@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:19:22'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Implementing Natural Conversational Agents with Elixir – Sean Moriarity
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://seanmoriarity.com/2024/02/25/implementing-natural-conversational-agents-with-elixir/](https://seanmoriarity.com/2024/02/25/implementing-natural-conversational-agents-with-elixir/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -26,6 +32,7 @@
     impress my non-tech friends. I am, however, not in this business to impress my
     friends. I want Nero to *actually help me* and *actually feel like an assistant*.
     My previous version is not that.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: One missing piece is the ability to converse naturally without browser interaction.
@@ -34,39 +41,48 @@
     did not retain any conversational history. In short, Nero was not a great conversational
     assistant. It was one of the things I wanted to fix; however, I was motivated
     to do it sooner rather than later after watching [an impressive demo from Retell](https://beta.retellai.com/home-agent).
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'The Retell demo implements a conversational agent backed by their WebSocket
     API in a browser. The demonstration has:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: “Always on” recording
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Low latency
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Support for interrupts
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Impressive filtering (e.g. snapping and other non-voice activity doesn’t seem
     to throw off the agent)
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Their documentation suggests they also have support for [backchanneling](https://www.cs.utep.edu/nigel/bc/#:~:text=What%20is%20a%20Backchannel%3F,utterances%20such%20as%20uh%2Dhuh.)
     and intelligent end of turn detection—two things that are essential to natural
     conversational feel but which are very difficult to express programmatically.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: I had previously convinced myself that I could implement a passable conversational
     agent experience in a short amount of time. So that is what I set out to do.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Always On Recording
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -79,6 +95,7 @@
     is a server-side rendering framework built on top of Elixir. LiveView has support
     for client-side JavaScript hooks which support bidirectional communication between
     client and server.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: The original speech to text implementation used a hook with an event listener
@@ -89,6 +106,7 @@
     to make some minor tweaks. Rather than trigger recordings to stop and start on
     mouse events, we want to trigger recordings to start and stop exactly when a person
     starts and stops speaking. Simple, right?
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: My first idea in implementing what I called “always on recording” was to monitor
@@ -100,19 +118,23 @@
     is a stream of media content containing information about audio and video tracks
     in the stream. We can use data from the `MediaStream` to determine speaker activity
     and thus trigger recordings.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'To determine the volume for a given sample, we can use an [AnalyserNode](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode).
     Per the documentation `AnyalyserNode` is designed for processing generated audio
     data for visualization purposes, but we can use it to determine spikes in audio:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: This uses an analyser and repeatedly checks if the volume of the microphone
     at a given frame exceeds the given `VOLUME_THRESHOLD`. If it does, it checks to
     see if we are recording and if not, starts the recording.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'After testing a bit, I realized this implementation sucked. Of the many issues
@@ -120,9 +142,11 @@
     volume. Checking a single frame doesn’t account for these natural dips. To fix
     this, I thought it would be a good idea to introduce a timeout which only stopped
     recording after the volume was below a threshold for a certain amount of time:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: This actually ended up working decent, but required tuning hyperparameters for
@@ -132,6 +156,7 @@
     slower and quieter speaking rhythms. Additionally, a static `VOLUME_THRESHOLD`
     does not account for ambient noise. Now, despite these shortcomings, I found I
     was able to passably detect a single speaker in a quiet room.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: After hooking this up to my existing LiveView and trying some end-to-end conversations,
@@ -144,6 +169,7 @@
     which always tracked the previous 150ms of audio. After recording started, I would
     stop the pre-recording buffer and start the actual recording, and then eventually
     splice these 2 together to send to the server for transcription.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Overall, this *actually* worked okay. While there are some obvious failure modes,
@@ -152,9 +178,11 @@
     at [voice activity detection](https://en.wikipedia.org/wiki/Voice_activity_detection).
     Later on in this post, I’ll run through some of the improvements I made based
     on my research into the field of VAD.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: End-to-End Implementation
+  id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -162,6 +190,7 @@
     already contained the scaffolding for an end-to-end transcription -> response
     -> speech pipeline. I only needed to make some slight modifications to get the
     phone call demo to work. The end-to-end the pipeline looks like this:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'When our algorithm detects that speech has stopped, it invokes the `stopRecording`
@@ -170,17 +199,21 @@
     of [LiveView’s normal uploads lifecycle](https://hexdocs.pm/phoenix_live_view/uploads.html)
     and then invokes an [async task](https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html#module-arbitrary-async-operations)
     to start transcription:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'Note that because we did most of the pre-processing client-side, we can just
     consume the audio binary as an `Nx.Tensor`, without any additional work. The `SpeechToText`
     module implements transcription using [Nx.Serving](https://hexdocs.pm/nx/Nx.Serving.html):'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: '`Nx.Serving` is an abstraction in the Elixir Nx ecosystem for serving machine
@@ -188,91 +221,115 @@
     encapsulates pre-processing, inference, and post-processing, supports distribution
     and load-balancing between multiple GPUs natively, and in general is an extremely
     easy way to serve machine learning models.'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'After transcription completes, we get an async result we can handle to initiate
     a response:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: 'Here `Nero.Agent.respond/1` returns an Elixir `Stream` of text. For my original
     demonstration I just used the Elixir OpenAI library to produce a stream from a
     GPT-3.5 response:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: 'The response stream is consumed by `speak/2`. `speak/2` implements the text
     to speech pipeline:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: Where `Nero.TextToSpeech.stream/1` uses the [ElevenLabs WebSocket API](https://elevenlabs.io/docs/api-reference/websockets)
     to stream text in and speech out. You can read a bit more about the implementation
     in my previous post.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '`Nero.TextToSpeech.stream/1` returns the consumed response as text so we can
     append that to the chat history after the `:speak` task finishes:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'This is basically all of the scaffolding needed for an end-to-end demo, but
     I wanted to add a few more features. First, I wanted to support “intelligent”
     hang-ups. Basically, I wanted to be able to detect when a conversation was finished,
     and stop the recording. To do that, I used [Instructor](https://github.com/thmsmlr/instructor_ex):'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'Please ignore my wonderfully engineered prompt. This uses GPT-3.5 to determine
     whether or not a given conversation has ended. After every one of Nero’s turns,
     we check the transcript to possibly end the call:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: 'This pushes a `hang_up` event to the socket:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'Which stops the recording, and then pushes an event to `toggle_conversation`
     back to the server. `toggle_conversation` implements the start/stop logic from
     the server:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: 'Finally, I wanted to implement information extraction from the transcript.
     Again, I used instructor and defined an extraction schema:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: 'And used GPT-3.5 with a rough prompt to get the necessary information from
     the transcript:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'And then anytime a conversation ends, we attempt to retrieve appointment information:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: 'Now this is essentially the exact implementation that produced [this demonstration](https://twitter.com/sean_moriarity/status/1760435005119934862).
@@ -280,24 +337,30 @@
     most of the basic scaffold implemented from my previous work on Nero. In my biased
     opinion, I think my demo is pretty good, but as others have pointed out Retell’s
     demo kicks my ass in:'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Latency
+  id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Reliability
+  id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Natural sounding voice
+  id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: And so, I set out to improve my implementation – starting with latency.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Reducing Latency
+  id: totrans-split-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -307,6 +370,7 @@
     in a conversation can be as quick as 200ms. That means for a conversational agent
     to feel realistic, it needs an extremely quick turn around time for “time to first
     spoken word.”
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: After posting my original demonstration, I already knew there were some very
@@ -317,52 +381,64 @@
     and logging. Basically, I computed a `startTime` from the exact moment an audio
     recording stopped and an `endTime` from the exact moment an audio output started,
     and then I logged that time to the console.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: This is a very unscientific way of doing business. In the future, I’d like to
     implement a much more involved profiling and benchmarking methodology. For this
     process though, it worked well enough.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, I considered all of the areas that could introduce latency into the pipeline.
     From the moment a recording stops, these are all of the steps we take:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Pre-process recording by converting to PCM buffer, and then converting endianness
     to match server (if necessary)
+  id: totrans-split-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Upload buffer to server
+  id: totrans-split-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Perform speech to text on buffer to produce text
+  id: totrans-split-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Send text to LLM
+  id: totrans-split-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Send streamed text to ElevenLabs
+  id: totrans-split-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Receive streamed audio from ElevenLabs
+  id: totrans-split-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Broadcast audio to client
+  id: totrans-split-73
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Decode audio on client and play
+  id: totrans-split-74
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: That’s a lot of steps that can introduce latency, including potentially 3 (in
     our case 2 because we own the STT pipeline) network calls.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: Next, I wanted to esablish a “baseline” of performance. To demonstrate this
@@ -370,6 +446,7 @@
     going to be slow relative to my previous demo because the previous demo runs on
     a GPU. The baseline performance I got from the original demo running on my mac
     was `4537 ms`. 4.5 seconds turn around time. Yikes. Lots of work to do.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'To start, I knew that the `SILENCE_TIMEOUT` used to wait for speech to end
@@ -378,18 +455,21 @@
     response process. After some trial and error, I figured 500 ms was a “passable”
     hyperparameter. After adjusting this down, the latency change was almost exactly
     correlated to the dip: `4079 ms`.'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'I had a hunch that my text to speech pipeline was not efficient. Fortunately,
     ElevenLabs gives us a nice [Latency Guide](https://elevenlabs.io/docs/api-reference/reducing-latency).
     The first suggestion is to use their turbo model by specifying `eleven_turbo_v2`.
     I set that and we got a slight performance boost: `4014 ms`.'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, they suggest adding `optimize_streaming_latency`. I set the value to
     `3` and we get: `3791 ms`. Their next suggestion is to use a pre-made voice. I
     actually didn’t realize until much later that I was not using a pre-made voice
     so I don’t have a comparison for how that change impacted latency.'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now it says to limit closing WebSocket connections. my current implementation
@@ -397,16 +477,19 @@
     has to establish a new websocket connection. Additionally, ElevenLabs has a timeout
     of 20s from when you connect. So you need to send a message at least every 20s.
     I considered 2 options at this point:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: Open a global WebSocket connection, or maybe even a pool of connections, and
     try to keep the connection alive. But that seems really wasteful, and I don’t
     think is the intended use of their API
+  id: totrans-split-81
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Open a WebSocket connection when convo starts. We don’t have to worry about
     20s pauses
+  id: totrans-split-82
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -417,6 +500,7 @@
     you run the risk of creating a potentially unbounded number of connections. A
     more robust solution would probably use connection pools; however, I’m not really
     worried about traffic or scaling here.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: While adding this optimization, I struggled a bit because ElevenLabs would send
@@ -425,6 +509,7 @@
     generation after I finished sending my tokens. This also seemed to fix unnatural
     audio problems I was having. After applying this optimization, our time to first
     spoken word was slightly lower in the `3700 ms` range.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: After perusing their docs a bit more, I learned that ElevenLabs will send PCM
@@ -433,6 +518,7 @@
     creator tier to receive PCM instead of MP3\. Now, if you’re wondering if I spent
     $99 to save some milliseconds for a meaningless demo, the answer is absolutely
     yes I did.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: At this point, I believe I’ve exhausted a lot of the “easy” optimizations for
@@ -444,6 +530,7 @@
     latency impact is, but I’m sure we could shave *some* time by avoiding both of
     these conversions. I also think the Base64 representation results in slightly
     larger buffers which could impact network latency.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'The next area I looked to improve was the speech-to-text pipeline. I am using
@@ -452,10 +539,12 @@
     that assumes our transcription pipeline can run fast enough on our own hardware.
     XLA is notoriously slow on CPUs (it’s getting better). The first “optimization”
     I did was to switch to my GPU: `2050 ms`'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: And that right there is a bitter lesson, because it’s the largest performance
     boost we’re going to get.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, I realized the model isn’t using F16, which can introduce some solid
@@ -470,6 +559,7 @@
     short sequence lengths like we care about in this implementation. One day I may
     go down the performance hole of fast batch size 1 transcription, but today is
     not that day.'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: At this point, I had moved on to improving some of the failure modes of my demo.
@@ -482,6 +572,7 @@
     Oh well. Additionally, I realized I wasn’t using a pre-made ElevenLabs voice.
     After introducing both of these optimizations, I was able to achieve `1520 ms`
     turn time.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, I realized I was doing all of my benchmarks on a development server.
@@ -494,16 +585,19 @@
     ms` turn around time. Still, unfortunately, this does not match Retell’s latency.
     According to them, they are able to achieve `800 ms` consistently. I have some
     musings at the end about how this is possible.'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: I believe the biggest area I could improve the implementation is to use a better
     VAD implementation that relies on small rolling windows of activity rather than
     frames. We could probably get away with using 20-30 ms windows, which could theoretically
     offer a 480 ms latency improvement. I would like to eventually explore this.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: In all honesty though, I think that is a significant improvement, and I could
     *probably* stop right here and be done with it.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: If I were to keep going, I would explore using a local LLM with Nx and Bumblebee.
@@ -515,13 +609,16 @@
     and Mistral. Fortunately, the folks at [Fly.io](https://fly.io/gpu) were kind
     enough to give me access to some 80GB A100s. I will post a demo when I get one
     deployed 🙂
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Maybe one day I will implement StyleTTS2 and see how efficient we can get with
     an entirely local inference pipeline.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: Improving the Conversational Experience
+  id: totrans-split-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -531,14 +628,17 @@
     and mouse clicks, and doesn’t do well with ambient noise. They also have support
     for backchanneling, fillers and interruptions which introduces some element of
     “realness” when interacting with their agent.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: Now I didn’t get around to adding backchannels or fillers, but I was able to
     make some slight improvements to the VAD algorithm I used, and I added support
     for interruptions.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Fixing Some Failure Modes with VAD
+  id: totrans-split-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -549,29 +649,36 @@
     point I realized that I could specify the microphone sample rate for the optimization
     I could added from the last section. Most of these options are on by default depending
     on your browser, but I added them explicitly anyway:'
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-101
   prefs: []
   type: TYPE_PRE
 - en: Now that somewhat helped, but Nero still picks up it’s own audio. This probably
     requires a more sophisticated solution, but I moved on to the next problem.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: 'The second obvious failure mode is the fact that it picks up keyboard clicks,
     and the silence timeout is hard to tune. My first attempt to fix this was to “ignore”
     large spikes in audio by “smoothing” the volume at each frame:'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-104
   prefs: []
   type: TYPE_PRE
 - en: 'Then, with some advice from [Paulo Valente](https://twitter.com/polvalente),
     I implemented a biquad filter to with a low and high-pass in order to filter audio
     to the range of human speech:'
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-106
   prefs: []
   type: TYPE_PRE
 - en: In practice, both of these solutions actually seemed to work decent, but they
@@ -581,9 +688,11 @@
     VAD, and have `1ms` inference times. I realized that it’s probably quicker to
     just send all of the data over the websocket in chunks, and perform VAD on the
     server. I’ll discuss that implementation a little later.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: Supporting Interruptions
+  id: totrans-split-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -591,23 +700,29 @@
     speaker will cut off mid-speech if it detects that you are speaking. To implement
     this feature in Nero, I added a `pushEvent` to the Microphone hook which would
     push an `interrupt` event to the server anytime speech is detectected:'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-110
   prefs: []
   type: TYPE_PRE
 - en: 'The server handles this event and broadcasts an event to the TTS channel to
     stop speaking:'
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-112
   prefs: []
   type: TYPE_PRE
 - en: 'And the channel handles the event by clearing out the output audio stream and
     queue:'
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-114
   prefs: []
   type: TYPE_PRE
 - en: Unfortunately, this does create a race condition. There’s a potential situation
@@ -620,14 +735,17 @@
     in sync with the client and server. On the client, when processing the audio queue,
     it simply checks whether or not the token at the beginning of the payload matches,
     and if it doesn’t it ignores that sample.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: The limitation with this implementation is it does not update the chat transcript.
     It’s entirely possible because we have access to the alignment information from
     ElevenLabs, but I just didn’t implement it at this time.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: Time-based Hang Ups
+  id: totrans-split-117
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -636,9 +754,11 @@
     AI speaker asking you if you’re still there. After another duration of silence,
     it will hang up. This is something that’s pretty easy to do with LiveView and
     `Process.send_after/4`:'
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-119
   prefs: []
   type: TYPE_PRE
 - en: 'And then we can cancel the timer anytime we receive a transcription, and restart
@@ -648,12 +768,15 @@
     initiates a really long speech, which overlaps with the `nudge_ms` duration. Now,
     we can control the number of nudges with an assign. In my case, I just used a
     boolean:'
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-121
   prefs: []
   type: TYPE_PRE
 - en: Re-doing the Entire Thing
+  id: totrans-split-122
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -664,6 +787,7 @@
     VAD in `1ms` on a single CPU thread. They also had an ONNX model—and we have a
     library in the Elixir ecosystem called [Ortex](https://github.com/elixir-nx/ortex)
     which allows us to execute ONNX models.
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: To accomodate for the new VAD model, I ended up re-implementing the original
@@ -672,13 +796,16 @@
     The implementation is also relatively simple, and easily expanded to accomodate
     for other LLMs, TTS, and STT models. The WebSocket implementation has low latency
     (when running on a GPU), and supports interrupts.
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: You can find the [project on my GitHub](https://github.com/seanmor5/echo) as
     well as an [example using the server](https://github.com/seanmor5/echo_example).
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: Musings
+  id: totrans-split-126
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -689,11 +816,13 @@
     to detail that goes into making an effective conversational agent, and Retell’s
     demo shows they paid a lot of attention to the details. Kudos to them and their
     team.
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: I will also admit that my demo is playing to one benchmark. I’m optimizing the
     hell out of latency to support a single user—me. I think this solution would change
     if it needed to accomodate for multiple concurrent users.
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: Retell’s website claims they have a conversation orchestration model under the
@@ -702,9 +831,11 @@
     model or a series of models for VAD, adding backchannels, etc. I’m not sure. I
     think eventually it *will* be a single model, but I’m not sure if it is now, which
     leads me to my next point.
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: Another Bitter Lesson
+  id: totrans-split-130
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -716,10 +847,12 @@
     I predict in less than a year we will see an incredibly capable joint speech/text
     model. I recently saw a large audio model called [Qwen-Audio](https://github.com/QwenLM/Qwen-Audio)
     that I believe is similar to what I envision.
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: 'Specifically, if somebody were kind enough to give me some money to throw at
     this problem, here is exactly what I would do:'
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: 'Generate an [Alpaca-style](https://github.com/tatsu-lab/stanford_alpaca/blob/main/alpaca_data.json)
@@ -732,19 +865,23 @@
     in as well. You can even throw in text prompts that dictate when and when not
     to respond to support things like [wake word detection](https://picovoice.ai/platform/porcupine/)
     without needing to train a separate model.'
+  id: totrans-split-133
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Create a LLaVA-style model with a Whisper or equivalent base, an LLM, and a
     projection layer.
+  id: totrans-split-134
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Secure H100s, train model, and “turn H100s into $100s” (thank you [@thmsmlr](https://twitter.com/thmsmlr?lang=en))
+  id: totrans-split-135
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: If you want to give me some $$$, my e-mail is smoriarity.5@gmail.com 🙂
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: I believe we are also close to just having full-on speech-to-speech models.
@@ -754,15 +891,18 @@
     dataset. People tend to change their behavior under observation. Additionally,
     conversations from movies and TV shows aren’t actually very natural. Even some
     podcasts have an unnatural converastional rhythm.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: While watching [Love is Blind](https://en.wikipedia.org/wiki/Love_Is_Blind_(TV_series))
     with my fiancé, I realized you could probably get a decent amount of quality data
     from reality tv shows. The conversations in reality TV are overly dramatic and
     chaotic, but are (I think) closer to realistic than anything else.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: Conversational Knowledge Base?
+  id: totrans-split-139
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -774,9 +914,11 @@
     a system search. Building something like that in is entirely possible. Additionally,
     if your agent requires information up front about an individual, it’s possible
     to include that in the initial prompt.
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: You Should Use Elixir
+  id: totrans-split-141
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -784,9 +926,11 @@
     perfect application of Elixir and Phoenix. If you are building conversational
     agents, you should seriously consider giving Elixir a try. A large part of how
     quick this demo was to put together is because of how productive Elixir is.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-143
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -795,10 +939,12 @@
     to build off of. If you are interested in conversational agents, I encourage you
     to check it out, give feedback, and contribute! I know it’s very rough right now,
     but it will get better with time.
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: Additionally, I plan to periodically build out the rest of the Nero project,
     so please follow me on [Twitter](https://twitter.com/sean_moriarity) if you’d
     like to stay up to date.
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL

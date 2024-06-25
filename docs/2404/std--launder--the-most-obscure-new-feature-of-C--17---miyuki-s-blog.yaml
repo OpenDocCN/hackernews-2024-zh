@@ -1,49 +1,62 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:54:06'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'std::launder: the most obscure new feature of C++17 · miyuki''s blog'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://miyuki.github.io/2016/10/21/std-launder.html](https://miyuki.github.io/2016/10/21/std-launder.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'std::launder: the most obscure new feature of C++17'
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 21 Oct 2016
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Proposal [P0137R1](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0137r1.html)
     introduces a new function into the C++ standard library called `std::launder`.
     Unfortunately, this proposal is hard to understand for mere mortals.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is what Botond Ballo writes about `std::launder` in his [trip report](https://botondballo.wordpress.com/2016/07/06/trip-report-c-standards-meeting-in-oulu-june-2016/)
     to the C++ Standards Commitee meeting:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Don’t ask. If you’re not one of the 5 or so people in the world who already
     know what this is, you don’t want or need to know.
+  id: totrans-split-10
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'But nevertheless let’s try to get some intuition about how `std::launder` works.
     The original proposal provides an example:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: Here we first initialize `u` with `1` (so `x.n` is set to 1, and `x` becomes
@@ -52,39 +65,49 @@
     The problem here is that `n` is const-qualified and the optimizer is allowed to
     assume that it will always remain equal to 1\. So, `std::launder` acts as an optimization
     barrier that prevents the optimizer from performing constant propagation.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'This example is explained in more detail in the answer to a question on Stack
     Overflow: [What is the purpose of std::launder?](http://stackoverflow.com/questions/39382501/what-is-the-purpose-of-stdlaunder).'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Alisdair Meredith also briefly [mentions](https://youtu.be/-rIixnNJM4k?t=583)
     a real-life use case in his talk “C++17 in Breadth” from CppCon 2016\. He tells
     us that this function might be handy when dealing with containers of const-qualified
     elements.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, let’s look at another example. The GCC maintainers initially [implemented](https://gcc.gnu.org/ml/libstdc++/2016-10/threads.html#00152)
     `std::launder` as a no-op, i.e. something similar to:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: 'but Richard Smith (the lead developer of Clang) came up with an example which
     is compiled correctly by Clang, but miscompiled by GCC:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: 'The optimizer folds `h` into something similar to:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: (when compiled correctly, this function should return 3).
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'This example defines a class hierarchy consisting of two classes: `A` and `B`.
@@ -92,10 +115,12 @@
     `f` in `A` does a placement new on the `this` pointer and replaces the object
     with a newly created instance of `B` and then returns 1\. `f` in `B` does the
     opposite, i.e. replaces the object with an instance of `A` and then returns 2.'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Function `h` allocates an instance of `A` on the stack and invokes `f` twice.
     Note that the second call is performed on the “laundered” pointer.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: This example resembles the first one, but this time the mutated const value
@@ -105,10 +130,12 @@
     the compiler replaces such virtual call with a direct call. This time the optimizer
     is overly optimistic and fails to recognize that even stack-allocated objects
     can now change their dynamic type.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Note that C++17 support in GCC is still experimental, and such bugs are expected.
     This one has been spotted and a [fix](https://gcc.gnu.org/ml/libstdc++/2016-10/msg00194.html)
     already exists.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL

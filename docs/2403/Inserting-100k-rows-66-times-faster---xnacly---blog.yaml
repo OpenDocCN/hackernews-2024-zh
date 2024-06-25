@@ -1,61 +1,78 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:31:43'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Inserting 100k rows 66 times faster | xnacly - blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://xnacly.me/posts/2024/faster-inserts/](https://xnacly.me/posts/2024/faster-inserts/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: In the process of implementing the initial data syncing logic for a mostly offline
     application I noticed my database abstraction taking a solid 2 minutes for inserting
     short of 750k rows into a single database table.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: I set out to fix this bottleneck.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Problems and Issues [##](#problems-and-issues)
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'A new issue arose before i could even tackle the aforementioned performance
     problems: At first I used the spread syntax for a variadic amount of function
     parameters.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: 'This polluted the call stack and promptly caused a stack overflow:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: Believe me this seems obvious in retrospect, but it took me a solid day of combing
     trough typescript source maps to find the cause.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Takeaway
+  id: totrans-split-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I will never use the spread operator again - looking at you react.js
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: First Estimates and Benchmarking [##](#first-estimates-and-benchmarking)
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -63,47 +80,61 @@
     to insert in. The first tests were nothing short of disappointing: 57 seconds
     for inserting 500k rows, 1min 10 seconds for inserting 750k rows - this was too
     slow.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: 'My next idea was to get specific and reproducible numbers, thus i created a
     benchmark, for the simplified `create` implementation above, with differing loads,
     starting with 10 rows and stopping at a million rows:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: 'Measured times:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '|  | `create` |'
+  id: totrans-split-22
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- |'
+  id: totrans-split-23
   prefs: []
   type: TYPE_TB
 - en: '| 10 rows | 2ms |'
+  id: totrans-split-24
   prefs: []
   type: TYPE_TB
 - en: '| 100 rows | 1ms |'
+  id: totrans-split-25
   prefs: []
   type: TYPE_TB
 - en: '| 1,000 rows | 13ms |'
+  id: totrans-split-26
   prefs: []
   type: TYPE_TB
 - en: '| 10,000 rows | 100ms |'
+  id: totrans-split-27
   prefs: []
   type: TYPE_TB
 - en: '| 100,000 rows | 1089ms |'
+  id: totrans-split-28
   prefs: []
   type: TYPE_TB
 - en: '| 1,000,000 rows | 11795ms |'
+  id: totrans-split-29
   prefs: []
   type: TYPE_TB
 - en: Approaches [##](#approaches)
+  id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -112,100 +143,130 @@
     a look, i notice there are no heavy or even many operations here. How could I
     improve the database interaction itself? This was the moment I stumbled upon bulk
     inserts.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: 'The naive example implementation makes a database call for every row it wants
     to insert. Bulk inserting reduces this to a single call to the database layer
     by appending more value tuples to the above statement:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'Using the above to implement a faster `create` method as follows:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: 'Extending our tests for `createFast`:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: '|  | `create` | `createFast` | Improvement |'
+  id: totrans-split-39
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- |'
+  id: totrans-split-40
   prefs: []
   type: TYPE_TB
 - en: '| 10 rows | 2ms | 1ms | 2x |'
+  id: totrans-split-41
   prefs: []
   type: TYPE_TB
 - en: '| 100 rows | 1ms | 1ms | / |'
+  id: totrans-split-42
   prefs: []
   type: TYPE_TB
 - en: '| 1,000 rows | 13ms | 3ms | 4.3x |'
+  id: totrans-split-43
   prefs: []
   type: TYPE_TB
 - en: '| 10,000 rows | 100ms | 22ms | 4.5x |'
+  id: totrans-split-44
   prefs: []
   type: TYPE_TB
 - en: '| 100,000 rows | 1089ms | 215ms | 5.1x |'
+  id: totrans-split-45
   prefs: []
   type: TYPE_TB
 - en: '| 1,000,000 rows | 11795ms | 1997ms | 5.9x |'
+  id: totrans-split-46
   prefs: []
   type: TYPE_TB
 - en: Info
+  id: totrans-split-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The before benchmarks were done on the following system:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: 'CPU: Intel(R) Core(TM) i5-6200U CPU @ 2.30GHz 4 cores'
+  id: totrans-split-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'RAM: 8,0 GB DDR3 1600 MHz'
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The system was under heavy load while benchmarking, thus the recorded times
     are still pretty slow.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Escaping from micro benchmarks into the real world [##](#escaping-from-micro-benchmarks-into-the-real-world)
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Applying the results from the micro benchmarks to my real world projects database
     layer resulted in significant runtime improvements, up to 66x faster.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '|  | `create` | `createFast` | Improvement |'
+  id: totrans-split-54
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- |'
+  id: totrans-split-55
   prefs: []
   type: TYPE_TB
 - en: '| 10 rows | 7ms | 2ms | 3.5x |'
+  id: totrans-split-56
   prefs: []
   type: TYPE_TB
 - en: '| 100 rows | 48ms | 1ms | 48x |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '| 1000 rows | 335ms | 9ms | 37.2x |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: '| 10000 rows | 2681ms | 80ms | 33.5x |'
+  id: totrans-split-59
   prefs: []
   type: TYPE_TB
 - en: '| 100000 rows | 25347ms | 390ms | 66x |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB

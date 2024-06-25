@@ -1,25 +1,32 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:04:34'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Why Do Python Lists Multiply Oddly? A CPython Internals Deep Dive
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://codeconfessions.substack.com/p/why-do-python-lists-multiply-oddly](https://codeconfessions.substack.com/p/why-do-python-lists-multiply-oddly)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I was scrolling down on X/Twitter when I noticed the following Python related
     post with 2.5k likes on it.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: At first glance it does appear to be a surprising output and I agree with the
@@ -27,28 +34,34 @@
     is the right behavior or not. Instead, I want to take this opportunity to explain
     the reason behind this behavior and show some CPython internal details as part
     of the process.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: We will start by a high level answer by just doing some inspection in the REPL,
     then we will go one level deeper and see the details of the list implementation
     in CPython to see why that happens, and finally we will go another level down
     to see how CPython invokes this behavior.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: This peculiar behavior of Python can be explained right from the REPL itself.
     So first, let’s get the short answer first using the REPL.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'In Python, the `*` operator when used on a sequence type object (such as lists,
     strings), repeats the elements of the object `x` number of times. For instance:
     `‘a’ * 3` would produce `‘aaa’`. Similarly, `[[]] * 4` produces `[[], [], [],
     []]`.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: However, as you might know, everything is an object in Python and every object
@@ -56,39 +69,49 @@
     to an empty list object. And the `*` operator is simply copying the same reference
     four times, resulting in `[[], [], [], []]`. And, all these repeated inner lists
     are references to the same initial empty list object.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can verify this theory by printing the ids of each of the empty list as
     shown below:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: As you can see, each of the inner lists has the same object id, which means
     that they are references to the same object. This is why modifying one of these
     inner lists reflects as an update to every other list.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Demonstration that each inner list is indeed reference to the same list object
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: So this was the short answer. Now, for those interested in the CPython implementation
     details behind this, let’s dive in!
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s start by looking at the definition of the list object which is defined
     in the file [Include/cpython/listobject.h](https://github.com/python/cpython/blob/3.12/Include/cpython/listobject.h#L5).
     The following illustration shows its structure.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Definition of list object in CPython
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'It consists of three fields:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: The first field is an instance of the `PyObject` struct (also called as the
@@ -96,20 +119,24 @@
     the object reference count and type implementation related details about the object.
     (Watch my [video on PyObject and PyTypeObject](https://codeconfessions.substack.com/p/decoding-pyobject-and-pytypeobject)
     for more details).
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The third field is the current capacity of the list, i.e., how many objects
     can it hold. The list gets resized when it is about to overflow its capacity.
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The 2nd field is an array of `PyObject *` types. This array is where the list
     internally stores all those objects. Let’s discuss it in more detail.
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'So we know that the list type internally uses an array for storing its items.
@@ -117,54 +144,67 @@
     array is a pointer to a `PyObect` object. This itself means that the list simply
     stores references to objects instead of storing the actual objects. The following
     illustration shows how it looks like:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: The in-memory representation of the CPython list object
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s see what the list looks like after adding an element to it.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: How the list looks like when an element is inserted into it
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: As you can see in the illustration — when we add a new element to the list,
     internally the list is only storing a pointer (or reference) to that object. Now,
     let’s see how the list object in CPython handles the `*` operator and what happens
     to this array in that case.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: With this basic understanding of how the list type is defined in CPython, let’s
     take a look at the function where it implements handling for the `*` operator.
     The complete implementation of CPython’s list object is in the file [Objects/listobject.c](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L552)
     and the following illustration shows the function which handles the `*` operation.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: The function for handling * operator as defined in listobject.c
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: This function starts by creating a new list, it then copies the references stored
     in the original list into the new list, and finally it repeats those references
     n times in the new list.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Although I''ve annotated the whole function with commentary, let’s spend some
     time on the meat of the function where the items of the first list are being copied
     and repeated into the new list. Let’s start by looking at how a list which stores
     an empty list as its only element looks like in memory:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: How the list l1 looks like in-memory when it stores a reference to another empty
     list
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: So this is the way things look like before we use the `*` operator. The outer
@@ -172,17 +212,21 @@
     an entry in the `ob_item` array of `l1` which points to the other list. This other
     list currently has a reference count of 1\. We will see how this changes after
     we apply the `*` operator.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: Let’s see how things look like after applying the `*` operator on `l1` as per
     the above code snippet.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The result of applying the * operation l1\. A new list gets created which contains
     copies of the references originally stored in l1, repeated n times.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: The above illustration shows the result of doing `l1 * 4`. Note that the `*`
@@ -191,25 +235,31 @@
     list contains 4 pointers (or references) to the same empty list object. Also,
     the reference count of the list they are pointing to has gone up from one to five
     — four references from `l2` and one reference is from `l1`.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, what happens when we do `l2[0].append()`? The following illustration
     shows that
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: What happens when we insert an element into the first inner list of l2?
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: We appended the float value `3.14` to the first element of `l2`. The above figure
     illustrates the changes caused by that. The 4 elements in `l2` still point to
     the same common list but now this list’s `ob_item` array contains a reference
     to a float type object with value `3.14`.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: This is everything that goes on when we use the * operator on lists. But there
@@ -217,11 +267,13 @@
     this particular function when the `*` operator is used on a list type object?
     This is a bonus section unrelated to understanding our original question. You
     can continue to read if you are interested in going deeper in CPython internals.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: So how does the CPython VM know that it needs to invoke the function `list_repeat`
     from inside `listobject.c` (we saw this function in the previous section)? Let’s
     learn this from the bottom up.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: In the first section we saw the definition of the list object in CPython, and
@@ -229,15 +281,18 @@
     struct. It turns out every type definition in CPython includes this as its first
     field and as a result this field is also called the object header (because it
     lies at the beginning of each object).
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: The `PyObject` struct includes the reference count of the object and it also
     includes a pointer to an object of type [PyTypeObject](https://github.com/python/cpython/blob/3.12/Include/cpython/object.h#L146).
     Now, `PyTypeObject` struct is of interest here because it includes fields for
     storing type related information about the object.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: Definition of PyObject struct in CPython
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Among these fields are a bunch of function pointer tables for handling various
@@ -245,16 +300,19 @@
     a table called `tp_as_sequence`. It contains function pointers for handling operations
     which are expected by sequence type objects. These operations include things like
     slicing, indexing, repetition, concatenation, etc.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: The following illustration shows a partial definition of the `PyTypeObject`
     struct (because it’s too big to show all of it here) and highlights a couple of
     function pointer tables, i.e. `tp_as_number` (for numeric operators) and `tp_as_sequence`
     (for handling sequence type operators).
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Definition of PyTypeObject and the function pointer tables for handling numeric
     and sequence type operations
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Every object in CPython (depending on its type, i.e. whether its numeric, sequence
@@ -263,11 +321,13 @@
     indexing, slicing, repetition, etc and populate the `tp_as_sequence` field in
     its `PyTypeObject` instance with pointers to those functions. The following illustration
     shows how all of this happens inside `listobject.c`.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: How the list type in CPython implements functions for handling len, concat (+)
     and repeat (*) operations, and then uses pointers to those functions to create
     the PySequenceMethods object, which in turn goes inside the PyTypeObject instance
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: The illustration shows the functions that the list object implements for handling
@@ -275,16 +335,19 @@
     used to populate an instance of the `PySequenceMethods` struct, and finally a
     pointer to this object goes inside the instance of the `PyTypeObject` (called
     `PyList_Type`).
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Next, a pointer to this `PyList_Type` object is used to populate the header
     of every new list object upon initialization. The following illustration shows
     the code which is invoked every time the CPython runtime needs to create a new
     list object.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: The function in listobject.c which gets invoked everytime a new list object
     needs to be created.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: This means that every list object has these function pointers in its headers
@@ -292,64 +355,78 @@
     In fact, every CPython object follows a similar protocol in its implementation
     to populate the function pointer tables in their header. Now let’s see how the
     CPython VM looks up this header to perform various operations on the objects.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s understand this with the help of an example where we have a function which
     performs the `*` operator on a list object.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: The above listing also shows the compiled bytecode for this function using the
     [dis](https://docs.python.org/3/library/dis.html) module. CPython uses a stack
     based virtual machine (VM) to execute these bytecode instructions. The VM uses
     a stack to store the arguments for executing these instructions.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Apart from the stack, there is a `locals` table for storing scope local variables
     and function arguments, and a `globals` table for storing global objects. Based
     on this information, let’s understand what is happening in this bytecode sequence.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '`BUILD_LIST`: creates a new list object.'
+  id: totrans-split-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`STORE_FAST`: puts the list object into the locals table (i.e. the variable
     `l`) at index 0'
+  id: totrans-split-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`LOAD_FAST`: loads the object at index 0 from the locals table and pushes it
     onto the stack'
+  id: totrans-split-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`LOAD_CONST`: pushes the constant 4 onto the stack'
+  id: totrans-split-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`BINARY_OP`: pops the top two objects from the stack and performs the `*` operation
     on them, i.e., it pops 4 and `l` from the stack and executes the `*` operation
     on them. Let’s discuss this in more detail.'
+  id: totrans-split-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The implementation for handling all these bytecode instructions is present
     in the file [Python/generated_cases.c.h](https://github.com/python/cpython/blob/3.12/Python/generated_cases.c.h).
     The code for handling the `BINARY_OP` instruction looks like the following:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: The handling of the BINARY_OP instruction in the CPython VM
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: So we see that the VM has a function pointer table for handling each operator.
     In order to execute a binary operation, it looks up this table and calls the corresponding
     function. Now let’s see what this table looks like.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: The function pointer table in generated_cases.c.h for handling binary operators
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: All the function pointers mapped in this table are defined in the file [Objects/abstract.c](https://github.com/python/cpython/blob/3.12/Objects/abstract.c).
@@ -358,15 +435,18 @@
     different operators, it lets the abstract object interface deal with that part.
     Now let’s take a look at the implementation of the `PyNumber_Multiply` function
     in `Objects/abstract.c`.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: The PyNumber_Multiply function as implemented in abstract.c
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: The above illustration lists the function from abstract.c which handles the
     `*` operator. As you can see, this function is fully aware of how the type system
     in CPython exposes the functions for handling the operators via the function pointer
     table in the object header.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Even though the function name is `PyNumber_Multiply`, it handles the `*` operator
@@ -375,24 +455,29 @@
     field of `PyTypeOjbect`), and when that fails then it tries to lookup the function
     pointer table for sequence types. Once it finds the function, it invokes that
     function and returns the value.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: 'So this was all we needed to know about the CPython implementation details
     behind the handling of `*` operation on sequence type objects and to understand
     the reason behind that peculiar behavior for which we started this whole exploration.
     Let’s summarize all of this discussion quickly to conclude this article:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Everything is an object in Python but those objects are accessed by references,
     i.e., our code is dealing with references to objects as opposed to the objects
     directly.
+  id: totrans-split-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Lists also store references to other objects internally.
+  id: totrans-split-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -400,10 +485,12 @@
     contains the references stored in the original list repeated n times. This means
     that the repeated elements in the new list are sharing references to the same
     object.
+  id: totrans-split-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: We looked at how this is implemented within CPython’s list implementation.
+  id: totrans-split-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -411,11 +498,13 @@
     internally uses an array to store the items. This array contains pointers to objects
     of type `PyObject`. `PyObject` is the universal type in the CPython runtime to
     represent all the objects.
+  id: totrans-split-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: We saw when we store a value in a list, how it results in the array storing
     a pointer to that object.
+  id: totrans-split-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -423,23 +512,28 @@
     saw how this function simply copies these pointers in the new list. Which again
     shows how the repeated values in the new list are simply pointers to the same
     object.
+  id: totrans-split-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Then we went one level deeper and saw how the CPython VM invokes the right function
     in `listobject.c` when the `*` operator is applied on a list type object.
+  id: totrans-split-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: This is done by doing a function pointer lookup in a table present in the list
     object’s header.
+  id: totrans-split-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-92
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: '[Share](https://blog.codingconfessions.com/p/why-do-python-lists-multiply-oddly?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL

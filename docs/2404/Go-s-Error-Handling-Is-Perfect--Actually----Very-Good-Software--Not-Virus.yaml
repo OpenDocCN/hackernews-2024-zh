@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:56:36'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Go’s Error Handling Is Perfect, Actually :: Very Good Software, Not Virus'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.verygoodsoftwarenotvirus.ru/posts/errors-in-go/](https://blog.verygoodsoftwarenotvirus.ru/posts/errors-in-go/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,21 +29,25 @@
     complaints are, anecdotally, rarely well thought out suggestions on what error
     handling could or should be like in a language like Go, but often merely boil
     down to “I don’t like having to look at it”.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: You’ll mainly see people complain about having to litter their apps with `if
     err != nil`, how they feel it makes the code verbose, and how they miss just writing
     ten very consequential lines one after the other in more dynamic languages like
     Python or Javascript.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Less often, you’ll see folks bemoan the lack of a stdlib-defined [Result type](https://doc.rust-lang.org/std/result/),
     which would have either a value or an error, like in Rust. Every now and then
     you’ll see someone bemoan how error handling works in highly concurrent Go programs,
     or how [some errors can be nil and not-nil simultaneously](https://stackoverflow.com/questions/53892508/golang-returning-nil-does-not-return-nil).
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: In defense of `if err != nil`[⌗](#in-defense-of-if-err--nil)
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -47,6 +57,7 @@
     I’ve spent writing Go, I can think of perhaps a handful of times where it actually
     reared its head. I also ascribe that issue to the subject of nil in Go, which
     is a whole other topic, this article is about errors.)'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'I regard the matter like this: do you want to know when something bad can happen
@@ -54,9 +65,11 @@
     for me that goes through every row of a CSV file, performs a get request for the
     value in the first column, and parses the responses as a JSON map of strings to
     strings`:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: There’s basically no error handling here, but there’s a ton that can go wrong.
@@ -65,20 +78,25 @@
     if the response body isn’t valid JSON, or doesn’t match the expected shape? The
     answer, in the case of Python, is an exception gets thrown, and since there’s
     no code to catch it, it’s handled by the broader runtime, printing a stack trace.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: Note that for any sufficiently complex program that invokes many dependencies,
     this stack trace will be so far down the chain that you may not even see where
     you’re making the call that causes it.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'I asked ChatGPT to write the same code, but in Go:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: Wouldn’t you know it, we have all the aforementioned errors handled! If there’s
@@ -86,12 +104,14 @@
     with the `GET` request, that will be surfaced. If the response doesn’t contain
     valid JSON, that will get surfaced. Is there more error handling code in the Go
     version? Yes, because that’s how Go is idiomatically written.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: The Python I posted above, while it certainly could be written a better way,
     doesn’t look meaningfully different from 90%+ of the Python I’ve ever had to work
     with professionally. My only major gripe with the Go variant is that it doesn’t
     check the length of row before accessing that index, but that’s ChatGPT for you.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: There are folks who will say that the Go version is less readable than the Python
@@ -100,19 +120,23 @@
     accomplish, I could entertain the suggestion that Python wins. If you measure
     it from the perspective of how long it takes to suss out what the different execution
     paths or outcomes could possibly be from a given chunk of code, I think Go wins.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Even if you didn’t know that file reads could fail, or network requests could
     fail, you would understand that both are possible after reading the Go code, but
     not from the Python code.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: I’d rather see a billion `if err != nil` statements in my code than have an
     error occur that I cannot quickly and effectively diagnose because it comes with
     a bunch of unrelated noise.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Result types in Go[⌗](#result-types-in-go)
+  id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -122,14 +146,17 @@
     that can contain either the anticipated value, or an error, but not both. So you
     sort of get the chance to collapse the standard `res, err := someOperation()`
     pattern you see in a lot of Go into just `res := someOperation()`.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'I asked ChatGPT to `Please write some rust code that returns a Result container
     with a string, have it check the current time and return an error if the unix
     timestamp is even or a positive result if the unix timestamp is odd`:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: This is, frankly, neat, and not a bad idea. There’s an alternative universe
@@ -138,6 +165,7 @@
     [are libraries](https://github.com/MisterKaiou/go-functional) you can use now,
     post-generics, that do just this, and [an old and long-closed proposal](https://github.com/golang/go/issues/19991)
     to add it to Go specifically cites the Rust variant.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: The only opposition I have to the Result type in Go is that we wouldn’t be able
@@ -149,21 +177,26 @@
     with one return value, some with the new style, and many instances of confused
     programmers using the wrong one. It would be as close to a Go equivalent of the
     Python 2/3 transition debacle as I think we could manage.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'I also don’t really think it meaningfully improves readability. Compare the
     above Rust code to the Go equivalent:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: Our main function is 6 lines, compared to Rust’s 4\. I suppose that adds up
     over time and with a larger project, but I still just don’t think it’s the massive
     win for readability that some folks proclaim it to be.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion[⌗](#conclusion)
+  id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -171,5 +204,6 @@
     language, or its fans, or indeed anything at all. I just think a lot of the criticism
     around this particular element of the Go programming language is missing the forest
     for the trees.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL

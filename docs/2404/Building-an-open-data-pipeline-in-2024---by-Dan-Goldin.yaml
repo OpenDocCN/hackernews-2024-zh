@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:33:04'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Building an open data pipeline in 2024 - by Dan Goldin
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.twingdata.com/p/building-an-open-data-pipeline-in](https://blog.twingdata.com/p/building-an-open-data-pipeline-in)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -29,10 +35,12 @@
     external data customers in which case you want to prioritize availability over
     everything else. While there is no one-size-fits-all solution, understanding your
     unique use cases and requirements allows you to tailor your approach accordingly.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: There are a few dimensions here and I want to go through each of them separately
     although in practice it’s going to be a combination of factors.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: We live in a world of “big data” but even within big data we have entirely different
@@ -41,6 +49,7 @@
     and can leverage modern data warehouses, such as [Snowflake](https://www.snowflake.com/en/)
     or [Databricks](https://www.databricks.com/). And if you’re dealing with truly
     massive datasets you can take advantage of GPUs for your data jobs.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: There are two types of latency to consider. The first type is data processing,
@@ -53,18 +62,21 @@
     able to query it via a BI tool and 95% of queries execute within 5 seconds. In
     this case, your data processing latency is at most 70 minutes but your query latency
     is a few seconds.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: You can improve data processing latency by running the jobs more frequently
     or on larger hardware. To improve query latency you can have larger hardware and
     keep as much data “hot” and in memory rather than pulling it from “cold” storage.
     As with most things, reducing latency will cost you more.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: In general, managed tools will give you stronger governance and access controls
     compared to open source solutions. For businesses dealing with sensitive data
     that requires a robust security model, commercial solutions may be worth investing
     in, as they can provide an added layer of reassurance and a stronger audit trail.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Different types of data will often have different requirements. Typically, raw
@@ -72,6 +84,7 @@
     However, as the data is rolled up and aggregated, the sensitivity level tends
     to decrease, allowing for more defined roles and responsibilities around the data
     sensitivity levels.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Cost is a function of the above but is also a key dimension on its own. Depending
@@ -82,12 +95,14 @@
     you a good sense of your priorities and how to tradeoff between them. For instance,
     you might realize that achieving sub-second query latency is less crucial than
     establishing a robust security model.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: A helpful approach when thinking about cost is asking the question of what it
     would look like if you had twice the budget? What about half the budget? That
     can inspire some creative thinking and lead to solutions that weren’t obvious
     at first.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Before starting [Twing Data](https://www.twingdata.com/), I gained valuable
@@ -97,9 +112,11 @@
     pipeline. Drawing from that experience, I wanted to utilize the framework mentioned
     above to create an architecture that is specifically tailored to accommodate diverse
     requirements while leveraging Iceberg and the different compute environments available.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Here’s a breakdown of how it fits together.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Log-level events are collected in [Redpanda](https://redpanda.com/) and persisted
@@ -109,6 +126,7 @@
     billions of events each day and range from information about the advertising auctions
     being run, to the winners of each auction, to collecting information around whether
     the ad was viewed and for how long.
+  id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -117,29 +135,34 @@
     work with large-scale joins run in Snowflake. One example is joining all the events
     from the first step in order to create a wide table where each row represents
     everything we know about a single auction.
+  id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: DuckDB is used for simpler jobs that can run on a single node. For example,
     taking the wide and large table from the second step and coming up with smaller
     tables that have a subset of the dimensions and are highly aggregated.
+  id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Cube](https://cube.dev/) is used as a semantic layer to give us a standard
     way of defining the metrics we care about and ensuring they are consistent across
     multiple access paths.'
+  id: totrans-split-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: One access path is [Metabase](https://www.metabase.com/) which acts as our BI
     tool. By going through Cube we can ensure we use standard definitions and take
     advantage of Cube’s pre-aggregation/caching layer.
+  id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Some of our engineers use Python directly and can also take advantage of the
     semantic layer offered by Cube.
+  id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -147,6 +170,7 @@
     the data directly from R2 using whatever compute layer they want. They may want
     to use Spark or even Snowflake but they’re able to because the data is stored
     using an open storage format, Iceberg.
+  id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -157,5 +181,6 @@
     core of the system, the data itself, is not confined to a proprietary format.
     This not only leads to cost-effectiveness but also fosters innovation as both
     you and the ecosystem expand and evolve.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL

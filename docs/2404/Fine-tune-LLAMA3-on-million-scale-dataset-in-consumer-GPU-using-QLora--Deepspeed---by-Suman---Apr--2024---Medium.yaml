@@ -1,42 +1,54 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:32:39'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Fine tune LLAMA3 on million scale dataset in consumer GPU using QLora, Deepspeed
     | by Suman | Apr, 2024 | Medium
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a](https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Fine tune LLAMA3 on million scale dataset in consumer GPU using QLora, Deepspeed
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Highlights,
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '**Model** : LLAMA-8b-instruct'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '**Dataset**: Openhermes-2.5(700k training, 300k testing)'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '**GPU**: 4 RTX 4090, 24GB'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Bit of background about me,
+  id: totrans-split-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -49,15 +61,18 @@
     working with large language models. This is my first time, so please let me know
     if there are any oversights. Yes, this is my first blog post. Writing this will
     definitely help me, and hopefully, it will be useful for any readers as well
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: LLama
+  id: totrans-split-13
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Who don’t know about this long necked creature revolutionizing the AI field
     from its birth. Joke apart release of llama where the whole OSS powered LLM kicked
     of the revolution which don’t seems like stopping in near future.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: To learn more on llama in depth and technical do checkout this [Post | LinkedIn](https://www.linkedin.com/posts/ujamil_llama-explained-kv-cache-rotary-positional-activity-7100620274642866176-XaKO/)
@@ -67,25 +82,26 @@
     These are not in scope of this article. They continued releasing their versions
     of LLama with latest version came few days ago. And this time with massive data
     compacted into few GBs of parameters.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[Meta Unveils Llama 3–10 Key Facts About The Advanced LLM (forbes.com)](https://www.forbes.com/sites/janakirammsv/2024/04/19/meta-unveils-llama-310-key-facts-about-the-advanced-llm/)'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Deepspeed
+  id: totrans-split-17
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '*DeepSpeed is a deep learning optimization library that makes distributed training
     and inference easy, efficient, and effective.*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-18
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[*https://github.com/microsoft/DeepSpeed*](https://github.com/microsoft/DeepSpeed)'
+  id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -95,6 +111,7 @@
     training on a single GPU. Why? When we train on a single GPU, the Optimizer state,
     parameters and gradients reside in a single system, which helps iterating over
     models on one GPU.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, if we add another GPU, there are two systems that will train the models,
@@ -107,17 +124,21 @@
     state and gradients. DeepSpeed helps in distributing the load over the GPUs without
     any issues. And accelerate package from Huggingface lets us do this like its piece
     of cake.'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: I will use stage 3 which will shard all parameters, gradients and optimizer
     state which will let us training over less memory requirement,
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'More details in their blog, [ZeRO & DeepSpeed: New system optimizations enable
     training models with over 100 billion parameters — Microsoft Research](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: QLoRA
+  id: totrans-split-24
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -130,13 +151,16 @@
     then came QLoRA which helped even more reducing memory consumption by quantizing
     the pre trained LLM to 4 bit precision, quantizing is a topic in itself so not
     going beyond this.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Also take a look into this article [LoRA Fine-tuning & Hyperparameters Explained
     (in Plain English) | Entry Point AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Lets start finetuning LLamA 3
+  id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -144,213 +168,271 @@
     · Hugging Face](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) over
     [openhermes](https://huggingface.co/teknium/OpenHermes-2.5-Mistral-7B) dataset
     provided by teknium.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Data preparation
+  id: totrans-split-29
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Meta has their own chat format so tried to follow the format they provided and
     read their encoding algorithm in their llama3 repository,
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '**Load the dataset**'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: '**The encoding utility I took inspiration from** [**llama3 repo**](https://github.com/meta-llama/llama3/blob/af6eedf7042fb51d00b2b26d8ef1ceaab73e1670/llama/tokenizer.py#L202)**,**'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: '[PRE2]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: Remove redundunt columns and split it into train and validation
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: '**And push it to hub,**'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: The resultant dataset, [sumandas/openhermes-2.5-llama3 · Datasets at Hugging
     Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3), example
     text
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: Now its time for training LLama3
+  id: totrans-split-42
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: All of the resources were already available in internet I just fine tuned those
     for my setup and requirements,
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '**Prerequisites,**'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Install cuda dev kit `conda install cuda` or follow [developer.nvidia.com/cuda-downloads?target_os=Linux](https://developer.nvidia.com/cuda-downloads?target_os=Linux)
+  id: totrans-split-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Install deepspeed
+  id: totrans-split-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Install flash-attention *pip install flash-attn — no-build-isolation*
+  id: totrans-split-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Install these libraries, I use [uv](https://github.com/astral-sh/uv) for faster
     dependency resolution,
+  id: totrans-split-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: '**Training code**'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is Swiss knife training code where you can train in multiple mode as per
     you convenience, found this in this repo [pacman100/LLM-Workshop: LLM Workshop
     by Sourab Mangrulkar (github.com)](https://github.com/pacman100/LLM-Workshop),'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: The `training.py` file is the one we will launch using accelerate with proper
     configs, just putting the training.py gist here, [https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab](https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab)
+  id: totrans-split-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: This training code uses SFTTrainer from huggingface, more details [Supervised
     Fine-tuning Trainer (huggingface.co)](https://huggingface.co/docs/trl/en/sft_trainer)
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: You can do multiple thing with this, you can train with loftq, unsloth, FFT,
     normal lora but I will just use QloRa with Deepspeed ZerO stage 3.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '**First lets define the accelerate config for using deepspeed**'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Note, If you increase the number of GPU update number in *num_processes*
+  id: totrans-split-56
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Now lets just run the accelerate command to start training,
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: '**Notes,**'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Set env variable HF_HUB_ENABLE_HF_TRANSFER=1 first
+  id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: output_dir will also be the repo created in huggingface where all the checkpoints
     will be stored, checkpoints will be created every 500 steps by default
+  id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: I set chat template format as `none` , because I already formatted those in
     my way, if you have other format do use for e.g chatml, zephyr
+  id: totrans-split-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '`lora_target_modules` is set as all-linear which is QLoRa specific where they
     published paper to show fine tuning all linear layers gives us comparable result
     to full fine tune.'
+  id: totrans-split-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: For setting up hyperparameters for LoRa, take a look into this awesome blog
     [LoRA Fine-tuning & Hyperparameters Explained (in Plain English) | Entry Point
     AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
+  id: totrans-split-64
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Set up WANDB_API_KEY=<key> if you are reporting to wandb else remove `report_to='wandb'`
+  id: totrans-split-65
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This should be it and your training should be running in full force, look for
     GPU utilization.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Observation
+  id: totrans-split-67
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Ran the fine tuning for only 1 epoch, took around 15 hours. Loss curve
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'fig: training loss [train/loss (24/04/25 02:44:11) | huggingface — Weights
     & Biases (wandb.ai)](https://wandb.ai/sumandas0/huggingface/reports/train-loss-24-04-25-02-44-11---Vmlldzo3Njg1NzIw?accessToken=hinzctjy4lbm48zwjoamnmhxs5r56zp8l88iqpss2jb0xo2w2bu049jkiqd59btj)'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '**WandB summary**'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: Last steps,
+  id: totrans-split-72
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: After the finetuning what model you will get is small adapter model not full
     model that you can just start using just now, we need to add the adapter to the
     original meta llama3 weights,
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: Load PEFT adapter model,
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: Now save the adapter model into hf,
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: Inference
+  id: totrans-split-78
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: '[PRE12]'
+  id: totrans-split-80
   prefs: []
   type: TYPE_PRE
 - en: Response,
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-82
   prefs: []
   type: TYPE_PRE
 - en: Do send my model and dataset some love if it has any worth :)
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[sumandas/openhermes-2.5-llama3 · Datasets at Hugging Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3)'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[sumandas/llama3-openhermes-2.5 · Hugging Face](https://huggingface.co/sumandas/llama3-openhermes-2.5)'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL

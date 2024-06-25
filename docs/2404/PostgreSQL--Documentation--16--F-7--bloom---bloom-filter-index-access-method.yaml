@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:28:02'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'PostgreSQL: Documentation: 16: F.7. bloom — bloom filter index access method'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.postgresql.org/docs/current/bloom.html](https://www.postgresql.org/docs/current/bloom.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,6 +28,7 @@
     an element is a member of a set. In the case of an index access method, it allows
     fast exclusion of non-matching tuples via signatures whose size is determined
     at index creation.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: A signature is a lossy representation of the indexed attribute(s), and as such
@@ -30,6 +37,7 @@
     using the actual attribute values from the heap entry. Larger signatures reduce
     the odds of a false positive and thus reduce the number of useless heap visits,
     but of course also make the index larger and hence slower to scan.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: This type of index is most useful when a table has many attributes and queries
@@ -38,58 +46,73 @@
     where one needs only a single bloom index. Note however that bloom indexes only
     support equality queries, whereas btree indexes can also perform inequality and
     range searches.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is an example of creating a bloom index:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: The index is created with a signature length of 80 bits, with attributes i1
     and i2 mapped to 2 bits, and attribute i3 mapped to 4 bits. We could have omitted
     the `length`, `col1`, and `col2` specifications since those have the default values.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Here is a more complete example of bloom index definition and usage, as well
     as a comparison with equivalent btree indexes. The bloom index is considerably
     smaller than the btree index, and can perform better.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: 'A sequential scan over this large table takes a long time:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: 'Even with the btree index defined the result will still be a sequential scan:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: 'Having the bloom index defined on the table is better than btree in handling
     this type of search:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: 'Now, the main problem with the btree search is that btree is inefficient when
     the search conditions do not constrain the leading index column(s). A better strategy
     for btree is to create a separate index on each column. Then the planner will
     choose something like this:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: Although this query runs much faster than with either of the single indexes,
     we pay a penalty in index size. Each of the single-column btree indexes occupies
     2 MB, so the total space needed is 12 MB, eight times the space used by the bloom
     index.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL

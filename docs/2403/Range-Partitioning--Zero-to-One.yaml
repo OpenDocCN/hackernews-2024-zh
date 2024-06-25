@@ -1,118 +1,147 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:43:48'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Range Partitioning: Zero to One'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.aspiring.dev/range-partitioning/](https://www.aspiring.dev/range-partitioning/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Of the many partitioning methods used to build distributed systems, range partitioning
     (dividing data into logical key ranges), is quickly becoming the preferred method
     to build the most scalable systems.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Yet if you go searching, there''s a clear lack of resources on how to implement
     this: It''s buried away in implementations such as FoundationDB, and skimmed over
     as a minor detail in papers.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Range partitioning has become the foundation for many of the databases deployed
     at the largest scales, such as FoundationDB (Apple), BigTable (Google), Spanner
     (Google), and CockroachDB.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: In this post, we'll go over how range partitioning works, why it's chosen over
     other partitioning methods, and build a simple implementation for a key-value
     store.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: To keep this post focused on the partitioning, we won't go over tangential topics
     in range-partitioned distributed databases like replication, range mapping, leader
     election, etc.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: You can find the [code on Github](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev)
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'How Range Partitioning Works: A Speedrun'
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Just to make sure we're all on the same page, I'll quickly go over how range
     partitioning works.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'It''s pretty simple: Data is split by ranges of the key.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Let's say you have a key-value store, with keys `a`, `b`, `d`, and `e`.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Databases like CockroachDB that using range partitioning will start with just
     a single range, and split as necessary. In databases like these, ranges typically
     have their own low-level indexes (e.g. a b-tree), so having them in separate indexes
     reduces contention and allows granular portability of data across nodes in a cluster.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'The two most common conditions to splitting ranges are:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Exceeding some size threshold (e.g. 512MB)
+  id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: High load, commonly referred to as a "hot range"
+  id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: In our example above, we start with a single range `[0, inf]`. This range says
     "I own everything between and including no bytes, and infinite bytes. Typically
     they are represented in byte ranges, but for simplicity I'll show the string values.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: But there's an issue in our database! Key `b` is getting a *LOT* of `get()`
     operations, so much so that it's slowing down the performance of selections for
     other keys as well! *Time to split the range*.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, we split the one range into two: `[0, d)` and `[d, inf)`. We split at `d`,
     so that now the `[0, d)` range can handle the load of `b` with less contention
     from the data in `[d, inf)`.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '*Note: When it comes to range nomenclature, `[` or `]` means includes (>= or
     <=), and `(` or `)` means excludes (> or <).*'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we insert now, the range it lands in depends on the key: If we insert `c`,
     that would fall into the `[0, d)` range, since `c >= 0` and `c < d`. If we inserted
     `z`, that would be in the `[d, inf)` range, because `z >= d` and `z < inf`.'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: And that's how range partitioning works! See, it's simple!
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Why Range Partitioning
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: There are many reasons to prefer range partitioning over other methods such
     as hash partitioning.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Scale
+  id: totrans-split-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -121,20 +150,24 @@
     of "you must choose the `num_tokens` when creating the keyspace", meaning that
     once you select the number of partitions (often called "tokens") **you can''t
     change it without rewriting data.**'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: This is because the understanding of how to route operations for a given key
     is based on hashing that key, and performing modulo over the number of tokens
     like `hash('abc') % 256`.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: This also means that if the number of hashes changes between insert and select,
     it breaks!
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: For example, maybe we inserted `"blah"` which was put in token `42`, but after
     changing the number of tokens from `256` to `1024` subsequent selects look for
     it at token `731`, and can't find it! *Big problem*.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: With range partitioning, you can easily scale the number of ranges up and down,
@@ -144,14 +177,17 @@
     doesn't change! Ranges can adjust their highs and lows to accomodate for splitting
     and merging (although merging doesn't happen nearly as often, so we'll stop talking
     about it).
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Scan performance
+  id: totrans-split-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Databases aren't just about single key-value operations, it also matters how
     fast we can select variable numbers of contiguous rows in one fell swoop.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: With hash based partitioning, as long as all your data shares the same partitioning
@@ -159,9 +195,11 @@
     a high probability to have to select from multiple nodes, as hash tokens are typically
     spread out randomly among nodes. The larger the cluster, the higher the probability
     you have to hop the network for that next partition.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '*That''s much slower... and we don''t like slow in the database world.*'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'With range partitioning, we have the same benefits of related data being in
@@ -173,45 +211,56 @@
     have to visit many ranges, there''s a smaller chance that we have to visit more
     than one node to accumulate that data, which the probability of doesn''t really
     change as we scale the cluster.'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '*We like linear scan performance as the cluster grows in the database world!*'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: An excellent example of this is CQL vs SQL. Notice how Cassandra and Scylla
     don't have a rich ecosystem of aggregation functions, but CockroachDB (and other
     NewSQL DBs) do?
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '*Scan performance ftw.*'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Why Not Range Partitioning
+  id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Range partitioning is not a silver bullet, there are cases where it's sub-par.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '**The first case is highly sequential workloads, like time.**'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: If you're inserting time-series data super fast, you're obviously always targeting
     one range at a time. This is problematic, and creates hotspots.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Hashing is one mechanism to defend against hotspots (in fact, [CockroachDB includes
     hash-based indexing natively](https://www.cockroachlabs.com/docs/stable/hash-sharded-indexes?ref=aspiring.dev#:~:text=Hash%2Dsharded%20indexes%20contain%20a,be%20seen%20with%20SHOW%20COLUMNS%20.)),
     but can cause selections over ranges of time to become very slow, as many hash
     ranges need to be visited...
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '**Range partitioning can also be a bit more tricky to implement than hash partitioning.**'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'Hash partitioning is simple: Hash the key, then find what node owns that token
     (e.g. token ownership shared via gossip). They''re typically delegated to their
     owning nodes on creation, and that only changes if the size of the cluster changes.'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: With range partitioning, it's a bit tricker because we have to figure out when
@@ -222,14 +271,17 @@
     distributed systems when the range is moved to another node. If you listen cloesly,
     you can hear distributed system engineers crying among the beanbags and empty
     coffee cups as their 107th consistency test is still failing.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Hash rings can just use a map that's rarely edited, and as most of these databases
     are eventually consistent, they can just sync token ownership over gossip. *Must
     be nice*.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '**Range-partitioned databases typically start with just a single range.**'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: This means that write performance gets better over time (that's weird), because
@@ -238,9 +290,11 @@
     heard one. Typically you don't encounter this though, as most people adopt a new
     database when they're small and don't have too much write load. It's a major consideration
     if you are migrating, as it can make migrations *super slow* if not handled properly.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Building Range Partitioning
+  id: totrans-split-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -249,77 +303,98 @@
     across nodes and replication, we''ll create synthetic constraints as to when we
     split ranges: When a range has N/2 keys or more, we split it (N being a parameter
     we can pass at DB creation time).'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: I want to stress that this method of building a KV database is in no way reflective
     of how real databases do it, this is just a quick implementation to show off range
     partitioning!
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'We''ll start by defining a simple `Database` struct:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: In typical implementations, you'd use some form of binary search like a b-tree
     for quickly finding range ownership.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: To keep our code simple, easy to understand, and dependency free, we'll just
     use arrays and maps (rip performance).
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'Then, we can create the `Range` struct:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: 'We''ll keep the ranges in terms of strings so it''s easy to read debug data,
     but generally you''ll want to encode this to bytes. Note that this is also not
     thread-safe: concurrent operations could panic!'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: We'll say that the `Low` of the range is always *inclusive*, and the `High`
     is always *exclusive.*
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Database Functions
+  id: totrans-split-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'We''ll need a few notable functions for our database: Get, Set, and Delete'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: To get from our database, we'll need to iterate over all ranges, find the range
     that owns the current key, and check if that range owns the key. If it does, we'll
     check if that range has the key.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
 - en: 'Deleting data is simple, just find the range and delete the key from the map
     if it exists:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: 'We saved the most interesting for last: set.'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, we need to be able to do some simple set into the range :'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: 'The range splitting functionality comes in at the database level:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: If we detect that the range is too large, then we'll split the range. Splitting
@@ -327,6 +402,7 @@
     adding it to the database! Now we commit the heresy of sorting an unsorted map
     using an array, but real databases would evaluate where to split based on why
     it's splitting (e.g. based on load, or size) and find the respective "midpoint".
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: Note that the range did not decide to split, the database did. This is important.
@@ -335,116 +411,145 @@
     that actually stores the data is simple. Separation of concerns makes it much
     easier to test and focus on functionality, and gives us more control over when
     we should split ranges.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: Testing the DB
+  id: totrans-split-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We can write some simple tests to confirm our suspicions that this is actually
     working.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: We'll insert zero-padded keys so we can use integers with string-sorting to
     show that we get the expected behavior.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can start by putting in 500 records to show that they all go into the current
     range:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: 'Then, we can insert more records to cause a the first range to split:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: We now have two ranges!
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s what just happened:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: We inserted a bunch more (101 times to be exact)
+  id: totrans-split-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: We exceeded the max number of records per range (600), so we split into 300
     and 301 ranges
+  id: totrans-split-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: We inserted the final 99 records into the top range, because those keys were
     larger than the high border of the new range that we created (our code creates
     the range down)
+  id: totrans-split-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'If we insert a bunch more values, we can see the ranges get further split:'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: Pretty cool, look at all those ranges!
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: 'For run, let''s jam it with numbers and see how they lexicographically sort:'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-93
   prefs: []
   type: TYPE_PRE
 - en: You can play with this [code from Github](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev),
     just follow the instructions in the readme!
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Some Things We Didn't Cover
+  id: totrans-split-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We built the worlds simplest, but worst, range-partitioned memory DB ever!
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: A key implementation of distributed databases is the availability of ranges
     when they are split and moved.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: This isn't an issue we had to deal with our implementation, as our ranges are
     so small that when we (b)lock the DB to split ranges a client can't tell. But
     with databases such as FoundationDB and CockroachDB, they coordinate a fancy dance
     to minimize the amount of time that a range of data is unavailable.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Another major area of concern is making sure that nodes are up to date on the
     latest in range ownership. This isn't something that we want to do over gossip,
     because there would be brief (potentially not-so brief) periods of nodes routing
     operations to the wrong nodes, thinking that they own a range that they don't.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: This is yet another fancy dance that combines replication magic, along with
     consenus protocols like Paxos and RAFT. These databases work really hard to make
     sure you never know it happens.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: Alternative Use Cases for Range Partitioning
+  id: totrans-split-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Databases aren't the only place where range partitioning can be useful, there
     are abundant opportunities to jam range partitioning into what ever we build.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: One place is actually compute scheduling! In fact, in the context of databases,
     you can kind of think of range partitioning as a way to "scheduling data" to nodes.
     Starting to make sense, right?
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: When you need to have long-running workloads on machines, using range partitioning
     to place them on workers is actually a *very good idea, hear me out.*
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: Let's say we have something called a [Cloudflare Durable Object](https://developers.cloudflare.com/durable-objects/?ref=aspiring.dev),
@@ -452,36 +557,44 @@
     responsible for running what instances (through the ranges they own). That makes
     it easy for us to route requests to the instance, and ensure that only one instance
     is running at a time (at least that's available to receive requests).
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: If a node dies and recovers, or doesn't come back (and we need to move the objects
     to other machines), it'd be great if there was a consistent silo of defined objects
     that we can transfer ownership of (range of object IDs). Being able to use coarse-grained
     locking (on the range) is *FAR* more performant than locking per-object.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: Using range partitioning, it means that the cluster can easily scale to adjust
     to the adoption of Durable Objects by adding more machines and splitting ranges.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: In fact, a potential optimization for performance could be if they colocated
     Durable Object instances with the elected leader for a custom distributed KV database
     (I believe they currently use FoundationDB) to remove an extra network hop when
     writing, and remove the only network hop when reading.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Neat stuff, right?
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '*Disclaimer: I don''t work at Cloudflare, nor do I know if they are using range
     partitioning, but it seems like a fair guess.*'
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: Range partitioning is useful for not only databases, but anywhere we need to
     define coarse-grained ownership. Range partitioning scales up and down very elegantly,
     and is simple to understand!
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[Discuss this post on HackerNews](https://news.ycombinator.com/item?id=39725649&ref=aspiring.dev)'
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL

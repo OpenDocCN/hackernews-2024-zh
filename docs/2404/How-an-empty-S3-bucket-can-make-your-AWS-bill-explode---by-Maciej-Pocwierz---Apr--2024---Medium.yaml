@@ -1,38 +1,48 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:37:44'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How an empty S3 bucket can make your AWS bill explode | by Maciej Pocwierz |
     Apr, 2024 | Medium
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1](https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: How an empty S3 bucket can make your AWS bill explode
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '**Update 7.05.2024** The S3 team is working on a fix:'
+  id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[https://twitter.com/jeffbarr/status/1785386554372042890](https://twitter.com/jeffbarr/status/1787844682216792163)'
+  id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Imagine you create an empty, private AWS S3 bucket in a region of your preference.
     What will your AWS bill be the next morning?
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: A few weeks ago, I began working on a PoC of a document indexing system for
@@ -41,12 +51,15 @@
     to make sure that what I was doing was well within the free-tier limits. Apparently,
     it wasn’t. My bill was over $1,300, with the billing console showing nearly 100,000,000
     S3 PUT requests executed within just one day!
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: My billed S3 usage per day, per region
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Where were these requests coming from?
+  id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -55,9 +68,11 @@
     or [S3 Server Access Logging](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html).
     After enabling CloudTrail logs, I immediately observed thousands of write requests
     originating from multiple accounts or entirely outside of AWS.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: But why would some third parties bombard my S3 bucket with unauthorised requests?
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -67,47 +82,58 @@
     the same name that I used for my bucket**. This meant that every deployment of
     this tool with default configuration values attempted to store its backups in
     my S3 bucket!
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note: I can’t disclose the name of the tool I’m referring to, as that would
     put the impacted companies at risk of data leak (as explained further).'
+  id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'So, a horde of misconfigured systems is attempting to store their data in my
     private S3 bucket. But why should I be the one paying for this mistake? Here’s
     why:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: S3 charges you for unauthorized incoming requests
+  id: totrans-split-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'This was confirmed in my exchange with AWS support. As they wrote:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Yes, S3 charges for unauthorized requests (4xx) as well[1]. That’s expected
     behavior.
+  id: totrans-split-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'So, if I were to open my terminal now and type:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: I would receive an *AccessDenied* error, but you would be the one to pay for
     that request. And I don’t even need an AWS account to do so.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another question was bugging me: why was over half of my bill coming from the
     *us-east-1* region? I didn’t have a single bucket there! The answer to that is
     that **the S3 requests without a specified region default to *us-east-1* and are
     redirected as needed. And the bucket’s owner pays extra for that redirected request.**'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: The security aspect
+  id: totrans-split-25
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -118,14 +144,17 @@
     public writes and collected over 10GB of data within less than 30 seconds**. Of
     course, I can’t disclose whose data it was. But it left me amazed at how an innocent
     configuration oversight could lead to a dangerous data leak!
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: What did I learn from all this?
+  id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Lesson 1: Anyone who knows the name of any of your S3 buckets can ramp up your
     AWS bill as they like.'
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -134,31 +163,38 @@
     accessed directly through the S3 API. Standard S3 PUT requests are priced at just
     [$0.005 per 1,000 requests](https://aws.amazon.com/s3/pricing/), but a single
     machine can easily execute thousands of such requests per second.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'Lesson 2: Adding a random suffix to your bucket names can enhance security.'
+  id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This practice reduces vulnerability to misconfigured systems or intentional
     attacks. At least avoid using short and common names for your S3 buckets.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Lesson 3: When executing a lot of requests to S3, make sure to explicitly specify
     the AWS region.'
+  id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This way you will avoid additional costs of S3 API redirects.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'Aftermath:'
+  id: totrans-split-34
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: I reported my findings to the maintainers of the vulnerable open-source tool.
     They quickly fixed the default configuration, although they can’t fix the existing
     deployments.
+  id: totrans-split-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -166,20 +202,24 @@
     S3 bucket name to protect their customers from unexpected charges, and to protect
     the impacted companies from data leaks. But they were unwilling to address misconfigurations
     of third-party products.
+  id: totrans-split-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: I reported the issue to two companies whose data I found in my bucket. They
     did not respond to my emails, possibly considering them as spam.
+  id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: AWS was kind enough to cancel my S3 bill. However, they emphasized that this
     was done as an exception.
+  id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Thank you for taking the time to read my post. I hope it will help you steer
     clear of unexpected AWS charges!
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL

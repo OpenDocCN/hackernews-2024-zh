@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:44:51'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Representing State as interfaces in Go - Evan Moses
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.emoses.org/posts/resolver-resolved-pattern/](https://www.emoses.org/posts/resolver-resolved-pattern/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Representing State as interfaces in Go
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -29,25 +36,31 @@
     one *[Update: [apg](https://lobste.rs/~apg) on Lobsters [pointed out the name](https://lobste.rs/s/tzgizl/representing_state_as_interfaces_go#c_cvlm2d)
     “typestate”, which I like]*. I’m going to show an instance of the pattern first
     and the motivation after.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: The Pattern
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: 'So far, so boring. You’ve got a `Resolver` that batches up query data, an `Executor`
     that, well, executes the query, and a `Resolve` that lets you access the result.
     What’s neat about this is that `Resolver` and `Resolved` can be implemented by
     the same struct:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: Ok but why?
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -56,35 +69,43 @@
     you `Collected` after you executed, you’d never look up the id. So I added a boolean
     `hasExecuted` to `IdResolver` so that if you called `Resolve` before you had called
     `Execute` or `Collect` after, it would check that flag and panic.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: This is kind of a mess, harder to read and maintain, and much easier to mess
     up the logic in.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: When to use it
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Of course the `Resolver` and the `Resolved` *could* be represented by different
     structs with their own methods. But in this case it felt like we were really working
     with a single object: it collects data, operates on it, and manages the result.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The crux of the matter is that the object has different operations that are
     valid in different states, and Go interfaces are a perfect way to expose that.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'Update: Is this just a `Builder`?'
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A few folks on the internet have pointed out that this is very similar to the
     Builder pattern that you see pretty often in Java/C# (and to a lesser extent in
     Go), and especially a multiphase [Step Builder](https://www.svlada.com/step-builder-pattern/).
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t think there’s a fundamental difference, but Builders that I’m familar
@@ -92,5 +113,6 @@
     object for use somewhere else, rather than doing any sort of effectful execution.
     I think this pattern is both more general (you could certainly use it as a Builder)
     and has a different purpose.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL

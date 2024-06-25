@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:04:46'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: ETag and HTTP caching | Redowan's Reflections
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://rednafi.com/misc/etag_and_http_caching/](https://rednafi.com/misc/etag_and_http_caching/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,74 +28,90 @@
     `GET` requests. Along with the `ETag` header, the caching workflow requires you
     to fiddle with other conditional HTTP headers like `If-Match` or `If-None-Match`.
     However, their interaction can feel a bit confusing at times.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Every time I need to tackle this, I end up spending some time browsing through
     the relevant MDN docs ^(^(^(to jog my memory. At this point, I’ve done it enough
     times to justify spending the time to write this.)))
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Caching the response of a `GET` endpoint[#](#caching-the-response-of-a-get-endpoint)
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The basic workflow goes as follows:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The client makes a `GET` request to the server.
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The server responds with a `200 OK` status, including the content requested
     and an `ETag` header.
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The client caches the response and the `ETag` value.
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For subsequent requests to the same resource, the client includes the `If-None-Match`
     header with the `ETag` value it has cached.
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The server regenerates the `ETag` independently and checks if the `ETag` value
     sent by the client matches the generated one.
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If they match, the server responds with a `304 Not Modified` status, indicating
     that the client’s cached version is still valid, and the client serves the resource
     from the cache.
+  id: totrans-split-15
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: If they don’t match, the server responds with a `200 OK` status, including the
     new content and a new `ETag` header, prompting the client to update its cache.
+  id: totrans-split-16
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: We can test this workflow with GitHub’s REST API suite via the GitHub CLI^(.
     If you’ve installed the CLI and authenticated yourself, you can make a request
     like this:)
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'This asks for the data associated with the user `rednafi`. The response looks
     as follows:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: I’ve truncated the response body and omitted the headers that aren’t relevant
     to this discussion. You can see that the HTTP status code is `200 OK` and the
     server has included an `ETag` header.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The `W/` prefix indicates that a weak validator ^(is used to validate the content
@@ -98,31 +120,39 @@
     is JSON, then changing the format of the JSON won’t change the value of the `ETag`
     header since two JSON payloads with the same content but with different formatting
     are semantically the same thing.)
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s see what happens if we make the same request again while passing the value
     of the `ETag` in the `If-None-Match` header.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: 'This returns:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: This means that the cached response in the client is still valid and it doesn’t
     need to refetch that from the server. So, the client can be coded to serve the
     previously cached data to the users when asked for.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'A few key points to keep in mind:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Always wrap your `ETag` values in double quotes when sending them with the `If-None-Match`
     header, just as the spec says^.
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -130,6 +160,7 @@
     request is considered successful when the `ETag` value from the client doesn’t
     match that of the server. When the values match, the server will return `304 Not
     Modified` with no body.
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -137,32 +168,39 @@
     tells us ^(to use a weak comparison for ETags. This means that the client will
     still be able to validate the cache with weak ETags, even if there have been slight
     changes to the representation of the data.)
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If the client is a browser, it’ll automatically manage the cache and send conditional
     requests without any extra work.
+  id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Writing a server that enables client-side caching[#](#writing-a-server-that-enables-client-side-caching)
+  id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: If you’re serving static content, you can configure your load balancer to enable
     this caching workflow. But for dynamic `GET` requests, the server needs to do
     a bit more work to allow client-side caching.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s a simple server in Go that enables the above workflow for a dynamic
     `GET` request:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: The server generates a weak `ETag` for its content by creating a SHA-256 hash
     and adding `W/` to the front, indicating it’s meant for weak comparison.
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -170,17 +208,20 @@
     the same if the JSON format changes but the content does not. The current `calculateETag`
     implementation is susceptible to format changes, and I kept it that way to keep
     the code shorter.
+  id: totrans-split-38
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
 - en: When delivering content, the server includes this weak `ETag` in the response
     headers, allowing clients to cache the content along with the `ETag`.
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For subsequent requests, the server checks if the client has sent an `ETag`
     in the `If-None-Match` header and weakly compares it with the current content’s
     `ETag` by independently generating the hash.
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -188,43 +229,55 @@
     with a `304 Not Modified` status. Otherwise, it sends the content again with a
     `200 OK` status and updates the `ETag`. When this happens, the client knows that
     the existing cache is still warm and can be served without any changes to it.
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'You can spin up the server by running `go run main.go` and from a different
     console, start making requests to it like this:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: 'This will return the `ETag` header along with the JSON response:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: Now, you can make another request with the value of
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'the `ETag` in the `If-None-Match` header:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'This will return a `304 Not Modified` response with no body:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: In a real-life scenario, you’ll probably factor out the caching part in middleware
     so that all of your HTTP `GET` requests can be cached from the client-side without
     repetition.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: One thing to look out for[#](#one-thing-to-look-out-for)
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -232,6 +285,7 @@
     the server always sends back the same `ETag` for the same content, even when there
     are multiple servers working behind a load balancer. If these servers give out
     different ETags for the same content, it can mess up how clients cache that content.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: Clients use ETags to decide if content has changed. If the `ETag` value hasn’t
@@ -239,13 +293,16 @@
     bandwidth and speeding up access. But if ETags are inconsistent across servers,
     clients might download content they already have, wasting bandwidth and slowing
     things down.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: This inconsistency also means servers end up dealing with more requests for
     content that clients could have just used from their cache if ETags were consistent.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Recent posts
+  id: totrans-split-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -258,6 +315,7 @@
     function in Go](https://rednafi.com/go/retry_function/)*   [Type assertion vs
     type switches in Go](https://rednafi.com/go/type_assertion_vs_type_switches/)*   [Patching
     pydantic settings in pytest](https://rednafi.com/python/patch_pydantic_settings_in_pytest/)'
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL

@@ -1,31 +1,31 @@
 - en: <!--yml
-  id: totrans-0
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
   zh: <!--yml
 - en: 'category: 未分类'
-  id: totrans-1
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
   zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:31:00'
-  id: totrans-2
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
   zh: 日期：2024-05-27 13:31:00
 - en: -->
-  id: totrans-3
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
   zh: -->
 - en: A Logic Language for Distributed SQL Queries
-  id: totrans-4
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
   zh: 用于分布式 SQL 查询的逻辑语言
 - en: 来源：[https://www.osohq.com/post/logic-language-distributed-sql-queries](https://www.osohq.com/post/logic-language-distributed-sql-queries)
-  id: totrans-5
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -36,19 +36,19 @@
     every service can reuse. But authorization as a domain is *messy*. Authorization
     logic blurs with domain-specific information, and data needed to evaluate authorization
     decisions heavily overlaps with application data.
-  id: totrans-6
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
   zh: 如果您曾经使用过微服务，您就会知道解决共享能力的难度有多大。授权就是这样一种能力。大多数服务都需要某种形式的授权，因此您希望有一个干净的授权实现，每个服务都可以重复使用。但授权作为一个领域却是*混乱的*。授权逻辑与特定于领域的信息混在一起，用于评估授权决策的数据与应用程序数据有很大的重叠。
 - en: This means that when trying to extract authorization out into its own service,
     it ends up being challenging to draw a clean separation.
-  id: totrans-7
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
   zh: 这意味着当试图将授权提取到自己的服务中时，很难实现清晰的分离。
 - en: Authorization as a domain blurs lines between multiple applications, making
     it hard to extract into a service
-  id: totrans-8
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
   zh: 授权作为一个领域模糊了多个应用程序之间的界限，使得难以将其提取为一个服务。
@@ -56,38 +56,38 @@
     so you can integrate it with minimal overhead to any given application. A key
     consideration is that you shouldn’t need to synchronize data to a different service,
     just to evaluate authorization logic that could have all been handled locally.
-  id: totrans-9
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
   zh: 我们理想中的授权版本作为一个共享能力，强化了这些界限，因此您可以将其与任何给定应用程序集成，而不需要额外的开销。一个关键考虑因素是，您不应该需要将数据同步到不同的服务，只是为了评估授权逻辑，这些逻辑本可以全部在本地处理。
 - en: To this end, we built a logic language for expressing authorization called Polar.
     It’s built to allow multiple teams to build an authorization model expressing
     both shared and domain-specific logic.
-  id: totrans-10
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
   zh: 为此，我们构建了一个用于表达授权的逻辑语言称为 Polar。它被设计为允许多个团队构建一个表达共享和特定领域逻辑的授权模型。
 - en: And then we made it possible to run Polar over multiple data stores, so that
     it can do authorization using shared data stored centrally, and application data
     stored alongside the application.
-  id: totrans-11
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
   zh: 然后我们使得可以在多个数据存储中运行 Polar，这样它可以使用集中存储的共享数据和与应用程序并行存储的应用程序数据来进行授权。
 - en: In Distributed Authorization, we extract as much authorization *as possible*
     into a shared service, but let each service manage some of it on its own
-  id: totrans-12
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
   zh: 在分布式授权中，我们尽可能将尽可能多的授权*提取*到一个共享服务中，但让每个服务都可以自行管理一些授权
 - en: We call the resulting architecture *Distributed Authorization.* Here’s how we
     built it.
-  id: totrans-13
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
   zh: 我们称这种结果架构为*分布式授权*。这是我们如何构建它的方式。
 - en: 'Scenario: Service-Oriented GitHub'
-  id: totrans-14
+  id: totrans-split-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -96,18 +96,18 @@
     architecture. It’s common that application-specific functionality like “repository
     issues” would be decoupled from authorization and permission controls like “managing
     organizations and user roles”.
-  id: totrans-15
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
   zh: 想象一下，你正在构建一个像GitHub这样的应用，但是采用面向服务的架构。像“存储库问题”这样的应用特定功能往往会与像“管理组织和用户角色”这样的授权和权限控制解耦。
 - en: 'So let’s say you have two services: **AuthzService** and **IssuesService**'
-  id: totrans-16
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
   zh: 假设你有两个服务：**AuthzService** 和 **IssuesService**
 - en: Diagram showing our two services, their databases, and a list of the data they
     manage
-  id: totrans-17
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
   zh: 图表显示我们的两个服务、它们的数据库以及它们管理的数据列表。
@@ -115,20 +115,20 @@
     who belongs to those organizations, what roles they have, what custom roles they’ve
     created. It also manages authorization data on Repositories, like which organization
     owns the Repository, who the members are, and what roles they have.'
-  id: totrans-18
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
   zh: AuthzService了解关于组织的所有授权相关信息：谁属于这些组织、他们拥有什么角色、他们创建了什么自定义角色。它还管理有关存储库的授权数据，例如哪个组织拥有存储库、成员是谁以及他们拥有什么角色。
 - en: 'Meanwhile, the IssuesService deals with *everything* issue-related: who created
     the issue, what repository it belongs to, and so on.'
-  id: totrans-19
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
   zh: 与此同时，IssuesService处理与问题相关的*所有*内容：谁创建了问题、它属于哪个存储库等等。
 - en: 'Let’s take as an example: the `user Alice` wants to close `issue #42` on repository
     `acme/anvil`. The IssuesService wants to know if Alice is allowed to do this,
     and will make an API request to the AuthzService to find out.'
-  id: totrans-20
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
   zh: 举个例子：`用户Alice`想要关闭`问题＃42`，它位于存储库`acme/anvil`上。IssuesService想知道Alice是否被允许这样做，并将向AuthzService发出API请求以获取答案。
@@ -136,19 +136,19 @@
     gets complex. For example, GitHub has organization roles, customizable default
     repository roles, custom roles, issue creators, and public/private repositories.
     All of these impact the authorization logic:'
-  id: totrans-21
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
   zh: 这是一个简单的问题，但在像GitHub这样成熟的应用中，逻辑变得复杂。例如，GitHub具有组织角色、可自定义的默认存储库角色、自定义角色、问题创建者以及公共/私有存储库。所有这些都影响授权逻辑：
 - en: 'Roles, relationships, and attributes impacting whether Alice can close issue
     #42'
-  id: totrans-22
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
   zh: 角色、关系和属性会影响Alice是否能关闭问题＃42。
 - en: 'And authorization goes beyond simple yes/no questions like this. As put really
     nicely by [*wkirby on Hacker News*](https://news.ycombinator.com/item?id=40054080):'
-  id: totrans-23
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
   zh: 而授权不仅限于像这样的简单的是/否问题。正如[*Hacker News上的wkirby所说*](https://news.ycombinator.com/item?id=40054080)：
@@ -157,36 +157,36 @@
     answer any permutation of those variables. Given this person and this object,
     what can they do? Given this object and this action, who can do it? Given this
     person and this action, which objects can they act upon?
-  id: totrans-24
+  id: totrans-split-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
   zh: 权限具有三个移动部分，谁想要做什么，他们想要做什么，以及在什么对象上。任何良好的权限系统都必须能够有效地回答这些变量的任何排列。给定此人和此对象，他们可以做什么？给定此对象和此操作，谁可以执行它？给定此人和此操作，他们可以对哪些对象进行操作？
 - en: which acts a force multiplier on all of the above complexity.
-  id: totrans-25
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
   zh: 这在所有上述复杂性中起到了一种乘数作用。
 - en: 'Given all this, a shared authorization capability for this application has
     to be able to:'
-  id: totrans-26
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
   zh: 综上所述，此应用程序的共享授权功能必须能够：
 - en: express the above logic, which spans the Authz and Issues domains
-  id: totrans-27
+  id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 表达上述跨 Authz 和 Issues 领域的逻辑
 - en: use data stored in both the AuthzService and IssuesService
-  id: totrans-28
+  id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 使用存储在 AuthzService 和 IssuesService 中的数据
 - en: support yes/no questions as well as more flexible “list” questions
-  id: totrans-29
+  id: totrans-split-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -194,12 +194,12 @@
 - en: Let's start with the logic. From there, we'll explain how our approach to logic
     let us solve some tricky data problems. We’ll demonstrate the concepts with examples
     that apply them to both yes/no and list questions.
-  id: totrans-30
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
   zh: 让我们从逻辑开始。从那里开始，我们将解释我们的逻辑方法如何帮助我们解决一些棘手的数据问题。我们将通过应用这些概念到是/否和列表问题的示例来演示这些概念。
 - en: 'Polar: A prolog-inspired language that transpiles to SQL'
-  id: totrans-31
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -208,34 +208,34 @@
     services. Polar is inspired by logic programming languages like Prolog, Datalog,
     and miniKanren. Under the hood, Polar transpiles to SQL over a custom data model,
     which does the heavy lifting of query planning and fast data access.
-  id: totrans-32
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
   zh: Polar 是我们的声明性授权逻辑，跨多个服务。Polar 受逻辑编程语言如 Prolog、Datalog 和 miniKanren 的启发。在底层，Polar
     转译为 SQL，基于自定义数据模型，从而执行查询规划和快速数据访问。
 - en: 'Here’s a fairly minimal example of a Polar policy:'
-  id: totrans-33
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
   zh: 这里有一个相当简单的 Polar 策略示例：
 - en: '[PRE0]'
-  id: totrans-34
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
   zh: '[PRE0]'
 - en: 'There’s an `allow` ”rule” that says:'
-  id: totrans-35
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
   zh: 存在一个 `allow` ”rule”，其内容如下：
 - en: a `user`  (of type `User` ) is allowed to `read` an  `org` (of type `Organization`)
-  id: totrans-36
+  id: totrans-split-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 一个 `user`（类型为 `User`）被允许 `read` 一个 `org`（类型为 `Organization`）
 - en: '*if* the `user` has the role `member` on that `org`'
-  id: totrans-37
+  id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -244,25 +244,25 @@
     are called *facts —* unconditionally true information. In this case, the fact
     is asserting that the user with `id: alice` is a member of the organization with
     `id: acme`.'
-  id: totrans-38
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
   zh: '还有一个孤立的 `has_role` 规则，没有 *if* 和没有条件。这些称为 *facts* —— 无条件真实信息。在这种情况下，事实是断言具有
     `id: alice` 的用户是 `id: acme` 组织的成员。'
 - en: 'This Polar policy expresses:'
-  id: totrans-39
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
   zh: 此 Polar 策略表达了：
 - en: 'a simple piece of role-based access control logic: org members can read that
     organization'
-  id: totrans-40
+  id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 一个简单的基于角色的访问控制逻辑：org 成员可以读取该组织
 - en: a small piece of factual data assigning the member role to alice.
-  id: totrans-41
+  id: totrans-split-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -270,30 +270,30 @@
 - en: To use this policy, you can *query* it. The theoretical foundations of this
     come from logic programming and first order logic. For a deeper dive, I’d recommend
     checking out [The Power of Prolog](https://www.metalevel.at/prolog/introduction).
-  id: totrans-42
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
   zh: 要使用这个策略，你可以*查询*它。其理论基础来自逻辑编程和一阶逻辑。如果想深入了解，建议查看[Prolog 的威力](https://www.metalevel.at/prolog/introduction)。
 - en: 'For today, there are two main facets of logic programming that you’ll want
     to wrap your head around:'
-  id: totrans-43
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
   zh: 今天，你需要理解逻辑编程的两个主要方面：
 - en: Inference logic (how Polar evaluate rules)
-  id: totrans-44
+  id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 推理逻辑（如何评估 Polar 规则）
 - en: Unification (the core “pattern-matching algorithm” of Polar)
-  id: totrans-45
+  id: totrans-split-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 统一（Polar 的核心“模式匹配算法”）
 - en: 'Interlude: Logic Programming'
-  id: totrans-46
+  id: totrans-split-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -302,7 +302,7 @@
     these other things are also true”. The syntax of rules makes them look a little
     like functions, but they resolve logically/declaratively rather than imperatively.
     It can still be helpful though to think in terms of “calling” rules.'
-  id: totrans-47
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
   zh: 规则表达了关于世界的逻辑属性：“如果这些其他事情也是真的，那么这个声明就是真的”。规则的语法使它们看起来有点像函数，但它们在逻辑上/声明性地解决，而不是命令式地。不过，仍然有帮助思考“调用”规则。
@@ -310,90 +310,90 @@
     the `acme` organization, it follows that `allow(alice, "read", acme)` is true.
     That is, we *infer* that the `allow` rule is true based on the fact that the `has_role`
     condition is satisfied.'
-  id: totrans-48
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
   zh: '**推理**说：“给定一个用户`alice`，她在`acme`组织拥有`member`角色，因此`allow(alice, "read", acme)`是真的。也就是说，我们根据`has_role`条件的满足推断`allow`规则是真的。'
 - en: '**Unification** is effectively a fancy pattern matching algorithm that combines
     variable assignment + comparisons into one operator.'
-  id: totrans-49
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
   zh: '**统一**实际上是一种复杂的模式匹配算法，将变量赋值和比较合并为一个操作符。'
 - en: 'For example, the following are all examples of simple unification:'
-  id: totrans-50
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
   zh: 例如，以下都是简单统一的示例：
 - en: '[PRE1]'
-  id: totrans-51
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
   zh: '[PRE1]'
 - en: Unification is a process for helping you *solve* those equations. Given x=1
     and y=x what is y? Well, obviously it’s 1 . That’s what unification is doing.
-  id: totrans-52
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
   zh: 统一是一种帮助你*解决*这些方程的过程。给定 x=1 和 y=x，那么 y 是多少？显然是 1。这就是统一在做的事情。
 - en: Logic Programming in Polar
-  id: totrans-53
+  id: totrans-split-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: Polar 中的逻辑编程
 - en: 'Putting the two together — rule inference and unification — you end up with
     a logic engine that can make simple deductions:'
-  id: totrans-54
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
   zh: 将规则推理和统一结合在一起，你将得到一个可以进行简单推断的逻辑引擎：
 - en: Logical steps taken to evaluate a query against a Polar policy
-  id: totrans-55
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
   zh: 评估针对 Polar 策略的查询所采取的逻辑步骤
 - en: Querying a Polar policy
-  id: totrans-56
+  id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 查询 Polar 策略
 - en: 'Here’s an example of how you query a policy using the `oso-cloud` CLI:'
-  id: totrans-57
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
   zh: 下面是如何使用`oso-cloud`CLI查询策略的示例：
 - en: '[PRE2]'
-  id: totrans-58
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
   zh: '[PRE2]'
 - en: 'The output of `oso-cloud query` is showing the result of logical deductions:
     it “filled in” the missing argument of `Organization:acme`.'
-  id: totrans-59
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
   zh: '`oso-cloud query`的输出显示了逻辑推断的结果：它“填充”了`Organization:acme`的缺失参数。'
 - en: 'And you can extend this:'
-  id: totrans-60
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
   zh: 而且你可以扩展这一点：
 - en: '[PRE3]'
-  id: totrans-61
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
   zh: '[PRE3]'
 - en: This time there’s an additional fact — user `bob` is a `member` of `megacorp`.
-  id: totrans-62
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
   zh: 这次有一个额外的事实 — 用户`bob`是`megacorp`的`member`。
 - en: And the query is even more generic — what are all the users, with any permission,
     on any organization. Using the same deduction process as above, Oso Cloud determines
     that `alice` can read `acme` and `bob` can read `megacorp`.
-  id: totrans-63
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
   zh: 而且查询更加通用——所有用户在任何组织上都有任何权限。与上述相同的推理过程一样，Oso Cloud确定`alice`可以读取`acme`，而`bob`可以读取`megacorp`。
@@ -401,46 +401,46 @@
     use the exact same declarative configuration to answer “can Alice read Organization:acme”
     as well as “what are all the organizations Alice can access”. Which is exactly
     what you need for common authorization use cases.'
-  id: totrans-64
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
   zh: 这里展示了逻辑语言的一个特别好的元素：您可以使用完全相同的声明性配置来回答“Alice是否可以读取Organization:acme”以及“Alice可以访问的所有组织是哪些”。这正是您在常见授权用例中所需的。
 - en: Using Inference to Remove Redundancy
-  id: totrans-65
+  id: totrans-split-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 使用推理来去除冗余
 - en: 'Now suppose you introduce more roles and more permissions by defining a member
     with the following permissions:'
-  id: totrans-66
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
   zh: 现在假设您通过定义具有以下权限的成员来引入更多角色和更多权限：
 - en: '[PRE4]'
-  id: totrans-67
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
   zh: '[PRE4]'
 - en: 'And an admin with a slightly increased set of permissions:'
-  id: totrans-68
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
   zh: 还有一个带有略微增加权限集的管理员：
 - en: '[PRE5]'
-  id: totrans-69
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
   zh: '[PRE5]'
 - en: 'You can see that it starts to get a little repetitive. And so you can write
     logic wherever it makes sense to remove redundancy. In the above case, admins
     can do whatever members can do, so for the admin permissions you can write:'
-  id: totrans-70
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
   zh: 您可以看到它开始有点重复了。因此，在任何有意义的地方编写逻辑以消除冗余是有意义的。在上述情况下，管理员可以做任何成员可以做的事情，因此对于管理员权限，您可以写：
 - en: '[PRE6]'
-  id: totrans-71
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
   zh: '[PRE6]'
@@ -451,102 +451,102 @@
     This saves you from needing to repeat all the member permissions on the admin
     – and from needing to remember to do that every time you add a new permission
     to members.
-  id: totrans-72
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
   zh: 也就是说，您使用推理逻辑来表示如果用户具有“管理员”角色，则在组织中用户具有“成员”角色。规则推理逻辑是*递归*的。通过添加这一规则，您现在知道依赖于用户是组织成员的任何规则也将适用于组织管理员。这样一来，您就无需重复所有成员权限的操作，也无需记住每次向成员添加新权限时都要这样做。
 - en: 'Incidentally, the above use case is so common that Polar has some built-in
     primitives to express it. You would write it as:'
-  id: totrans-73
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
   zh: 顺便说一句，上述用例非常常见，Polar有一些内置的原语来表达它。您可以将其写为：
 - en: '[PRE7]'
-  id: totrans-74
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
   zh: '[PRE7]'
 - en: which is a little less noisy, while also baking in validation logic to prevent
     typos of names.
-  id: totrans-75
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
   zh: 这样会少一些噪音，同时还包含验证逻辑，以防止名称拼写错误。
 - en: Under the hood those `"read" if "member"`  rules expand to the same thing you
     wrote earlier
-  id: totrans-76
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
   zh: 在幕后，那些`"read" if "member"`规则扩展到您之前写的相同内容
 - en: '[PRE8]'
-  id: totrans-77
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
   zh: '[PRE8]'
 - en: it’s purely syntactic sugar.
-  id: totrans-78
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
   zh: 这纯粹是语法糖。
 - en: Pulling it all Together
-  id: totrans-79
+  id: totrans-split-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 将所有内容汇总
 - en: 'Coming back to the GitHub example, the full logic from earlier would look something
     like:'
-  id: totrans-80
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
   zh: 回到GitHub的例子，之前的完整逻辑大致如下：
 - en: '[PRE9]'
-  id: totrans-81
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
   zh: '[PRE9]'
 - en: 'In this policy there are effectively *five* different ways (not counting the
     combinatorial explosions of all of them) that a user might get permission to close
     an issue:'
-  id: totrans-82
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
   zh: 在这个策略中，实际上有 *五* 种不同的方式（不包括它们的组合爆炸），用户可能获得关闭问题的权限：
 - en: They are the issue creator, and they have read-access on the repository
-  id: totrans-83
+  id: totrans-split-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 他们是问题的创建者，并且他们对仓库具有阅读访问权限
 - en: They directly have an appropriate role (e.g. “triage”) on the repository it
     belongs to
-  id: totrans-84
+  id: totrans-split-84
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 他们直接在所属仓库上拥有适当的角色（例如“triage”）
 - en: They directly have a custom role on the repository, and the organization configured
     that role to have “close_issues” permission on repositories
-  id: totrans-85
+  id: totrans-split-85
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 他们直接在仓库上拥有自定义角色，并且组织配置了该角色在仓库上具有“close_issues”权限
 - en: They are a member of the organization, and the organization configures members
     to have at least “triage” level access on all repositories
-  id: totrans-86
+  id: totrans-split-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 他们是组织成员，并且组织配置成员在所有仓库上至少具有“triage”级别的访问权限
 - en: They are an organization admin which grants them admin-level access on all repositories.
-  id: totrans-87
+  id: totrans-split-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 他们是组织管理员，这使他们在所有仓库上具有管理员级别的访问权限。
 - en: Phew!
-  id: totrans-88
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
   zh: 哦！
@@ -555,7 +555,7 @@
     in authorization systems, with reusable logical predicates (i.e., more rules).
     Polar’s logic programming foundations let it represent this logic clearly and
     concisely.
-  id: totrans-89
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
   zh: 逻辑编程作为授权的强大范式之一在于能够实现此类分支条件逻辑，这通常在授权系统中见到，使用可重用的逻辑谓词（即更多规则）。Polar 的逻辑编程基础使其能够清晰而简洁地表示这种逻辑。
@@ -563,23 +563,23 @@
     and into a common location, multiple teams can collaborate on the policy. Because
     the policy language is declarative, the rules are easy to read and the logic is
     easy to understand, further facilitating collaboration.
-  id: totrans-90
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
   zh: 更重要的是，通过将授权逻辑从各个服务中抽出并放入一个共同的位置，多个团队可以共同协作策略。因为策略语言是声明性的，规则易于阅读，逻辑易于理解，进一步促进了协作。
 - en: 'For example, to extend the prior policy to make “closing locked issues” a distinct
     permission, you can make a small policy change:'
-  id: totrans-91
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
   zh: 例如，要扩展先前的策略以使“关闭已锁定问题”成为一个独立的权限，您可以进行小的策略更改：
 - en: '[PRE10]'
-  id: totrans-92
+  id: totrans-split-92
   prefs: []
   type: TYPE_PRE
   zh: '[PRE10]'
 - en: 'From Logic to Data: Facts as SQL'
-  id: totrans-93
+  id: totrans-split-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -587,23 +587,23 @@
 - en: Expressing authorization logic in a language like Polar is half the battle.
     What it gives you is a consistent approach to writing reusable authorization logic
     that multiple teams can collaborate on building.
-  id: totrans-94
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
   zh: 将授权逻辑表达在像 Polar 这样的语言中只是一半的战斗。它为您提供的是一种一致的方法来编写可重用的授权逻辑，多个团队可以共同协作建设。
 - en: 'However, we’ve been deliberately skipping over data: where it comes from and
     how it affects performance.'
-  id: totrans-95
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
   zh: 然而，我们故意跳过数据：它来自何处以及它如何影响性能。
 - en: 'Earlier, we showed how you can add data by writing facts directly in the policy:'
-  id: totrans-96
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
   zh: 早些时候，我们展示了如何通过直接在策略中写入事实来添加数据：
 - en: '[PRE11]'
-  id: totrans-97
+  id: totrans-split-97
   prefs: []
   type: TYPE_PRE
   zh: '[PRE11]'
@@ -612,12 +612,12 @@
     a fact is just an unconditionally true rule. It’s down to the implementation to
     provide convenient APIs for modifying the state of our system by adding/removing
     new facts, and to implement an efficient way to store/index/lookup facts.
-  id: totrans-98
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
   zh: 从逻辑编程的角度来看，这没有任何固有的问题。没有真正的需要区分规则和事实 —— 记住，事实只是一个无条件成立的规则。关键在于实现提供方便的 API 来通过添加/删除新事实来修改系统状态，并实现有效的存储/索引/查找事实的方式。
 - en: Storing facts
-  id: totrans-99
+  id: totrans-split-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -627,7 +627,7 @@
     element of its design. One way that different implementations of Datalog are distinguished
     from one another is the strategies they use for evaluating rules and facts together
     in optimal ways: [https://en.wikipedia.org/wiki/Datalog#Evaluation](https://en.wikipedia.org/wiki/Datalog#Evaluation).'
-  id: totrans-100
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
   zh: '[Datalog](https://en.wikipedia.org/wiki/Datalog) 很好地说明了这一点。Datalog 是一种逻辑编程语言，将规则与事实区分开来作为其设计的基本元素之一。不同的
@@ -635,20 +635,20 @@
 - en: In fact, we could have used Datalog to achieve our data goals — but that would
     mean we have to build our own Datalog implementation, backing data store, etc.
     We don’t want to do that.
-  id: totrans-101
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
   zh: 实际上，我们本可以使用 Datalog 来实现我们的数据目标 —— 但这意味着我们必须构建我们自己的 Datalog 实现、支持数据存储等等。我们不想这样做。
 - en: We *want* to leverage existing tried and true technology — like SQL. And more
     specifically, SQLite.
-  id: totrans-102
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
   zh: 我们*希望*利用现有的经过验证的技术 —— 比如 SQL。更具体地说，是 SQLite。
 - en: 'And so what we decided was: we should have a custom data model purpose-built
     for Polar and backed by SQL. We’ve been through a few iterations of said data
     model, and landed on a painfully simple one: we store facts as rows in SQL tables.'
-  id: totrans-103
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
   zh: 因此，我们决定：我们应该有一个专为 Polar 设计、由 SQL 支持的自定义数据模型。我们已经经历了几次迭代的数据模型，并最终采用了一个痛苦简单的模型：我们将事实存储为
@@ -657,70 +657,70 @@
     table together. But we realized that with SQLite we would be better served by
     dynamically creating tables for a given fact *type*, which we defined as the fact
     name (e.g. “has_role”) and argument types.
-  id: totrans-104
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
   zh: 最初，我们将所有具有相同元数（参数个数）的事实放在一起放在一个表中。但是我们意识到，使用 SQLite，为特定事实*类型*动态创建表会更好，我们定义事实名（例如“has_role”）和参数类型为事实类型。
 - en: 'In Polar, values are either raw primitives (strings, integers, booleans), or
     type + ID pairs, like `{ type: "Organization", id: "acme" }`. And we can represent
     primitives in that format too (e.g. `{ type: “String”, id: “member”}`).'
-  id: totrans-105
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
   zh: '在 Polar 中，数值要么是原始类型（字符串、整数、布尔值），要么是类型 + ID 对，例如 `{ type: "Organization", id:
     "acme" }`。我们也可以用这种格式表示原始类型（例如 `{ type: “String”, id: “member”}`）。'
 - en: 'Where this leaves us - for a fact like:'
-  id: totrans-106
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
   zh: 这给我们留下了一个事实，例如：
 - en: '[PRE12]'
-  id: totrans-107
+  id: totrans-split-107
   prefs: []
   type: TYPE_PRE
   zh: '[PRE12]'
 - en: we create an entry in a fact index, which maps an incrementing ID to the fact
     type, e.g.
-  id: totrans-108
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
   zh: 我们在事实索引中创建一个条目，它将递增的ID映射到事实类型，例如。
 - en: '[PRE13]'
-  id: totrans-109
+  id: totrans-split-109
   prefs: []
   type: TYPE_PRE
   zh: '[PRE13]'
 - en: 'and then store the id: portions of the fact value (i.e. the quoted parts) in
     the fact_1  table:'
-  id: totrans-110
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
   zh: 然后将事实值（即引用部分）的id存储在fact_1表中：
 - en: '[PRE14]'
-  id: totrans-111
+  id: totrans-split-111
   prefs: []
   type: TYPE_PRE
   zh: '[PRE14]'
 - en: Retrieving Facts
-  id: totrans-112
+  id: totrans-split-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 检索事实
 - en: 'So now the question becomes: how should Polar access this data? There are two
     options worth considering:'
-  id: totrans-113
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
   zh: 现在问题变成：Polar应该如何访问这些数据？有两种值得考虑的选择：
 - en: Make it possible to access the backing datastore as part of query evaluation.
-  id: totrans-114
+  id: totrans-split-114
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 使得可以在查询评估的一部分访问后端数据存储。
 - en: 'Split evaluation into two phases: query evaluation, and data lookups'
-  id: totrans-115
+  id: totrans-split-115
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -728,7 +728,7 @@
 - en: We ultimately opted for (2) because we knew when we started that we were heading
     towards something that could support data split across multiple services, so we
     would need those two steps to be separated.
-  id: totrans-116
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
   zh: 我们最终选择了（2），因为我们在开始时就知道我们正在朝着可以支持数据分割到多个服务的方向发展，因此我们需要将这两个步骤分开。
@@ -736,29 +736,29 @@
     Organization:_`, it works *mostly* like a regular logic programming language.
     It performs unification and applies inference logic to find all possibilities
     of what the input variables could be – with one important difference.'
-  id: totrans-117
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
   zh: 工作原理是：当Polar评估类似于`allow User:alice read Organization:_`的查询时，它基本上像普通的逻辑编程语言一样工作。它执行统一并应用推理逻辑来找到输入变量可能的所有可能性
     - 唯一的重要区别是。
 - en: 'When Polar sees a condition like:'
-  id: totrans-118
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
   zh: 当Polar看到这样的条件时：
 - en: '[PRE15]'
-  id: totrans-119
+  id: totrans-split-119
   prefs: []
   type: TYPE_PRE
   zh: '[PRE15]'
 - en: 'It considers two distinct possibilities:'
-  id: totrans-120
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
   zh: 它考虑了两种不同的可能性：
 - en: The condition is satisfied by some other rule, and so should find matching rules
     and evaluate those
-  id: totrans-121
+  id: totrans-split-121
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -766,7 +766,7 @@
 - en: The condition is satisfied by a concrete fact that is stored in the underlying
     database. In which case, track this in its internal state as something to be resolved
     later.
-  id: totrans-122
+  id: totrans-split-122
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -774,80 +774,80 @@
 - en: And so instead of Polar returning concrete results like before, Polar is actually
     returning an intermediate representation of all the ways the query could be satisfied
     using facts in the database.
-  id: totrans-123
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
   zh: 因此，与其像以前那样Polar返回具体的结果，实际上Polar正在返回一个中间表示，显示数据库中的事实可以如何满足查询的所有方式。
 - en: 'For the above example rule of “users can close issues if they have the ‘triage’
     role on the repository it belongs to”, asking the query “which issues can Alice
     close” results in the intermediate representation:'
-  id: totrans-124
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
   zh: 对于上述规则“如果用户具有存储库中的‘triage’角色，则用户可以关闭问题”的示例规则，查询“Alice可以关闭哪些问题”将产生中间表示：
 - en: '[PRE16]'
-  id: totrans-125
+  id: totrans-split-125
   prefs: []
   type: TYPE_PRE
   zh: '[PRE16]'
 - en: It’s no coincidence that this looks a lot like SQL’s `SELECT ... FROM ... WHERE`
     syntax. The final step in this process is to turn the above into SQL, and query
     our embedded SQLite database.
-  id: totrans-126
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
   zh: 这看起来很像SQL的`SELECT ... FROM ... WHERE`语法并非巧合。该过程的最后一步是将上述内容转换为SQL，并查询我们嵌入的SQLite数据库。
 - en: 'For the facts, indexed `f0` and `f1` , we look up the corresponding fact tables
     via the index. For simplicity, I’ll assume those tables are `fact_0` and `fact_1`
     . The SQL output is:'
-  id: totrans-127
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
   zh: 对于索引为 `f0` 和 `f1` 的事实，我们通过索引查找相应的事实表。为简单起见，我将假设这些表是 `fact_0` 和 `fact_1` 。SQL
     输出如下：
 - en: '[PRE17]'
-  id: totrans-128
+  id: totrans-split-128
   prefs: []
   type: TYPE_PRE
   zh: '[PRE17]'
 - en: 'Interlude: Performance'
-  id: totrans-129
+  id: totrans-split-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 插曲：性能。
 - en: Given that one of the motivations for using SQL was performance, how well does
     this perform?
-  id: totrans-130
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
   zh: 鉴于使用 SQL 的动机之一是性能，这个方法表现如何？
 - en: 'Because our facts are in SQL tables, we can generate a bunch of indexes for
     those tables using simple heuristics:'
-  id: totrans-131
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
   zh: 因为我们的事实存储在 SQL 表中，我们可以使用简单的启发式方法为这些表生成大量索引：
 - en: '[PRE18]'
-  id: totrans-132
+  id: totrans-split-132
   prefs: []
   type: TYPE_PRE
   zh: '[PRE18]'
 - en: 'Our SQL queries end up being a number of joins, and simple filters on these
     indexed columns. This makes the SQLite query planner *very* happy:'
-  id: totrans-133
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
   zh: 我们的 SQL 查询最终会是一些连接和对这些索引列的简单过滤。这使得 SQLite 查询规划器非常满意：
 - en: '[PRE19]'
-  id: totrans-134
+  id: totrans-split-134
   prefs: []
   type: TYPE_PRE
   zh: '[PRE19]'
 - en: 'It does exactly what you would expect: it finds all of the repositories that
     alice is has the “triage” role for, and then gets all of the issues belonging
     to those repositories.'
-  id: totrans-135
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
   zh: 它确实做到了你所期望的：找到 Alice 担任“筛选”角色的所有仓库，然后获取这些仓库中的所有问题。
@@ -855,17 +855,17 @@
     query planner is smart enough to realize that issues belong to strictly one repository,
     whereas users might have roles on many repositories and reverses the ordering
     of the joins:'
-  id: totrans-136
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
   zh: 在我们询问 Alice 是否可以关闭特定问题的情况下呢？SQLite 查询规划器足够聪明，能够意识到问题严格属于一个仓库，而用户可能在多个仓库上拥有角色，并反转连接的顺序：
 - en: '[PRE20]'
-  id: totrans-137
+  id: totrans-split-137
   prefs: []
   type: TYPE_PRE
   zh: '[PRE20]'
 - en: 'Polar + Facts: An Ideal Combination'
-  id: totrans-138
+  id: totrans-split-138
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -874,42 +874,42 @@
     hard to overstate how nice it is for us to be able to focus purely on providing
     good inputs to a battle-tested SQL engine like SQLite rather than attempt to build
     this. We get to spend our innovation tokens elsewhere.
-  id: totrans-139
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
   zh: 到这一点上，我基本上只是在向你解释为什么 SQL 是很酷的... 但很难过分强调我们能够完全专注于向像 SQLite 这样的经过实战检验的 SQL 引擎提供良好的输入，而不是试图构建这个过程。我们可以把创新的筹码花在其他地方。
 - en: 'We’ve also drawn a relatively clear line in the sand. Polar supports:'
-  id: totrans-140
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
   zh: 我们还在相对清晰的界限上划出了一条线。Polar 支持：
 - en: 'Common authorization data: roles, relationships, attributes'
-  id: totrans-141
+  id: totrans-split-141
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 常见的授权数据：角色，关系，属性。
 - en: Custom data types expressed as facts
-  id: totrans-142
+  id: totrans-split-142
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 表达为事实的自定义数据类型。
 - en: Arbitrary combinations of facts expressed via `and` and `or`
-  id: totrans-143
+  id: totrans-split-143
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 任意组合的事实，通过 `and` 和 `or` 表达。
 - en: A handful of comparisons like integer comparisons, and time-based checks (for
     expiration).
-  id: totrans-144
+  id: totrans-split-144
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 几个比较操作，例如整数比较和基于时间的检查（用于过期）。
 - en: Recursive data lookups (e.g. files and folders hierarchies a la Google Drive).
-  id: totrans-145
+  id: totrans-split-145
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -917,7 +917,7 @@
 - en: 'We think this the ideal combination: flexible enough to represent almost anything,
     while being structured enough for us to write a robust querying layer using SQLite
     to do the underlying query planning and data lookups.'
-  id: totrans-146
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
   zh: 我们认为这是理想的组合：足够灵活以表示几乎任何东西，同时结构化到足以编写使用 SQLite 编写强大的查询层来进行底层查询规划和数据查找。
@@ -925,12 +925,12 @@
     programming language. SQL was itself inspired by logic programming, and Datalog
     is frequently described as a stepping stone between logic programming and relational
     algebra. Everything starts blurring together the more you look at it.
-  id: totrans-147
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
   zh: 回顾过去，SQL在类似Datalog的逻辑编程语言中运行得如此顺畅并不奇怪。SQL本身就受到逻辑编程的启发，而Datalog经常被描述为逻辑编程和关系代数之间的一个过渡步骤。当你越看越多时，所有的东西开始变得模糊不清。
 - en: Distributing Queries
-  id: totrans-148
+  id: totrans-split-148
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -938,7 +938,7 @@
 - en: With Polar we have a declarative way to express authorization logic. And we’ve
     seen that we can use Polar with a custom data model in SQL to evaluate queries
     fast. We use that to build our central authorization system (Oso Cloud).
-  id: totrans-149
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
   zh: 使用Polar，我们有一种声明性的方法来表达授权逻辑。我们已经看到，我们可以在SQL中使用自定义数据模型来快速评估查询。我们用它来构建我们的中心授权系统（Oso
@@ -946,26 +946,26 @@
 - en: 'Returning to our IssuesService example: if we want to use that central authorization
     system to decide “can Alice close issue #42”, we’ll need to give it access to
     the data it needs somehow.'
-  id: totrans-150
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
   zh: '返回到我们的 IssuesService 示例：如果我们想要使用那个中心授权系统来决定“Alice是否可以关闭问题 #42”，我们需要以某种方式使其访问所需的数据。'
 - en: 'Typically, centralized authorization systems – including Oso Cloud – have achieved
     this by requiring that any necessary data exist *in the authorization system*
     at the time the decision is made. This means either:'
-  id: totrans-151
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
   zh: 通常，集中式授权系统（包括Oso Cloud）已通过要求在做出决定时授权系统中存在任何必要数据来实现这一点。这意味着要么
 - en: Duplicating authorization-relevant data between the application and the authorization
     service
-  id: totrans-152
+  id: totrans-split-152
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 在应用程序和授权服务之间复制与授权相关的数据
 - en: Moving to event sourcing
-  id: totrans-153
+  id: totrans-split-153
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -974,7 +974,7 @@
     questions. In the case of duplicating the data, you’re either building a replication
     process or you’re passing extra data over the wire for every authorization request.
     If you move to event sourcing, then you’re taking on a major application refactor.
-  id: totrans-154
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
   zh: 这两者听起来都是为了回答一些授权问题而进行了大量额外工作。在数据复制的情况下，您要么构建一个复制过程，要么为每个授权请求通过网络传递额外的数据。如果您转向事件溯源，那么您正在进行主要的应用程序重构。
@@ -982,25 +982,25 @@
     return a long list of data back out of it. Think back to the case where we asked
     for all the issues that Alice can close. If Alice has access to hundreds of issues,
     then the response will include all of them, increasing latency.
-  id: totrans-155
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
   zh: 无论您选择如何将数据引入服务中，某些操作还将从中返回长列表的数据。回想一下我们要求所有Alice可以关闭的问题的情况。如果Alice可以访问数百个问题，那么响应将包含所有这些问题，增加延迟。
 - en: 'This led us to consider a different option: distribute the authorization. We
     can centralize anything that’s shared across multiple services and leave everything
     else in the application.'
-  id: totrans-156
+  id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
   zh: 这使我们考虑了一个不同的选择：分发授权。我们可以将所有多服务共享的内容集中起来，而将其他所有内容留在应用程序中。
 - en: 'For example, in the GitHub example most of a user’s permissions on an issue
     come from the repository roles, and so one path to implement it would be:'
-  id: totrans-157
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
   zh: 例如，在GitHub的示例中，用户在问题上的大部分权限来自于仓库角色，因此实施的一个路径可能是：
 - en: '[PRE21]'
-  id: totrans-158
+  id: totrans-split-158
   prefs: []
   type: TYPE_PRE
   zh: '[PRE21]'
@@ -1009,49 +1009,49 @@
     service. But you implement domain-specific authorization logic, like “issue creators
     can close their own issues”, within the service (i.e. IssueService) and use the
     application data you already have.
-  id: totrans-159
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
   zh: 那么，坦白地说，这并不算太糟糕。GitHub 的大部分功能依赖于用户在组织/仓库权限上的设置，因此您需要在共享授权服务中管理这些逻辑和数据。但是，像“问题创建者可以关闭自己的问题”这样的领域特定授权逻辑则需要在服务内部（即IssueService）实现，并且利用您已有的应用数据。
 - en: 'But we can do better. The above code has one big downside: a significant amount
     of authorization logic has bled into the IssuesService.'
-  id: totrans-160
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
   zh: 不过我们可以做得更好。上述代码有一个明显的缺点：大量授权逻辑已经渗入到IssuesService中。
 - en: That’s bad because it creates a coupling between the AuthzService and the IssuesService.
-  id: totrans-161
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
   zh: 这很糟糕，因为它在AuthzService和IssuesService之间创建了耦合。
 - en: 'Suppose you want to modify your authorization logic to differentiate between
     which users can close *locked* issues. That might look something like:'
-  id: totrans-162
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
   zh: 假设您想修改授权逻辑以区分哪些用户可以关闭*锁定*的问题。可能看起来像这样：
 - en: Add code to IssuesService for checking if the user has `"close_locked_issues"`
     permission. Deploy these changes behind a feature flag.
-  id: totrans-163
+  id: totrans-split-163
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 在IssuesService中添加代码，用于检查用户是否具有“close_locked_issues”权限。在功能标志后台部署这些更改。
 - en: Add the new permission to roles in the AuthzService, redeploy these changes.
-  id: totrans-164
+  id: totrans-split-164
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 在AuthzService中为角色添加新的权限，然后重新部署这些更改。
 - en: Toggle the feature flag for IssuesService to enable the new feature.
-  id: totrans-165
+  id: totrans-split-165
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 切换IssuesService的功能标志以启用新功能。
 - en: Small changes in one service require coordinating code changes across multiple
     services (and therefore teams).
-  id: totrans-166
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
   zh: 一个服务中的微小变化需要跨多个服务（因此跨多个团队）协调代码更改。
@@ -1062,18 +1062,18 @@
     to the repository (employees who left the company shouldn’t be able to close their
     old issues). But this logic is outside the AuthzService, so you’ve lost most of
     your tools to make sure that this line is implemented correctly, and tested.
-  id: totrans-167
+  id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
   zh: 与此同时，通过将领域特定的授权延迟到关联服务，每个团队都可以在其应用程序中“完成画画的剩余部分”。例如，实施“创建者可以关闭问题”时，Issues团队很幸运地记得检查问题创建者仍然对仓库具有读权限（已经离开公司的员工不应能够关闭他们的旧问题）。但是这种逻辑是在AuthzService之外，因此您失去了确保该行为正确实施和测试的大部分工具。
 - en: Cleaning up the Mess
-  id: totrans-168
+  id: totrans-split-168
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 清理混乱
 - en: 'As we said at the beginning: authorization is messy.'
-  id: totrans-169
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
   zh: 正如我们在开头所说的：授权是混乱的。
@@ -1082,7 +1082,7 @@
     authorization logic to leak into your application, and you don’t want to duplicate
     application data in your authorization service. That means you need a way to distribute
     authorization decisions across both the AuthzService and IssueService.
-  id: totrans-170
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
   zh: 要决定谁可以对哪些资源做什么，您需要了解这些资源是什么，以及它们如何与其他资源相关联。但是您不希望授权逻辑泄漏到您的应用程序中，也不希望在授权服务中重复应用程序数据。这意味着您需要一种方法在
@@ -1091,39 +1091,39 @@
     authorization logic while maintaining encapsulation of the domain-specific data
     would be more resilient to changes in logic or data on either end. Practically,
     this means:'
-  id: totrans-171
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
   zh: 上述代码示例让我们接近目标，但是一个解决方案可以消除泄露的授权逻辑，并保持领域特定数据封装性将更具抗变化逻辑或数据变化的弹性。实际上，这意味着：
 - en: Centralizing all authorization logic in the authorization service
-  id: totrans-172
+  id: totrans-split-172
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 将所有授权逻辑集中在授权服务中
 - en: Centralizing *shared* authorization data (e.g. organization and repository roles)
     in the authorization service
-  id: totrans-173
+  id: totrans-split-173
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 在授权服务中集中*共享*的授权数据（例如组织和存储库角色）
 - en: Keeping *domain specific* authorization data in the appropriate application
     database
-  id: totrans-174
+  id: totrans-split-174
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 将 *领域特定* 的授权数据保存在适当的应用程序数据库中
 - en: Evaluating Polar against an Application DB
-  id: totrans-175
+  id: totrans-split-175
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 对一个应用程序数据库评估 Polar
 - en: We achieve this by bringing the power of Polar to data stored across multiple
     data stores. And importantly, to data stored *outside* of Oso Cloud.
-  id: totrans-176
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
   zh: 我们通过将 Polar 的能力引入存储在多个数据存储中的数据来实现这一点。而且重要的是，这些数据存储在 Oso Cloud *之外*。
@@ -1131,7 +1131,7 @@
     that runs inside an application. However, previously we relied on ORMs to do the
     query building. We returned an intermediate representation inspired by relational
     algebra, and used the ORM to turn this into SQL.
-  id: totrans-177
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
   zh: 我们之前有 [将 Polar 转换为 SQL](https://www.osohq.com/post/authorization-logic-into-sql)
@@ -1139,25 +1139,25 @@
 - en: But given that we are already working with an intermediate representation we
     know is flexible enough to convert to SQL, we looked at what we already had when
     thinking about this problem again.
-  id: totrans-178
+  id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
   zh: 但是考虑到我们已经在使用一个足够灵活的中间表示来转换为 SQL，当我们再次思考这个问题时，我们看了看我们已经拥有的东西。
 - en: 'We need to do two things:'
-  id: totrans-179
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
   zh: 我们需要做两件事情：
 - en: Turn our intermediate representation into SQL to run it against an application
     database.
-  id: totrans-180
+  id: totrans-split-180
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 将我们的中间表示转换为 SQL，以便在应用程序数据库中运行。
 - en: Split the intermediate representation into an Oso part that runs centrally and
     a local part that runs in the application.
-  id: totrans-181
+  id: totrans-split-181
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -1166,48 +1166,48 @@
     to use [CTEs](https://www.metabase.com/learn/sql-questions/sql-cte) to make the
     application database “look like” our own internal schema, e.g. in the previous
     query replace `fact_0` and `fact_1` with a CTE describing how to get that data:'
-  id: totrans-182
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
   zh: 一个相对简单的做法（1），虽然有些天真，但接近我们的需求，是使用 [CTEs](https://www.metabase.com/learn/sql-questions/sql-cte)
     来使应用程序数据库“看起来像”我们自己的内部架构，例如在前面的查询中，用描述如何获取数据的 CTE 替换 `fact_0` 和 `fact_1`：
 - en: '[PRE22]'
-  id: totrans-183
+  id: totrans-split-183
   prefs: []
   type: TYPE_PRE
   zh: '[PRE22]'
 - en: To get this, we just need a configuration file that maps between the Oso data
     schema and SQL tables, e.g.
-  id: totrans-184
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
   zh: 要实现这一点，我们只需要一个配置文件，该文件在 Oso 数据架构和 SQL 表格之间进行映射，例如：
 - en: '[PRE23]'
-  id: totrans-185
+  id: totrans-split-185
   prefs: []
   type: TYPE_PRE
   zh: '[PRE23]'
 - en: 'Having a simple mapping from an application DB to Oso facts was no accident.
     We have a simple rule of thumb for mapping data to Oso:'
-  id: totrans-186
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
   zh: 将应用程序数据库映射到 Oso 事实的简单映射不是偶然的。我们有一个简单的规则来将数据映射到 Oso：
 - en: 'Roles: many-to-many or one-to-many tables which relate two tables/primary keys
     and have an additional “role” attribute.'
-  id: totrans-187
+  id: totrans-split-187
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 角色：多对多或一对多的表格，它们关联两个表/主键，并具有额外的“角色”属性。
 - en: 'Relationships: a primary key + a foreign key'
-  id: totrans-188
+  id: totrans-split-188
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 关系：一个主键 + 一个外键
 - en: 'Attributes: a primary key + a column value'
-  id: totrans-189
+  id: totrans-split-189
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -1215,14 +1215,14 @@
 - en: We tell our customers to use this simple mapping for sending Oso data, and so
     all of our common patterns for authorization rules are expressed in terms of this
     data.
-  id: totrans-190
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
   zh: 我们告诉我们的客户使用这个简单的映射发送 Oso 数据，因此我们所有的授权规则的常见模式都是基于这些数据表达的。
 - en: The “issue” table has a primary key, foreign keys for the parent repository
     and issue creator, and a column for if its locked. Combinations of these map to
     relationship and attribute data in Oso.
-  id: totrans-191
+  id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
   zh: “问题”表具有主键，父存储库和问题创建者的外键，以及一个列用于标识是否被锁定。这些组合在 Oso 中映射为关系和属性数据。
@@ -1230,49 +1230,49 @@
     modify the database in any way, nor persist any data. But if we were to convert
     the data into how Polar sees it, or to expand out the CTEs that we generate into
     actual tables, it would look something like this:'
-  id: totrans-192
+  id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
   zh: 我们创建的映射是一个“虚拟”的映射。实际上，我们无需以任何方式修改数据库，也不需要持久化任何数据。但是，如果我们要将数据转换为 Polar 所看到的形式，或者将我们生成的
     CTEs 展开为实际表格，它会看起来像这样：
 - en: Each row in the “issue” table maps to many facts.
-  id: totrans-193
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
   zh: “问题”表中的每一行都映射到多个事实。
 - en: And just like that* we have a policy language that can run over an application
     database with minimal configuration.
-  id: totrans-194
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
   zh: 就像那样，我们有了一个可以在应用程序数据库上运行的策略语言，只需最少的配置。
 - en: '*Note: I would like to clarify that the intent here is to say that it’s that
     easy for Oso users, and not diminish the effort of the Oso team who implemented
     this feature 🐻'
-  id: totrans-195
+  id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
   zh: '*注意：我想澄清这里的意图是说 Oso 用户可以很容易做到这一点，并不是要贬低实现这一功能的 Oso 团队的努力 🐻*'
 - en: Splitting the lookup across two services
-  id: totrans-196
+  id: totrans-split-196
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 将查找拆分成两个服务
 - en: We now have (1) — a way to run SQL against an application database.
-  id: totrans-197
+  id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
   zh: 现在我们有了（1）—— 一种针对应用程序数据库运行 SQL 的方法。
 - en: Lets move on to (2) — split the intermediate representation into an Oso part
     and a local part.
-  id: totrans-198
+  id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
   zh: 让我们继续（2）—— 将中间表示拆分为 Oso 部分和本地部分。
 - en: Once we had figured out the configuration and how that would compile to SQL,
     deciding on how to “split” the intermediate state was clear.
-  id: totrans-199
+  id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
   zh: 一旦我们弄清楚了配置以及如何将其编译为SQL，并决定如何“拆分”中间状态，就很清楚了。
@@ -1280,190 +1280,190 @@
     create dummy variables to bridge the two, e.g. we know the `issuesService` manages
     issue data, and therefore the `has_relation` facts between issues and repositories,
     whereas Oso manages roles
-  id: totrans-200
+  id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
   zh: 我们将正在搜索的事实分成Oso部分和本地部分，并创建虚拟变量来连接这两者，例如，我们知道`issuesService`管理问题数据，因此问题与存储库之间的`has_relation`事实，而Oso管理角色
 - en: '**Before splitting:**'
-  id: totrans-201
+  id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
   zh: '**拆分之前：**'
 - en: '[PRE24]'
-  id: totrans-202
+  id: totrans-split-202
   prefs: []
   type: TYPE_PRE
   zh: '[PRE24]'
 - en: '**After splitting:**'
-  id: totrans-203
+  id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
   zh: '**拆分之后：**'
 - en: '[PRE25]'
-  id: totrans-204
+  id: totrans-split-204
   prefs: []
   type: TYPE_PRE
   zh: '[PRE25]'
 - en: 'On Oso’s side, we evaluate the Oso part in an identical way to before: we compile
     it to SQL, run the SQL, and get back a set of results.'
-  id: totrans-205
+  id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
   zh: 在Oso的一侧，我们以与之前相同的方式评估Oso部分：我们将其编译为SQL，运行SQL，并获取一组结果。
 - en: 'To resolve the rest of the authorization result within the application, we’ll
     need to take:'
-  id: totrans-206
+  id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
   zh: 要在应用程序内解决其余的授权结果，我们需要采取：
 - en: The other half of the intermediate representation
-  id: totrans-207
+  id: totrans-split-207
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 中间表示的另一半
 - en: The schema mapping configuration
-  id: totrans-208
+  id: totrans-split-208
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 模式映射配置
 - en: The partially evaluated results from Oso
-  id: totrans-209
+  id: totrans-split-209
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 来自Oso的部分评估结果
 - en: And turn them into a SQL query we can run.
-  id: totrans-210
+  id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
   zh: 并将它们转换为我们可以运行的SQL查询。
 - en: 'That is, we combine:'
-  id: totrans-211
+  id: totrans-split-211
   prefs: []
   type: TYPE_NORMAL
   zh: 也就是说，我们结合了：
 - en: 'the required lookups:'
-  id: totrans-212
+  id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
   zh: 所需的查找：
 - en: '[PRE26]'
-  id: totrans-213
+  id: totrans-split-213
   prefs: []
   type: TYPE_PRE
   zh: '[PRE26]'
 - en: 'plus the configuration:'
-  id: totrans-214
+  id: totrans-split-214
   prefs: []
   type: TYPE_NORMAL
   zh: 加上配置：
 - en: '[PRE27]'
-  id: totrans-215
+  id: totrans-split-215
   prefs: []
   type: TYPE_PRE
   zh: '[PRE27]'
 - en: 'and the inputs from Oso:'
-  id: totrans-216
+  id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
   zh: 和来自Oso的输入：
 - en: '[PRE28]'
-  id: totrans-217
+  id: totrans-split-217
   prefs: []
   type: TYPE_PRE
   zh: '[PRE28]'
 - en: 'to compute the SQL to perform “the rest of the authorization”:'
-  id: totrans-218
+  id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
   zh: 计算执行“其余授权”的SQL：
 - en: '[PRE29]'
-  id: totrans-219
+  id: totrans-split-219
   prefs: []
   type: TYPE_PRE
   zh: '[PRE29]'
 - en: 'The IssueService can run this SQL against its own database to check authorization
     of a single entity:'
-  id: totrans-220
+  id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
   zh: IssueService可以针对自己的数据库运行此SQL来检查单个实体的授权：
 - en: '[PRE30]'
-  id: totrans-221
+  id: totrans-split-221
   prefs: []
   type: TYPE_PRE
   zh: '[PRE30]'
 - en: By converting the intermediate polar representation to SQL *that the IssueService
     can run*, we have built a way to access authorization data that is distributed
     across multiple services.
-  id: totrans-222
+  id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
   zh: 通过将中间极坐标表示转换为IssueService可以运行的SQL *，我们建立了一种访问分布在多个服务中的授权数据的方法。
 - en: 'With all this in place, the `closeIssue`  method gets a whole lot shorter:'
-  id: totrans-223
+  id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
   zh: 有了这一切就位，`closeIssue`方法变得更简短了：
 - en: '[PRE31]'
-  id: totrans-224
+  id: totrans-split-224
   prefs: []
   type: TYPE_PRE
   zh: '[PRE31]'
 - en: 'You can also use this approach to generate lists of authorized issues. For
     example, to return all the issues that the current user can close:'
-  id: totrans-225
+  id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
   zh: 您还可以使用此方法生成已授权问题的列表。例如，返回当前用户可以关闭的所有问题：
 - en: '[PRE32]'
-  id: totrans-226
+  id: totrans-split-226
   prefs: []
   type: TYPE_PRE
   zh: '[PRE32]'
 - en: Because you’re creating the list against the local database, it’s easy to sort
     and paginate the results.
-  id: totrans-227
+  id: totrans-split-227
   prefs: []
   type: TYPE_NORMAL
   zh: 因为您正在针对本地数据库创建列表，所以很容易对结果进行排序和分页。
 - en: '[PRE33]'
-  id: totrans-228
+  id: totrans-split-228
   prefs: []
   type: TYPE_PRE
   zh: '[PRE33]'
 - en: Conclusion
-  id: totrans-229
+  id: totrans-split-229
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
   zh: 结论
 - en: 'Referring back to our initial criteria:'
-  id: totrans-230
+  id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
   zh: 回顾我们的初始标准：
 - en: 'a shared authorization capability must provide mechanisms for:'
-  id: totrans-231
+  id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
   zh: 共享授权功能必须提供以下机制：
 - en: expressing the above logic, which spans the Authz and Issues domains
-  id: totrans-232
+  id: totrans-split-232
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 表达上述跨Authz和Issues领域的逻辑
 - en: using data stored in both the AuthzService and IssuesService
-  id: totrans-233
+  id: totrans-split-233
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
   zh: 使用存储在AuthzService和IssuesService中的数据
 - en: supporting yes/no questions as well as more flexible “list” questions
-  id: totrans-234
+  id: totrans-split-234
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -1472,18 +1472,18 @@
     from any one service. We distribute Polar across services to avoid needing to
     sync data anywhere, and our approach of compiling Polar to SQL makes it possible
     to ask *any* kind of question without needing to rewrite any logic.
-  id: totrans-235
+  id: totrans-split-235
   prefs: []
   type: TYPE_NORMAL
   zh: 我们已经实现了这三点！我们有 Polar 来表达脱离任何一个服务的声明性逻辑。我们在服务之间分发 Polar，避免了需要在任何地方同步数据，而我们将 Polar
     编译成 SQL 的方法使得可以提出*任何*类型的问题，而无需重写任何逻辑。
 - en: 'Try it out here: [https://www.osohq.com/docs/guides/integrate/filter-lists#list-filtering-with-decentralized-data](https://www.osohq.com/docs/guides/integrate/filter-lists#list-filtering-with-decentralized-data)'
-  id: totrans-236
+  id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
   zh: 在这里尝试一下：[https://www.osohq.com/docs/guides/integrate/filter-lists#list-filtering-with-decentralized-data](https://www.osohq.com/docs/guides/integrate/filter-lists#list-filtering-with-decentralized-data)
 - en: ‍
-  id: totrans-237
+  id: totrans-split-237
   prefs: []
   type: TYPE_NORMAL
   zh: ‍

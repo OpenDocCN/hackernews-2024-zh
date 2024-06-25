@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:43:14'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Making Friends with AttributeGraph
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://saagarjha.com/blog/2024/02/27/making-friends-with-attributegraph/](https://saagarjha.com/blog/2024/02/27/making-friends-with-attributegraph/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -29,6 +35,7 @@
     to program against. True to its name, AttributeGraph provides the foundation of
     what a declarative UI framework needs: a graph of attributes that tracks data
     dependencies.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Mastering how these dependencies work is crucial to writing advanced SwiftUI
@@ -41,6 +48,7 @@
     [several](https://developer.apple.com/videos/play/wwdc2021/10022) [videos](https://developer.apple.com/videos/play/wwdc2023/10160/)
     that go over the high-level design, but unsurprisingly they shy away from mentioning
     the existence of AttributeGraph itself. Other developers do, but [only fleetingly](https://chris.eidhof.nl/presentations/day-in-the-life/).
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: This puts us in a real bind! We can `Self._printChanges()` all day and still
@@ -54,40 +62,49 @@
     of just making guesses as how things are implemented. Unlike AI, we can also test
     our theories. We won’t know whether our speculation is right, but we can definitely
     check to make sure we’re not wrong!
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing `Setting`
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'As we explore how SwiftUI propagates changes, it will be very helpful to have
     an real example to work with. Say hello to `Setting`, a simple `UserDefaults`
     wrapper similar to [`AppStorage`](https://developer.apple.com/documentation/swiftui/appstorage):'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: 'We haven’t implemented it yet, but it should be fairly straightforward to see
     how you might use this:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: 'Our API is slightly more explicit about how unset values should work, but it
     is otherwise almost identical to Apple’s: we even expose a `Binding` as the `projectedValue`
     so `Setting` can be used directly with SwiftUI controls. Here’s what a preliminary
     implementation might look like. None of it should be particularly surprising:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: This *almost* works. However, we have a compiler error in our implementation
     for `projectedValue`–it captures `self`, and when the `Binding` updates it tries
     to call `wrappedValue`’s setter. But since `self` is immutable, the compiler will
     not let us modify `wrappedValue`. Or will it?
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'We’re not really modifying `self` here: the setter just writes to user defaults.
@@ -96,18 +113,23 @@
     is actually what `State` uses itself to let you assign to it, even in contexts
     where the view that owns it is not mutable: it stores its state outside of itself,
     just like we do. Let’s update our implementation of `wrappedValue` to use this.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: 'With that, the code compiles, so let’s take it for a spin:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: Handling updates
+  id: totrans-split-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -115,6 +137,7 @@
     noticed that it doesn’t exactly seem to work as we’d hope. You can toggle the
     switch all you want, but the UI doesn’t update. What’s going on? We made a `Binding`
     and everything!
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: With a debugger, it’s easy to verify that the `Toggle` *is* actually invoking
@@ -128,9 +151,11 @@
     After that, though, the UI does not update, even though the getter returns the
     new value. Notably, `ContentView`’s body is not evaluated again, even though it
     should because of the new state.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Examining `State`
+  id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -142,9 +167,11 @@
     a chance to run your own code, and `State` must use it to tell SwiftUI about the
     change. Putting aside our earlier conversation about `nonmutating`, `State` probably
     looks something like this:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: 'Even though this explains why our code doesn’t work, this is still a problem
@@ -152,9 +179,11 @@
     and only `State` (and the other built-in types) know how to do it. However, we
     don’t have to. The framework provides an affordance to let solve our issue: composing
     property wrappers.'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Composition with `DynamicProperty`
+  id: totrans-split-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -162,9 +191,11 @@
     this system with *composition*. If a property wrapper contains a `State` inside
     of itself, then mutating it can initiate a refresh. Let’s make a few changes to
     the property wrapper (and skip the parts that remain unmodified):'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'Note the addition of `value`, the new `State<T>` variable that we return instead.
@@ -176,9 +207,11 @@
     why this needs to be the case a little later, but with the change this code finally
     works. Toggling the switch updates the UI and it also writes to defaults, and
     this value persists across launches. Success!'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Abusing dependencies
+  id: totrans-split-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -188,24 +221,29 @@
     we had, where defaults was the backing store and we talked to it directly, was
     definitely cleaner. If the `State` setter’s side effects are all we need, can
     we clean the code up a little bit? What if we did this?'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: Even though we store things in `value` to trigger updates, we don’t use it as
     the source of truth anymore. Instead, we just return whatever user defaults has
     in it. In the last version we were careful to have it match `value` at all times,
     so this should produce the same value.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you try out this version, you’ll find that it doesn’t work anymore! The
     reason for this is actually quite subtle. If you’ve been following along so far
     and want a quick puzzle, see if you can debug what is going on before moving on
     to the next section. Hint: try printing `value` in `wrappedValue`’s getter.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: The hint I gave was slightly misleading. Yes, printing `value` in `wrappedValue`’s
@@ -214,13 +252,16 @@
     that it doesn’t matter). But more importantly, **adding the print statement makes
     it work again!** If you remove the print statement, it stops working, and if you
     add it back, it works again.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you test a little bit more, you’ll see that it’s not the print statement
     that’s important, but the access of `value` itself. Even this code works:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'This is not a fluke of the optimizer. `State.wrappedValue`’s getter actually
@@ -232,6 +273,7 @@
     that state, and it will skip redrawing views that are unrelated. For us, this
     means that we cannot just set `value` in our setter: we also have to access it
     in the getter, to indicate to SwiftUI that we depend on it.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'It’s important to note at this point that this mechanism, while clever, is
@@ -245,12 +287,15 @@
     effects of the update. This, you could argue, is a lot worse than our proper `State`-based
     solution, but it’s far more flexible. Here’s what it looks like (again, skipping
     redundant parts):'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: '`State` lifecycle'
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -259,9 +304,11 @@
     is [KVO compliant](https://developer.apple.com/documentation/foundation/userdefaults#2926902)
     to allow us to respond to these changes. Since we know how to set up dependencies
     ourselves, updating our code to handle this isn’t too hard:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: Unfortunately, we can’t use Swift’s type-safe `KeyPath`-based callback API because
@@ -269,15 +316,18 @@
     We can pass it the `State` that we’re using to manage updates and it can inform
     SwiftUI using that when the value changes. Otherwise, everything else can stay
     the same.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'As you’ve probably guessed by now, this doesn’t work. At least it doesn’t break
     in-app behavior this time: it just doesn’t update when changes happen externally.
     While the KVO callback does get invoked, poking `_update` from inside it does
     not have any visible effects.'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Reflection introspection
+  id: totrans-split-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -288,6 +338,7 @@
     the key to the behavior we are seeing. Even though we are trying to update the
     “same” `State` in our code, something must be different about the two for one
     change to go through and another to get dropped.'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 'Fortunately, Swift binaries typically contain fairly rich metadata that can
@@ -296,9 +347,11 @@
     the innards of types we don’t own. Let’s try that by printing `__update` (note
     the extra leading underscore to refer to the property wrapper itself) in `wrappedValue`,
     where we know it is ready to publish our changes:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: 'As expected, `State` is a composite of several properties. `_value` is fairly
@@ -307,14 +360,17 @@
     LLDB (for example, we can see that there is a flag called `_wasRead`, as well
     as a connection to AttributeGraph), but before dive too deeply let’s do the same
     dump in `Observer.observeValue(forKeyPath:of:change:context:)`:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: Aha! This time, `_location` is `nil`. This `_location` must (among other things)
     contain the connection back to SwiftUI used when notifying it of changes. Since
     it’s not set at this point, there’s nobody there to listen to our updates.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: It’s worth thinking about how this might happen. Even though both `Setting`
@@ -326,6 +382,7 @@
     sees any changes. On the other hand, `Setting`’s `_update` also has a `nil` `_location`
     at this point, but sometime in the future this changes to something valid. Who
     is doing it? When, and how?
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'The answer, of course, is that SwiftUI does it for us. Shortly before a view’s
@@ -338,6 +395,7 @@
     this is why we had to add a `DynamicProperty` conformance earlier. In that case,
     it uses reflection to look for `DynamicProperty` members instead and then does
     a search for `State` inside of those.'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'SwiftUI does the same inside of our `Setting` property wrapper when the view
@@ -346,18 +404,22 @@
     [`DynamicProperty.update()`](https://developer.apple.com/documentation/swiftui/dynamicproperty/update()-29hjo)
     at exactly the right point in time to let us do this. Let’s update `Setting` to
     use it:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'With that, external updates (e.g. using `defaults write`) update the view as
     well. With that, our `Setting` is functional and ready to use with SwiftUI. Here’s
     the final version that we created, for reference:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: While it is probably not worth using this code directly in your app (note the
     disclaimer above!), understanding how and why it works the way it does might be
     helpful in debugging your own SwiftUI projects.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL

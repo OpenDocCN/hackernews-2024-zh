@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:33:09'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Postgres Bloat Minimization
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://supabase.com/blog/postgres-bloat](https://supabase.com/blog/postgres-bloat)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: How data of Postgres tables stored[#](#how-data-of-postgres-tables-stored)
+  id: totrans-split-6
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -26,6 +33,7 @@
     method. So every database is a set of 1Gb files (”segments”) and each file is
     logically split into 8Kb pages. Actual table rows are put into any page with enough
     free space.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: When the row data is updated, a new version of a whole row is constructed and
@@ -34,35 +42,42 @@
     transaction is completed we’ll have two or several versions of the same row in
     the table. Cleaning old ones is by an asynchronous process called vacuum (and
     autovacuum).
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Vacuum goes through all table files looking for row versions that were updated
     or deleted by already completed transactions and frees the space on the pages.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Then it updates the table’s free-space-map to reflect that some page has a certain
     amount of free space for row inserts.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: It also updates the visibility map for a page. It marks that all remaining rows
     are visible. So index scans can skip visibility checks, which is not so for the
     modified page before vacuuming. This significantly increases the speed of queries
     using indexes.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: In many cases vacuum runs automatically, cleans everything, and requires little
     care. But in some scenarios, we need to go deeper and tune the autovacuum parameters
     or run the vacuum manually.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Vacuum marks space in a relation file as free to use for future row inserts
     or updates. And it’s not a problem unless we insert many rows, delete many rows
     at once, and then don’t make any inserts or updates. Space remains reserved in
     a file but we don’t use it.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this case, we could free actual filesystem space by running more aggressive
     mode:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: It will rebuild the table from live rows and they will be placed compactly so
@@ -70,152 +85,194 @@
     lock and you won’t be able to modify the table while `VACUUM FULL` does it's work.
     It’s wise to execute that process when the database is least accessed e.g. at
     night.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'An alternative way that doesn’t need full locks is using pg_repack extension:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: pg_repack --table mytable test`
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: pg_repack operates similarly to VACUUM FULL for database `test` and table `mytable`.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'To see database bloat via the [Supabase CLI](https://supabase.com/docs/guides/cli/getting-started)
     run:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: $ supabase inspect db bloat`
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'or:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '`_13'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: -- number of dead rows
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: _13
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: -- number of live rows`
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: If the numbers differ by more than 2x, chances are that the autovacuum didn’t
     start or hasn’t completed for a table. There could be several legitimate reasons
     for this.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can see information for the last successful autovacuum by running:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: $ supabase inspect db vacuum-stats`
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'or:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s turn on autovacuum logging so that all autovacuum events land in the
     log:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: ALTER TABLE mytable SET log_autovacuum_min_duration to 0;`
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two ways we can encounter this situation:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: autovacuum hasn’t started
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: autovacuum did start, (possibly multiple times) but never succeeded
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Autovacuum starts based on several configuration parameters like timeout and
     pattern of access to a particular table. Maybe it’s even legitimate that it hasn’t
     started.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '`autovacuum_vacuum_threshold` - number of rows updated or deleted in a table
     to invoke autovacuum'
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`autovacuum_vacuum_insert_threshold` - number of rows inserted into a table
     to invoke autovacuum'
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`autovacuum_vacuum_scale_factor` - a fraction of table modified by updates
     or deletes to invoke autovacuum'
+  id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`autovacuum_vacuum_insert_scale_factor` - a fraction of table modified by inserts
     to invoke autovacuum'
+  id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'With all these parameters set, the autovacuum will start if the number of rows
     updated or deleted exceeds:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: autovacuum_vacuum_scale_factor * size_of_table + autovacuum_vacuum_threshold`
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'The same logic applies for inserts. Default scale factors are 20% of a table,
     which could be too high for big tables. If we want autovacuum to occur on large
     tables more frequently and take less time each run, decrease the default values
     for these tables e.g.:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: ALTER TABLE mytable SET autovacuum_vacuum_scale_factor to 0.05;`
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '`autovacuum_naptime` (default 1 min) - Each 1-minute autovacuum daemon will
     see the state of all tables in the database and decide whether to start autovacuum
     for a table. Most often this parameter does not need to be modified.'
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'To see global vacuum settings for your cluster let’s run:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: SELECT * from pg_settings where category like 'Autovacuum';`
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'To see current settings for a table (that overrides global settings) run:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: SELECT relname, reloptions FROM pg_class WHERE relname='mytable';`
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: The most common reason autovacuum doesn’t succeed is long-running open transactions
@@ -224,37 +281,48 @@
     as dead. One common cause for this problem is interactive sessions that were left
     open on accident. When tuples can’t be marked as dead, the database begins to
     bloat.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'To see all open transactions run:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: SELECT xact_start, state FROM pg_stat_activity;`
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'To close transactions found to be idling:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: SELECT pg_cancel_backend(pid) FROM pg_stat_activity WHERE xact_start = '<value
     from previous query>';`
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'For automatically closing idle transactions in a session:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: SET idle_in_transaction_session_timeout TO '10000s';`
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: The same parameter could be set per role or database as needed.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Another, less likely, possibility is that autovacuum can’t succeed due to locks.
@@ -264,22 +332,27 @@
     for a long time. A good recipe when this happens is to cancel all the open transactions
     and run VACUUM for a table manually (or wait until the next autovacuum comes for
     it).
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '`_10'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: SELECT pg_cancel_backend(pid) FROM pg_stat_activity WHERE state = 'active';`
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: There could be too few autovacuum workers or each worker could operate slowly
     due to the low setting of `autovacuum_work_mem`.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '`autovacuum_max_workers` (default 3) - Number of parallel workers doing autovacuum
     for tables. When you have enough cores, increasing the default value is worthwhile.
     Note that this will decrease the number of possible backends or regular parallel
     workers running at a time.'
+  id: totrans-split-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -287,6 +360,7 @@
     memory that is used per autovacuum worker. If you see in your logs that autovacuum
     for some tables starts but takes a long time, that time may be decreased by increasing
     this value. This parameter can only be modified in the config file.'
+  id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -294,38 +368,48 @@
     They have several parameters that allow efficient tuning. Some insight into what
     database does can help prevent the cases where autovacuum becomes problematic
     and bloat increases i.e.:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: Long open transactions
+  id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Stuck locks
+  id: totrans-split-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Insufficient resources allocated to vacuuming
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Space not freed on a filesystem level after massive table modifications
+  id: totrans-split-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'For more information about bloat and vacuuming, here are some direct references
     to resources:'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '[Full official documentation for vacuum](https://www.postgresql.org/docs/current/routine-vacuuming.html#VACUUM-BASICS)'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[Per-table vacuum parameters](https://www.postgresql.org/docs/current/sql-createtable.html#SQL-CREATETABLE-STORAGE-PARAMETERS)'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[Global autovacuum parameters (most of them need modifying postgresql.conf,
     but could be overridden by per-table parameters)](https://www.postgresql.org/docs/current/runtime-config-autovacuum.html)'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[Supabase CLI reference](https://supabase.com/docs/reference/cli/global-flags)'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL

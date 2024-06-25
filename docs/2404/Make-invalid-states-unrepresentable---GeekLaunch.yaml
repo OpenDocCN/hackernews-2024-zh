@@ -1,70 +1,89 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:32:23'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Make invalid states unrepresentable - GeekLaunch
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://geeklaunch.io/blog/make-invalid-states-unrepresentable/](https://geeklaunch.io/blog/make-invalid-states-unrepresentable/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Let’s talk about types.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: This post will be applicable to most programming languages, but it is significantly
     easier to apply these concepts when using languages that have more powerful, functionally-inspired,
     or mathematically-flavored type systems^.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: As you probably know, the Rust compiler can spit out some pretty high-quality
     error messages.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: For example, it will recommend changing the mutability of an immutable binding
     when code attempts to mutate it.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: Here, it suggests a missing field’s name from a type constructor.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: 'And here, it suggests changing an invalid identifier (side note: this is possibly
     my favorite `rustc` error message).'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: The Rust compiler is *smart*, and in conjunction with the language’s powerful
     type system, you have a useful tool at your disposal.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Legal vs. valid states
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Types tell the compiler in what manner data can be represented. These might
     be types from the standard library, types from third-party libraries, primitives
     from the language, or even types that you write yourself.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Types delineate the set of *legally representable states* $\mathcal{R}$ ^(in
     your application.)
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Then, there’s your business logic. Business logic leverages data that conform
@@ -73,29 +92,36 @@
     set of valid states $\mathcal{V}$ (i.e. “handleable” states), and critically,
     *the set of valid states is not necessarily equal to the set of representable
     states*.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: $$\mathcal{R} \supseteq \mathcal{V}$$
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: In fact, $\mathcal{R}$ is often *significantly* larger than $\mathcal{V}$, i.e.
     the code can handle far fewer states than are actually representable.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'The difference between these two sets is the set of invalid states: the data
     which a program can represent but does not know how to handle properly. This is
     where bugs occur.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'In order to reduce bugs, we therefore need to minimize this gap, and to do
     that, we can either:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: increase the number of cases handled by the code, or,
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: decrease the number of representable states.
+  id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -103,27 +129,34 @@
     and complex code also has a high tendency to be buggy if you’re not careful. Therefore,
     in this post, we’re covering the latter strategy: decreasing the number of representable
     states.'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Another way to think of this is that we’re moving as many errors as possible
     from runtime to compile-time.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'Example: color'
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Let’s take a look at a simple example:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'Here, we have a function that accepts a color as input. Right now, it takes
     a string. Let’s see how this might pan out for our function:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: Right now, the set of representable states is greater than the set of valid
@@ -131,268 +164,337 @@
     probably some error handling. If the function propagates the error by returning
     a `Result` (Rust) or throwing an exception (Java, others), then the invoking code
     will need to perform some error handling as well.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s instead introduce a simple `Color` data structure with two variants:
     for RGB and RGBA colors, and we’ll update our function to accept a parameter of
     this type instead of a string:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: 'Let’s take a look at the representable states now:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: Turns out, all of the representable states are also valid states! This means
     that our sets $\mathcal{R}$ and $\mathcal{V}$ are equal, and no runtime error
     handling is necessary.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before I continue, let’s take a step back and evaluate how we can benefit from
     coding like this:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: First, it helps us to separate concerns within the codebase. Before you can
     use user input in your business logic, it has to be validated and parsed into
     an internal data structure, and this requirement is enforced by the compiler.
+  id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Then, the guarantees which that parsing and validating step check for persist
     as long as the data exist. It provides deeper and earlier guarantees.
+  id: totrans-split-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: If we restrict the possible inputs to a function, for example, this means that
     the logic in the body of the function has to cover fewer cases.
+  id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: If your types mirror your business logic, changes to those types will cause
     compile-time errors until your code is updated respectively. This is a good thing.
+  id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Finally, well-structured data types are easier to understand and use. This is
     especially important in larger codebases with multiple contributors. Well-typed
     data is harder (though not impossible) to mistakenly use incorrectly.
+  id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Example: modal text editor'
+  id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let’s take a look at a little more complicated example.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Imagine you’re writing a Vim-like text editor. In Vim, you can perform different
     text editing actions, as well as some other functions, like recording macros.
     A macro is a combination of actions that can be saved and executed multiple times.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: In our example editor, we’re going to add the constraint that recorded macros
     are not allowed to save or record macros inside of them.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: (Note that real Vim actually *does* support “recursive” macro operations, but
     this is a motivated example, so just roll with it.)
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we were to implement a type for actions, it might look something like this:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: Actions are represented by an enum. Saving a macro requires us to specify the
     register in which to save the macro, and the list of actions to save. The `Motion`
     and `Register` structs are irrelevant, so I’ve omitted any definition.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: However, this set of types doesn’t enforce the non-recursive constraint. `SaveMacro::actions`
     isn’t *supposed* to be allowed to contain `Action::SaveMacro` or `Action::RunMacro`,
     but these type declarations allow for that.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'No big deal, we can still enforce this, no problem. We’ll just make the fields
     of `SaveMacro` private and provide a constructor that enforces the constraint:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: It’s not too bad. We have a bit of code, a simple, self-explanatory error type,
     and our constructor works great.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: So what’s the issue?
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Well, whenever we want to use the constructor, the caller has to perform some
     error handling.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: …which not the end of the world. Error handling is part of the job description.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: Here I’ve used `unwrap`^(, which will halt the program if it encounters any
     errors.)
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: What happens if we uncomment the commented-out line?
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: At compile time, nothing! Unfortunately, this code produces a runtime error.
     Our validation code only runs at *run*time, so there’s no way for the compiler
     to tell us anything has gone wrong.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is not necessarily a bad thing: runtime errors are normal. Sometimes they
     are unavoidable. However, in this case, we can do better.'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Shrinking the representable state space
+  id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let’s take another look at our type declarations and do a bit of restructuring
     to shrink the set of representable states and make it closer to the set of valid
     states.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: First, a rewrite of our `Action` and `SaveMacro` types.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: You’ll notice I’ve extracted the macro-legal actions out into their own enum.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: Also note that in this version, there’s no constructor, no type for constructor
     errors, and the fields of `SaveMacro` can be public.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Here’s what it looks like to construct a `SaveMacro` action that does the same
     thing as the example for the previous version.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: However, this time, if we uncomment the commented-out line, we get an error
     at compile-time!
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: Perfect! This is exactly what we wanted.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: We defined our type system in a way that more closely mirrored our business
     logic, and in return, the Rust compiler was able to automatically validate more
     of our code at compile-time.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: Compare this to the previous version, where we had to write the validation code
     ourselves, and even then we only got the error at runtime.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: State machines and state transitions
+  id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let’s look at one more example by implementing a state machine. We will leverage
     the power of the type system to enforce valid state transitions at compile time.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'We’ll use the simple example of a VPN, which has three states: `Disconnected`,
     `Connecting`, and `Connected`, as well as four state transitions:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '`Disconnected` → `Connecting`'
+  id: totrans-split-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Connecting` → `Connected` (on connection success)'
+  id: totrans-split-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Connecting` → `Disconnected` (on connection failure)'
+  id: totrans-split-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Connected` → `Disconnected`'
+  id: totrans-split-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Here’s one way to model the data structures:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: Note that instead of putting the different states in an enum, we are parameterizing
     the `Vpn` struct with other “`Vpn` state” structs. In the future, all of the state
     structs might implement a common trait, but this is good enough for now.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Since the state field is private in the struct, we can easily force the initial
     state of all `Vpn`s to be `Disconnected` by only implementing a `new` function
     on that type.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-89
   prefs: []
   type: TYPE_PRE
 - en: From here, it’s a simple matter to implement each state transition.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-91
   prefs: []
   type: TYPE_PRE
 - en: 'However, the `Connecting` state has two possibilities: it can transition to
     `Connected` on success, or `Disconnected` on failure.'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: We can model this with a `TryFrom` implementation.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-94
   prefs: []
   type: TYPE_PRE
 - en: '* * *'
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: I do not hope to convince you that your set of types is only good if it cannot
     represent invalid states, i.e. $\mathcal{R} = \mathcal{V}$. However, I do hope
     to demonstrate that putting a little more thought into the design of your data
     structures *could* help you to avoid *more* bugs *earlier* in development.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: 'I would be remiss if I failed to mention the body of work preceding me on this
     topic:'
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: I’m a software engineer for [NEAR Protocol](https://near.org/) and a graduate
     student at the [Tokyo Institute of Technology](https://www.titech.ac.jp/).
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: Connect with me on [Twitter](https://twitter.com/sudo_build) and [Mastodon](https://infosec.exchange/@hatchet).
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL

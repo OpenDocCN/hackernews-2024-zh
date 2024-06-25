@@ -1,1379 +1,1767 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:02:36'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Git by example: Interactive guide'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://antonz.org/git-by-example/](https://antonz.org/git-by-example/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Git by example: Interactive guide'
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Git is *the* distributed version control system used in software development
     today. It's very powerful, but also known for its not-so-obvious syntax.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: I got tired of googling the same Git commands over and over again. So I created
     an interactive step-by-step guide to Git operations, from basic to advanced. You
     can read it from start to finish to (hopefully) learn more about Git, or jump
     to a specific use case that interests you.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Feel free to experiment with the examples by changing the commands and clicking
     *Run*.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[Concepts](#concepts) • [Basics](#basics) • [Branch & merge](#branch-and-merge)
     • [Local & remote](#local-and-remote) • [Undo](#undo) • [Advanced](#advanced-stuff)
     • [Final thoughts](#final-thoughts)'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'This guide is also available in other formats:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Concepts
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This is the only piece of theory in the guide. I'll keep it short and simplified
     to the π == 3 level. Please don't judge me if you're a Git master.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Working tree, staging area, repository
+  id: totrans-split-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: A *working tree* is the slice of the project at any given moment (usually it's
     the current moment). When you add or edit code, you change the working tree.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: A *staging area* is where you stage the changes from the working tree before
     making them permanent.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: A *repo* (repository) is the collection of permanent changes (*commits*) made
     throughout the history of the project. Typically, there is a single *remote* repo
     (managed by GitHub/GitLab/etc) and many *local* repos — one for each developer
     involved in a project.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: When you make a change in the staging area permanent, it is removed from the
     staging area and *committed* to the local repo. A commit is the permanent record
     of that change. The repo contains all the commits that have been made.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: When you *checkout* a specific commit, the working tree is updated to reflect
     the project state at the time of that commit.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Local and remote repos are frequently synchronized so that all repos contain
     all commits from all developers.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Branch, tag, HEAD
+  id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: A *branch* is an alternate version of the project reality. Typically, there
     is a main branch, and separate branches for features under development. When work
     on a feature branch is complete, it is merged into the main branch (or discarded).
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: A *tag* is a named state of the project. Typically, tags are created on the
     main branch for important milestones such as releases.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: The currently checked-out commit (usually the latest commit in a branch) is
     referenced as *HEAD*.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Now that the boring stuff is out of the way, let's get to the recipes!
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Basics
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let's start with basic Git operations on a local repo.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[init repo](#init-repo) • [add file](#add-file) • [edit file](#edit-file) •
     [rename file](#rename-file) • [delete file](#delete-file) • [show status](#show-current-status)
     • [show log](#show-commit-log) • [show commit](#show-specific-commit) • [search](#search-repo)'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Init repo
+  id: totrans-split-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Create an empty repo:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="init-1" sandbox="shell" editor="basic" template="init.sh"
     output="">[PRE2]
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'Set user name and email for the repo (they are required):'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="init-2" sandbox="shell" editor="basic" template="init.sh"
     depends-on="init-1" output-tail="" output="">Use the `--global` flag to set the
     name and email at the OS user level instead of the repo level.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show user and repo configs:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="init-3" sandbox="shell" editor="basic" template="init.sh"
     depends-on="init-2" output-tail="" output="">[PRE5]
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Add file
+  id: totrans-split-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Create a file and add it to the staging area:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="add-1" sandbox="shell" editor="basic" template="add.sh"
     output="">View changes in the staging area:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="add-2" sandbox="shell" editor="basic" template="add.sh"
     depends-on="add-1" output-tail="" output="">[PRE7]
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'Commit to the local repo:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="add-3" sandbox="shell" editor="basic" template="add.sh"
     depends-on="add-1" output-tail="" output="">[PRE9]
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Edit file
+  id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Edit the previously committed file:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="edit-1" sandbox="shell" editor="basic" template="edit.sh"
     output="">View local changes:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="edit-2" sandbox="shell" editor="basic" template="edit.sh"
     depends-on="edit-1" output-tail="" output="">[PRE11]
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'Add modified files and commit in one command:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="edit-3" sandbox="shell" editor="basic" template="edit.sh"
     depends-on="edit-1" output-tail="" output="">[PRE13]
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Note that `-a` does not add new files, only changes to the already committed
     files.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Rename file
+  id: totrans-split-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Rename the previously committed file:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="mv-1" sandbox="shell" editor="basic" template="mv.sh" output="">The
     change is already in the staging area, so `git diff` won''t show it. Use `--cached`:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="mv-2" sandbox="shell" editor="basic" template="mv.sh" depends-on="mv-1"
     output-tail="" output="">[PRE15]
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'Commit the change:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="mv-3" sandbox="shell" editor="basic" template="mv.sh" depends-on="mv-1"
     output-tail="" output="">[PRE17]
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Delete file
+  id: totrans-split-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Delete the previously committed file:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="rm-1" sandbox="shell" editor="basic" template="rm.sh" output="">The
     change is already in the staging area, so `git diff` won''t show it. Use `--cached`:'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="rm-2" sandbox="shell" editor="basic" template="rm.sh" depends-on="rm-1"
     output-tail="" output="">[PRE18]
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'Commit the change:'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="rm-3" sandbox="shell" editor="basic" template="rm.sh" depends-on="rm-1"
     output-tail="" output="">[PRE20]
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: Show current status
+  id: totrans-split-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Edit the previously committed file and add the changes to the staging area:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="status-1" sandbox="shell" editor="basic" template="status.sh"
     output="">Create a new file:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="status-2" sandbox="shell" editor="basic" template="status.sh"
     depends-on="status-1" output-tail="" output="">Show the working tree status:'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="status-3" sandbox="shell" editor="basic" template="status.sh"
     depends-on="status-2" output-tail="" output="">[PRE23]
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: Note that `message.txt` is in the staging area, while `praise.txt` is not tracked.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Show commit log
+  id: totrans-split-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Show commits:'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE24]
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show only the commit message and the short hash:'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE25]
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show commits as an ASCII graph:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE26]
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show compact ASCII graph:'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet sandbox="shell" editor="basic" template="log.sh" output="">[PRE28]
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: Show specific commit
+  id: totrans-split-90
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Show the last commit contents:'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="show.sh" output="">[PRE29]
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show the second-to-last commit:'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="show.sh" output="">[PRE30]
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Use `HEAD~n` to show the nth-before-last commit or use the specific commit hash
     instead of `HEAD~n`.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: Search repo
+  id: totrans-split-96
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'There are 3 commits, each adding a new line to `message.txt`:'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE31]
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: 'The current `message.txt` state:'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE32]
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'Search in working tree (current state):'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE33]
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: 'Search the project as of the second-to-last commit:'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="grep.sh" output="">[PRE34]
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: You can use the specific commit hash instead of `HEAD~n`.
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: Branch and merge
+  id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let's dive into the wondrous world of merging.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[branch](#branch) • [merge](#merge) • [rebase](#rebase) • [squash](#squash)
     • [cherry-pick](#cherry-pick)'
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Branch
+  id: totrans-split-109
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Show branches (there is only `main` now):'
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="branch-1" sandbox="shell" editor="basic" template="branch.sh"
     output="">Create and switch to a new branch:'
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-split-112
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="branch-2" sandbox="shell" editor="basic" template="branch.sh"
     output="">[PRE36]
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show branches (the current one is `ohmypy`):'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="branch-3" sandbox="shell" editor="basic" template="branch.sh"
     depends-on="branch-2" output-tail="" output="">Add and commit a file:'
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-split-116
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="branch-4" sandbox="shell" editor="basic" template="branch.sh"
     depends-on="branch-2" output-tail="" output="">[PRE38]
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show only commits from the `ohmypy` branch:'
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-split-119
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="branch-5" sandbox="shell" editor="basic" template="branch.sh"
     depends-on="branch-4" output-tail="" output="">### Merge
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show commits from all branches (two commits in `main`, one in `ohmypy`):'
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-split-122
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="merge-1" sandbox="shell" editor="basic" template="merge.sh"
     output="">[PRE41]
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: 'We are now on the `main` branch, let''s merge the `ohmypy` branch back into
     main:'
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="merge-2" sandbox="shell" editor="basic" template="merge.sh"
     output="">[PRE42]
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are no conflicts, so git commits automatically. Show the new commit history:'
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE43]'
+  id: totrans-split-127
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="merge-3" sandbox="shell" editor="basic" template="merge.sh"
     depends-on="merge-2" output-tail="" output="">[PRE44]
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: Rebase
+  id: totrans-split-129
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Show commits from all branches (two commits in `main`, one in `ohmypy`):'
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE45]'
+  id: totrans-split-131
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="rebase-1" sandbox="shell" editor="basic" template="rebase.sh"
     output="">[PRE46]
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: 'We are now on the `main` branch, let''s rebase the `ohmypy` branch back into
     main:'
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="rebase-2" sandbox="shell" editor="basic" template="rebase.sh"
     output="">[PRE47]
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note that the new commit history is linear, unlike when we do a `git merge
     ohmypy`:'
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE48]'
+  id: totrans-split-136
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="rebase-3" sandbox="shell" editor="basic" template="rebase.sh"
     depends-on="rebase-2" output-tail="" output="">[PRE49]
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: Rebasing rewrites history. So it's better not to rebase branches that have already
     been pushed to remote.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: Squash
+  id: totrans-split-139
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Show commits from all branches (two commits in `main`, three in `ohmypy`):'
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE50]'
+  id: totrans-split-141
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="squash-1" sandbox="shell" editor="basic" template="squash.sh"
     output="">[PRE51]
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: If we do `git merge ohmypy` to merge the `ohmypy` branch into `main`, the main
     branch will receive all three commits from ohmypy.
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: Sometimes we prefer to "squash" all the branch commits into a single commit,
     and then merge it into main. Let's do it.
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: 'Switch to the `ohmypy` branch:'
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="squash-2" sandbox="shell" editor="basic" template="squash.sh"
     output="">[PRE52]
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: 'Combine all `ohmypy` changes into a single commit in the working directory:'
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="squash-3" sandbox="shell" editor="basic" template="squash.sh"
     depends-on="squash-2" output-tail="" output="">[PRE53]
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: 'Commit the combined changes:'
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE54]'
+  id: totrans-split-150
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="squash-4" sandbox="shell" editor="basic" template="squash.sh"
     depends-on="squash-3" output-tail="" output="">[PRE55]
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: 'Switch back to the `main` branch:'
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="squash-5" sandbox="shell" editor="basic" template="squash.sh"
     depends-on="squash-4" output-tail="" output="">Merge the `ohmypy` branch into
     `main`:'
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE56]'
+  id: totrans-split-154
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="squash-6" sandbox="shell" editor="basic" template="squash.sh"
     depends-on="squash-5" output-tail="" output="">[PRE57]
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note the single commit in `main` made of three commits in `ohmypy`:'
+  id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE58]'
+  id: totrans-split-157
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="squash-7" sandbox="shell" editor="basic" template="squash.sh"
     depends-on="squash-6" output-tail="" output="">[PRE59]
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: Cherry-pick
+  id: totrans-split-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'I have a typo in `message.txt`:'
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="cherry-1" sandbox="shell" editor="basic" template="cherry.sh"
     output="">And I accidentally fixed it in the `ohmypy` branch instead of `main`:'
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE60]'
+  id: totrans-split-162
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="cherry-2" sandbox="shell" editor="basic" template="cherry.sh"
     output="">[PRE61]
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
 - en: 'I''m not ready to merge the entire `ohmypy` branch, so I will cherry-pick the
     commit:'
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="cherry-3" sandbox="shell" editor="basic" template="cherry.sh"
     output="">[PRE62]
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: '`cherry-pick` applied the comment to the `main` branch:'
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE63]'
+  id: totrans-split-167
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="cherry-4" sandbox="shell" editor="basic" template="cherry.sh"
     depends-on="cherry-3" output-tail="" output="">[PRE64]
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: 'The typo is fixed:'
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="cherry-5" sandbox="shell" editor="basic" template="cherry.sh"
     depends-on="cherry-3" output-tail="" output="">## Local and remote
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: Working with a local repo is fun, but adding a remote repo is even funnier.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: '[push](#push) • [pull](#pull) • [resolve](#resolve-conflict) • [push branch](#push-branch)
     • [fetch branch](#fetch-branch) • [tags](#tags)'
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: Push
+  id: totrans-split-173
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Alice wants to clone our repo and make some changes.
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: 'Clone the remote repo:'
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE65]'
+  id: totrans-split-176
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="push-1" sandbox="shell" editor="basic" template="push.sh"
     output="">[PRE66]
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: Normally you'd see a GitHub/GitLab/etc URL here, but our "remote" repo is on
     the same machine in `/tmp/remote.git`.
+  id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
 - en: 'Set user name and email:'
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE67]'
+  id: totrans-split-180
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="push-2" sandbox="shell" editor="basic" template="push.sh"
     depends-on="push-1" output-tail="" output="">Make some changes and commit:'
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE68]'
+  id: totrans-split-182
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="push-3" sandbox="shell" editor="basic" template="push.sh"
     depends-on="push-2" output-tail="" output="">[PRE69]
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
 - en: 'Push locally committed changes to the remote repo:'
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="push-4" sandbox="shell" editor="basic" template="push.sh"
     depends-on="push-3" output-tail="" output="">### Pull
+  id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
 - en: I want to pull Alice's changes to the local repo.
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
 - en: 'No commits from Alice yet:'
+  id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="pull-1" sandbox="shell" editor="basic" template="pull.sh"
     output="">Pull the latest changes from the remote repo:'
+  id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="pull-2" sandbox="shell" editor="basic" template="pull.sh"
     output="">[PRE70]
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
 - en: 'The local repo now contains commits from Alice:'
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="pull-3" sandbox="shell" editor="basic" template="pull.sh"
     depends-on="pull-2" output-tail="" output="">[PRE71]
+  id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
 - en: Resolve conflict
+  id: totrans-split-192
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I have a local commit (not yet pushed to the remote) that conflicts with Alice's
     changes (already pushed to the remote), so I need to resolve it.
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
 - en: 'Pull the changes from the remote repo:'
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="conflict-1" sandbox="shell" editor="basic" template="conflict.sh"
     output="">[PRE72]
+  id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
 - en: 'There is a conflict in `message.txt`! Let''s show it:'
+  id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="conflict-2" sandbox="shell" editor="basic" template="conflict.sh"
     depends-on="conflict-1" output-tail="" output="">[PRE73]
+  id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
 - en: 'I like Alice''s version better, so let''s choose it:'
+  id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE74]'
+  id: totrans-split-199
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="conflict-3" sandbox="shell" editor="basic" template="conflict.sh"
     depends-on="conflict-1" output-tail="" output="">Add the resolved file to the
     staging area and complete the merge:'
+  id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE75]'
+  id: totrans-split-201
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="conflict-4" sandbox="shell" editor="basic" template="conflict.sh"
     depends-on="conflict-3" output-tail="" output="">[PRE76]
+  id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
 - en: Push branch
+  id: totrans-split-203
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Create the local `ohmypy` branch:'
+  id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE77]'
+  id: totrans-split-205
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="push-branch-1" sandbox="shell" editor="basic" template="push-branch.sh"
     output="">[PRE78]
+  id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
 - en: 'Add and commit a file:'
+  id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE79]'
+  id: totrans-split-208
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="push-branch-2" sandbox="shell" editor="basic" template="push-branch.sh"
     depends-on="push-branch-1" output-tail="" output="">[PRE80]
+  id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
 - en: 'Push the local branch to remote:'
+  id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE81]'
+  id: totrans-split-211
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="push-branch-3" sandbox="shell" editor="basic" template="push-branch.sh"
     depends-on="push-branch-2" output-tail="" output="">[PRE82]
+  id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show both local and remote branches:'
+  id: totrans-split-213
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="push-branch-4" sandbox="shell" editor="basic" template="push-branch.sh"
     depends-on="push-branch-3" output-tail="" output="">[PRE83]
+  id: totrans-split-214
   prefs: []
   type: TYPE_NORMAL
 - en: Fetch branch
+  id: totrans-split-215
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Fetch remote branches:'
+  id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="fetch-1" sandbox="shell" editor="basic" template="fetch.sh"
     output="">Remote has the `ohmypy` branch, but it''s not checked out locally:'
+  id: totrans-split-217
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="fetch-2" sandbox="shell" editor="basic" template="fetch.sh"
     depends-on="fetch-1" output-tail="" output="">Checkout the `ohmypy` branch:'
+  id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE84]'
+  id: totrans-split-219
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="fetch-3" sandbox="shell" editor="basic" template="fetch.sh"
     depends-on="fetch-1" output-tail="" output="">[PRE85]
+  id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show branches:'
+  id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="fetch-4" sandbox="shell" editor="basic" template="fetch.sh"
     depends-on="fetch-3" output-tail="" output="">Create a tag for the latest commit:'
+  id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="tag-1" sandbox="shell" editor="basic" template="tag.sh"
     output="">Create a tag for the nth-before-last commit:'
+  id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE86]'
+  id: totrans-split-224
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="tag-2" sandbox="shell" editor="basic" template="tag.sh"
     depends-on="tag-1" output-tail="" output="">You can use the commit hash instead
     of `HEAD~n`.
+  id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show tags:'
+  id: totrans-split-226
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="tag-3" sandbox="shell" editor="basic" template="tag.sh"
     depends-on="tag-2" output-tail="" output="">Show compact log with tags:'
+  id: totrans-split-227
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE87]'
+  id: totrans-split-228
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="tag-4" sandbox="shell" editor="basic" template="tag.sh"
     depends-on="tag-2" output-tail="" output="">[PRE88]
+  id: totrans-split-229
   prefs: []
   type: TYPE_NORMAL
 - en: 'Delete tag:'
+  id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="tag-5" sandbox="shell" editor="basic" template="tag.sh"
     depends-on="tag-2" output-tail="" output="">[PRE89]
+  id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
 - en: 'Push tags to the remote:'
+  id: totrans-split-232
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="tag-6" sandbox="shell" editor="basic" template="tag.sh"
     depends-on="tag-5" output-tail="" output="">## Undo
+  id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
 - en: '"Damn, how do I undo what I just did?" — is the eternal Git question. Let''s
     answer it once and for all.'
+  id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
 - en: '[amend commit](#amend-commit) • [undo uncommitted](#undo-uncommitted-changes)
     • [undo local](#undo-local-commit) • [undo remote](#undo-remote-commit) • [rewind
     history](#rewind-history) • [stash changes](#stash-changes)'
+  id: totrans-split-235
   prefs: []
   type: TYPE_NORMAL
 - en: Amend commit
+  id: totrans-split-236
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Edit a file and commit:'
+  id: totrans-split-237
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE90]'
+  id: totrans-split-238
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="amend-1" sandbox="shell" editor="basic" template="amend.sh"
     output="">[PRE91]
+  id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show commits:'
+  id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="amend-2" sandbox="shell" editor="basic" template="amend.sh"
     depends-on="amend-1" output-tail="" output="">[PRE92]
+  id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
 - en: 'I made a typo, so I want to change the commit message:'
+  id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE93]'
+  id: totrans-split-243
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="amend-3" sandbox="shell" editor="basic" template="amend.sh"
     depends-on="amend-1" output-tail="" output="">[PRE94]
+  id: totrans-split-244
   prefs: []
   type: TYPE_NORMAL
 - en: 'Git has replaced the last commit:'
+  id: totrans-split-245
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="amend-4" sandbox="shell" editor="basic" template="amend.sh"
     depends-on="amend-3" output-tail="" output="">[PRE95]
+  id: totrans-split-246
   prefs: []
   type: TYPE_NORMAL
 - en: To change the commit message for one of the last `n` commits, use `git rebase
     -i HEAD~n` (interactive) and follow the instructions on the screen.
+  id: totrans-split-247
   prefs: []
   type: TYPE_NORMAL
 - en: Amend only works if the commit has not yet been pushed to the remote repo!
+  id: totrans-split-248
   prefs: []
   type: TYPE_NORMAL
 - en: Undo uncommitted changes
+  id: totrans-split-249
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Edit the previously committed file and add the changes to the staging area:'
+  id: totrans-split-250
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE96]'
+  id: totrans-split-251
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="undo-local-1" sandbox="shell" editor="basic" template="undo-local.sh"
     output="">Show the working tree status:'
+  id: totrans-split-252
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-local-2" sandbox="shell" editor="basic" template="undo-local.sh"
     depends-on="undo-local-1" output-tail="" output="">[PRE97]
+  id: totrans-split-253
   prefs: []
   type: TYPE_NORMAL
 - en: 'Remove the changes from the staging area:'
+  id: totrans-split-254
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE98]'
+  id: totrans-split-255
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="undo-local-3" sandbox="shell" editor="basic" template="undo-local.sh"
     depends-on="undo-local-1" output-tail="" output="">The local file is still modified,
     but it''s not staged for commit:'
+  id: totrans-split-256
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-local-4" sandbox="shell" editor="basic" template="undo-local.sh"
     depends-on="undo-local-3" output-tail="" output="">[PRE99]
+  id: totrans-split-257
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now let''s discard the changes altogether:'
+  id: totrans-split-258
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE100]'
+  id: totrans-split-259
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="undo-local-5" sandbox="shell" editor="basic" template="undo-local.sh"
     depends-on="undo-local-3" output-tail="" output="">Show the file contents:'
+  id: totrans-split-260
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-local-6" sandbox="shell" editor="basic" template="undo-local.sh"
     depends-on="undo-local-5" output-tail="" output="">The changes are gone.
+  id: totrans-split-261
   prefs: []
   type: TYPE_NORMAL
 - en: Undo local commit
+  id: totrans-split-262
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I changed my mind about the last commit and I want to undo it.
+  id: totrans-split-263
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show commits:'
+  id: totrans-split-264
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-commit-1" sandbox="shell" editor="basic" template="undo-commit.sh"
     output="">[PRE101]
+  id: totrans-split-265
   prefs: []
   type: TYPE_NORMAL
 - en: 'Undo the last one:'
+  id: totrans-split-266
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="undo-commit-2" sandbox="shell" editor="basic" template="undo-commit.sh"
     output="">The commit is gone:'
+  id: totrans-split-267
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="undo-commit-3" sandbox="shell" editor="basic" template="undo-commit.sh"
     depends-on="undo-commit-2" output-tail="" output="">But the changes are still
     in the staged area:'
+  id: totrans-split-268
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-commit-4" sandbox="shell" editor="basic" template="undo-commit.sh"
     depends-on="undo-commit-2" output-tail="" output="">[PRE102]
+  id: totrans-split-269
   prefs: []
   type: TYPE_NORMAL
 - en: 'To remove both the commit and the local changes, use `--hard` instead of `--soft`:'
+  id: totrans-split-270
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE103]'
+  id: totrans-split-271
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="undo-commit-5" sandbox="shell" editor="basic" template="undo-commit.sh"
     output="">[PRE104]
+  id: totrans-split-272
   prefs: []
   type: TYPE_NORMAL
 - en: Reset only works if the commit has not yet been pushed to the remote repo!
+  id: totrans-split-273
   prefs: []
   type: TYPE_NORMAL
 - en: Undo remote commit
+  id: totrans-split-274
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I changed my mind about the last commit and I want to undo it, but the commit
     is already pushed to the remote repo.
+  id: totrans-split-275
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show commits:'
+  id: totrans-split-276
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-remote-1" sandbox="shell" editor="basic" template="undo-remote.sh"
     output="">[PRE105]
+  id: totrans-split-277
   prefs: []
   type: TYPE_NORMAL
 - en: 'Undo the last one:'
+  id: totrans-split-278
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE106]'
+  id: totrans-split-279
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="undo-remote-2" sandbox="shell" editor="basic" template="undo-remote.sh"
     output="">[PRE107]
+  id: totrans-split-280
   prefs: []
   type: TYPE_NORMAL
 - en: You can revert to nth-before-last commit by using `HEAD~n` or use the specific
     commit hash instead of `HEAD~n`.
+  id: totrans-split-281
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since the commit has already been pushed, git can''t delete it. Instead it
     creates an "undo" commit:'
+  id: totrans-split-282
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-remote-3" sandbox="shell" editor="basic" template="undo-remote.sh"
     depends-on="undo-remote-2" output-tail="" output="">[PRE108]
+  id: totrans-split-283
   prefs: []
   type: TYPE_NORMAL
 - en: 'Push the "undo" commit to the remote:'
+  id: totrans-split-284
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="undo-remote-4" sandbox="shell" editor="basic" template="undo-remote.sh"
     depends-on="undo-remote-2" output-tail="" output="">### Rewind history
+  id: totrans-split-285
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show commits:'
+  id: totrans-split-286
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE109]'
+  id: totrans-split-287
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="reflog-1" sandbox="shell" editor="basic" template="reflog.sh"
     output="">[PRE110]
+  id: totrans-split-288
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show all repo states in reverse chronological order:'
+  id: totrans-split-289
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="reflog-2" sandbox="shell" editor="basic" template="reflog.sh"
     output="">[PRE111]
+  id: totrans-split-290
   prefs: []
   type: TYPE_NORMAL
 - en: 'Suppose I want to go back to `HEAD@{3}`:'
+  id: totrans-split-291
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE112]'
+  id: totrans-split-292
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="reflog-3" sandbox="shell" editor="basic" template="reflog.sh"
     output="">[PRE113]
+  id: totrans-split-293
   prefs: []
   type: TYPE_NORMAL
 - en: 'This resets the entire repo and the working tree to the moment of `HEAD@{3}`:'
+  id: totrans-split-294
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE114]'
+  id: totrans-split-295
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="reflog-4" sandbox="shell" editor="basic" template="reflog.sh"
     depends-on="reflog-3" output-tail="" output="">[PRE115]
+  id: totrans-split-296
   prefs: []
   type: TYPE_NORMAL
 - en: Stash changes
+  id: totrans-split-297
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Edit the previously committed file:'
+  id: totrans-split-298
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE116]'
+  id: totrans-split-299
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="stash-1" sandbox="shell" editor="basic" template="stash.sh"
     output="">Let's say we need to switch to another branch, but we don't want to
     commit the changes yet.
+  id: totrans-split-300
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stash the local changes (i.e. save them in "drafts"):'
+  id: totrans-split-301
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="stash-2" sandbox="shell" editor="basic" template="stash.sh"
     depends-on="stash-1" output-tail="" output="">[PRE117]
+  id: totrans-split-302
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stash is a stack, so you can push multiple changes onto it:'
+  id: totrans-split-303
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE118]'
+  id: totrans-split-304
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="stash-3" sandbox="shell" editor="basic" template="stash.sh"
     depends-on="stash-2" output-tail="" output="">[PRE119]
+  id: totrans-split-305
   prefs: []
   type: TYPE_NORMAL
 - en: 'Show stash contents:'
+  id: totrans-split-306
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="stash-4" sandbox="shell" editor="basic" template="stash.sh"
     depends-on="stash-3" output-tail="" output="">[PRE120]
+  id: totrans-split-307
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now we can switch to another branch and do something:'
+  id: totrans-split-308
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE121]'
+  id: totrans-split-309
   prefs: []
   type: TYPE_PRE
 - en: 'Switch back to the main branch and re-apply the latest changes from the stash:'
+  id: totrans-split-310
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE122]'
+  id: totrans-split-311
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="stash-5" sandbox="shell" editor="basic" template="stash.sh"
     depends-on="stash-3" output-tail="" output="">[PRE123]
+  id: totrans-split-312
   prefs: []
   type: TYPE_NORMAL
 - en: '`pop` returns changes from the stack in "last in, first out" order.'
+  id: totrans-split-313
   prefs: []
   type: TYPE_NORMAL
 - en: 'Clear the stash:'
+  id: totrans-split-314
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="stash-6" sandbox="shell" editor="basic" template="stash.sh"
     depends-on="stash-5" output-tail="" output="">## Advanced stuff
+  id: totrans-split-315
   prefs: []
   type: TYPE_NORMAL
 - en: While git gurus probably know all about these features, most developers have
     never heard of them. Let's fix that.
+  id: totrans-split-316
   prefs: []
   type: TYPE_NORMAL
 - en: '[log summary](#log-summary) • [worktree](#worktree) • [bisect](#bisect) • [partial
     checkout](#partial-checkout) • [partial clone](#partial-clone)'
+  id: totrans-split-317
   prefs: []
   type: TYPE_NORMAL
 - en: Log summary
+  id: totrans-split-318
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Since the 1.0 release (tag `v1.0`), we have 6 commits from 3 contributors:'
+  id: totrans-split-319
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE124]'
+  id: totrans-split-320
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet sandbox="shell" editor="basic" template="shortlog.sh" output="">[PRE125]
+  id: totrans-split-321
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note the `--pretty` option which customizes the log fields:'
+  id: totrans-split-322
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE126]'
+  id: totrans-split-323
   prefs: []
   type: TYPE_PRE
 - en: 'List the commits grouped by contributors:'
+  id: totrans-split-324
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="shortlog.sh" output="">[PRE127]
+  id: totrans-split-325
   prefs: []
   type: TYPE_NORMAL
 - en: 'A couple of useful options:'
+  id: totrans-split-326
   prefs: []
   type: TYPE_NORMAL
 - en: '`-n` (`--numbered`) sorts the output by descending number of commits per contributor.'
+  id: totrans-split-327
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`-s` (`--summary`) omits commit descriptions and prints only counts.'
+  id: totrans-split-328
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'List contributors along with the number of commits they have authored:'
+  id: totrans-split-329
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet sandbox="shell" editor="basic" template="shortlog.sh" output="">###
     Worktree
+  id: totrans-split-330
   prefs: []
   type: TYPE_NORMAL
 - en: 'I''m in the middle of something important in the `ohmypy` branch:'
+  id: totrans-split-331
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE128]'
+  id: totrans-split-332
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="worktree-1" sandbox="shell" editor="basic" template="worktree.sh"
     output="">[PRE129]
+  id: totrans-split-333
   prefs: []
   type: TYPE_NORMAL
 - en: Suddenly I need to fix an annoying typo in the `main` branch. I can stash the
     local changes with `git stash`, or I can checkout multiple branches at the same
     time with `git worktree`.
+  id: totrans-split-334
   prefs: []
   type: TYPE_NORMAL
 - en: 'Checkout the main branch into `/tmp/hotfix`:'
+  id: totrans-split-335
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE130]'
+  id: totrans-split-336
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="worktree-2" sandbox="shell" editor="basic" template="worktree.sh"
     output="">[PRE131]
+  id: totrans-split-337
   prefs: []
   type: TYPE_NORMAL
 - en: 'Fix the typo and commit:'
+  id: totrans-split-338
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE132]'
+  id: totrans-split-339
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="worktree-3" sandbox="shell" editor="basic" template="worktree.sh"
     depends-on="worktree-2" output-tail="" output="">[PRE133]
+  id: totrans-split-340
   prefs: []
   type: TYPE_NORMAL
 - en: 'Push to remote main:'
+  id: totrans-split-341
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE134]'
+  id: totrans-split-342
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="worktree-4" sandbox="shell" editor="basic" template="worktree.sh"
     depends-on="worktree-3" output-tail="" output="">[PRE135]
+  id: totrans-split-343
   prefs: []
   type: TYPE_NORMAL
 - en: Now I can return to `/tmp/repo` and continue working on the `ohmypy` branch.
+  id: totrans-split-344
   prefs: []
   type: TYPE_NORMAL
 - en: Bisect
+  id: totrans-split-345
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'I have 5 poorly named commits:'
+  id: totrans-split-346
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="bisect-1" sandbox="shell" editor="basic" template="bisect.sh"
     output="">[PRE136]
+  id: totrans-split-347
   prefs: []
   type: TYPE_NORMAL
 - en: 'And a failing test:'
+  id: totrans-split-348
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="bisect-2" sandbox="shell" editor="basic" template="bisect.sh"
     output="">I will use the bisection algorithm to find the commit that introduced
     the bug:'
+  id: totrans-split-349
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="bisect-3" sandbox="shell" editor="basic" template="bisect.sh"
     output="">[PRE137]
+  id: totrans-split-350
   prefs: []
   type: TYPE_NORMAL
 - en: 'The current state is obviously buggy, but I''m pretty sure the first "main.sh"
     commit was good:'
+  id: totrans-split-351
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE138]'
+  id: totrans-split-352
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="bisect-4" sandbox="shell" editor="basic" template="bisect.sh"
     depends-on="bisect-3" output-tail="" output="">[PRE139]
+  id: totrans-split-353
   prefs: []
   type: TYPE_NORMAL
 - en: 'Git has automatically checked out the middle commit. Let''s test it:'
+  id: totrans-split-354
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="bisect-5" sandbox="shell" editor="basic" template="bisect.sh"
     depends-on="bisect-4" output-tail="" output="">The test passes. Mark the commit
     as good:'
+  id: totrans-split-355
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="bisect-6" sandbox="shell" editor="basic" template="bisect.sh"
     depends-on="bisect-5" output-tail="" output="">[PRE140]
+  id: totrans-split-356
   prefs: []
   type: TYPE_NORMAL
 - en: 'Git has automatically checked out the middle commit. Let''s test it:'
+  id: totrans-split-357
   prefs: []
   type: TYPE_NORMAL
 - en: '<codapi-snippet id="bisect-7" sandbox="shell" editor="basic" template="bisect.sh"
     depends-on="bisect-6" output-tail="" output="">The test fails. Show the commit
     details:'
+  id: totrans-split-358
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="bisect-8" sandbox="shell" editor="basic" template="bisect.sh"
     depends-on="bisect-7" output-tail="" output="">[PRE141]
+  id: totrans-split-359
   prefs: []
   type: TYPE_NORMAL
 - en: This is the commit that introduced the bug (subtraction instead of addition)!
+  id: totrans-split-360
   prefs: []
   type: TYPE_NORMAL
 - en: Partial checkout
+  id: totrans-split-361
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'The remote repo looks like this:'
+  id: totrans-split-362
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE142]'
+  id: totrans-split-363
   prefs: []
   type: TYPE_PRE
 - en: We will selectively checkout only some of the directories.
+  id: totrans-split-364
   prefs: []
   type: TYPE_NORMAL
 - en: 'Clone the repo, but do not checkout the working tree:'
+  id: totrans-split-365
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE143]'
+  id: totrans-split-366
   prefs: []
   type: TYPE_PRE
 - en: <codapi-snippet id="sparse-checkout-1" sandbox="shell" editor="basic" template="sparse-checkout.sh"
     output="">[PRE144]
+  id: totrans-split-367
   prefs: []
   type: TYPE_NORMAL
 - en: 'Tell git to checkout only the root and `users` directories:'
+  id: totrans-split-368
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE145]'
+  id: totrans-split-369
   prefs: []
   type: TYPE_PRE
 - en: '<codapi-snippet id="sparse-checkout-2" sandbox="shell" editor="basic" template="sparse-checkout.sh"
     depends-on="sparse-checkout-1" output-tail="" output="">Checkout the directories:'
+  id: totrans-split-370
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="sparse-checkout-3" sandbox="shell" editor="basic" template="sparse-checkout.sh"
     depends-on="sparse-checkout-2" output-tail="" output="">[PRE146]
+  id: totrans-split-371
   prefs: []
   type: TYPE_NORMAL
 - en: 'Only the root and users directories are checked out:'
+  id: totrans-split-372
   prefs: []
   type: TYPE_NORMAL
 - en: <codapi-snippet id="sparse-checkout-4" sandbox="shell" editor="basic" template="sparse-checkout.sh"
     depends-on="sparse-checkout-3" output-tail="" output="">[PRE147]
+  id: totrans-split-373
   prefs: []
   type: TYPE_NORMAL
 - en: The `products` directory was not checked out.
+  id: totrans-split-374
   prefs: []
   type: TYPE_NORMAL
 - en: Partial clone
+  id: totrans-split-375
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The partial checkout approach we tried earlier still clones the entire repo.
     So if the repo itself is huge (which is often the case if it has a long history
     or large binary files), the clone step can be slow and traffic-intensive.
+  id: totrans-split-376
   prefs: []
   type: TYPE_NORMAL
 - en: 'To reduce the amount of data downloaded during cloning, use *partial clone*
     with one of the following commands:'
+  id: totrans-split-377
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE148]'
+  id: totrans-split-378
   prefs: []
   type: TYPE_PRE
 - en: In both cases, git will lazily fetch the missing data later when needed.
+  id: totrans-split-379
   prefs: []
   type: TYPE_NORMAL
 - en: Note that for this to work, the remote server should support partial cloning
     (GitHub does).
+  id: totrans-split-380
   prefs: []
   type: TYPE_NORMAL
 - en: Final thoughts
+  id: totrans-split-381
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We've covered important Git operations, from basic editing to branching and
     merging, remote syncing, undoing changes, and performing some moderate magic.
+  id: totrans-split-382
   prefs: []
   type: TYPE_NORMAL
 - en: To learn more about Git, check out the [reference manual](https://git-scm.com/docs)
     and the [Pro Git](https://git-scm.com/book) book by Scott Chacon and Ben Straub.
+  id: totrans-split-383
   prefs: []
   type: TYPE_NORMAL
 - en: And may Git be with you!
+  id: totrans-split-384
   prefs: []
   type: TYPE_NORMAL
 - en: ──
+  id: totrans-split-385
   prefs: []
   type: TYPE_NORMAL
 - en: P.S. Interactive examples in this post are powered by [**codapi**](https://codapi.org/)
     — an open source tool I'm building. Use it to embed live code snippets into your
     product docs, online course or blog.
+  id: totrans-split-386
   prefs: []
   type: TYPE_NORMAL
 - en: '*[* **Subscribe***](/subscribe/) *to keep up with new posts.**</codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet></codapi-snippet>'
+  id: totrans-split-387
   prefs: []
   type: TYPE_NORMAL

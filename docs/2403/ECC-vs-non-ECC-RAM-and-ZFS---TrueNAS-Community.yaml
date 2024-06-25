@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:00:26'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: ECC vs non-ECC RAM and ZFS | TrueNAS Community
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.truenas.com/community/threads/ecc-vs-non-ecc-ram-and-zfs.15449/](https://www.truenas.com/community/threads/ecc-vs-non-ecc-ram-and-zfs.15449/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -28,6 +34,7 @@
     they know how important it is to not have a few bits that get stuck from trashing
     your entire array. The hardware RAID controller(just like ZFS) absolutely NEEDS
     to trust that the data in RAM is correct.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: For those that don't want to read, just understand that ECC is one of the legs
@@ -35,9 +42,11 @@
     old hardware that uses non-ECC RAM. Just buy ECC RAM and trust ZFS. Bad RAM is
     like your computer having dementia. And just like those old folks homes, you can't
     go ask them what they forgot. They don't remember, and neither will your computer.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s some assumptions I''ve made and some explanation for them:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. We're going to deal with a system that has a single bit error. A memory
@@ -45,13 +54,16 @@
     more widespread corruption. For my examples I'm going to provide a hypothetical
     8 bits of RAM. Bit number 2 will be stuck at "1". I will properly mark it with
     an
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '**underline and bold**'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: for bits that end up corrupted. Later I will move this location, but I will
     discuss that with you at that time.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Most servers have very little RAM used by the system processes and large
@@ -61,43 +73,55 @@
     likely going to reset it and keep going until you realize after multiple crashes
     in a short period of time that something else is wrong. At that point, you're
     going to already be in "oh crap" territory.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. I'm going to ignore any potential corruption of the file system for my examples.
     Clearly corrupting the file system itself is VERY serious and can be fatal for
     your data. I will cover this topic at the very end of this discussion.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 4\. No additional corruption from any other subsystem or data path will occur.
     Obviously any additional corruption won't make things any easier.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 5\. What I am about to explain is a limitation of ZFS. This is
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: not
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: FreeNAS specific. It is ZFS specific.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now on to some examples:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '**What happens when non-ECC RAM goes bad in a system for file systems that
     don''t do their own parity and checksumming?**'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: So pretend a file is loaded into RAM and then saved to an NTFS/ext4/UFS/whatever-file-system-you-want-that-doesn't-do-its-own-parity/checksumming.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: The file is 8bits long. 00110011.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Since our file got stored in RAM, its been corrupted. Now its 0
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 110011\. Then that is forwarded to the disk subsystems and subsequently stored
@@ -106,112 +130,142 @@
     array, the file will be saved wrong. No big deal except for that file. It might
     make the file unable to be opened in your favorite office suite or it might cause
     a momentary corruption of the image on your streaming video.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '**What happens when non-ECC RAM goes bad in a ZFS system?**'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: So pretend that our same 8bit file is stored in RAM wrong.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Same file as above and same length: 00110011.'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: The file is loaded into RAM, and since its going to be stored on your ultra-safe
     zpool it goes to ZFS to be paritied and checksummed. So your RAIDZ2 zpool gets
     the file. But, here's the tricky part. The file is corrupted now thanks to your
     bad RAM location.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: ZFS gets 0
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 110011 and is told to safely store that in the pool. So it calculates parity
     data and checksums for the corrupted data. Then, this data is saved to the disk.
     Ok, not much worse than above since the file is trashed. But your parity and checksum
     isn't going to help you since those were made
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '*after*'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: the data was corrupted.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'But, now things get messy. What happens when you read that data back? Let''s
     pretend that the bad RAM location is moved relative to the file being loaded into
     RAM. Its off by 3 bits and move it to position 5\. So now I read back the data:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Read from the disk: 0'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '110011.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: But what gets stored in RAM? 0
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '11'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '011.'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Ok, no problem. ZFS will check against its parity. Oops, the parity failed since
     we have a
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '*new*'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: corrupted bit. Remember, the checksum data was calculated after the corruption
     from the first memory error occurred. So now the parity data is used to "repair"
     the bad data. So the data is "fixed" in RAM. Now it's supposed to be corrected
     to 01110011, right? But, since we have that bad 5th position, its
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '*still*'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: bad! Its corrected for potentially one clock cycle, but thanks to our bad RAM
     location its corrupted immediately again. So we really didn't "fix" anything.
     0
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '11'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '**1**'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 011 is still in RAM. Now, since ZFS has detected corrupted data from a disk,
     its going to write the fix to the drive. Except its actually corrupting it even
     more because the repair didn't repair anything. So as you can see, things will
     only get worse as time goes on.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Now let's think about your backups.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: If you use rsync, then rsync is going to backup the file in its corrupted form.
     But what if the file was correct and later corrupted? Well, thanks to rsync the
     backup itself is actually corrupted.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: What about ZFS replication? Surely that's better, right? Well sort of. Thanks
@@ -219,47 +273,58 @@
     your backup server. And lets not forget the added risk of corruption during replication
     because when the ZFS checksums are being calculated to be piped over SSH those
     might be corrupted too!
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: But we're really smart. We also do religious zpool scrubs. Well, guess what
     happens when you scrub the pool. As that stuck memory location is continually
     read and written to, zfs will attempt to "fix" corrupted data that it thinks is
     from your hard disk and write that data back. But instead it is actually reading
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '*good*'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: data from your drive, corrupting it in RAM, fixing it in RAM(which doesn't fix
     it as I've shown above), and then writing the "fixed" data to your disk. This
     means the data in entire pool is being trashed while trying to do a scrub.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'So in conclusion:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. All that stuff about ZFS self-healing goes down the drain if the system
     isn't using ECC RAM.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Backups will quite possibly be trashed because of bad RAM. Based on forum
     users over the last 18 months, you've got almost no chance your backups will be
     safe by the time you realize your RAM is bad.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. Scrubs are the best thing you can do for ZFS, but they can also be your
     worst enemy if you use bad RAM.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 4\. The parity data, checksums, and actual data need to all match. If not, then
     repairs start taking place. And what are you to do a disk needs replaced and parity
     data and actual data don't match because of corruption? The data is lost.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'To protect your data from loss with ZFS, here''s what you need to know:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. Use ECC RAM. It's a fundamental truth.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. ZFS uses parity, checksums, mirrors, and the copies parameter to protect
@@ -267,9 +332,11 @@
     parity/mirrors/copies corrects those errors. As long as you have enough parity/mirrors/copies
     to fix any error that ever occurs, your data is 100% safe(again, assuming you
     are using ECC RAM). So running a RAIDZ1 is
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '**very**'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: dangerous because when one disk fails you have no more protection. During the
@@ -278,19 +345,24 @@
     corrected. Let's hope that the error isn't in your file system where corruption
     could be fatal for your entire pool. In fact, about 90% of users that lose their
     data had a RAIDZ1 and suffered 2 disk failures.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. If you run out of parity/mirrors and your pool is unmountable, you are in
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: deep
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: trouble. There are no recovery tools for ZFS, and quotes from data recovery
     specialists
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: start
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: in the 5 digit range. All those tools people normally use for recovery of desktop
@@ -299,19 +371,23 @@
     like fragments to a file. Clearly it would be cheaper(and more reliable) to just
     make a backup, even if you have to build a second FreeNAS server. Let's not forget
     that if ZFS is corrupted
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '*just*'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: badly enough to be unmountable because of bad RAM, even if your files are mostly
     safe, you'll have to consider that 5 digit price tag too.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 4\. Usually, when RAM goes bad you will normally lose more than a single memory
     location. The corruption is usually a breakdown of the insulation between locations,
     so adjacent locations start getting trashed too. This only creates more multi-bit
     errors.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: 5\. ZFS is designed to repair corruption and isn't designed to handle corruption
@@ -319,64 +395,83 @@
     at the point that ZFS' file structure is corrupted and you can't repair it because
     you have no redundancy, you are probably going to lose the pool(and the system
     will probably kernel panic).
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: So now that you're convinced that ECC really is
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '*that*'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: important, you can build a system with ECC for relatively cheap...
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'Motherboard:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[Supermicro X9SCM-F ($160ish)](http://www.amazon.com/dp/SUPERMICRO/?tag=ozlp-20)'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: 'CPU:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[Pentium G2020 ($60ish)](http://www.amazon.com/dp/B00D5ZZZ70/?tag=ozlp-20)'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'RAM:'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[KVR16E11K4/32 32GB of DDR3-ECC-1600Mhz RAM($350ish)](http://www.amazon.com/dp/B008LMO1DG/?tag=ozlp-20)'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: So total cost is about
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '**$570**'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: . Less if you don't want to go to a full 32GB of RAM. If you went with a 2x8GB
     RAM stick kit you can get the total price down about
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: '**$370**'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: . The G2020 is a great CPU for FreeNAS.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: Of course, if you plan to use plugins like Plex that can be CPU intensive for
     transcoding you will need a little more power. Be wary of what CPUs do and don't
     support ECC. All Xeons do, and some i3s do. Check with Intels specification sheets
     to be sure
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: before
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: you spend the money. I use an
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '[E3-1230v2](http://www.amazon.com/dp/B0085MQUTU/?tag=ozlp-20)'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: (about $250) and it is AMAZING! No matter what I throw at it I can't get more
@@ -388,6 +483,7 @@
     of AMD. I do know that trying to go with "Green" CPUs for AMDs has disappointed
     many people here. "Green" CPUs perform slower than other CPUs, so be careful and
     don't buy a CPU that can't perform fast enough to make you happy.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: The motherboard I listed above is ideal too. It has dual Intel Gb LAN, IPMI(never
@@ -398,12 +494,15 @@
     you can mount CDs without a CD-ROM on the computer, remotely! How cool is that!?
     Add in the ability to remotely power on and off the server with IPMI and you have
     something for that server you want to shove in the corner and forget about.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: ECC RAM can only detect
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: and
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: correct single bit errors. When you have multi-bit errors(if my experience is
@@ -414,9 +513,11 @@
     get corrupted because of bad RAM. Remember, the whole goal is to protect your
     zpool and a system halt is the best bet once you've realized things are going
     badly in RAM.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s another way to look at it:'
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'Example 1: Running a server with its native file system(probably ext3, NTFS,
@@ -427,60 +528,75 @@
     But you''ll be able to take that disk and put it in another machine and get most(if
     not all) of your data back. Even a worst case scenario there''s plenty of tools
     like'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[Ontrack EasyRecovery DIY](http://www.krollontrack.com/data-recovery/recovery-software/)'
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: Software that will work for NTFS and you can expect to have a reasonable chance
     of getting most(if not all) of your data back. You can also call those data recovery
     professionals and for 4-figures they might get your data back from a failed disk.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: 'Example 2: Server with ZFS and non-ECC RAM. Now you have more ways to lose
     your data:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. If the drive completely dies(obviously).
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Based on prior users that have had non-ECC RAM fail you'll reboot to find
     your pool unmountable. This means your data is gone. There is no data recovery
     tools out there for ZFS. NONE. It's ALL gone for good.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: '3\. What about the fact that you used those non-server grade parts? Guess what,
     they can also trash your pool and make it unmountable. The outcome is exactly
     the same as #2\. You just lost'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: all
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: of your data because the pool won't mount.
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: The problem is that your native file systems have tools like chkdsk and fsck
     to fix file system errors. You also have plenty of options for software recovery
     with utilities like
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: '[Ontrack EasyRecovery DIY](http://www.krollontrack.com/data-recovery/recovery-software/)'
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: Software.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: But, no matter how much searching you do, there is no ZFS recovery tools out
     there. You are welcome to call companies like Ontrack for data recovery. I know
     one person that did, and they spent $3k just to find out
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: '*if*'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: their data was recoverable. Then they spent another $15k to get just 200GB of
     data back.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: 'So tell me which example you''d rather fall into? #1 where you have fewer opportunities
@@ -488,39 +604,49 @@
     more opportunities to lose everything and have zero recovery options to boot?
     I''d rather be in scenario 1 than scenario 2\. I can''t imagine you''d want scenario
     2 either.'
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: So when you read about how using ZFS is an "all or none" I'm not just making
     this up. I'm really serious as it really does work that way. ZFS either works
     great or doesn't work at all. That
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: really
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: truthfully how it works
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: Don't like it, be one of the few that "stick it to the man" with non-recommended
     components. It's your win(or loss). But you will get absolutely no sympathy when
     you show up and your pool doesn't mount like many people that think they can build
     a cheap system and get away with it.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '**PLEASE TAKE THIS AS A WARNING TO NOT USE NON-ECC RAM WITH ZFS.** [Cool presentation
     from Intel about RAM errors and non-ECC vs ECC.](http://cache-www.intel.com/cd/00/00/46/78/467819_467819.pdf)'
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: 'Someone else that confirms this:'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '[https://pthree.org/2013/12/10/zfs-administration-appendix-c-why-you-should-use-ecc-ram/](https://pthree.org/2013/12/10/zfs-administration-appendix-c-why-you-should-use-ecc-ram/)'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: 'List of threads where people unfortunately experienced data loss with bad non-ECC
     RAM. (Updated when I can remember to):'
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: 'List of people that have posted info that asserts the fact that ECC saved them:'
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL

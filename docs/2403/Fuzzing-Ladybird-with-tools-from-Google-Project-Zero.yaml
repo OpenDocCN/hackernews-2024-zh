@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:01:01'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Fuzzing Ladybird with tools from Google Project Zero
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from](https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,160 +30,202 @@
     [🍅](https://github.com/googleprojectzero/domato)”, a DOM fuzzer from [Google Project
     Zero](https://googleprojectzero.blogspot.com/), to stress test Ladybird and fix
     some issues found along the way.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: The way this works is that Domato generates randomized web pages with lots of
     mostly-valid but strange HTML, CSS and JavaScript. I then load these pages into
     a debug build of Ladybird and observe what happens.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Domato generates HTML pages of roughly 500 KiB in size, filled with “interesting”
     JS, CSS and HTML to surprise and delight your browser engine!
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The Domato README boasts a ton of bugs discovered in all major browsers, so
     I have no doubt it will find some in ours as well. Here we go!
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'Unsurprisingly, it took less than a second to find the first issue! The output
     produced by Domato is actually 562 KiB, but I was able to reduce it to the following:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: 'I’ve compiled Ladybird with UBSAN (Undefined Behavior SANitizer) for this test,
     and I get the following very helpful trace output:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: It’s a good old-fashioned null pointer dereference!
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'As it turns out, we’ve implemented `<th>` and `<td>` elements with the assumption
     that there’s always a `<table>` somewhere above it in the DOM tree. We probably
     believed this because the following is not allowed by the HTML parser:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '`<mfrac><th>`'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: If you load the above markup in a spec-compliant browser, it will create a single
     `<mfrac>` element with nothing inside it.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: However, when creating DOM nodes manually using JavaScript API, you can break
     some of the rules that the parser has to follow, and indeed put a `<th>` inside
     an `<mfrac>`!
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s the buggy function:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: It’s used to implement the ancient feature where `<table border=3>` and `<table
     padding=5>` applies CSS border and padding to each table cell, and not just the
     table box itself.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'The fix is simply to stop assuming that `<th>` and `<td>` elements always have
     a containing `<table>` in the ancestor chain. We don’t need the `table_containing_cell`
     helper but can instead simply replace this:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: 'With this:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: 'And we’re done with issue #1! [(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/b9bacb3ff49ba675f9875434d646fb1b34d2c0df)'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'We continue executing the fuzzer and once again, within less than 1 second,
     we hit a new problem. The Domato output is 472 KiB, but it whittles down to this:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: 'When opened in Ladybird, we fail like so:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: The reason things go wrong here is due to the special behavior of `onfoo` event
     handler attributes on the `<body>` element. For compatibility with ancient web
     content, assignments to `document.body.onfoo` must forward to `window.onfoo`.
     However, documents created via `DOMParser`  *do not have a window object!*
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: It turns out we’ve misunderstood this detail in our implementation, and structured
     our internal object model as if every document always has a window. Oops!
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: The fix is to make `Document::window()` return a nullable value, and then handle
     null in a bajillion places. When assigning `document.body.onblur` in a window-less
     document, we now simply do nothing, same as other browsers.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/b98a2be96bf03562ec21e80b48d4b3b97ad74cd6)'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Modern browsers have to support SVG both inline in HTML, and also as an external
     image format. This adds a whole host of new edge cases and interesting interactions.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, SVG allows declaring gradients that reference other gradients
     to inherit their colors. As it turns out, we hadn’t considered the case where
     a gradient references itself:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: The SVG above would cause our implementation to loop forever as it attempted
     to follow the chain of referenced gradients. Oops, indeed!
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'The obvious fix is to stop following the chain of linked gradients if the current
     gradient references itself. However, that doesn’t cover reference cycles that
     span multiple steps like so:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: To properly handle cyclical references, we have to keep track of all the gradients
     we’ve visited, and stop following the chain if we encounter a gradient we’ve already
     visited before.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Curiously, Firefox actually complains about these kind of gradients in their
     developer console:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/2e0297d7035a807d4a18c89c8b310ec06bef005d)'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'This one is interesting:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: 'The above test would crash like this:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: As it turns out, this is actually a bug in the HTML spec! When an iframe is
@@ -187,63 +235,79 @@
     reported"** which inspects the browsing context of the “accessor” and “accessed”
     window. The spec incorrectly assumed that both windows have an associated browsing
     context at the time of property access.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[I’ve opened an issue against the HTML spec](https://github.com/whatwg/html/issues/10192),
     and patched this in Ladybird in the meantime by adding a null check.'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Finding spec bugs is actually one of my favorite things while working on Ladybird.
     It allows us to improve the specs for everyone by submitting a bug report or fix.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/ad843b6e4a4404a4897b587711f9ce97a4504ed0)'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: When opening the next page, it just wouldn’t finish loading. It just sat there
     chewing 100% CPU.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s the reduction:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'This was a mistake in the implementation of `before()`, which has to find the
     first preceding sibling of `<div id=”two”>` that isn’t one of its arguments (i.e
     `<div id=”one”>` in this case.) We had the following loop mistake in the implementation:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: The problem here is that we kept fetching `node->previous_sibling`, instead
     of continuing to follow the sibling chain via `previous_sibling->previous_sibling`.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s how I fixed it:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/35f359c51c787153cd17c7289664ab87146241ea)'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: This can probably go on for quite some time, so let’s call it a day. We found
     five real bugs, one of which was a spec bug, and were able to fix all of them.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Even though things went basically as I expected, it’s still quite interesting
     just how quickly we fall apart when confronted with strange and unexpected inputs.
     Fuzzers like Domato are an amazing resource for anyone who wants to make their
     software more robust.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: The next step here will be to get Ladybird to the point where we can handle
     a sustained onslaught of fuzzed inputs. And once it’s reasonably stable, we can
     start running it automatically in the cloud somewhere, and hopefully shake out
     even more issues.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:48:39'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Light ELF: exploring potential size reduction | MaskRay'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://maskray.me/blog/2024-04-01-light-elf-exploring-potential-size-reduction](https://maskray.me/blog/2024-04-01-light-elf-exploring-potential-size-reduction)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,140 +30,175 @@
     sizes. I propose "Light ELF" (`EV_LIGHT`, version 2) – a whimsical exploration
     inspired by Light Elves of Tolkien's legendarium (who had seen the light of the
     Two Trees in Valinor).
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In a light ELF file, the `e_version` member of the ELF header is set to 2\.
     `EV_CURRENT` remains 1 for backward compatibility.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-9
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: When linking a program, traditional ELF (version 1) and light ELF (version 2)
     files can be mixed together.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Relocations
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Light ELF utilizes [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf)
     for relocations. [REL and RELA](/blog/2024-01-14-exploring-object-file-formats#relocations)
     from traditional ELF are unused.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Existing lazy binding schemes rely on random access to relocation entries within
     the `DT_JMPREL` table. Due to CREL's sequential nature, keeping lazy binding requires
     a memory allocation that holds decoded JUMP_SLOT relocations.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Traditional ELF (version 1) [section header tables](/blog/2024-01-14-exploring-object-file-formats#sections)
     can be large. Light ELF addresses this through a compact section header table
     format signaled by `e_shentsize == 0` in the ELF header.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[A compact section header table for ELF](/blog/2024-03-31-a-compact-section-header-table-for-elf)
     contains the detail. Its current version is copied below for your convenience.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '`nshdr` denotes the number of sections (including `SHN_UNDEF`). The section
     header table (located at `e_shoff`) begins with `nshdr` `Elf_Word` values. These
     values specify the offset of each section header relative to `e_shoff`.'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'Following these offsets, `nshdr` section headers are encoded. Each header begins
     with a `presence` byte indicating which subsequent `Elf_Shdr` members use explicit
     values vs. defaults:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '`sh_name`, ULEB128 encoded'
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_type`, ULEB128 encoded (if `presence & 1`), defaults to `SHT_PROGBITS`'
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_flags`, ULEB128 encoded (if `presence & 2`), defaults to 0'
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_addr`, ULEB128 encoded (if `presence & 4`), defaults to 0'
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_offset`, ULEB128 encoded'
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_size`, ULEB128 encoded (if `presence & 8`), defaults to 0'
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_link`, ULEB128 encoded (if `presence & 16`), defaults to 0'
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_info`, ULEB128 encoded (if `presence & 32`), defaults to 0'
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_addralign`, ULEB128 encoded as log2 value (if `presence & 64`), defaults
     to 1'
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`sh_entsize`, ULEB128 encoded (if `presence & 128`), defaults to 0'
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: In traditional ELF, `sh_addralign` can be 0 or a positive integral power of
     two, where 0 and 1 mean the section has no alignment constraints. While the compact
     encoding cannot encode `sh_addralign` value of 0, there is no loss of generality.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Example C++ code that decodes a specific section header:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: While the current format allows for O(1) in-place random access of section headers
     using offsets at the beginning of the table, this access pattern seems uncommon
     in practice. At least, I haven't encountered (or remembered) any instances within
     the llvm-project codebase. Therefore, I'm considering removing this functionality.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: In a release build of llvm-project (`-O3 -ffunction-sections -fdata-sections
     -Wa,--crel`, the traditional section header tables occupy 16.4% of the `.o` file
     size while the compact section header table drastically reduces the ratio to 4.7%.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Symbol table
+  id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -166,10 +207,12 @@
     `SHF_COMPRESSED`](/blog/2023-07-07-compressed-arbitrary-sections). However, compressing
     the dynamic symbol table (`.dynsym`) and its associated string table (`.dynstr`)
     is not recommended.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Symbol table sections have a non-zero `sh_entsize`, which remains unchanged
     after compression.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The string table, which stores symbol names (also section names in LLVM output),
@@ -177,34 +220,43 @@
     can utilize a text compression algorithm. While compressing the string table,
     compressing the symbol table along with it might make sense, but using a compact
     encoding for the symbol table itself won't provide significant benefits.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Program headers, while individually large (each `Elf64_Phdr` is 56 bytes) and
     no random access is needed, typically have a limited quantity within an executable
     or shared object. Consequently, their overall size contribution is relatively
     small. Light ELF maintains the existing format.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Section compression
+  id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Compressed sections face a challenge due to header overhead especially for ELFCLASS64.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'The overhead and [alignment padding](/blog/2022-01-23-compressed-debug-sections#alignment)
@@ -213,17 +265,21 @@
     that the large `Elf64_Chdr` makes evaluating compressed `.rela.*` sections difficult.
     Light ELF addresses this challenge by introducing an header format of smaller
     footprint:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '`ch_type`, ULEB128 encoded'
+  id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ch_size`, ULEB128 encoded'
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`ch_addralign`, ULEB128 encoded as log2 value'
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -231,39 +287,50 @@
     bytes for smaller sections, compared to the 24 bytes required by the traditional
     format. The content is no longer guaranteed to be word-aligned, a property that
     most compression libraries don't require anyway.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Furthermore, [compressed sections with the `SHF_ALLOC` flag](https://groups.google.com/g/generic-abi/c/HUVhliUrTG0)
     are allowed. Using them outside of relocatable files needs caution, though.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Experiments
+  id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I have developed a Clang/lld prototype that implements compact section header
     table and CREL ([https://github.com/MaskRay/llvm-project/tree/april-2024](https://github.com/MaskRay/llvm-project/tree/april-2024)).
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '| 136012504 | 18284992 | -O3 |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB
 - en: '| 111583312 | 18284992 | -O3 -Wa,--crel |'
+  id: totrans-split-61
   prefs: []
   type: TYPE_TB
 - en: '| 97976973 | 4604341 | -O3 -Wa,--crel,--cshdr |'
+  id: totrans-split-62
   prefs: []
   type: TYPE_TB
 - en: '| 2174179112 | 260281280 | -g |'
+  id: totrans-split-63
   prefs: []
   type: TYPE_TB
 - en: '| 1763231672 | 260281280 | -g -Wa,--crel |'
+  id: totrans-split-64
   prefs: []
   type: TYPE_TB
 - en: '| 1577187551 | 74234983 | -g -Wa,--crel,--cshdr |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: 'Light ELF: a thought experiment'
+  id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -271,5 +338,6 @@
     and modifying `Elf_Chdr` might not be feasible, it's interesting to consider the
     possibilities of compact section headers and compressed symbol/string tables.
     Perhaps this can spark some interesting discussions!
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL

@@ -1,37 +1,47 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:42:15'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Writing x86 SIMD using x86inc.asm | Ronald S. Bultje
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blogs.gnome.org/rbultje/2017/07/14/writing-x86-simd-using-x86inc-asm/](https://blogs.gnome.org/rbultje/2017/07/14/writing-x86-simd-using-x86inc-asm/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'In multimedia, we often write vector assembly (SIMD) implementations of computationally
     expensive functions to make our software faster. At a high level, there are three
     basic approaches to write assembly optimizations (for any architecture):'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: intrinsics;
+  id: totrans-split-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: inline assembly;
+  id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: hand-written assembly.
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -46,14 +56,17 @@
     `x86inc.asm` is also used in [libvpx](https://chromium.googlesource.com/webm/libvpx/+/master/third_party/x86inc/x86inc.asm), [libaom](https://aomedia.googlesource.com/aom/+/master/third_party/x86inc/x86inc.asm),
     [x265](https://bitbucket.org/multicoreware/x265/src/3f6841d271e36dc324936f09846d1f2cb77c63e5/source/common/x86/x86inc.asm?at=default&fileviewer=file-view-default)
     and [FFmpeg](http://git.videolan.org/?p=ffmpeg.git;a=blob;f=libavutil/x86/x86inc.asm;h=c4ec29bd9da320179f91bf10006a78e568ca1bb5;hb=HEAD).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: This guide is intended to serve as an introduction to `x86inc.asm` for developers
     (somewhat) familiar with (x86) vector assembly (either intrinsics or hand-written
     assembly), but not familiar with `x86inc.asm`.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Basic example of how to use `x86inc.asm`
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -61,53 +74,66 @@
     the following C function to calculate the SAD (sum-of-absolute-differences) of
     a 16×16 block (this would typically be invoked as distortion metric in a motion
     search):'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: 'In `x86inc.asm` syntax, this would look like this:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'That’s a whole lot of stuff. The critical things to understand in the above
     example are:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: functions (symbols) are declared by cglobal;
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: we don’t refer to vector registers by their official typed name (e.g. `mm0`, `xmm0`, `ymm0`
     or `zmm0`), but by a templated name (`m0`) which is generated in `INIT_*`;
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: we use `mova`, not `movdqa`, to move data between registers or from/to memory;
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: we don’t refer to general-purpose registers by their official name (e.g. `rdi` or `edi`),
     but by a templated name (e.g. `srcq`), which is generated (and populated) in `cglobal` –
     unless it is to store return values (`eax`);
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: use `RET` (not `ret`!) to return.
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: in your build system, this would be treated like any other hand-written assembly
     file, so you’d build an object file using [`nasm`](http://www.nasm.us/) or [`yasm`](http://yasm.tortall.net/).
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Let’s explore and understand all of this in more detail.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Understanding `INIT_*`, `cglobal`, `DEFINE_ARGS` and `RET`
+  id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -115,31 +141,37 @@
     SSE (`xmm0`), AVX (`ymm0`) or AVX-512 (`zmm0`). The invocation also allows us
     to target a specific CPU instruction set (e.g. `ssse3` or `avx2`). This has various
     features:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: templated vector register names (`m0`) which mirror a specific class of registers
     (`mm0`, `xmm0`, `ymm0` or `zmm0`);
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: templated instruction names (e.g. `psadbw`) which can warn if we’re using instructions
     unsupported for the chosen set (e.g. `pmulhrsw` in SSE2 functions);
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: templated instruction names also hide VEX-coding (`vpsadbw` vs. `psadbw`) when
     targeting AVX;
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: aliases for moving data to or from full aligned (`mova`, which translates to `movq` for `mm`,
     `(v)movdqa` for `xmm` or `vmovdqa` for `ymm` registers), full unaligned (`movu`)
     or half (`movh`) vector registers;
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: convenience aliases `mmsize` and `gprsize` to indicate the size (in bytes) of
     vector and general-purpose registers.
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -148,75 +180,92 @@
     To write a “extended MMX” (the integer instructions introduced as part of SSE)
     function using `mm` registers, you’d use `INIT_MMX mmxext`. Finally, for AVX-512,
     you use `INIT_ZMM avx512`.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '`cglobal` indicates a single function declaration. This has various features:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: portably declaring a global (exported) symbol with project name prefix and instruction
     set suffix;
+  id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: portably making callee-save general-purpose registers available (by pushing
     their contents to the stack);
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: portably loading function arguments from stack into general-purpose registers;
+  id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: portably making callee-save `xmm` vector registers available (on Win64);
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: generating named and numbered general-purpose register aliases whose mapping
     to native registers is optimized for each particular target platform;
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: allocating aligned stack memory (see “Using stack memory”).
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'The `sad_16x16` function declared above, for example, had the following `cglobal` line:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: Using the first argument (`sad_16x16`), this creates a global symbol `<prefix>_sad_16x16_sse2()` which
     is accessible from C functions elsewhere. The prefix is a project-wide setting
     defined in your `nasm`/`yasm` build flags (`-Dprefix=name`).
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Using the third argument, it requests 7 general-purpose registers (GPRs):'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: on x86-32, where only the first 3 GPRs are caller-save, this would push the
     contents of the other 4 GPRs to the stack, so that we have 7 GPRs available in
     the function body;
+  id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: on unix64/win64, we have 7 or more caller-save GPRs available, so no GPR contents
     are pushed to the stack.
+  id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Using the second argument, 4 GPRs are indicated to be loaded with function
     arguments upon function entry:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: on x86-32, where all function arguments are transferred on the stack, this means
     that we `mov` each argument from the stack into an appropriate register;
+  id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: on win64/unix64, the first 4/6 arguments are transferred through GPRs (`rdi`, `rsi`, `rdx`, `rcx`, `R8`, `R9` on
     unix64; `rcx`, `rdx`, `R8`, `R9` on win64), so no actual `mov` instructions are
     needed in this particular case.
+  id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -227,50 +276,60 @@
     which each numbered register is associated with a native register per target platform
     depends on the function call argument order mandated by the ABI; then caller-save
     registers; and lastly callee-save registers.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, using the fourth argument, we indicate that we’ll be using 5 `xmm` registers.
     On win64, if this number is larger than 6 (or 22 for AVX-512), we’ll be using
     callee-save `xmm` registers and thus have to back up their contents to the stack.
     On other platforms, this value is ignored.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 'The remaining arguments are named aliases for each GPR (e.g. `src` will refer
     to `r0`, etc.). For each named or numbered register, you’ll notice a suffix (e.g.
     the `q` suffix for `srcq`). A full list of suffixes:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '`q`: qword (on 64-bit) or dword (on 32-bit) – note how `q` is missing from
     numbered aliases, e.g. on unix64, `rdi = r0 = srcq`, but on 32-bit `eax = r0 =
     srcq`;'
+  id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`d`: dword, e.g. on unix64, `eax = r6d = cntd`, but on 32-bit `ebp = r6d =
     cntd`;'
+  id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`w`: word, e.g. on unix64 `ax = r6w = cntw`, but on 32-bit `bp = r6w = cntw`;'
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`b`: (low-)byte in a word, e.g. on unix64 `al = r6b = cntb`;'
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`h`: high-byte in a word, e.g. on unix64 `ah = r6h = cnth`;'
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`m`: the stack location of this variable, if any, else the dword alias (e.g.
     on 32-bit `[esp + stack_offset + 4] = r0m = srcm`);'
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`mp`: similar to `m`, but using a qword register alias and memory size indicator
     (e.g. on unix64 `qword [rsp + stack_offset + 8] = r6mp = cntmp`, but on 32-bit `dword
     [rsp + stack_offset + 28] = r6mp = cntmp`).'
+  id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -279,6 +338,7 @@
     registers under a different name, typically implying a different purpose, and
     thus allows for more readable code without requiring more general-purpose registers
     than strictly necessary.'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '`RET` restores any callee-save register (GPR or vector) from the stack that
@@ -286,9 +346,11 @@
     use (see “Using stack memory”). It will also call `vzeroupper` to clear the upper
     half of `ymm` registers (if invoked with `INIT_YMM` or higher). At the end, it
     calls `ret` to return to the caller.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Templating functions for multiple register types
+  id: totrans-split-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -298,9 +360,11 @@
     vector registers (`m0`instead of `mm0`, `xmm0`, `ymm0` or `zmm0`). The reason
     for this is function templating. Let’s go back to the `sad_16x16` function above
     and use templates:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: This indeed generates 9 functions for square and rectangular sizes for each
@@ -308,6 +372,7 @@
     of this tutorial, the take-home message is that we can use the same source code
     to write functions for multiple vector register types (`mm0`, `xmm0`, `ymm0` or
     `zmm0`).
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Some readers may at this point notice that `x86inc.asm` allows a programmer
@@ -318,9 +383,11 @@
     the function, this allows us to explicitly access `xmm` registers in functions
     otherwise templated for `ymm` registers, but will still correctly map to `mm`
     registers in MMX functions.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Templating functions for multiple instruction sets
+  id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -329,9 +396,11 @@
     that was added in SSSE3\. You could use templates to write two versions of a SAD
     version for 10- or 12-bits per pixel component pictures (`typedef uint16_t pixel` in
     the C code above):'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: Altogether, function templating allows for making easily-maintainable code,
@@ -339,9 +408,11 @@
     Templating can partially hide complexity of a function in macros, which can be
     very confusing and thus make code harder to understand. At the same time, it will
     significantly reduce source code duplication, which makes code maintenance easier.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: AVX three-operand instruction emulation
+  id: totrans-split-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -351,30 +422,38 @@
     for templating purposes, the three-operand instruction support actually exists
     in the non-VEX versions, too. Therefore, code like this (to interleave vertically
     adjacent pixels) is actually valid:'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: 'An AVX version of this function (using `xmm` vector registers, through `INIT_XMM
     avx`) would translate this literally to the following on unix64:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: 'On the other hand, a SSE2 version of the same source code (through `INIT_XMM
     sse2`) would translate literally to the following on unix64:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: In practice, as demonstrated earlier, AVX/VEX emulation also allows using the
     same (templated) source code for pre-AVX functions and AVX functions.
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: Using `SWAP`
+  id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -384,18 +463,22 @@
     the assembler’s internal meaning of the templated vector register names `m0` and `m1`.
     Before, `m0` might refer to `xmm0` and `m1` might refer to `xmm1`; after, `m0` would
     refer to `xmm1` and `m1` would refer to `xmm0`.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '`SWAP` can take more than 2 arguments, in which case `SWAP` is sequentially
     invoked on each subsequent pair of numbers. For example, `SWAP 1, 2, 3, 4` would
     be identical to `SWAP 1, 2`, followed by `SWAP 2, 3`, and finally followed by `SWAP
     3, 4`.'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: The ordering is re-set at the beginning of each function (in `cglobal`).
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Using stack memory
+  id: totrans-split-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -409,11 +492,13 @@
     number of bytes you need in terms of stack memory. If this value is 0 or missing,
     no stack memory is allocated. If the alignment constraint (`mmsize`) is greater
     than that guaranteed by the platform, the stack is manually aligned.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: 'If the stack was manually aligned, there’s two ways to restore the original
     (pre-aligned) stack pointer in `RET`, each of which have implications for the
     function body/implementation:'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: if we saved the original stack pointer in a general-purpose register (GPR),
@@ -422,10 +507,12 @@
     pointer) is not available for other uses in our function body. Specifically, on
     32-bit, this would limit the number of available GPRs in the function body to
     6\. To use this option, specify a positive stack size;
+  id: totrans-split-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: if we saved the original stack pointer on the (post-aligned) stack, we will
@@ -433,22 +520,27 @@
     we don’t occupy a GPR. To use this option, specify a negative stack size. Note
     how we write a negative number as `0 - 64`, not just `-64`, because of a bug in
     some older versions of `yasm`.
+  id: totrans-split-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: After stack memory allocation, it can be accessed using `[rsp]` (which is an
     alias for `[esp]` on 32-bit).
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This post was meant as an introduction to `x86inc.asm`, an x86 hand-written
     assembly helper, for developers (somewhat) familiar with hand-written assembly
     or intrinsics. It was inspired by an earlier guide called [x264asm](https://wiki.videolan.org/X264_asm_intro/).
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL

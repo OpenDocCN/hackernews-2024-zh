@@ -1,47 +1,59 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:37:50'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The "missing" graph datatype was invented in the '70s
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://tylerhou.com/posts/datalog-go-brrr/](https://tylerhou.com/posts/datalog-go-brrr/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*This post is a response to/inspired by [The Hunt for the Missing Data Type](https://www.hillelwayne.com/post/graph-types/)
     ([HN](https://news.ycombinator.com/item?id=39592444)) by Hillel Wayne. I suggest
     reading his article first.*'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Why do programming languages lack built-in support for graphs and graph algorithms?
     Or—why is there no “datatype” for a graph? Hillel Wayne argues (in the post linked
     above) that there are a few reasons:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: There are too many types of graphs.
+  id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: There are too many graph algorithms.
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Even if you focus on one particular type of graph, there are many possible different
     graph representations.
+  id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The graph representation you choose has a large effect on performance.
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -49,6 +61,7 @@
     graphs are inherently too complex to be well-supported by mainstream programming
     languages. Languages **could** have **amazing** graph support! In maybe a decade?
     And only after lots of research effort? (More on this later…)
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: I claim the reason why it is so difficult to support graphs in languages nowadays
@@ -59,12 +72,14 @@
     Then, your traversal algorithm is dependent on the representation you chose. If
     you find out later that your representation is no longer efficient, it is a lot
     of work to adapt your algorithms for a new representation.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: So what if we just, like, didn’t do this? What if we don’t pick a graph representation?
     What if we could express our graph and our graph algorithm declaratively and have
     the computer pick a representation for us? Would such an program be just as performant?
     Are these questions rhetorical?
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: The answers, of course, are yes. **We already have a declarative programming
@@ -76,9 +91,11 @@
     are also highly performant, adjust query strategies in response to changes in
     data, and some engines even support advanced features like live streams/incremental
     view maintenance. The downside? You have to write Datalog.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Datalog
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -88,14 +105,17 @@
     expressed in Datalog that it is often used as the [first example when teaching
     Datalog!](https://berkeley-cs294-248.github.io/lectures/unit9.pdf#page=37)) Here
     is a concrete example of such a program:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: Lines 1-3 encode the graph in the edge relation. This graph in particular is
     a (directed) “linked-list” graph on three nodes, where vertex 1 has an edge to
     vertex 2, which has an edge to vertex 3.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'In plain English, lines 5 and 6 say: there are two ways that there might be
@@ -108,57 +128,72 @@
     jax="SVG"></mjx-container>to <mjx-container class="MathJax" jax="SVG"></mjx-container>(line
     6). Both rules are repeatedly evaluated until the database reaches a *fixed-point;*
     i.e. further application of either rule leads to no changes.'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'How does this evaluate? First, the database starts off as just containing the
     edges:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'While Datalog rules are allowed to fire in arbitrary order, let’s assume that
     they fire in program order. The rule on line 5 fires, adding a path to our database
     for each edge:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'To execute line 6, the Database engine *joins* the `edge` and `path` relations
     on the common variable <mjx-container class="MathJax" jax="SVG"></mjx-container>.
     That is, the equivalent SQL statement might be:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: Here is the result of the join.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: And the Datalog engine adds these new tuples to the database. Note that before
     firing the rule on line 6, we had paths of length <mjx-container class="MathJax"
     jax="SVG"></mjx-container>in our database; now we have paths of length <mjx-container
     class="MathJax" jax="SVG"></mjx-container>.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: We fire the rule on line 5 again, but it does not change our database. Finally
     we fire the rule on line 6, and we get the join
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Only the last entry is new, so we add it to our database:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: And now the program is finished, because execution of either rule will not change
@@ -166,6 +201,7 @@
     1 to vertex 4, as expected, but also computed whether there is a path between
     every pair of vertices. You can see [this program in action](https://egraphs-good.github.io/egglog/?example=path)
     in Egglog, an extension of Datalog.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'This program is also easy to augment. For example, if we wanted to support
@@ -174,9 +210,11 @@
     <mjx-container class="MathJax" jax="SVG"></mjx-container>if there is a path from
     <mjx-container class="MathJax" jax="SVG"></mjx-container>to <mjx-container class="MathJax"
     jax="SVG"></mjx-container>:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: You can express much more powerful programs in Egglog (and Datalog in general)
@@ -185,6 +223,7 @@
     the path](https://egraphs-good.github.io/egglog/?example=pathproof). If the weights
     of each edge are given (`edge(a, b, w)`), then Egglog can also compute shortest
     paths; see [page 6 of the Egglog paper for an example](https://arxiv.org/pdf/2304.04332.pdf#page=6).
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'In fact, in recent years there has been a trend to use Datalog to compute [program
@@ -195,9 +234,11 @@
     order to traverse the control flow graph, an analysis needs to resolve virtual
     methods, which requires points-to analysis! Datalog makes it much easier to express
     complex, mutually recursive graph algorithms in a declarative manner.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Performance
+  id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -205,6 +246,7 @@
     Rust would beat a database engine in raw speed? You might be surprised. When program
     analyses have been rewritten to use Datalog, the Datalog implementations run much
     faster.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[Doop](https://dl.acm.org/doi/10.1145/1639949.1640108), a points-to analysis
@@ -214,6 +256,7 @@
     More recently, [Egglog](https://arxiv.org/abs/2304.04332) is about an order of
     magnitude faster at equality saturation compared to its predecessor Egg, which
     was handwritten in Rust.'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: How can database engines be so fast? First, the execution model of the above
@@ -222,6 +265,7 @@
     ones are [semi-naïve evaluation](https://pages.cs.wisc.edu/~paris/cs838-s16/lecture-notes/lecture8.pdf#page=2)
     and [the demand transformation](https://dl.acm.org/doi/abs/10.1145/1836089.1836094)/[magic
     sets](https://dl.acm.org/doi/10.1145/28659.28689).
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Second, (as Wayne observed) the most efficient representation of a graph and
@@ -230,6 +274,7 @@
     are best at. There have been decades and decades of research in database systems
     on how to best represent datasets ([un]clustered indexes, efficient in-memory
     data structures) and queries on those datasets (join ordering, types of joins).
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'These correspond decently well to efficient representations of a graph: for
@@ -238,6 +283,7 @@
     join on it using (hash)-joins and an in-memory index. This would be essentially
     the same as a normal in-memory graph traversal in an imperative language—except
     the database join would probably be much better optimized.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'If a graph is huge but sparse, a database could choose to merge-join relations,
@@ -247,6 +293,7 @@
     join techniques (worst case optimal joins: [VAAT](https://berkeley-cs294-248.github.io/lectures/hung-ngo-wcoj.pdf#page=22),
     [IAAT](https://berkeley-cs294-248.github.io/lectures/hung-ngo-wcoj.pdf#page=45))
     that would perform even better on certain graphs.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: That’s not to mention that sophisticated database engines can adapt their storage
@@ -255,6 +302,7 @@
     on your graph and switch to a better representation when appropriate. When everything
     works properly, this requires no extra work from the programmer. (And often databases
     offer tuning knobs if the chosen representation or join ordering is not appropriate.)
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: That said, there are still a few performance challenges for Datalog. First,
@@ -265,13 +313,16 @@
     for memory constrained systems (e.g. [traversing a huge filesystem, or searching
     over trillions of vertices](https://www.hillelwayne.com/post/graph-types/#:~:text=Everyone%20I%20talked,of%20a%20thousand.))
     but in principle these problems are likely solvable with more research.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Wonderful! Except for the “writing Datalog” part.
+  id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: If Datalog is so great, why hasn’t it seen more adoption?
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: The short answer is that Datalog is relatively esoteric outside of academia
@@ -279,6 +330,7 @@
     a “software engineering” perspective. It is hard for programmers accustomed to
     imperative code to write Datalog programs, and large Datalog programs can be hard
     to write and understand.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Fortunately, in recent years, there has been research in the area of how to
@@ -290,6 +342,7 @@
     of “melding” Datalog with a traditional programming language is that you can express
     all the graph traversal/fixpoint algorithms in Datalog with hopefully seamless
     interop with traditional programming.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another research paper, [Functional Programming with Datalog (2022)](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECOOP.2022.7),
@@ -300,12 +353,14 @@
     the flow of Datalog evaluation (as traditionally Datalog rules can evaluate in
     any order, but functional languages usually have an evaluation order defined by
     control flow).'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: And there are other papers that I haven’t mentioned ([Slog](https://arxiv.org/abs/2211.11573))
     but if I keep listing prior work, I’d just be repeating the entire [reading list
     of the Declarative Program Analysis and Optimization class being offered at Berkeley
     this semester](https://inst.eecs.berkeley.edu/~cs294-260/sp24/), so I’ll stop.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'The point of all of this is: I think it is very possible that some future (mainstream?)
@@ -315,6 +370,7 @@
     in database systems. Imagine writing a complex graph traversal (or some other
     reasonably incrementalizable algorithm) and getting efficient incremental updates
     *for free*.'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'In summary, the data model for graphs—relations, and the relational algebra—was
@@ -324,5 +380,6 @@
     a simple framework for incremental view maintenance ([DBSP](https://arxiv.org/abs/2203.16684)),
     and in general, a renewed interest in Datalog. The database overlords have shown
     me the light, and the light says that Datalog go brrr.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL

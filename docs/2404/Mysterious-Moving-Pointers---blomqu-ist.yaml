@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:11:10'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Mysterious Moving Pointers - blomqu.ist
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blomqu.ist/posts/2024/move/](https://blomqu.ist/posts/2024/move/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,12 +30,15 @@
     as certain things are deprecated and new features are added. One piece of software
     was built exclusively for Windows and after upgrading the project, an important
     class consistently caused segmentation faults.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here is a minimal example that describes the problem code:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: In this graph, a node stores its connection to other nodes. When a connection
@@ -37,12 +46,15 @@
     stable, a pointer to it should stay valid as long as the list and the node itself
     exists. But at some point, that pointer is invalidated and attempting to access
     it causes the segmentation fault.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'First question: Why is this broken?'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'Second Question: How did this ever work in the first place?'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The answer to the first question is a classic C++ footgun. When a `std::vector`
@@ -54,10 +66,12 @@
     MSVC, `std::list` is not marked as such so when the vector reallocates, the list
     is *copied* instead of moved. When the list is copied, its elements are copied
     and our pointers are invalidated.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Now that we know why it's broken, we ask how it was able to work in the first
     place. How did the pointers stay valid if `std::vector` couldn't move its elements?
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: While MSVC is considered one of the most complete implementations of the standard
@@ -68,6 +82,7 @@
     exist, the reallocation behavior of `std::vector` couldn't change depending on
     the traits of the element type. It would unconditionally use the move constructor
     of the element.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: And so the second mystery is solved. Because of Microsoft's partial implementation
@@ -75,11 +90,13 @@
     because our vector would move the lists it contained. When we upgraded, the "correct"
     behavior broke our code. The simplest solution in our case was to change the `std::vector`
     to a `std::list` which keeps everything stable.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Personally, I found this to be a pretty interesting puzzle. That said, it should
     not take a detailed understanding of the standard and the history of its various
     implementations to find the source of a bug. Most languages are designed for writing
     software. Apparently, C++ was designed for solving riddles.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL

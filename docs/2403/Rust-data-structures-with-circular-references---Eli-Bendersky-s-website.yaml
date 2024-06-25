@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:41:15'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Rust data structures with circular references - Eli Bendersky's website
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://eli.thegreenplace.net/2021/rust-data-structures-with-circular-references/](https://eli.thegreenplace.net/2021/rust-data-structures-with-circular-references/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,26 +29,32 @@
     ownership and references throughout a program. This makes writing certain kinds
     of data structures challenging; in particular, data structures that have circular
     references.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s start with a simple binary tree:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: Since the Rust compiler should be able to calculate the size of a struct at
     compile-time, `left` and `right` typically use a heap-allocated `Box`. These boxes
     are wrapped in an `Option` because a node's left or right child might be empty.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Now suppose we want to add a *parent* link to every node. This is useful for
     certain tree structures; for example, in a [binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree)
     (BST), a parent link can be used to efficiently find the successor of a node.
     How can we do that?
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: The "obvious" approach fails
+  id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -50,22 +62,27 @@
     would imply that a node owns its parent; this is clearly wrong. In fact, our original
     `Node` definition already makes it clear that a parent owns its children, not
     the other way around.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'So we probably want to add a *reference* instead; a parent owns its children,
     but a child may *refert to* a parent. That sounds right; let''s try it:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: 'Rust will refuse to compile this, asking for an explicit lifetime parameter.
     When we store a reference in a struct field, Rust wants to know how the lifetime
     of this reference relates to the lifetime of the struct itself. Fair enough, we
     can do that:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'Now the lifetime is explicit: we tell the compiler that the lifetime of the
@@ -77,13 +94,16 @@
     reference to the node. The borrow checker won''t let us create a reference to
     an object which already has a live mutable reference to it; it also won''t let
     us mutate an object while any other reference to it is alive.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: As an exercise, try to write an insertion method for the tree using this `Node`
     definition; you'll run into the problem fairly quickly.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Now what?
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -95,24 +115,29 @@
     question cannot be answered at compile-time in the general case, it means we can't
     just use plain Rust references for these "points to" relations. We need to be
     somewhat more clever.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Having tackled this issue over and over again, Rust programmers have settled
     on three potential solutions:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Defer borrow checking to *run-time*, by using a reference-counted pointer (`std::rc::Rc`)
     to a `std::cell:RefCell`.
+  id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Centralize the ownership (e.g. all nodes are owned by a vector of nodes in the
     `Tree`), and then references become *handles* (indices into the abovementioned
     vector).
+  id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Use raw pointers and `unsafe` blocks.
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -123,20 +148,24 @@
     the post only presents a few snippets of interest for each approach. Refer to
     the code repository for the complete implementations with comments and extensive
     tests.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Run-time borrow checking with Rc and RefCell
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'This approach uses a combination of two data structures from the Rust standard
     library:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '`std::rc::Rc` is a reference-counted pointer, providing shared ownership of
     heap-allocated data. Multiple instances of `Rc` can refer to the same data; when
     all references are gone, the heap allication is dropped . This is quite similar
     to a `shared_ptr` in C++.'
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -144,6 +173,7 @@
     data owned by some other `Rc`. While we can access the data through a `Weak`,
     if only weak pointers remain the allocation will be dropped. In C++ this would
     be a `weak_ptr`.'
+  id: totrans-split-29
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
@@ -151,25 +181,31 @@
     borrow rules. `RefCell` allows us to take and pass around references to heap data
     without the scrutiny of the borrow checker. However, it''s still safe; all the
     same borrow rules are enforced by `RefCell` at run-time.'
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You can see the full code implementing this approach [here](https://github.com/eliben/code-for-blog/blob/main/2021/rust-bst/src/rcrefcell.rs).
     In what follows, I'll highlight some interesting parts.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is how can define our BST data structure :'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: 'Owning "links" are represented by a `Option<Rc<RefCell<Node>>>`; non-owning
     links are represented by `Option<Weak<RefCell<Node>>>`. Let''s look at some representative
     code samples:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: For simplicity, the code samples in this post separate the operation on the
@@ -182,18 +218,22 @@
     mutable reference, as in `&mut`; instead, it's a special type called `std::cell::RefMut`.
     This is where the mutability magic happens - there is no `&mut` in sight, yet
     the code can actually mutate the underlying data .
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: To reiterate, this code remains safe; if you attempt to do another `borrow_mut()`
     on the `RefCell` while the previous `RefMut` is in scope, you'll get a run-time
     panic. The safety is guaranteed at run-time.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another interesting example is the private `find_node` method, which finds
     and returns a node with the given data, starting from some node:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: The `.borrow()` call at the beginning is how we ask a `RefCell` to provide a
@@ -202,6 +242,7 @@
     the `Rc`, because we need a separate shared owner for the node. This lets Rust
     guarantee that the node cannot just be dropped while the returned `Rc` is still
     alive.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: As the full code sample demonstrates, this approach is workable. It takes a
@@ -209,6 +250,7 @@
     programmers. Since each node is wrapped in three levels of indirection (`Option`,
     `Rc` and `RefCell`) writing the code can be somewhat tricky, since at any point
     you have to remember which level of inderection you're "currently in".
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Another downside of this approach is that getting a plain reference to data
@@ -220,44 +262,55 @@
     only return a `std::cell::Ref`, but this leaks implementation details. This isn't
     a fatal flaw, but just something to keep in mind while writing code using these
     types.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Using handles into a vector as Node references
+  id: totrans-split-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The second approach we''re going to dicuss has the `Tree` owning all the nodes
     created in it, using a simple `Vec`. Then, all node references become "handles"
     - indices into this vector. Here are the data structures:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: 'Once again, the full code is available [on GitHub](https://github.com/eliben/code-for-blog/blob/main/2021/rust-bst/src/nodehandle.rs);
     here I''ll show some salient parts. Here''s insertion:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: 'Where `alloc_node` is:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: After writing code with `Option<Rc<RefCell<...>>>`, this handle approach feels
     *very simple*. There are no layers of indirection; a handle is an index; a reference
     to a node is a handle; handle 0 means "none", that's it .
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: This version is also likely to be much more efficient than the linked version,
     because it has far fewer heap allocations and the single vector is very cache
     friendly.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: That said, there are some issues here as well.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: First, we take some of the safety into our own hands. While this approach won't
@@ -266,15 +319,18 @@
     Due to bugs, these incides may point past the vector's bounds, or point at the
     wrong slot, etc. For example, nothing prevents us from modifying a slot while
     there are "live handles" to it.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'The other issue is removing tree nodes. Right now, the code "removes" a node
     simply by not pointing to it with any live handle. This makes the node unreachable
     through the tree''s methods, but it does not deallocate memory. In fact, this
     BST implementation never deallocates anything:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: This is obviously wrong for real-world applications. At the very least, this
@@ -282,56 +338,69 @@
     can be reused when nodes are added. A more ambitious approach could be to implement
     a full-fledged garbage collector for the nodes. If you're up for a challenge,
     give it a try ;-)
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Using raw pointers and unsafe blocks
+  id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The third and final approach to discuss is using *raw pointers* and `unsafe`
     blocks to implement our BST. This approach feels very familiar if you're coming
     from a C / C++ background. The full code is [here](https://github.com/eliben/code-for-blog/blob/main/2021/rust-bst/src/unsafeall.rs).
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'Node links become `*mut Node`, which is a raw pointer to a mutable `Node`.
     Working with raw pointers is quite similar to writing C code, with a few idiosyncracies
     around allocating, deallocating and accsesing data through these pointers. Let''s
     start with allocation; here are the `Node` constructors:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: The simplest way I found to allocate new memory for a raw pointer is using `Box::into_raw`,
     and it works well as long as we remember that deallocating this memory is on us
     from that point on (more on this later).
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s see how insertion works:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: The interesting point to notice here is the `unsafe` block the body of `insert_node`
     is wrapped in. This is required because this code dereferences raw pointers. In
     Rust it's OK to assign pointers and pass them around without special provisions,
     but dereferencing requires `unsafe`.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s see how removing nodes work; here''s `replace_node`, which performs
     the same task as the similarly named method we''ve seen in the node handle approach:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-67
   prefs: []
   type: TYPE_PRE
 - en: 'This demonstrates how we deallocate heap data through raw pointers: by using
     `Box::from_raw`. This makes a `Box` that takes ownership of the data; a `Box`
     has a destructor, so it will actually deallocate it when it goes out of scope.'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'This brings us to an important point: we have to take care of releasing the
@@ -340,12 +409,15 @@
     `root: *mut Node` and Rust has no idea how to "drop" that. If we run our tests
     without implementing the `Drop` trait explicitly, there will be memory leaks.
     Here''s a simple implementation of `Drop` to fix that:'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: As an exercise, try to implement a more efficient `Drop`!
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: Writing the code with raw pointers felt fairly natural; while the final LOC
@@ -355,41 +427,50 @@
     the dynamic borrow checks that `RefCell` does. The flip side is, of course, the
     loss of safety. With the `unsafe` version we can run into all the good-old C memory
     bugs.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The goal of this post was to review the different approaches one could take
     to implement non-trivial linked data structures in Rust. It covers approaches
     with three levels of safety:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: Fully safe with `Rc` and `RefCell`.
+  id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Memory safe but otherwise more prone to bugs (such as aliasing borrows) with
     integer handles into a `Vec`.
+  id: totrans-split-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Fully unsafe with raw pointers.
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: All three approaches have their merits and are useful to know, IMHO. Anecdotal
     evidence from Rust's own standard library and some popular crates suggests that
     the third approach - using raw pointers and `unsafe` - is quite popular.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks for reading! Since this is my first non-trivial Rust post, I'm particularly
     interested in any comments, feedback or suggestions. Feel free to send me [an
     email](mailto:eliben@gmail.com) or leave a comment on whatever aggregation site
     this gets reposted to - I keep an eye on these from time to time.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '* * **'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL

@@ -1,86 +1,109 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:04:55'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'How I write tests in Go :: Very Good Software, Not Virus'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.verygoodsoftwarenotvirus.ru/posts/testing-in-go/](https://blog.verygoodsoftwarenotvirus.ru/posts/testing-in-go/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: How I write unit tests in Go[⌗](#how-i-write-unit-tests-in-go)
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'One of my favorite features of Go is that unlike many popular languages, it
     comes with it’s own testing framework, the [testing](https://pkg.go.dev/testing)
     package. Let’s say we have this trivial function in a file called `numbers.go`:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: 'The idiomatic way to test this function is to create a second file called `numbers_test.go`
     and test it using the aforementioned `testing` package:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: 'Then I can run `go test` and see the output of the test:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: 'Alternatively, if the test fails (i.e. if I expect the result to be 11 instead),
     I get an appropriate error report:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: This works pretty well, overall. When I need to find the tests for a given file,
     I can usually assume they’re in its corresponding `_test.go` file. The `testing`
     framework is built into the standard library, and does exactly what you’d expect
     with this code.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: We have the technology[⌗](#we-have-the-technology)
+  id: totrans-split-16
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: This isn’t how I actually like to write Go unit tests, however. There are techniques
     and libraries I use to make unit testing in Go more effective to write and understand
     when things go (heh) awry.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The test command[⌗](#the-test-command)
+  id: totrans-split-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'You can run `go test` in a given directory and see the output of your test,
     but that leaves a lot of functionality on the table that can and will be useful.
     The full command I typically use is:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '`go test -cover -shuffle=on -race -vet=all -failfast <$RELEVANT_PACKAGE(S)>`'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s what each of these flags do:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Table-driven tests[⌗](#table-driven-tests)
+  id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -88,13 +111,16 @@
     table tests very rarely useful. For something like our `addNumbers` function,
     I might actually do it, because the inputs and outputs are simple. Here’s what
     that might look like:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: That said, it’s pretty easy to end up in a situation where your table tests
     need to be quite complicated and gnarly to get full coverage.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'Goland lets you generate tests for functions using a default template that
@@ -102,22 +128,27 @@
     test function looks like for a method in a side project. This method fetches a
     webhook object from the database, and accepts 3 total parameters — a context,
     a webhook ID, and an accountID:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: I think this is kind of a mess, and it doesn’t even include test cases yet.
     I’d rather have the querier built by an only-available-to-tests constructor that
     puts sensible defaults for all these values.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: The point of this is not to dunk on Goland (I am a happily paying customer and
     have been for many years), it’s just to illustrate how even a non-trivial function
     can really blow up the readability of a table-driven test.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Parallel[⌗](#parallel)
+  id: totrans-split-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -125,11 +156,13 @@
     level. This behavior is on by default, and can only be disabled by setting the
     `-parallel=1` flag when invoking `go test` (which can be useful when debugging
     flaky tests).
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: I’m of the opinion that tests should be parallel unless they absolutely cannot
     be, and even then, I’d rather fix the flaw behind why they can’t be run in parallel
     than force them to be run sequentially.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Running your tests in parallel generally allows you to suss out concurrency
@@ -137,12 +170,15 @@
     will eventually lead to you developing concurrency-safe habits when writing code
     in the first place. So generally, when I write a test, the very first line is
     the parallel declaration:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: Subtests[⌗](#subtests)
+  id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -152,6 +188,7 @@
     I usually write subtests even when there’s only one test case I care about, because
     it incurs no real overhead to do so, and allows you to easily test a new case
     in the event the tested function gets more complex.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: When I write subtests, I usually name the top-level `*testing.T` object a capitalized
@@ -159,102 +196,127 @@
     subtest logic always looks like an idiomatic Go test, and there’s no confusion
     of what variable is which or what shadows what. Calls to `.Parallel()` will have
     to be made for both the big and little `*T` variables.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s a demonstration that adapts our earlier example for the `addNumbers`
     function:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: 'Now if I decide to add another test case, it’s simply a matter of copying the
     subtest block, changing the name, and then making the test match that description:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: Additionally, if there are test fixtures or constants that are relevant to all
     subtests, they can live in the space between the big-T call to `.Parallel()` and
     the first declared subtest.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Libraries[⌗](#libraries)
+  id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: While the standard library testing package is pretty great, there have been
     some great contributions by the community to the ecosystem that make testing in
     Go even better.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Fake Values[⌗](#fake-values)
+  id: totrans-split-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Typically, when I need to interact with an object in a test, I want to have
     unpredictable values to the extent possible for that object, so that I’m discouraged
     from relying on those conventions when writing tests.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: So for instance, if I need a `*User` object for a test, I want to have no idea
     what it’s username might be, as opposed to a common static value that I might
     copy/paste from place to place, which would make many tests fail if it was inadvertently
     changed.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'I like to use [brianvoe/gofakeit](https://pkg.go.dev/github.com/brianvoe/gofakeit/v7)
     for this. It comes with a ton of sensible functions with which to build fake instances
     of different types, and I’ve never had a problem with it. Here’s what that fake
     user builder might look like:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: Testify[⌗](#testify)
+  id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'I’m a huge fan of the `(assert|require|mock)` libraries in [testify](https://github.com/stretchr/testify).
     In our example test, using testify would look like:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: I think `assert.Equal` is fairly obvious in its function for users who are new
     to a code base. `testify` is probably the only library I can think of that I would
     wholeheartedly support being absorbed into the standard library.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can use `require` instead if you want the test to stop in the event of
     a failure. This is usually good for dependencies of a test, i.e. if I need to
     create a file and pass it to a function, I should probably `require` that no errors
     happen when creating it:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: '`mock` is also useful for defining mock implementations of structures. Say
     I have the following interface:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: 'Implementing a mock for this interface becomes a matter of:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'Using the above mock in a test looks like this:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: I won’t lie, I’m not deeply impressed with the way that `mock.Mock` determines
@@ -262,22 +324,27 @@
     and paste something in the wrong order or have the wrong indices on your return
     values) it’s VERY hard to suss out, but by and large, `testify/mock` does an incredible
     job of what it needs to do.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can avoid having to put `mock.Anything` in an expectation call by writing
     a type matcher. For `context.Context`, it would look like this:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: There’s also `testify/suite`, which I *have* used, but wouldn’t recommend. It’s
     useful when you have a ton of common prerequisites for tests that need to be spun
     up ahead of time, but I still think it makes more sense to just make those prerequisites
     the product of a common function, instead of writing non-standard test code.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Testcontainers[⌗](#testcontainers)
+  id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -288,6 +355,7 @@
     it did what you wanted, or otherwise fly blind in production. With testcontainers,
     I can spin up ephemeral containers that run a given piece of software and have
     my code interact with that to verify functionality.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: In practice, it’s not perfect. These tests generally run great on my machine,
@@ -295,6 +363,7 @@
     to make a fake computer within itself, spin up a piece of software on that fake
     computer, and handle all the networking shenanigans that go along with interfacing
     with it, so there’s plenty of opportunity for mishaps and errors to occur.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'Sometimes a testcontainer invocation will just fail, and the reason behind
@@ -302,19 +371,24 @@
     prone than standard tests, I don’t typically write subtests for these. Instead,
     I tend to write one big function that uses a single instance of the container
     to test a bunch of related functions.'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s an example of the test for that aforementioned webhook retrieval function:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: (I acknowledge that this code is missing some function definitions, but it’s
     meant for you to get an idea, not copy/paste)
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Failure Cases[⌗](#failure-cases)
+  id: totrans-split-73
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -322,9 +396,11 @@
     to higher-level call sites, but in order to test that those errors are caught
     and returned, Here are some ways I manage to achieve failures for very specific
     circumstances in Go.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: JSON Encoding[⌗](#json-encoding)
+  id: totrans-split-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -332,17 +408,21 @@
     and render it as JSON. This function is capable of returning an error in the event
     the source struct is unrepresentable, but it’s actually pretty hard to make a
     struct unrepresentable in Go. You basically have to do it on purpose.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'The way I achieve this is by using [`json.Number`](https://pkg.go.dev/encoding/json#Number),
     a string alias meant to represent numbers, and giving it a non-numerical value.
     Here’s what that looks like:'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: URL Parsing[⌗](#url-parsing)
+  id: totrans-split-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -351,39 +431,49 @@
     the actual test cases in the standard library for [`net/url`](https://pkg.go.dev/net/url).
     Here are some inputs you might think return an error from `url.Parse`, but actually
     don’t:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: an empty string
+  id: totrans-split-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: a URL with double dots in the path (i.e. `https://google.com/../../var/data`)
+  id: totrans-split-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: just a scheme (i.e. `https://`)
+  id: totrans-split-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: a URL with emojis in it (i.e. `https://😘.🔥`)
+  id: totrans-split-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: a URL with an invalid scheme (i.e. `farts://`)
+  id: totrans-split-85
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'All of these actually don’t return an error. The only way I was able to force
     it to occur by using:'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-87
   prefs: []
   type: TYPE_PRE
 - en: For whatever reason, this causes `url.Parse` to fail.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion[⌗](#conclusion)
+  id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -392,5 +482,6 @@
     Gophers are blessed to have a thoroughly adequate solution out-of-the-box, and
     even further blessed to have an active ecosystem where folks are making in-depth
     testing a walk in the park.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL

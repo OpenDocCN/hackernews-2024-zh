@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:29:45'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Apt archive mirrors in Git-LFS – Simon Josefsson's blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.josefsson.org/2024/03/18/apt-archive-mirrors-in-git-lfs/](https://blog.josefsson.org/2024/03/18/apt-archive-mirrors-in-git-lfs/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -28,6 +34,7 @@
     Currently I track [Trisquel](https://trisquel.info/), [PureOS](https://pureos.net/),
     [Gnuinos](https://www.gnuinos.org/) and their upstreams [Ubuntu](https://ubuntu.com/),
     [Debian](https://www.debian.org/) and [Devuan](https://www.devuan.org/).
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Debdistget download **Release/Package/Sources** files and store them in a git
@@ -38,6 +45,7 @@
     and the [Trisquel package/sources files](https://gitlab.com/debdistutils/archives/trisquel/packages).
     Repositories for all distributions can be found in [debdistutils’ archives GitLab
     sub-group](https://gitlab.com/debdistutils/archives).'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: The reason for splitting into two repositories was that the git repository for
@@ -51,6 +59,7 @@
     import) plus the frequency and size of updates. Ubuntu’s use of [Apt Phased Updates](https://wiki.ubuntu.com/PhasedUpdates)
     (which triggers a higher churn of Packages file modifications) appears to be the
     primary reason for its larger size.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Working with large Git repositories is inefficient and the GitLab CI/CD jobs
@@ -61,6 +70,7 @@
     to run, with the majority of time is spent on downloading the archives. Yes I
     know I could look into runner-side caching but I dislike complexity caused by
     caching.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Fortunately not all use-cases requires the package files. The [debdistcanary](https://gitlab.com/debdistutils/debdistcanary)
@@ -72,6 +82,7 @@
     90MB, [Trisquel](https://gitlab.com/debdistutils/canary/trisquel) 12MB, [Gnuinos](https://gitlab.com/debdistutils/canary/gnuinos)
     2MB. Here I believe the main size correlation is update frequency, and Debian
     is large because I track the volatile unstable.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: So I hit a scalability end with my first approach. A couple of months ago I
@@ -85,6 +96,7 @@
     approach. So I started to learn about [Git-LFS](https://git-lfs.com/) and understanding
     that it was able to [handle multi-GB worth of data](https://devblogs.microsoft.com/bharry/the-largest-git-repo-on-the-planet/)
     that looked promising.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'Fairly quickly I scripted up a [GitLab CI/CD job](https://gitlab.com/debdistutils/debdistget/-/blob/main/ci-debdistget-dists.yml)
@@ -96,6 +108,7 @@
     As can be expected, jobs are quick to clone the git archives: [debdistdiff pipelines](https://gitlab.com/debdistutils/debdistdiff/-/pipelines)
     went from a **run-time of 80 minutes down to 10 minutes** which more reasonable
     correlate with the archive size and CPU run-time.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'The LFS storage size for those repositories are at [Ubuntu 15GB](https://gitlab.com/debdistutils/dists/ubuntu),
@@ -113,6 +126,7 @@
     approach surprisingly scale less well for overall storage-size. Still, the original
     repository is much smaller, and you usually don’t have to pull all LFS files anyway.
     So it is net win.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Throughout this work, I kept thinking about how my approach relates to [Debian’s
@@ -130,6 +144,7 @@
     based approach to store these files will scale over many years to come. This remains
     to be seen. Perhaps the repository has to be split up per release or per architecture
     or similar.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Another factor is storage costs. While the git repository size for a Git-LFS
@@ -144,6 +159,7 @@
     approach a’la S3 is the way to go? The cost to host this on GitLab will be manageable
     for up to **~1TB ($5000/year)** but scaling it to storing say **500TB** of data
     would mean an yearly fee of **$2.5M** which seems like poor value for the money.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'I realized that ultimately I would want a git repository locally with the entire
@@ -164,68 +180,88 @@
     and verifying the git checkout using some method similar to [Guix’s approach to
     trusting git](https://archive.fosdem.org/2023/schedule/event/security_where_does_that_code_come_from/)
     content or [Sigstore’s gitsign](https://github.com/sigstore/gitsign).'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'A naive push of the **175GB** archive in a single git commit ran into pack
     size limitations:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '`remote: fatal: pack exceeds maximum allowed size (4.88 GiB)`'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'however breaking up the commit into smaller commits for parts of the archive
     made it possible to push the entire archive. Here are the commands to create this
     repository:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '`git init'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: git lfs install
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: git lfs track 'dists/**' 'pool/**'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: git add .gitattributes
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: git commit -m"Add Git-LFS track attributes." .gitattributes
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: time debmirror --method=rsync --host ftp.se.debian.org --root :debian --arch=amd64
     --source --dist=bookworm,bookworm-updates --section=main --verbose --diff=none
     --keyring /usr/share/keyrings/debian-archive-keyring.gpg --ignore .git .
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: git add dists project
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: git commit -m"Add." -a
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: git remote add origin git@gitlab.com:debdistutils/archives/debian/mirror.git
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: git push --set-upstream origin --all
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: for d in pool/*/*; do
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: echo $d;
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: time git add $d;
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: git commit -m"Add $d." -a
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: git push
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: done`
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: The [resulting repository](https://gitlab.com/debdistutils/archives/debian/mirror)
@@ -235,6 +271,7 @@
     git repository (>1GB). So maybe one repository per release? These repositories
     could also be split up on a subset of **pool/** files, or there could be one repository
     per release per architecture or sources.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, I have concerns about using SHA1 for identifying objects. It seems
@@ -244,8 +281,10 @@
     long-term deployment of these concepts, it would be nice to go for SHA256 identifiers
     directly. Git-LFS already uses SHA256 but Git internally uses SHA1 as does the
     Debian snapshot service.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: What do you think? Happy Hacking!
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL

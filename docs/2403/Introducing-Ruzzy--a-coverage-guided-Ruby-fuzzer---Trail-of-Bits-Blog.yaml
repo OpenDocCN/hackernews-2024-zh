@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:46:34'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing Ruzzy, a coverage-guided Ruby fuzzer | Trail of Bits Blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/](https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*By Matt Schwager*'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Trail of Bits is excited to introduce [Ruzzy](https://github.com/trailofbits/ruzzy),
@@ -28,6 +35,7 @@
     in Ruby C extensions, they may result in memory corruption. Notably, the Ruby
     community has been missing a tool it can use to fuzz code for such bugs. We decided
     to fill that gap by building Ruzzy.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Ruzzy is heavily inspired by Google’s [Atheris](https://github.com/google/atheris),
@@ -35,27 +43,33 @@
     for its coverage instrumentation and fuzzing engine. Ruzzy also supports [AddressSanitizer](https://clang.llvm.org/docs/AddressSanitizer.html)
     and [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html)
     when fuzzing C extensions.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: This post will go over our motivation behind building Ruzzy, provide a brief
     overview of installing and running the tool, and discuss some of its interesting
     implementation details. Ruby revelers rejoice, Ruzzy* is here to reveal a new
     era of resilient Ruby repositories.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '* If you’re curious, Ruzzy is simply a portmanteau of Ruby and fuzz, or fuzzer.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Bringing fuzz testing to Ruby
+  id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The Trail of Bits Testing Handbook provides the following [definition of fuzzing](https://appsec.guide/docs/fuzzing/):'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Fuzzing represents a dynamic testing method that inputs malformed or unpredictable
     data to a system to detect security issues, bugs, or system failures. We consider
     it an essential tool to include in your testing suite.
+  id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -66,6 +80,7 @@
     fix over 10,000 security vulnerabilities and 36,000 bugs with fuzzing. As mentioned
     previously, Python has Atheris. Java has [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer/).
     The Ruby community deserves a high-quality, modern fuzzing tool too.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'This isn’t to say that Ruby fuzzers haven’t been built before. They have: [kisaten](https://github.com/twistlock/kisaten),
@@ -73,24 +88,30 @@
     and perhaps some we’ve missed. However, all these tools appear to be either unmaintained,
     difficult to use, lacking features, or all of the above. To address these challenges,
     Ruzzy is built on three principles:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Fuzz pure Ruby code and Ruby C extensions
+  id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Make fuzzing easy by providing a RubyGems installation process and simple interface
+  id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Integrate with the extensive libFuzzer ecosystem
+  id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: With that, let’s give this thing a test drive.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Installing and running Ruzzy
+  id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -98,6 +119,7 @@
     so this post will provide an abridged version of installing and running the tool.
     The goal here is to provide a quick overview of what using Ruzzy looks like. For
     more information, check out the repository.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: First things first, Ruzzy requires a Linux environment and a recent version
@@ -107,54 +129,68 @@
     or [Windows](https://docs.docker.com/desktop/install/windows-install/) as your
     Linux environment. You can then use Ruzzy’s [Docker development environment](https://github.com/trailofbits/ruzzy#developing)
     to run the tool. With that out of the way, let’s get started.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Run the following command to install Ruzzy from [RubyGems](https://rubygems.org/gems/ruzzy):'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: These environment variables ensure the tool is compiled and installed correctly.
     They will be explored in greater detail later in this post. Make sure to update
     the `/path/to` portions to point to your `clang` installation.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Fuzzing Ruby C extensions
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: To facilitate testing the tool, Ruzzy includes a [“dummy” C extension](https://github.com/trailofbits/ruzzy/blob/main/ext/dummy/dummy.c)
     with a heap-use-after-free bug. This section will demonstrate using Ruzzy to fuzz
     this vulnerable C extension.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, we need to configure Ruzzy’s required [sanitizer options](https://github.com/google/sanitizers/wiki/SanitizerCommonFlags):'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: (See the [Ruzzy README](https://github.com/trailofbits/ruzzy#getting-started)
     for why these options are necessary in this context.)
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, start fuzzing:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: '`LD_PRELOAD` is required for the same reason that [Atheris requires](https://github.com/google/atheris/blob/master/native_extension_fuzzing.md#option-a-sanitizerlibfuzzer-preloads)
     it. That is, it uses a special shared object that provides access to libFuzzer’s
     sanitizers. Now that Ruzzy is fuzzing, it should quickly produce a crash like
     the following:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: Fuzzing pure Ruby code
+  id: totrans-split-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -162,12 +198,15 @@
     harness. The tracer script is required due to an implementation detail of the
     Ruby interpreter. Every tracer script will look nearly identical. The only difference
     will be the name of the Ruby script you’re tracing.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, the tracer script. Let’s call it `test_tracer.rb`:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: 'Next, the fuzzing harness. A fuzzing harness wraps a fuzzing target and passes
@@ -175,30 +214,38 @@
     when it receives the input “FUZZ.” It’s a contrived example, but it demonstrates
     Ruzzy’s ability to find inputs that maximize code coverage and produce crashes.
     Let’s call this harness `test_harness.rb`:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'You can start the fuzzing process with the following command:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'This should quickly produce a crash like the following:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'Ruzzy used libFuzzer’s coverage-guided instrumentation to discover the input
     (“FUZZ”) that produces a crash. This is one of Ruzzy’s key contributions: coverage-guided
     support for pure Ruby code. We will discuss coverage support and more in the next
     section.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Interesting implementation details
+  id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -210,20 +257,24 @@
     that go into creating a tool like this but we’ll focus on three: creating a Ruby
     fuzzing harness, compiling Ruby C extensions with libFuzzer, and adding coverage
     support for pure Ruby code.'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Creating a Ruby fuzzing harness
+  id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'One of the first things you need when embarking on a fuzzing campaign is a
     fuzzing harness. The Trail of Bits Testing Handbook [defines a fuzzing harness](https://appsec.guide/docs/fuzzing/#terminology)
     as follows:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: A harness handles the test setup for a given target. The harness wraps the software
     and initializes it such that it is ready for executing test cases. A harness integrates
     a target into a testing environment.
+  id: totrans-split-50
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -233,6 +284,7 @@
     is written in C/C++. When [using libFuzzer as a library](https://llvm.org/docs/LibFuzzer.html#using-libfuzzer-as-a-library),
     we need to pass a C function pointer to `LLVMFuzzerRunDriver` to initiate the
     fuzzing process. How can we pass arbitrary Ruby code to a C/C++ library?'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'Using a foreign function interface (FFI) like [Ruby-FFI](https://github.com/ffi/ffi)
@@ -243,6 +295,7 @@
     API, we discovered the [`rb_proc_call` function](https://github.com/ruby/ruby/blob/v3_3_0/proc.c#L985-L986).
     This function allowed us to use Ruby C extensions to bridge the gap between Ruby
     code and the libFuzzer C/C++ implementation.'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'In Ruby, a [`Proc`](https://ruby-doc.org/3.3.0/Proc.html) is “an encapsulation
@@ -251,9 +304,11 @@
     a core of its functional programming features.” Perfect, this is exactly what
     we needed. In Ruby, all lambda functions are also `Proc`s, so we can write fuzzing
     harnesses like the following:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'In this example, the `json_target` lambda function is passed to `Ruzzy.fuzz`.
@@ -264,13 +319,16 @@
     the C/C++ fuzzing engine to repeatedly call the Ruby target with fuzzed data.
     Considering the example above, since all lambda functions are `Proc`s, this accomplishes
     the goal of calling arbitrary Ruby code from a C/C++ library.'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: As with all good, high-level overviews, this is an oversimplification of how
     Ruzzy works. You can see the exact implementation in [`cruzzy.c`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/ext/cruzzy/cruzzy.c).
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Compiling Ruby C extensions with libFuzzer
+  id: totrans-split-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -280,6 +338,7 @@
     section discussed the Ruzzy C extension implementation. This section discusses
     Ruby C extension targets. These are third-party libraries that use Ruby C extensions
     that we’d like to fuzz.'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: To fuzz a Ruby C extension, we need a way to compile the extension with libFuzzer
@@ -288,15 +347,18 @@
     need a way to inject these flags into the C extension compilation process. Dynamically
     adding these flags is important because we’d like to install and fuzz Ruby gems
     without having to modify the underlying code.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'The [`mkmf`](https://ruby-doc.org/3.3.0/stdlibs/mkmf/MakeMakefile.html), or
     MakeMakefile, module is the primary interface for compiling Ruby C extensions.
     The `gem install` process calls a gem-specific Ruby script, typically named `extconf.rb`,
     which calls the `mkmf` module. The process looks roughly like this:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: 'Unfortunately, by default `mkmf` does not respect common C/C++ compilation
@@ -305,9 +367,11 @@
     This tells `make` that environment variables override `Makefile` variables. With
     that, we can use the following command to install Ruby gems containing C extensions
     with the appropriate fuzzing flags:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: The gem we’re installing is `msgpack`, an example of a gem containing a [C extension
@@ -315,14 +379,17 @@
     it deserializes binary data, it makes a great fuzzing target. From here, if we
     wanted to fuzz `msgpack`, we would create an `msgpack` fuzzing harness and initiate
     the fuzzing process.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: If you’d like to find more fuzzing targets, searching GitHub for [`extconf.rb`
     files](https://github.com/search?q=path%3A**%2Fextconf.rb&type=code) is one of
     the best ways we’ve found to identify good C extension candidates.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Adding coverage support for pure Ruby code
+  id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -331,6 +398,7 @@
     functionality via lengthy, not-officially-supported environment variables is a
     hacky solution, then what follows is not for the faint of heart. But, hey, a working
     solution with a little *artistic freedom* is better than no solution at all.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: First, we need to cover the motivation for coverage support. Fuzzers derive
@@ -341,6 +409,7 @@
     that they will find crashes and bugs. When fuzzing Ruby C extensions, Ruzzy can
     punt coverage instrumentation for C code to Clang. With pure Ruby code, we have
     no such luxury.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'While implementing Ruzzy, we discovered one supremely useful piece of functionality:
@@ -353,6 +422,7 @@
     if you need to continuously gather coverage information and pass it to libFuzzer.
     However, we know the `Coverage` module must be implemented somehow, so we dug
     into the Ruby interpreter’s C implementation to learn more.'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: Enter Ruby event hooking. The [`TracePoint`](https://ruby-doc.org/3.3.0/TracePoint.html)
@@ -363,6 +433,7 @@
     When we’re trying to track coverage information, what we’d really like to do is
     listen for branching events. This is what the `Coverage` module is doing, so we
     know it must exist under the hood somewhere.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: 'Fortunately, the public Ruby C API provides access to this event hooking functionality
@@ -371,12 +442,15 @@
     whenever one of those events fires. By digging around in the source code a bit,
     we find that the list of possible events looks very similar to the list in the
     [`TracePoint` module](https://ruby-doc.org/3.3.0/TracePoint.html#class-TracePoint-label-Events):'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: '[Ruby event hook types](https://github.com/ruby/ruby/blob/v3_3_0/include/ruby/internal/event.h#L37-L40)'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you keep digging, you’ll notice a distinct lack of one type of event: coverage
@@ -384,12 +458,15 @@
     you continue digging, you’ll find that there are in fact coverage events, and
     that is how the `Coverage` module works, but you don’t have access to them. They’re
     defined as part of a private, internal-only portion of the Ruby C API:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: '[Private coverage event hook types](https://github.com/ruby/ruby/blob/v3_3_0/vm_core.h#L2182-L2184)'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: That’s the bad news. The good news is that we can define the `RUBY_EVENT_COVERAGE_BRANCH`
@@ -401,9 +478,11 @@
     [inline 8-bit counters](https://clang.llvm.org/docs/SanitizerCoverage.html#inline-8bit-counters),
     [PC-Table](https://clang.llvm.org/docs/SanitizerCoverage.html#pc-table), and [data
     flow tracing](https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-data-flow).
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: There’s just one more thing.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: 'During our testing, even though we added the correct event hook, we still weren’t
@@ -418,6 +497,7 @@
     internal-only API. The easiest solution we could come up with was calling `Coverage.setup(branches:
     true)` before we start fuzzing. With that, we began successfully hooking coverage
     events as expected.'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Having coverage events included in the standard library made our lives a lot
@@ -425,15 +505,18 @@
     solutions like modifying the Ruby code the interpreter sees in real time. However,
     it would have made our lives *even easier* if hooking coverage events were part
     of the official, public Ruby C API. We’re currently tracking this request at [`trailofbits/ruzzy#9`](https://github.com/trailofbits/ruzzy/issues/9).
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: Again, the information presented here is a slight oversimplification of the
     implementation details; if you’d like to learn more, then [`cruzzy.c`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/ext/cruzzy/cruzzy.c)
     and [`ruzzy.rb`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/lib/ruzzy.rb)
     are great places to start.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Find more Ruby bugs with Ruzzy
+  id: totrans-split-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -444,6 +527,7 @@
     or step forward in the fuzzing community. As mentioned previously, the [Atheris](https://security.googleblog.com/2020/12/how-atheris-python-fuzzer-works.html)
     and [Jazzer](https://www.code-intelligence.com/blog/java-fuzzing-with-jazzer)
     posts were a great inspiration to us, so we figured we’d pay it forward.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Building the tool is just the beginning. The real value comes when we start
@@ -451,24 +535,30 @@
     it, Ruzzy is an attempt to bring a higher level of software assurance to the Ruby
     community. If you find a bug using Ruzzy, feel free to open a PR against our [trophy
     case](https://github.com/trailofbits/ruzzy#trophy-case) with a link to the issue.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you’d like to read more about our work on fuzzing, check out the following
     posts:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[Contact us](https://www.trailofbits.com/contact/) if you’re interested in
     custom fuzzing for your project.'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'Like this:'
+  id: totrans-split-87
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Like Loading...
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: '*Related*'
+  id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL

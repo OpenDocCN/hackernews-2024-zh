@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:17:45'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The Rust Calling Convention We Deserve · mcyoung
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://mcyoung.xyz/2024/04/17/calling-convention/](https://mcyoung.xyz/2024/04/17/calling-convention/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,6 +30,7 @@
     [Go register ABI](https://go.googlesource.com/go/+/refs/heads/dev.regabi/src/cmd/compile/internal-abi.md),
     but it seems most people have trouble filling in the gaps of what I mean. This
     article explains what I mean in detail.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'I have discussed [calling conventions](https://mcyoung.xyz//2021/11/09/assembly-1/#the-calling-convention)
@@ -32,68 +39,83 @@
     to actually call a function. This includes which registers arguments go in, which
     registers values are returned out of, what function prologues/epilogues look like,
     how unwinding works, etc.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: This particular post is primarily about x86, but I intend to be reasonably generic
     (so that what I’ve written applies just as well to ARM, RISC-V, etc). I will assume
     a general familiarity with x86 assembly, LLVM IR, and Rust (but not rustc’s internals).
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Today, like many other natively compiled languages, Rust defines an unspecified0-
     calling convention that lets it call functions however it likes. In practice,
     Rust lowers to LLVM’s built-in C calling convention, which LLVM’s prologue/epilogue
     codegen generates calls for.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'Rust is fairly conservative: it tries to generate LLVM function signatures
     that Clang could have plausibly generated. This has two significant benefits:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Good probability debuggers won’t choke on it. This is not a concern on Linux,
     though, because DWARF is very general and does not bake-in the Linux C ABI. We
     will concern ourselves only with ELF-based systems and assume that debuggability
     is a nonissue.
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: It is less likely to tickle LLVM bugs due to using ABI codegen that Clang does
     not exercise. I think that if Rust tickles LLVM bugs, we should actually fix them
     (a very small number of rustc contributors do in fact do this).
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'However, we are too conservative. We get terrible codegen for simple functions:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: '[PRE1]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: '`arr` is 12 bytes wide, so you’d think it would be passed in registers, but
     no! It is passed by pointer! Rust is actually *more* conservative than what the
     Linux C ABI mandates, because it actually passes the `[i32; 3]` in registers when
     `extern "C"` is requested.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: '[PRE3]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: The array is passed in `rdi` and `rsi`, with the `i32`s packed into registers.
     The function moves `rdi` into `rax`, the output register, and shifts the upper
     half down.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Not only does clang produce patently *bad* code for passing things by value,
     but it also knows how to do it better, if you request a standard calling convention!
     We could be generating *way* better code than Clang, but we don’t!
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Hereforth, I will describe how to do it.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s suppose that we keep the current calling convention for `extern "Rust"`^(,
@@ -101,18 +123,21 @@
     when compiling a crate. The supported values will be `-Zcallconv=legacy` for the
     current one, and `-Zcallconv=fast` for the one we’re going to design. We could
     even let `-O` set `-Zcallconv=fast` automatically.)
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Why keep the old calling convention? Although I did sweep debugability under
     the rug, one nice property `-Zcallconv=fast` will not have is that it does not
     place arguments in the C ABI order, which means that a reader replying on the
     “Diana’s silk dress cost $89” mnemonic on x86 will get fairly confused.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: I am also assuming we may not even support `-Zcallconv=fast` for some targets,
     like WASM, where there is no concept of “registers” and “spilling”. It may not
     even make sense to enable it for for debug builds, because it will produce much
     worse code with optimizations turned off.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: There is also a mild wrinkle with function pointers, and `extern "Rust" {}`
@@ -121,30 +146,37 @@
     calling through a function pointer is slow and rare, so we can simply force them
     to use `-Zcallconv=legacy`. We can generate a shim to translate calling conventions
     as needed.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'Similarly, we can, in principle, call any Rust function like this:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: However, this mechanism can only be used to call unmangled symbols. Thus, we
     can simply force `#[no_mangle]` symbols to use the legacy calling convention.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: In an ideal world, LLVM would provide a way for us to specify the calling convention
     directly. E.g., this argument goes in that register, this return goes in that
     one, etc. Unfortunately, adding a calling convention to LLVM requires writing
     a bunch of C++.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: However, we can get away with specifying our own calling convention by following
     the following procedure.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: First, determine, for a given target triple, the maximum number of values that
     can be passed “by register”. I will explain how to do this below.
+  id: totrans-split-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -152,6 +184,7 @@
     or it will need to be returned “by reference”, in which case we pass an extra
     `ptr` argument to the function (tagged with the `sret` attribute) and the actual
     return value of the function is that pointer.
+  id: totrans-split-32
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -159,12 +192,14 @@
     being passed by reference. This will be a heuristic, but generally will be approximately
     “arguments larger than the by-register space”. For example, on x86, this comes
     out to 176 bytes.
+  id: totrans-split-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Decide which arguments get passed by register, so as to maximize register space
     usage. This problem is NP-hard (it’s the knapsack problem) so it will require
     a heuristic. All other arguments are passed on the stack.
+  id: totrans-split-34
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -173,6 +208,7 @@
     `ptr`, `double`, and `<2 x i64>`. What valid choices are for said non-aggregates
     depends on the target, but the above are what you will generally get on a 64-bit
     architecture. Arguments passed on the stack will follow the “register inputs”.
+  id: totrans-split-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -181,6 +217,7 @@
     that would be present when using `-Zcallconv=legacy`. This allows us to generate
     the same code for the body of the function regardless of calling convention. Redundant
     decoding code will be eliminated by DCE passes.
+  id: totrans-split-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -188,6 +225,7 @@
     instruction for the return type as it would be for `-Zcallconv=legacy`. This block
     will encode it into the requisite output format and then `ret` as appropriate.
     All exit paths through the function should `br` to this block instead of `ret`-ing.
+  id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -196,6 +234,7 @@
     function pointer to it, generate a shim that uses `-Zcallconv=legacy` and immediately
     tail-calls the real implementation. This is necessary to preserve function pointer
     equality.
+  id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -207,51 +246,62 @@
     faster heuristics depending on `-Copt-level`. Note that correctness requires that
     we forbid linking code generated by multiple different Rust compilers, which is
     already the case, since Rust breaks ABI from release to release.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'Assuming we do that, how do we actually get LLVM to pass things in the way
     we want it to? We need to determine what the largest “by register” passing LLVM
     will permit is. The following LLVM program is useful for determining this on a
     particular version of LLVM:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: When you pass an aggregate by-value to an LLVM function, LLVM will attempt to
     “explode” that aggregate into as many registers as possible. There are distinct
     register classes on different systems. For example, on both x86 and ARM, floats
     and vectors share the same register class (kind of^().)
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The above values are for x86^(. LLVM will pass six integers and eight SSE vectors
     by register, and return half as many (3 and 4) by register. Increasing any of
     the values generates extra loads and stores that indicate LLVM gave up and passed
     arguments on the stack.)
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: The values for `aarch64-unknown-linux` are 8 integers and 8 vectors for both
     inputs and outputs, respectively.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: This is the maximum number of registers we get to play with for each class.
     Anything extra gets passed on the stack.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'I recommend that *every function* have the same number of by-register arguments.
     So on x86, EVERY `-Zcallconv=fast` function’s signature should look like this:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: When passing pointers, the appropriate `i64`s should be replaced by `ptr`, and
     when passing `double`s, they replace `<2 x i64>`s.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: But you’re probably saying, “Miguel, that’s crazy! Most functions don’t pass
     176 bytes!” And you’d be right, if not for the magic of LLVM’s very well-specified
     `poison` semantics.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: We can get away with not doing extra work if every argument we do not use is
@@ -259,16 +309,20 @@
     at the present moment”, when LLVM sees `poison` passed into a function via register,
     it decides that the most convenient value is “whatever happens to be in the register
     already”, and so it doesn’t have to touch that register!
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: For example, if we wanted to pass a pointer via `rcx`, we would generate the
     following code.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: '[PRE8]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'It is perfectly legal to pass poison to a function, if it does not interact
@@ -277,6 +331,7 @@
     in setting up the call: loading poison into the other thirteen registers compiles
     down to nothing^(, so it only needs to load the pointer returned by malloc into
     `rcx`.)'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: This gives us almost total control over argument passing; unfortunately, it
@@ -287,12 +342,15 @@
     in whatever order we want. For example, we can pretend the order registers should
     be allocated in is `rdx`, `rcx`, `rdi`, `rsi`, `r8`, `r9` for inputs, and `rdx`,
     `rcx`, `rax` for outputs.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: '[PRE10]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: '`square` generates extremely simple code: the input and output register is
@@ -301,21 +359,26 @@
     This is similar to code seen on aarch64, which uses the same register sequence
     for input and output. We can see that the “naive” version of this IR produces
     the exact same code on aarch64 for this reason.'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: '[PRE12]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: Now that we’ve established total control on how registers are assigned, we can
     turn towards maximizing use of these registers in Rust.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: For simplicity, we can assume that rustc has already processed the users’s types
     into basic aggregates and unions; no enums here! We then have to make some decisions
     about which portions of the arguments to allocate to registers.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: First, return values. This is relatively straightforward, since there is only
@@ -329,50 +392,59 @@
     u32); 2]`, this is 192 bits, since it excludes the padding. For `bool`, this is
     one. For `char` this is technically 21, but it’s simpler to treat `char` as an
     alias for `u32`.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: The reason for counting bits this way is that it permits significant compaction.
     For example, returning a struct full of bools can simply bit-pack the bools into
     a single register.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: So, a return value is converted to a by-ref return if its effective size is
     smaller than the output register space (on x86, this is three integer registers
     and four SSE registers, so we get 88 bytes total, or 704 bits).
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Argument registers are much harder, because we hit the [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem),
     which is NP-hard. The following relatively naive heuristic is where I would start,
     but it can be made infinitely smarter over time.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: First, demote to by-ref any argument whose effective size is larget than the
     total by-register input space (on x86, 176 bytes or 1408 bits). This means we
     get a pointer argument instead. This is beneficial to do first, since a single
     pointer might pack better than the huge struct.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Enums should be replaced by the appropriate discriminant-union pair. For example,
     `Option<i32>` is, internally, `(union { i32, () }, i1)`, while `Option<Option<i32>>`
     is `(union { i32, (), () }, i2)`. Using a small non-power-of-two integer improves
     our ability to pack things, since enum discriminants are often quite tiny.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we need to handle unions. Because mucking about with unions’ uninitialized
     bits behind our backs is allowed, we need to either pass it as an array of `u8`,
     unless it only has a single non-empty variant, in which case it is replaced with
     that variant^.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, we can proceed to flatten everything. All of the converted arguments are
     flattened into their most primitive components: pointers, integers, floats, and
     bools. Every field should be no larger than the smallest argument register; this
     may require splitting large types such as `u128` or `f64`.'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: This big list of primitives is next sorted by effective size, from smallest
     to largest. We take the largest prefix of this that will fit in the available
     register space; everything else goes on the stack.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: If part of a Rust-level input is sent to the stack in this way, and that part
@@ -381,48 +453,59 @@
     else is passed directly on the stack in the order those inputs were before the
     sort. This helps keep regions that need to be copied relatively contiguous, to
     minimize calls to `memcpy`.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: The things we choose to pass in registers are allocated to registers in reverse
     size order, so e.g. first 64-bit things, then 32-bit things, etc. This is the
     same layout algorithm that `repr(Rust)` structs use to move all the padding into
     the tail. Once we get to the `bool`s, those are bit-packed, 64 to a register.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s a relatively complicated example. My Rust function is as follows:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: 'The codegen for this function is quite complex, so I’ll only cover the prologue
     and epilogue. After sorting and flattening, our raw argument LLVM types are something
     like this:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: Everything fits in registers! So, what does the LLVM function look like on x86?
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: Above, `!dbg` metadata for the argument values should be attached to the instruction
     that actually materializes it. This ensures that gdb does something halfway intelligent
     when you ask it to print argument values.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: On the other hand, in current rustc, it gives LLVM eight pointer-sized parameters,
     so it winds up spending all six integer registers, plus two values passed on the
     stack. Not great!
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is not a complete description of what a completely over-engineered calling
     convention could entail: in some cases we might know that we have additional registers
     available (such as AVX registers on x86). There are cases where we might want
     to split a struct across registers and the stack.'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: This also isn’t even getting into what returns *could* look like. `Result`s
@@ -433,17 +516,20 @@
     an out-parameter pointer for the error, with the ok variant’s payload, and the
     is ok bit, returned as an `Option<T>`. There are some fussy details with `Into`
     calls via `?`, but the idea is implementable.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Now, because we’re Rust, we’ve also got a trick up our sleeve that C doesn’t
     (but Go does)! When we’re generating the ABI that all callers will see (for `-Zcallconv=fast`),
     we can look at the function body. This means that a crate can advertise the *precise*
     ABI (in terms of register-passing) of its functions.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'This opens the door to a more extreme optimization-based ABIs. We can start
     by simply throwing out unused arguments: if the function never does anything with
     a parameter, don’t bother spending registers on it.'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another example: suppose that we know that an `&T` argument is not retained
@@ -451,16 +537,19 @@
     never converted to a raw pointer (or written to memory a raw pointer is taken
     of, etc). We also know that `T` is fairly small, and `T: Freeze`. Then, we can
     replace the reference with the pointee directly, passed by value.'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: The most obvious candidates for this is APIs like `HashMap::get()`. If the key
     is something like an `i32`, we need to spill that integer to the stack and pass
     a pointer to it! This results in unnecessary, avoidable memory traffic.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Profile-guided ABI is a step further. We might know that some arguments are
     hotter than others, which might cause them to be prioritized in the register allocation
     order.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'You could even imagine a case where a function takes a very large struct by
@@ -469,17 +558,20 @@
     The callee does not see additional cost: it had to issue those loads anyway. However,
     the caller probably has those values in registers already, which avoids some memory
     traffic.'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: Instrumentation profiles may even indicate that it makes sense to duplicate
     whole functions, which are identical except for their ABIs. Maybe they take different
     arguments by register to avoid costly spills.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: This is a bit more advanced (and ranty) than my usual writing, but this is an
     aspect of Rust that I find really frustrating. We could be doing *so much better*
     than C++ ever can (because of their ABI constraints). None of this is new ideas;
     this is *literally* how Go does it!
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: So why don’t we? Part of the reason is that ABI codegen is complex, and as I
@@ -488,6 +580,7 @@
     other part is a lack of expertise. As of writing, only a handful of people contributing
     to rustc have the necessary grasp of LLVM’s semantics (and mood swings) to emit
     the Right Code such that we get good codegen and don’t crash LLVM.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: Another reason is compilation time. The more complicated the function signatures,
@@ -496,6 +589,7 @@
     I don’t think this is a meaningful complaint. Nor do I think the project’s Goodhartization
     of compilation time as a metric is healthy… but I do not think this is ultimately
     a relevant drawback.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: I, unfortunately, do not have the spare time to dive into fixing rustc’s ABI
@@ -503,5 +597,6 @@
     has a low bus factor. For that reason, I am happy to provide the Rust compiler
     team expert knowledge on getting LLVM to do the right thing in service of making
     optimized code faster.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL

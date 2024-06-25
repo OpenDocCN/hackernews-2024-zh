@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:49:17'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Diffusion models from scratch
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.chenyang.co/diffusion.html](https://www.chenyang.co/diffusion.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,12 +28,15 @@
     \newcommand{\projK}{ {\rm proj}_{\Kset} } \newcommand{\eps}{\epsilon} \newcommand{\Loss}{\mathcal{L}}
     \newcommand{\norm}[1]{\left\lVert #1 \right\lVert} \newcommand{\R}{\mathbb{R}}
     \DeclareMathOperator{\softmin}{softmin} \DeclareMathOperator{\distop}{dist}\]'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '[Paper (ICML 2024)](https://arxiv.org/abs/2306.04848)   [Code (Github)](https://github.com/yuanchenyang/smalldiffusion)'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[Discussion on HackerNews](https://news.ycombinator.com/item?id=39672450)'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Diffusion models have recently produced impressive results in generative modeling,
@@ -37,6 +46,7 @@
     generation, [protein design](https://www.nature.com/articles/s41586-023-06415-8),
     [robotics path planning](https://diffusion-policy.cs.columbia.edu/), all of which
     require sampling from multimodal distributions.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: This tutorial aims to introduce diffusion models from an optimization perspective
@@ -45,15 +55,18 @@
     and code, using the theory to explain how to implement diffusion models from scratch.
     By the end of the tutorial, you will learn how to implement training and sampling
     code for a toy dataset, which will also work for larger datasets and models.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: In this tutorial we will mainly reference code from [`smalldiffusion`](https://github.com/yuanchenyang/smalldiffusion).
     For pedagogical purposes, the code presented here will be simplified from the
     [original library code](https://github.com/yuanchenyang/smalldiffusion/blob/main/src/smalldiffusion/),
     which is on its own well-commented and easy to read.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Training diffusion models
+  id: totrans-split-12
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -63,47 +76,59 @@
     set of pixel values that correspond to realistic images. Diffusion models also
     work for \(\mathcal{K}\) corresponding to modalities other than images, such as
     audio, video, robot trajectories, and even in discrete domains such as text generation.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'In a nutshell, diffusion models are trained by:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Sampling \(x_0 \sim \mathcal{K}\), noise level \(\sigma \sim [\sigma_\min, \sigma_\max]\),
     noise \(\epsilon \sim N(0, I)\)
+  id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Generating noisy data \(x_\sigma = x_0 + \sigma \epsilon\)
+  id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Predicting \(\epsilon\) (direction of noise) from \(x_\sigma\) by minimizing
     squared loss
+  id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This amounts to training a \(\theta\)-parameterized neural network \(\epsilon_\theta(x,
     \sigma)\), by minimizing the loss function
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: \[\Loss(\theta) = \mathop{\mathbb{E}} \lVert\epsilon_\theta(x_0 + \sigma_t \epsilon,
     \sigma_t) - \epsilon \lVert^2\]
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'In practice, this is done by the following simple `training_loop`:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: 'The training loop iterates over batches of `x0`, then samples noise level `sigma`
     and noise vector `eps` using `generate_train_sample`:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: Noise schedules
+  id: totrans-split-24
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -113,26 +138,33 @@
     instead sampled uniformly from the \(N\) possible values of \(\sigma_t\). We define
     the `Schedule` class that encapsulates the list of possible `sigmas`, and sample
     from this list during training.'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: 'In this tutorial, we will use a log-linear schedule defined below:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: Other commonly used schedules include `ScheduleDDPM` for pixel-space diffusion
     models and `ScheduleLDM` for latent diffusion models such as Stable Diffusion.
     The following plot compares these three schedules with default parameters.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: A comparison plot of different diffusion schedules
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Toy example
+  id: totrans-split-31
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -140,46 +172,58 @@
     diffusion papers [[Sohl-Dickstein et.al. 2015]](https://arxiv.org/abs/1503.03585),
     where \(\Kset \subset \R^2\) are points sampled from a spiral. We first construct
     and visualize this dataset:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: Swissroll toy dataset
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this simple dataset, we can implement the denoiser using a multi-layer
     perceptron (MLP):'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: 'The MLP takes the concatenation of \(x \in \R^2\) and an embedding of the noise
     level \(\sigma\), then predicts the noise \(\epsilon \in \R^2\). Although many
     diffusion models use a sinusoidal positional embedding for \(\sigma\), the simple
     two-dimensional embedding works just as well:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Two-dimensional \(\sigma_t\) embedding
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Now we have all the ingredients to train a diffusion model.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Training loss over 15000 epochs, smoothed with moving average
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: The learned denoiser \(\eps_\theta(x, \sigma)\) can be visualized as a vector
     field parameterized by the noise level \(\sigma\), by plotting \(x - \sigma \eps_\theta(x,
     \sigma)\) for different \(x\) and levels of \(\sigma\).
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Plot of predicted \(\hat{x}_0 = x - \sigma \eps_\theta(x, \sigma)\) for different
     \(x\) and \(\sigma\)
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: In the plots above, the arrows point from each noisy datapoint \(x\) to the
@@ -187,14 +231,17 @@
     levels of \(\sigma\), the denoiser tends to predict the mean of the data, but
     at low noise levels the denoiser predicts actual data points, provided that its
     input \(x\) is also close to the data.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: How do we interpret what the denoiser is learning, and how do we create a procedure
     to sample from diffusion models? We will next build a theory of diffusion models,
     then draw on this theory to derive sampling algorithms.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Denoising as approximate projection
+  id: totrans-split-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -205,34 +252,43 @@
     introduce a relative-error approximation model to analyze the convergence of diffusion
     sampling algorithms. First we introduce some basic properties of distance and
     projection functions.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Distance and projection functions
+  id: totrans-split-48
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
 - en: The *distance function* to a set \(\Kset \subseteq \R^n\) is defined as
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '\[\distK(x) := \min \{ \norm{x-x_0} : x_0 \in \Kset \}.\]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 'The *projection* of \(x \in \R^n\), denoted \(\projK(x)\), is the set of points
     that attain this distance:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '\[\projK(x) := \{ x_0 \in \Kset : \distK(x) = \norm{x-x_0} \}\]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'If \(\projK(x)\) is unique, the gradient of \(\distK(x)\), the direction of
     steepest descent of the distance function, points towards this unique projection:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '**Proposition** Suppose \(\Kset\) is closed and \(x \not \in \Kset\). If \(\projK(x)\)
     is unique, then'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: \[\nabla \frac{1}{2} \distK(x)^2 = \distK(x) \nabla \distK(x) = x-\projK(x).\]
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: This tells us that if we can learn \(\nabla \distK(x)\) for every \(x\), we
@@ -241,26 +297,32 @@
     everywhere, thus \(\nabla \distK\) is not a continuous function. To solve this
     problem, we introduce a squared-distance function smoothed by a parameter \(\sigma\)
     using the \(\softmin\) operator instead of \(\min\).
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: \[\distop^2_\Kset(x, \sigma) := \substack{\softmin_{\sigma^2} \\ x_0 \in \Kset}
     \norm{x_0 - x}^2 = {\textstyle -\sigma^2 \log\left(\sum_{x_0 \in \Kset} \exp\left(-\frac{\norm{x_0
     - x}^2}{2\sigma^2}\right)\right)}\]
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: The following picture from [[Madan and Levin 2022]](https://arxiv.org/pdf/2108.10480.pdf)
     shows the contours of both the distance function and its smoothed version.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Smoothed distance function has continuous gradients
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: From this picture we can see that \(\nabla \distK(x)\) points toward the closest
     point to \(x\) in \(\Kset\), and \(\nabla \distop^2(x, \sigma)\) points toward
     a weighted average of points in \(\Kset\) determined by \(x\).
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Ideal denoiser
+  id: totrans-split-61
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -268,10 +330,12 @@
     is an exact minimizer of the training loss function. When the data is a discrete
     uniform distribution over a finite set \(\Kset\), the ideal denoiser has an exact
     closed-form expression given by:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: \[\eps^*(x_\sigma, \sigma) = \frac{\sum_{x_0 \in \Kset} (x_\sigma-x_0) \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}
     {\sigma \sum_{x_0 \in \Kset} \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}\]
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'From the above expression, we see that the ideal denoiser points towards a
@@ -279,40 +343,50 @@
     \in \Kset\) determines the distance to \(x_0\). Using this expression, we can
     also implement the ideal denoiser, which is computationally tractable for small
     datasets:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: 'For our toy dataset, we can plot the direction of \(\epsilon^*\) as predicted
     by the ideal denoiser for different noise levels \(\sigma\):'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Plot of direction of \(\eps^*(x, \sigma)\) for different \(x\) and \(\sigma\)
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: From our plots we see that for large values of \(\sigma\), \(\epsilon^*\) points
     towards the mean of the data, but for smaller values of \(\sigma\), \(\epsilon^*\)
     points towards the nearest data-point.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'One insight from our paper is that the ideal denoiser for a fixed \(\sigma\)
     is equivalent to the gradient of a \(\sigma\)-smoothed squared-distance function:'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '**Theorem** For all \(\sigma > 0\) and \(x \in \R^n\), we have'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: \[\frac{1}{2} \nabla_x \distop^2_\Kset(x, \sigma) = \sigma \eps^*(x, \sigma).\]
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: This tells us that the ideal denoiser found by minimizing the diffusion training
     objective \(\Loss(\theta)\) is in fact the gradient of a smoothed squared-distance
     function to the underlying data manifold \(\Kset\). This connection is key to
     motivating our interpretation that the denoiser is an approximate projection.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Relative error model
+  id: totrans-split-73
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
@@ -321,32 +395,39 @@
     \(x-\sigma \epsilon_{\theta}( x, \sigma)\) well approximates \(\projK(x)\) when
     the input to the denoiser \(\sigma\) well estimates \(\distK(x)/\sqrt{n}\). For
     constants \(1 > \eta \ge 0\) and \(\nu \ge 1\), we assume that
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: \[\norm{ x-\sigma \epsilon_{\theta}( x, \sigma) - \projK(x)} \le \eta \distK(x)\]
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: when \((x, \sigma)\) satisfies \(\frac{1}{\nu}\distK(x) \le \sqrt{n}\sigma \le
     \nu \distK(x)\). In addition to the discussion about ideal denoisers above, this
     error model is motivated by the following observations.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '*Low noise* When \(\sigma\) is small and the manifold hypothesis holds, denoising
     approximates projection because most of the added noise is orthogonal to the data
     manifold.'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: When added noise is small, most of noise is orthogonal to tangent space of manifold.
     Under the manifold hypothesis, denoising is approximately projection.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '*High noise* When \(\sigma\) is large relative to the diameter of \(\Kset\),
     then any denoiser predicting any weighted mean of the data \(\Kset\) has small
     relative error.'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: When added noise is large compared to diameter of data, denoising and projection
     point in the same direction
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: We also perform empirical tests of our error model for pre-trained diffusion
@@ -354,22 +435,27 @@
     of the ideal denoiser. Our experiments show that for this dataset, the relative
     error between the exact projection and ideal denoiser output is small over sampling
     trajectories.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Ideal denoiser well-approximates projection onto the CIFAR-10 dataset under
     relative-error model
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Sampling from diffusion models
+  id: totrans-split-83
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Given a learned denoiser \(\epsilon_\theta(x, \sigma)\), how do we sample from
     it to obtain a point \(x_0 \in \Kset\)? Given noisy \(x_t\) and noise level \(\sigma_t\),
     the denoiser \(\eps_\theta(x_t, \sigma_t)\) predicts \(x_0\) via
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: \[\hat x_0^t := x_t - \sigma_t \eps_\theta(x_t, \sigma_t)\]
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: Intuition from the relative error assumption tells us that we want to start
@@ -377,6 +463,7 @@
     is achieved by choosing \(\sigma_T\) to be large relative to the diameter of \(\Kset\),
     and \(x_T\) sampled i.i.d. from \(N(0, \sigma_T)\), a Gaussian with variance \(\sigma_T\).
     This ensures that \(x_T\) is far away from \(\Kset\).
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: Although \(\hat x_0^T = x_T - \sigma_T \eps_\theta(x_T, \sigma_T)\) has small
@@ -385,35 +472,43 @@
     ideal denoiser tells us that \(\hat x_0^T\) should be close to the mean of the
     data \(\Kset\). We cannot obtain a sample close to \(\Kset\) with a single call
     to the denoiser.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Sampling process iteratively calls the denoiser based on \(\sigma_t\) schedule.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: Thus we want to *iteratively call the denoiser* to obtain a sequence \(x_T,
     \ldots, x_t, \ldots x_0\) using a pre-specified schedule of \(\sigma_t\), hoping
     that \(\distK(x_t)\) decreases in concert with \(\sigma_t\).
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t-1}) \eps_\theta(x_t, \sigma_t)\]
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: This is exactly the deterministic [DDIM sampling algorithm](https://arxiv.org/abs/2010.02502),
     though presented in different coordinates through a change of variable. See [Appendix
     A of our paper](https://arxiv.org/abs/2306.04848) for more details and a proof
     of equivalence.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: Diffusion sampling as distance minimization
+  id: totrans-split-92
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: We can interpret the diffusion sampling iterations as gradient descent on the
     squared-distance function \(f(x) = \frac{1}{2} \distK(x)^2\). In a nutshell,
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '**DDIM is approximate gradient descent on \(f(x)\) with stepsize \(1- \sigma_{t-1}/\sigma_t\),
     with \(\nabla f(x_t)\) estimated by \(\eps_\theta(x_t, \sigma_t)\).**'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: How should we choose the \(\sigma_t\) schedule? This determines the number and
@@ -421,92 +516,113 @@
     might not decrease and the algorithm may not converge. On the other hand, if we
     take many small steps, we need to evaluate the denoiser for as many times, a computationally
     expensive operation. This motivates our definition of admissible schedules.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: '**Definition** An *admissible schedule* \(\{ \sigma_t \}_{t=0}^T\) ensures
     \(\frac{1}{\nu} \distK(x_t) \le \sqrt{n} \sigma_t \le \nu \distK(x_t)\) holds
     at each iteration. In particular, a geometrically decreasing (i.e. log-linear)
     sequence of \(\sigma_t\) is an admissible schedule.'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: Our main theorem states that if \(\{\sigma_t\}_{t=0}^T\) is an admissible schedule
     and \(\epsilon_\theta(x_t, \sigma_t)\) satisfies our relative error model, the
     relative error can be controlled, and the sampling procedure aiming to minimize
     distance converges.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: '**Theorem** Let \(x_t\) denote the sequence generated by DDIM and suppose that
     \(\nabla \distK(x)\) exists for all \(x_t\) and \(\distK(x_T) = \sqrt n \sigma_T\).
     Then'
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: \(x_t\) is generated by gradient descent on the squared-distance function with
     stepsize \(1 - \sigma_{t-1}/\sigma_{t}\)
+  id: totrans-split-99
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: \(\distK(x_{t})/\sqrt{n} \approx \sigma_{t}\) for all \(t\)
+  id: totrans-split-100
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Coming back to our toy example, we can find an admissible schedule by subsampling
     from the original log-linear schedule, and implement the DDIM sampler as follows:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-102
   prefs: []
   type: TYPE_PRE
 - en: Samples from 20-step DDIM
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: We see that most samples lie close to the original data, but there is room for
     improvement. One way is to increase the number of DDIM steps, but this incurs
     an additional computational cost. Next, we use our interpretation of diffusion
     models to derive a more efficient sampler.
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: Improved sampler with gradient estimation
+  id: totrans-split-105
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'Since \(\nabla \distK(x)\) is invariant between \(x\) and \(\projK(x)\), we
     aim to minimize estimation error \(\sqrt{n} \nabla \distK(x) - \epsilon_{\theta}(x_t,
     \sigma_t)\) with the update:'
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: \[\bar\eps_t = \gamma \eps_{\theta}(x_t, \sigma_t) + (1-\gamma) \eps_{\theta}(x_{t+1},
     \sigma_{t+1})\]
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: 'Intuitively, this update corrects any error made in the previous step using
     the current estimate:'
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Our gradient estimation update step
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: This leads to faster convergence compared to the DDIM sampler, as seen from
     the samples on our toy model lying closer to the original data.
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: Samples from 20-step gradient estimation sampler
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: Compared to the default DDIM sampler, our sampler can be interpreted as adding
     momentum, causing the trajectory to potentially overshoot but converge faster.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: Sampling trajectories varying momentum term \(\gamma\)
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: Empirically, adding noise during the generation process also improves the sampling
     quality. In order to do so while sticking to our original \(\sigma_t\) schedule,
     we need to denoise to a smaller \(\sigma_{t'}\) then add back noise \(w_t \sim
     N(0, I)\).
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \epsilon_\theta(x_t, \sigma_t) +
     \eta w_t\]
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: If we assume that \(\mathop{\mathbb{E}}\norm{w_t}^2 = \norm{\epsilon_\theta(x_t,
@@ -516,26 +632,33 @@
     and \(\eta = \sqrt{\sigma_{t-1}^2 - \sigma_{t'}^2}\). When \(\mu = \frac{1}{2}\),
     we exactly recover the [DDPM sampler](https://arxiv.org/abs/2006.11239) (see [Appendix
     A of our paper](https://arxiv.org/abs/2306.04848) for a derivation).
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: Sampling trajectories varying amount of noise added during sampling
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: Our gradient estimation update can be combined with adding noise during sampling.
     In summary, our full update step is
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \bar\eps_t + \eta w_t\]
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: The full sampler that generalizes DDIM (`gam=1, mu=0`), DDPM (`gam=1, mu=0.5`)
     and our gradient estimation sampler (`gam=2, mu=0`) is implemented below.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-121
   prefs: []
   type: TYPE_PRE
 - en: Large-scale examples
+  id: totrans-split-122
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -543,56 +666,70 @@
     used to train image diffusion models from scratch. See [this example](https://github.com/yuanchenyang/smalldiffusion/blob/main/examples/fashion_mnist.py)
     for an example of training on the FashionMNIST dataset to get a second-place FID
     score on [this leaderboard](https://paperswithcode.com/sota/image-generation-on-fashion-mnist):'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: Samples from a diffusion model trained on the FashionMNIST dataset
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: 'The sampling code works without modifications to sample from state-of-the-art
     pretrained latent diffusion models:'
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-126
   prefs: []
   type: TYPE_PRE
 - en: We can visualize the different effects of our momentum term \(\gamma\) on high
     resolution text-to-image generation.
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: Text-to-image samples using Stable Diffusion
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: Other resources
+  id: totrans-split-129
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'Also recommended are the following blog posts on diffusion models:'
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: '[What are diffusion models](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
     introduces diffusion models from the discrete-time perspective of reversing a
     Markov process'
+  id: totrans-split-131
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Generative modeling by estimating gradients of the data distribution](https://yang-song.net/blog/2021/score/)
     introduces diffusion models from the continuous time perspective of reversing
     a stochastic differential equation'
+  id: totrans-split-132
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[The annotated diffusion model](https://huggingface.co/blog/annotated-diffusion)
     goes over a pytorch implementation of a diffusion model in detail'
+  id: totrans-split-133
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Citation
+  id: totrans-split-134
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'If you found this blog useful, please consider citing our paper:'
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-136
   prefs: []
   type: TYPE_PRE

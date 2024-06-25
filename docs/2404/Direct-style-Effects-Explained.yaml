@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:35:51'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Direct-style Effects Explained
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.inner-product.com/posts/direct-style-effects/](https://www.inner-product.com/posts/direct-style-effects/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,6 +29,7 @@
     and [OCaml](https://github.com/ocaml-multicore/ocaml-effects-tutorial), are coming
     to [Scala](https://www.youtube.com/watch?v=0Fm0y4K4YO8), and I’m seeing discussion
     about them in other [closely-related-to-industry contexts](https://without.boats/blog/coroutines-and-effects/).
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'The goal is very simple: to allow us to write code in a natural style without
@@ -32,6 +39,7 @@
     direct-style effects. In this post I want to address this confusion by explaining
     the what, the why, and the how of direct-style effects using a Scala 3 implementation
     as an example.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: There is quite a bit going on here. First we’ll talk about the problem we’re
@@ -41,9 +49,11 @@
     and see how they can solved by two language features, one well known (delimited
     continuations) and one in development (type system innovations). Finally I’ll
     give some pointers to more about information on this topic.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: What We Care About
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -57,10 +67,12 @@
     goes into detail.) Therefore, replacing side effects with something in keeping
     with these core principles is considered an important problem in functional programming.
     Solutions to this problem are called **effect systems**.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'Nota bene: in this post I use the term *side effect* for uncontrolled effects,
     and just *effect* for effects that are controlled in a more desirable way.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Monads are the most common effect system in modern functional programming, but
@@ -70,13 +82,16 @@
     checker. Most current research work focuses on what are called **algebraic effects**
     and **effect handlers**. It’s this kind of approach we will be exploring, though
     we have some background to get through first.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Now we known why effect systems are interesting, let’s look at some of the design
     choices in effect systems.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: The Design Space of Effect Systems
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -85,9 +100,11 @@
     style in which code is written, the separation between description and action,
     and some of the nuances in how effect systems can help us reason about and compose
     effectful code.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Direct and Monadic Style
+  id: totrans-split-16
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -97,33 +114,41 @@
     it has. Here we will look at **direct style**, which is code as we want to write
     it, and **monadic style**, which is code as monadic effect systems force us to
     write it.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Direct style code is code as it is usually written. You call functions, they
     return results, and you use those results in further computations. Here’s the
     kind of code we write in direct style.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: We don’t need to say much about direct style, other than that it is desirable
     to write in this style.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: As most Scala programmers will have experienced, we must write code in a different
     style if we are to use monads. In monadic style the code above ends up looking
     something like
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: This is considered annoying enough that languages that support monads usually
     provide special syntax for them. In Scala we can write
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: This isn’t too bad. Lots of developers have written code like this. However,
@@ -132,9 +157,11 @@
     using monads, it is usually the case that all of our code has to be transformed
     to monadic style. So ideally an alternative effect system would allow us to continue
     to write in direct style.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Description and Action
+  id: totrans-split-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -143,23 +170,28 @@
     composition. Consider perhaps the simplest effect in any programming language:
     printing to the console. In Scala we can accomplish this as a side effect with
     `println`:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: Imagine we want to compose the effect of printing to the console with the effect
     that changes the color of the text on the console. With the `println` side effect
     we cannot do this. Once we call `println` the output is already printed; there
     is no opportunity to change the color.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Let me be clear that the goal is *composition*. We can certainly use two side
     effects that happen to occur in the correct order to get the output with the color
     we want.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'However this is not the same thing as composing an effect that combines these
@@ -168,60 +200,76 @@
     effects: they have “action at a distance” meaning one part of the program can
     change the meaning of another part of the program. This in turns means we cannot
     reason locally, nor can we build programs in a compositional way.'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: What we really want is to write code like
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: which limits the foreground colour to just the given text. We can only do if
     we have a separation between describing the effect, as we have done above, and
     actually running it.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Reasoning and Composing with Effects
+  id: totrans-split-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Effect systems should help us reason about what code does. Take for example,
     the following method signature:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: What happens when we call this method? Returning `Unit` suggests it has some
     side-effect, but what is that side-effect? It could print to the console, raise
     an exception, or wake a Great Old One to destroy the Earth. We cannot tell.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Using the `IO` monad is similar. If we instead see the method signature
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: we again don’t know what effects will occur but we do have some way to manipulate
     those effects. We can attempt to cancel the effects, for example, by writing
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: or instead recover from errors using `handleError`.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: It’s important to note that we can do this manipulation of effects in a composable
     way. For instance, we can pass the `IO` to some other method that chooses how
     to manipulate it.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: We cannot do this in the first case that uses side-effects.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Before we get into effect systems, there another issue I want to quickly deal
@@ -231,17 +279,21 @@
     from the keyboard and prints to the screen. Monad transformers are one way to
     achieve this, but they are difficult to use. A more common alternative is tagless
     final. The method signature
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: indicates this method requires a `WakeGreatOldOne` effect, which we might use
     to decide to not call the method. Tagless final is also inconvenient, but not
     so inconvenient to stop it becoming relatively common in the Scala world.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Direct-style Effect Systems in Scala 3
+  id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -249,14 +301,17 @@
     some machinery that is new in Scala 3\. Since that’s probably unfamiliar to many
     readers we’re going to start with an example, explain the programming techniques
     behind it, and then explain the concepts it embodies.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Our example is a simple effect system for printing to the console. The implementation
     is below. You can save this in a file (called, say, `Print.scala`) and run it
     with `scala-cli` with the command `scala-cli Print.scala`.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'A `Print[A]` is a description: a program that when run may print to the console
@@ -264,33 +319,40 @@
     You can think of a context function as a normal function with `given` (implicit)
     parameters. In our case a `Print[A]` is a context function with a `Console` given
     parameter. (`Console` is a type in the Scala standard library.)'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'Context function types have a special rule that makes constructing them easier:
     a normal expression will be converted to an expression that produces a context
     function if the type of the expression is a context function. Let’s unpack that
     by seeing how it works in practice. In the example above we have the line'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: '`Print.println` is an expression with type `Unit`, not a context function type.
     However `Print[Unit]` is a context function type. This type annotation causes
     `Print.println` to be converted to a context function type. You can check this
     yourself by removing the type annotation:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: This will not compile.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: We use the same trick with `Print.apply`, which is a general purpose constructor.
     You can call `apply` with any expression and it will be converted to a context
     function. (As far as I know it is not essential to use `inline`, but all the examples
     I learned from do this so I do it as well. I assume it is an optimization.)
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'Running a `Print[A]` uses another bit of special sauce: if there is given value
@@ -299,22 +361,27 @@
     example of which is shown below, work. The calls to `Print.print` are in a context
     where a `Console` is available, and so will be evaluated once the surrounding
     context function is run.'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: 'That’s the mechanics of how direct-style effect systems work in Scala: it all
     comes down to context functions.'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'Notice what we have in these examples: we write code in the natural direct
     style, but we still have an informative type, `Print[A]`, that helps us reason
     about effects and we can compose together values of type `Print[A]`.'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: I’m going to deal with composition of different effects and more in just a bit.
     First though, I want describe the concepts behind what we’ve done.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: 'Notice in direct-style effects we split effects into two parts: context functions
@@ -322,6 +389,7 @@
     In the literature these are called algebraic effects and effect handlers respectively.
     This is an important difference from `IO`, where the same type indicates the need
     for effects and provides the implementation of those effects.'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Also notice that we use the argument type of context functions to indicate the
@@ -329,12 +397,15 @@
     avoids the [“colored function”](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)
     problem with monads. We can think of the arguments as specifying requirements
     on the environment or context in which the context functions, hence the name.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: Now let’s look at composition of effects, and effects that modify control flow.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: Composition of Direct-Style Effects
+  id: totrans-split-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -342,21 +413,27 @@
     parameters to our context function. Here’s a simple example that defines another
     effect, `Sample`, for producing random values, and then builds a program that
     requires both `Print` and `Sample`.'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: First we define the effect, using the same pattern as before.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: Now we can use both `Print` and `Sample`.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: Effects That Change Control Flow
+  id: totrans-split-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -364,6 +441,7 @@
     don’t alter the control flow at all. Many interesting effects, such as error handling
     and concurrency, require manipulation of the program’s control flow. How do we
     handle this in our model?
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'We need a slight extension to accomodate this: when the user program calls
@@ -373,39 +451,48 @@
     value that can be invoked to continue execution from the point that called the
     effect handler. Cooperative threads, fibers, generators, and coroutines are all
     examples of abstractions that use a form of continuations.'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: Continuations can be implemented as a program transform, but for performance
     we ideally want runtime support. This is why [Scala Native is getting continuations](https://github.com/scala-native/scala-native/blob/main/nativelib/src/main/scala-3/scala/scalanative/runtime/Continuations.scala).
     On the JVM, [Project Loom](https://cr.openjdk.org/~rpressler/loom/Loom-Proposal.html)
     adds them.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Scala 3 does not yet expose a continuation API, but it does have non-local exits
     in `scala.util.boundary` that can express a few interesting things. Here’s an
     example implementing error-handling in the style of exceptions.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: Notice that we still have the separation between description and action. The
     `program` isn’t run until we call `Raise.run`, and the control-flow exits at the
     point where it is run, not at the point where it is defined.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Using direct-style effects we can write programs that would have to use `traverse`
     or other combinators in monadic style. Here’s an example that produces an `Option[List[Int]]`
     from a `List[Int]`.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-84
   prefs: []
   type: TYPE_PRE
 - en: 'This is the equivalent of the following program using Cats:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: 'You might wonder how monads implement effects that play with control flow without
@@ -416,23 +503,28 @@
     monad implementation. In fact monads are [equivalent to delimited continuations](https://dl.acm.org/doi/10.1145/174675.178047).
     So direct-style effects and monad effects can be seen as just two different syntaxes
     for writing the same thing.'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Capturing, Types, and Effects
+  id: totrans-split-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'What we’ve seen so far suggests that effects are straightforward to implement
     and use, and they are for the most part. However there is at least one wrinkle
     that we need to be aware of: capturing effects.'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: In the following code we capture a `Error[String]` in a closure, and then attempt
     to call the `raise` method on that `Error` outside of the block where it is valid.
     This leads to a runtime exception.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-91
   prefs: []
   type: TYPE_PRE
 - en: Is this a serious flaw in the entire foundation of direct-style effects? No!
@@ -440,6 +532,7 @@
     in Scala 3\. [Capture checking](https://dotty.epfl.ch/docs/reference/experimental/cc),
     which is still experimental, rules out this kind of bug. The [Capturing Types](https://dl.acm.org/doi/10.1145/3618003)
     paper has all the technical details.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: Capture checking in fact goes further than the examples we’ve seen so far. It
@@ -451,31 +544,38 @@
     the type system works out these types for us. It can also be use for resource
     checking, such as ensuring all open files are closed or that region-based memory
     management is implemented without leaks.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusions and Further Reading
+  id: totrans-split-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'We’ve seen that direct-style effect allow us to write code in a natural direct
     style, while still retaining useful types that help with reasoning and allowing
     composition of effects. The implementation is a combination of:'
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: context functions;
+  id: totrans-split-96
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: continuations; and
+  id: totrans-split-97
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: type system improvements
+  id: totrans-split-98
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: which together allow us to express effects in direct-style as operations on
     effect handlers.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: Overall, I’m pretty excited by direct-style effects in general, and direct-style
@@ -484,6 +584,7 @@
     I’m also excited to have access to continuations, and presumably tail calls, in
     more languages. Tail calls are really useful for certain problems, such as [virtual
     machine dispatch](https://noelwelsh.com/posts/understanding-vm-dispatch/).
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: I’m also excited to see Scala continuing to evolve. Scala has always been a
@@ -495,15 +596,18 @@
     I also think Scala Native is important for Scala’s industrial adoption in use
     cases like serverless, so I see more investment in Scala Native as a *big* win
     for the community.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you’d like to read more about direct-style effects here are some suggestions,
     which are a mix of accessible introductions and academic papers:'
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, if you’ve found this interesting I think you’ll love my book, [Functional
     Programming Strategies](https://scalawithcats.com/). It covers lots of the concepts
     in this post, such as continuation-passing style and interpreters, and a whole
     lot more.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL

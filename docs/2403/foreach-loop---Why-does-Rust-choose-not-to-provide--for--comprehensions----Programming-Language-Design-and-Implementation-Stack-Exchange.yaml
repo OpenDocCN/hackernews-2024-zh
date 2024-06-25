@@ -1,132 +1,165 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:49:57'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: foreach loop - Why does Rust choose not to provide `for` comprehensions? - Programming
     Language Design and Implementation Stack Exchange
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://langdev.stackexchange.com/questions/2848/why-does-rust-choose-not-to-provide-for-comprehensions](https://langdev.stackexchange.com/questions/2848/why-does-rust-choose-not-to-provide-for-comprehensions)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Python List Comprehensions
+  id: totrans-split-6
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'In Python, there are 3 blessed collections -- `list`, `set`, and `dict` --
     for which syntactic sugar built into the language allow creating one, or the other,
     directly. The List Comprehension syntax available in Python allows creating either:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: This is great when you use them... and less so when you'd like another.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'Equality: no second-class citizen in Rust!'
+  id: totrans-split-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Rust is a Systems Programming Language.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'In Python, most developers do not know, nor care, exactly how `dict` works
     under the hood: what''s the memory layout? The type of hash-map used? The hashing
     algorithm used?'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Systems Programmers, however, do care. They may care due to performance reasons,
     they may care due to the lack of memory allocation in their domain (embedded,
     kernel). This means that unlike Python developers, they are *much* more likely
     to need specialized collections, rather than the run-of-the-mill standard collections.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: And therein lies the rub. The thought of all those specialized collections being
     second-class citizens, and much more awkward to use than 3 blessed standard collections,
     did not sit well with Rust developers.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'Therefore, instead of creating a list-comprehension syntax that would only
     be usable with 3 standard collections, they instead focused on making the operations
     you are looking for work with any collection via Rust''s powerful trait system:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: The `Iterator` trait allows iterating over anything, and provides many way to
     filter/transform the elements being yielded.
+  id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The `FromIterator` trait allows any type implementing it to be built from an
     `Iterator`.
+  id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Therefore, it is perfectly possible to create one collection from another:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: '*Note: It is not possible to *directly* create an array due to fallibility
     concerns, though maybe one should submit a RFC to allow collecting into a `Result<[_;
     _], _>` as that would handle the fallibility concerns.*'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Iterator chains are very powerful: take, skip, filter, filter_map, enumerate,
     ... so that list comprehensions would be a step down (they can only map and filter)
     in many cases.'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Is it worth having special syntax for the easy case? Well, so far, the answer
     from Rust developers has been that they don't feel it would be.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'On a tangent, the same iterators chains are available for *extending* an existing
     collection with more elements:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: The `extend` method takes any iterator yielding elements of the same type as
     the collection.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Macros!
+  id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: It should also be noted that Rust has macros.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'A quick search on [crates.io](https://crates.io) reveals that some Rust users
     felt the need for quick & easy, and they went ahead and created macros for it,
     such as the [`list_comprehension_macro`](https://crates.io/crates/list_comprehension_macro)
     crate (and a bunch of others). From the README:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: This, in turn, is also a disincentive to include any such functionality in the
     standard library, as it's easy enough to make your own, or use a 3rd-party library.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '*Note: a somewhat minimal standard library is also an explicit goal of Rust
     developers.*'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL

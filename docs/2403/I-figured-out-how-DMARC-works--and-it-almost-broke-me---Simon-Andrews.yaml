@@ -1,63 +1,79 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:59:35'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: I figured out how DMARC works, and it almost broke me | Simon Andrews
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc](https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I figured out how DMARC works, and it almost broke me
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: How to prevent email spoofing on your domain, using an unholy combination of
     silly standards.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Recently, I encountered a problem. My domain didn't correctly implement SPF,
     DKIM, or DMARC.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'Then, I encountered a second problem: I had no idea what those were, and seemingly
     *nobody* has written about SPF, DKIM, or DMARC in a way that a human can understand,
     not to mention implement. Every article I found was either highly technical, trying
     to game SEO to sell me something, or too high level to be useful.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: As a result, I've had to do a lot of hard work and research to understand this
     problem. Hopefully, because I had to do this, you won't.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'There''s two main sections here: a human explanation of what these things are,
     followed by a reasonably straightforward way to implement them.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: This might not be easy, but if you've landed here, it's probably not optional.
     I hope this helps.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '*I''m keeping this article up-to-date as I learn more, so it''ll change and
     grow. If you want to keep track of what''s changed since the last time you were
     here, [check the diffs on GitHub](https://github.com/simon360/simonandrews.ca/commits/main/pages/articles/how-to-set-up-spf-dkim-dmarc.mdx).*'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Table of contents
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: What are these weird acronyms?
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -65,73 +81,90 @@
     servers as indicators of whether or not an email is spam. DMARC then does two
     things: it tells email servers how *important* SPF and DKIM are, *and* what to
     do when an email fails to pass their tests.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: This probably doesn't make much sense yet - that's fine. Let's dig a little
     deeper.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: SPF
+  id: totrans-split-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '`SPF` is a way to declare who''s allowed to send emails from your domain. It
     stands for the "sender policy framework," but you don''t need to know that. Just
     call it SPF, or "spoof." It''s meant to make it harder to send spoof emails.'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: For example, it's a way to say "emails from mycompany.com can only be sent from
     Google and Postmark." Declaring SPF makes it harder for me to send emails from
     your domain in an attempt to phish.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s how it works, for a *valid, non-phishing* email:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: I send an email to you from `hello@sadl.io`, using my Fastmail SMTP server.
+  id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Gmail (your email service) receives the email.
+  id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The email is from someone at `sadl.io`, so Gmail grabs the DNS records for `sadl.io`
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '`sadl.io` has a DNS record that declares its SPF policy. It says that emails
     can be sent from Fastmail.'
+  id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This email was sent from Fastmail, so it passes the SPF test.
+  id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The email lands in your inbox.
+  id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: That's all great! `SPF` hasn't stopped me from sending a real email to you.
     But it seems pretty simple. So... what *would* it stop?
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'Emails are notoriously easy to spoof. To me, even though I haven''t written
     PHP in years, *nothing* demonstrates this more simply than this PHP script:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: This script sends an email to `employee@example.com`, which looks like it comes
     from `payroll@example.com`, and asks the employee to enter their banking details.
     It's a pretty compelling email, and could probably get a few people to, at least,
     click the link - or worse.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: You could run this script *right now*, and if `example.com` hasn't set up SPF,
     an email might actually reach the inbox of `employee@example.com`.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Seriously, it''s that simple. We''ve all learned this at one time or another:
@@ -140,34 +173,42 @@
     heard, or said. We shove it to the back of our minds. We know emails are insecure,
     but we use them anyway. Turns out that''s not entirely true. SPF can actually
     start to help cut down on spoofing.'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'If SPF were set up, here''s what would happen when that script runs:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: An email gets sent to `employee@example.com`.
+  id: totrans-split-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This email gets received by Google, who run the mail server for `example.com`
+  id: totrans-split-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Since it's an email from `example.com`, Google gets the DNS records for `example.com`
+  id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '`example.com` has an SPF policy declared, which states that emails can only
     be sent from Google.'
+  id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This email wasn't sent from Google; it was sent from a local mail server.
+  id: totrans-split-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Since the sending domain doesn't match a domain that's allowed by `example.com`,
     the email is marked as spam. *Maybe*.
+  id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -175,9 +216,11 @@
     without DMARC. We''ll get to that, but suffice to say: if you''ve just set up
     SPF, it''s mostly informational. Some email servers *might* use it, but they might
     not treat it with much importance. DMARC lets you increase its importance.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: On envelopes vs. letters
+  id: totrans-split-42
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -185,17 +228,20 @@
     now, read the rest of the article, and come back to it again after. It makes a
     lot more sense once you understand DMARC alignment, but we're not there yet. Alright.
     Here goes.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'First off: shout out to Liam, who correctly pointed out an inaccuracy with
     this description of SPF. SPF *actually* checks the validity of the "envelope from",
     not "from".'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'Liam pointed me to an article that explains the difference between two things:
     an email (think of it as a letter), and the SMTP interactions that transport that
     letter (an envelope). It''s from XEAMS, and you can (and should!) [read it here](https://www.xeams.com/difference-envelope-header.htm).
     But I''ll paraphrase it:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: The **email** is what you see in your client. It includes the message body,
@@ -206,11 +252,13 @@
     - in your email client, whether it's an app or a website, you'll probably be able
     to find a menu item called "View original" or "View raw message". That'll show
     you what an email *really* is. But it doesn't show you the envelope.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'The **envelope** is what happens at the SMTP level. I''ll defer to the XEAMS
     article on what SMTP looks like, but in effect: the *envelope* can contain a *completely*
     different `MAIL FROM` email address than the email''s `From` header.'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'You''ll hear a few different terms thrown around to describe the SMTP `MAIL
@@ -218,10 +266,12 @@
     thing. I like "envelope from" colloquially, because the analogy is clever, but
     I think it''s useful to know that it comes from the SMTP protocol command used
     to deliver your email.'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: 'Which brings us to this: SPF *doesn''t actually care about the From header
     in your email*. It only cares about the `MAIL FROM` value.'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Later on, we''ll talk about DMARC alignment. But here''s a spoiler: with DMARC
@@ -230,6 +280,7 @@
     the same as the domain in the FROM address." In effect, it makes that PHP spoofing
     example run *roughly* the way you''d expect, but it takes a bit of a circuitous
     route to get there.'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: I've left this inaccuracy in the above section. Why? Well... explaining the
@@ -239,15 +290,18 @@
     you - but if it helps, I wrote the first version of this article not knowing the
     difference, and I still *essentially* got a decent understanding of SPF out of
     it.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: DKIM
+  id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '`DKIM` is a way to declare signing keys for emails from your domain. It stands
     for DomainKeys Identified Mail. Again... that doesn''t matter. It''s Dee-Kim.
     You can think of it as SPF''s cryptographic cousin.'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'It means that an email server that receives an email can check if that email
@@ -255,6 +309,7 @@
     there''s two keys: a private one, held by your email sending server (SMTP) and
     known by no one else, and a public one, set in your DNS, which can be seen by
     *anybody* and used to determine if a signature was made using that secret key.'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: A domain can have multiple DKIM keys, by the way. That took me a long time to
@@ -264,78 +319,95 @@
     you're authorising those services to send on behalf of your domain - it's similar
     to adding them in SPF, but instead of being about domains, it's about knowing
     a secret,
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s how it works in a happy path:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: I send an email from `hello@sadl.io` to `somebody@gmail.com`.
+  id: totrans-split-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This email goes through my Fastmail SMTP server in order to be sent.
+  id: totrans-split-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The Fastmail SMTP server generates a signature using the secret key, and attaches
     it to the email, then sends it to `example.com`'s receiving server.
+  id: totrans-split-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The Google email server receives this email. It's from `sadl.io`, so it gets
     the DNS records.
+  id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The email has a signature embedded, and the DNS records for `sadl.io` declare
     a few public DKIM keys which can be used to verify that signature.
+  id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: One of those DKIM keys matches the one used to make this signature - specifically,
     the one that Fastmail provides. So the DKIM test passes.
+  id: totrans-split-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The email lands in `somebody@gmail.com`'s inbox.
+  id: totrans-split-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'The unhappy path here is fairly straightforward. You could use the same PHP
     script from the SPF section. Here''s what would happen:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: I run this script. An email gets sent to `employee@example.com`.
+  id: totrans-split-65
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This email gets received by Google, who run the mail server for `example.com`
+  id: totrans-split-66
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Since it's an email from `example.com`, Google gets the DNS records for `example.com`
+  id: totrans-split-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The `SPF` test fails. But that *might* be ok, because `example.com` declares
     some DKIM keys in its DNS records.
+  id: totrans-split-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'This email doesn''t have a signature attached. So none of those DKIM keys are
     useful. (Alternative: the email *does* have a signature attached, but it doesn''t
     match the signature that would be generated by any of the public keys on `example.com`).'
+  id: totrans-split-69
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Since the email failed the SPF test *and* the DKIM test, it's marked as spam.
     *Maybe*.
+  id: totrans-split-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Yup. Once again: *maybe*. An email could fail *both* of these tests, and still
     land in a user''s inbox. You''ve put all this work in, and *still*, your email
     domain can be spoofed with 5 lines of *incredibly basic* PHP.'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: If you're me, it's taken hours to get to this point. You're dejected and demotivated.
@@ -343,44 +415,54 @@
     You've nervously updated DNS records, afraid that you're going to break your organisation's
     email services - only to discover that, on the contrary, you've effectively accomplished
     nothing. Everything is terrible. You briefly reconsider your career choices.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: 'There''s one acronym left on your list of things to implement: DMARC. Another
     miserable email security practice to implement, and - you expect - one more solution
     that leads to a dead end.'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: Alright. Fine. Screw it. Let's get into it. But if this doesn't work, I give
     up.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: DMARC
+  id: totrans-split-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I have good news for you. DMARC *will* make SPF and DKIM work better.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'But there''s some bad news, too: it''s a bit complicated, and requires some
     more infrastructure.'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, what is DMARC? At its core, it''s actually two things, packaged up into
     one DNS record:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: It's a policy, which declares what email servers should do when an email fails
     SPF and DKIM tests
+  id: totrans-split-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: It's a reporting system, so that you can figure out who is trying to spoof your
     domain
+  id: totrans-split-80
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You're probably more interested in 1, but 2 is super important. To understand
     why, let's talk about why SPF and DKIM don't do the thing you thought they did.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Emails are complicated. If you haven't come to that conclusion by this point,
@@ -388,10 +470,12 @@
     standards that have been written over decades. People do unexpected things with
     emails. There are intricate systems that were set up in the 90s that still run,
     unobstructed, on top of email.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Changing how emails works tends to break things. And that's what SPF and DKIM
     do.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: SPF and DKIM are used as *indicators* of whether an email is spoofed or not.
@@ -401,22 +485,27 @@
     emails. If you added DKIM keys to your domain, but one of your email services
     doesn't support DKIM - or you forgot to add DKIM keys for that service - your
     customers could stop getting emails.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: But they *don't* stop getting emails. Some emails will fail both SPF *and* DKIM,
     and still end up in users' inboxes. It's entirely at the discretion of the receiving
     email server, and they can be quite lenient. That's good for the services you
     forgot to add, but it's bad for the spoofers you're trying to squash.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'You want to do two things:'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: Find out what services you misconfigured, so you can fix them.
+  id: totrans-split-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Stop spoofers from abusing your domain.
+  id: totrans-split-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -426,32 +515,39 @@
     In other words: you can use DMARC to find out about emails sent from your domain
     that *would* fail the SPF/DKIM tests, *without* telling email servers that all
     emails failing those tests should be marked as spam.'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: Once you're satisfied that you've configured everything, and all the reports
     you get are for spoof emails, you can update your policy to tell email servers
     that those tests are now important. It gives you a bit of time to validate and
     test, before you switch over to enforcing your SPF/DKIM rules.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: 'Implementing DMARC goes something like this:'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: Read this article, bash your head against a wall, openly weep.
+  id: totrans-split-92
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Implement a lenient DMARC record in your domain's DNS, so that you start getting
     reports.
+  id: totrans-split-93
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Read through the reports you get over the next days and weeks. Check if any
     valid emails are getting flagged for failing DKIM or SPF. If they are, fix them.
+  id: totrans-split-94
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Update your DMARC record to make it less lenient.
+  id: totrans-split-95
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -460,18 +556,22 @@
     update them to match my domains, and implement them, all within an hour or two.
     That's not how it works. This takes some effort, and you need to let some time
     elapse.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: 'In other words: email is complicated.'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: Luckily, as I said, I've done the hard work here, because I don't think *anybody*
     should have to figure this out on their own again. For you, this process will
     have to play out over the course of a few days or, more likely, a few weeks, but
     within a few minutes, you can be well on your way.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Let's talk about alignment
+  id: totrans-split-99
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -480,20 +580,24 @@
     the domain on the DKIM signature and the From header. In both cases, the From
     header can be thought of as the anchor: it''s the thing users see, so either SPF
     or DKIM needs to vouch that the From header is what it should be.'
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'This finally does the thing we set out to do. That PHP script at the top will,
     now, only succeed in getting an email to the inbox if one of two things is true:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: The PHP script is running on an IP address that is authorised to send for `example.com`
     using SPF, *and* both the SMTP MAIL FROM and the From header end in `example.com`,
     *or*
+  id: totrans-split-102
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The PHP script is hooked up to a mail server that can sign an email with DKIM,
     using a key that's valid for `example.com`, and the From header ends in `example.com`.
+  id: totrans-split-103
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -501,43 +605,53 @@
     the same IP. Otherwise, the words I have to use just become a jumble. The script
     could be hooked up to an external mail server, and as long as *that* mail server
     is allowed in SPF, or can sign for the domain with DKIM, it'll work fine.)
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: Now might be a good time to jump back to the [envelope from](#on-envelopes-vs-letters)
     section - it pairs nicely with this section.
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: How do I use them?
+  id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Here''s the good news: you *probably* have SPF and DKIM records set up for
     your domain. These days, most email services will give you the correct DNS records
     to add, and offer tools to verify that they''re set up correctly.'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: Implement SPF
+  id: totrans-split-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'SPF is set up as a `TXT` record in your domain''s DNS. Here''s what mine looks
     like for simonandrews.ca:'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-110
   prefs: []
   type: TYPE_PRE
 - en: It's declared directly on `simonandrews.ca` as a `TXT` record - not on a subdomain.
     If I were sending emails from `newsletter.simonandrews.ca`, I'd need *another*
     record for that subdomain.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: 'Most SPF records are going to look like this, though many will have more than
     one `include:` clause. Let''s break this down:'
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: '`v=spf1`: Declares this as an SPF record, as distinct from the other things
     you might declare in a TXT record. It''s SPF v1.'
+  id: totrans-split-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -548,6 +662,7 @@
     Mandrill, for transactional emails. You can have as many of these as you want.
     If you want to see what `include:` does after you''ve set up SPF on your domain,
     check out the dmarc analyser [SPF Record Checker](https://www.dmarcanalyzer.com/spf/checker/).'
+  id: totrans-split-114
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -556,6 +671,7 @@
     (`-`) on "all others" (`all`). In other words: "if none of the previous declarations
     matched an email you received from our domain, then the email you received is
     probably spoofed."'
+  id: totrans-split-115
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -566,6 +682,7 @@
     doesn't match these domains, it doesn't matter." *If you use `~all` or `?all`,
     your SPF record isn't doing very much, even if you set up DMARC.* Use `-all` instead.
     **Seriously, use `-all` instead.** Always put it at the end of your SPF record.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: 'Like I said, most email services these days provide the SPF record you should
@@ -576,6 +693,7 @@
     that will guide you and validate your settings. Their support teams may be able
     to help, failing that. And, remember: if they suggest `~all` or `?all`, ignore
     it and use `-all` instead.'
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '**N.B.** SPF used to be its own DNS record type - instead of declaring a TXT
@@ -585,9 +703,11 @@
     It''s DNS, so this probably gives you anxiety, but trust me here. SPF-type records
     are going away, and all email services that obey SPF records will read them from
     TXT-type records. You want to do this.'
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: Main takeaway
+  id: totrans-split-119
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -595,9 +715,11 @@
     at the time. It was probably just one of a hundred small tasks you did when you
     signed up for an emailing platform. But you should check it. Use your email services'
     tools to check them, but do a manual check, too. And never forget to use `-all`.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: Resources
+  id: totrans-split-121
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -605,15 +727,18 @@
     There's quite a lot more available than I've described, but in my experience,
     you don't need all that detail. Regardless, now that you know the basics (congratulations,
     by the way!), this page should make sense.
+  id: totrans-split-122
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The dmarc analyser [SPF Record Checker](https://www.dmarcanalyzer.com/spf/checker/)
     is a good way to check your SPF records.
+  id: totrans-split-123
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Implement DKIM
+  id: totrans-split-124
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -621,6 +746,7 @@
     provide instructions to set up DKIM, like with SPF. If they don't provide instructions,
     it probably means they don't support DKIM. If they *do* provide instructions,
     you'll want to follow them *to the letter*.
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: Normally, a DKIM public key lives in your DNS records on a subdomain of `_domainkey.yourdomain.net`
@@ -628,11 +754,13 @@
     `fm2._domainkey.simonandrews.ca`, and `fm3._domainkey.simonandrews.ca`, per their
     instructions. It might be a `TXT` record, with the key directly inline, or a `CNAME`
     record that points to a public key hosted by your email providers.
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: When an email gets signed by the sending server using DKIM, the signature will
     include the identifier to use - for example, on my domain, it would be one of
     `fm1`, `fm2`, or `fm3`.
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: I won't get into the structure here *at all*. It varies by provider, but *will*
@@ -640,24 +768,29 @@
     probably something in a service's Domains dashboard that tells you what to do,
     and validates your configuration. You may have set DKIM up already, and didn't
     know it.
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: Main takeaway
+  id: totrans-split-129
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Your email providers will tell you how to set up DKIM, if they support it. Trust
     them, and follow their instructions. If they don't support DKIM, it's not the
     end of the world - but make sure SPF is set up correctly.
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: Resources
+  id: totrans-split-131
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Postmark have a [very good write-up of DKIM](https://postmarkapp.com/guides/dkim).
     It's better than anything I could write - though understanding the basics, as
     you do now, will help you understand that document on your first read.
+  id: totrans-split-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -665,14 +798,17 @@
     you can use to validate your setup. You'll need your domain name, and the key
     (like `fm1` for Fastmail), because DKIM is declared on subdomains, not your domain
     root.
+  id: totrans-split-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Implement DMARC
+  id: totrans-split-134
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Oh boy, you're gonna hate this part.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: This is the part that I've found most difficult to research. There are a *bunch*
@@ -680,10 +816,12 @@
     none of them explain what DMARC is, at least not publicly. They don't give you
     the information to understand what's going on and what you'll need to do - instead,
     they're trying to sell you something that will just fix it for you.
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: I don't trust companies that game SEO, so I didn't trust any of these articles.
     I wanted to get down to basics.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: Here's the bad news, though. I glossed over something earlier, when we talked
@@ -691,14 +829,17 @@
     now. You understand most of the concepts we're dealing with, and even if your
     email domains aren't locked down yet, they're definitely better. But... DMARC
     reports are sent as XML files.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: I'm so, so sorry.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: DMARC reports aren't meant to be read by humans. If you have a domain that has
     any volume of emails, you'll probably get a lot of DMARC reports of spoofing.
     Those reports are meant to be interpreted and aggregated by a machine.
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: 'In other words: unless you''re willing to manually read XML reports to figure
@@ -707,30 +848,37 @@
     provider. Those companies that are gaming SEO, and being cryptic about what DMARC
     actually is so they can sell you something? You''re probably going to give one
     of them some money.'
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: 'Anyway. Let''s start with the basics. Pretend that I didn''t just say that.
     While the reports aren''t fun to interpret manually, it''d be good to get our
     hands on some so we can get a feel for what this is. We''re going to go through
     3 phases:'
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: Implement a lenient DMARC policy and start collecting reports
+  id: totrans-split-143
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Wait, watch and analyze
+  id: totrans-split-144
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Increase the strictness of your DMARC policy
+  id: totrans-split-145
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: That's not too bad. Let's start with a super simple DMARC policy.
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: The lenient policy
+  id: totrans-split-147
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -738,50 +886,63 @@
     which actually just forwards to my personal email address. Then, I added a `TXT`-type
     DNS record on `_dmarc.simonandrews.ca` that looks like this - yours will go on
     `_dmarc.mydomain.net`:'
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-149
   prefs: []
   type: TYPE_PRE
 - en: Whoa whoa whoa... what's that? Ok. Let's break it down.
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: 'There''s the *policy* declarations:'
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: '`v=DMARC1` says "this is DMARC version 1"'
+  id: totrans-split-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`p=none` says "if SPF or DKIM fail, you don''t need to do anything." Remember
     when I said we''d implement a lenient policy? This is it.'
+  id: totrans-split-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`pct=100` says "apply this policy to *all* emails from my domain"'
+  id: totrans-split-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'And then we''ve got the *reporting* declarations:'
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-156
   prefs: []
   type: TYPE_PRE
 - en: This tells an email server to send **aggregate** reports of spoofed emails to
     `postmaster@simonandrews.ca`
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-158
   prefs: []
   type: TYPE_PRE
 - en: This tells an email server to send **forensic** reports of spoofed emails to
     `postmaster@simonandrews.ca`
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
 - en: This policy... works. If you set up your own postmaster email address, and use
     this DMARC record, you'll be well on your way. Go ahead and do that. Within a
     few days, you'll start getting reports.
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: Don't believe me? Try setting up DMARC using a configuration like this, giving
@@ -790,9 +951,11 @@
     a report right away, and the spoofed email generated by the script might even
     end up in your inbox. But within 24 hours, you'll probably get your first DMARC
     report.
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: Sit back and watch
+  id: totrans-split-162
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -801,41 +964,50 @@
     get a high volume of reports - you'll probably want to stand up a DMARC server
     like [lafayette](https://github.com/LinkedInAttic/lafayette), or use a third party
     service, to handle these reports.
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
 - en: Regardless, after you've got some reports through, start analysing the reports.
     Are emails failing SPF or DKIM tests, that shouldn't be? Did you misconfigure
     a service? Are you or your company sending emails with a service you weren't aware
     of? Or, is there a spoofer who's aggressively abusing your domain?
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: What can you expect? Well, here's a report I got, after I ran that PHP script
     from earlier and sent to a Gmail address I have. I added in some comments, to
     outline what it's telling you.
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-166
   prefs: []
   type: TYPE_PRE
 - en: If you're running a large domain, you'll get a bunch of these reports. If you're
     running a small one, you might be able to handle it yourself.
+  id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
 - en: Regardless, with a bit of time, you'll be confident you've set the policy correctly.
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: Increase the strictness
+  id: totrans-split-169
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: When we first added DMARC, we set `p=none`. That says, basically, "don't *do*
     anything, just tell me about SPF and DKIM when they fail."
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you''re comfortable with the reports you''ve been receiving - that is, all
     of the emails in the reports are from spoofers, and all of the emails *you''re*
     sending are passing the tests - you can increase this parameter. You have two
     options:'
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: 'Set `p=quarantine`. This tells the receiving server that, if both SPF and DKIM
@@ -844,6 +1016,7 @@
     put in a quarantine where an administrator for the receiving domain can approve
     or reject it. Either way, this option is good: it locks your domain down, but
     gives users recourse when something goes wrong.'
+  id: totrans-split-172
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -853,29 +1026,35 @@
     services will be set up correctly, then this is probably the option for you. I'd
     say it's fine to set `p=quarantine`, and then ramp yourself up to set `p=reject`
     at a later date.
+  id: totrans-split-173
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: It's in your hands now, though.
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: Resources
+  id: totrans-split-175
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: dmarc.org have a good overview of [what DMARC records are made of](https://dmarc.org/overview/).
     If you want to skip right to the meaty stuff, read the section titled "Anatomy
     of a DMARC resource record in the DNS"
+  id: totrans-split-176
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: dmarc.org also have a list of [code and libraries](https://dmarc.org/resources/code-and-libraries/)
     you can use. That's where I found lafayette.
+  id: totrans-split-177
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: dmarcian have a [DMARC Record Checker](https://dmarcian.com/dmarc-inspector/),
     which will help validate that your policy is set up well.
+  id: totrans-split-178
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -886,22 +1065,27 @@
     give a reasonable breakdown (it turns out DMARC Digests is a service they provide,
     so it's not an unbiased source. Thanks to [max1cc on Hacker News](https://news.ycombinator.com/item?id=28193601)
     for pointing this out.)
+  id: totrans-split-179
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Troubleshooting
+  id: totrans-split-180
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Not receiving reports? You might need EDV
+  id: totrans-split-181
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Thanks to [Nicolas Lenz](https://www.eisfunke.com) for reaching out with this!*'
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
 - en: If you've set everything up right, and are waiting for DMARC reports that just
     aren't coming, you might need to set up EDV.
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
 - en: You can't send DMARC reports to *just anyone*. I can't, for example, set up
@@ -910,19 +1094,23 @@
     (his loss). To prevent annoying, unsolicited reports, DMARC implements a system
     known as EDV (which, depending on who you talk to, means either External Domain
     Verification or External Destination Verification).
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, when might you need it? You''d need to meet these two main conditions:'
+  id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
 - en: 'You''re sending your DMARC reports to a different domain. (EDV wouldn''t be
     necessary if I were sending reports from `simonandrews.ca` to `postmaster@simonandrews.ca`,
     because it''s not external. Remember: *external* domain verification.)'
+  id: totrans-split-186
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You're *not* using a third-party DMARC reporting service. (These tools should
     have EDV set up automatically.)
+  id: totrans-split-187
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -931,57 +1119,69 @@
     an email address on another domain that I own. In order for reporting to work,
     I''d need to configure DMARC on `sadl.io`, *and* configure EDV on `simonandrews.ca`
     to allow DMARC reports related to `sadl.io`.'
+  id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
 - en: 'Once you understand all of that, it''s easy: add a DNS `TXT` record on the
     receiving domain (`simonandrews.ca`, in this case), on the `sadl.io._report._dmarc`
     subdomain, with a value of `v=DMARC1`. In other words, something like...'
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-190
   prefs: []
   type: TYPE_PRE
 - en: Now, before a provider sends off a report to `postmaster@simonandrews.ca`, for
     emails related to `sadl.io`, it'll check `sadl.io._report._dmarc.simonandrews.ca`
     to see if it's willing to receive them.
+  id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
 - en: You can find more on the dmarc.org article, [Receiving DMARC Reports Outside
     Your Domain](https://dmarc.org/2015/08/receiving-dmarc-reports-outside-your-domain/).
+  id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
 - en: Wrapping up
+  id: totrans-split-193
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Chances are, you should implement all of these. But your implementation will
     probably fork off from mine, as you learn about it.
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
 - en: My main goal here was to provide you with a vocabulary, so you understand what
     SPF, DKIM, and DMARC are. I'm not an expert. I probably got some things wrong
     here. And this article, explicitly, only goes into the basics.
+  id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
 - en: But hopefully, now that you're here, you've got a basic understanding, and perhaps
     the start of an implementation. You can go read some other posts, and you won't
     be completely lost. I'd suggest looking at some of the resources I linked - they're
     not too complicated, and most won't try to sell you things.
+  id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks for coming along on this crazy, not-really-that-satisfying journey with
     me. I'll try and keep this post updated as I learn more, and welcome any and all
     feedback you might have. If I got anything wrong here (I'm absolutely certain
     I did), please reach out to [hello@sadl.io](mailto:hello@sadl.io).
+  id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
 - en: Corrections
+  id: totrans-split-198
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: You can take a look through all the changes I've made [on GitHub](https://github.com/simon360/simonandrews.ca/commits/main/pages/articles/how-to-set-up-spf-dkim-dmarc.mdx)
     - if you've read this article before, and just want to check the new stuff, I'd
     suggest reading the diffs.
+  id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
 - en: A previous version of this article claimed that Postmark provided an unbiased
@@ -989,6 +1189,7 @@
     In fact, they do, called DMARC Digests, which is mentioned in their guide. **Thanks
     to [max1cc on Hacker News](https://news.ycombinator.com/item?id=28193601) for
     correcting this.**
+  id: totrans-split-200
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -997,9 +1198,11 @@
     than correcting this (I *did* try, but the section came out too complex), I added
     an additional section that explains the difference. **Thanks to Liam for reaching
     out over email and setting me straight.**
+  id: totrans-split-201
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Last updated: 17 August 2021, 7:10 PM BST'
+  id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL

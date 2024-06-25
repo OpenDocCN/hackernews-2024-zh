@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:51:21'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Vision Transformers are Overrated | Frank’s Ramblings
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://frankzliu.com/blog/vision-transformers-are-overrated](https://frankzliu.com/blog/vision-transformers-are-overrated)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,6 +29,7 @@
     recognition setting, the receptive field of a pure ViT is effectively the entire
     image ^(. In particular, vanilla ViTs maintain the quadratic time complexity (w.r.t.
     number of input patches) of language models with dense attention.)'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Kernels in convolutional networks, on the other hand, have the property of being
@@ -32,6 +39,7 @@
     are located spatially. The weight sharing present in convolutional layers also
     makes convnets highly parameter-efficient and less prone to overfitting - a property
     ViTs do not have.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: As such, you might expect that ViTs and convnets are used equally in production
@@ -39,6 +47,7 @@
     recognition and convnets for more “local” tasks such as object recognition. Even
     so, we’ve been inundated with work that utilizes ViTs, with bold high-level claims
     (mostly by media outlets) that [convnets are a thing of the past](https://syncedreview.com/2023/07/17/deepmind-proposes-novel-vision-transformer-for-arbitrary-size-resolution/).
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Curious to see if I could lend a hand in helping debunk this claim, I set out
@@ -46,63 +55,76 @@
     performance of both ViT and ConvNeXt. The comparison to ConvNeXt is of particular
     interest, since it is a fully convolutional network that attempts to bridge the
     gap between transformers and convnets.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: With a bit of experimentation on Imagenet-1k, we can reach **82.0%** accuracy
     with a 176x176 training image size with no extra data, matching ConvNeXt-T (v1,
     without pre-training a-la MAE) and surpassing ViT-S (specifically, the ViT flavor
     from DeiT-III).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Training methodology
+  id: totrans-split-11
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'We start by adopting the training methodology set in Pytorch’s late 2021 blog,
     where they achieved an impressive [**80.8%** accuracy on Imagenet-1k](https://pytorch.org/blog/how-to-train-state-of-the-art-models-using-torchvision-latest-primitives/)
     with a stock ResNet50 model. Here’s a couple of key points to note:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: We stick with SGD as the optimizer, rather than going for RMSProp or Adam (or
     any of their variants).
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The scheduler uses cosine decay with five warmup epochs and 600 total epochs.
     This may seem like an unnecessarily large number of epochs, but we’ll get around
     to reducing this later.
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'We utilize a whole slew of augmentations found in modern literature, including,
     but not limited to: label smoothing, mixup, cutmix, and model EMA.'
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: To prevent overfitting on the validation dataset, we’ll skip hyperparameter
     tuning and grid search and stick with the stock training methodology listed out
     in the blog post.
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Nearly all of these training optimizations have already been used to boost the
     performance of modern visual recognition models, but adopting these changes don’t
     quite get us to the magical 82% accuracy we’re looking for.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Architectural modifications
+  id: totrans-split-18
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'The baseline ResNet architecture is strong but not optimal, so we adopt a few
     architectural modifications to enable better performance:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '**ResNet-d**'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'First order of business is the embrace some “modernizations” to ResNet. For
     completeness, here are the changes listed out:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The initial 7x7 convolution is changed to a sequence of three 3x3 convolutions
@@ -110,6 +132,7 @@
     first convolutional layer. With this change, we now use exclusively 3x3 and 1x1
     convolutions across the entire network all while retaining the original size of
     the receptive field for the network head.
+  id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -117,6 +140,7 @@
     layer to the subsequent 3x3 convolutional layer. This has the effect of capturing
     all input pixels in a downsampling block, since a strided 1x1 convolution effectively
     skips every other pixel.
+  id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -124,6 +148,7 @@
     residual block now has a stride of two, matching the remaining residual blocks.
     While max pooling is theoretically useful for retaining edges, corners, and other
     low-level features, I haven’t found it to be particularly useful in practice.
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -131,15 +156,18 @@
     is replaced with 2x2 average pooling followed by a standard 1x1 convolutional
     layer. Again, this has the effect of capturing all input activations rather than
     just one out of every four input channels.
+  id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The resulting micro-optimizations result in an architecture that is extremely
     close to [ResNet-d](https://arxiv.org/abs/1812.01187v2), with some very minor
     differences.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '**ReLU -> SiLU**'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'ReLU has two weaknesses compared to other activation functions: 1) it is not
@@ -156,6 +184,7 @@
     defined by $SiLU(x) = \frac{x}{1+e^{-x}}$, which has already seen success with
     a number of visual recognition models. Since this switch enabled faster training,
     I reduced the number of epochs from 600 to 450.'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Although I could’ve used [GELU](https://arxiv.org/pdf/1606.08415.pdf), I decided
@@ -165,6 +194,7 @@
     language models. Although GELU and SiLU are highly correlated ^(, networks trained
     with GELU are *not* equivalent to networks trained with SiLU in terms of representational
     capacity due to differences in weight decay and initialization.)
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Lastly, I hypothesize that a SiLU network would likely perform better with [stochastic
@@ -174,15 +204,18 @@
     other hand, has nonzero gradients for all values $x$ except for $x \approx -1.278$.
     As such, with the switch from ReLU to SiLU, adding a bit of regularization might
     be warranted. I’ll have to experiment more with this in the upcoming weeks.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '*Update (03/23/2024)*: After some experimentation, I found that stochastic
     depth with a drop probability of `0.1` negatively impacts the performance of the
     network (by about `0.2%` or so), but reducing it to `0.05` results in what is
     effectively the same accuracy. I’ll need to play around with it a bit more.'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '**Split normalization**'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Vanilla ResNet uses a generous amount of batch normalization (BN); one BN layer
@@ -196,6 +229,7 @@
     me that these two must be applied back-to-back. Furthermore, since backpropogation
     effectively treats each individual layer of neurons as an independent learner,
     the most sensible thing to do is to normalize layer *inputs* rather than *outputs*.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Long story short, I found that splitting BN into two separate layers - pre-convolution
@@ -204,9 +238,11 @@
     during training, it has zero impact on inference performance since the normalization
     and affine transformations can be represented as diagonal matrices and fused with
     the weights of the convolutional layer once the network is fully trained.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[Split normalization, visualized.]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: I wanted to better understand the theory behind “split” normalization but couldn’t
@@ -215,12 +251,14 @@
     In it, they show that BN often *increases* ICS. Instead, they argue that batch
     normalization works well because improves the first- and second-order properties
     of the loss landscape.)
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Through a quick exercise, we can show that split normalization (SN) has the
     same effect. Let’s consider two networks - one without SN defined by loss function
     $L$ and one with SN defined by loss function $\hat{L}$. For the network with SN,
     the gradients through each of these layers is as follows:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{aligned} \frac{\partial\hat{L}}{\partial y_i} &= \frac{\partial\hat{L}}{\partial
@@ -228,6 +266,7 @@
     \\ \frac{\partial\hat{L}}{\partial x_i} &= \frac{1}{\sigma}\frac{\partial\hat{L}}{\partial\hat{x}_i}
     - \frac{1}{m\sigma}\sum_{k=1}^{m}\frac{\partial\hat{L}}{\partial\hat{x}_k} - \frac{1}{m\sigma}\hat{x}_i\sum_{k=1}^{m}\frac{\partial\hat{L}}{\partial\hat{x}_k}\hat{x}_k
     \end{aligned}\]
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'Where $m$ is the size of each mini-batch and $y_i$, $\hat{y}_i$, $\hat{x}_i$,
@@ -235,11 +274,13 @@
     the dimensionality of the activation tensors can be arbitrarily large or small
     (e.g. 3d for most convnets). With this, we can represent the full loss gradient
     via dot products:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{aligned} \frac{\partial\hat{L}}{\partial\mathbf{x}} &= \frac{\gamma}{m\sigma}\mathbf{W}^T\left(m\frac{\partial\hat{L}}{\partial\mathbf{y}}
     - \mathbf{1} \cdot \frac{\partial\hat{L}}{\partial\mathbf{y}} - \mathbf{x} \left(\frac{\partial\hat{L}}{\partial\mathbf{y}}
     \cdot \mathbf{x}\right)\right) \end{aligned}\]
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'For a function $f(a)$, the L2 norm of its gradient $\left\Vert\frac{df}{da}\right\Vert$
@@ -250,15 +291,18 @@
     is bound above by the largest singular value of $\mathbf{A}$, i.e. $\Vert\mathbf{A}\cdot\mathbf{b}\Vert
     \leq s_{max}(\mathbf{A})\Vert\mathbf{b}\Vert = \sqrt{\lambda_{max}(\mathbf{W}^T\mathbf{W})}\Vert\mathbf{b}\Vert$.
     Given this, we have:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{aligned} \left\Vert\frac{\partial\hat{L}}{\partial\mathbf{x}}\right\Vert^2
     &\leq \left(\frac{\gamma}{m\sigma} \right)^2 s_{max}(\mathbf{W})^2\left\Vert m\frac{\partial\hat{L}}{\partial\mathbf{y}}
     - \mathbf{1} \cdot \frac{\partial\hat{L}}{\partial\mathbf{y}} - \mathbf{x} \left(\frac{\partial\hat{L}}{\partial\mathbf{y}}
     \cdot \mathbf{x}\right)\right\Vert^2 \end{aligned}\]
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Applying the reduction from C.2 in Santurkar et al., we get:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{aligned} \left\Vert\frac{\partial\hat{L}}{\partial\mathbf{x}}\right\Vert^2
@@ -266,6 +310,7 @@
     - \frac{1}{m}\left\Vert\mathbf{1} \cdot \frac{\partial L}{\partial\mathbf{y}}\right\Vert^2
     - \frac{1}{m}\left\Vert\frac{\partial L}{\partial\mathbf{y}} \cdot \mathbf{x}\right\Vert^2
     \right) \end{aligned}\]
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: In my eyes, we should separate the multiplicative term (i.e. $\frac{\gamma^2s_{max}^2}{\sigma^2}$)
@@ -279,9 +324,11 @@
     certain situations, be *increasing the Lipschitz constant of the loss*. At the
     same time, ICS at the inputs of each layer is strictly decreased, as the learnable
     affine transformation now comes after the weights rather than before.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: The results
+  id: totrans-split-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -289,46 +336,58 @@
     without any external sources of data! In the spirit of modern machine learning
     research, let’s give this network a fancy name: GResNet (Good/Great/Gangster/Godlike
     ResNet).'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '| Model | Accuracy | Params | Throughput |'
+  id: totrans-split-48
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- |'
+  id: totrans-split-49
   prefs: []
   type: TYPE_TB
 - en: '| GResNet | 82.0%* | 25.7M | 2057 im/s |'
+  id: totrans-split-50
   prefs: []
   type: TYPE_TB
 - en: '| ConvNeXt | 82.1% | 28.6M | 853 im/s |'
+  id: totrans-split-51
   prefs: []
   type: TYPE_TB
 - en: '| ViT (DeiT) | 81.4% | 22.0M | 1723 im/s |'
+  id: totrans-split-52
   prefs: []
   type: TYPE_TB
 - en: '[Comparison of different models. Throughput calculated on a single Nvidia A100
     with batch size 256 without network optimizations. *Accuracy improves to 82.2%
     and throughput drops to 1250 im/s when we use ConvNeXt''s train image size of
     224x224 instead of 176x176.]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: The GResNet model definition is available [here](https://gist.github.com/fzliu/006d2043dc1e90d68ae562c5bde8066c),
     while weights are available [here](https://drive.google.com/file/d/1WKPkLybhrE389sierVj2-uZ_ZYAJI1Gf/view?usp=drive_link).
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[Accuracy curve during training.]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Ending words
+  id: totrans-split-56
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: What exactly have we shown here? With some simple modifications to ResNet, we
     can attain excellent performance - on par or better than both ViT and a ViT-inspired
     convnet (ConvNeXt) on smallish datasets.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[ResNet strikes back... again?]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: 'You might be asking: why Imagenet-1k? Aren’t there a number of much larger
@@ -341,6 +400,7 @@
     and these models benefit greatly from the exact type experiment of outlined in
     this post: strong augmentation with limited data trained across many epochs. This
     is exactly the type of data that Imagenet-1k represents.'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'And on the topic of ViTs being superior to convnets on large datasets: the
@@ -356,32 +416,40 @@
     to hundreds of billions of parameters - scaling that could theoretically also
     be done with RNNs if research scientists had decades of time to train them (spoiler:
     they don’t).'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Addendum - comparing embedding quality
+  id: totrans-split-61
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'I thought it might be interesting to compare embeddings from GResNet, ConvNeXt,
     and ViT by storing and indexing the embeddings from each model in [Milvus](https://github.com/milvus-io/milvus):'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: 'I removed the model initialization and data loading snippets for brevity and
     used Euclidean/L2 as the distance metric with no indexing (i.e. FLAT). With that
     step done, we can then query the collections to get results that look like this:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: One could argue that GResNet tends to pick out images which are stylistically
     closer to the query image in addition to being the same class, but aside from
     that, the results between all three models are very comparable.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL

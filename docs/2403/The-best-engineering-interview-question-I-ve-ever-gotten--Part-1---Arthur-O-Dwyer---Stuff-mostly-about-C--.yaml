@@ -1,21 +1,27 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:40:19'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The best engineering interview question I've ever gotten, Part 1 – Arthur O'Dwyer
     – Stuff mostly about C++
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://quuxplusone.github.io/blog/2022/01/06/memcached-interview/](https://quuxplusone.github.io/blog/2022/01/06/memcached-interview/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,23 +31,28 @@
     so I assume they’re not still relying on this specific interview question. I don’t
     feel bad for revealing it. It’s a great story that I tell people a lot; I’ve just
     never blogged it before.)
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Okay, so this isn’t a “question” per se; it’s a programming challenge. I forget
     how much time they gave for it. Let’s say three hours, counting the time to explain
     the problem.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Since MemSQL was a database company, this is a database challenge.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing memcached
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: You know about `memcached`? No? Well, it’s an in-memory key-value store. ([Read
     its About page here.](https://memcached.org/about)) Let’s download its code and
     build it so I can show you what it does.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: You may need to `brew install libevent` and maybe some other stuff in order
@@ -49,29 +60,36 @@
     anyway, wrangling with your environment wasn’t part of the test. You can assume
     interviewees were given access to a Linux box with all the right dependencies
     in place already.
+  id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'For the authentic 2013 experience, let’s bypass the [GitHub repo](https://github.com/memcached/memcached)
     and untar a contemporary source distribution:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: 'Now we’ve built the `memcached` executable. Let’s start it running:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: We can talk to the server via the default memcached port, port 11211. Its protocol
     is basically plain text, so we can use plain old `telnet` to talk to it. (If you
     don’t have `telnet` anymore, substitute the words [`nc -c`](https://www.unixfu.ch/use-netcat-instead-of-telnet/)
     for `telnet`.)
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: Playing with memcached
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -80,9 +98,11 @@
     and it’ll tell us the value it remembered. In memcached, keys are always ASCII
     strings and values are always arbitrary byte streams (which means you must specify
     their length manually). For example, type this into your telnet session:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: 'This tells memcached to remember an association between the string key `fullname`
@@ -90,31 +110,39 @@
     value (`0`) to remember alongside the byte-stream value; and an expiry timeout
     (`3600`) measured in seconds, after which memcached will forget this association.
     Anyway, after you type these two lines, memcached will respond:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now you can retrieve the value of `fullname` by typing into the same telnet
     session:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'memcached will respond:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: You can overwrite the value associated with `fullname` by issuing another `set
     fullname` command. You can also ask memcached to modify the value in certain ways;
     for example, there are special dedicated commands for `append` and `prepend`.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: 'Of course if you wanted to append `-Jones` to `fullname` from within a client
     program, you *could* do something like this:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: But the advantage of memcached’s dedicated `append` command is that it’s guaranteed
@@ -122,15 +150,19 @@
     server, and they’re all trying to append to the same key at the same time, the
     `get/set` version might cause some of those updates to be lost, whereas with `append`
     you’re assured they’ll all be accounted for.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another dedicated command that executes atomically is `incr`:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'memcached responds with the postincremented value:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: This response is useful because of the multiple clients thing. If you issued
@@ -138,58 +170,73 @@
     clients had done their own updates. If you’re intending to use the value as a
     serial number, or a SQL primary key, or something like that, then it’s very good
     that there’s a way to see the incremented value *atomically*.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'memcached remembers the incremented value too, of course:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'Notice that `37` and `38` are still being stored and returned as byte-strings;
     they’re decoded from ASCII into integers and back as part of the atomic operation.
     If you try to `incr` a non-integer value, you get an error:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: 'Finally, note that `incr` is a full-fledged addition operation: you can increment
     (or `decr`) by any positive value, not just by `1`.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: By the way, when you’re done talking to memcached and want to kill the connection,
     you can type the memcached command `quit`. (If you’re using `nc -c`, Ctrl+D also
     works. Or, just go to the terminal window where the `memcached` server is running
     and Ctrl+C to bring it down.)
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'The challenge: Modifying memcached'
+  id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Via its `incr` and `decr` commands, memcached provides a built-in way to atomically
     add \(k\) to a number. But it doesn’t provide other arithmetic operations; in
     particular, there is no “atomic multiply by \(k\)” operation.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Your programming challenge: **Add a `mult` command to memcached.**'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: When you’re done, I should be able to telnet to your memcached client and run
     commands like
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: You have three hours. Go!
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: For spoilers and analysis, see [“The best engineering interview question I’ve
     ever gotten, Part 2.”](/blog/2022/01/07/memcached-interview-solution/)
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:25:18'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Delay e-mail delivery with Postfix for a relaxing weekend | Enrico Bassetti
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.enricobassetti.it/2024/04/delay-e-mail-delivery-with-postfix-for-a-relaxing-weekend/](https://www.enricobassetti.it/2024/04/delay-e-mail-delivery-with-postfix-for-a-relaxing-weekend/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,29 +28,35 @@
     and relaxing weekend. Unfortunately, it is not so easy: open-source projects you
     are contributing to, friends, hobbies, and newsletters are all good reasons to
     read e-mails once in a while.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: But we all have that friend, the one that sends many e-mails, and you don’t
     want to read them on the weekend. Let’s implement some “delay-until-Monday” feature
     in Postfix!
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Postfix queues
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Did you know that [Postfix has different *queues*](https://www.postfix.org/QSHAPE_README.html#queues)?
     In fact, Postfix has:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '**maildrop** is the queue for e-mails sent locally using `sendmail`. This is
     the only queue that is actually usable even when Postfix is not running;'
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**incoming**, used by the `cleanup` Postfix process to store e-mail that just
     arrived. It exists because the `active` queue (see below) can accommodate only
     a fixed number of active e-mails;'
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -52,16 +64,19 @@
     has a fixed capacity to avoid overloading Postfix, as these e-mails are the next
     to be sent (you don’t want your system to try to send more than 200k e-mails at
     the same time, do you?);'
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**deferred** is used when there is a **transient** error (i.e., temporary problems),
     so e-mails are queued here and picked up later for retry;'
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Finally, the **hold** is a special queue where messages go if some administrative
     ACL says so, and they are moved to other queues using the `postsuper` command.
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -69,12 +84,15 @@
     the right moment or move it to the *active* queue and schedule the delivery later.
     However, neither approaches are really in line with the description of those queues,
     and, as far as I know, there is no easy way to do that.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: We will use the **hold** queue instead!
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Postfix lookup tables
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -82,9 +100,11 @@
     `HOLD` action so that Postfix will move incoming e-mails in the *hold* queue.
     Then, we can use some bash script and crontab to release them when the moment
     comes.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Enters the [Postfix lookup *tables*](https://www.postfix.org/DATABASE_README.html)!
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Postfix can look up information in *tables* by matching specific parts of the
@@ -93,58 +113,71 @@
     a local file or in some network services. It is very handy, as you can basically
     [link Postfix to a database server to query for e-mails and stuff](https://www.postfix.org/pgsql_table.5.html),
     and this is basically what everyone (who has a large number of addresses) does.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'In our case, we need to use [an `access` table](https://www.postfix.org/access.5.html).
     `access` tables return actions for a match. Specifically, we are looking for the
     `HOLD` action. In theory, a file like this should suffice:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: If you save a file like this, and you use the `file:` table type in a specific
     parameter in the Postfix configuration (as we see later), all e-mails coming from
     `[[email protected]](/cdn-cgi/l/email-protection)` will be moved to the *hold*
     queue, yay!
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: The problem is that there doesn’t seem to be any way to assign a time period
     to this rule. This means that the rule will always match, even if you use `postsuper`
     to remove it from the queue! It does not work that well. What else can we use?
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: It turns out we can use a database for that. If you are already using a database,
     that’s completely fine. However, I don’t have it, as my Postfix setup is very
     minimal. In this case, we can just use `sqlite` as a database and query a local
     file with some SQL magic.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, we need a SQLite database. Make sure that Postfix is compiled with the
     `sqlite` table type (it is by default) and that you have the `sqlite3` executable
     in your path. Then:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'Perfect! Now, let’s create the database table that we will use in order to
     store information for the Postfix table:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: 'Now we can close the database file, and we can create the file that holds the
     “database connection information”. Let’s say, `/etc/postfix/time_based_access`:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'As you can see, I am using the “day of the week” (0-6, where 0 is Sunday).
     We can hold e-mails from `[[email protected]](/cdn-cgi/l/email-protection)` on
     Sunday by inserting the following:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: But we are not finished yet. We need to tell Postfix to query this. We will
@@ -153,40 +186,51 @@
     using the exact order you specify in the configuration. So, you want your query
     to be executed last, or at least after the usual checks for blocklists, unknown
     recipient domains, etc.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: Restart Postfix to apply. Now, e-mails from `[[email protected]](/cdn-cgi/l/email-protection)`
     on Sundays will be on hold!
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Release e-mails on hold
+  id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Let’s create a script to release them (create the file, then +x it):'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: 'Now we can schedule this command to run, say, every morning at 5am:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Unfortunately, `postsuper` must run as a super-user. However, as good practice,
     you should already know how to configure a user with the necessary permissions
     to use `sudo` and AppArmor.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: That’s all. You have your own Postfix-powered system to delay e-mail delivery!
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Caveats
+  id: totrans-split-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -195,9 +239,11 @@
     your account (also, before the others that will be released at 5am). If your friend
     is a night owl, you may want to tweak the database structure to store also some
     time information there.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Future improvements
+  id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -205,5 +251,6 @@
     I have a CalDAV server, so it should not be so challenging to work with (I see
     you laughing, stop!). Maybe next weekend I can work on th… wait, wasn’t I looking
     forward to a pleasant weekend?!?
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL

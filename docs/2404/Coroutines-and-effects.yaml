@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:23:14'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Coroutines and effects
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://without.boats/blog/coroutines-and-effects/](https://without.boats/blog/coroutines-and-effects/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,15 +31,18 @@
     (like Rust’s async functions or generators) are in some ways isomorphic to one
     another. I’ve been pondering the differences between them, trying to figuring
     out the advantages and disadvantages of each.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'A few weeks ago, Will Crichton posted something on [Twitter](https://twitter.com/tonofcrates/status/1770560175835058573)
     that helped bring the contrast into sharper focus for me:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'The entire field of PL right now: what if it was dynamically scoped&mldr;.
     but statically typed&mldr;&mldr;&mldr;&mldr;..? (effects, capabilities, contexts,
     metavariables&mldr;)'
+  id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -42,13 +51,16 @@
     this seems like a cutting insight and this property of effect handlers - static
     typing but dynamic scoping - seems to me to be a good jumping off point for understanding
     the difference between effect handlers and coroutines from a user perspective.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Background
+  id: totrans-split-10
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: What is a coroutine?
+  id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -57,19 +69,23 @@
     it yielded, so it can resume the coroutine again if it so chooses. It’s possible
     to model many meaningful “effects” using coroutines by having the coroutine yield.
     For example:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: A coroutine can perform IO “asynchronously,” by yielding a value like `Pending`
     when IO is being performed.
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A coroutine can be iterable by yielding values as it traverses some collection.
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A coroutine can model exceptions by yielding an exception value (in this case,
     resuming the coroutine would have no effect).
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -77,9 +93,11 @@
     the other hand, exceptions are not modeled this way; instead they are modeled
     with the `Result` type. Specifically, Rust uses “stackless” coroutines, but this
     distinction is not very important to the concepts in this post.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: What is an effect handler?
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -90,6 +108,7 @@
     In this post, I am focused on effect systems as proposed in languages like [Koka](https://koka-lang.github.io/koka/doc/index.html)
     and [Effekt](https://effekt-lang.org). And my understanding of these systems may
     be imperfect or wrong, but this is how they operate as I understand them.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: In an effect system, in addition to a type, an expression will have an *effect*.
@@ -97,6 +116,7 @@
     (in the same way that lifetimes are another “kind” in Rust). In general, expressions
     inherit the effects of other expressions they contain. Functions inherit the effects
     of their body.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: For example, Koka has a “diverging” effect, which means that an expression may
@@ -105,6 +125,7 @@
     between a function that is guaranteed to finish and a function that may not finish
     (this is imperfect, of course, because of the undecidability of the halting problem;
     some functions that do not diverge will be marked diverging).
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: However, these languages also have a concept of *effect handlers*, which take
@@ -113,30 +134,36 @@
     it is not possible to meaningfully handle the diverging effect), but some can.
     The semantics of what it means to handle an effect are where effect systems become
     similar to coroutines.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'When a handleable effect occurs, an effectful expression yields control to
     the nearest-most handler of that effect, which may or may not yield control back.
     This can be used to model all of the same sorts of effects as coroutines. For
     example:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: An IO effect can yield control to the IO handler, which will yield back to the
     expression when IO is complete.
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: An iterable effect can yield control to the loop consumer for each value, which
     yields back to the iterable to continue iteration.
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: An exception effect can yield control to an exception handler, which will not
     yield control back.
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The difference is between static and dynamic scope
+  id: totrans-split-26
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -144,53 +171,64 @@
     yield control to their caller, but effectful expressions yield control to their
     handler. The difference of affordance this implies is the materially significant
     advantage of coroutines over effect handlers.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s imagine a programming language in which every function is a coroutine
     which can yield `Pending` or an exception (to model both IO and exceptions) and
     there are multiple kind of call operators that “handle effects” differently:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: There is an ordinary call operator that can only be used on coroutines that
     never yield (these coroutines are effectively pure functions)
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: There is an asynchronous `().await` call operator that can be called on coroutines
     that yield `Pending`, which yields `Pending` and then calls them again (so it
     can only be called from within another coroutine that yields `Pending`)
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: There is an exception-throwing `()?` call operator that can be called on coroutines
     that yield an exception, which yields the exception outward.
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: There is a combined `().await?` call operator that can be called on coroutines
     that yield `Pending` and exceptions, to forward both effects.
+  id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Let’s suppose you wanted to do an HTTP request in this language (which performs
     IO and can also raise an exception representing some sort of IO error):'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'Now, let’s contrast this to a similar language which models IO and exceptions
     using effects. In this language, there is no need for special call operators:
     a function which has an IO or exception effect can call functions which also have
     IO or exception effects:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: The difference between these features is that the call to `http::get` must be
     annotated with the `await` and `?` syntax to forward its effects, whereas with
     effect handlers the forwarding of effects by a callee is implicit.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'I want to take one more step back and then I promise I will reach a conclusion.
@@ -204,6 +242,7 @@
     it last left off. For semicoroutines, in contrast, calling a coroutine produces
     a new stack frame which can only be resumed by code with a reference to that stack
     frame.'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'The program stack is such a universal model of program execution today that
@@ -213,6 +252,7 @@
     is exactly one dynamic jump point - wherever it returns to. From the point of
     view of the caller, this is now statically known: the function will jump back
     to the point at which it is called.'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'This rule can only be violated when a language introduces new features that
@@ -221,6 +261,7 @@
     handled. There are two kinds of exceptions: unchecked exceptions, which are totally
     untyped, and checked exceptions, which require an annotations on any function
     which could throw them.'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '**Effect handlers are a generalization of checked exceptions**, with all of
@@ -232,6 +273,7 @@
     able to identify points at which an error occurs without examining the signatures
     of each function call. This is why Rust features `Result` and the `?` operator
     instead of checked exceptions.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'There’s an axis of evaluation here with three points: a language could model
@@ -242,6 +284,7 @@
     examples of this. And a language could model the effect in a way which is both
     statically typed and lexically scoped. This is what Rust does for these effects
     with both `Result` and `async/await`.'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '(You may notice that there’s a fourth spot in the design space not covered
@@ -249,9 +292,11 @@
     be the async/await feature in dynamically typed languages like Python and JavaScript;
     you must annotate asynchronous calls with `await` to get their result, but if
     you fail to do so it is not a compile-time error.)'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'These are not the only language features that can be used to model effects,
@@ -262,6 +307,7 @@
     Coroutines on the other hand are order-independent: all coroutine that yield `Pending`
     and `Exception` have the same type, there is no distinction of order. The same
     is true of effect handlers.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'This has appeared in Rust for example with the debate about the design of [async
@@ -271,6 +317,7 @@
     `Pending`. This was the crux of Russell Johnston’s argument in the post I linked
     earlier: this unlayered property is shared by coroutines and effect handlers,
     and is an advantage of these features.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: On the other hand, by modeling errors with `Result` instead of some sort of
@@ -283,6 +330,7 @@
     from a generator that yields a sequence of `Result`s. But I don’t find this inadequacy
     to come up in practice that often, so I’m content to leave it as theoretical work
     for a future language to solve.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'Overall, coroutines strike me as the most promising way to handle many kinds
@@ -291,5 +339,6 @@
     point for handling effects in any language would be a coroutine feature (though
     if the language were not under Rust’s constraints, I would prefer if it were a
     stackful coroutine feature so they could be recursive).'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL

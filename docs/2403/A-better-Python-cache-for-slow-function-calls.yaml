@@ -1,40 +1,52 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:30:08'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: A better Python cache for slow function calls
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://docs.sweep.dev/blogs/file-cache](https://docs.sweep.dev/blogs/file-cache)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <main class="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 📚 Blogs
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 📂 A better Python cache for slow function calls
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: A better Python cache for slow function calls
+  id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '**William Zeng** - March 18th, 2024'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: We wrote a file cache - it's like Python's `lru_cache`, but it stores the values
@@ -42,18 +54,22 @@
     benchmarks, and we'd like to share it as its own Python module. Thanks to [Luke
     Jaggernauth (opens in a new tab)](https://github.com/lukejagg) (former Sweep engineer)
     for building the initial version of this!
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s the link: [https://github.com/sweepai/sweep/blob/main/docs/public/file_cache.py
     (opens in a new tab)](https://github.com/sweepai/sweep/blob/main/docs/public/file_cache.py).
     To use it, simply add the `file_cache` decorator to your function. Here''s an
     example:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: Background
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -62,6 +78,7 @@
     other information off to the LLM. We chain multiple agents to turn a GitHub issue
     to a pull request. For example, to modify code we'll input the old code, any relevant
     context, and instructions then output the new code.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'A typical improvement involves tweaking a small part of our pipeline (like
@@ -69,15 +86,19 @@
     use pdb (python''s native debugger) to set breakpoints and inspect the state of
     our prompts, input values, and parsing logic. For example, we can check whether
     a certain string matches a regex:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: This lets us debug at runtime with the actual data.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Cached pdb
+  id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -85,42 +106,51 @@
     a version of pdb that not only interrupted execution, but also cached the entire
     program state up to that point. Our time to hit that same bug could be cut from
     10 minutes to 15 seconds (a 40x improvement).
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: We didn't build this, but we think our file_cache works just as well.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: LLM calls are slow but their inputs and outputs are easy to cache, saving a
     lot of time. We can use the input prompt/string as the cache key, and the output
     string as the cache value.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: What's different from lru_cache?
+  id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: lru_cache is great for memoizing repeated function calls, but it doesn't support
     two key features.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: we need to persist the cache between runs.
+  id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: lru_cache stores the results in-memory, which means that the next time you run
     the program the cache will be empty. file_cache stores the results on disk. We
     also considered using Redis, but writing to disk is easier to set up/manage.
+  id: totrans-split-27
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: lru_cache doesn't support ignoring arguments that invalidate the cache.
+  id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: We'll use a custom `chat_logger` which stores the chats for visualization. It
     contains the current timestamp `chat_logger.expiration`, which will invalidate
     the cache if it's serialized.
+  id: totrans-split-29
   prefs:
   - PREF_IND
   - PREF_UL
@@ -128,112 +158,141 @@
 - en: 'To counteract this we added ignored parameters, used like this: `file_cache(ignore_params=["chat_logger"])`.
     This removes `chat_logger` from the cache key construction and prevents bad invalidation
     due to the constantly changing `expiration`.'
+  id: totrans-split-30
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
 - en: Implementation
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Our two main methods are `recursive_hash` and `file_cache`.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: recursive_hash
+  id: totrans-split-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: We want to stably hash objects, and this is [not natively supported in python
     (opens in a new tab)](https://death.andgravity.com/stable-hashing).
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: 'hashlib.md5 alone doesn''t work for objects, giving us the error: `TypeError:
     object supporting the buffer API required`. We use recursive_hash, which works
     for arbitrary python objects.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: file_cache
+  id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: file_cache is a decorator that handles the caching logic for us.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: Without the cache, searching through the codebase using our LLM agent to get
     `top_results` takes 5 minutes - way too long if we're not actually testing it.
     Instead with file_cache, we just need to wait for deserialization of the pickled
     object - basically instantaneous for search results.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Wrapper
+  id: totrans-split-42
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: First we store our cache in `/tmp/file_cache`. This lets us remove the cache
     by simply deleting the directory (running `rm -rf /tmp/file_cache`). We can also
     selectively remove function calls using `rm -rf /tmp/file_cache/search_codebase*`.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: Then we can create a cache key.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Cache Key Creation / Miss Conditions
+  id: totrans-split-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: 'We have another problem - we want to miss our cache under two conditions:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: The arguments to the function change - handled by `recursive_hash`
+  id: totrans-split-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The code changes
+  id: totrans-split-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: To handle 2\. we used `inspect.getsource(func)` to add the function's source
     code to the hash, correctly missing the cache when the the code changes.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: '[PRE7]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: Cache hits and misses
+  id: totrans-split-53
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Finally we check cache key existence and write to the cache in the case of a
     cache miss.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: Conclusion
+  id: totrans-split-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: We hope this code is useful to you. We've found it to be a massive time saver
     when debugging LLM calls. We'd love to hear your feedback and contributions at
     [https://github.com/sweepai/sweep (opens in a new tab)](https://github.com/sweepai/sweep)!
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: </main>
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL

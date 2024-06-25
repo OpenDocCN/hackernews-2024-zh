@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:34:40'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Chris''s Wiki :: blog/unix/ShellImportanceOfASpace'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/ShellImportanceOfASpace](https://utcc.utoronto.ca/~cks/space/blog/unix/ShellImportanceOfASpace)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,22 +30,27 @@
     entry after it was noted by Emilio in a comment). This innocent looking mistake
     and its consequences are an illustration of something in Unix shell command lines,
     although I'm not sure of just what, so I'm going to write it up.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'The story starts with the general arguments of [Bash''s ''`read`'' builtin](https://www.gnu.org/software/bash/manual/bash.html#index-read):'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '`read [-ers] [-a *aname*] [-d *delim*] [-i *text*] [-n *nchars*] [-N *nchars*]
     [-p *prompt*] [-t *timeout*] [-u *fd*] [*name* …]`'
+  id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'The ''`read`'' builtin follows the general standard behavior of Unix commands
     where ''-d *delim*'' and other options that take an argument can be shortened
     to omit the space, so ''-d*delim*''. So you can write, for example:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-10
   prefs:
   - PREF_BQ
   type: TYPE_PRE
@@ -47,27 +58,33 @@
     is taken as the 'line' terminator, but if *delim* is blank, `read` will terminate
     the line when it reads a NUL character (0 byte), which is just what you want to
     handle the output of, for example, 'find ... -print0'.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'The way you create an empty string argument in a Bash command line is to use
     an empty pair of quotes:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_PRE
 - en: 'So when I was writing the original command line in [yesterday''s entry](/~cks/space/blog/sysadmin/FindPruningThingsOut),
     I absently mashed these two things together in my mind and wrote:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_PRE
 - en: I've used '' to create an empty argument and then I've done the standard thing
     of removing the space between -d and its argument. So clearly I've given '-d'
     an empty argument, right? Nope.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'In Bash and other conventional shells, '''' is nothingness. It only means an
@@ -76,13 +93,16 @@
     next to other non-whitespace characters, it disappears in the command line that
     the program will see. So writing `-d''''` was the same as writing `-d` with no
     argument, and the command line as ''`read`'' would see it was actually:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-18
   prefs:
   - PREF_BQ
   type: TYPE_PRE
 - en: Which would have caused '`read`' to use 'l' as the line terminator.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the process of writing this entry, I realized that there''s a more interesting
@@ -90,17 +110,21 @@
     Unix arcana and doesn''t look half as obvious. In many modern shells, the Bourne
     shell included, you can write a NUL character (0 byte) as `$''\0''`. So you will
     see people write a ''read with NUL terminated lines'' command line as:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-21
   prefs:
   - PREF_BQ
   type: TYPE_PRE
 - en: 'This works fine, and unlike the '''' case we obviously have a real argument
     here, not just an empty argument, so clearly we can shorten this to:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-23
   prefs:
   - PREF_BQ
   type: TYPE_PRE
@@ -110,17 +134,21 @@
     strings. No matter how you invoke a program, the first NUL character in an argument
     is the end of that argument from the program''s perspective. So although it looked
     very different as typed, from `read`''s perspective what we did was the same as:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-25
   prefs:
   - PREF_BQ
   type: TYPE_PRE
 - en: (And then it would have the same effect as my mistake.)
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'PS: This is a little tangled because ''`read`'' is a Bash builtin so in theory
     Bash doesn''t have to stick to the limits of the kernel API, but in practice I
     think Bash does do so.'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL

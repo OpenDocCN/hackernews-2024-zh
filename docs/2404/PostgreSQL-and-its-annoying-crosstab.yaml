@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:58:17'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: PostgreSQL and its annoying crosstab
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/](https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,201 +28,256 @@
     with a query. The task is deceptively simple: Collect metadata about all columns
     of a table in a single query. This was to be a function in PostgreSQL that would
     return a table with the following columns:'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '`table_name`'
+  id: totrans-split-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`column_name`'
+  id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`data_type`'
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`total_tows`'
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`not_null_count`'
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`unique_count`'
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`max_value` (for integers)'
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`min_value` (for integers)'
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`avg_value` (for integers)'
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`max_length` (for strings)'
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`min_length` (for strings)'
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`avg_length` (for strings)'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`space_count_max` (for strings)'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`space_count_min` (for strings)'
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`space_count_avg` (for strings)'
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`max_date` (for dates)'
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`min_date` (for dates)'
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You can can imagine how this would be slow if you did the query for each column
     individually since it requires a full table scan if we have no index on the column.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s create a test table:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: Get the stats, in wide format
+  id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The first part of the solution was to build a query that would return the metadata
     wide, something like (shortened for brevity):'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: Get the stats, in tall format
+  id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The idea is to gather the stats of the table in a single go and then build
     some sort of pivot table from it. Since we are using dynamic SQL, it’s not too
     hard. We can use a lateral join to make the data tall:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: 'This will yield results that look like this:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '| column_name | meta_key | value |'
+  id: totrans-split-34
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-35
   prefs: []
   type: TYPE_TB
 - en: '| int_col | total_rows | 1000 |'
+  id: totrans-split-36
   prefs: []
   type: TYPE_TB
 - en: '| int_col | not_null_count | 904 |'
+  id: totrans-split-37
   prefs: []
   type: TYPE_TB
 - en: '| int_col | unique_count | 100 |'
+  id: totrans-split-38
   prefs: []
   type: TYPE_TB
 - en: '| int_col | max_value | 99 |'
+  id: totrans-split-39
   prefs: []
   type: TYPE_TB
 - en: '| int_col | min_value | 0 |'
+  id: totrans-split-40
   prefs: []
   type: TYPE_TB
 - en: '| int_col | avg_value | 50.4115044247787611 |'
+  id: totrans-split-41
   prefs: []
   type: TYPE_TB
 - en: '| string_col | total_rows | 1000 |'
+  id: totrans-split-42
   prefs: []
   type: TYPE_TB
 - en: '| string_col | not_null_count | 915 |'
+  id: totrans-split-43
   prefs: []
   type: TYPE_TB
 - en: '| string_col | unique_count | 1 |'
+  id: totrans-split-44
   prefs: []
   type: TYPE_TB
 - en: '| string_col | max_length | 20 |'
+  id: totrans-split-45
   prefs: []
   type: TYPE_TB
 - en: '| string_col | min_length | 20 |'
+  id: totrans-split-46
   prefs: []
   type: TYPE_TB
 - en: '| string_col | avg_length | 20.0000000000000000 |'
+  id: totrans-split-47
   prefs: []
   type: TYPE_TB
 - en: '| string_col | space_count_max | 9 |'
+  id: totrans-split-48
   prefs: []
   type: TYPE_TB
 - en: '| string_col | space_count_min | 9 |'
+  id: totrans-split-49
   prefs: []
   type: TYPE_TB
 - en: '| string_col | space_count_avg | 9.0000000000000000 |'
+  id: totrans-split-50
   prefs: []
   type: TYPE_TB
 - en: Crosstab the data into a table
+  id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now, we need to pivot this data. PostgreSQL’s crosstab is what we need, but
     getting it to work is a bit of a pain. The first thing we need to do is to install
     the `tablefunc` extension:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: '`crosstab` takes a string as argument with the query that will return the data
     to pivot. We can use behemoth of generated SQL that we had above (just 10 times
     bigger, because what table has only 2 columns?). The query will look like this:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'Now let’s look at the results:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '| column_name | total_rows | not_null_count | unique_count | max_value | min_value
     | avg_value | max_length | min_length | avg_length | space_count_max | space_count_min
     | space_count_avg |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
     |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: '| int_col | 1000 | 904 | 100 | 99 | 0 | 50.4115044247787611 | null | null |
     null | null | null | null |'
+  id: totrans-split-59
   prefs: []
   type: TYPE_TB
 - en: '| string_col | 1000 | 915 | 1 | 20 | 20 | 20.0000000000000000 | 9 | 9 | 9.0000000000000000
     | null | null | null |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB
 - en: Uh… WTF? THis is not what we wanted. The stats for `string_col` moved to the
@@ -226,63 +287,79 @@
     6 columns, but `string_col` will pivot into 9 columns), we need to supply crosstab
     with a second parameter. It is also recommended to order the rows, so that each
     parameter will be in order
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: 'Let’s have a look at the results:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '| column_name | avg_length | avg_value | max_length | max_value | min_length
     | min_value | not_null_count | space_count_avg | space_count_max | space_count_min
     | total_rows | unique_count |'
+  id: totrans-split-64
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
     |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: '| int_col | null | 50.4115044247787611 | null | 99 | null | 0 | 904 | null
     | null | null | 1000 | 100 |'
+  id: totrans-split-66
   prefs: []
   type: TYPE_TB
 - en: '| string_col | 20.0000000000000000 | null | 20 | null | 20 | null | 915 | 9.0000000000000000
     | 9 | 9 | 1000 | 1 |'
+  id: totrans-split-67
   prefs: []
   type: TYPE_TB
 - en: Ahhh, this looks more like it.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'This approach has a couple of drawbacks:'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: All data types must be converted to text because our tall format requires static
     types.
+  id: totrans-split-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Crosstab is really annoying and easy to get wrong
+  id: totrans-split-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: You can’t include more columns than you have in the list of columns to pivot
     into. The crosstab function WILL complain if there is a column in the result that
     has no value in the pivot list.
+  id: totrans-split-72
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: But, you know what? It works. It’s good enough for me at the moment. If you
     have *any* suggestion on how to improve this, PLEASE let me know.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'PS: I learned that you can also escape multiline strings in postgres using
     dollar-quoted strings.'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-75
   prefs: []
   type: TYPE_PRE
 - en: Ahh, feels so much better.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL

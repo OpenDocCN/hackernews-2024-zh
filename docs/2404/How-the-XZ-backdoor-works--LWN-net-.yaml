@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:53:25'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How the XZ backdoor works [LWN.net]
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://lwn.net/SubscriberLink/967192/6c39d47b5f299a23/](https://lwn.net/SubscriberLink/967192/6c39d47b5f299a23/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,12 +28,15 @@
     LWN](/subscribe/) is helping to keep us publishing, but, beyond that, subscribers
     get immediate access to all site content and access to a number of extra site
     features. Please sign up today! |'
+  id: totrans-split-6
   prefs: []
   type: TYPE_TB
 - en: By **Daroc Alden**
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: April 2, 2024
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Versions 5.6.0 and 5.6.1 of the [XZ](https://git.tukaani.org/?p=xz.git;a=summary)
@@ -38,13 +47,16 @@
     It was introduced by XZ co-maintainer "Jia Tan" — a probable alias for person
     or persons unknown. The backdoor is a sophisticated attack with multiple parts,
     from the build system, to link time, to run time.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The community response to the attack is just as interesting as the technical
     aspects. For more information on that, refer to [this companion article](/Articles/967866).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Build time
+  id: totrans-split-11
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -59,6 +71,7 @@
     files include the `configure` script and makefiles for the project. Releasing
     versions that contain the generated files allows downstream users of the software
     to build without needing to install Autoconf.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: In this case, however, the scripts in the maintainer-provided source tarballs
@@ -68,6 +81,7 @@
     macro that converts between the style of pathname used by the build environment
     and the run-time environment of the program. The version in these XZ releases
     was modified to extract the next stage of the exploit, which is contained in `tests/files/bad-3-1corrupt_lzma2.xz`.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: This file is included in the repository, ostensibly as part of XZ's test suite,
@@ -76,6 +90,7 @@
     XZ stream with some bytes swapped — for example, `0x20` is swapped with occurrences
     of `0x09` and vice versa. When decoded, it yields [a shell script](/Articles/967979)
     that unpacks and executes the next stage of the backdoor.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: The next stage of the backdoor is located in `tests/files/good-large_compressed.lzma`.
@@ -86,9 +101,11 @@
     of the file. Finally, that decrypted stream is decompressed using the XZ command-line
     program, in order to extract a pre-compiled file called `liblzma_la-crc64-fast.o`,
     which is also attached to Freund's message.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Link time
+  id: totrans-split-16
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -102,6 +119,7 @@
     notifications without pulling in the entire library. When the malicious `liblzma`
     is used by a dynamically linked process, it uses the [indirect function](https://sourceware.org/glibc/wiki/GNU_IFUNC)
     mechanism to involve itself in the [linking process](/Articles/961117).
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Indirect functions are a feature of the GNU C library (glibc) that permits a
@@ -114,6 +132,7 @@
     but using faster functions to calculate checksums does sound like a plausible
     use of the feature. This plausible deniability is probably why the exploit itself
     lives in a file called `liblzma_la-crc64-fast.o`.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: When the dynamic linker finalizes the locations of those functions, it calls
@@ -124,6 +143,7 @@
     table (GOT). However, `liblzma` is loaded fairly early in the link order of OpenSSH,
     which means that the [OpenSSL](https://www.openssl.org/) cryptography functions
     that are the backdoor's ultimate target may not have been loaded yet.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: To deal with that, the backdoor adds an [audit hook](https://www.man7.org/linux/man-pages/man7/rtld-audit.7.html).
@@ -132,9 +152,11 @@
     symbol being resolved. Despite the name, this function is actually part of handling
     an RSA signature (which is a decryption operation) — OpenSSH calls it while validating
     an RSA certificate provided by the client during a connection.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Run time
+  id: totrans-split-21
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -146,6 +168,7 @@
     The backdoor checks whether the command is signed by the attacker's private key
     and has valid formatting. If it does, then the backdoor directly runs the given
     command as the user running `sshd`, which is usually root.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Anthony Weems has put together [an explanation](https://github.com/amlweems/xzbot)
@@ -156,14 +179,17 @@
     private key. This also means that detecting backdoored servers remotely is nearly
     impossible, since they will not react any differently to connections that don't
     use the attacker's private key.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Ultimately, the effect of the backdoor appears to be that a compromised SSH
     server which receives a connection with a hand-crafted RSA certificate for authentication
     can be made to run attacker-controlled code.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Anti-analysis
+  id: totrans-split-25
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -176,6 +202,7 @@
     appears in the binary of the exploit. Instead, it uses a [trie](https://en.wikipedia.org/wiki/Trie)
     to hold various strings. Serge Bazanski posted [a list](https://gist.github.com/q3k/af3d93b6a1f399de28fe194add452d01)
     of strings in the malicious `liblzma` encoded this way.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Examining that list shows that `RSA_public_decrypt` is likely not the only function
@@ -183,6 +210,7 @@
     various functions and strings that are used to interfere with OpenSSH's logging.
     This is not yet confirmed, but it seems likely that a compromised SSH server would
     not actually log any connection attempts that use the exploit.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'The backdoor also includes many checks to ensure it is running in the expected
@@ -194,6 +222,7 @@
     had a breakpoint inserted by a debugger. Despite these obstacles, community efforts
     to reverse-engineer and explain the remainder of the backdoor''s code [remain
     underway](https://gist.github.com/smx-smx/a6112d54777845d389bd7126d6e9f504).'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: ~~The backdoor also includes code that patches the binary of `sshd` itself to
@@ -204,9 +233,11 @@
     Many people have put together their own summaries of the exploit, including [this
     comprehensive FAQ](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27)
     by Sam James, which links to other resources.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Being safe
+  id: totrans-split-30
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -222,17 +253,22 @@
     any commits from Tan, so users should expect to see security updates related to
     that soon. Readers may also wish to refer to the security notice for their distribution
     for more specific information.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: (
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/967192/)'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: to post comments)
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL

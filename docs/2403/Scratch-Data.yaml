@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:32:29'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Scratch Data
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://scratchdata.com/blog/building-a-ledger/](https://scratchdata.com/blog/building-a-ledger/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Building a Scalable Accounting Ledger
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -27,17 +34,20 @@
     have come to light explaining the basics of double-entry accounting for developers.
     I aim to share a simple - and elegant, I think - database schema for recording
     and tabulating ledger entries.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'Engineers tend to hand-wave over accounting terminology, dispensing with terms
     like “debit” and “credit” - after all, why not just use positive and negative
     numbers? I think this leads to confusing results. Take this example from ledger-cli’s
     [documentation](https://www.ledger-cli.org/3.0/doc/ledger3.html#Stating-where-money-goes):'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '"When you look at the balance totals for your ledger, you may be surprised
     to see that Expenses are a positive figure, and Income is a negative figure. It
     may take some getting used to, but…"'
+  id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -45,13 +55,16 @@
     ledger-cli represents credits as negative numbers, then income would be show as
     negative. But this is not consistent at all with how financial statements are
     prepared.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: So let’s design a system which can be easily modeled in a database and consistent
     with how actual accounting is done.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Database Choice Matters
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -59,22 +72,27 @@
     find that calling SUM() on these columns is plain old slow. One way to solve this
     is to pre-aggregate data, perhaps by day, and store it in a separate table. This
     can be done in the application, materialized views, or triggers.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another option is to use a column-oriented database like Clickhouse. That''s
     what we''ve chosen here: we prefer to keep the data model simple and use the technology
     to process data quickkly rather than complicate how data gets inserted.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: The Chart of Accounts
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The first thing we want to define is our list of accounts. Our accounts table
     has 3 columns:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '**Name**. The name of the account (Assets, Liabilities, etc)'
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -82,147 +100,188 @@
     Assets, 101 Cash, 106 Accounts Receivable, etc. The useful thing here is we can
     roll up the value of sub-accounts by using place value. We’ll get to an example
     later.'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Normal balance**. In our schema, we define `1` for credit and `-1` as debit.
     The user never sees this! But it is convenient for arithmetic.'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Here’s our table, using SQLite:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: 'And we’ll populate it with some accounts:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '| name | number | normal |'
+  id: totrans-split-23
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-24
   prefs: []
   type: TYPE_TB
 - en: '| Assets | 100 | 1 |'
+  id: totrans-split-25
   prefs: []
   type: TYPE_TB
 - en: '| Cash | 110 | 1 |'
+  id: totrans-split-26
   prefs: []
   type: TYPE_TB
 - en: '| Merchandise | 120 | 1 |'
+  id: totrans-split-27
   prefs: []
   type: TYPE_TB
 - en: '| Liabilities | 200 | -1 |'
+  id: totrans-split-28
   prefs: []
   type: TYPE_TB
 - en: '| Deferred Revenue | 210 | -1 |'
+  id: totrans-split-29
   prefs: []
   type: TYPE_TB
 - en: '| Revenues | 300 | -1 |'
+  id: totrans-split-30
   prefs: []
   type: TYPE_TB
 - en: '| Expenses | 400 | 1 |'
+  id: totrans-split-31
   prefs: []
   type: TYPE_TB
 - en: '| Cost of Goods Sold | 410 | 1 |'
+  id: totrans-split-32
   prefs: []
   type: TYPE_TB
 - en: '| Equity | 500 | -1 |'
+  id: totrans-split-33
   prefs: []
   type: TYPE_TB
 - en: '| Capital | 510 | -1 |'
+  id: totrans-split-34
   prefs: []
   type: TYPE_TB
 - en: Note that Cash and Merchandise roll up into Assets (likewise for other sub-accounts.)
     All Asset accounts are in the “100” range. This is [typical](https://www.accountingtools.com/articles/chart-of-accounts-numbering.html)
     for how firms set up their chart of accounts.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'This schema is already useful! Just based on knowing our accounts and their
     normal balances, we can derive the accounting equation:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: '| expression |'
+  id: totrans-split-38
   prefs: []
   type: TYPE_TB
 - en: '| --- |'
+  id: totrans-split-39
   prefs: []
   type: TYPE_TB
 - en: '| Liabilities + Revenues + Equity + Deferred Revenue + Capital |'
+  id: totrans-split-40
   prefs: []
   type: TYPE_TB
 - en: '| Assets + Expenses + Cash + Merchandise + Cost of Goods Sold |'
+  id: totrans-split-41
   prefs: []
   type: TYPE_TB
 - en: Each line is one side of the equation. This is a rather, erm, comprehensive
     rendition of that equation. We can just get the high-level accounts by selecting
     those which are divisible by 100\. The arithmetic is pretty nifty, and lets us
     roll up data as granularly as we like.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: '| expression |'
+  id: totrans-split-44
   prefs: []
   type: TYPE_TB
 - en: '| --- |'
+  id: totrans-split-45
   prefs: []
   type: TYPE_TB
 - en: '| Liabilities + Revenues + Equity |'
+  id: totrans-split-46
   prefs: []
   type: TYPE_TB
 - en: '| Assets + Expenses |'
+  id: totrans-split-47
   prefs: []
   type: TYPE_TB
 - en: 'Much better! With a little more SQL we can output the equation itself:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: Transactions
+  id: totrans-split-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now that we have a workable chart of accounts, let’s add transactions. Our transactions
     table is straightforward.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: '**Transaction ID**. This will identify all single-entry items (debits+credits)
     which make up a single transaction.'
+  id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Date**. The transaction date.'
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Amount**. The dollar amount for the transaction. This is usually a positive
     number - we do not use negative numbers to represent credits, there is a separate
     column for that.)'
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Account**. This is the account number (ie, 110 for Cash) for this transaction’s
     line item.'
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Direction**. We choose `1` for debit and `-1` for credit, as before. This
     is a handy convention for arithmetic.'
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Example Transactions
+  id: totrans-split-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -230,71 +289,91 @@
     account balance, buying inventory, and then selling the inventory to a customer.
     This post won’t go into the accounting explanation for each transaction (stay
     tuned!) but shows how to use this data to do basic queries.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'In our DB, we add the following rows:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '| id | date | amount | account | direction |'
+  id: totrans-split-61
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-62
   prefs: []
   type: TYPE_TB
 - en: '| 0 | 2022-01-01 | 500.0 | 110 | 1 |'
+  id: totrans-split-63
   prefs: []
   type: TYPE_TB
 - en: '| 0 | 2022-01-01 | 500.0 | 510 | -1 |'
+  id: totrans-split-64
   prefs: []
   type: TYPE_TB
 - en: '| 1 | 2022-01-01 | 100.0 | 120 | 1 |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: '| 1 | 2022-01-01 | 100.0 | 110 | -1 |'
+  id: totrans-split-66
   prefs: []
   type: TYPE_TB
 - en: '| 2 | 2022-02-01 | 15.0 | 110 | 1 |'
+  id: totrans-split-67
   prefs: []
   type: TYPE_TB
 - en: '| 2 | 2022-02-01 | 15.0 | 210 | -1 |'
+  id: totrans-split-68
   prefs: []
   type: TYPE_TB
 - en: '| 3 | 2022-02-05 | 15.0 | 210 | 1 |'
+  id: totrans-split-69
   prefs: []
   type: TYPE_TB
 - en: '| 3 | 2022-02-05 | 15.0 | 300 | -1 |'
+  id: totrans-split-70
   prefs: []
   type: TYPE_TB
 - en: '| 4 | 2022-02-05 | 3.0 | 410 | 1 |'
+  id: totrans-split-71
   prefs: []
   type: TYPE_TB
 - en: '| 4 | 2022-02-05 | 3.0 | 120 | -1 |'
+  id: totrans-split-72
   prefs: []
   type: TYPE_TB
 - en: Note there are multiple rows with the same ID. This is because both rows are
     part of the same transaction - the entirety of that transaction must have debits
     = credits.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'Breaking down transaction `0`:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: The amount is for $500.
+  id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The first line is a debit, denoted as `direction=1`. The account is Cash, as
     the account number `110` matches with our accounts table. Because Cash shares
     the same prefix as “Assets” then this transaction rolls up to the “Assets” account.
+  id: totrans-split-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The second line is a credit, denoted as `direction=-1`. Similarly, the account
     number `510` is Capital, which is an Equity account.
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Querying Transactions
+  id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -302,198 +381,261 @@
     are all surprisingly understandable - dare I say elegant. The schema preserves
     the norms of accounting, the DB operations are cheap, and the output is consistent
     with any standard accounting statement.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: JOIN Transactions with Account details
+  id: totrans-split-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: This is a basic query to show transaction and account information.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-82
   prefs: []
   type: TYPE_PRE
 - en: '| id | date | amount | account | direction | name | number | normal |'
+  id: totrans-split-83
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- | --- | --- | --- |'
+  id: totrans-split-84
   prefs: []
   type: TYPE_TB
 - en: '| 2 | 2022-02-01 | 15.0 | 110 | 1 | Cash | 110 | 1 |'
+  id: totrans-split-85
   prefs: []
   type: TYPE_TB
 - en: '| 2 | 2022-02-01 | 15.0 | 210 | -1 | Deferred Revenue | 210 | -1 |'
+  id: totrans-split-86
   prefs: []
   type: TYPE_TB
 - en: '| 3 | 2022-02-05 | 15.0 | 210 | 1 | Deferred Revenue | 210 | -1 |'
+  id: totrans-split-87
   prefs: []
   type: TYPE_TB
 - en: '| 3 | 2022-02-05 | 15.0 | 300 | -1 | Revenues | 300 | -1 |'
+  id: totrans-split-88
   prefs: []
   type: TYPE_TB
 - en: '| 1 | 2022-01-01 | 100.0 | 110 | -1 | Cash | 110 | 1 |'
+  id: totrans-split-89
   prefs: []
   type: TYPE_TB
 - en: '| 1 | 2022-01-01 | 100.0 | 120 | 1 | Merchandise | 120 | 1 |'
+  id: totrans-split-90
   prefs: []
   type: TYPE_TB
 - en: '| 4 | 2022-02-05 | 3.0 | 120 | -1 | Merchandise | 120 | 1 |'
+  id: totrans-split-91
   prefs: []
   type: TYPE_TB
 - en: '| 4 | 2022-02-05 | 3.0 | 410 | 1 | Cost of Goods Sold | 410 | 1 |'
+  id: totrans-split-92
   prefs: []
   type: TYPE_TB
 - en: '| 0 | 2022-01-01 | 500.0 | 510 | -1 | Capital | 510 | -1 |'
+  id: totrans-split-93
   prefs: []
   type: TYPE_TB
 - en: '| 0 | 2022-01-01 | 500.0 | 110 | 1 | Cash | 110 | 1 |'
+  id: totrans-split-94
   prefs: []
   type: TYPE_TB
 - en: Verifying debits = credits
+  id: totrans-split-95
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: This query helps us verify that, overall, debits and credits match.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-97
   prefs: []
   type: TYPE_PRE
 - en: 'Debits and credits should sum to 0\. We can verify this like so:'
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-99
   prefs: []
   type: TYPE_PRE
 - en: '| sum(direction * amount) |'
+  id: totrans-split-100
   prefs: []
   type: TYPE_TB
 - en: '| --- |'
+  id: totrans-split-101
   prefs: []
   type: TYPE_TB
 - en: '| 0.0 |'
+  id: totrans-split-102
   prefs: []
   type: TYPE_TB
 - en: What if we want to find transactions where debits and credits don’t match?
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-104
   prefs: []
   type: TYPE_PRE
 - en: Balances
+  id: totrans-split-105
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Putting together a balance sheet is easy:'
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-107
   prefs: []
   type: TYPE_PRE
 - en: '| a | name | balance |'
+  id: totrans-split-108
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-109
   prefs: []
   type: TYPE_TB
 - en: '| 110 | Cash | 415.0 |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: '| 120 | Merchandise | 97.0 |'
+  id: totrans-split-111
   prefs: []
   type: TYPE_TB
 - en: '| 210 | Deferred Revenue | 0.0 |'
+  id: totrans-split-112
   prefs: []
   type: TYPE_TB
 - en: '| 300 | Revenues | 15.0 |'
+  id: totrans-split-113
   prefs: []
   type: TYPE_TB
 - en: '| 410 | Cost of Goods Sold | 3.0 |'
+  id: totrans-split-114
   prefs: []
   type: TYPE_TB
 - en: '| 510 | Capital | 500.0 |'
+  id: totrans-split-115
   prefs: []
   type: TYPE_TB
 - en: The most important part of this query is `SUM(amount * direction * normal)`.
     This ensures we are correctly increasing and decreasing our balances, and ensures
     the balance is positive.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: What if we want a report with the sub-accounts rolled into the main ones? We
     can use arithmetic to find the parent account number.
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-118
   prefs: []
   type: TYPE_PRE
 - en: '| a | name | balance |'
+  id: totrans-split-119
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-120
   prefs: []
   type: TYPE_TB
 - en: '| 100 | Assets | 512.0 |'
+  id: totrans-split-121
   prefs: []
   type: TYPE_TB
 - en: '| 200 | Liabilities | 0.0 |'
+  id: totrans-split-122
   prefs: []
   type: TYPE_TB
 - en: '| 300 | Revenues | 15.0 |'
+  id: totrans-split-123
   prefs: []
   type: TYPE_TB
 - en: '| 400 | Expenses | 3.0 |'
+  id: totrans-split-124
   prefs: []
   type: TYPE_TB
 - en: '| 500 | Equity | 500.0 |'
+  id: totrans-split-125
   prefs: []
   type: TYPE_TB
 - en: Here, we've rolled up Cash and Merchandise under Assets.
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, here’s how we can display all transactions in a human-readable way:'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-128
   prefs: []
   type: TYPE_PRE
 - en: '| id | date | name | DR | CR |'
+  id: totrans-split-129
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-130
   prefs: []
   type: TYPE_TB
 - en: '| 0 | 2022-01-01 | Cash | 500.0 |  |'
+  id: totrans-split-131
   prefs: []
   type: TYPE_TB
 - en: '| 0 | 2022-01-01 | Capital |  | 500.0 |'
+  id: totrans-split-132
   prefs: []
   type: TYPE_TB
 - en: '| 1 | 2022-01-01 | Merchandise | 100.0 |  |'
+  id: totrans-split-133
   prefs: []
   type: TYPE_TB
 - en: '| 1 | 2022-01-01 | Cash |  | 100.0 |'
+  id: totrans-split-134
   prefs: []
   type: TYPE_TB
 - en: '| 2 | 2022-02-01 | Cash | 15.0 |  |'
+  id: totrans-split-135
   prefs: []
   type: TYPE_TB
 - en: '| 2 | 2022-02-01 | Deferred Revenue |  | 15.0 |'
+  id: totrans-split-136
   prefs: []
   type: TYPE_TB
 - en: '| 3 | 2022-02-05 | Deferred Revenue | 15.0 |  |'
+  id: totrans-split-137
   prefs: []
   type: TYPE_TB
 - en: '| 3 | 2022-02-05 | Revenues |  | 15.0 |'
+  id: totrans-split-138
   prefs: []
   type: TYPE_TB
 - en: '| 4 | 2022-02-05 | Cost of Goods Sold | 3.0 |  |'
+  id: totrans-split-139
   prefs: []
   type: TYPE_TB
 - en: '| 4 | 2022-02-05 | Merchandise |  | 3.0 |'
+  id: totrans-split-140
   prefs: []
   type: TYPE_TB
 - en: Streaming with Scratch Data
+  id: totrans-split-141
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -501,18 +643,22 @@
     using a data warehouse (Clickhouse, Snowflake, etc) then it''s impossible to do
     individual INSERT statements every time a transaction happens. You end up setting
     up a nightly bulk load process.'
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: What if you could stream journal entries in as transactions happen in real time?
     You could have up-to-the-minute balance sheets. Thankfully, Scratch Data makes
     this really easy.
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: You can stream data to Scratch and we will automatically collect it, create
     database schemas, and safely batch insert.
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: Streaming Stripe and Shopify Data
+  id: totrans-split-145
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -520,39 +666,49 @@
     you can set Scratch Data as a webhook destination and every transaction will stream
     into the database in real time. Check out our blog posts for [Stripe](/blog/stripe-data-ingest/)
     and [Shopfiy](/blog/shopify-data-ingest/) as examples.
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: Streaming From Code
+  id: totrans-split-147
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'If you want to stream data from code - perhaps you have your own webhook, or
     application code - this is really easy too! Here''s what the JSON would look like:'
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-149
   prefs: []
   type: TYPE_PRE
 - en: 'And then POST it:'
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-151
   prefs: []
   type: TYPE_PRE
 - en: From here, data can be streamed to your application (if you're building a user-facing
     dashboard) or as an Excel file.
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-153
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: This is hopefully a starting point on how to design a ledgering system which
     has a high chance of producing data that can be used by your finance team using
     correct terminology.
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to learn more about how we can help you build such a system, please
     [reach out](https://q29ksuefpvm.typeform.com/to/baKR3j0p#source=building_a_ledger)!
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL

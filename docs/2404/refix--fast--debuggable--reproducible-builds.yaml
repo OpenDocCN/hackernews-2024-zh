@@ -1,38 +1,48 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:51:09'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'refix: fast, debuggable, reproducible builds'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://yosefk.com/blog/refix-fast-debuggable-reproducible-builds.html](https://yosefk.com/blog/refix-fast-debuggable-reproducible-builds.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'There''s a simple way to make your builds all of the following:'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '**Reproducible**/deterministic - same binaries always built from the same source,
     so you can cache build outputs across users'
+  id: totrans-split-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Debuggable** - gdb, sanitizers, Valgrind, KCachegrind, etc. find your source
     code effortlessly'
+  id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Fast** - the build time overhead is negligible, even compared to a blazing
     fast linker like [mold](https://github.com/rui314/mold)'
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -43,6 +53,7 @@
     binaries. But this can work with other languages and binary formats, too, and
     it should be easy to support them in `refix`. (*In fact, it mostly supports them
     already...* you'll see.)
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: This "one weird trick" isn't already popular, not because the solution is hard,
@@ -51,9 +62,11 @@
     and standardize on workarounds instead. Since "established practices" are sticky,
     and especially so in the darker corners like build systems, we'll need to discuss
     not only how to solve the problem, but also why solve it at all.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The curious case of the disappearing source files
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -61,23 +74,28 @@
     to the source code of a debugged program? I mean, build a "Hello, world" cmake
     project, and everything just works: gdb finds your source code, `assert` prints
     a path you can just open in an editor, etc. "Source path" isn''t even a thing.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'Later on, the system grows, and the build slows down. So someone implements
     build artifact caching, in one of several ways:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: A general-purpose distributed build cache, like Bazel's
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Something for caching specific kinds of artifacts, like ccache
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: An entirely home-grown system - like running the build of user X in a build
     directory left previously by user Y at the build server's local disk (and hoping
     that their source code is similar enough, so most object files needn't be rebuilt)
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -87,6 +105,7 @@
     all agree that build caches are important, and pretty much force you to put relative
     paths into debug information and the value of `__FILE__` (and some meaningless
     garbage into `__TIME__`, etc.)
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: But we can *also* agree that the *final binaries* which users actually run should
@@ -94,6 +113,7 @@
     the source files. We'll talk about them later; I'd say they don't really work.
     Of course, the workarounds would be tolerable if they were inevitable. But they
     aren't.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '**Why not fix the binary coming out of the build cache, so it points to the
@@ -101,35 +121,43 @@
     the binary from the full source path, so that it can be cached. But now that the
     binary has left the cache, we should "refix" it back to the source path of the
     version where it belongs.)'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: We'll look at 3 ways of refixing the binary to the source path - a thesis, an
     anti-thesis and a synthesis, as it were.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'Thesis: `debugedit` - civilized, standard and format-aware'
+  id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'A standard tool for this is [debugedit](https://sourceware.org/debugedit/).
     The man page example does exactly the "refixing" we''re looking for:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: Some Linux distributions use `debugedit` for building source files in some arbitrary
     location, and then make the debug info point to wherever source files are installed
     when someone downloads them to debug the program.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: If debugedit works for you, problem solved. It works perfectly when it does.
     However, when I tried it on a 3GB shared object compiled from a C++ code base,
     it ran for 30 seconds, and then crashed. If you, too find debugedit either slow
     or buggy for your needs, read on.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Anti-thesis: `sed` - nasty, brutish, and short'
+  id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -137,58 +165,72 @@
     grow or shrink the space reserved for each replaced string. When you do such things,
     you need to move a lot of data (slow), and adjust who-knows-which offset fields
     in the file (bug-prone.)
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: But what if the strings had the same length? Then we don't need to move or adjust
     anything, and we could, erm, we could replace them with `sed`.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here, then, is our nasty, brutish, and short recipe:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'Our post-link step thus becomes:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: The downside, on top of the source path length limit, is a trace of the brutishness
     making it into the output file. Namely, you're going to see these extra forward
     slashes in some situations. We can't pad a prefix with an invisible character...
     luckily, we can pad it with a character not changing the meaning of the path.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'On the upside, compared to `debugedit`, the method using `sed` is:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '**More widely applicable** - it, erm, "supports" all executable and debug information
     formats, as well as archives and object files.'
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**More robust** - not affected by input format complexity'
+  id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Faster** - 10 seconds to process the 3GB binary (about the time it takes
     `mold` to link that binary... yes, it''s that good!)'
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Is this fast enough? Depends on your binary sizes. If yours are big and you
     don't want to effectively double the link time, our next and last method is for
     you.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'Synthesis: `refix` - nasty, brutish, and somewhat format-aware'
+  id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Can we go faster than `sed`? We have two reasons to hope so:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '`sed` is unlikely to be optimized specifically for replacing strings of equal
     size; it''s not that common a use case.'
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -196,6 +238,7 @@
     in some of the sections - `.rodata` where strings are kept, and debug info sections.
     If we know enough about the file format to find the sections (which takes very
     little knowledge), we can avoid touching most of the bytes in the file.
+  id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -203,45 +246,54 @@
     debug info? *Yes*, but it turns out that most of the debug info sections *don't
     contain file paths*; only `.debug_line` and `.debug_str` do and these are only
     about 10% of our giant file.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'So the `refix` program works as follows:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: It `mmap`s the file, since it knows it never needs to move the data and can
     just overwrite the strings in place.
+  id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For ELF files, it finds `.rodata`, `.debug_line` and `.debug_str`, and searches
     & replaces only within these. This handles executables, shared libraries (`*.so`)
     and object files (`*.o`).
+  id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For `ar` archives, it finds the ELFs within the archive, then the sections it
     cares about within each ELF, and searches & replaces within these. This handles
     `lib*.a`.
+  id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For files which are neither ELFs nor archives of ELFs, `refix` just replaces
     everywhere as `sed` would, but still faster because it's optimized for the same-sized
     source & destination strings case.
+  id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Thus, `refix` is:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '**Very fast** - 50 ms on the 3GB binary, and 250 ms on the same binary in "sed
     mode" (meaning, if we remove the ELF magic number, so `refix` is forced to replace
     everywhere and not just in the relevant sections.)'
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Widely applicable** - works on any file format where the file prefix isn''t
     compressed and is otherwise "laid bare"'
+  id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -249,22 +301,27 @@
     very little (enough to find the sections it''s interested in); it''s hundreds
     of lines of code vs `debugedit`''s thousands. And you can always make it run even
     less code by falling back to "sed mode."'
+  id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '...with the sole downside being that, same as with sed, you might occasionally
     see the leading slashes in pathnames.'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: That's it, right? We're done? Well, maybe, but it's not always how it goes.
     People have questions. So here we go.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Q & A
+  id: totrans-split-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Why do this? We already have a system for finding the source code.
+  id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -272,9 +329,11 @@
     finding source code, because the tired, stressed developer who was sent a core
     dump to urgently look at is entitled to having at least *this* part work entirely
     effortlessly.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'But also, whatever system you do have ought to have issues:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: If you do not modify the cacheable, reproducible binaries coming out of the
@@ -284,6 +343,7 @@
     rely on some sort of version information. What if the program had uncommitted
     changes, which happens in debugging scenarios (someone built a version to test
     and someone else sent a core dump from this version?)
+  id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -296,6 +356,7 @@
     this discussion, which started at how build caches *speed up* the build, deteriorate
     to the point where we''re telling developers to change how they work, in ways
     which will *slow them down?*'
+  id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -309,6 +370,7 @@
     machines to run on that aren't managed by Jenkins or some such to begin with.
     But that is a horror story for another time. Here I'll just assume that we agree
     that it's good to be able to test changes locally and debug easily.)
+  id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -317,6 +379,7 @@
     that automatically tells gdb where the source code is based on the embedded version
     info. Do you have this extension and a team maintaining it together with the build
     system?
+  id: totrans-split-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -324,6 +387,7 @@
     KCachegrind, VTune, whatever)? Do they all even have a way to tell them where
     to look for source code? Is there a team handling this for all users, for every
     new tool used by developers?
+  id: totrans-split-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -334,27 +398,33 @@
     and they are quite often very far removed from any team that could ameliorate
     their suffering by improving "the system for finding source code" - so they're
     bound to suffer for a long time.)
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'My main point, however, is that you needn''t have any of these pain points
     *at all*. There''s no tradeoff or price to pay: your build is still reproducible
     and fast. Just make it debuggable with this one weird trick!'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: (Wow, I've been quite composed and civil here. I'm very proud of myself. Not
     that it's easy. I have strong *feelings* about this stuff, folks!)
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: What about non-reproducible info other than source path (time, build host, etc)?
+  id: totrans-split-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'I''m glad you asked! You can put all the stuff changing with every build into
     a separate section, reserved at build time and filled after link time. You make
     the section with:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: This reserves `SIZE` bytes in a section called `.ver`. It's non-`const` deliberately,
@@ -364,6 +434,7 @@
     this section in a core dump, perhaps before looking at anything else. **For instance,
     the content of this section can help you find the path of the executable that
     dumped this core!**
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '(How do you find the section in the core dump without having an executable
@@ -372,6 +443,7 @@
     the executable path *in the core dump* is an additional and often major improvement
     on top of having full source paths *in the executable...* because you need to
     find the executable before you can find the source!)'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: Additionally, our `ver` variable is deliberately initialized with one `1` followed
@@ -379,21 +451,26 @@
     zeroed by the loader and without space reserved for it in the binary. So you'd
     have nowhere to write your actual, "non-reproducible" version info at a post-link
     step.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: 'After the linker is done, you can use `objcopy` to replace the content of `.ver`.
     But if you''re using `refix`, which already mmaps the file, you can pass it more
     arguments to replace ELF sections:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: '`refix` will put the content of `file` into `.ver`, or fail if the file doesn''t
     have the right length. (We don''t move stuff around in the ELF, only replace.)'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: What about compressed debug sections?
+  id: totrans-split-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -402,6 +479,7 @@
     they need to run them often, I presume), but they do want to compress the debug
     sections to save space? Like, in what scenario *this* is your way to save enough
     space to even worry about it?
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: But, they could be supported rather nicely, I think, if you really care. You
@@ -409,15 +487,18 @@
     updating any offset field in the file, but I think you could come close, or rather
     stay very far away from doing seriously heavy lifting making this slow and bug-prone.
     Let's chat if you're interested in this.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: (I think maybe one problem is that some build caches have a file size limit?
     Like, something Bazel-related tops out at 2GB since it's the maximal value of
     the Java int type?.. Let's talk about something else, this is making me very sad.)
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: It's 250 ms on generic data. And you still did the ELF/ar thing to get to 50
     ms. Are you insane?
+  id: totrans-split-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -428,6 +509,7 @@
     system stop doing that, and I want people stuck in this situation to at least
     have debuggable binaries without waiting even more for the build. So `refix` is
     optimized for a slow filesystem.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: But also, if it's not too much work, I like things to be fast. [Insane or not](people-can-read-their-managers-mind.html),
@@ -436,6 +518,7 @@
     of maybe going overboard a bit; better safe than sorry. Like, I don't parse most
     of the ELF file, which means I don't use the `Elf::parse` method from the `goblin`
     library, but instead I wrote a 30 line function to parse just what I need.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: This saves 300-350 ms, which, is it a lot? - maybe not. Will it become much
@@ -445,6 +528,7 @@
     the Rust program is a "clean room" open source implementation of, takes 150 ms
     and the Rust one takes about 400 ms. Am I happy now that I got it down to 50 ms?
     Indeed!
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: (Why is Rust faster? Not sure; I think, firstly, GNU `memmem` is slower than
@@ -452,6 +536,7 @@
     in Rust, because the speedup is marginal - you bottleneck on I/O - and I don't
     want to complicate the build for small gains, but in Rust it's not complicated
     - just `cargo add rayon`.)
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: It often takes less time to just do the efficient thing than it takes to argue
@@ -461,17 +546,21 @@
     will usually just go for the efficient thing when they see it regardless if it's
     the case, I think. IME the people who always argue about whether optimizations
     are worth it make big and slow things in the end.)
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: I'm as crazy as you, and I want this speedup for non-ELF executable formats.
+  id: totrans-split-86
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Let's chat. The `goblin` library probably supports your format - shouldn't take
     more than 100-150 LOC to handle this in `refix`.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Which binaries should I run this stuff on?
+  id: totrans-split-88
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -479,6 +568,7 @@
     programs / load shared libraries) or other build systems (which link code against
     static libraries / object files.) And nothing "inside the build system", or it
     will ruin caching.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: I hope for your sake that you have a monolithic build where you build everything
@@ -487,22 +577,26 @@
     that case, you might start out with a bug where some libraries are shipped with
     the MAGIC as their source prefix instead of the real thing. This is easy to fix
     though, and someone might even remind you with "what's this weird MAGIC stuff?"
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: (Somehow nobody used to ask "what's `/local/clone-87fg12eb/src`", when *that*
     was the prefix instead of MAGIC. Note that even if you have this bug and keep
     MAGIC in some library files, *nobody is worse off* than previously when it was
     `/local/clone-87fg12eb/src`. And once you fix it, they'll be *better* off.)
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: CI removes the source after building it. What should the destination source
     prefix be?..
+  id: totrans-split-92
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'And here I was, thinking that it''s the build cache not liking absolute paths
     that was the problem... It turns out that we have a bigger problems: the source
     is just nowhere to be found! `/local/clone-87fg12eb/src` is gone forever!'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: But actually, it makes sense for CI to build on the local disk in a temporary
@@ -512,6 +606,7 @@
     but fails in the worst ways under load - which is why a temporary local directory
     makes sense. But NAS is a great place for *debugging tools* to get source from
     - widely accessible with no effort for the user.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Many organizations decide against NAS source exports, because it would be too
@@ -520,32 +615,39 @@
     have; plus, you can make yourself some coffee while the entire source code (of
     which you'll only need the handful of files you'll actually open in the debugger)
     is downloaded and decompressed.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: In that case, your destination source prefix should be wherever the user downloads
     the files to. Decide on any local path independent of the user name, and with
     version information encoded in it, so multiple versions can be downloaded concurrently.
     Have a nice cup of coffee!
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: What should the root path length limit be?
+  id: totrans-split-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 100 bytes.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Our CI produces output in `/filer/kubernetes/docker/gitlab/jenkins/pre-commit/department/team/developer/branch-name/test-suite-name/repo/`,
     which is 110 bytes.
+  id: totrans-split-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Great! Now you have a reason to ask them to shorten it. I'm sure they'll get
     to it in a quarter or two, if you keep reminding.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: Our CEO's preschooler works as a developer, insists on a 200 byte prefix, and
     won't tolerate the build failing.
+  id: totrans-split-101
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -555,21 +657,26 @@
     since the current situation leaves it nowhere worse to take you. It could only
     possibly take you from *never* being able to easily find the source to *sometimes*,
     if not always, being able to find it.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-103
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Use `refix`, `sed` or `debugedit` to make your fast, reproducible builds also
     effortlessly debuggable, so that it's trivial to find the source given an executable
     - and the executable given a core dump.
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: And please don't tell me it's OK for developers to roam the Earth looking for
     source code instead. It hurts my feelings!
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: '*Thanks to Dan Luu for reviewing a draft of this post.*'
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL

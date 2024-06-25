@@ -1,34 +1,43 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:41:02'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Swift.org - Swift 5.10 Released
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.swift.org/blog/swift-5.10-released/](https://www.swift.org/blog/swift-5.10-released/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Swift 5.10 Released
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: March 5, 2024
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Swift was designed to be safe by default, preventing entire categories of programming
     mistakes at compile time. Sources of undefined behavior in C-based languages,
     such as using variables before they’re initialized or a use-after-free, are defined
     away in Swift.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: An increasingly important source of undefined behavior is concurrent code that
@@ -39,6 +48,7 @@
     which guarantees mutually exclusive access to shared mutable state. Data isolation
     enforcement has been under active development since 2020 when the [Swift concurrency
     roadmap](https://forums.swift.org/t/swift-concurrency-roadmap/41611) was posted.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '**Swift 5.10 accomplishes full data isolation in the concurrency language model.**
@@ -49,12 +59,14 @@
     contexts without introducing a risk of data races. And now, in Swift 5.10, full
     data isolation is enforced at compile time in all areas of the language when the
     complete concurrency checking option is enabled.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Full data isolation in Swift 5.10 sets the stage for the next major release,
     Swift 6\. The Swift 6.0 compiler will offer a new, opt-in Swift 6 language mode
     that will enforce full data isolation by default, and we will embark upon the
     transition to eliminate data races across all software written in Swift.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Swift 5.10 will produce data-race warnings in some circumstances where the code
@@ -62,11 +74,13 @@
     development for the Swift 6 release is improving the usability of strict concurrency
     checking by mitigating false positive concurrency errors in common code patterns
     that are proven to be safe.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Read on to learn about full data isolation in Swift 5.10, new unsafe opt-outs
     for actor isolation checking, and the remaining concurrency evolution ahead of
     Swift 6.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Swift 5.10 rounds out the data-race safety semantics in all corners of the language,
@@ -75,14 +89,17 @@
     flag `-strict-concurrency=complete`, Swift 5.10 will diagnose the potential for
     data races at compile time except where an explicit unsafe opt-out, such as `nonisolated(unsafe)`
     or `@unchecked Sendable`, is used.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, in Swift 5.9, the following code fails an isolation assertion
     at runtime due to a `@MainActor`-isolated initializer being evaluated outside
     the actor, but it was not diagnosed under `-strict-concurrency=complete`:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'The above code admits data races. `MyModel.shared` is a `@MainActor`-isolated
@@ -91,19 +108,23 @@
     inside the `useShared()` function, so the initial value is computed off the main
     actor. In Swift 5.10, compiling the code with `-strict-concurrency=complete` produces
     a warning that the access must be done asynchronously:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: The possible fixes for resolving the data race are 1) access `MyModel.shared`
     asynchronously using `await`, 2) make `MyModel.init` and `MyModel.shared` both
     `nonisolated` and move the code that requires the main actor into a separate isolated
     method, or 3) isolate `useShared()` to `@MainActor`.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: You can find more details about the changes and additions to the full data isolation
     programming model in the [Swift 5.10 release notes](https://github.com/apple/swift/blob/release/5.10/CHANGELOG.md).
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Unsafe opt-outs, such as `@unchecked Sendable` conformances, are important for
@@ -115,48 +136,59 @@
     opt the entire type out of data-race safety checking. In many cases, only one
     specific property in a type needs the opt-out, while the rest of the implementation
     adheres to static concurrency safety.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Swift 5.10 introduces a new `nonisolated(unsafe)` keyword to opt out of actor
     isolation checking for stored properties and variables. `nonisolated(unsafe)`
     can be used on any form of storage, including stored properties, local variables,
     and global/static variables.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, global and static variables can be accessed from anywhere in your
     code, so they are required to either be immutable and `Sendable`, or isolated
     to a global actor:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: 'When building the above code with `-strict-concurrency=complete`, the compiler
     emits a warning:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: 'All uses of `globalCache` are guarded by `cacheQueue.async { ... }`, so this
     code is free of data races in practice. In this case, `nonisolated(unsafe)` can
     be applied to the static variable to silence the concurrency warning:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: '`nonisolated(unsafe)` also eliminates the need for `@unchecked Sendable` wrapper
     types that are used only to pass specific instances of non-`Sendable` values across
     isolation boundaries when there is no potential for concurrent access:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: Note that without correct implementation of a synchronization mechanism to achieve
     data isolation, dynamic analysis from exclusivity enforcement or tools such as
     the Thread Sanitizer may still identify failures.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '**The next release of Swift will be Swift 6.** The complete concurrency model
@@ -167,15 +199,18 @@
     when the compiler determines there is no potential for concurrent access, [more
     effective `Sendable` inference for functions and key-paths](https://github.com/apple/swift-evolution/blob/main/proposals/0418-inferring-sendable-for-methods.md),
     and more. You can find the set of proposals that will round out Swift 6 at [Swift.org/swift-evolution](https://www.swift.org/swift-evolution/#?version=6.0).'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: You can help shape the transition to the Swift 6 language mode by [trying out
     complete concurrency checking](/documentation/concurrency/) in your project and
     providing feedback on your experience.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: If you find any remaining compiler bugs where complete concurrency checking
     does not diagnose a data race at compile time, please [report an issue](https://github.com/apple/swift/issues/new/choose).
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: You can also provide feedback that helps improve the concurrency documentation,
@@ -184,13 +219,16 @@
     or you’re not sure how to resolve a given data-race warning, please start a [discussion
     thread on the Swift forums](https://forums.swift.org/tags/c/swift-users/15/concurrency)
     using the `concurrency` tag.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Official binaries for Swift 5.10 are [available for download](https://swift.org/download/)
     from [Swift.org](http://swift.org/) for macOS, Windows, and Linux.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following language proposals were accepted through the [Swift Evolution](https://github.com/apple/swift-evolution)
     process and [implemented in Swift 5.10](https://www.swift.org/swift-evolution/#?version=5.10):'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL

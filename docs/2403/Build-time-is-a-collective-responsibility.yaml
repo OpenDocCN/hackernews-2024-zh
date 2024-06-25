@@ -1,35 +1,44 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:38:00'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Build time is a collective responsibility
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://yoyo-code.com/build-time-is-collective-responsibility/](https://yoyo-code.com/build-time-is-collective-responsibility/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: There's been some talk about Rust's compile time again recently. I feel like
     there's a mismatch of expectations when it comes to this topic in general. I want
     to address that, and Rust is especially good example to illustrate this.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: You have to do your part [🔗](#you-have-to-do-your-part)
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: At my previous job, I became pretty frustrated with slow builds of our C++ codebase.
     From the frontend world, I was used to seeing my code changes reflected in the
     browser in ~1s, so 5-minute build time was a bit too much for me.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'When I asked one developer about this, my concerns were more or less dismissed.
@@ -37,29 +46,35 @@
     responsibility: "this is not our problem, it''s been inflicted on us, we''re a
     native project, we have to compile a lot of code." But as I have dug into the
     build system, I''ve found a bunch of trivial problems:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: the heaviest part of the codebase was built twice
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: single big header file was included almost everywhere and compiled more than
     100x times
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: many unnecessary includes that created spurious build time dependencies
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Severely limited parallelism because of a single (avoidable) bottleneck in the
     build graph
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Fixing them was often just about changing few lines in `CMakeLists.txt` or moving
     some code around between different files. I shaved off minutes of build time in
     the end.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Curiously, one problem wasn't even a build system problem. I was told to use
@@ -67,60 +82,72 @@
     on the team just assumed that `-j` is a shorthand for `-j <num_cpus>`, but it's
     actually a shorthand for `-j <infinity>`. That's a user problem, but it also illustrates
     my point.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: We could go rant about many inherent compile time problems of C++, about confusing
     `make` defaults, some `CMake` constructs not doing what you'd expect, but the
     thing is - this is our program, our build configuration, our responsibility. **Part
     of our responsibility is to understand the tools and use them properly.**
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Builder is an interpreter [🔗](#builder-is-an-interpreter)
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Here''s the thing:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Build time will never be simply fast. Build is just a program, like any other
     one and has all the problematic properties of programs.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Rust is a perfect example here, because it has a turing-complete type system,
     so your code can be thought of as a combination of multiple programs layered on
     top of each other. One program will be run by your users, but another program
     will be interpreted by Rust's type system during the build.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: You don't have to use a turing-complete build system, though. Even if your build
     system doesn't allow arbitrary computation, it probably has some way you can give
     it a lot of work to do. Regex also doesn't have to be Turing complete to run practically
     forever on some inputs.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: This means that you can't just offload the build time concern to a third party,
     like compiler developers. Yes, they have to do their part, too, but they can't
     take responsibility for your program or build config doing something fundamentally
     problematic.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '**As much as language developers are not responsible for your quadratic program
     when it comes to runtime performance, they are also not responsible for your quadratic
     build-time program.**'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: We are in this together [🔗](#we-are-in-this-together)
+  id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: To be fair, library and toolchain developers have this meta-responsibility of
     offering and encouraging constructs that work well for their toolchain.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: I think this is partly why there are these mismatched expectations in the first
     place. Many people come from ecosystems where these concerns don't exist because
     their developers designed these languages or toolchains to avoid them. This is
     especially true for interpreted languages.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Rust is in a much harder position here. They not only included features that
@@ -129,12 +156,14 @@
     states unrepresentable' meme is also part of the blame here. Doing that often
     implies using the compiler as theorem prover, which is fundamentally a compile
     time trade-off.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: For languages like Rust, I believe compile time concerns should be part of the
     education and documentation. Developers have to understand that the way they structure
     their codebase or how they use certain features has a non-trivial impact on build
     time. It should also give them tools to diagnose and fix these problems.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: For example, The Little Book of Rust Macros has a [performance section](https://veykril.github.io/tlborm/decl-macros/patterns/tt-muncher.html#performance)
@@ -143,5 +172,6 @@
     and [self profile](https://blog.rust-lang.org/inside-rust/2020/02/25/intro-rustc-self-profile.html)
     to diagnose. Typescript has a [performance](https://github.com/microsoft/TypeScript/wiki/Performance)
     section in their wiki, too.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL

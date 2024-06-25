@@ -1,39 +1,50 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:09:22'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Building a Linux Container using Namespaces :: Part - 1'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.polarsparc.com/xhtml/Containers-1.html](https://www.polarsparc.com/xhtml/Containers-1.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Building a Linux Container using Namespaces :: Part - 1'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Ever wondered how Linux Containers worked ???
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Currently, [Docker](https://www.polarsparc.com/xhtml/Docker.html) is one of
     the most popular and prevalent container implementations.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Containers run on top of the same Operating System kernel, but isolate the application
     processes running inside them from one another. One of the secret sauces behind
     containers is [Namespaces](http://man7.org/linux/man-pages/man7/namespaces.7.html).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: A Namespace abstracts global system resources, such as, host names, user IDs,
@@ -41,337 +52,429 @@
     (within the namespace) as though they have their own isolated instance of the
     global system resources. One of the primary goals of namespaces is to support
     the implementation of containers (lightweight virtualization).
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Currently, in Linux there are 6 types of namespaces - IPC, Network, Mount, PID,
     User, and UTS.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following are brief descriptions for each of the namespaces:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'IPC :: This namespace isolates certain interprocess communication (IPC) resources,
     namely, Message Queues, Semaphores, and Shared Memory'
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Network :: This namespace provides isolation of the system resources associated
     with networking, such as, Network devices, IP addresses, IP routing tables, /proc/net
     directory, port numbers, and so on'
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Mount :: This namespace isolates the set of filesystem mount points seen by
     a group of processes. Processes in different mount namespaces can have different
     views of the filesystem hierarchy'
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'PID :: This namespace isolates the process ID number space. This allows processes
     in different PID namespaces to have the same PID'
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'User :: This namespace isolates the user and group ID number spaces, such that,
     a process''s user and group IDs can be different inside and outside the user namespace'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'UTS :: This namespace isolates two system identifiers — the hostname and the
     domainname. For containers, the UTS namespaces allows each container to have its
     own hostname and NIS domain name'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For the demonstration in this article, we will be using the unshare Linux command
     as well as implement, build, and execute a simple container using golang.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: The installation is on a Ubuntu 18.04 LTS based Linux desktop.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: We will need two commands newuidmap and newgidmap to demonstrate User namespace.
     For this, we need to install the package uidmap.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'To install the package uidmap, execute the following command:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo apt install -y uidmap
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we will need the brctl command to create a bridge network interface. For
     this, we need to install the package bridge-utils.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'To install the package bridge-utils, execute the following command:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo apt install -y bridge-utils
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: To develop, build, and execute the simple container in go programming language,
     we need to install the golang package.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'To check the version of golang available to install, execute the following
     command:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo apt-cache policy golang
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Output.1
+  id: totrans-split-32
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: 'To install golang, execute the following command:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo apt install -y golang
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: The above installation procedure installs golang from the official Ubuntu repository.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create a directory for developing, building, and running go programs by executing
     the following commands:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: $ mkdir $HOME/projects/go
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: $ export GOPATH=$HOME/projects/go
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: We will need one of the popular go packages on netlink for networking.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'To download the go package, execute the following command:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: $ go get github.com/vishvananda/netlink
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Open two Terminal windows - we will refer to them as TA and TB respectively.
     TB is where we will demonstrate the simple container.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: We need to download a minimal root filesystem (rootfs) that will be used as
     the base image for the simple container. For our demonstration, we will choose
     the latest [Ubuntu Base 18.04.4 LTS](http://cdimage.ubuntu.com/ubuntu-base/releases/18.04.4/release/ubuntu-base-18.04.4-base-amd64.tar.gz)
     at the time of this article.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: We will assume the latest Ubuntu Base is downloaded to the directory $HOME/Downloads.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: The unshare command executes the specified program with the indicated namespace(s)
     isolated from the parent process.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the options for the unshare command, execute the following command
     in TA:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Output.2
+  id: totrans-split-49
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: Each process (with [PID]) has associated with it a sub-directory /proc/[PID]/ns
     that contains one entry for each of the namespaces.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'To list all the namespaces associated with a process, execute the following
     command in TA :'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: Output.3
+  id: totrans-split-54
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'To launch a simple container whose host name is isolated from the parent host
     name, execute the following command in TB:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo unshare -u /bin/sh
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: The -u option enables the UTS namespace.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: 'The command prompt will change to a #.'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'To check the PID of the simple container, execute the following command in
     TB:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'To list all the namespaces associated with the simple container, execute the
     following command in TB:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Output.5
+  id: totrans-split-64
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: Comparing Output.5 to Output.3, we see a change in the uts namespace, which
     is expected and correct.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: 'To change the host name of the simple container, execute the following command
     in TB:'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the host name of the parent host, execute the following command
     in TA:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the host name of the simple container, execute the following command
     in TB:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: This demonstrates to us that we have isolated the host name of the simple container
     from the parent host name.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: 'To exit the simple container, execute the following command in TB:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, we will mimic the above UTS namespace isolation using the following go
     program:'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: <fieldset id="sc-fieldset"><legend>Listing.1</legend>
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: </fieldset>
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: The Command function from the exec package allows one to run the specified command
     (1st parameter) with the supplied arguments (2nd parameter). It returns an instance
     of the Cmd struct.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: One can set the standard input (os.Stdin), the standard output os.Stdout, the
     standard error os.Stderr, and some operating system specific attributes on the
     returned Cmd instance. In this case, we specify the syscall.CLONE_NEWUTS OS attribute
     to indicate the command be run in a new UTS namespace.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'IMPORTANT : When the main process starts, it internally spawns another main
     process (with the CLONE argument) in a new namespace. It is this spawned main
     process (running in the new namespace) that is overlayed (syscall.Exec) with the
     shell command by invoking the function execContainerShell.'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create and change to the directory $GOPATH/uts by executing the following commands
     in TB:'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: $ mkdir -p $GOPATH/uts
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: $ cd $GOPATH/uts
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Copy the above code into the program file main.go in the current directory.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'To compile the program file main.go, execute the following command in TB:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'To run program main, execute the following command in TB:'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Output.8
+  id: totrans-split-88
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-89
   prefs: []
   type: TYPE_PRE
 - en: The command prompt will change to a ->.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the host name of the simple container, execute the following command
     in TB:'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: 'To exit the simple container, execute the following command in TB:'
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: SUCCESS !!! We have demonstrated the UTS namespace using both the unshare command
     and a simple go program.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Let us layer the User namespace on top of the UTS namespace.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: 'To launch a simple container whose user/group IDs as well as the host name
     are isolated from the parent namespace, execute the following command in TB:'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo unshare -uU /bin/sh
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: The -U option enables the User namespace.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the user ID and group ID in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: Output.10
+  id: totrans-split-101
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-102
   prefs: []
   type: TYPE_PRE
 - en: When a User namespace is created, it starts without a mapping for the user/group
@@ -380,81 +483,103 @@
     for the overflow user ID is read from /proc/sys/kernel/overflowuid (which is 65534).
     Similarly, the default value for the overflow group ID is read from /proc/sys/kernel/overflowgid
     (which is 65534).
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: 'To fix the mapping for the user/group ID to the parent user/group ID, exit
     the simple container by executing the following command in TB:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: 'To re-launch the simple container with the current effective user/group ID
     mapped to the superuser user/group ID in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo unshare -uUr /bin/sh
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: The -r option enables the mapping of the user/group IDs in the new namespace
     to the parent namespace user/group IDs.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: 'The command prompt will change to a #.'
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the user ID and group ID in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: Output.11
+  id: totrans-split-111
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-112
   prefs: []
   type: TYPE_PRE
 - en: 'To list all the namespaces associated with the simple container, execute the
     following command in TB:'
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: Output.12
+  id: totrans-split-115
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-116
   prefs: []
   type: TYPE_PRE
 - en: Comparing Output.12 to Output.3, we see a change in both the uts namespace as
     well as the user namespace, which is what is expected and correct.
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: 'To exit the simple container, execute the following command in TB:'
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, we will mimic the above UTS and User namespace isolation using the following
     go program:'
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: <fieldset id="sc-fieldset"><legend>Listing.2</legend>
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-121
   prefs: []
   type: TYPE_PRE
 - en: </fieldset>
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: As indicated previously, the Command function returns an instance of the Cmd
     struct.
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: In this example, we specify the additional syscall.CLONE_NEWUSER OS attribute
     to indicate the command be run in a new User namespace.
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: In addition, we set the user ID map UidMappings as an array of syscall.SysProcIDMap
@@ -462,489 +587,626 @@
     to the user ID in the host namespace (HostID). In this case, we map the root user
     ID 0 in the container to the root user ID 0 of the host namespace. Similarly,
     we set the group ID map GidMappings
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create and change to the directory $GOPATH/user by executing the following
     commands in TB:'
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: $ mkdir -p $GOPATH/user
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: $ cd $GOPATH/user
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: Copy the above code into the program file main.go in the current directory.
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: 'To compile the program file main.go, execute the following command in TB:'
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
 - en: 'To run program main, execute the following command in TB:'
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: Output.13
+  id: totrans-split-133
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-134
   prefs: []
   type: TYPE_PRE
 - en: The command prompt will change to a ->.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the user ID and group ID in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: Output.14
+  id: totrans-split-138
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-139
   prefs: []
   type: TYPE_PRE
 - en: 'To list all the namespaces associated with the simple container, execute the
     following command in TB:'
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: Output.15
+  id: totrans-split-142
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-143
   prefs: []
   type: TYPE_PRE
 - en: 'To display the host name of the simple container, execute the following command
     in TB:'
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: 'To exit the simple container, execute the following command in TB:'
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: SUCCESS !!! We have demonstrated the combined UTS and User namespaces using
     both the unshare command and a simple go program.
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: Let us now layer the PID namespace on top of the User namespace and the UTS
     namespace.
+  id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
 - en: 'To launch a simple container whose process IDs as well as the user/group IDs
     and the host name are isolated from the parent namespace, execute the following
     command in TB:'
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo unshare -uUrpf --mount-proc /bin/sh
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: The -p option enables the PID namespace.
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: The -f option enables spawning (or forking) of new processes in the new namespace.
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: The --mount-proc option mounts the proc filesystem as a private mount at /proc
     in the new namespace. This means the /proc pseudo directory only shows information
     only about processes within that PID namespace.
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
 - en: ATTENTION
+  id: totrans-split-154
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-155
   prefs: []
   type: TYPE_PRE
 - en: 'The command prompt will change to a #.'
+  id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display all the processes in the new namespace, execute the following command
     in TB:'
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: Output.17
+  id: totrans-split-159
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-160
   prefs: []
   type: TYPE_PRE
 - en: 'To display all the processes in the parent namespace, execute the following
     command in TA:'
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
 - en: Output.18
+  id: totrans-split-163
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-164
   prefs: []
   type: TYPE_PRE
 - en: Comparing Output.17 to Output.18, we see the isolation between the new namespace
     and the parent namespace, which is what is expected and correct.
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: 'To exit the simple container, execute the following command in TB:'
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, we will mimic the above UTS, User, and PID namespace isolation using
     the following go program:'
+  id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
 - en: <fieldset id="sc-fieldset"><legend>Listing.3</legend>
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-169
   prefs: []
   type: TYPE_PRE
 - en: </fieldset>
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
 - en: As indicated previously, the Command function returns an instance of the Cmd
     struct.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: In this example, we specify the additional syscall.CLONE_NEWNS and syscall.CLONE_NEWPID
     OS attributes to indicate the command be run in a new PID namespace.
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: 'Create and change to the directory $GOPATH/pid by executing the following commands
     in TB:'
+  id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
 - en: $ mkdir -p $GOPATH/pid
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: $ cd $GOPATH/pid
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: Copy the above code into the program file main.go in the current directory.
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
 - en: 'To compile the program file main.go, execute the following command in TB:'
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: 'To run program main, execute the following command in TB:'
+  id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: Output.19
+  id: totrans-split-180
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-181
   prefs: []
   type: TYPE_PRE
 - en: The command prompt will change to a ->.
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the host name of the simple container, execute the following command
     in TB:'
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: 'To display the user ID and group ID in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
 - en: Output.21
+  id: totrans-split-187
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-188
   prefs: []
   type: TYPE_PRE
 - en: 'To display all the processes in the simple container, execute the following
     command in TB:'
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
 - en: Output.22
+  id: totrans-split-191
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-192
   prefs: []
   type: TYPE_PRE
 - en: 'To list all the namespaces associated with the simple container, execute the
     following command in TB:'
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
 - en: Output.23
+  id: totrans-split-195
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-196
   prefs: []
   type: TYPE_PRE
 - en: 'To exit the simple container, execute the following command in TB:'
+  id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
 - en: SUCCESS !!! We have demonstrated the combined UTS, User, and PID namespaces
     using both the unshare command and a simple go program.
+  id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
 - en: We will now setup the minimal Ubuntu Base image for use in the new namespace
     in the /tmp directory.
+  id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
 - en: 'To create and copy the base image to a directory in /tmp, execute the following
     commands in TA:'
+  id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
 - en: $ mkdir -p /tmp/rootfs/.old_root
+  id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
 - en: $ tar -xvf $HOME/Downloads/ubuntu-base-18.04.4-base-amd64.tar.gz --directory
     /tmp/rootfs
+  id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
 - en: cd /tmp
+  id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
 - en: Now let us now layer the Mount namespace on top of the User, the UTS, and the
     PID namespaces.
+  id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
 - en: 'To launch a simple container whose mount points as well as the process IDs,
     the user/group IDs, and the host name are isolated from the parent namespace,
     execute the following command in TB:'
+  id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
 - en: $ sudo unshare -uUrpfm --mount-proc /bin/sh
+  id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
 - en: The -m option enables the Mount namespace.
+  id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
 - en: 'The command prompt will change to a #.'
+  id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
 - en: 'To list all the mount points in the parent namespace, execute the following
     command in TA:'
+  id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
 - en: $ cat /proc/mounts | sort
+  id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-211
   prefs: []
   type: TYPE_NORMAL
 - en: Output.24
+  id: totrans-split-212
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-213
   prefs: []
   type: TYPE_PRE
 - en: 'Now, let us list all the mount points in the new namespace by executing the
     following command in TB:'
+  id: totrans-split-214
   prefs: []
   type: TYPE_NORMAL
 - en: cat /proc/mounts | sort
+  id: totrans-split-215
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
 - en: Output.25
+  id: totrans-split-217
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-218
   prefs: []
   type: TYPE_PRE
 - en: Comparing Output.25 and Output.24, we see the one difference for proc. When
     a new Mount namespace is created, the mount points of the new namespace is a copy
     of the mount points in the parent's namespace.
+  id: totrans-split-219
   prefs: []
   type: TYPE_NORMAL
 - en: We will now demonstrate any changes to the new namespace will not affect the
     parent namespace.
+  id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
 - en: 'To make the mount point / (and its children recursively) to be private to the
     new namespace, execute the following command in TB:'
+  id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
 - en: mount --make-rprivate /
+  id: totrans-split-222
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'To recursive bind the mount point rootfs/ to rootfs/ in the new namespace,
     execute the following command in TB:'
+  id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
 - en: mount --rbind rootfs/ rootfs/
+  id: totrans-split-224
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'We need the proc filesystem in the new namespace for making changes to mounts.
     To mount /proc as the proc filesystem proc in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
 - en: mount -t proc proc rootfs/proc
+  id: totrans-split-226
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Next, we need to make rootfs/ the root filesystem in the new namespace and
     move the parent root filesystem to rootfs/.old_root using the pivot_root command.
     To do that, execute the following commands in TB:'
+  id: totrans-split-227
   prefs: []
   type: TYPE_NORMAL
 - en: pivot_root rootfs/ rootfs/.old_root
+  id: totrans-split-228
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: cd /
+  id: totrans-split-229
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'To list all the file(s) under / in the parent namespace, execute the following
     command in TA:'
+  id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
 - en: Output.26
+  id: totrans-split-232
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-233
   prefs: []
   type: TYPE_PRE
 - en: 'To list all the file(s) under / in the new namespace, execute the following
     command in TB:'
+  id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-235
   prefs: []
   type: TYPE_NORMAL
 - en: Output.27
+  id: totrans-split-236
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-237
   prefs: []
   type: TYPE_PRE
 - en: Comparing Output.26 and Output.27, we see the root filesystems are totally different.
+  id: totrans-split-238
   prefs: []
   type: TYPE_NORMAL
 - en: 'To mount /tmp as the temporary filesystem tmpfs in the new namespace, execute
     the following command in TB:'
+  id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
 - en: mount -t tmpfs tmpfs /tmp
+  id: totrans-split-240
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'To create a text file /tmp/leopard.txt in the directory /tmp of the new namespace,
     execute the following command in TB:'
+  id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
 - en: echo 'leopard' > /tmp/leopard.txt
+  id: totrans-split-242
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'To list the properties of the file /tmp/leopard.txt in the new namespace, execute
     the following command in TB:'
+  id: totrans-split-243
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-244
   prefs: []
   type: TYPE_NORMAL
 - en: Output.28
+  id: totrans-split-245
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-246
   prefs: []
   type: TYPE_PRE
 - en: 'To list the properties of the file /tmp/leopard.txt in the parent namespace,
     execute the following command in TA:'
+  id: totrans-split-247
   prefs: []
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-248
   prefs: []
   type: TYPE_NORMAL
 - en: Output.29
+  id: totrans-split-249
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-250
   prefs: []
   type: TYPE_PRE
 - en: 'Finally, to completely remove the parent root filesystem rootfs/.old_root from
     the new namespace, execute the following commands in TB:'
+  id: totrans-split-251
   prefs: []
   type: TYPE_NORMAL
 - en: mount --make-rprivate /.old_root
+  id: totrans-split-252
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: umount -l /.old_root
+  id: totrans-split-253
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'To list all the mount points in the new namespace by executing the following
     command in TB :'
+  id: totrans-split-254
   prefs: []
   type: TYPE_NORMAL
 - en: cat /proc/mounts | sort
+  id: totrans-split-255
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'The following would be a typical output:'
+  id: totrans-split-256
   prefs: []
   type: TYPE_NORMAL
 - en: Output.30
+  id: totrans-split-257
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-258
   prefs: []
   type: TYPE_PRE
 - en: 'To exit the new namespace, execute the following command in TB:'
+  id: totrans-split-259
   prefs: []
   type: TYPE_NORMAL
 - en: SUCCESS !!! We have demonstrated the combined UTS, User, PID, and Mount namespaces
     using the unshare command.
+  id: totrans-split-260
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-261
   prefs: []
   type: TYPE_NORMAL

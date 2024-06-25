@@ -1,46 +1,59 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:46:35'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: A capable PWA • charlesrocket
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://failsafe.monster/posts/capable-pwa/](https://failsafe.monster/posts/capable-pwa/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 28 Mar 2024
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Converting to a Progressive Web App
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 6 minutes reading time
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Updated 02 Apr 2024
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Problems)Problems'
+  id: totrans-split-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I am not a fan of **JavaScript**. But I already started with some [Service Worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers)
     examples from **Mozilla** some time ago, and [PWA](https://wikipedia.org/wiki/Progressive_web_app)s
     have proven to be very effective. So, let's go.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Static_deployments)Static deployments'
+  id: totrans-split-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -50,30 +63,37 @@
     a lot of data, having a dedicated page for this is just ugly. That was the only
     way to make it work with `fetch()`. And I had to add an extra `zola build` as
     well.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '**Zola** does not yet have the capability to populate non-HTML files, and I
     could not justify adding extra steps with **NPM**/etc. just for a single service
     worker event to function. So a new approach was needed.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#External_libraries)External libraries'
+  id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[Workbox](https://developer.chrome.com/docs/workbox) or [sw-tools](https://github.com/veiss-com/sw-tools)
     libraries would resolve probably everything, but it''s too easy. Since I would
     have to maintain **JavaScript** anyway, let''s get on with it.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Portability)Portability'
+  id: totrans-split-17
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '*Huh*'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Service_Worker)Service Worker'
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -81,59 +101,74 @@
     offline mode. This feels like the most efficient approach. And it requires no
     external dependencies or *extra steps*. I could play with network requests, but
     `timeout` sounds too slow already, so maybe next time.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Strategy)Strategy'
+  id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I decided to remove the hardcoded/dynamic cache list and install a fallback
     page instead.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: The rest is cached "as you go"—the service worker filters useful requests and
     writes them into the cache. This way, I save critical resources during the first
     page navigation, and there is no funny business. If the requests fail (no network),
     an **offline** page is served.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: The site's static assets are hashed by my **Zola** [theme](https://github.com/charlesrocket/halve-z),
     so the strategy fits perfectly.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Cache)Cache'
+  id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Housekeeping is done via `cacheName` - all previous (old) cache records are
     purged during the service worker's activation, maintaining a clean browser environment.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: Although, I want to find a nice way to "expire" cache records, relying on a
     hardcoded cache name only might be an issue.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Revalidation)Revalidation'
+  id: totrans-split-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'To handle "expired" resources, I switched the `fetch` event to the **stale-while-revalidate**
     strategy:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: '[#](#Precache)Precache'
+  id: totrans-split-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -141,29 +176,35 @@
     mode**. The standard approach for this is to use the background sync API. A quick
     examination suggests this is a picky solution, and support is very limited. That
     alone is enough to look for a workaround. I started from the ground.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: First, I needed to generate the cache list, so I took my macro and applied its
     logic directly in the HTML `&LThead>` to use the output with a `data-cache` tag
     attribute while linking the service worker's loader script.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Second, I needed a way to get the cache list to "sync" with the service worker.
     The search got me the `postMessage()` service worker [method](https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker/postMessage)
     that "sends a message to the worker". Bingo. To catch the message on the other
     side, one needs to implement the `message` event:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: Now, what stops me from repeating what I have been doing during the service
     worker installation? I sent a message after the service worker's activation, checked
     the request type, and started to fill the cache using URLs from the **message**.
     Worked.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'The cache is full, all assets are included, and I had no issues mixing absolute/relative
@@ -171,16 +212,20 @@
     list with critical assets got reintroduced, along with the offline page, all to
     be cached during the installation. I also started requesting the precache only
     after the installation, to avoid redundant fetches:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: This setup delivers a fully offline-ready site. The service worker deploys critical
     files during the installation, then precaches everything else.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[#](#Conclusion)Conclusion'
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -189,5 +234,6 @@
     the workflow or user experience. All code is available in theme's pull requests
     [#22](https://github.com/charlesrocket/halve-z/pull/22), [#23](https://github.com/charlesrocket/halve-z/pull/23),
     and [#24](https://github.com/charlesrocket/halve-z/pull/24).
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL

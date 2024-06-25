@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:33:00'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: require(esm) in Node.js | Joyee Cheung's Blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,6 +29,7 @@
     long overdue. In the pull request, [I commented](https://github.com/nodejs/node/pull/51977#issuecomment-1994837735)
     with my understanding about why it did not happen sooner before this pull request
     in 2024\. This post expands on that comment a bit more.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: The opinions in this post are my own and reflect my perception of the ESM development
@@ -30,9 +37,11 @@
     here - representation of the Node.js project only comes from consensus among the
     collaborators. There is no specific individual who can speak for the project on
     their own.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: The headaches of `ERR_REQUIRE_ESM`
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -41,6 +50,7 @@
     any non-Node.js user who just stumbled upon this post by chance, here’s my understanding
     about the ESM situation in Node.js and why I (and many others) thought that pull
     request was necessary.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Since ESM was shipped in Node.js, for many years, it was possible to `import
@@ -51,6 +61,7 @@
     modules as CJS, or ship both the CJS and ESM version i.e. as dual modules (which
     can lead to some problems, still, this has been a very common practice) with conditional
     exports information in their package.json.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Meanwhile, many transpilers (e.g. the TypeScript compiler) are still configured
@@ -60,21 +71,26 @@
     uses a third-party module that’s real ESM, which could not be `require()`-d, they
     would see an `ERR_REQUIRE_ESM`. This could be very confusing since they might
     assume that their code was run as real ESM.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The synchronicity of ESM
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Naturally, one might ask: why can’t `require()` just support loading ESM?'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'For a very long time, the answer from the Node.js project had been something
     like this (to quote the documentation before my pull request):'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Using require to load an ES module is not supported because ES modules have
     asynchronous execution.
+  id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -83,6 +99,7 @@
     being a long-time Node.js contributor, ESM or the user module loader in Node.js
     was never my jam. When it comes to a component that I am not very familiar with
     myself, I would just believe what the documentation says, like everyone else.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: But this was one of the situations where the documentation and other communications
@@ -93,6 +110,7 @@
     I found out by chance that ESM itself was not actually designed to be unconditionally
     asynchronous. Rather, it was [designed to be only conditionally asynchronous](https://tc39.es/ecma262/#sec-moduleevaluation)
     - [only when the graph contains top-level `await`](https://tc39.es/ecma262/#sec-source-text-module-record-execute-module).
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Then it would seem very natural for `require()` to at least support ESM graphs
@@ -102,13 +120,16 @@
     registry, none of ~30 that I tested contained top-level `await` - and supporting
     synchronous modules in `require()` would probably already be enough to make a
     lot of headaches in the ecosystem go away.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: But ESM has been designed like this for a very long time. There must’ve been
     other people who realized this before me, right? Well yes, of course.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Synchronous `require(esm)` in 2019
+  id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -124,6 +145,7 @@
     none that I could found that was shared in the form of a pull request (there were
     some later attempts at `require(esm)`, but they still assumed that ESM was unconditionally
     asynchronous).
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The theoretical foundation for syntax-based synchronous evaluation of ESM on
@@ -137,13 +159,16 @@
     syntax-based synchronicity in specifications been more widely known, there probably
     would’ve been a lot more attempts after 2019, and the documentation would not
     have talked about ESM being asynchronous as if it was unconditional.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: But then why was this relatively unknown to those who didn’t work on ESM in
     Node.js?
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: The ESM silo
+  id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -152,6 +177,7 @@
     than technical. There seemed to be a [silo problem](https://en.wikipedia.org/wiki/Information_silo)
     between those who worked on the ESM implementation in Node.js/communication with
     the standard bodies and those who didn’t.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Normally in Node.js, most decision making is done based on consensus among 100+
@@ -160,6 +186,7 @@
     collaborators, the decision goes to the Node.js TSC. The Node.js TSC is a subset
     of the more active Node.js collaborators and it can make decisions by simply voting
     and taking the option that wins by simple majority.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: The early development of ESM in Node.js, however, used a different process.
@@ -168,6 +195,7 @@
     community members (e.g. package authors, standard body participants, and other
     kinds of stakeholders). Node.js TSC mostly acted as a rubber stamp on their consensus
     when it came to ESM decisions.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Due to the nature of the topic, the discussions in the modules group tended
@@ -177,6 +205,7 @@
     with what was going on there or to participate. I myself definitely tried to stay
     out of ESM in Node.js at that time - it seemed like they already got more than
     enough opinions there.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: As a result, silos were developed. If a debate was never escalated out of the
@@ -187,6 +216,7 @@
     TSC. The people involved in the debate could not reach consensus, it sort of just
     dwindled among those who were aware of it, and others started to assume that it
     was not possible.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Another factor in the delay of synchronous `require(esm)` was that changes to
@@ -199,15 +229,18 @@
     sooner. At least when I was started looking into `require(esm)` last year, I definitely
     did not want to be too loud about it to avoid drawing unnecessary debates before
     any technical progress was even made.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: The ESM loader
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: While I said that I think a synchronous `require(esm)` in Node.js didn’t happen
     earlier mostly because of cultural reasons, some smaller technical factors probably
     also contributed to the delay.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: The ESM loader itself is quite a beast at this point. When I started contributing
@@ -219,6 +252,7 @@
     amazed by how the ESM loader was even more complex than the CJS loader (almost
     3x more code). This probably comes from years of organic growth of the loader
     and it seems to really need some cleaning up.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: The ESM loader was implemented largely in JavaScript - while I do think JavaScript
@@ -235,6 +269,7 @@
     which is only exposed to the JavaScript layer via C++/JS bindings. It seems over
     time the JavaScript part started confine itself with what was provided by the
     C++/JS bindings, instead of making full use of what V8 provides.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: These technical issues in the ESM loader also have other consequences - e.g.
@@ -243,9 +278,11 @@
     faster. But when I tested `require(esm)` on that ~30-ish ESM-only npm packages
     and comparing to `import esm`, the former (which uses dedicated synchronous routines)
     [is actually ~1.22x faster](https://github.com/nodejs/node/pull/51977#issuecomment-1995209126).
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Restarting synchronous `require(esm)`
+  id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -256,6 +293,7 @@
     even to this day, but the agony of `ERR_REQUIRE_ESM` has been so bad that it seems
     to be worth the risk of getting into these taxing debates to get the ball rolling
     again.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: That said I wouldn’t take the risk if it’s a very high-hanging fruit - which
@@ -265,6 +303,7 @@
     quite some time to refactor the ESM loader to a shape that supports this. So I’d
     rather just leave it to others who are more faimilar with the ESM loader to do
     that refactoring.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: In late February in 2024, when I was working on [a ccache-like thing for both
@@ -274,6 +313,7 @@
     I was skeptical already), and implement a few dedicated routines for the CJS loader
     to support synchronous `require(esm)`. The fewer existing ESM loader code it uses,
     the easier it would be.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: So that led to [this PR](https://github.com/nodejs/node/pull/51977). The major
@@ -283,14 +323,17 @@
     without much pushbacks (it derailed a tiny bit due to the discussions about loader
     hooks, but at least we agreed that hooks support could be left for follow-ups
     and `require(esm)` itself should be back on track).
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: What’s next?
+  id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The feature is still experimental under the flag `--experimental-require-module`
     and there is still some work that needs to be done before it goes out of experiments.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: There probably still are some edge cases that it needs to take care of. I tried
@@ -298,6 +341,7 @@
     possibility of module graphs to test them all in one PR. The initial iteration
     was already enough to load most high-impact ESM-only npm packages that I’ve tested.
     We can continue polishing this as we get user feedback about it.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Another thing that needs to be solved is support for custom loader hooks. The
@@ -311,6 +355,7 @@
     loader hooks that support both `require()` and `import`. This could make `require()`
     monkey-patching no longer necessary, and enable more users to migrate from CJS
     to ESM.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'Currently `require(esm)` only supports ESM explicitly labeled as ESM - either
@@ -322,6 +367,7 @@
     an overhead and once you have enough ESM modules in your project, you probably
     don’t want Node.js to waste time guessing what your module type is, when you could’ve
     saved the cost with just one explicit `"type": "module"` field in your `package.json`.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Support for top-level await in entry points is still possible - we could just
@@ -329,9 +375,11 @@
     exports of the entry point goes nowhere anyway. That can be done already via the
     `--experimental-detect-module` and it is more of an implementation detail to move
     the fallback within the CJS loader now that it supports loading ESM.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks Bloomberg, who has been sponsoring my work over the years, for supporting
     my work on fixing this agony.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL

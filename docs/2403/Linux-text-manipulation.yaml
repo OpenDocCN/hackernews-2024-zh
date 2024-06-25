@@ -1,266 +1,331 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:44:45'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Linux text manipulation
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://yusuf.fyi/posts/linux-text-manipulation](https://yusuf.fyi/posts/linux-text-manipulation)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Today, I wanted to make a module for my AwesomeWM status bar that shows the
     currently playing Spotify song, it’d be nice if it could show something human-readable
     like this: *Wild World by Yusuf/Cat Stevens*.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Through a quick search, I found a tiny bash script, [sp](https://gist.github.com/streetturtle/fa6258f3ff7b17747ee3),
     that does what I need. except the output must be cleaned up.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: I could ask chatgpt to format this or write a Lua script, but that wouldn’t
     be much fun, *would it?* in this article, we’ll learn how to use `awk`, `sed`
     and other commands to get the desired output.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Intended Audience
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: this is intended for people who have used Linux but are otherwise new to the
     terminal, if you’ve at least created a file from the command line, you’re good
     to go, I’ll cover everything else throughout the article
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to follow along, download the bash script, and experiment with the
     commands we’ll learn, but that’s not required per se.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Mini Problem #1'
+  id: totrans-split-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: To get started `sp current` returns the album name, album artist, song artist,
     and song title, whereas we only need the artist and title. we can use `sed` to
     pick the specific lines we need.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: sed works by looping through lines of the input and doing a given action, by
     default it prints the resulting lines to stdout. we can give sed a file to work
     with but more commonly you’ll pipe a command into sed, as we’ll do later on.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: <details><summary>What do you mean by ***pipe***?</summary> Generally, in Linux,
     a command’s input is read from the keyboard and its output (along with any errors)
     is printed on your screen. we can, however, change this behavior.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: piping essentially lets you pass a command’s output onto another command’s input.
     programs can choose whether or not to support piping, but most basic Linux programs
     (and all the ones we’ll discuss today) support it.</details>
+  id: totrans-split-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: let’s look into sed in more detail
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: '[PRE2]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: '[PRE3]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: '[PRE4]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: 'and now—as you may have already figured out—we can print the artist and song
     name only like so:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: and we end up with
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: 'Mini Problem #2'
+  id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Next, we need to get rid of the column labels, we can use `cut` for this. As
     with `sed`, `cut` accepts a file as its input, if no file is given it’ll read
     from stdin.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Here is how we usually work with `cut`, you give it a delimiter and a set of
     columns to print, and it will split each line by that delimiter and return the
     selected columns.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: in our case, columns are separated with a space, so we can do the following
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'our columns are seperated by multiple spaces though, so cut will treat the
     empty-ness between each space as its own column, to avoid this we can inject the
     command `tr` to trim the extra spaces:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: But this is still not totally right. if a song’s title contains more than one
     word we’ll get this
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: you can pass `cut` a column range to print, as in `cut -d ' ' -f2-4` to select
     the 2nd, 3rd, and 4th columns, **if the range is open-ended**, `cut` **will print
     every column until the end of the line**, so let’s incorporate that into our script.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: 'output:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: '**note**: as I’ve shown you `tr` needs to be applied before `cut` on the contrary,
     `cut` and `sed` can be swapped because they serve entirely different purposes.'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'Mini Problem #3'
+  id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Now, what’s left is to simply join the lines and format them nicely. we can
     use `awk` to do this.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '`awk` is based on a condition-script model, It’s similar to `sed` it checks
     if the current line matches the condition and executes the appropriate script,
     although I find `awk` to have a more expressive syntax.'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'awk scripts are written in quotes like this:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: let’s look at a few examples. any of these can be passed to awk in quotes.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: '[PRE14]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: Lastly, you can assign globals to variables,
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: this assigns a to the 1st column of the 1st line and then prints `x` for every
     line in the input. note that the first script only runs once, thus a will stay
     the same for every line
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: 'now we can combine everything we know to get this script:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'this does the following:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: we assign `a` to the artist name (entire first line)
+  id: totrans-split-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '`skip` tells `awk` to *skip* the execution of the second script and to move
     to the next line'
+  id: totrans-split-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: we’re on the second line now so `NR==1` isn’t matched and the first script is
     skipped.
+  id: totrans-split-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: print the song name (`$0`) then the string literal `by` then the artist name
     (content of variable `a`)
+  id: totrans-split-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: Final Thoughts
+  id: totrans-split-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'That concludes our script, here is what we ended up with:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: 'Now this script could be optimized in different ways, but instead of showing
     you how to do it here, I leave that as *an exercise to the reader*. here are a
     couple of things you can do, ranging from easiest to hardest:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: replace the `cut` command with an additional `sed` action
+  id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: re-write the entire thing from memory
+  id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: make the script as short as possible
+  id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: write the entire script in `awk`
+  id: totrans-split-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Finally, I hope you learned something new today and if you attempt any of these,
     please share what you did either in the mastodon replies or through an article
     on your blog. I promise to take a look and I’ll probably learn something myself!
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL

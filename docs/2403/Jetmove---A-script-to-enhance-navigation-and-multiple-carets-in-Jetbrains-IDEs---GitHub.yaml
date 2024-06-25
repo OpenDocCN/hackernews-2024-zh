@@ -1,1472 +1,1949 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:31:52'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Jetmove - A script to enhance navigation and multiple carets in Jetbrains IDEs
     · GitHub
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://gist.github.com/lurebat/df773fecbc6829625d996fc8a65d5e25](https://gist.github.com/lurebat/df773fecbc6829625d996fc8a65d5e25)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '|  | import com.intellij.find.FindModel |'
+  id: totrans-split-6
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.actionSystem.AnActionEvent |'
+  id: totrans-split-7
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.actionSystem.DataContext |'
+  id: totrans-split-8
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.editor.Caret |'
+  id: totrans-split-9
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.editor.Editor |'
+  id: totrans-split-10
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.editor.actionSystem.TypedAction |'
+  id: totrans-split-11
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.editor.actionSystem.TypedActionHandler |'
+  id: totrans-split-12
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.ui.DialogPanel |'
+  id: totrans-split-13
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.ui.DialogWrapper |'
+  id: totrans-split-14
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.openapi.util.TextRange |'
+  id: totrans-split-15
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.ui.EditorTextField |'
+  id: totrans-split-16
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.ui.dsl.builder.bind |'
+  id: totrans-split-17
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.ui.dsl.builder.bindSelected |'
+  id: totrans-split-18
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.ui.dsl.builder.panel |'
+  id: totrans-split-19
   prefs: []
   type: TYPE_TB
 - en: '|  | import com.intellij.ui.dsl.builder.toMutableProperty |'
+  id: totrans-split-20
   prefs: []
   type: TYPE_TB
 - en: '|  | import liveplugin.currentEditor |'
+  id: totrans-split-21
   prefs: []
   type: TYPE_TB
 - en: '|  | import liveplugin.editor |'
+  id: totrans-split-22
   prefs: []
   type: TYPE_TB
 - en: '|  | import liveplugin.executeCommand |'
+  id: totrans-split-23
   prefs: []
   type: TYPE_TB
 - en: '|  | import liveplugin.registerAction |'
+  id: totrans-split-24
   prefs: []
   type: TYPE_TB
 - en: '|  | import org.intellij.lang.regexp.RegExpFileType |'
+  id: totrans-split-25
   prefs: []
   type: TYPE_TB
 - en: '|  | import javax.swing.JComponent |'
+  id: totrans-split-26
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-27
   prefs: []
   type: TYPE_TB
 - en: '|  | /** |'
+  id: totrans-split-28
   prefs: []
   type: TYPE_TB
 - en: '|  | * Represents a generic text object that provides a range within a document.
     |'
+  id: totrans-split-29
   prefs: []
   type: TYPE_TB
 - en: '|  | */ |'
+  id: totrans-split-30
   prefs: []
   type: TYPE_TB
 - en: '|  | interface TextObject { |'
+  id: totrans-split-31
   prefs: []
   type: TYPE_TB
 - en: '|  | val name: String |'
+  id: totrans-split-32
   prefs: []
   type: TYPE_TB
 - en: '|  | val shortcut: String |'
+  id: totrans-split-33
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-34
   prefs: []
   type: TYPE_TB
 - en: '|  | /** |'
+  id: totrans-split-35
   prefs: []
   type: TYPE_TB
 - en: '|  | * Calculates the range for the current text object. |'
+  id: totrans-split-36
   prefs: []
   type: TYPE_TB
 - en: '|  | * @param inside Whether to find the range inside or around the text object.
     |'
+  id: totrans-split-37
   prefs: []
   type: TYPE_TB
 - en: '|  | * @param caret The caret to use as a reference point. |'
+  id: totrans-split-38
   prefs: []
   type: TYPE_TB
 - en: '|  | * @return A pair representing the start and end index of the range, or
     null if not applicable. |'
+  id: totrans-split-39
   prefs: []
   type: TYPE_TB
 - en: '|  | */ |'
+  id: totrans-split-40
   prefs: []
   type: TYPE_TB
 - en: '|  | fun range(inside: Boolean, caret: Caret): Pair<Int, Int>? |'
+  id: totrans-split-41
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-42
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-43
   prefs: []
   type: TYPE_TB
 - en: '|  | /** |'
+  id: totrans-split-44
   prefs: []
   type: TYPE_TB
 - en: '|  | * A simplified version of TextObject for easier creation of specific text
     objects. |'
+  id: totrans-split-45
   prefs: []
   type: TYPE_TB
 - en: '|  | */ |'
+  id: totrans-split-46
   prefs: []
   type: TYPE_TB
 - en: '|  | abstract class SimpleTextObject : TextObject { |'
+  id: totrans-split-47
   prefs: []
   type: TYPE_TB
 - en: '|  | override fun range(inside: Boolean, caret: Caret): Pair<Int, Int>? = |'
+  id: totrans-split-48
   prefs: []
   type: TYPE_TB
 - en: '|  | range(inside, caret.editor.document.charsSequence, caret.offset) |'
+  id: totrans-split-49
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-50
   prefs: []
   type: TYPE_TB
 - en: '|  | /** |'
+  id: totrans-split-51
   prefs: []
   type: TYPE_TB
 - en: '|  | * Calculates the text object''s range based on characters and an offset
     within a document. |'
+  id: totrans-split-52
   prefs: []
   type: TYPE_TB
 - en: '|  | * @param inside Whether to find the range inside or around the text object.
     |'
+  id: totrans-split-53
   prefs: []
   type: TYPE_TB
 - en: '|  | * @param chars The character sequence to analyze. |'
+  id: totrans-split-54
   prefs: []
   type: TYPE_TB
 - en: '|  | * @param offset The offset within the character sequence to consider.
     |'
+  id: totrans-split-55
   prefs: []
   type: TYPE_TB
 - en: '|  | * @return A pair representing the start and end index of the range, or
     null if not applicable. |'
+  id: totrans-split-56
   prefs: []
   type: TYPE_TB
 - en: '|  | */ |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '|  | abstract fun range(inside: Boolean, chars: CharSequence, offset: Int):
     Pair<Int, Int>? |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-59
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB
 - en: '|  | class CharPairs(private val starts: CharArray, private val ends: CharArray)
     { |'
+  id: totrans-split-61
   prefs: []
   type: TYPE_TB
 - en: '|  | constructor(vararg pairs: Pair<Char, Char>) : this( |'
+  id: totrans-split-62
   prefs: []
   type: TYPE_TB
 - en: '|  | pairs.map { it.first }.toCharArray(), |'
+  id: totrans-split-63
   prefs: []
   type: TYPE_TB
 - en: '|  | pairs.map { it.second }.toCharArray() |'
+  id: totrans-split-64
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-66
   prefs: []
   type: TYPE_TB
 - en: '|  | fun findPreviousStart(text: CharSequence, offset: Int): Int? { |'
+  id: totrans-split-67
   prefs: []
   type: TYPE_TB
 - en: '|  | val charsCount = Array(starts.size) { 0 } |'
+  id: totrans-split-68
   prefs: []
   type: TYPE_TB
 - en: '|  | for (i in offset - 1 downTo 0) { |'
+  id: totrans-split-69
   prefs: []
   type: TYPE_TB
 - en: '|  | val char = text[i] |'
+  id: totrans-split-70
   prefs: []
   type: TYPE_TB
 - en: '|  | val start = starts.indexOf(char) |'
+  id: totrans-split-71
   prefs: []
   type: TYPE_TB
 - en: '|  | if (start != -1) { |'
+  id: totrans-split-72
   prefs: []
   type: TYPE_TB
 - en: '|  | if (charsCount[start] == 0) return i |'
+  id: totrans-split-73
   prefs: []
   type: TYPE_TB
 - en: '|  | charsCount[start]-- |'
+  id: totrans-split-74
   prefs: []
   type: TYPE_TB
 - en: '|  | continue |'
+  id: totrans-split-75
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '|  | val end = ends.indexOf(char) |'
+  id: totrans-split-77
   prefs: []
   type: TYPE_TB
 - en: '|  | if (end != -1) { |'
+  id: totrans-split-78
   prefs: []
   type: TYPE_TB
 - en: '|  | charsCount[end]++ |'
+  id: totrans-split-79
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-80
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-81
   prefs: []
   type: TYPE_TB
 - en: '|  | return null |'
+  id: totrans-split-82
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-83
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-84
   prefs: []
   type: TYPE_TB
 - en: '|  | fun findNextEnd(text: CharSequence, offset: Int): Int? { |'
+  id: totrans-split-85
   prefs: []
   type: TYPE_TB
 - en: '|  | val charsCount = Array(ends.size) { 0 } |'
+  id: totrans-split-86
   prefs: []
   type: TYPE_TB
 - en: '|  | for (i in offset until text.length) { |'
+  id: totrans-split-87
   prefs: []
   type: TYPE_TB
 - en: '|  | val char = text[i] |'
+  id: totrans-split-88
   prefs: []
   type: TYPE_TB
 - en: '|  | val end = ends.indexOf(char) |'
+  id: totrans-split-89
   prefs: []
   type: TYPE_TB
 - en: '|  | if (end != -1) { |'
+  id: totrans-split-90
   prefs: []
   type: TYPE_TB
 - en: '|  | if (charsCount[end] == 0) return i |'
+  id: totrans-split-91
   prefs: []
   type: TYPE_TB
 - en: '|  | charsCount[end]-- |'
+  id: totrans-split-92
   prefs: []
   type: TYPE_TB
 - en: '|  | continue |'
+  id: totrans-split-93
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-94
   prefs: []
   type: TYPE_TB
 - en: '|  | val start = starts.indexOf(char) |'
+  id: totrans-split-95
   prefs: []
   type: TYPE_TB
 - en: '|  | if (start != -1) { |'
+  id: totrans-split-96
   prefs: []
   type: TYPE_TB
 - en: '|  | charsCount[start]++ |'
+  id: totrans-split-97
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-98
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-99
   prefs: []
   type: TYPE_TB
 - en: '|  | return null |'
+  id: totrans-split-100
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-101
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-102
   prefs: []
   type: TYPE_TB
 - en: '|  | fun findNextStart(text: CharSequence, offset: Int): Int? = text.indexOfAny(starts,
     offset).takeIf { it != -1 } |'
+  id: totrans-split-103
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-104
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-105
   prefs: []
   type: TYPE_TB
 - en: '|  | class BalancedTextObject(override val name: String, override val shortcut:
     String, private val pairs: CharPairs) : |'
+  id: totrans-split-106
   prefs: []
   type: TYPE_TB
 - en: '|  | SimpleTextObject() { |'
+  id: totrans-split-107
   prefs: []
   type: TYPE_TB
 - en: '|  | constructor(name: String, shortcut: String, vararg pairs: Pair<Char, Char>)
     : this( |'
+  id: totrans-split-108
   prefs: []
   type: TYPE_TB
 - en: '|  | name, |'
+  id: totrans-split-109
   prefs: []
   type: TYPE_TB
 - en: '|  | shortcut, |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: '|  | CharPairs(*pairs) |'
+  id: totrans-split-111
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-112
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-113
   prefs: []
   type: TYPE_TB
 - en: '|  | override fun range(inside: Boolean, caret: CharSequence, offset: Int):
     Pair<Int, Int>? { |'
+  id: totrans-split-114
   prefs: []
   type: TYPE_TB
 - en: '|  | val start = pairs.findPreviousStart(caret, offset) ?: pairs.findNextStart(caret,
     offset) ?: return null |'
+  id: totrans-split-115
   prefs: []
   type: TYPE_TB
 - en: '|  | val end = pairs.findNextEnd(caret, offset) ?: return null |'
+  id: totrans-split-116
   prefs: []
   type: TYPE_TB
 - en: '|  | return if (inside) Pair(start + 1, end) else Pair(start, end + 1) |'
+  id: totrans-split-117
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-118
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-119
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-120
   prefs: []
   type: TYPE_TB
 - en: '|  | fun getUnmatchedCharIndex(isBackwards: Boolean, text: CharSequence, char:
     Char, match: Char): Int { |'
+  id: totrans-split-121
   prefs: []
   type: TYPE_TB
 - en: '|  | var count = 0 |'
+  id: totrans-split-122
   prefs: []
   type: TYPE_TB
 - en: '|  | val range = if (isBackwards) text.indices.reversed() else text.indices
     |'
+  id: totrans-split-123
   prefs: []
   type: TYPE_TB
 - en: '|  | for (i in range) { |'
+  id: totrans-split-124
   prefs: []
   type: TYPE_TB
 - en: '|  | val c = text[i] |'
+  id: totrans-split-125
   prefs: []
   type: TYPE_TB
 - en: '|  | if (c == char) count++ |'
+  id: totrans-split-126
   prefs: []
   type: TYPE_TB
 - en: '|  | if (c == match) { |'
+  id: totrans-split-127
   prefs: []
   type: TYPE_TB
 - en: '|  | if (count == 0) return i |'
+  id: totrans-split-128
   prefs: []
   type: TYPE_TB
 - en: '|  | count-- |'
+  id: totrans-split-129
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-130
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-131
   prefs: []
   type: TYPE_TB
 - en: '|  | return -1 |'
+  id: totrans-split-132
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-133
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-134
   prefs: []
   type: TYPE_TB
 - en: '|  | val textObjects = arrayOf( |'
+  id: totrans-split-135
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("word", "W", '' '' to '' '', '' '' to ''\n'', ''\n''
     to '' ''), |'
+  id: totrans-split-136
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("double-quote", "shift QUOTE''", ''"'' to ''"''), |'
+  id: totrans-split-137
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("single-quote", "QUOTE", ''\'''' to ''\''''), |'
+  id: totrans-split-138
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("paren", "shift 9", ''('' to '')''), |'
+  id: totrans-split-139
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("bracket", "[", ''['' to '']''), |'
+  id: totrans-split-140
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("brace", "shift [", ''{'' to ''}''), |'
+  id: totrans-split-141
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("angle-bracket", "shift ,", ''<'' to ''>''), |'
+  id: totrans-split-142
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("backtick", "`", ''`'' to ''`''), |'
+  id: totrans-split-143
   prefs: []
   type: TYPE_TB
 - en: '|  | BalancedTextObject("block", "B", ''{'' to ''}'', ''('' to '')'', ''[''
     to '']''), |'
+  id: totrans-split-144
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-145
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-146
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-147
   prefs: []
   type: TYPE_TB
 - en: '|  | val baseShortcutAround = "alt S, " |'
+  id: totrans-split-148
   prefs: []
   type: TYPE_TB
 - en: '|  | val baseShortcutInside = "alt shift S," |'
+  id: totrans-split-149
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-150
   prefs: []
   type: TYPE_TB
 - en: '|  | fun registerTextObjectActions() { |'
+  id: totrans-split-151
   prefs: []
   type: TYPE_TB
 - en: '|  | for (textObject in textObjects) { |'
+  id: totrans-split-152
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("text-object-around-${textObject.name}", baseShortcutAround
     + textObject.shortcut) { |'
+  id: totrans-split-153
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = it.project?.currentEditor ?: return@registerAction |'
+  id: totrans-split-154
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-155
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.caretModel.allCarets.forEach { caret -> |'
+  id: totrans-split-156
   prefs: []
   type: TYPE_TB
 - en: '|  | val range = textObject.range(false, caret) |'
+  id: totrans-split-157
   prefs: []
   type: TYPE_TB
 - en: '|  | if (range != null) { |'
+  id: totrans-split-158
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.setSelection(range.first, range.second) |'
+  id: totrans-split-159
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-160
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-161
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-162
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("text-object-inside-${textObject.name}", baseShortcutInside
     + textObject.shortcut) { |'
+  id: totrans-split-163
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = it.project?.currentEditor ?: return@registerAction |'
+  id: totrans-split-164
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.caretModel.allCarets.forEach { caret -> |'
+  id: totrans-split-165
   prefs: []
   type: TYPE_TB
 - en: '|  | val range = textObject.range(true, caret) |'
+  id: totrans-split-166
   prefs: []
   type: TYPE_TB
 - en: '|  | if (range != null) { |'
+  id: totrans-split-167
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.setSelection(range.first, range.second) |'
+  id: totrans-split-168
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-169
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-170
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-171
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-172
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-173
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-174
   prefs: []
   type: TYPE_TB
 - en: '|  | data class Model( |'
+  id: totrans-split-175
   prefs: []
   type: TYPE_TB
 - en: '|  | var onChanged: () -> Unit = {}, |'
+  id: totrans-split-176
   prefs: []
   type: TYPE_TB
 - en: '|  | ) : FindModel() { |'
+  id: totrans-split-177
   prefs: []
   type: TYPE_TB
 - en: '|  | fun matches(text: String): Boolean { |'
+  id: totrans-split-178
   prefs: []
   type: TYPE_TB
 - en: '|  | val re = compileRegExp() |'
+  id: totrans-split-179
   prefs: []
   type: TYPE_TB
 - en: '|  | return re.matcher(text).find() |'
+  id: totrans-split-180
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-181
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-182
   prefs: []
   type: TYPE_TB
 - en: '|  | var string |'
+  id: totrans-split-183
   prefs: []
   type: TYPE_TB
 - en: '|  | get() = stringToFind |'
+  id: totrans-split-184
   prefs: []
   type: TYPE_TB
 - en: '|  | set(value) { |'
+  id: totrans-split-185
   prefs: []
   type: TYPE_TB
 - en: '|  | stringToFind = value |'
+  id: totrans-split-186
   prefs: []
   type: TYPE_TB
 - en: '|  | onChanged() |'
+  id: totrans-split-187
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-188
   prefs: []
   type: TYPE_TB
 - en: '|  | var keep = true |'
+  id: totrans-split-189
   prefs: []
   type: TYPE_TB
 - en: '|  | set(value) { |'
+  id: totrans-split-190
   prefs: []
   type: TYPE_TB
 - en: '|  | field = value |'
+  id: totrans-split-191
   prefs: []
   type: TYPE_TB
 - en: '|  | onChanged() |'
+  id: totrans-split-192
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-193
   prefs: []
   type: TYPE_TB
 - en: '|  | var case = super.isCaseSensitive() |'
+  id: totrans-split-194
   prefs: []
   type: TYPE_TB
 - en: '|  | set(value) { |'
+  id: totrans-split-195
   prefs: []
   type: TYPE_TB
 - en: '|  | field = value |'
+  id: totrans-split-196
   prefs: []
   type: TYPE_TB
 - en: '|  | super.setCaseSensitive(value) |'
+  id: totrans-split-197
   prefs: []
   type: TYPE_TB
 - en: '|  | onChanged() |'
+  id: totrans-split-198
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-199
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-200
   prefs: []
   type: TYPE_TB
 - en: '|  | var words = super.isWholeWordsOnly() |'
+  id: totrans-split-201
   prefs: []
   type: TYPE_TB
 - en: '|  | set(value) { |'
+  id: totrans-split-202
   prefs: []
   type: TYPE_TB
 - en: '|  | field = value |'
+  id: totrans-split-203
   prefs: []
   type: TYPE_TB
 - en: '|  | super.setWholeWordsOnly(value) |'
+  id: totrans-split-204
   prefs: []
   type: TYPE_TB
 - en: '|  | onChanged() |'
+  id: totrans-split-205
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-206
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-207
   prefs: []
   type: TYPE_TB
 - en: '|  | var regex = super.isRegularExpressions() |'
+  id: totrans-split-208
   prefs: []
   type: TYPE_TB
 - en: '|  | set(value) { |'
+  id: totrans-split-209
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-210
   prefs: []
   type: TYPE_TB
 - en: '|  | field = value |'
+  id: totrans-split-211
   prefs: []
   type: TYPE_TB
 - en: '|  | super.setRegularExpressions(value) |'
+  id: totrans-split-212
   prefs: []
   type: TYPE_TB
 - en: '|  | onChanged() |'
+  id: totrans-split-213
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-214
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-215
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-216
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-217
   prefs: []
   type: TYPE_TB
 - en: '|  | fun matchingCarets(model: Model, carets: List<Caret>): List<Pair<Caret,
     ClosedRange<Int>?>> { |'
+  id: totrans-split-218
   prefs: []
   type: TYPE_TB
 - en: '|  | val re = if (model.regex) { |'
+  id: totrans-split-219
   prefs: []
   type: TYPE_TB
 - en: '|  | model.compileRegExp().toRegex() |'
+  id: totrans-split-220
   prefs: []
   type: TYPE_TB
 - en: '|  | } else { |'
+  id: totrans-split-221
   prefs: []
   type: TYPE_TB
 - en: '|  | Regex(model.stringToFind.let { |'
+  id: totrans-split-222
   prefs: []
   type: TYPE_TB
 - en: '|  | if (model.words) it.split("\\s+").joinToString("&#124;") { "\\b$it\\b"
     } else it |'
+  id: totrans-split-223
   prefs: []
   type: TYPE_TB
 - en: '|  | }, if (model.case) RegexOption.IGNORE_CASE else RegexOption.LITERAL) |'
+  id: totrans-split-224
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-225
   prefs: []
   type: TYPE_TB
 - en: '|  | return carets.map { |'
+  id: totrans-split-226
   prefs: []
   type: TYPE_TB
 - en: '|  | // get selected text or line |'
+  id: totrans-split-227
   prefs: []
   type: TYPE_TB
 - en: '|  | val selectedText = it.selectedText?.ifEmpty { null } ?: getLine(it) |'
+  id: totrans-split-228
   prefs: []
   type: TYPE_TB
 - en: '|  | it to if (model.keep) { |'
+  id: totrans-split-229
   prefs: []
   type: TYPE_TB
 - en: '|  | re.find(selectedText)?.range |'
+  id: totrans-split-230
   prefs: []
   type: TYPE_TB
 - en: '|  | } else { |'
+  id: totrans-split-231
   prefs: []
   type: TYPE_TB
 - en: '|  | (if (re.find(selectedText) == null) 0..selectedText.length else null)
     |'
+  id: totrans-split-232
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-233
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-234
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-235
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-236
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-237
   prefs: []
   type: TYPE_TB
 - en: '|  | fun filterCarets(it: AnActionEvent, keep: Boolean) { |'
+  id: totrans-split-238
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = it.editor ?: return |'
+  id: totrans-split-239
   prefs: []
   type: TYPE_TB
 - en: '|  | val project = it.project ?: return |'
+  id: totrans-split-240
   prefs: []
   type: TYPE_TB
 - en: '|  | val model = Model() |'
+  id: totrans-split-241
   prefs: []
   type: TYPE_TB
 - en: '|  | var panel: DialogPanel? = null |'
+  id: totrans-split-242
   prefs: []
   type: TYPE_TB
 - en: '|  | model.regex = true |'
+  id: totrans-split-243
   prefs: []
   type: TYPE_TB
 - en: '|  | model.keep = keep |'
+  id: totrans-split-244
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-245
   prefs: []
   type: TYPE_TB
 - en: '|  | val wrapper = object : DialogWrapper(editor.contentComponent, true) {
     |'
+  id: totrans-split-246
   prefs: []
   type: TYPE_TB
 - en: '|  | init { |'
+  id: totrans-split-247
   prefs: []
   type: TYPE_TB
 - en: '|  | init() |'
+  id: totrans-split-248
   prefs: []
   type: TYPE_TB
 - en: '|  | title = "Filter Caret" |'
+  id: totrans-split-249
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-250
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-251
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-252
   prefs: []
   type: TYPE_TB
 - en: '|  | override fun createCenterPanel(): JComponent { |'
+  id: totrans-split-253
   prefs: []
   type: TYPE_TB
 - en: '|  | panel = panel { |'
+  id: totrans-split-254
   prefs: []
   type: TYPE_TB
 - en: '|  | row { |'
+  id: totrans-split-255
   prefs: []
   type: TYPE_TB
 - en: '|  | label("Filter:") |'
+  id: totrans-split-256
   prefs: []
   type: TYPE_TB
 - en: '|  | cell(EditorTextField(project, RegExpFileType.INSTANCE).apply { |'
+  id: totrans-split-257
   prefs: []
   type: TYPE_TB
 - en: '|  | setOneLineMode(true) |'
+  id: totrans-split-258
   prefs: []
   type: TYPE_TB
 - en: '|  | setPreferredWidth(300) |'
+  id: totrans-split-259
   prefs: []
   type: TYPE_TB
 - en: '|  | }).bind( |'
+  id: totrans-split-260
   prefs: []
   type: TYPE_TB
 - en: '|  | { it.text }, |'
+  id: totrans-split-261
   prefs: []
   type: TYPE_TB
 - en: '|  | { e, s -> e.text = s }, |'
+  id: totrans-split-262
   prefs: []
   type: TYPE_TB
 - en: '|  | model::string.toMutableProperty() |'
+  id: totrans-split-263
   prefs: []
   type: TYPE_TB
 - en: '|  | ).focused() |'
+  id: totrans-split-264
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-265
   prefs: []
   type: TYPE_TB
 - en: '|  | buttonsGroup("Action") { |'
+  id: totrans-split-266
   prefs: []
   type: TYPE_TB
 - en: '|  | row { |'
+  id: totrans-split-267
   prefs: []
   type: TYPE_TB
 - en: '|  | radioButton("Keep", true) |'
+  id: totrans-split-268
   prefs: []
   type: TYPE_TB
 - en: '|  | radioButton("Remove", false) |'
+  id: totrans-split-269
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-270
   prefs: []
   type: TYPE_TB
 - en: '|  | }.bind(model::keep.toMutableProperty()) |'
+  id: totrans-split-271
   prefs: []
   type: TYPE_TB
 - en: '|  | row { |'
+  id: totrans-split-272
   prefs: []
   type: TYPE_TB
 - en: '|  | checkBox("Match case").bindSelected( |'
+  id: totrans-split-273
   prefs: []
   type: TYPE_TB
 - en: '|  | model::case.toMutableProperty() |'
+  id: totrans-split-274
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-275
   prefs: []
   type: TYPE_TB
 - en: '|  | checkBox("Words").bindSelected(model::words.toMutableProperty()) |'
+  id: totrans-split-276
   prefs: []
   type: TYPE_TB
 - en: '|  | checkBox("Regex").bindSelected(model::regex.toMutableProperty()) |'
+  id: totrans-split-277
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-278
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-279
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-280
   prefs: []
   type: TYPE_TB
 - en: '|  | return panel!! |'
+  id: totrans-split-281
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-282
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-283
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-284
   prefs: []
   type: TYPE_TB
 - en: '|  | if (!wrapper.showAndGet()) return |'
+  id: totrans-split-285
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-286
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-287
   prefs: []
   type: TYPE_TB
 - en: '|  | val caretModel = editor.caretModel |'
+  id: totrans-split-288
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-289
   prefs: []
   type: TYPE_TB
 - en: '|  | matchingCarets(model, editor.caretModel.allCarets).filter { it.second
     == null }.forEach { (c, _) -> |'
+  id: totrans-split-290
   prefs: []
   type: TYPE_TB
 - en: '|  | caretModel.removeCaret(c) |'
+  id: totrans-split-291
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-292
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-293
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-294
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-295
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("filter-carets-keep", "alt K") { filterCarets(it, true)
     } |'
+  id: totrans-split-296
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("filter-carets-remove", "alt shift K") { filterCarets(it,
     false) } |'
+  id: totrans-split-297
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-298
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-299
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-300
   prefs: []
   type: TYPE_TB
 - en: '|  | internal object EditorKeyListener : TypedActionHandler { |'
+  id: totrans-split-301
   prefs: []
   type: TYPE_TB
 - en: '|  | private val action = TypedAction.getInstance() |'
+  id: totrans-split-302
   prefs: []
   type: TYPE_TB
 - en: '|  | private val attached = mutableMapOf<Editor, TypedActionHandler>() |'
+  id: totrans-split-303
   prefs: []
   type: TYPE_TB
 - en: '|  | private var originalHandler: TypedActionHandler? = null |'
+  id: totrans-split-304
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-305
   prefs: []
   type: TYPE_TB
 - en: '|  | override fun execute(editor: Editor, charTyped: Char, dataContext: DataContext)
     { |'
+  id: totrans-split-306
   prefs: []
   type: TYPE_TB
 - en: '|  | (attached[editor] ?: originalHandler ?: return).execute(editor, charTyped,
     dataContext) |'
+  id: totrans-split-307
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-308
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-309
   prefs: []
   type: TYPE_TB
 - en: '|  | fun attach(editor: Editor, callback: TypedActionHandler) { |'
+  id: totrans-split-310
   prefs: []
   type: TYPE_TB
 - en: '|  | if (attached.isEmpty()) { |'
+  id: totrans-split-311
   prefs: []
   type: TYPE_TB
 - en: '|  | originalHandler = action.rawHandler |'
+  id: totrans-split-312
   prefs: []
   type: TYPE_TB
 - en: '|  | action.setupRawHandler(this) |'
+  id: totrans-split-313
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-314
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-315
   prefs: []
   type: TYPE_TB
 - en: '|  | attached[editor] = callback |'
+  id: totrans-split-316
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-317
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-318
   prefs: []
   type: TYPE_TB
 - en: '|  | fun detach(editor: Editor) { |'
+  id: totrans-split-319
   prefs: []
   type: TYPE_TB
 - en: '|  | attached.remove(editor) |'
+  id: totrans-split-320
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-321
   prefs: []
   type: TYPE_TB
 - en: '|  | if (attached.isEmpty()) { |'
+  id: totrans-split-322
   prefs: []
   type: TYPE_TB
 - en: '|  | originalHandler?.let(action::setupRawHandler) |'
+  id: totrans-split-323
   prefs: []
   type: TYPE_TB
 - en: '|  | originalHandler = null |'
+  id: totrans-split-324
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-325
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-326
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-327
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-328
   prefs: []
   type: TYPE_TB
 - en: '|  | fun Editor.waitForChar(callback: (Char) -> Unit) { |'
+  id: totrans-split-329
   prefs: []
   type: TYPE_TB
 - en: '|  | EditorKeyListener.attach( |'
+  id: totrans-split-330
   prefs: []
   type: TYPE_TB
 - en: '|  | this |'
+  id: totrans-split-331
   prefs: []
   type: TYPE_TB
 - en: '|  | ) { editor, char, dataContext -> |'
+  id: totrans-split-332
   prefs: []
   type: TYPE_TB
 - en: '|  | EditorKeyListener.detach(editor) |'
+  id: totrans-split-333
   prefs: []
   type: TYPE_TB
 - en: '|  | callback(char) |'
+  id: totrans-split-334
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-335
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-336
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-337
   prefs: []
   type: TYPE_TB
 - en: '|  | fun selectToChar(editor: Editor, backwards: Boolean) { |'
+  id: totrans-split-338
   prefs: []
   type: TYPE_TB
 - en: '|  | val document = editor.document |'
+  id: totrans-split-339
   prefs: []
   type: TYPE_TB
 - en: '|  | val text = document.charsSequence |'
+  id: totrans-split-340
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-341
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.waitForChar { char -> |'
+  id: totrans-split-342
   prefs: []
   type: TYPE_TB
 - en: '|  | val allCarets = editor.caretModel.allCarets |'
+  id: totrans-split-343
   prefs: []
   type: TYPE_TB
 - en: '|  | if (allCarets.size != 1) { |'
+  id: totrans-split-344
   prefs: []
   type: TYPE_TB
 - en: '|  | allCarets.forEach { caret -> |'
+  id: totrans-split-345
   prefs: []
   type: TYPE_TB
 - en: '|  | // search until newline |'
+  id: totrans-split-346
   prefs: []
   type: TYPE_TB
 - en: '|  | val newLine = text.indexOf(''\n'', caret.offset) |'
+  id: totrans-split-347
   prefs: []
   type: TYPE_TB
 - en: '|  | if (backwards) { // search backwards |'
+  id: totrans-split-348
   prefs: []
   type: TYPE_TB
 - en: '|  | val index = text.lastIndexOf(char, if (newLine == -1) text.length else
     newLine - 1) |'
+  id: totrans-split-349
   prefs: []
   type: TYPE_TB
 - en: '|  | if (index != -1) { |'
+  id: totrans-split-350
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.setSelection(index, caret.selectionEnd) |'
+  id: totrans-split-351
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-352
   prefs: []
   type: TYPE_TB
 - en: '|  | } else { // search forwards |'
+  id: totrans-split-353
   prefs: []
   type: TYPE_TB
 - en: '|  | val index = text.indexOf(char, caret.offset) |'
+  id: totrans-split-354
   prefs: []
   type: TYPE_TB
 - en: '|  | if (index != -1 && index < newLine) { |'
+  id: totrans-split-355
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.setSelection(caret.selectionStart, index + 1) |'
+  id: totrans-split-356
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-357
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-358
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-359
   prefs: []
   type: TYPE_TB
 - en: '|  | } else { |'
+  id: totrans-split-360
   prefs: []
   type: TYPE_TB
 - en: '|  | val caret = allCarets[0] |'
+  id: totrans-split-361
   prefs: []
   type: TYPE_TB
 - en: '|  | val offset = if (backwards) caret.selectionStart else caret.selectionEnd
     |'
+  id: totrans-split-362
   prefs: []
   type: TYPE_TB
 - en: '|  | val index = if (backwards) text.lastIndexOf(char, offset - 1) else text.indexOf(char,
     offset + 1) |'
+  id: totrans-split-363
   prefs: []
   type: TYPE_TB
 - en: '|  | if (index != -1) { |'
+  id: totrans-split-364
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.setSelection( |'
+  id: totrans-split-365
   prefs: []
   type: TYPE_TB
 - en: '|  | if (backwards) index else caret.selectionStart, |'
+  id: totrans-split-366
   prefs: []
   type: TYPE_TB
 - en: '|  | if (backwards) caret.selectionEnd else index + 1 |'
+  id: totrans-split-367
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-368
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-369
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-370
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-371
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-372
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-373
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("select-to-forwards", "alt X") { |'
+  id: totrans-split-374
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = it.editor ?: return@registerAction |'
+  id: totrans-split-375
   prefs: []
   type: TYPE_TB
 - en: '|  | selectToChar(editor, false) |'
+  id: totrans-split-376
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-377
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-378
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("select-to-backwards", "alt shift X") { |'
+  id: totrans-split-379
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = it.editor ?: return@registerAction |'
+  id: totrans-split-380
   prefs: []
   type: TYPE_TB
 - en: '|  | selectToChar(editor, true) |'
+  id: totrans-split-381
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-382
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-383
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("switch-selection", "alt Z") { |'
+  id: totrans-split-384
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = it.editor ?: return@registerAction |'
+  id: totrans-split-385
   prefs: []
   type: TYPE_TB
 - en: '|  | val caretModel = editor.caretModel |'
+  id: totrans-split-386
   prefs: []
   type: TYPE_TB
 - en: '|  | val allCarets = caretModel.allCarets |'
+  id: totrans-split-387
   prefs: []
   type: TYPE_TB
 - en: '|  | allCarets.forEach { caret -> |'
+  id: totrans-split-388
   prefs: []
   type: TYPE_TB
 - en: '|  | if (caret.offset < caret.leadSelectionOffset) { |'
+  id: totrans-split-389
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.moveToOffset(caret.selectionEnd) |'
+  id: totrans-split-390
   prefs: []
   type: TYPE_TB
 - en: '|  | } else { |'
+  id: totrans-split-391
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.moveToOffset(caret.selectionStart) |'
+  id: totrans-split-392
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-393
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-394
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-395
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-396
   prefs: []
   type: TYPE_TB
 - en: '|  | var bracketPairs = mapOf( |'
+  id: totrans-split-397
   prefs: []
   type: TYPE_TB
 - en: '|  | ''('' to '')'', |'
+  id: totrans-split-398
   prefs: []
   type: TYPE_TB
 - en: '|  | ''['' to '']'', |'
+  id: totrans-split-399
   prefs: []
   type: TYPE_TB
 - en: '|  | ''{'' to ''}'', |'
+  id: totrans-split-400
   prefs: []
   type: TYPE_TB
 - en: '|  | ''<'' to ''>'', |'
+  id: totrans-split-401
   prefs: []
   type: TYPE_TB
 - en: '|  | ''"'' to ''"'', |'
+  id: totrans-split-402
   prefs: []
   type: TYPE_TB
 - en: '|  | ''\'''' to ''\'''', |'
+  id: totrans-split-403
   prefs: []
   type: TYPE_TB
 - en: '|  | ''`'' to ''`'', |'
+  id: totrans-split-404
   prefs: []
   type: TYPE_TB
 - en: '|  | '')'' to ''('', |'
+  id: totrans-split-405
   prefs: []
   type: TYPE_TB
 - en: '|  | '']'' to ''['', |'
+  id: totrans-split-406
   prefs: []
   type: TYPE_TB
 - en: '|  | ''}'' to ''{'', |'
+  id: totrans-split-407
   prefs: []
   type: TYPE_TB
 - en: '|  | ''>'' to ''<'', |'
+  id: totrans-split-408
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-409
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-410
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-411
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-412
   prefs: []
   type: TYPE_TB
 - en: '|  | registerAction("replace-brackets", "alt shift 9") { ev -> |'
+  id: totrans-split-413
   prefs: []
   type: TYPE_TB
 - en: '|  | val editor = ev.editor ?: return@registerAction |'
+  id: totrans-split-414
   prefs: []
   type: TYPE_TB
 - en: '|  | val project = ev.project ?: return@registerAction |'
+  id: totrans-split-415
   prefs: []
   type: TYPE_TB
 - en: '|  | val caretModel = editor.caretModel |'
+  id: totrans-split-416
   prefs: []
   type: TYPE_TB
 - en: '|  | val allCarets = caretModel.allCarets |'
+  id: totrans-split-417
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-418
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.waitForChar { userChar -> |'
+  id: totrans-split-419
   prefs: []
   type: TYPE_TB
 - en: '|  | val userOpposite = if (userChar == ''-'') (''-'') else (bracketPairs[userChar]
     ?: return@waitForChar) |'
+  id: totrans-split-420
   prefs: []
   type: TYPE_TB
 - en: '|  | allCarets.forEach { caret -> |'
+  id: totrans-split-421
   prefs: []
   type: TYPE_TB
 - en: '|  | // find next or current bracket |'
+  id: totrans-split-422
   prefs: []
   type: TYPE_TB
 - en: '|  | val text = editor.document.charsSequence.substring(caret.offset) |'
+  id: totrans-split-423
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-424
   prefs: []
   type: TYPE_TB
 - en: '|  | text.indexOfAny(bracketPairs.keys.toCharArray()).takeIf { it != -1 }?.let
     { index -> |'
+  id: totrans-split-425
   prefs: []
   type: TYPE_TB
 - en: '|  | val char = text[index] |'
+  id: totrans-split-426
   prefs: []
   type: TYPE_TB
 - en: '|  | val charOpposite = bracketPairs[char] ?: return@forEach |'
+  id: totrans-split-427
   prefs: []
   type: TYPE_TB
 - en: '|  | val charOppositeIndex = getUnmatchedCharIndex(false, text.substring(index
     + 1), char, charOpposite) + index + 1 |'
+  id: totrans-split-428
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-429
   prefs: []
   type: TYPE_TB
 - en: '|  | if (charOppositeIndex != -1) { |'
+  id: totrans-split-430
   prefs: []
   type: TYPE_TB
 - en: '|  | if (userChar == ''-'') { |'
+  id: totrans-split-431
   prefs: []
   type: TYPE_TB
 - en: '|  | // Delete brackets |'
+  id: totrans-split-432
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.document.executeCommand( |'
+  id: totrans-split-433
   prefs: []
   type: TYPE_TB
 - en: '|  | project, |'
+  id: totrans-split-434
   prefs: []
   type: TYPE_TB
 - en: '|  | "Delete brackets - $char $charOpposite" |'
+  id: totrans-split-435
   prefs: []
   type: TYPE_TB
 - en: '|  | ) { |'
+  id: totrans-split-436
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.document.deleteString(caret.offset + index, caret.offset + index
     + 1) |'
+  id: totrans-split-437
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.document.deleteString( |'
+  id: totrans-split-438
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.offset + charOppositeIndex - 1, |'
+  id: totrans-split-439
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.offset + charOppositeIndex |'
+  id: totrans-split-440
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-441
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-442
   prefs: []
   type: TYPE_TB
 - en: '|  | } else { |'
+  id: totrans-split-443
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.document.executeCommand( |'
+  id: totrans-split-444
   prefs: []
   type: TYPE_TB
 - en: '|  | project, |'
+  id: totrans-split-445
   prefs: []
   type: TYPE_TB
 - en: '|  | "Replace brackets - $char $charOpposite - with $userChar $userOpposite"
     |'
+  id: totrans-split-446
   prefs: []
   type: TYPE_TB
 - en: '|  | ) { |'
+  id: totrans-split-447
   prefs: []
   type: TYPE_TB
 - en: '|  | // replace char with userChar and charOpposite with userOpposite |'
+  id: totrans-split-448
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.document.replaceString( |'
+  id: totrans-split-449
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.offset + index, |'
+  id: totrans-split-450
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.offset + index + 1, |'
+  id: totrans-split-451
   prefs: []
   type: TYPE_TB
 - en: '|  | userChar.toString() |'
+  id: totrans-split-452
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-453
   prefs: []
   type: TYPE_TB
 - en: '|  | editor.document.replaceString( |'
+  id: totrans-split-454
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.offset + charOppositeIndex, |'
+  id: totrans-split-455
   prefs: []
   type: TYPE_TB
 - en: '|  | caret.offset + charOppositeIndex + 1, |'
+  id: totrans-split-456
   prefs: []
   type: TYPE_TB
 - en: '|  | userOpposite.toString() |'
+  id: totrans-split-457
   prefs: []
   type: TYPE_TB
 - en: '|  | ) |'
+  id: totrans-split-458
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-459
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-460
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-461
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-462
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-463
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-464
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-465
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-466
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-467
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-468
   prefs: []
   type: TYPE_TB
 - en: '|  | registerTextObjectActions() |'
+  id: totrans-split-469
   prefs: []
   type: TYPE_TB
 - en: '|  |  |'
+  id: totrans-split-470
   prefs: []
   type: TYPE_TB
 - en: '|  | fun getLine(it: Caret): String { |'
+  id: totrans-split-471
   prefs: []
   type: TYPE_TB
 - en: '|  | val line = it.editor.document.getLineNumber(it.offset) |'
+  id: totrans-split-472
   prefs: []
   type: TYPE_TB
 - en: '|  | val start = it.editor.document.getLineStartOffset(line) |'
+  id: totrans-split-473
   prefs: []
   type: TYPE_TB
 - en: '|  | val end = it.editor.document.getLineEndOffset(line) |'
+  id: totrans-split-474
   prefs: []
   type: TYPE_TB
 - en: '|  | return it.editor.document.getText(TextRange(start, end)) |'
+  id: totrans-split-475
   prefs: []
   type: TYPE_TB
 - en: '|  | } |'
+  id: totrans-split-476
   prefs: []
   type: TYPE_TB

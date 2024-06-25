@@ -1,28 +1,36 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:37:08'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How to speed up the Rust compiler in March 2024 | Nicholas Nethercote
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://nnethercote.github.io/2024/03/06/how-to-speed-up-the-rust-compiler-in-march-2024.html](https://nnethercote.github.io/2024/03/06/how-to-speed-up-the-rust-compiler-in-march-2024.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: It has been over six months since my [last update](https://nnethercote.github.io/2023/08/25/how-to-speed-up-the-rust-compiler-in-august-2023.html)
     on the Rust compiler’s performance. Time for an update.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Big wins
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -30,6 +38,7 @@
     just some things I noticed over this time period. The information about metrics
     at the top of [this post](https://nnethercote.github.io/2022/10/27/how-to-speed-up-the-rust-compiler-in-october-2022.html)
     still applies.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[#115554](https://github.com/rust-lang/rust/pull/115554): There are many build
@@ -43,6 +52,7 @@
     and also reduced the size of the `rustc` binary. This change has not yet been
     done for Windows or Mac builds because the improvements were smaller, but it may
     happen soon.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[#117727](https://github.com/rust-lang/rust/pull/117727): In this PR, [Ben
@@ -51,6 +61,7 @@
     change that gave amazing results: a [mean wall-time reduction of 1.33% across
     all benchmark results](https://perf.rust-lang.org/compare.html?start=eae4135939881ae730342bd336ae6302c3787e27&end=0f44eb32f1123ac93ab404d74c295263ce468343&stat=wall-time&nonRelevant=true).
     and a [mean binary size reduction of 1.32% across all release build results](https://perf.rust-lang.org/compare.html?start=eae4135939881ae730342bd336ae6302c3787e27&end=0f44eb32f1123ac93ab404d74c295263ce468343&stat=size%3Alinked_artifact&nonRelevant=true&doc=false&debug=false&check=false&incrFull=false&incrUnchanged=false&incrPatched=false).'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[#119977](https://github.com/rust-lang/rust/pull/119977): In this PR, [Mark
@@ -58,6 +69,7 @@
     many hash table lookups within the compiler. This gave a [mean wall-time reduction
     of 1.20% across all benchmark results](https://perf.rust-lang.org/compare.html?start=92f2e0aa62113a5f31076a9414daca55722556cf&end=098d4fd74c078b12bfc2e9438a2a04bc18b393bc&stat=wall-time&nonRelevant=true).
     The idea for this first arose [6.5 years ago](https://github.com/rust-lang/rust/issues/45275)!'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[#120055](https://github.com/rust-lang/rust/pull/120055): In this PR, [Nikita
@@ -66,6 +78,7 @@
     results](https://perf.rust-lang.org/compare.html?start=bc1b9e0e9a813d27a09708b293dc2d41c472f0d0&end=eaff1af8fdd18ee3eb05167b2836042b7d4315f6&stat=wall-time&nonRelevant=true).
     This is the latest in a long run of LLVM updates that have made rustc faster.
     Fantastic work from the LLVM folks!'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: In other big news, the Cranelift codegen backend is now available for [general
@@ -75,14 +88,17 @@
     lower generated code quality. Give it a try for your debug builds! This is the
     culmination of [a lot of work](https://bjorn3.github.io/2023/10/31/progress-report-oct-2023.html)
     by [bjorn3](https://github.com/bjorn3).
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, Jakub greatly reduced the size of compiled binaries by [excluding debug
     info by default](https://kobzol.github.io/rust/cargo/2024/01/23/making-rust-binaries-smaller-by-default.html).
     For small programs this can reduce their size on disk by up to 10x!
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: My (lack of) improvements
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -92,26 +108,32 @@
     are incredibly flat. It’s hard to find improvements when the hottest functions
     only account for 1% or 2% of execution time. Because of this I have been working
     on things unrelated to compile speed.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: That doesn’t mean there are no speed improvements left to be made, as the previous
     section shows. But they are much harder to find, and often require domain-specific
     insights that are hard to get when fishing around with a general-purpose profiler.
     And there is always other useful work to be done.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: General Progress
+  id: totrans-split-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: For the period 2023-08-23 to 2024-03-04 we had some excellent overall performance
     results.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, [wall-time](https://perf.rust-lang.org/compare.html?start=97fff1f2ed01f6f7c0c204530b693c74d88c2105&end=50e77f133f8eb1f745e05681163a0143d6c4dd7d&stat=wall-time&nonRelevant=true):'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: There were 526 results measured across 43 benchmarks.
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -119,30 +141,37 @@
     a reduction of 7.13%, and plenty of the reductions were in the double digits.
     (In my [last post](https://nnethercote.github.io/2023/08/25/how-to-speed-up-the-rust-compiler-in-august-2023.html)
     the equivalent reduction was also 7.13%. Quite the coincidence!)
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Next, [peak memory usage](https://perf.rust-lang.org/compare.html?start=97fff1f2ed01f6f7c0c204530b693c74d88c2105&end=50e77f133f8eb1f745e05681163a0143d6c4dd7d&stat=max-rss&nonRelevant=true):'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Again, there were 526 results measured across 43 benchmarks.
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 367 of these were improvements, and 159 were regressions. The mean change was
     a 2.05% reduction, and most of the changes were in the single digits.
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Finally, [binary size](https://perf.rust-lang.org/compare.html?start=97fff1f2ed01f6f7c0c204530b693c74d88c2105&end=50e77f133f8eb1f745e05681163a0143d6c4dd7d&stat=size%3Alinked_artifact&nonRelevant=true):'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: There were 324 results measured across 43 benchmarks.
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 318 of these were improvements, and 6 were regressions. The mean change was
     a 28.03% reduction, and almost every result was a double-digit reduction.
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -150,17 +179,20 @@
     which is the most interesting case for binary size, there were 42 improvements,
     1 regression, and the mean change was a reduction of 37.08%. The `helloworld`
     benchmark saw a whopping 91.05% reduction.
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: These improvements are mostly to the omission of debug info mentioned above,
     plus some metadata improvements made by Mark.
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For all three metrics, all but a handful of results met the significance threshold.
     I haven’t bothered separating those results because they made little difference
     to the headline numbers. As always, these measurements are done on Linux.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, Jakub recently [observed](https://twitter.com/Beranek1582/status/1760546947352453317)
@@ -169,5 +201,6 @@
     of the preceding three years were 7%, 17%, and 13%, and the reduction over the
     whole four year period was 37%. There is something to be said for steady, continuous
     improvements over long periods of time.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL

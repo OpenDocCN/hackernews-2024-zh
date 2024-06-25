@@ -1,31 +1,40 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:17:26'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: What makes concurrency so hard? • Buttondown
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://buttondown.email/hillelwayne/archive/what-makes-concurrency-so-hard/](https://buttondown.email/hillelwayne/archive/what-makes-concurrency-so-hard/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <date>April 16, 2024</date>
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: What makes concurrency so hard?
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Is it something about human brains, or something about the problem domain?
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -34,6 +43,7 @@
     to getting it wrong" that leads to people spending time and money on writing specifications.
     Given its relevance to my job, I spend an awful lot of time thinking about the
     nature of concurrency.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'As the old joke goes, concurrency one of the two hardest things in computer
@@ -42,12 +52,14 @@
     bugs can stay latent for a long time, etc. Is there anything that makes it *essentially*
     hard? Something that makes concurrent software, by its very nature, more difficult
     to write than synchronous software?'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'The reason I hear most often is that humans think linearly, not concurrently,
     so are ill-equipped to reason about race conditions. I disagree: in my experience,
     humans are *very* good at concurrent reasoning. We do concurrent reasoning every
     time we drive a car!'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: More generally, some studies find that if you frame [concurrent systems in human
@@ -55,14 +67,17 @@
     ("[meatspace modeling](https://buttondown.email/hillelwayne/archive/i-am-a-sql-injection-attack-5019/)"),
     people get quite good at finding the race conditions. So while concurrency might
     be difficult to reason about, I don't think it's because of a fault in our brains.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: In my opinion, a better basis is **state space explosion**. Concurrency is hard
     because concurrent systems can be in a lot of different possible states, and the
     number of states grows much faster than anyone is prepared for.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Behaviors, Interleavings, and Nondeterminism
+  id: totrans-split-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -72,19 +87,23 @@
     the second p2, etc. Agents complete their programs strictly linearly, but another
     process can interleave after every atomic step. If we have algorithms A1A2 and
     B1B2, they could execute as A1B1A2B2 or A1B1B2A2, but not A1**B2B1**A2.)
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Under those conditions, here''s an equation for how many possible orderings
     of execution (**behaviors**) can happen:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: If we have three agents all executing the same 2-step algorithm, that's `6!/8
     = 90` distinct behaviors. Each step in the sequence can potentially lead to a
     distinct state, so there's 6*90=540 maximum distinct states (MDS). Any one of
     those can potentially be the "buggy" one.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: In most cases, the actual state space will be significantly smaller than the
@@ -94,6 +113,7 @@
     is all without any kind of nondeterminism! If one step in one of the agents can
     nondeterministically do one of three things (send message M₁, send message M₂,
     crash), that triples the number of behaviors and the MDS.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: It's pretty common for complex concurrent systems to have millions or tens of
@@ -104,17 +124,21 @@
     essentially hard to reason about. If my theoretical MDS is two million states,
     my practical state space is just 1% that size, and my human brain can reason through
     99.9% of the remaining states… that still leaves 20 edge cases I missed.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Shrinking the State Space
+  id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Here''s a heuristic I use a lot:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '**All means of making concurrency ''easier'' are concerned first and foremost
     with managing the state space.**'
+  id: totrans-split-23
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -122,6 +146,7 @@
     enough. State spaces grow quickly and bigger state spaces cause problems. If we
     want to make maintainable concurrent systems, we need to start by shrinking the
     space.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Like look at threads. Threads share memory, and the thread scheduler has a lot
@@ -132,6 +157,7 @@
     of pruning to get the right behaviors. I can make mistakes in implementation,
     "misshape" the space (like by adding a deadlock), or not notice a buggy state
     I need to remove. Threads are very error prone.)
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: I could instead switch to memory-isolated processes. The scheduler can still
@@ -141,12 +167,14 @@
     are A2 and A4, then we only need to think about how A2A4 affects the state space.
     Three four-step agents have 35k interleavings, three two-step agents have only
     90\. That's a big improvement!
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: What else can we do? Low-level atomic instructions do more in a single step,
     so there's no room for interleaving. Database transactions take a lot of physical
     time but represent only one [logical time step](https://buttondown.email/hillelwayne/archive/physical-vs-logical-time/).
     Data mutations create new steps, which immutable data structures avoid by definition.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'Languages have constructs to better prune the resulting state space: go''s
@@ -154,18 +182,22 @@
     promises as a way of forcing "noninterleaving": wait until a future is ready to
     execute in full (or to the next yield point) and before execution. *Please* don''t
     quote me on this.'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'I *think* [CRDTs](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
     reduce state space by permitting interleavings, but arranging things so that external
     changes are commutative: A1B1 and B1A1 lead to the same final result, so there
     are not distinct states.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Again, this is all a *very* rough heuristic.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Limits
+  id: totrans-split-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -178,10 +210,12 @@
     appears again. We often work through concurrency by reduces groups of states to
     "state equivalence classes" that all have the same properties. complicated state
     spaces have more equivalence classes to work through.)'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '(Another way "humans are bad at reasoning about concurrency" can be a real
     thing: we might not *notice* that something is nonatomic.)'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Some high-level paradigms can lead to particular state space topologies that
@@ -190,6 +224,7 @@
     and pipe-filter are especially easy for humans to reason about, which I take to
     mean "doesn't lead to a gnarly state space". Maybe also event-loops? Where does
     the actor model fit into all of this?
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Another limit: there''s a difference between buggy *states* and buggy *behaviors*.
@@ -197,24 +232,30 @@
     "never reaches consistency". This is called a "liveness bug", and I talk more
     about them [here](https://www.hillelwayne.com/post/safety-and-liveness/). Liveness
     bugs are much harder to reason about.'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Okay, that's enough philosophical rambling about concurrency. Concurrency is
     hard, don't feel bad if you struggle with it, it's not you, it's combinatorics.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Video Appearance
+  id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I was on David Giard's *Technology and Friends* talking about TLA+. Check it
     out [here](https://www.youtube.com/watch?v=DERER_0RKGws)!
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '*If you''re reading this on the web, you can subscribe [here](/hillelwayne).
     Updates are once a week. My main website is [here](https://www.hillelwayne.com).*'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL

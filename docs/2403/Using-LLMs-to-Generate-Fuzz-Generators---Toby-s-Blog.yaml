@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:48:34'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Using LLMs to Generate Fuzz Generators - Toby's Blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://verse.systems/blog/post/2024-03-09-using-llms-to-generate-fuzz-generators/](https://verse.systems/blog/post/2024-03-09-using-llms-to-generate-fuzz-generators/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,6 +28,7 @@
     by without someone coming up with yet another use-case for this technology, often
     to solve tasks quickly that traditionally took a non-trivial amount of human work
     to complete.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Today’s example was [Brendan Dolan-Gavitt](https://engineering.nyu.edu/faculty/brendan-dolan-gavitt)’s
@@ -33,6 +40,7 @@
     fuzz the given GIF parser. Claude dutifully complies and the resulting fuzzer
     finds a range of vulnerabilities. Brendan since [repeated](https://twitter.com/moyix/status/1766225423841550381)
     that success with a less well-known format, VRML files.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'This success is at first glance very pleasing: writing a good fuzzer for a
@@ -41,9 +49,11 @@
     It certainly was to me when I first saw his tweet. Having thought about it, with
     the benefit of hindsight, I’ve started to understand why Brendan might have expected
     it to work in the first place.'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Why Might This Work?
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -53,6 +63,7 @@
     with instructions telling the LLM what to do and including the code within the
     prompt. In asking an LLM to look at a piece of code and spot bugs in it, one is
     essentially asking the LLM to perform [static analysis](https://en.wikipedia.org/wiki/Static_program_analysis).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'I hold the opinion that we shouldn’t expect LLMs to be very good at static
@@ -64,25 +75,30 @@
     if the static analyser tells you there is a bug in the code, it has to be very
     sure the bug is real. Otherwise, developer time drowns in a sea of [false bug
     reports](https://owasp.org/www-community/controls/Static_Code_Analysis#:~:text=Limitations-,False%20Positives,application%20from%20input%20to%20output.).'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'But, in contrast to static analysis, fuzzing is very different. Fuzzing is
     an inherently stochastic process. Quoting from [Wikipedia](https://en.wikipedia.org/wiki/Fuzzing):'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: An effective fuzzer generates semi-valid inputs that are “valid enough” in that
     they are not directly rejected by the parser, but do create unexpected behaviors
     deeper in the program and are “invalid enough” to expose corner cases that have
     not been properly dealt with.
+  id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: In other words, a fuzzer should generate inputs that are “close to” what is
     expected by the program. Therefore, we might expect LLMs to be a better fit at
     generating a “close enough” fuzzer for a given program.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Fuzzing an Unknown Input Format
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -92,21 +108,25 @@
     formats, given that its training data likely contained much text about each input
     format, as well as lots of parsing and serialisation code for both formats, too
     (although considerably more for GIF than VRML).
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: I therefore decided to test Claude on an unknown input format. Fortunately for
     me I had one lying around. 8 years ago, in 2016, when I first started [teaching](../2016-07-18-software-engineering-teaching/)
     at Melbourne, I set my students an assignment in which I created a fictitious
     input format and asked them to write fuzzers for this input format.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'To make the assignment challenging, the input format was protected by a [CRC32](https://en.wikipedia.org/wiki/Cyclic_redundancy_check)
     checksum. Specifically, each input is a *packet*, whose structure looks like the
     following and includes a (useless) sequence number, a two-byte length field, and
     a data payload (whose maximum size is 4096 bytes):'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: The data payload consisted of a sequence of instructions (each one byte in size)
@@ -119,37 +139,44 @@
     as well as operations to `READ` and `WRITE` to arbitrary positions in the stack
     (identified using the top-of-stack operand as an offset downwards from the top
     of the stack).
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'I wrote a parser for the input format and an interpreter for the stack machine
     language. The [C code](https://www.dropbox.com/scl/fi/f4ixkhypnm0g9e0n42nfz/for_brendan.tar.gz?rlkey=0730l3mkoosn6cwo67vzazbz8&dl=0)
     that implements this functionality is under 400 [SLOC](https://en.wikipedia.org/wiki/Source_lines_of_code).
     I seeded a range of vulnerabilities in this code, namely:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: A [Heartbleed](https://en.wikipedia.org/wiki/Heartbleed) style out-of-bounds
     `memcpy` in the parsing code (blindly trusting the input data’s length field to
     use as the length to pass to `memcpy`, even though the source and destination
     buffers’ sizes are both 4096 bytes while the maximum 2-byte length value is 65535);
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Unchecked division-by-zero when the second argument to the `DIVIDE` instruction
     was zero;
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Unchecked signed overflow when stack operands grow too large due to repeated
     application of arithmetic operations;
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Out-of-bounds read due to unchecked offset in the implementation of the `READ`
     instruction;
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Out-of-bounds write similarly in the `WRITE` instruction.
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -160,17 +187,21 @@
     followed by an interpreter implemented by the `execute` function. My prompt (linked
     above) included the relevant bits of the code along with these explanations and
     the request to the model to generate the Python fuzzer.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Claude generated a pretty useful fuzzer, although I had to ask it to fix a type
     error in the code it generated (which it did first try after I gave it the error
     message).
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'The resulting Python fuzzer code is below:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: I compiled the C program with Clang’s [Address Sanitizer](https://clang.llvm.org/docs/AddressSanitizer.html)
@@ -178,35 +209,44 @@
     turned on. Running the Python code to produce inputs for the C program, and running
     the compiled C program against the inputs produced, I found that Claude’s fuzzer
     is able to trigger the out-of-bounds read and write bugs only.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: However, the fuzzer is unable to trigger the other bugs. I shared this code
     with Brendan who also played with it and got [similar results](https://twitter.com/moyix/status/1766311605413818826).
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: What should we make of this?
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Understanding the Results
+  id: totrans-split-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Why is Claude’s fuzzer unable to find the other bugs? If we look at the fuzzing
     code, the answer is pretty clear. Here is the relevant snippet:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: Notice how the packet data it generates is totally random bytes. It then generates
     what it calls `padding` which contains entirely valid instructions. So of course
     the correctly-formatted instruction data is hidden behind a mass of noise.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Instead the data and padding should be calculated e.g. like this:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: (With this change, the fuzzer can trigger the division-by-zero. However, the
@@ -214,28 +254,34 @@
     too easy to trigger, making the odds of being able to trigger the others without
     triggering one of those incredibly small. This is not the fuzzer’s fault, per
     se. Although is an inherent limitation with fuzzing in this manner.)
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'Also, Claude’s fuzzer always correctly reports the packet length in the `len`
     field:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: This means the Heartbleed style vulnerability in the parser can never be triggered
     (and also means the correctly formatted instruction data is ignored by the interpreter,
     meaning that that correctly formatted input has no ability to trigger bugs in
     the code).
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: So What About Static Analysis?
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Of course, like me I’m sure you’re wondering by now whether we might’ve been
     better off asking Claude to look for vulnerabilities directly in the code (i.e.,
     to perform the kind of static analysis I referred to above).
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note: doing so isn’t very scientific. We are comparing a method (fuzzing) in
@@ -243,24 +289,30 @@
     to another (static analysis by LLM) in which it is very difficult to trust the
     generated bug alerts. So we are hardly comparing apples with apples. But let’s
     proceed anyway.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'When I asked Claude to look for vulnerabilities in this code it found:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: The Heartbleed-style buffer overflow in the parsing code;
+  id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The division-by-zero in the `DIVIDE` instruction
+  id: totrans-split-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Out-of-bounds memory read in the `READ` instruction (due to arithmetic
+  id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Uninitialised stack in the instruction execution function `execute`
+  id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -269,44 +321,54 @@
     the presence of the out-of-bounds read vulnerability (because without that, the
     uninitialised portions of the stack can never be accessed). On balance I therefore
     consider the uninitialised stack a false positive.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Claude also coached me on how I should fix these vulnerabilities.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[Updated: Sun 10 Mar 2024 14:15:51 AEDT] A Promising Way Forward?'
+  id: totrans-split-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'A little over 12 hours after I wrote this post, it’s worth asking: what did
     we learn?'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: LLMs seem interestingly good at being able to analyse code and write a fuzzer
     to generate “close enough” inputs to exercise that code and find bugs. Though
     they have some limitations.
+  id: totrans-split-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: LLMs can do static analysis but suffer from false positives and so on.
+  id: totrans-split-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: This [suggests](https://twitter.com/thuanpv_/status/1766593960959476182), as
     my colleague [Thuan Pham](https://thuanpv.github.io/) notes, that perhaps we should
     consider combining the two approaches.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: 'Specifically, we could consider performing the following steps:'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Ask the LLM to identify vulnerabilities in the code (i.e., to statically analyse
     it)
+  id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: For each vulnerability the LLM identifies, ask it to generate a [directed](https://mboehme.github.io/paper/CCS17.pdf)
     fuzzer that generates inputs to try to trigger (just) that vulnerability.
+  id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -315,18 +377,22 @@
     trigger the Heartbleed-style vulnerability mentioned above). But of course further
     work is needed to validate this approach and work out what challenges need to
     be overcome to make it practical (if indeed it can be made practical).
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: That’s certainly more work than can be squeezed into the odd free moment on
     a heatwave weekend.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: What are we to make of this, above any other unscientific experiment with an
     LLM?
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: In terms of fuzzing, LLMs have been used to generate [fuzz drivers](https://arxiv.org/abs/2307.12469)
@@ -336,6 +402,7 @@
     and patching that last year it decided to [revisit](https://aicyberchallenge.com/)
     its 2016 Cyber Grand Challenge, launching the AIxCC competition, to understand
     the impact of LLM-related technology for these tasks.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: 'With all this in mind, I’m curious to see whether any of the AIxCC competitors
@@ -343,16 +410,20 @@
     the topic of this post), **[Updated: Sun 10 Mar 2024 14:15:51 AEDT to add]** whether
     directed or not. We should certainly expect many to try fuzz-driver generation
     and static-analysis via LLM.'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 'Like so many other experiments with LLMs, this one served to simultaneously
     surprise and disappoint, **[Updated: Sun 10 Mar 2024 14:15:51 AEDT to add]** though
     I remain optimistic about the value of exploring this approach further.'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: I’d love to hear your thoughts.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: In the meantime, much thanks of course to Brendan whose work inspired this post.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL

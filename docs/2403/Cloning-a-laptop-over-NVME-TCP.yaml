@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:52:46'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Cloning a laptop over NVME TCP
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://copyninja.in/blog/clone_laptop_nvmet.html](https://copyninja.in/blog/clone_laptop_nvmet.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Posted on Mar 10, 2024 By copyninja under devops
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Recently, I got a new laptop and had to set it up so I could start using it.
@@ -27,44 +34,54 @@
     was complaining about this to my colleague, and there came the suggestion of why
     not copy the entire disk to the new laptop. Though it sounded like an interesting
     idea to me, I had my doubts, so here is what I told him in return.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: I don't have the tools to open my old laptop and connect the new disk over USB
     to my new laptop.
+  id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: I use full disk encryption, and my old laptop has a 512GB disk, whereas the
     new laptop has a 1TB NVME, and I'm not so familiar with resizing LUKS.
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'He promptly suggested both could be done. For step 1, just expose the disk
     using NVME over TCP and connect it over the network and do a full disk copy, and
     the rest is pretty simple to achieve. In short, he suggested the following:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Export the disk using nvmet-tcp from the old laptop.
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Do a disk copy to the new laptop.
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Resize the partition to use the full 1TB.
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Resize LUKS.
+  id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Finally, resize the BTRFS root disk.
+  id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Exporting Disk over NVME TCP
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -73,28 +90,35 @@
     by specifying *rd.systemd.unit=storage-target-mode.target*. But he suggested not
     to use this as I need to tweak the dracut initrd image to involve network services
     as well as configuring WiFi from this mode is a painful thing to do.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'So alternatively, I simply booted both my laptops with GRML rescue CD. And
     the following step was done to export the NVME disk on my current laptop using
     the nvmet-tcp module of Linux:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: 'These steps ensure that the device is now exported using NVME over TCP. The
     next step is to detect this on the new laptop and connect the device:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: Finally, `nvme list` shows the device which is connected to the new laptop,
     and we can proceed with the next step, which is to do the disk copy.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Copying the Disk
+  id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -104,12 +128,15 @@
     speed at which I was copying was about 18-20MB/s. The other option would have
     been to create an initial partition and file system and do an rsync of the root
     disk or use BTRFS itself for file system transfer.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: Resizing Partition and LUKS Container
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -118,23 +145,29 @@
     said yes. Next, I had to install `cloud-guest-utils` to get `growpart` to fix
     the second partition, and the following command extended the partition to the
     full 1TB:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Next, I used `cryptsetup-resize` to increase the LUKS container size.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: Finally, I rebooted into the disk, and everything worked fine. After logging
     into the system, I resized the BTRFS file system. BTRFS requires the system to
     be mounted for resize, so I could not attempt it in live boot.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: Conclussion
+  id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -142,9 +175,11 @@
     feel like I'm using my existing laptop. Typically, setting up a new laptop takes
     about a week or two to completely get adjusted, but in this case, that entire
     time is saved.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: An added benefit is that I learned how to export disks using NVME over TCP,
     thanks to my colleague. This new knowledge adds to the value of the experience.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL

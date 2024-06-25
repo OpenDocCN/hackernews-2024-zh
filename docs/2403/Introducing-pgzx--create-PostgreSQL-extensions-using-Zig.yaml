@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:33:11'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Introducing pgzx: create PostgreSQL extensions using Zig'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://xata.io/blog/introducing-pgzx](https://xata.io/blog/introducing-pgzx)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,6 +29,7 @@
     for developing PostgreSQL extensions written in Zig. It provides a set of utilities
     (e.g. error handling, memory allocators, wrappers) as well as a build and development
     environment to simplify integrating with the Postgres codebase.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '[Zig](https://ziglang.org/) is described on its website as a general-purpose
@@ -32,6 +39,7 @@
     a "modern C", providing safer memory management, compilation time code execution
     (comptime), and a rich standard library. We''ll show some of these features in
     the context of Postgres extensions below.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: A major reason to use Zig for Postgres development is its ability to interoperate
@@ -40,6 +48,7 @@
     Zig's automatic translation of C macros to Zig code is not yet perfect, but it's
     still helpful. This makes Zig a great choice for working with very large C codebases,
     like Postgres happens to be.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Because Zig can call any C function and translate C macros to inline Zig functions,
@@ -47,41 +56,51 @@
     the same steps you would for a C extension. However, a framework like pgzx simplifies
     the process significantly by providing a development environment, a set of utilities
     and wrappers for Postgres APIs, common error handling, and more.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: pgzx has at the moment 2 sample extensions that you can take inspiration from.
     [char_count_zig](https://github.com/xataio/pgzx/tree/main/examples/char_count_zig)
     is a minimal extension, while [pg_audit_zig](https://github.com/xataio/pgzx/tree/main/examples/pgaudit_zig)
     is more complex and shows more of the features of pgzx.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Let's look at the `char_count_zig`, which is only slightly more than a "Hello,
     World!" of Postgres extensions. It adds a function that counts how many times
     a character appears in a string. This was inspired by [this tutorial](https://www.highgo.ca/2019/10/01/a-guide-to-create-user-defined-extension-modules-to-postgres/),
     which shows how to do this in plpqsql and C.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: Here is the `char_count` extension written in Zig and in C.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: char_count written in Zig
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: char_count written in C
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: Whilst they're similar, the Zig version is actually a bit more concise. This
     is partially because Zig is more expressive, but also because pgzx does a bit
     more of the work.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Registered SQL functions receive their arguments serialized and some code is
@@ -90,12 +109,14 @@
     deserialized. How? By having a `comptime` function that generates the necessary
     boilerplate code at compile time. If you are curious, check out the [pgCall](https://github.com/xataio/pgzx/blob/9825dde752ee4ace2cbc594332eba100292aafd5/src/pgzx/fmgr.zig#L77-L102)
     function, it's a nice example for the power of Zig's `comptime` execution.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The `PG_MODULE_MAGIC` and `PG_FUNCTION_INFO_V1` functions are a second example
     of `comptime` usage. They export the required symbols needed for Postgres to recognize
     this as an extension and to register the function as a SQL function. In this case,
     `comptime` acts pretty much like the corresponding C macros.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: If you looked carefully at the code above, you might have noticed that it contains
@@ -104,38 +125,47 @@
     so if the string is the empty string, there will be a out of bounds access error.
     We left that bug intentionally in so you can see what happens when bugs like that
     happen in the extension.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can trigger the bug with this SQL:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: 'Which responds:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: 'In C code, this type of bug could trigger a segmentation fault or even a security
     vulnerability. If you try this with the `char_count_zig` extension, the Postgres
     process still crashes (not the full server, just the process serving the connection),
     but if you check the logs you''ll see an error message like this:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: It points exactly where the error happened! This happens because Zig has runtime
     checks depending on the [build mode](https://ziglang.org/documentation/master/#Build-Mode).
     The `ReleaseSafe` mode, for example, trades a bit of performance for more safety
     checks.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Note that this stacktrace worked so well because the error was in Zig code.
     When building Postgres extensions, you often have to call Postgres APIs which
     will still segmentation fault if you use them incorrectly.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Postgres uses [allocator arenas](https://en.wikipedia.org/wiki/Region-based_memory_management)
@@ -146,11 +176,13 @@
     are also hierarchical, so you can create a context that is a child of another
     context, and when the parent context is freed, all children are freed as well.
     This makes memory leaks rather unlikely.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Another advantage of memory contexts is that they improve [memory monitoring](https://www.postgresql.org/docs/current/view-pg-backend-memory-contexts.html),
     because context have names and you can see how much memory is used by each context.
     This is useful for debugging large memory usage.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: This model of using an arena/context allocator happens to match really good
@@ -158,31 +190,38 @@
     memory receive an allocator as a parameter. This makes allocations [more explicit](https://notes.eatonphil.com/2024-03-15-zig-rust-and-other-languages.html)
     but also makes it easy to use a custom allocator. pgzx defines custom allocators
     that wrap the Postgres memory contexts and make them available to Zig code.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here is an example that creates a new context as a child of the current context
     and gets the allocator for it:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: Another Postgres API that you will very likely need to know about in a more
     complex extension is the error handling. Postgres implements "exceptions" in C
     via `setjmp/longjmp` and provides a set of macros to throw and catch them ([PG_TRY/PG_CATCH](https://github.com/postgres/postgres/blob/master/src/include/utils/elog.h#L318)).
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: The issue is that long jumps could bypass the Zig control flow, for example
     `errdefer` blocks might not be executed. This means that if your extension calls
     into Postgres APIs, and those APIs can throw errors, long jumps might skip your
     `defer` and `errdefer` blocks!
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Luckily, pgzx is here to help. It provides a set of functions that allow you
     to catch the Postgres exceptions and convert them into Zig errors. For example:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: 'pgzx comes with a [Nix flakes](https://nixos.wiki/wiki/Flakes) based development
@@ -190,12 +229,15 @@
     a project template which you can use to set up this environment in a new repository.
     To use it, [install Nix](https://github.com/DeterminateSystems/nix-installer)
     and then run:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'Then load the nix shell with:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: The dev environment includes commands to relocate the Postgres binaries in your
@@ -203,30 +245,36 @@
     with a minimal extension and a `build.zig` file with a few common tasks. See the
     template [README](https://github.com/xataio/pgzx/tree/main/nix/templates/init)
     for how to build the extension from this point.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Postgres extensions are typically tested via a tool called `pg_regress`. This
     is supported by pgzx as well, simply call `zig build pg_regress`.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: But we also wanted to have unit tests. This is a bit tricky because the tests
     need to be compiled and run in the **context of a Postgres instance**. Otherwise,
     they won't be able to interact with Postgres' APIs.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'In order to solve this, pgzx registers a custom `run_tests` function. This
     function can be called from SQL (`SELECT run_tests();`) and it will run the unit
     tests. A test suite is a Zig struct with functions starting with `test`. To register
     a test suite, you would typically do something like this:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: The [registerTests](https://github.com/xataio/pgzx/blob/9825dde752ee4ace2cbc594332eba100292aafd5/src/pgzx/testing.zig#L39)
     function is another example of `comptime` usage. It iterates over all the fields
     of a struct and generates the call to run the tests when the `run_tests()` function
     is called in SQL.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'This walkthrough covered some of the more interesting functionality exposed
@@ -234,6 +282,7 @@
     ([lists](https://xataio.github.io/pgzx/#A;pgzx:list), hashtables), [SPI](https://xataio.github.io/pgzx/#A;pgzx:spi),
     [shared memory access](https://xataio.github.io/pgzx/#A;pgzx:shmem), [connection
     management](https://xataio.github.io/pgzx/#A;pgzx:pq), and more...'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: At Xata, we have been working on a new Postgres project, which doesn't really
@@ -242,20 +291,25 @@
     to [build it in public](https://mailchi.mp/xata/2zoy27tx2e). It will be somewhat
     similar to Citus, but some different choices, especially around usage and DX,
     based on what we learned running Xata for the past couple of years.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'For this project, we considered three potential implementation directions:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: As an external proxy, like Vitess does for MySQL.
+  id: totrans-split-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: As a Postgres extension, like Citus.
+  id: totrans-split-52
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: As a fork of Postgres, like Greenplum.
+  id: totrans-split-53
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -267,36 +321,43 @@
     Postgres code it will open up more options and avoid us having to reimplement
     some very difficult parts. Given the long term vision of the project, and that
     we didn't want to maintain a fork, we decided to go with the second option.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: 'The next node in our decision tree was the **programming language**. The main
     options we considered were C, Rust, and Zig. While there are pros and cons to
     each of these options, which we might cover in detail a future blog post, we decided
     to go with Zig. The main "pros" for Zig were:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: It allows us to call into the Postgres APIs almost directly, so we have the
     same power as using C.
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It offers more memory safety than C, it's a bit more expressive, and a bit more
     fun (we think).
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: It fits well with the Postgres codebase, for example when it comes to memory
     management and string handling.
+  id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: As we started working, we realized that an equivalent for Rust's [pgrx](https://github.com/pgcentralfoundation/pgrx)
     would be needed for Zig as well, so we started pgzx.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: While Zig and pgzx might not be the best choice for every Postgres extension,
     we think it's a reasonable choice for our project and perhaps for some others
     as well.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: pgzx is new and should be considered "alpha" as of now. However, if you want
@@ -304,20 +365,24 @@
     easier with pgzx than without it. A status of the covered functionality is in
     the [README](https://github.com/xataio/pgzx). If you need help or you'd like to
     contribute, please join us on the [Xata Discord](https://xata.io/discord).
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Also, if this blog post has sparked your interest in Zig and you want to give
     it a try, why not develop a Postgres extension? Let us know about it and we'll
     include it in the list of examples!
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'Learn more about the development of this project from the folks that built
     it, and watch a quick demo to see it in action. Check out our latest meet the
     makers session here:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Want to keep up with pgzx, the distributed Postgres project, or other open-source
     projects from Xata? We have set up an email newsletter just for that. You can
     subscribe [here](https://mailchi.mp/xata/2zoy27tx2e).
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL

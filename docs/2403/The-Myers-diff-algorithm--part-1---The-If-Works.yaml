@@ -1,28 +1,36 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:53:30'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'The Myers diff algorithm: part 1 – The If Works'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.jcoglan.com/2017/02/12/the-myers-diff-algorithm-part-1/](https://blog.jcoglan.com/2017/02/12/the-myers-diff-algorithm-part-1/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'If you enjoy this article, I have published a book explaining the internals
     of Git through implementation: [Building Git](https://shop.jcoglan.com/building-git/).'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: —
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: As a programmer, you probably use a version control system such as [Git](https://git-scm.com/),
@@ -30,6 +38,7 @@
     your uncommitted work in progress, to look at what changed in a single commit,
     to compare two branches before performing a merge, and so on. Diffs are the language
     through which you understand how things have changed in your software.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: But as well as being read by people, diffs are used by your version control
@@ -42,6 +51,7 @@
     applying them to the indexed version of a file. And some version control systems
     use the differences between versions as their primary way to store the project
     history, rather than storing a snapshot of all the code for each commit.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: So diffs are central to version control, but you might not have thought much
@@ -50,6 +60,7 @@
     what it means to insert a new function into a file, or to delete a redundant one,
     or to rewrite a section. However, there’s an awful lot more to diffing than meets
     the eye, and there are many ways to do it that produce different results.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Think for a moment about how you’d calculate a diff, and how you’d write a function
@@ -58,6 +69,7 @@
     not changed? Once you’ve found a difference between them, how would you find the
     next line in each version where the text matches up again? It’s more complicated
     than it looks!
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: In this series of articles, I’d like to walk you through the default diff algorithm
@@ -66,23 +78,28 @@
     dense and is focussed on proving that it works. The explanations here will be
     less rigorous, but will hopefully be more intuitive, giving a detailed walk-through
     of what the algorithm actually does and how it works.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: In this first article, we’ll lay out the basic model of what the algorithm is
     trying to achieve and go through an example of how it works out the simplest set
     of edits to get from one version to another.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'To use the example from the paper, say we want to calculate the difference
     between two strings:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'By “difference”, we mean a sequence of edits that will convert string *a* into
     string *b*. One possible such sequence is to simply delete each character in *a*,
     and then insert each character in *b*, or to use common diff notation:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: However, we wouldn’t consider this a good-quality diff since it doesn’t tell
@@ -90,20 +107,25 @@
     and we really want to see *sections* of code that were inserted or deleted. A
     diff that shows the entire file being removed and replaced with the new version
     isn’t much use to us.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'A better diff of these two strings would be:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: 'This makes the smallest possible number of changes to *a* in order to produce
     *b*, so it’s a better visualisation of what really changed. It’s not the only
     possible solution, for example these are also valid:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: 'However, they are all *minimal*: they make the smallest number of edits possible,
@@ -112,6 +134,7 @@
     perform edits in. From looking at diffs, you probably have an intuitive idea that
     diffs only show the things that changed, but these examples show that there are
     many possible interpretations of the difference between two files.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: So, the purpose of diff algorithms is to provide a strategy for generating diffs,
@@ -122,17 +145,21 @@
     above. And, when you change a whole block of code, you’d like to see the whole
     chunk being deleted followed by the new code being inserted, rather than many
     deletions and insertions interleaved with each other.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: 'You also probably want to see deleted or inserted code that aligns with your
     idea of the code’s structure, for example if you insert a method, you’d like that
     method’s `end` to be considered new, rather than the `end` of the preceding method:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: Myers’ algorithm is just one such strategy, but it’s fast and it produces diffs
@@ -140,11 +167,13 @@
     that is trying to consume as many lines that are the same before making a change
     (therefore avoiding the “wrong `end`” problem), and also by preferring deletions
     over insertions when given a choice, so that deletions appear first.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: The Myers paper is based on the idea that finding the *shortest edit script*
     (SES) can be modelled as a graph search. Let’s take our two strings, *a* = `ABCABBA`
     and *b* = `CBABAC`, and build a graph of all the ways we can get from *a* to *b*.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: The (*x*, *y*) co-ordinates in the grid shown below correspond to steps in the
@@ -156,6 +185,7 @@
     our edited string is thus `CBCABBA`. At position (4,3), we have converted `ABCA`
     into `CBA`, but we still need to convert `BBA` into `BAC`. The bottom-right position
     (7,6) corresponds to converting string *a* fully into string *b*.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: As well as moving rightward and downward, in some positions we can also move
@@ -164,9 +194,11 @@
     are both `C`, and so position (2,0) has a diagonal leading to (3,1). This corresponds
     to consuming an equal character from both strings, neither deleting nor inserting
     anything.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'The idea behind the Myers algorithm is quite simple: we want to get from (0,0)
@@ -174,6 +206,7 @@
     step rightward (a deletion from *a*) or downward (an insertion from *b*). The
     most number of moves we could take to get from *a* to *b* is 13: the combined
     length of the two strings.'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: However, walking diagonal paths is free since they don’t correspond to making
@@ -181,19 +214,23 @@
     the number of rightward/downward moves. The examples above show that we can actually
     get from *a* to *b* making only five edits, and Myers provides a strategy for
     finding that pathway.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: To develop an intuition for how the algorithm works, let’s start exploring the
     graph. To try to find the shortest path to the bottom-right position, we’ll explore
     every possible path from (0,0) in tandem until we find a path that reaches the
     end. I recommend keeping the above grid handy while you follow this.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s start by recording our initial position at (0,0).
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'We have two options from this position: we can move downward and reach (0,1)
     or move rightward and reach (1,0).'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Now let’s consider (0,1). If we move downward from here we reach (0,2), but
@@ -201,37 +238,45 @@
     moves are free we can say that moving downward from (0,1) gets us to (2,4) at
     the cost of only one move. Therefore we’ll mark the move from (0,1) to (2,4) as
     a single step in our walk.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Moving rightward from (0,1) takes us to (1,1) and again there is a diagonal
     from there to (2,2). Let’s mark both these moves on our walk.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: Now let’s consider the other branch we took from (0,0), moving rightward to
     (1,0). Moving downward from (1,0) takes us to (1,1), which as we just found out
     gets us to (2,2). Moving rightward from (1,0) takes us to (2,0), which has a diagonal
     to (3,1). Again, we’ll record both these steps.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: I’m recording (2,2) as being visited via (1,0) rather than (0,1) for reasons
     that will become clear a little later. For intuition, consider that making a rightward
     move first means performing a deletion first, and we generally want deletions
     to appear before insertions.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: We’ve now fully explored the graph to two moves deep and we can begin on our
     third move. Moving downward from (2,4) gets us to (2,5), and from there is a diagonal
     to (3,6). Moving rightward from (2,4) takes us to (3,4), where again a diagonal
     takes us to (4,5).
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'Next, we consider (2,2). Moving rightward from there is as we’ve seen before:
@@ -240,9 +285,11 @@
     diagonal from there. Now, if we were doing a general-purpose graph search, we’d
     want to record both the result of moving rightward from (2,4) and the result of
     moving downward from (2,2), that is:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: However, the structure of the particular graphs we’re examining means that it’s
@@ -252,73 +299,91 @@
     and then the two insertions, gets us to (2,3). So, we’ll just keep the (4,5) result
     and throw the (2,3) away, indicating (4,5) is the best position reachable after
     one deletion and two insertions *in any order*.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: Finally in our depth-2 scan, we visit (3,1). Moving downward from there goes
     to (3,2), which leads diagonally to (5,4), and so we’ll again record this as a
     move downward from (3,1) rather than rightward from (2,2). Moving rightward from
     (3,1) gives (4,1), which has a diagonal to (5,2).
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s the completed record after three moves:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: You’re probably getting the hang of this by now so let’s rattle through the
     remaining moves. We can’t move downward from (3,6), and moving rightward from
     there gives (4,6), which is also reachable downward from (4,5), so we’ll mark
     it as such. Rightward of (4,5) is (5,5).
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: (5,5) is also downward of (5,4) so we’ll mark that, and moving rightward from
     (5,4) gives (6,4), with a diagonal leading to (7,5).
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: Downward from (5,2) also leads to (7,5), and moving rightward from (5,2) leads
     to (7,3), thus completing the fourth row of the scan.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: Now we begin the fifth row. Since we know there are diffs from *a* to *b* requiring
     only five edits, we expect this row of the scan to find the bottom-right position,
     (7,6).
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: There is nothing downward from (4,6), and rightward of that is (5,6), which
     is also downward from (5,5). Rightward of (5,5) is (6,5).
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: Finally, moving downward from (7,5) gives (7,6) – the final position! This is
     certainly better than (6,5), which we reached by going right, right, down, down,
     right, and so we replace it in our trace of the moves.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: 'So that’s the basic idea the algorithm is based on: given two strings, find
     the shortest path through a graph that represents the edit space between the two.
     We explore every possible route through the graph breadth-first, and stop as soon
     as we reach the final position.'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: In the next article, we’ll look at how Myers actually represents this process,
     and start to look at implementing it in code.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL

@@ -1,138 +1,168 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:05:52'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Deep Bug @ marginalia.nu
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.marginalia.nu/log/a_104_dep_bug/](https://www.marginalia.nu/log/a_104_dep_bug/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The project has been haunted by a mysterious bug since sometime February. It
     relates to the code that constructs the index, particularly the code that merges
     partial indices.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In short the search engine constucts the reverse index through successive merging
     of smaller indices, which reduces the overall memory requirement.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: You can conceptualize the revese index itself as two files, one with offset
     pointers into another file, which has sorted numbers. This code runs after each
     partition finishes crawling and processing its data, and has a run time of about
     4 hours.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Suddenly the code that merges the indexes started to randomly fail.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: What failed was the code that copies sorted numbers from one of the older indices
     to one of the newer, in the case when a keyword is present in only one of the
     indexes and no actual merging of sorted lists is needed.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: If code suddenly starts acting up when the amount of data increases, all my
     intuition screams that this must be a 32 bit integer overflow. The index construction
     does all of its work in the bermuda triangle of 32 bit errors that is 1-32 GB
     file size range, so it really does seem like a very probable suspect.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: I went over the code looking for such a thing, and found nothing. I added a
     bunch of guard clauses and assertions to get some hint about what was going on,
     but these didn’t turn up much other than the copy operation attempting to copy
     outside the file.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: To my surprise, while doing this the construction process suddenly went through!
     The index it constructed was sane. Had I fixed it by perturbing the code somehow?
     I ran it again and it failed.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'Some non-determinism is expected since the indexes are merged in parallel,
     so the order they’re merged in is a bit random even if the merging itself is completely
     deterministic. I felt this explained the random success: I got lucky with the
     ordering.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Since I had a work-around I left this be for a while. I had other work that
     was more pressing. The seven remaining partitions were coaxed through by just
     hitting the restart button until it worked, taking one or more days of hammering
     restarts. Annoying and time consuming, but it worked.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: This week the final partition came through, and I had a moment to look deeper
     into this enigma.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Maybe it wasn’t an integer overflow? I checked the git log for any suspect changes
     between December when it worked and February when it didn’t work, and I found
     nothing. Again I combed over the code looking for integer overflows, and still
     found nothing.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: I did find a function that shrinks the merged index, which is initially allocated
     to be the total size of the inputs. Since the merge function removes duplicates,
     the merged index is often smaller than the sum of its parts, but it’s impossible
     to know how small before actually merging.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: This seemed like a plausible explanation, since if the files were truncated
     too hard, it would explain the files seemingly being “too small”. I disabled the
     truncation, and still got errors.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'In investigating this, I stumbled on a very curious aberration. I’ll sketch
     out the gist of it:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: All this runs in sequence on the same thread, and nothing writes to `counts`
     other than this code.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: The assertion would fail.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Alright, so it is an integer overflow! &mldr; you might think. Nope. These are
     all 64 bit longs, and the values being added are small and few enough not to overflow
     a 32 bit integer. At this point I could reliably isolate the particular inputs
     that triggered the behavior with the assert, so I did just that.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: There are four lights, damnit!
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: At this point I patched production so that if this assertion were to fail, the
     input files were copied over to a separate directory. This gave me a 2 GB set
     of test-data that had been known to trigger the error that I could exfiltrate
     and examine locally.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: The bug of course did not re-appear when I ran this code in isolation, but that
     actually says something important. I’d reduced the problem down to deterministic
     code being non-deterministic and outputting logical contradictions. This feels
     like a good reason to question other things than the program logic.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: It’s probably safe to assume the problem is either the JVM, the linux kernel,
     or the hardware, in decreasing order of likelihood.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: The JVM is at the top of the suspect list since one of the things that *had*
     in fact changed since the bug appeared was that the project migrated over to graalvm
     from openjdk.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Hardware errors typically don’t target only a specific function over and over,
@@ -143,6 +173,7 @@
     This also probably rules out some sort of linux kernel bug, since the kernels
     were a few versions apart; one machine was SMP and the other was not, one with
     ECC one not, etc.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: So at this point the only remaining suspect on my list was the graalvm JDK.
@@ -150,12 +181,14 @@
     oracle’s official docker images. This did absolutely nothing to address the problem.
     I switched the docker build process to use a temurin (openjdk) image instead of
     graalvm, and&mldr; the problem went away! Since then, it’s worked over and over.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: At this point I’d love to file a bug report, although I’m having trouble isolating
     the problem enough to do so. “Doesn’t work” is famously not an error description.
     The relevant process is something like 5 KLOC, and the smallest dataset that triggers
     the bug somewhat reliably is about 54 GB.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: I’ve isolated the code that manifests the bug and run it 50,000 times on the
@@ -164,22 +197,27 @@
     spooky action at a distance going on. I’ve tried perturbing it in various ways,
     introducing page faults and so on, since that’s happening a lot in production,
     again to no avail.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: In general I’d argue you haven’t fixed a bug unless you understand why it happened
     and why your fix worked, which makes this frustrating, since every indication
     is that the bug exists within proprietary code that is out of my reach. This feels
     like an impasse, not a solution, even though the error has nominally been corrected.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: I can at least say make statements about what hasn’t caused the error.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '**Update**: This post got some attention on Hacker News, and as a result of
     the visibility I found myself in contact with a dev at Oracle who is looking into
     the problem as a possible compiler bug. [GH issue](https://github.com/oracle/graal/issues/8747).'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL

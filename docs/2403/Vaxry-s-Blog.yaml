@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:59:40'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Vaxry's Blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.vaxry.net/articles/2024-cursors](https://blog.vaxry.net/articles/2024-cursors)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,255 +29,317 @@
     the old standard of XCursor, I think it's a good idea to make a blogpost about
     how cursors actually work on Linux (and BSD, blah blah) in general to help people
     understand what's going on.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Terminology
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'A quick one on the terms used:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: A "theme" is a pack of cursor shapes.
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A "shape" is, well, a shape. E.g. a pointer, a text indicator, a grabbing hand.
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: An "image" is a single picture of a shape at a set resolution (or an svg)
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How does a cursor work?
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '*"Well lol just draw a png haha"*'
+  id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Well, no, it's not that simple.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Rasters are annoying. Raster means an image is stored with pixels, for example
     a png, or an mp4\. The problem with rasters is that when you resize them, the
     computer has to take a wild guess at what it should look like. There are various
     algorithms that do it, but the most used are bilinear and nearest neighbor.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Nearest neighbor will produce a "pixelated" look, while bilinear will make it
     more blurry.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Now, if we just encoded our cursor in e.g. 128x128, we could just downscale
     it to the user-requested size and be done with it, right?
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Well, not exactly. No matter the algorithm, it will almost never produce pixel-perfect
     results. It will almost always look "odd".
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: That's why, with raster cursors, the best course of action is to just encode
     a few common sizes and be done with it. That's what XCursor does.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Every XCursor shape is just a few images at different sizes. 96, 64, 48, 32,
     24, 18, etc.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: The obvious problem with this is that first, we are storing multiple images
     per shape, and second, that we can't get anything in-between.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: XCursor does not allow for resizing those images, so either the client has to
     do it or it's not happening. In most cases, it's not happening.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: That's not too bad
+  id: totrans-split-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Oh wait, we got more!
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Most cursor sizes have their largest images at 96x96\. That's, on an 8K screen,
     already considerably smaller than a 32px on a 1080p screen.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: You might think that a 1080p PNG is like a megabyte, so why not encode more?
     like 128px and 256px?
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Well, the reason is simple. XCursor predates PNG. GIF too. JPEG as well. That's
     why, XCursor images are... uncompressed.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: A max 96x96 Bibata cursor, a single cursor, is about 2MB. That's a lot. The
     entire theme is 44.1MB. Ouch.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '*Amendment*: A single static cursor in Bibata is almost 170kB, and animated
     ones are about 16MB each, my bad. The 44.1MB figure is correct.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: A modern format
+  id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: To stop storing uncompressed pixel data like a caveman, I've made hyprcursor.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Hyprcursor has a few key advantages:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Cursors can be stored as *either* PNG or SVG image(s).
+  id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Each cursor has metadata describing how it wants to be presented
+  id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Simplified and straightforward API
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '*Way* less space usage.'
+  id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Let''s elaborate on each point a bit:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Storage format
+  id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Your cursors can be either PNG, which is an efficient, extremely widely used,
     lossless raster image format, or SVG, which is the most adopted standard for vector-based
     images.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Almost all cursors start out as an SVG, because they are infinitely scalable.
     An SVG basically describes the "shape" of your cursor instead of the raw pixels,
     and is then rendered at different resolutions for packing into a theme.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'With hyprcursor, hyprcursor itself can do the rendering, which has two benefits:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: You can support any and all sizes (For fun I rendered Bibata at 2048px the other
     day, it looks beautiful)
+  id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Way less space usage: SVGs of cursors are usually around 1kB.'
+  id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Some cursors cannot become SVGs, and that's fine. Some cursors are used for
     more than one shape, and that's fine. Some cursors are animated, and that's fine!
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: All of a shape's properties are described in a small `meta.hl` file alongside
     them.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: For overrides, instead of being a caveman and making symlinks all over the place,
     a simple `define_override = name` in the meta is enough.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: For raster shapes, you can define what scaling algorithm to use, if any, so
     that you can control how your cursors scale to sizes outside of the ones you've
     made.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: API
+  id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Rendering a cursor shape with hyprcursor to a png on disk takes about 10 lines
     of C if we exclude error checking. With it, it's about 25.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: You can also use the C++ API, which does some additional QoL stuff behind the
     scenes for you :)
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Space efficiency
+  id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: PNGs are way more efficient than uncompressed data, bringing down Bibata from
     44.1MB to about 6MB. However, with svg, we get down to **171kB**, which is a 250x
     reduction.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Okay okay but how is that used?
+  id: totrans-split-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Who draws the cursor? Well, you might assume it's the, well, display server,
     the compositor, right?
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Well, kind of.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: In the beginning, the earth was without form, and void. Wait, a bit too far
     behind.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: In the beginning of wayland, and in the core design spec, it's the *client's*
     job to draw the cursor. I mean, it kind of makes sense, as some apps might want
     to draw a custom cursor (e.g. games)
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: However, for desktop usage, that kinda sucks. Each app has to support rendering
     cursors, and some apps might render them differently, leading to inconsistencies.
     You probably have encountered them especially if using a HiDPI screen.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Recently, we've got the wp_cursor_shape protocol, which allows the apps to just
     say "hey compositor, render a ~~shape~~", which is miles better, as the compositor
     can now draw the cursor.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: There are about 35 defined shapes in the protocol, which is, to be honest, enough.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: If your compositor supports hyprcursor (like hyprland), then whenever server-side
     cursors are being used, hyprcursor will also be utilized. However, if client-side,
     the classic style, is used, it's up to the app, and most, at the moment, don't
     support hyprcursors.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: What's the support looking like?
+  id: totrans-split-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Well, right now, not perfect. QT, chromium, electron and hypr* apps support
     cursor_shape, so in hyprland (or any other compositor using hyprcursors) you will
     get your pixel-perfect hyprcursors.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Notably, GTK does not support the protocol, so apps like firefox, or the entire
     gnome suite will fall back to the ugly XCursor themes.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Will this ever be adopted?
+  id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I don't know! All I know is that it's a clearly superior system that is easy
     to implement.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: The best path, in my opinion, would be to push for wp_cursor_shape adoption
     over at gtk. If gtk finally supports the protocol, almost all desktop apps that
     people might wanna use on Linux will be able to utilize hyprcursors via the compositor.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Support from the toolkits themselves for hyprcursor itself is likely not going
@@ -279,50 +347,62 @@
     a 10-year-long bureaucratic process, unless somehow the developers over there
     decide it's more beneficial to use hyprcursors now rather than wait and develop
     their own, new standard. Who knows? :)
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: How do I make a hyprcursor theme? Can I use my current themes?
+  id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: You can convert an xcursor theme to a hyprcursor theme in 5 minutes using the
     `hyprcursor-util` in the hyprcursor repo.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: However, you probably would rather go to the original cursor source and replace
     all the generated `.png` files with the source `.svg` versions to get the benefits
     of vector images. This process will take a bit longer, but is surely worth it
     :) *Remember to update the meta.hl with the new images!*
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to share the theme with other people (and it is allowed via its
     license), feel free to post it in `#hyprcursor-themes` on the Hyprland discord
     server :)
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Check out the docs and the util on the [hyprcursor github page](https://github.com/hyprwm/hyprcursor)
     for more. You can also find instructions there for the end users and developers
     wishing to adopt this library in the `docs/` directory.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: Closing thoughts
+  id: totrans-split-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Thanks to everyone for the constant support towards making the Hypr* project
     better and better!
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: We've got some big plans moving forward so stick around for the journey :)
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'As a small gift, here''s bibata''s left_ptr, rendered with hyprcursor at 4K,
     just because I thought it was funny:'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[click here](../resource/articleCursor/arrow.png)'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '*I tried 16K but it almost crashed my computer lol*'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL

@@ -1,21 +1,27 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:40:00'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Supercharge compression efficiency with shared dictionaries  |  Blog  |  Chrome
     for Developers
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://developer.chrome.com/blog/shared-dictionary-compression](https://developer.chrome.com/blog/shared-dictionary-compression)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,6 +31,7 @@
     such as HTML, CSS, and JavaScript files, and send them to the client where they
     could be decompressed. The result is faster load times for resources without affecting
     the intended behavior of a page.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Though gzip is highly effective in its own right, further improvements in compression
@@ -33,6 +40,7 @@
     By the end of 2017, all modern browsers supported Brotli, and server support for
     it started to become more widespread. More recently, Chrome [has shipped ZStandard
     compression](https://chromestatus.com/feature/6186023867908096).
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: The work doesn't stop there though! The Chrome team has been working on making
@@ -43,9 +51,11 @@
     code, and can—in some cases—deliver **90% or better compression ratios**. This
     post goes into more detail on how shared dictionaries work, and how you can register
     for the origin trials to use them for Brotli and ZStandard on your website.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Shared dictionaries explained
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -56,6 +66,7 @@
     by using a *compression dictionary*, which is a collection of additional patterns
     that these algorithms can use during compression. In fact, Brotli's high efficiency
     is achieved to some degree by using an internal dictionary.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: However, *custom* user-curated dictionaries can be used with Brotli and ZStandard
@@ -66,6 +77,7 @@
     on overall compression efficiency. Dictionaries that are highly similar to the
     contents of an input will yield outputs with higher compression ratios than dictionaries
     with generic or dissimilar contents.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s an example of how effective a custom compression dictionary can be:
@@ -76,6 +88,7 @@
     to Angular 1.8.3 later on. Given that this version of Angular is roughly the same
     size as version 1.7.9, you can expect pretty much the same compression ratio as
     the previous version.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: This is where a custom dictionary can come in handy by using a process known
@@ -85,6 +98,7 @@
     the output would be just over 4 KiB. This represents a compression ratio of **nearly
     98%**. Clearly, compression dictionaries can have a big impact on loading performance,
     and their effectiveness has already [been realized in real-world applications](https://github.com/WICG/compression-dictionary-transport/blob/main/examples.md#static-resource-flow-results)!
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: However, there's a challenge in making this flow work on the web. The catch
@@ -93,42 +107,51 @@
     [SDCH](https://en.wikipedia.org/wiki/SDCH)—but was challenging to implement safely.
     This latest proposal for shared dictionary compression [addresses those concerns](https://github.com/WICG/compression-dictionary-transport?tab=readme-ov-file#this-time-will-be-different)
     while providing a substantial benefit for both static and dynamic resources.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: How Chrome advertises support for shared dictionaries
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'All browsers advertise the compression algorithms they support through the
     [`Accept-Encoding` request header](https://developer.mozilla.org/docs/Web/HTTP/Headers/Accept-Encoding).
     The content of the header is a comma-separated list of supported encodings:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: This particular `Accept-Encoding` header states that the browser requesting
     the resource supports the gzip, Brotli, and ZStandard compression algorithms.
     A web server responding to the request can then decide which algorithm to use
     when responding to the request.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: When shared dictionary support is enabled and a relevant dictionary is available
     for a resource, additional tokens are added to the `Accept-Encoding` header. These
     tokens are `br-d` for Brotli and `zstd-d` for Zstandard. Chrome will also include
     the hash of an available dictionary, which is covered next.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: If a web server is configured to recognize this token, and it recognizes the
     dictionary, it can respond to that request with a resource that was compressed
     using the dictionary for the applicable encoding. How this is achieved in practice
     depends on whether the request is for a static or dynamic resource.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Shared dictionary compression for static resources
+  id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -140,15 +163,18 @@
     resource types are a great candidate for the delta compression that shared dictionaries
     provide, as static resources are often cached for long periods of time and tend
     to be updated with some frequency.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'A dictionary can be specified for a static resource by setting the `Use-As-Dictionary`
     response header for it. The header takes one of a few key/value pairs, but the
     only required one is `match`, which accepts [`URLPattern` syntax](https://urlpattern.spec.whatwg.org/)
     specifying the resource path where the dictionary should be used:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: Think of the `Use-As-Dictionary` header as a mechanism that applies to future
@@ -157,6 +183,7 @@
     the first version of that resource is located at `/dist/styles.v1.css`, and is
     sent with a `Use-As-Dictionary` response header containing a `match` value of
     `/dist/styles.*.css`.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'After some time passes, you update your website''s CSS and ship a new version
@@ -164,15 +191,18 @@
     `Use-As-Dictionary` response header from the previous version applies to this
     request, the browser will send a `Available-Dictionary` header containing a hash
     of the dictionary encoded as a [structured field byte sequence](https://www.rfc-editor.org/rfc/rfc8941.html#name-byte-sequences):'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: At this point, it's up to the server to configure compression on its end to
     ensure the matching dictionary is used. The resource compressed with that dictionary
     will then be sent, and the available dictionary in the user's browser cache will
     be used to decompress it.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: If you ship new code often for your website, delta compression can go a long
@@ -180,9 +210,11 @@
     dictionary is available in the user's browser cache, it will *not* specify the
     additional `br-d` or `zstd-d` tokens in the `Accept-Encoding` header. In that
     case, the standard compression flow applies.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Shared dictionary compression for dynamic resources
+  id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -192,6 +224,7 @@
     often dynamic resources. In such cases, the dictionary can contain most of the
     site's common HTML structure and template code leading to compressed pages where
     only the unique parts of each page are sent.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Due to the nature of dynamically-generated resources, a dictionary must be
@@ -201,27 +234,33 @@
     cost can be amortized over a large number of navigations. Should you decide to
     try it, the first step is to specify the dictionary''s location by way of a `<link>`
     element in your page HTML:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'When Chrome encounters this `<link>` element, it *may* fetch the dictionary
     once the page is idle, and at low priority in an effort to avoid bandwidth contention.
     The response for the dictionary itself must specify a `Use-As-Dictionary` header
     and specify which dynamic resource path it applies to:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: From here, the flow is largely the same as for static resources. The browser
     will see that the dictionary itself applies to matching resources, and the browser
     will attach an `Available-Dictionary` header to the request with a hash of the
     dictionary's contents, again, similar to the static resources flow explained earlier.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Compress static resources at build time
+  id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -230,6 +269,7 @@
     compressed resources. For example, [Apache lets you use directives to serve those
     precompressed resources](https://bash-prompt.net/guides/apache-brotli-static/)
     at the time of the request.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'Most Node.js-based bundlers that support compression use Node''s built-in Zlib
@@ -237,6 +277,7 @@
     an interface to pass options directly into Zlib, which [supports dictionary-aided
     compression](https://nodejs.org/api/zlib.html#class-options). Here are a few bundlers
     that support using dictionaries:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Note that available dictionaries for any given version of a resource may use
@@ -245,9 +286,11 @@
     benefit the maximum number of returning users as best as you can. CDN providers
     are currently experimenting with shared dictionary compression. No implementations
     are yet available for public use, but we expect that to change!
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Try it out!
+  id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -256,11 +299,13 @@
     websites that frequently ship updated production code and receive significant
     traffic from returning visitors. If you''re interested in giving shared dictionary
     compression a shot, you have two options:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: If you're just looking to tinker with shared dictionary compression on your
     own to get a feel for how it works, you can enable the **Compression dictionary
     transport** experimental feature on the `chrome://flags` page.
+  id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -268,10 +313,12 @@
     shared dictionary compression could benefit real users, [register for the origin
     trial](/origintrials#/view_trial/3693514644397228033) to get a token, and read
     up on [how origin trials work](/docs/web-platform/origin-trials).
+  id: totrans-split-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -283,5 +330,6 @@
     For additional resources and tools, check out [use-as-dictionary.com](https://use-as-dictionary.com/).
     Finally, if you're interested in a deeper dive into how it all works, [the explainer](https://github.com/WICG/compression-dictionary-transport/blob/main/README.md)
     is a good next step!
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL

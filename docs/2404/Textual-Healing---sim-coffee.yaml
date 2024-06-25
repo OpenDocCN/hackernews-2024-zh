@@ -1,35 +1,45 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:06:54'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Textual Healing – sim.coffee
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://sim.coffee/textual-healing/](https://sim.coffee/textual-healing/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[It’s a Token Issue](#tokenizer)'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '[The Result](#results)'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[Surprise](#surprise)'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: We’re seeing a lot of activity on [our Discord](https://discord.gg/7fpmbqfXcJ)
     lately. People are using [Codea](http://itunes.apple.com/app/id439571171?mt=8),
     and they’re complaining when it doesn’t work! Which is *freaking awesome*
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: After 14 years of making apps, the thing I’ve come to appreciate most is when
@@ -37,35 +47,44 @@
     where it bugs them when it doesn’t work how they expect, and they tell you about
     it. You should appreciate every one of these people, even the frustrated ones
     who are running short on patience
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Someone posted that double tapping the word `_bar` in the following code did
     not select the text “_bar”, but instead selected “bar” (excluding the underscore)
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: I knew immediately why this was happening. Our `UITextInputTokenizer` was why
     it was happening. I checked out my subclass of `UITextInputStringTokenizer`^([1](#165e6f52-80ea-42ba-9a36-d82931aa4386))
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: '*2013*. I started this file eleven years ago'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: It’s a Token Issue
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: '`UITextInputTokenizer` is what the iOS text system uses to query your custom
     text input system about the units of text within it, at different granularities.
     It has a wild and esoteric API that encompasses the following four methods:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: The `UITextPosition` and `UITextRange` objects are opaque types that you implement
@@ -73,6 +92,7 @@
     system doesn’t care what they are, so long as it can give them to you and get
     meaningful results back. For example, Codea uses `AVAudioPlayer` for `UITextPosition`s,
     and `CLLocation2D` for `UITextRange`^([2](#9df35c91-6dc2-4036-9ce0-a9f104e5dc70)))
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The methods basically query your text system for *boundaries* with *granularities*
@@ -80,24 +100,28 @@
     granularity is — word, sentence, paragraph, document, and so on. “Is this *position*
     at the *edge* of a *word* if I’m moving *forward*?” and you reply with “Why, yes.
     It is”, or no
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: This is very important for keyboard navigation and selection. When you hold
     option and hit the arrow keys, you jump across by word. This is how the text system
     understands what a “word” is and where the next one lives. Same thing for double-tapping
     a word to select, or triple-tapping to get a line
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Apple provides `UITextInputStringTokenizer` (note the `String` in there), a
     concrete subclass of the `UITextInputTokenizer` protocol, so you don’t have to
     write your own. Being lazy, we used this as the basis for our code tokenizer a
     long time ago
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: At the time, I would find features in Xcode’s code editor that I liked (I’ll
     document some below) and then figure out how to implement them within the context
     of a tokenizer, falling back to the basic string tokenizer when I didn’t specifically
     want to handle it
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Double-tapping a word was one of those cases where we fell back to the string
@@ -105,15 +129,18 @@
     not code. Words in English don’t typically include underscores, and so they are
     not selected because they form a boundary at the word granularity level, and the
     `rangeEnclosingPosition` method will not include them as part of a word
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: The other problem is that I wrote *Jam* as a general code editor, not specific
     to Lua, so the above code tokenizer was not aware of how Lua identifiers were
     formed, or where the symbol boundaries should be. I had focused our code tokenizer
     on how to navigate whitespace and allow for exact caret placement^([3](#51675be5-f78f-475a-9933-fae14827f803))
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: The Result
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -121,56 +148,71 @@
     Lua editors in Codea. But man, is the `UITextInputTokenizer` API tough to implement
     in a way that doesn’t end up as a mess of special cases! Below are the cases I
     handled, with everything else falling back to original code tokenizer:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Command back arrow for indented code
+  id: totrans-split-28
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Go to the end of a line of indented code in Xcode
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Hit ⌘←
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: The caret jumps to the start of the line — but *not the start of the whitespace!*
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Hit ⌘←
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: The caret jumps to the start of the line, at the start of the whitespace
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Here it is in Codea^([4](#acc4a566-1df1-40d3-ae0a-1fe2517dd8c7))
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Exact caret placement
+  id: totrans-split-35
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Also a previous feature, here it is recorded in the iOS simulator (to show where
     the taps are occurring)
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Respect for symbol boundaries
+  id: totrans-split-37
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Below is navigating with the option key to jump by “word” (symbol). The ugly,
     `_main_Test` member is related to the original bug report. You can see we now
     traverse the symbol as a single entity
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Supplying ranges for symbols as “words”
+  id: totrans-split-39
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
 - en: Demonstrating fixed behaviour around selecting “_” when they form part of an
     identifier
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Falling back to natural language tokenization
+  id: totrans-split-41
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -179,37 +221,35 @@
     In cases like this, we exclude these symbols and defer to the `UITextInputStringTokenizer`
     to get the regular text editing experience when inside strings, comments, and
     so on
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Addendum
+  id: totrans-split-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: As I sat down to write this post, I had finished rewriting the Codea tokenizer
     last night, Sunday April 7, 2024, publishing a new beta build and promptly falling
     asleep
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: And I began this piece by talking about user *complaints*. But as I was half-way
     through writing it tonight, a very lovely and dear email came into my inbox. It
     is as follows
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '*I suspect you don’t get enough of this kind of beta-feedback, so..:*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Unless I’m very much mistaken, you have, at some point, made the cursor-positioning
     and line-selection in the editor work much better than it used to, at least for
     me.*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -217,20 +257,14 @@
     gutter and conversely when trying to place the cursor at the beginning of a line
     (these two operations would get mixed up in other words), but now it feels much
     easier / needs less precision or whatever made me fail before.*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-48
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*It is so often these minute quality-of-life things that makes all the difference,
     especially when you use them all the time (ie. most features in a code-editor
     I guess, if taken across the whole user-base).*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-49
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -238,17 +272,16 @@
     walls have certainly listened to a LOT of it), so it only stands to reason that
     I also take the time to dredge the following up from the bottom of my heart (or
     whatever blackened piece of charcoal is left):*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-50
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Thank You VERY Much!*'
+  id: totrans-split-51
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Someone noticed!
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:24:40'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Finding the First 10-digit Prime in (a Billion) Digits of e
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.hanshq.net/eprime.html](https://www.hanshq.net/eprime.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,31 +28,38 @@
     where they posted the following billboard along the main freeway running through
     Silicon Valley, and later at [other locations](http://web.archive.org/web/20040912012847/http://www.boston.com/business/technology/articles/2004/09/09/comprehension_test/)
     in the country:'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: For those who managed to find the answer, a second problem awaited on the secret
     web site, and those who solved that were then encouraged to send in a job application.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Effectively [nerd sniped](http://xkcd.com/356/), I started playing with this
     problem sometime last year, and it led down a path to some excellent programming
     exercises.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: This post describes a few different ways of solving the problem; from a Perl
     one-liner, to using hand-rolled fixed-point arithmetic (including an implementation
     of [Improved division by invariant integers](https://gmplib.org/~tege/division-paper.pdf))
     or using binary splitting with GMP to compute a billion decimals of *e*.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The code is available in [eprime.c](files/eprime.c).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Table of Contents
+  id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Finding the 10-digit Prime With Perl
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -56,48 +69,58 @@
     online. We can still benefit from the web by searching for ["many digits of e"](https://www.google.com/search?q=many+digits+of+e).
     The [first hit](https://apod.nasa.gov/htmltest/gifcity/e.2mil) provides two million
     digits in which we can search for the solution, for example with a Perl one-liner:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: '(To install the required Perl module on a Debian system: sudo apt-get install
     libmath-prime-util-perl)'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: How does this work?
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[curl](https://curl.haxx.se/docs/manpage.html) downloads the e.2mil file, which
     is then piped to the next command. The -s (for silent) flag makes it not print
     any other output.'
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[tr](https://linux.die.net/man/1/tr) deletes (-d) all whitespace characters,
     making sure the digits of *e* from the file end up on one line with no spaces
     in between them.'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'With Perl''s [-M](https://perldoc.perl.org/perlrun.html#*-M*%5b*-*%5d_module_)
     flag, we import two Perl module subroutines: [Math::Prime::Util::is_prime](http://search.cpan.org/~danaj/Math-Prime-Util-0.65/lib/Math/Prime/Util.pm#is_prime)
     and [List::Util::first](http://search.cpan.org/~pevans/Scalar-List-Utils-1.48/lib/List/Util.pm#first).'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[-n](https://perldoc.perl.org/perlrun.html#*-n*) makes Perl loop over the input,
     executing our code for each line, with the current line in [$_](https://perldoc.perl.org/perlvar.html#%24_).'
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[-l](https://perldoc.perl.org/perlrun.html#*-l*%5b_octnum_%5d) causes a newline
     to be added to each print statement.'
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[-e](https://perldoc.perl.org/perlrun.html#*-e*-_commandline_) specifies the
     code we want to run.'
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -105,11 +128,13 @@
     matches a regular expression against $_, which holds the current line. The [/g](https://perldoc.perl.org/perlop.html#Matching-in-list-context)
     (global matching) modifier makes it return a list of all the strings matched by
     capture groups.
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The capture group in our regex, ([1-9]\d{9}), matches a non-zero digit followed
     by nine digits, i.e. a ten-digit number (leading zeros wouldn't count).
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -118,19 +143,23 @@
     that overlap, we put the pattern in a [lookahead assertion](https://perldoc.perl.org/perlre.html#Lookaround-Assertions):
     (?=..). Our regex matches an empty string followed by a ten-digit number; the
     number isn''t considered part of the match, but it does get captured.'
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: first returns the first element from the list of regex matches for which is_prime
     returns true.
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Finally, that element is printed.
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Computing *e* Ourselves
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -139,177 +168,223 @@
     with the current record at 22.5 trillion digits, but *e* too has been computed
     to extreme precision ([at least](http://www.numberworld.org/digits/E/) to 5 trillion
     digits).
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: One way to approach the computation is from [Taylor's theorem](https://en.wikipedia.org/wiki/Taylor's_theorem),
     which for *e* gives us
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: where *R*, the remainder term, is bounded by
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: The factorial in the denominator of the remainder term means the series converges
     quickly.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: By choosing a large enough *n* and adding the terms of the series, we can approximate
     *e* to any precision we want. To get *k* correct decimals, we need an *n* such
     that
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Taking the logarithm of both sides and using [Stirling's approximation for factorials](https://en.wikipedia.org/wiki/Stirling's_approximation)
     gives us
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since the left-hand side is monotonic, we can use binary search to quickly
     find the smallest *n* that fulfills the inequality:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: To compute 10,000 decimals, we need 3,249 terms.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: For the computation of *e*, we cannot use the regular double data type, since
     it only has enough precision for a handful of decimals. Instead, we will use [GMP](https://gmplib.org/)'s
     arbitrary-precision [floating-point functions](https://gmplib.org/manual/Floating_002dpoint-Functions.html).
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: How many bits of precision do we need? Each decimal digit requires
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'bits, so to compute 10,000 decimals we define:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: (Note that we have to be careful not to lose any bits due to the truncating
     integer division.)
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'We need two floating-point variables: one for the sum of the terms (which approaches
     *e*), and one for the current term. The current term starts at 1, and then we
     divide it by 1, 2, 3, etc. so that in each loop iteration, its value is *1/i!*'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'We convert the final value to a string of decimal digits using [mpf_get_str](https://gmplib.org/manual/Converting-Floats.html#index-mpf_005fget_005fstr):'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: The string we get back starts with "2718..", i.e. there is an implicit decimal
     point after the first character.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, we iterate over the string, checking for 10-digit primes with [mpz_probab_prime_p](https://gmplib.org/manual/Number-Theoretic-Functions.html#index-Prime-testing-functions):'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: 'To install GMP, build and run the program on Debian:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: 'On Mac, to install GMP from [MacPorts](https://www.macports.org/), build and
     run the program:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'To print the digits, pass along -DPRINT_E:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: The result can be compared against for example [this page](http://www-history.mcs.st-andrews.ac.uk/HistTopics/e_10000.html).
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: (Note that mpf_get_str has rounded the last decimal up to 9, and so has that
     page. If you print more decimals, you will see that the 10,000th decimal is actually
     8, followed by 5674..)
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: As it turns out, the 10-digit prime occurs early in *e*, starting at the 99th
     decimal (in the second row above), so there is no need to compute all 10,000 decimals.
     But more decimals is more fun!
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Computing *e* Ourselves Without GMP
+  id: totrans-split-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: It seems amazing that just by repeatedly dividing and adding some numbers together,
     we end up with this sophisticated mathematical constant.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: GMP did all the work in the code above. Perhaps if we implemented all of it
     ourselves, it would be even more satisfying? This seems like a worthwhile programming
     exercise.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Fixed-Point Representation
+  id: totrans-split-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Remember how numbers are represented in our regular decimal system. For example:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'As long as we remember the position of the decimal point, we could simply store
     the number as an array of digits:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: This is called fixed-point representation because the implicit decimal point
     occurs in a fixed position of the number (as opposed to floating-point, where
     it can change).
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Since the instructions in modern computers perform arithmetic on 64-bit values,
     it's much more efficient to store numbers as arrays of 64-bit values rather than
     decimals.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 'As we know that the integer part of *e* is 2, we only concern ourselves with
     computing and storing the fractional part. We will represent it as an array of
     *n* 64-bit words:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: Fixed-Point Addition
+  id: totrans-split-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'To compute *e*, we only need to perform two operations: addition and division
     (what we did with mpf_add and mpf_div_ui in the GMP version).'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: 'Addition is straight-forward; we add the numbers place by place, starting at
     the least significant end and carrying the one as necessary (this is Algorithm
     A in The Art of Computer Programming, Section 4.3.1):'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: Fixed-Point Division
+  id: totrans-split-73
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Performing the division is trickier. Luckily, we only need to divide our n-word
     term number by a single word. That means the algorithm is straight-forward, essentially
     how we do [short division](https://en.wikipedia.org/wiki/Short_division) in school.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: However, the algorithm relies on being able to divide a two-word divisor by
@@ -318,6 +393,7 @@
     what we need as long as the result fits in a single word (which it always will
     in our case). But it is not possible to express that division in standard C, and
     many CPUs don't have an instruction for it.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: Instead, we will perform two-by-one division using a clever technique that relies
@@ -325,6 +401,7 @@
     only does this solve the division problem for us, it solves it efficiently because
     we can reuse the reciprocal when dividing by the same value multiple times. Using
     X86's DIV instruction would be much slower since it can take up to 100 cycles.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: The algorithm is described in Möller and Granlund "[Improved division by invariant
@@ -332,22 +409,27 @@
     The paper is an improved version of Granlund and Montgomery "[Division by Invariant
     Integers using Multiplication"](https://gmplib.org/~tege/divcnst-pldi94.pdf) (PLDI'94)
     which is also the subject of Chapter 10 in [Hacker's Delight](http://www.hackersdelight.org/).
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: The approximate reciprocal is defined as
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: which when *d* is "normalised", meaning that its highest bit is set, fits in
     a 64-bit word. Basically it's *1/d* shifted up 128 bits, with some adjustments
     to make it fit in a 64-bit word.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'The algorithms in the paper rely on performing 64-bit by 64-bit multiplications,
     the results of which can be up to 128 bits. Standard C only provides the lower
     64 bits of such multiplications, which the paper refers to as umullo:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: 'Most CPUs do provide the full result of the multiplication. With GCC or Clang
@@ -355,52 +437,65 @@
     of the result) and umul (both the high and low 64-bits). With Microsoft Visual
     C++ we can use intrinsics, and when none of those options are available, we can
     compute the result by hand using four 32-bit multiplications:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: With these functions in place, we can proceed to implement reciprocal_word,
     which computes *v* using carefully implemented (and hard to follow in the paper)
     [Newton iteration](https://en.wikipedia.org/wiki/Newton's_method).
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-85
   prefs: []
   type: TYPE_PRE
 - en: If we do have access to the X86 DIV instruction, it can be used to compute the
     approximate reciprocal directly. We use this in the assert above to check our
     work.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: Using the reciprocal, 2-by-1 division is implemented as below, using two multiplications
     and some adjustments.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: And with that in place, we can finally implement our n-by-1 division.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: To normalize the dividend, it is convenient to have a function for getting the
     number of leading zeros in a word. Many CPUs have an instruction for that (X86
     has BSR), and otherwise we can do it ourselves.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-91
   prefs: []
   type: TYPE_PRE
 - en: 'Since we shift the dividend to normalize it, we must also shift the divisor
     the same amount to get the correct result. We can do this in-place while performing
     the division (this "short division" algorithm is Exercise 16 in The Art of Computer
     Programming, Section 4.3.1):'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-93
   prefs: []
   type: TYPE_PRE
 - en: Computing *e* With Our Fixed-Point Routines
+  id: totrans-split-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -408,60 +503,74 @@
     the fraction, we skip the first terms (which add up to 2), and start with the
     third one. To initialize efrac and term to 0.5, we need to figure out what that
     is in the base we''re using:'
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-96
   prefs: []
   type: TYPE_PRE
 - en: Decimal Conversion
+  id: totrans-split-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The code above leaves us with an array of carefully computed 64-bit words that
     represent the fractional part of *e*. How do we turn that into a decimal string?
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: 'We have:'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: If we multiply it by 10, the most significant digit, 7, gets moved to the integer
     position (in our case there is no integer position, so the 7 arrives as an overflow
     of the multiplication). We can repeat the process to extract one decimal at the
     time.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: Instead of multiplying by 10 to get one decimal, we can multiply by 100 to get
     two, or any power of 10 to extract multiple decimals at the time. The largest
     power of 10 that fits in a 64-bit word is 10^19, so we will use that to extract
     19 decimals at a time.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '(The time complexity of this is quadratic: *O(n)* multiplications are performed
     *O(n)* times. GMP implements faster [algorithms](https://gmplib.org/manual/Binary-to-Radix.html#Binary-to-Radix)
     for binary to decimal conversion.)'
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-103
   prefs: []
   type: TYPE_PRE
 - en: 'Back in eprime_manual:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-105
   prefs: []
   type: TYPE_PRE
 - en: Primality Testing
+  id: totrans-split-106
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: To check whether a number is prime, we will implement Algorithm P from The Art
     of Computer Programming, Section 4.5.4, also known as the [Miller-Rabin primality
     test](https://en.wikipedia.org/wiki/Miller%E2%80%93Rabin_primality_test).
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: This is a probabilistic test, which means it cannot tell us that a number is
     prime with absolute certainty, but it's good enough for our purposes, and it's
     fast.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: The algorithm relies on modular exponentiation, which we can implement with
@@ -470,34 +579,43 @@
     we're dealing with 64-bit numbers, so we need to be able to compute 128-bit products
     and divide those by a 64-bit dividend. Luckily, we implemented exactly the necessary
     tools with umul and div2by1 above.
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-110
   prefs: []
   type: TYPE_PRE
 - en: 'Back in eprime_manual:'
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-112
   prefs: []
   type: TYPE_PRE
 - en: A Million Decimals
+  id: totrans-split-113
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'We can use our program to compute a million decimals:'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-115
   prefs: []
   type: TYPE_PRE
 - en: On my laptop, the "manual" version takes about 2 minutes. If I use X86's DIV
     instruction instead of multiplying by the reciprocal, it takes 4 minutes. The
     GMP version takes just over 1 minute; it uses fancier and more carefully implemented
     algorithms.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: Computing *e* Using Binary Splitting
+  id: totrans-split-117
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -507,23 +625,28 @@
     called *binary splitting*. My implementation is based on [the description](http://numbers.computation.free.fr/Constants/Algorithms/splitting.html)
     ([PostScript version](http://numbers.computation.free.fr/Constants/Algorithms/splitting.ps))
     by Xavier Gourdon and Pascal Sebah.
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: Consider the series below.
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: When *a = 0* and *b = n*, it is equivalent to the Taylor series for *e* except
     that it's missing the first term, *1/0!*
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: 'To compute the fraction resulting from adding the terms together, we need to
     rewrite each term to use the common denominator, *Q(a,b)*:'
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: 'To compute *Q(a,b)*, we can use binary splitting. Instead of iteratively multiplying
     with *a+1*, *a+2*, and so on, we can use a recursive approach, splitting the computation
     into two halves at each step and combining the results (binary splitting is really
     just another name for [divide and conquer](https://en.wikipedia.org/wiki/Divide_and_conquer_algorithm)):'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: When *Q(a,b)* is small, this isn't any faster than the iterative computation,
@@ -531,10 +654,12 @@
     the numbers are larger, the time required for each operation grows (often super-linearly)
     with the size of the numbers involved, and then we benefit from the binary splitting
     method reducing the size of the sub-problems.
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: (Besides reducing the size of the sub-problems, binary splitting is also a nice
     way to parallelize the computation by computing the sub-problems on separate threads.)
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: 'Computing the numerator of the series, *P(a,b)* is a little trickier. To rewrite
@@ -542,47 +667,59 @@
     missing from their denominators. For example, for the first term, we need to multibly
     by *a+2*, *a+3*, and so on all the way to *b*. For the second term, we start with
     *a+3*, and so on:'
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we split *P(a,b)* into *P(a,m)* and *P(m,b)*, how can we combine them? Look
     at what we get:'
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: '*P(m,b)* matches the last terms of *P(a,b)*, so that seems fine.'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: '*P(a,m)* looks like the first terms of *P(a,b)* except that the numerators
     are wrong; we need them to be *b!*. To fix this, we can multiply them by *b!/m!*,
     which we also know as *Q(m,b)*. So, we end up with:'
+  id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
 - en: 'In order for the computation to be fast, it''s necessary to use a multiplication
     algorithm with good time complexity (in particular, the naive schoolbook algorithm
     with *O(mn)* time won''t do). GMP implements [fancy multiplication algorithms](https://gmplib.org/manual/Multiplication-Algorithms.html),
     so we will rely on that for performance:'
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-130
   prefs: []
   type: TYPE_PRE
 - en: A Billion Decimals
+  id: totrans-split-131
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Using this version to compute a million decimals is significantly faster than
     what we saw [above](#million):'
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-133
   prefs: []
   type: TYPE_PRE
 - en: 'How about a billion decimals? On my laptop, it takes about 20 minutes:'
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-135
   prefs: []
   type: TYPE_PRE
 - en: Further Reading
+  id: totrans-split-136
   prefs:
   - PREF_H2
   type: TYPE_NORMAL

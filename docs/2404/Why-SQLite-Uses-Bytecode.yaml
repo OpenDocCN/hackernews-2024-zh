@@ -1,35 +1,44 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:41:38'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Why SQLite Uses Bytecode
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://sqlite.org/draft/whybytecode.html](https://sqlite.org/draft/whybytecode.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 1\. Introduction
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Every SQL database engine works in roughly the same way: It first translates
     the input SQL text into a "prepared statement". Then it "executes" the prepared
     statement to generate a result.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: A prepared statement is an object that represents the steps needed to accomplish
     the input SQL. Or, to think of it in another way, the prepared statement is the
     SQL statement translated into a form that is more easily understood by the computer.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: In SQLite, a prepared statement is an instance of the [sqlite3_stmt object](c3ref/stmt.html).
@@ -38,30 +47,36 @@
     SQL database engines do not necessarily call these objects "prepared statements".
     But such objects exists, whatever they might be called. This paper will use the
     term "prepared statement".
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are countless ways of implementing a prepared statement. This paper will
     look at the two most common methods:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '**Bytecode** → The input SQL is translated into a virtual machine language
     that is then run by a virtual machine interpreter. This is the technique used
     by SQLite.'
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '**Tree-Of-Objects** → The input SQL is translated in a tree of objects that
     represent the processing to be done. The SQL is executed by walking this tree.
     This is the technique used by MySQL and PostgreSQL.'
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: There are advantages and disadvantages to each of these representations of a
     prepared statement. The purpose of this paper is to articulate some of those advantages
     and disadvantages.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 1.1\. How To Provide Feedback
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -69,9 +84,11 @@
     If you disagree with any of the opinions offered in this document, you are welcomed
     to offer corrections and/or contrary views on the [SQLite Forum](https://sqlite.org/forum).
     Or you can email the author directly.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 1.2\. Definition Of "Bytecode"
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -84,37 +101,45 @@
     between different memory locations. SQLite bytecode has these kinds of low-level
     instructions, too. But SQLite bytecode also contains some high-level operations
     that are specific to the needs of a database engine. Here are just a few examples:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '**OP_Column** → Extract the value from the N-th column of the database row
     that a particular cursor is currently pointing at.'
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**OP_CreateBtree** → Allocate space for a new B-Tree in the database file.'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**OP_ParseSchema** → Reread and reparse all or part of the [sqlite_schema table](schematab.html)
     and refresh internal symbol tables accordingly.'
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**OP_SeekGE** → Move a cursor on a particular B-Tree to the first entry that
     is greater than or equal to a given key.'
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**OP_Next** → Advance a cursor on a particular B-Tree to the next entry in
     the B-Tree and jump, or fall through if there are no more entries in that B-Tree.'
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: In other words, the "bytecode" used by SQLite is not so much a set of CPU instructions
     as it is a list of database primitives that are to be run in a particular order.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 1.3\. Definition Of "Abstract Syntax Tree" or "AST"
+  id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -129,6 +154,7 @@
     of the overall AST. As rules of the grammar are "reduced" by the parser, new nodes
     of the AST are allocated and connected to subnodes. After the parse completes,
     the start-symbol of the grammar is left holding the root of the AST.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: An AST is a tree of objects. But an AST is not a suitable form for a prepared
@@ -137,6 +163,7 @@
     to be checked. Optimizations need to be applied that transform input SQL statement
     into different forms that execute more quickly. Finally, the AST needs to be translated
     into an alternative representation that is more amenable to execution.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Some people refer to the tree of objects that is used as the executable form
@@ -153,9 +180,11 @@
     is no clear boundary between an AST and a prepared statement, people often refer
     to a prepared statement that is represented as a tree of objects as an "AST",
     even though that description is not precise.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 1.4\. Dataflow Programming
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -164,21 +193,26 @@
     part of the overall computation. Each node receives inputs from other nodes and
     sends its output to other nodes. Thus the nodes form a directed graph that carry
     inputs into outputs.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: A "dataflow program" is perhaps a better description than "AST" for the tree
     of objects that an SQL database engine uses as a prepared statement.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Advantages To Compiling Into Bytecode
+  id: totrans-split-31
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'SQLite compiles to bytecode, and the SQLite developers are very happy with
     this approach. Here is why:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 2.1\. Bytecode Is Easier To Understand
+  id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -186,12 +220,14 @@
     is being implemented. This is what happens in SQLite when you preface an SQL statement
     with the "EXPLAIN" keyword: Instead of actually running the SQL, the result is
     a listing of the bytecode that would have been used to implement that SQL.'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Bytecode lends itself to this because a bytecode program is easily represented
     as a table. In SQLite bytecode, each instruction has one opcode and five operands.
     Thus a prepared statement can be rendered as if it were a query against a six-column
     table.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: A tree-of-objects representation is more difficult to publish in a human-readable
@@ -202,9 +238,11 @@
     problem of rendering a tree-of-objects as a table is sufficiently difficult that
     nobody does it, as far as I know. Hence, no tree-of-objects database engine provides
     the level of detail in their "EXPLAIN" output that SQLite provides.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 2.2\. Bytecode Is Easier To Debug
+  id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -213,13 +251,16 @@
     and/or poor performance), the developers can examine the bytecode to quickly determine
     if the source of the trouble is either the front-end analysis or the back-end
     data storage section of the product.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: In debugging builds of SQLite, the [PRAGMA vdbe_trace=ON;](pragma.html#pragma_vdbe_trace)
     command will cause a trace of the bytecode execution to appear on the console.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 2.3\. Bytecode Can Be Run Incrementally
+  id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -227,6 +268,7 @@
     a statement can be run until it generates just its first row of output. The statement
     then pauses until it is stepped again. It is not necessary to run the statement
     to completion before examining the first row of output.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: This is more difficult to achieve in a tree-of-objects design. When the prepared
@@ -235,6 +277,7 @@
     the stack back up to the caller, all the while saving enough state to resume evaluation
     where it last left off. This is not impossible to do, but is sufficiently difficult
     that I have never seen it actually done.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Most SQL database engines do not really need to do incremental execution of
@@ -245,9 +288,11 @@
     the same address space and using the same stack as the application. Being able
     to easily and reliably perform incremental execution of an SQL statement is important
     to SQLite.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 2.4\. Bytecode Is Smaller
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -261,9 +306,11 @@
     than it did as an AST. This is important because calls to [sqlite3_prepare()](c3ref/prepare.html)
     are transient, but prepared statements are often cached for possible reuse and
     persist in memory for a long time.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 2.5\. Bytecode Is Faster
+  id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -277,18 +324,22 @@
     the other databases spend a lot of time doing client/server message processing,
     and it is difficult to untangle the message round-trip overhead from the actual
     processing time.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. Advantages Of Compiling Into A Tree Of Objects
+  id: totrans-split-48
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: The SQLite developers think that the bytecode approach is best, at least for
     the use cases the SQLite tries to fill, but the tree-of-objects approach to processing
     SQL does have some advantages over bytecode. There are always tradeoffs.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 3.1\. Query Planning Decisions Can Be Deferred Until Runtime
+  id: totrans-split-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -298,9 +349,11 @@
     A tree-of-objects is easier to modify on-the-fly. The query plan is mutable and
     can be tweaked as it is running, based on the progress of the query. Thus a query
     can be dynamically self-tuning.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 3.2\. Dataflow Programs Are Easy To Parallelize
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -310,6 +363,7 @@
     are typically needed within each node of the program. Node schedule is trivial:
     A node becomes eligible to run when it has data available and there is space in
     its output queue.'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: This is an important consideration for database engines that are designed to
@@ -318,5 +372,6 @@
     ([OLTP](https://en.wikipedia.org/wiki/Online_transaction_processing)) on the internet-of-things,
     so there is less need to represent prepared statements as dataflow programs in
     SQLite.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL

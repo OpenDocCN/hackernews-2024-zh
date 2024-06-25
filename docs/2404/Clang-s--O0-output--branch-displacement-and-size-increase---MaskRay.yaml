@@ -1,28 +1,36 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:35:53'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Clang''s -O0 output: branch displacement and size increase | MaskRay'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase](https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: tl;dr Clang 19 will remove the `-mrelax-all` default at `-O0`, significantly
     decreasing the text section size for x86.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Span-dependent instructions
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -32,21 +40,27 @@
     relative offset. A short jump is preferred because it takes less space. However,
     when the target of the jump is too far away (out of range for a 8-bit relative
     offset), a near jump must be used.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: A 1978 paper by Thomas G. Szymanski ("*Assembling Code for Machines with Span-Dependent
@@ -55,31 +69,37 @@
     optimal size for these instructions, often referred to as the "branch displacement
     problem" since branches are the most common type. A good resource for understanding
     Szymanski's work is [*Assembling Span-Dependent Instructions*](https://www.complang.tuwien.ac.at/anton/assembling-span-dependent.html).
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '## Start small and grow'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Popular assemblers still used today tend to favor a "start small and grow" approach,
     typically requiring one more pass than Szymanski's "start big and shrink" method.
     This approach often results in smaller code and can handle additional complexities
     like alignment directives.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: In LLVM, the [MC library](https://blog.llvm.org/2010/04/intro-to-llvm-mc-project.html)
     (Machine Code) is reponsible for assembly, disassembly, and object file formats.
     Within MC, "assembler relaxation" deals with span-dependent instructions. This
     is distinct from [linker relaxation](/blog/2021-03-14-the-dark-side-of-riscv-linker-relaxation).
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'Eli Bendersky provides a detailed explanation in a [2013 blog post](https://eli.thegreenplace.net/2013/01/03/assembler-relaxation)
     and highlights an interesting behavior:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: For example, when compiling with -O0, the LLVM assembler simply relaxes all
     jumps it encounters on first sight. This allows it to put all instructions immediately
     into data fragments, which ensures there's much fewer fragments overall, so the
     assembly process is faster and consumes less memory.
+  id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -89,65 +109,85 @@
     `MCTargetOptions`, instructing the assembler to potentially start with the long
     form (near) for JMP and JCC instructions on the X86 target only. Other instructions
     like ADD/SUB/CMP and non-x86 architectures remain unaffected.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '`-mrelax-all` tradeoff'
+  id: totrans-split-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Here is an example:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'The assembly (`clang -S`) looks like:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: The JE instruction assembles to either a short jump (8-bit relative offset)
     or near jump (32-bit relative offset).
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: The impact of `-mrelax-all` on text section size is significant, especially
@@ -157,6 +197,7 @@
     build of lld, `-mrelax-all` increased the `.text` section size by 13.7%. This
     translates to a 9.0% increase in VM size and a 7.2% increase in the overall file
     size.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Dean Michael Berris proposed to [remove the `-mrelax-all` default for `-O0`](https://reviews.llvm.org/D21830)
@@ -164,25 +205,32 @@
     RISC-V's [conditional branch transforms](https://reviews.llvm.org/D108961), leading
     Craig Topper to [remove `-mrelax-all`](https://github.com/llvm/llvm-project/pull/88538)
     at `-O0` for RISC-V recently.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: This actually indicated a size regression when the condition branch transform
     patch landed in 2023\.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: While `-mrelax-all` might have offered slight compile time benefits in the past,
@@ -192,11 +240,13 @@
     slightly](https://llvm-compile-time-tracker.com/compare.php?from=ef2ca97f48f1aee1483f0c29de5ba52979bec454&to=18376810f359dbd39d2a0aa0ddfc0f7f50eac199&stat=instructions%3Au)
     by 0.62% while the text section size [decreased](https://llvm-compile-time-tracker.com/compare.php?from=ef2ca97f48f1aee1483f0c29de5ba52979bec454&to=18376810f359dbd39d2a0aa0ddfc0f7f50eac199&stat=size-text)
     by 4.44%.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: A difference for assembly at different optimisation levels would be quite surprising.
     GCC/GNU assembler don't exhibit similar expansion of JMP/JCC instructions even
     at `-O0`.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'These arguments strengthen the case for removing `-mrelax-all` as the default
@@ -204,78 +254,98 @@
     and will be included in the next major release, LLVM 19.1\. I have also changed
     Clang to respect `-mrelax-all` for assembly input: `clang -c --target=x86_64 -mrelax-all
     a.s`'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Understanding the compile time difference
+  id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: I have studied a notorious huge file, `llvm/lib/Target/X86/X86ISelLowering.cpp`.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '**Fragment count**: A significant difference exists in the number of assembler
     fragments generated:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '`-mrelax-all`: 89633'
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`-mno-relax-all`: 143852'
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: With `-mrelax-all`, the number of `MCRelaxableFragment`s is substantially reduced
     (to zero when building Clang). This reduction likely contributes to the compile
     time difference.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '**Fixed-point iteration**: `-mrelax-all` ensures the fixed-point iteration
     algorithm (almost always) converges in a single iteration. In contrast, with `-mno-relax-all`,
     around 6% of sections require additional iterations. However, this difference
     is likely not the primary factor affecting compile time.'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: Why didn't people complain about the code size increase?
+  id: totrans-split-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Because people generally care less about `-O0` code size.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '`-O0` is frequently used with `-g` to include debugging information. This debug
     information can overshadow the size increase caused by `-mrelax-all`. (`-O1` or
     above sacrifices some debuggability.)'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: In addition, not all projects can be successfully built with `-O0` optimization.
     This is typically due to issues like very large programs or mandatory inlining
     behavior.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: For a discussion on size reduction ideas in ELF relocatable files, please check
     out my blog post about [Light ELF](/blog/2024-04-01-light-elf-exploring-potential-size-reduction).
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: You might also be interested in [my notes](/blog/2023-05-08-assemblers) about
     GNU assembler and LLVM integrated assembler.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL

@@ -1,30 +1,39 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:45:43'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How fast can we process a CSV file
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://datapythonista.me/blog/how-fast-can-we-process-a-csv-file](https://datapythonista.me/blog/how-fast-can-we-process-a-csv-file)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Follow me for more content or contact for work opportunities:'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '[Twitter](https://twitter.com/datapythonista) / [LinkedIn](https://www.linkedin.com/in/datapythonista/)'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Introduction
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -32,41 +41,50 @@
     data because of their simplicity and how easy is to write them. The file can be
     directly read by a human, as opposed to more efficient binary formats like parquet,
     for example:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: I don't think I'm wrong to think that any data professional or enthusiast had
     to process a CSV file at some point, whether it's for practice datasets like the
     Titanic or Iris datasets, for data exported by a client from a spreadsheet or
     other use cases.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: If you care about performance, you may want to avoid CSV files. But since our
     data sources are often like our family, we can't make a choice, we'll see in this
     blog post how to process a CSV file as fast as possible.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since I''ve been in the pandas core development team for more than 5 years,
     and a pandas user for much longer than that, I''m very biased on thinking that
     the de facto standard for many people to process a CSV file is something like
     this:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: While I think this is still today a reasonable choice, in this blog post I will
     show many other options, with a particular focus on speed.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before I continue, I need to make two **important disclaimers**:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Execution speed is not always what you care about. Having clear and maintainable
     code is quite often more important. Time to market can also be a bigger priority.
     Remember what Donald Knuth said, "premature optimization is the root of all evil".
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -75,28 +93,34 @@
     the fastest" is in general meaningless unless you have the context of what exactly
     is the task being measured, what is the amount of data, its distribution, the
     hardware being used...
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The problem
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: For this blog post I defined a simple CSV file and a single task. The CSV has
     one million rows, a first column with an id that we will ignore, and 8 columns
     with integer random numbers in the range -2e16 to 2e16.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'The numbers represent the coordinates of points in an 8-D space, and the task
     is to find how many of them are closer than 1e16 units to the origin. In practice,
     this is as simple as computing:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: The idea with this task is to have some CPU computations, but not so many so
     reading and parsing the file is still very significant.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: As mentioned earlier, this task can be very different from the tasks you perform.
@@ -105,25 +129,31 @@
     disk compared to the amount of time the CPU is being used, and results would differ.
     While this task may be somehow arbitrary, I think it can teach us a lot about
     performance.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Back to the basics
+  id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'I said before that using pandas is, at least in my point of view, kind of de
     facto standard. This is how this particular task could look like when addressed
     in pandas:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'One first question is, why pandas? Since we are already using Python, why don''t
     simply implement this in Python? A solution in pure Python could look like this:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: This implementation has around the same number of lines of code than the pandas
@@ -132,6 +162,7 @@
     do this is actually speed, as Python is a very slow language for data processing.
     This is mostly because the priority for Python has always been its simplicity
     and flexibility, not speed at data processing.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: While other approaches like using the PyPy interpreter exist, modern data processing
@@ -143,22 +174,27 @@
     it, but we don't loop in Python, we tell pandas to do it, and pandas will call
     a C function that performs the loop and the operation much faster than Python
     would. In this case the loop it's implemented in NumPy which pandas uses.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: CSV parsing in pandas
+  id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Now that it's hopefully clear that we don't want to implement our processing
     ourselves, but instead use a tool that provides the algorithms we need with a
     fast language, let's have a look at some of the main options in the Python world.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'The first one I''m going to discuss is also part of pandas, the PyArrow engine.
     The code would be exactly like before, making just one change:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: For the final users, it simply involves adding an extra parameter to the `read_csv`
@@ -167,49 +203,61 @@
     language that transpiles to C), to a much newer multithread implementation of
     CSV parsing implemented in C++ in the Arrow library and made available to the
     Python ecosystem via the PyArrow package.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: It's probably interesting to know that pandas also includes a third engine,
     the `python` engine which is implemented in pure Python. Yes, exactly what I said
     we don't want to do for speed. But there may be reasons I'm mostly unaware of
     for some users to avoid using Python C extensions, so there it is.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'The time to execute our task with the different Python and pandas options is
     next:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '| Description | File / Function | Time (seconds) |'
+  id: totrans-split-39
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-40
   prefs: []
   type: TYPE_TB
 - en: '| Pure Python looping with csv module using int types | pure_python_int | 3.4547557830810547
     |'
+  id: totrans-split-41
   prefs: []
   type: TYPE_TB
 - en: '| Pure Python looping with csv module using float types | pure_python_float
     | 3.8738009929656982 |'
+  id: totrans-split-42
   prefs: []
   type: TYPE_TB
 - en: '| pandas with C engine | pandas_c | 1.50089430809021 |'
+  id: totrans-split-43
   prefs: []
   type: TYPE_TB
 - en: '| pandas with Python engine | pandas_python | 8.328583478927612 |'
+  id: totrans-split-44
   prefs: []
   type: TYPE_TB
 - en: '| pandas with PyArrow engine and NumPy dtypes | pandas_pyarrow | 0.31276631355285645
     |'
+  id: totrans-split-45
   prefs: []
   type: TYPE_TB
 - en: '| pandas with PyArrow engine and PyArrow dtypes | pandas_pyarrow_arrow | 0.29172492027282715
     |'
+  id: totrans-split-46
   prefs: []
   type: TYPE_TB
 - en: We can see in the table that the differences are huge. Just changing our `read_csv(engine=...)`
     parameter from `engine="python"` to `engine="pyarrow"` makes pandas around 30x
     times faster to perform the same exact task.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Also, changing from the default C engine to using the PyArrow engine makes the
@@ -221,52 +269,67 @@
     WebAssembly, Lambdas, in a Raspberry Pi...). At least for now, if you care about
     reading CSV files faster, you may want to install PyArrow manually, and use the
     `engine="pyarrow"` in your calls to `read_csv`.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Other Python options
+  id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'For many years pandas was almost the only option for processing a CSV file
     in the Python world. But luckily this is changing quickly, and more options exist
     now. Here there is a comparison including other tools:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '| Description | File / Function | Time (seconds) |'
+  id: totrans-split-51
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-52
   prefs: []
   type: TYPE_TB
 - en: '| pandas with C engine | pandas_c | 1.50089430809021 |'
+  id: totrans-split-53
   prefs: []
   type: TYPE_TB
 - en: '| pandas with PyArrow engine and PyArrow dtypes | pandas_pyarrow_arrow | 0.29172492027282715
     |'
+  id: totrans-split-54
   prefs: []
   type: TYPE_TB
 - en: '| NumPy with loadtxt function | numpy_loadtxt | 1.8354885578155518 |'
+  id: totrans-split-55
   prefs: []
   type: TYPE_TB
 - en: '| DuckDB 0.9.2 with SQL API | duckdb_sql | 0.8167853355407715 |'
+  id: totrans-split-56
   prefs: []
   type: TYPE_TB
 - en: '| DuckDB 0.10.0 with SQL API | duckdb_sql | 0.288881778717041 |'
+  id: totrans-split-57
   prefs: []
   type: TYPE_TB
 - en: '| DataFusion with SQL API | datafusion_sql | 0.20633697509765625 |'
+  id: totrans-split-58
   prefs: []
   type: TYPE_TB
 - en: '| Polars in eager mode | polars_eager | 0.11399054527282715 |'
+  id: totrans-split-59
   prefs: []
   type: TYPE_TB
 - en: '| Polars in lazy mode | polars_lazy | 0.10555672645568848 |'
+  id: totrans-split-60
   prefs: []
   type: TYPE_TB
 - en: '| Polars in streaming mode | polars_streaming | 0.11504125595092773 |'
+  id: totrans-split-61
   prefs: []
   type: TYPE_TB
 - en: '| Polars with SQL API | polars_sql | 0.09796714782714844 |'
+  id: totrans-split-62
   prefs: []
   type: TYPE_TB
 - en: We can see how NumPy performs similar to the default pandas engine, datafusion
@@ -280,6 +343,7 @@
     in the [TPCH benchmark suite](https://pola.rs/posts/benchmarks/). As I said earlier,
     being faster (or slower) for this particular use case doesn't mean being consistently
     faster or slower, even if correlation surely exists.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: For people not familiar with these libraries, DuckDB is an analytics database
@@ -287,12 +351,15 @@
     Datafusion is an engine to build analytics databases or dataframelibraries on
     top of it. And Polars is mostly a pandas replacement, but in general faster, with
     an API more similar to Spark or R, and available also outside of the Python world.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: The code to run these benchmarks can be found in [this repository](https://github.com/datapythonista/bench_csv).
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Non-Python options
+  id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -301,77 +368,98 @@
     sense to try some of them, like distributed systems such as Spark or Dask, which
     are design to process much bigger data. But there is one worth trying, R, as it's
     a very common option for this task.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 'While my knowledge of R isn''t great, seems like it can be implemented with
     this simple command:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: 'The results are surprising, as R seems to be very slow:'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '| Description | Time (seconds) |'
+  id: totrans-split-71
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- |'
+  id: totrans-split-72
   prefs: []
   type: TYPE_TB
 - en: '| Pure Python looping with csv module using int types | 3.486 |'
+  id: totrans-split-73
   prefs: []
   type: TYPE_TB
 - en: '| pandas with C engine | 2.061 |'
+  id: totrans-split-74
   prefs: []
   type: TYPE_TB
 - en: '| pandas with Python engine | 8.823 |'
+  id: totrans-split-75
   prefs: []
   type: TYPE_TB
 - en: '| pandas with PyArrow engine and PyArrow dtypes | 0.902 |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '| Polars with SQL API (Python) | 0.300 |'
+  id: totrans-split-77
   prefs: []
   type: TYPE_TB
 - en: '| R | 31.547 |'
+  id: totrans-split-78
   prefs: []
   type: TYPE_TB
 - en: '| R with data.table / fread | 0.722 |'
+  id: totrans-split-79
   prefs: []
   type: TYPE_TB
 - en: Note that the results are different than in the previous table because previous
     results didn't account for the time to launch the Python interpreter, but to make
     the comparison with R fair, it needs to be accounted now.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: So based on this use case and implementation, Polars is 100x times faster than
     R, and R seems to be more than 3x times slower than the slowest Python implementation
     we considered (the `python` engine of pandas).
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: Can we be faster than Polars?
+  id: totrans-split-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Until this point, we can conclude that for this use case Polars is the fastest
     option of the tools I'm aware of. But can we be even faster?
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: And the answer is yes, since Polars is a generic tool that supports most CSV
     files, but I can implement an algorithm targeted at this particular file. For
     example, Polars supports unicode files, files delimited by semicolon, quoted text...
     which we do not need for this task.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: The second question is, is it easy to implement an algorithm faster than Polars
     in a low level language? The answer is clearly no.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'A first implementation of my CSV parser in Rust is next:'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-87
   prefs: []
   type: TYPE_PRE
 - en: As you can see, the implementation is quite simple, and while Rust is an extremely
@@ -379,6 +467,7 @@
     is not the only reason to use Rust, as probably the biggest advantage is the language
     design and the smart compiler, that catch most bugs at compilation time, in particular
     most bugs that would make a C/C++ program segfault.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'To make the comparison with Polars meaningful, we need to move Polars outside
@@ -387,41 +476,52 @@
     a significant overhead. This is the implementation of our task in Polars using
     its SQL API (Polars also have a dataframe API in the Rust world similar to the
     Python one, but I''ll use the SQL API here):'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: Note that defining the schema is not really needed, and the code would be significantly
     shorter without it. But making Polars infer the data types would be unfair when
     comparing with my custom implementation.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: 'Comparing the times of both implementations I get these results:'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: '| Description | Time (seconds) |'
+  id: totrans-split-93
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- |'
+  id: totrans-split-94
   prefs: []
   type: TYPE_TB
 - en: '| My implementation | 0.563 |'
+  id: totrans-split-95
   prefs: []
   type: TYPE_TB
 - en: '| Polars 1 CPU core | 0.483 |'
+  id: totrans-split-96
   prefs: []
   type: TYPE_TB
 - en: '| Polars all CPU cores | 0.150 |'
+  id: totrans-split-97
   prefs: []
   type: TYPE_TB
 - en: The interesting part here is that Polars is not only faster than my very simple
     solution, but it's still faster when forcing Polars to use only one CPU (my implementation
     only uses one CPU, but Polars by default will use all avaialble ones).
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Luckily, this is not the end. There are some reasons why a generic implementation
     like Polars is faster, and some things that can be done to improve my implementation.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: After some analysis, I found out that the way Rust is processing the file with
@@ -439,6 +539,7 @@
     to the millisecond we want to help the compiler and the operating system make
     the best guesses so the queue contains the right code as often as possible and
     the minimum amount of time is lost.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: Another factor is how the file is accessed from disk. There are different options,
@@ -451,6 +552,7 @@
     hints on how this memory is going to be accessed. In our case, we are going to
     access the file in sequential order, so if we let the Linux kernel know this when
     setting up the memory map, the kernel is going to speed up our program significantly.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: A more obvious factor is paralellization. Modern computers will in general have
@@ -461,6 +563,7 @@
     in a single CPU via SIMD operations. Where an operation can be applied to multiple
     values at the same time. I didn't implement SIMD in my tests here, but that could
     be another option.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: Finally, there is one last optimization we could perform. In general, when processing
@@ -474,31 +577,40 @@
     string. What's even better in this particular case, since I'll square all numbers,
     I don't care if they are positive or negative, and I can completely ignore the
     sign.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: 'After implementing those optimizations, I managed to achieve the next execution
     times:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: '| Description | Time (seconds) |'
+  id: totrans-split-105
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- |'
+  id: totrans-split-106
   prefs: []
   type: TYPE_TB
 - en: '| My original implementation | 0.563 |'
+  id: totrans-split-107
   prefs: []
   type: TYPE_TB
 - en: '| Polars 1 CPU core | 0.483 |'
+  id: totrans-split-108
   prefs: []
   type: TYPE_TB
 - en: '| Polars all CPU cores | 0.150 |'
+  id: totrans-split-109
   prefs: []
   type: TYPE_TB
 - en: '| My optimized implementation single core | 0.241 |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: '| My optimized implementation multicore | 0.070 |'
+  id: totrans-split-111
   prefs: []
   type: TYPE_TB
 - en: So, whether using a single CPU or all, my final implementation is 2x times faster
@@ -507,17 +619,21 @@
     than implementing the whole parsing from scratch. But in cases when performance
     is a top priority, these results seem to show that it's possible to process CSV
     files significantly faster than the faster generic implementation.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: I hope you enjoyed this post, feel free to follow me on [Twitter](https://twitter.com/datapythonista)
     to stay updated of future posts. And feel free to connect and contact me on [LinkedIn](https://www.linkedin.com/in/datapythonista/)
     if you think the article needs fixes, or if your company needs help with related
     work or you want to discuss job opportunities.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: 'Follow me for more content or contact for work opportunities:'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '[Twitter](https://twitter.com/datapythonista) / [LinkedIn](https://www.linkedin.com/in/datapythonista/)'
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL

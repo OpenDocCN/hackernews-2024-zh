@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:02:17'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: C++ exit-time destructors | MaskRay
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://maskray.me/blog/2024-03-17-c++-exit-time-destructors](https://maskray.me/blog/2024-03-17-c++-exit-time-destructors)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'In ISO C++ standards, [basic.start.term] specifies that:'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Constructed objects ([dcl.init]) with static storage duration are destroyed
@@ -26,315 +33,403 @@
     ([support.start.term]). The call to std::exit is sequenced before the destructions
     and the registered functions. [Note 1: Returning from main invokes std::exit ([basic.start.main]).
     — end note]
+  id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'For example, consider the following code:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The destructor for object a will be registered for execution at program termination.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '## `__cxa_atexit`'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'The Itanium C++ ABI employs `__cxa_atexit` rather than atexit for object destructor
     registration for two primary reasons:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'Limited `atexit` guarantee: ISO C (up to C23) guarantees support for 32 registered
     functions, although most implementations support many more.'
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Dynamic library unloading: `__cxa_atexit` provides a mechanism for handling
     destructors when dynamic libraries are unloaded via `dlclose` before program termination.'
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Several standard libraries, including glibc, musl, and FreeBSD libc, implement
     `atexit` using `__cxa_atexit`.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: In glibc, `atexit` returns `__cxa_atexit ((void (*) (void *)) func, NULL, __dso_handle)`,
     where `__dso_handle` is part of libc itself.
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: musl uses 0 instead of `__dso_handle`.
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api](https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api)
     provides detailed documentation on object destruction mechanisms. Let''s illustrate
     this with a GCC and glibc example:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'An invocation yields:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'Key points:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: The compiler registers destructors with `__cxa_atexit` using the `__dso_handle`
     symbol as an argument.
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`crtbeginS.o` defines the `.fini_array` section (triggering `__do_global_dtors_aux`)
     and the hidden symbol `__dso_handle`.'
+  id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Since 2017, lld [defines `__dso_handle` as a hidden symbol](https://reviews.llvm.org/D33856)
     if crtbegin does not.
+  id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`dlclose` invokes `.fini_array` functions. `__cxa_finalize(d)` iterates through
     the termination function list, calling matching destructors based on the DSO handle.'
+  id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`__cxa_atexit` implementations typically allocate memory dynamically and may
     fail. The failures are simply ignored.'
+  id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Note: In glibc, the `DF_1_NODELETE` flag marks a shared object as unloadable.
     Additionally, symbol lookups with `STB_GNU_UNIQUE` automatically set this flag.'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: musl provides a [no-op implementation for `dlclose` and `__cxa_finalize`](https://wiki.musl-libc.org/functional-differences-from-glibc.html#Unloading_libraries).
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Thread storage duration variables
+  id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Objects with thread storage duration that have non-trivial destructors will
     register those destructors using `__cxa_thread_atexit` during construction.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: When exit-time destructors are undesired
+  id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Exit-time destructors for static and thread storage duration variables can be
     undesired due to
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'Unnecessary overhead and complexity: This includes operating system kernels
     and memory-constrained systems.'
+  id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Potential race conditions: Destructors might execute during thread termination,
     while other threads still attempt to access the object. Examples: [webkit](https://bugs.webkit.org/show_bug.cgi?id=21810)'
+  id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Clang provides `-Wexit-time-destructors` (disabled by default) to warn about
     exit-time destructors.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Disabling exit-time destructors
+  id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Then, I will describe some approaches to disable exit-time destructors.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Pointer/reference to a dynamically-allocated object
+  id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: We can use a reference or pointer that refers to a dynamically-allocated object.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: This approach prevents the destructor from running at program exit, as pointers
     and references have a trivial destructor. Note that this does not create a memory
     leak, since the pointer/reference is part of the root set.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: The primary downside is unnecessary pointer indirection when accessing the object.
     Additionally, this approach uses a mutable pointer in the data segment and requires
     a memory allocation.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Class template with an empty destructor
+  id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'A common approach, as outlined in [P1247](https://wg21.link/p1247), is to use
     a class template with an empty destructor to prevent exit-time destruction:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: libstdc++ employs a variant that uses a union member.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: 'C++20 will support constexpr destructor:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-80
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-82
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Libraries like [`absl::NoDestructor`](https://github.com/abseil/abseil-cpp/blob/master/absl/base/no_destructor.h)
     and [`folly::Indestructible`](https://github.com/facebook/folly/blob/main/folly/Indestructible.h)
     offer similar functionality. The absl version optimizes for trivially destructible
     types.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Compiler optimization for no-op destructors
+  id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Ideally, compilers should optimize out exit-time destructors for empty user-provided
     destructors:'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '|'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: '|'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: LLVM has addressed this [since 2011](https://github.com/llvm/llvm-project/commit/ee6bc70d2f1c2434ca9ca8092216bdeab322c7e5).
     Its GlobalOpt pass eliminates `__cxa_atexit` calls related to empty destructors,
     along with other global variable optimizations.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: In contrast, GCC has an [open feature request](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=19661)
     for this optimization since 2005.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: '`no_destroy` attribute'
+  id: totrans-split-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -342,17 +437,21 @@
     to disable exit-time destructors for variables of static or thread storage duration.
     Its `-fno-c++-static-destructors` option allows disabling exit-time destructors
     globally.'
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: Standardization efforts for this attribute are underway [P1247R0](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1247r0.html).
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: I recently encountered a scenario where the `no_destroy` attribute would have
     been beneficial. I've filed a GCC feature request ([PR114357](https://gcc.gnu.org/PR114357))
     after I learned that GCC doesn't have the attribute.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: Case study
+  id: totrans-split-98
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -360,24 +459,29 @@
     startup time) and make destruction explicitly through `llvm_shutdown`. `ManagedStatic`
     is intended to be used at namespace scope. A prime example is LLVM's statistics
     mechanisms (`-stats` and `-time-passes`).
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: Programs using LLVM can strategically avoid calling `llvm_shutdown` for fast
     teardown by skipping some destructors. The lld linker employs this approach unless
     the `LLD_IN_TEST` environment variable is set to a non-zero integer.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'DSO plugin users requiring library unloading may [find `ManagedStatic` unsuitable](https://discourse.llvm.org/t/making-llvm-play-nice-r-when-used-as-a-shared-library-in-a-plugin-setting/63306).
     This is because:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: A DSO may not be able to determine if other active LLVM users exist within the
     process, making it unsafe to call `llvm_shutdown`.
+  id: totrans-split-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If `llvm_shutdown` is deferred until around program exit, executing destructors
     becomes unsafe once the DSO's code has been removed.
+  id: totrans-split-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -385,5 +489,6 @@
     for the linking task. This allows the parent process (the one launched from the
     shell or other programs) to exit early. This approach eliminates overhead associated
     with static destructors and other operations.
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL

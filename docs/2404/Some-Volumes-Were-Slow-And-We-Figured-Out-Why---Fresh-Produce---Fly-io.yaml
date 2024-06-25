@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:22:53'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Some Volumes Were Slow And We Figured Out Why - Fresh Produce - Fly.io
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://community.fly.io/t/some-volumes-were-slow-and-we-figured-out-why/19394](https://community.fly.io/t/some-volumes-were-slow-and-we-figured-out-why/19394)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: A Bug Report
+  id: totrans-split-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -27,33 +34,39 @@
     drives, which means they’re pinned to specific physical servers, and while we
     do back them up, you generally want to be doing something at an upper layer to
     replicate them. They can lose data! But, the flip side is: they’re very fast.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'So it was jarring, earlier this week, to get reports from folks experiencing
     what appeared to be I/O performance problems. We make it easy to spot I/O issues:
     you can just click out from our dashboard to `Metrics`, and look at the `I/O Utilization`
     percentage, which should be low.'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: One tricky thing about doing infra ops for a public cloud is that every possible
     thing can go wrong. Our customers exercise our hardware in every conceivable way.
     A performance problem could be on our side, or it could be an app stuck in an
     expensive tight loop. We started digging, but didn’t see any patterns.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Then [our metrics cluster started dragging.](https://status.flyio.net/incidents/2sl3hm7h8n3h)
     Well, we’re confident in the performance envelope of that system. We built it
     to scale. And we were seeing the Fly Machines running it grinding to a halt. Our
     digging gained some urgency.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'Then a customer reported the same grinding halt. We worked around the problem
     with them, by re-creating machines (hold that thought, it’s relevant later). But
     something was obviously up: as the [saying goes](https://gutenberg.ca/ebooks/flemingi-goldfinger/flemingi-goldfinger-00-h-dir/flemingi-goldfinger-00-h.html#:~:text=Mr%20Bond%2C%20they%20have%20a%20saying%20in%20Chicago%3A%20%22Once%20is%20happenstance.%20Twice%20is%20coincidence.%20The%20third%20time%20it%27s%20enemy%20action.),
     “Once is happenstance. Twice is coincidence. Three times is an incident.”'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Digging deeper
+  id: totrans-split-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -61,6 +74,7 @@
     servers, called `flyd`, spawns and manages KVM virtual machines using Firecracker
     and Cloud-Hypervisor. Both are lightweight and super fast, we we run lots and
     lots of them on any given physical server.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: We know that customer Fly Machines overwhelmingly aren’t having problems, but
@@ -69,13 +83,16 @@
     sleep” (`D`) for more than a few seconds. That’s the sign that the process is
     stalling on I/O. Stalling for multiple seconds, or even just coming up in `D`
     state multiple times back to back, means something’s off.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'Stalking a few of these troublesome processes gives us candidates to inspect.
     Linux makes this easy: you just `cat /proc/$pid/stack`. Here’s what we see:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'This is a normal stack trace: a process waiting for the completion of a scheduled
@@ -83,107 +100,132 @@
     a smell: `blk_io_schedule` should be super fast, unless something is getting in
     the way. This is like catching a whole room full of people blinking at exactly
     the same time.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The obvious question
+  id: totrans-split-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: What changed?
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Our hardware didn’t change. And there’s no correlation of these events in particular
     regions. We’re in the middle of a round of Firecracker version updates (ironically,
     to improve I/O performance!) but the new version is feature flagged. And we haven’t
     changed how volumes work.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Except we did, and didn’t realize it.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Earlier this week, we shipped a small feature to allow [first class support
     for swap devices](https://community.fly.io/t/a-new-way-to-rootfs/19196/2). This
     has the effect of moving swap off the root filesystem device and onto a dedicated
     swap device.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: The thing about swap is, if you’re using it, you’re probably using it pretty
     hard. Because of the way swap memory works, mostly invisibly to your apps, it
     can get pretty thrashy, as the OS lies to your dev framework about how much memory
     there is and covers its tracks with disk operations.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'So: we limit the IO bandwidth swap devices. This is good. Swap is available,
     to keep your app from crashing in a transient spike, but it’s limited, so it doesn’t
     inadvertently create noisy neighbor problems. All is in balance, all is right
     with the world.'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: You see where this is going.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'It’s easy enough to check which devices we’re rate limiting:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'Most of those `major,minor` pairs were associated with swap devices. “Most”
     is not the answer you want here. Now we know what’s happening: some small number
     of Fly Machines are getting throttled by an incorrect swap rate limit.'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'The remaining question is “why”. And a quick audit of the `flyd` code that
     sets up the rate limits yields an answer:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'To work with a device given its path on the filesystem, you call `stat(2)`
     on it. `stat` gives us the device `major,minor` numbers packed into a `dev_t`,
     which you get to unpack. Easy enough: the major is the top 8 bits, the minor the
     bottom, of a 16 bit value…'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: … if it’s 2003.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Check [linux/kdev_t.h](https://github.com/torvalds/linux/blob/v5.18/include/linux/kdev_t.h#L7):'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: Our orchestrator was potentially setting the `blkio` limits on the wrong device,
     limiting it to 16MiB/s, and sending any IO-intensive applications straight into
     their worst nightmare.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: The probability of hitting this was not huge. Which explained why the elevated
     `iowait` times seemed so sporadic. But once in a million events happen constantly
     at [Fly.io](http://Fly.io) scale.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'You can see now why re-creating a Fly Machine worked around this issue: it
     generated a new swap device, and a new root filesystem device, and those were
     unlikely to lose the block device number lottery.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: What we did
+  id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Clearing the bad rate limits was easy enough.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: So was fixing the `flyd` code that handled `st_rdev`.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Meanwhile, we’re investigating better telemetry for container process states.
     It’s not certain that a machine stuck for an extended period of time in an uninterruptible
     state is something that warrants us taking action or if it’s just a false positive
     event, but it might give us some signal to help detect potential issues.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: We’d also like to flat out make Firecracker’s IO layer faster. I don’t think
@@ -191,9 +233,11 @@
     the expected IO performance for a machine should be may let us determine if the
     observed performance is affected by changes to our platform. We’ll write more
     about this soon.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: In short
+  id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -201,6 +245,7 @@
     slow IO for the past few days. A change we made was the reason that happened and
     we are bummed if your app was affected. Bare metal performance is a feature of
     our platform and we’re pretty passionate about it.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: As always, if you’re running into issues or see something funky, you should
@@ -208,5 +253,6 @@
     drive our alerts, you have an app you care about and we want to know if you’re
     hitting any problems. Our users helped us identify this issue and we’re grateful
     for your engagement.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL

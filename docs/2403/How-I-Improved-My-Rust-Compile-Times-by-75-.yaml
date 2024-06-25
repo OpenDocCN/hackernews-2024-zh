@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:32:08'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How I Improved My Rust Compile Times by 75%
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent](https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: There's now a Part 2, where I cover a couple more options. Check it out [here](https://benw.is/posts/how-i-improved-my-rust-compile-times-part2)
+  id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -33,99 +40,122 @@
     The alternative, Live Page Reloading, will trigger a page reload when a change
     is detected. For Remix, the time difference between the two is signifigantly less
     than it would be in Rust, where we'd have to recompile.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: You can imagine, as a Leptos team member, we hear a lot of the same discussion.
     Leptos, as a frontend Rust web framework, sits at the intersection of these two
     worlds We see it on the [Leptos Discord](https://discord.gg/x8NhWWYTV2) all the
     time.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '"Now, if only rebuild was faster… 🫣"'
+  id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '"Anyone have some tips to improve compile times? Leptos is amazing but having
     to wait 5-10 seconds to render an extra div is very annoying"'
+  id: totrans-split-10
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: So Leptos basically has two approaches to solve this, improve Rust's compile
     time itself, and/or come up with a way to output changes to parts of the page
     without needing to recompile first. In this piece, we'll explore both.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: In order to test different changes, we need to establish a baseline. In default
     Rust, on my machine, how long will it take to compile my web app?
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: I have a quite beefy test machine on which I usually compile. On my machine
     I'll be compiling a simpler project, and my friend Alex kindly agreed to run test
     his startup Houski's [site](https://www.houski.ca/),
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: AMD 5950x processor,
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 72GB RAM
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: SATA SSD system drive.
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 7200RPM spinning disk storage drives
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: NVME drives
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: NixOS linux distro
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Rust 1.75 nightly
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: AMD 7900x processor
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 128GB RAM
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: NVME drive
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Ubuntu linux distro
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Rust 1.75 nightly
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: A Leptos web app typicallys undergoes a two stage build process.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Build Webassembly frontend module using cargo. Optimize and package it with
     warm-bindgen.
+  id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Build the server binary with cargo.
+  id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: I chose to benchmark the whole process for most of these demos, but since it's
     essentially two cargo steps, any relative changes would affect any cargo command.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '~~Note: Discord User @PaulH(and a couple others) let me know about this [bug](https://github.com/leptos-rs/cargo-leptos/pull/203)
@@ -134,22 +164,17 @@
     You can fix this by having cargo-leptos > 0.2.1 and adding this to you Cargo.toml
     under your Leptos settings block.!~~ I did not test with this enabled, but this
     is now the default behavior of cargo-leptos. The feature is deprecated.'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: TOML markup
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-32
   prefs:
   - PREF_BQ
   type: TYPE_PRE
@@ -158,30 +183,37 @@
     By default, the Rust compiler sets an opt-level of 0 for development builds. We're
     going to give it an opt-level of 1 for our code, and an opt-level of 3 for all
     the dependencies of our code.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: This does come with the drawback of much less useful error messages if they
     come from our dependencies. So you might have to adjust the levels if you run
     into tricky bugs.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Since optimization takes additional time, I expect the clean compile times to
     increase, but we may see the increased optimizations make the code easier to compile
     in incremental builds. We also had some positive anecdotes on our Discord.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '"fwiw @gbj @Alex Wilkinson i dropped my compile time from between 5-30 minutes
     to 6 seconds by putting this in my workspace Cargo.toml'
+  id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: We can enable adding these blocks to our `Cargo.toml` file. Nice and easy.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: TOML markup
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: For those unfamiliar with how what goes on inside the Rust compiler, it typically
@@ -192,12 +224,14 @@
     files and other system libs into one executable binary. Way more details about
     how that works can be found [here](https://rustc-dev-guide.rust-lang.org/overview.html).
     Fascinating reading, but a bit too deep for our discussion here.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[Mold](https://github.com/rui314/mold) is a new linker developed by Rui Ueyama,
     with the goal of increasing linker performance by parallelizing the load as much
     as possible, and benchmarks have shown it to be signifigantly faster than Rust''s
     default linker.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: For Linux and Mac, the default linker is ld, run by cc. Windows is a different
@@ -207,26 +241,32 @@
     or sponsor Rui on his Github Sponsors [page](https://github.com/sponsors/rui314).
     Windows users, unforunately, are not supported at this time. Support for Windows
     in Sold is in development.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: A fairly signifigant amount of time is spent linking your Rust binary, especially
     during incremental builds, so this could provide some real benefits.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'On Linux, it''s actually really easy to use, just [install Mold](https://github.com/rui314/mold)
     and then prepend you cargo commands with `mold -run`. For example, `mold -run
     cargo build`. It can also be enabled in `.cargo/config.toml`, like this:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: TOML markup
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: where `/path/to/mold` is an absolute path to the mold executable. This is also
     how you enable Sold, just replace the mold path with the sold path and the target
     to the one for your Mac.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: In the previous optimization, we replaced the linker the Rust compiler uses.
@@ -235,35 +275,44 @@
     as LLVM, it is good at spitting out code fast. It was recently integrated as an
     option for code generation in Rust 1.73 nightly for x86_64 linux targets. Other
     platforms will need to setup cranelift seperately, see their [README](https://github.com/rust-lang/rustc_codegen_cranelift).
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: bash
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: 'To use it with Cargo, it can be enabled by enabling the unstable `codegen-backend`
     feature, and then setting the `codegen-backend= "cranelift"` value for a profile.
     That can be done in `.cargo/config.toml` like so:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: TOML markup
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: If you don't need to worry about multi-target builds, you can also enable it
     below with a target. This does conflict with the desire to not use cranelift during
     production builds, so I wouldn't recommend it. Rust doesn't support per target
     profile builds, so creating your own profile is a lot more flexible.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: TOML markup
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: Keep in mind that Cranelift is still in development, and may have some issues
@@ -271,12 +320,14 @@
     you do find missing intrinsics, I encourage you to create an issue in their repo
     [here](https://github.com/rust-lang/rustc_codegen_cranelift), there may be a workaround
     available.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: I'm primarily interested in optimizing build times for Rust projects in development.
     This means I'm not concerned about filesize, optimizations, or run speed, as long
     as they are not signifigantly affected. We're interested in the time it takes
     to build our Rust Leptos apps, both from a clean state, and with incremental compilation.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: To do that we're going to use [hyperfine](https://github.com/sharkdp/hyperfine)
@@ -284,6 +335,7 @@
     earlier does Leptos's two step compilation. For clean builds, we will run `cargo
     clean` before each build, in order to delete any files cached by Rust. Incremental
     builds are a bit harder.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'For incremental builds, we''ll simulate a developer modifying a single HTML
@@ -292,22 +344,27 @@
     chosen the `<dfn>` tag, because I''ve never seen it used, and thus I probably
     don''t have to worry about multiple replacements tags. After some finagling, I
     ended up with this sed command:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: bash
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: Each configuration is tested six times, with two warmup runs to fill any caches
     and reduce variability in the output. Without the warmup runs variance was a bit
     wider, but the results were still consistent. Six runs is probably overkill for
     this test, but what can I say, I got CPU time for days, or more accurately nights.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: We'll measure the time it takes to complete six runs, with two warmup runs to
     setup filesystem caches, and hopefully provide consistent results.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: I will be compiling my [site](https://benwis), and Alex will be compiling [Houski's
@@ -315,158 +372,204 @@
     heavy usage of Polars, Serialization/Deserialization with Serde, and plenty more
     routes. Neither of us has tried to reduce these times much or done any special
     kinds of optimization.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: For both of us, these will be the times to beat.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |'
+  id: totrans-split-67
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-68
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) |'
+  id: totrans-split-69
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 88.387 | 1.817 |'
+  id: totrans-split-70
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 80.057 | 0.268 |'
+  id: totrans-split-71
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 124.993 | 0.483 |'
+  id: totrans-split-72
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |'
+  id: totrans-split-73
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-74
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) |'
+  id: totrans-split-75
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 20.461 | 0.801 |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 19.097 | 0.078 |'
+  id: totrans-split-77
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 40.818 | 0.252 |'
+  id: totrans-split-78
   prefs: []
   type: TYPE_TB
 - en: Not a bad baseline. Interesting to me was the variation in the 7200RPM build
     time for both clean and incremental builds, which might suggest that the drive
     was struggling to provide the data at the same rate consistently, or perhaps something
     else was contending with the benchmark for IO access.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Twenty or forty seconds is a pretty substantial time to rebuild the site in
     the dev profile, hopefully we can improve that.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: Let's enable the Mold linker as described earlier, and see how that changes
     things!
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-82
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-83
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-84
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 74.35 | 0.96 | 14.037 | 15.88129476 |'
+  id: totrans-split-85
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 67.206 | 0.386 | 12.851 | 16.05231273 |'
+  id: totrans-split-86
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 102.892 | 0.416 | 22.101 | 17.68179018 |'
+  id: totrans-split-87
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-88
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-89
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-90
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 5.842 | 0.268 | 14.619 | 71.44812082 |'
+  id: totrans-split-91
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 5.615 | 0.051 | 13.482 | 70.59747604 |'
+  id: totrans-split-92
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 19.6 | 0.067 | 21.218 | 51.98196874 |'
+  id: totrans-split-93
   prefs: []
   type: TYPE_TB
 - en: Woah! That's quite a bit faster. For my site, clean compilation time decreased
     by 12.04s(13.6%) on spinning disk and 12.80s(16.0%) for NVME. Houski dropped 22.10s(17.7s).
     Nice boost there.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Incremental compilation times changed signifigantly as well. My site on spinning
     disk dropped 14.62s(71.4%) and 13.5s(70.6%). That's a radical reduction, which
     makes some sense. Incremental compilation spends a majority of it's time in the
     linking step, so any upgrades there will disproportionally affect it.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: As far as Leptos users go, mold only supports compiling for x84_64_linux, so
     the webassembly compile time remained unchanged. Most of these optimizations only
     affect the server build, but I will be careful to note which ones don't.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: With few downsides, and such a huge upside, Mold/Sold seems like a no-brainer,
     especially if you are doing a lot of incremental builds!
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: What will adding more optimization do to compile times?
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-99
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-100
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-101
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 174.399 | 0.488 | -86.012 | -97.31295326 |'
+  id: totrans-split-102
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 166.847 | 0.41 | -86.79 | -108.4102577 |'
+  id: totrans-split-103
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 288.562 | 0.674 | -163.569 | -130.8625283 |'
+  id: totrans-split-104
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-105
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-106
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-107
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 16.201 | 1.303 | 4.26 | 20.82009677 |'
+  id: totrans-split-108
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 14.334 | 0.147 | 4.763 | 24.94109022 |'
+  id: totrans-split-109
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 32.489 | 0.348 | 8.329 | 20.40521339 |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: I did expect a clean compile to be slower, but this is quite a bit slower. Compared
@@ -475,50 +578,64 @@
     build time is a doubling of both the webassembly and server builds, which makes
     sense but should be noted. For me, I don't think the benefits of setting this
     are worth the delays in clean compile times.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-112
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-113
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-114
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 67.989 | 0.763 | 20.398 | 23.07805447 |'
+  id: totrans-split-115
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 63.645 | 0.247 | 16.412 | 20.50039347 |'
+  id: totrans-split-116
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-117
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-118
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-119
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-120
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 9.201 | 0.092 | 11.26 | 55.03152339 |'
+  id: totrans-split-121
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 9.345 | 0.212 | 9.752 | 51.0656124 |'
+  id: totrans-split-122
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-123
   prefs: []
   type: TYPE_TB
 - en: Cranelift, I had high hopes for you, and you delivered! It improved both clean
     and incremental compilations compared to the baseline. You may notice that the
     houski app lines here are blank, which are due to a failure to compile due to
     missing llvm intrinsics.
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: After my testing completed, they merged this [PR](%5B#1417%5D(https://github.com/rust-lang/rustc_codegen_cranelift/pull/1417))
@@ -526,6 +643,7 @@
     that I can avoid the missing aes intrinsics with a rust flag `RUSTFLAGS="--cfg
     aes_force_soft"`. Either that, or this [PR](https://github.com/rust-lang/rustc_codegen_cranelift/pull/1425)
     gets merged into rustup nightly. I hope to update this section soon.
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: If you are missing intrinsics, you can hook up a debugger to see what is causing
@@ -534,86 +652,112 @@
     in the [rustc cranelift repo](https://github.com/rust-lang/rustc_codegen_cranelift/issues/171#issuecomment-1803136179)
     and occasionally check in to see if there's a fix coming. @bjorn3 is on a roll
     there.
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-127
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-128
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-129
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 170.241 | 1.016 | -81.854 | -92.60864154 |'
+  id: totrans-split-130
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 168.047 | 1.018 | -87.99 | -109.9091897 |'
+  id: totrans-split-131
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 271.949 | 0.735 | -146.956 | -117.571384 |'
+  id: totrans-split-132
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-133
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-134
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-135
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 5.789 | 0.051 | 14.672 | 71.70715019 |'
+  id: totrans-split-136
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 5.727 | 0.041 | 13.37 | 70.01099649 |'
+  id: totrans-split-137
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca | 18.15 | 0.202 | 22.668 | 55.53432309 |'
+  id: totrans-split-138
   prefs: []
   type: TYPE_TB
 - en: Our first combination of features. Unforunately, this seems to have the slow
     clean compile times of O3, without decreasing compile times more than mold alone.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-140
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-141
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-142
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 107.401 | 1.05 | -19.014 | -21.51221333 |'
+  id: totrans-split-143
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 103.544 | 0.88 | -23.487 | -29.33784678 |'
+  id: totrans-split-144
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-145
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-146
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-147
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-148
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 4.992 | 0.322 | 15.469 | 75.60236548 |'
+  id: totrans-split-149
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 4.767 | 0.073 | 14.33 | 75.03796408 |'
+  id: totrans-split-150
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-151
   prefs: []
   type: TYPE_TB
 - en: Let's enable all the things! The incremental compiles are faster than any of
@@ -621,44 +765,57 @@
     from O3\. Cranelift seems to reduce the penalty from O3, but time will tell whether
     it is better than Mold + Cranelift alone. I suspect this is because Cranelift
     optimizes less than llvm, which is in line with their documentation.
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-153
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-154
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-155
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 110.251 | 0.687 | -21.864 | -24.737 |'
+  id: totrans-split-156
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 106.732 | 0.526 | -26.675 | -33.323 |'
+  id: totrans-split-157
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-158
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-159
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-160
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-161
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 9.096 | 0.351 | 11.365 | 55.54469479 |'
+  id: totrans-split-162
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 8.73 | 0.076 | 10.367 | 54.28601351 |'
+  id: totrans-split-163
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-164
   prefs: []
   type: TYPE_TB
 - en: Adding further support to the Cranelift optimization hypothesis, we see similiar
@@ -666,44 +823,57 @@
     Mold enabled. It is interesting that this ran faster than the previous test with
     Mold enabled, although I am not sure the difference is signifigant. Perhaps Mold
     and Cranelift or Mold and O3 have some negative interaction I don't recognize.
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: '| Clean Compilation |  |  |  |  |'
+  id: totrans-split-166
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-167
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-168
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 65.343 | 1.243 | 23.044 | 26.07170738 |'
+  id: totrans-split-169
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 59.777 | 0.191 | 20.28 | 25.33195098 |'
+  id: totrans-split-170
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-171
   prefs: []
   type: TYPE_TB
 - en: '| Incremental Compilation |  |  |  |  |'
+  id: totrans-split-172
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-173
   prefs: []
   type: TYPE_TB
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
+  id: totrans-split-174
   prefs: []
   type: TYPE_TB
 - en: '| benw.is 7200RPM | 4.831 | 0.251 | 15.63 | 76.38922829 |'
+  id: totrans-split-175
   prefs: []
   type: TYPE_TB
 - en: '| benw.is NVME | 4.654 | 0.067 | 14.443 | 75.62968005 |'
+  id: totrans-split-176
   prefs: []
   type: TYPE_TB
 - en: '| houski.ca |  |  |  |  |'
+  id: totrans-split-177
   prefs: []
   type: TYPE_TB
 - en: Here's the big money, Cranelift and Mold together. This offered the fastest
@@ -711,6 +881,7 @@
     pretty at around 75% reduction. Interestingly enough, there seemed to be little
     difference between the NVME and the 7200RPM drives here, suggesting that these
     two might be better at using disk I/O than some of the other configurations.
+  id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
 - en: For Rust web frameworks, we can try to simulate the performance of HMR, but
@@ -719,12 +890,14 @@
     css patches to the browser over a web socket connection when a change inside a
     `view` macro is detected that does not involve a change to a rust code block,
     and compile in the background. For me it works fairly well.
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
 - en: I didn't try to instrument and test it, as hot reload times are nearly instant.
     Any changes to the rust code will require a incremental recompilation though,
     which is why it's so useful to improve that time. JS frameworks will probably
     have an edge there for the foreseeable future.
+  id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
 - en: Enabling Mold and Cranelift netted me a 75% incremental and 25% clean compilation
@@ -735,13 +908,16 @@
     Mac, and not on Windows. WSL2 may help improve things, but may [be slower](https://medium.com/for-linux-users/wsl-2-why-you-should-use-real-linux-instead-4ee14364c18).
     Since I have a Mac laptop and a Linux workstation, I will be buying Sold for my
     Mac and using Cranelift for my projects that can.
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
 - en: If you feel like running some of these tests on your hardware or with your project,
     I have automated the process somewhat and put that repo on Github [here](https://github.com/benwis/customs).
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
 - en: Let me know what your experience was, and whether this helped you with your
     project by reaching out on mastodon at `@benwis@hachyderm.io`.
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL

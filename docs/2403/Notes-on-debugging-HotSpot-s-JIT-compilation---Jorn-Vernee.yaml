@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:42:16'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Notes on debugging HotSpot’s JIT compilation | Jorn Vernee
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://jornvernee.github.io/hotspot/jit/2023/08/18/debugging-jit.html](https://jornvernee.github.io/hotspot/jit/2023/08/18/debugging-jit.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,6 +30,7 @@
     This way of doing things allows the JIT to take maximum advantage of the conditions
     that the code is running in, such as hardware, and even to a certain degree the
     specific data that is fed into the program.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Understanding what the JIT compilers do is important when trying to understand
@@ -32,33 +39,41 @@
     is not a post focussed on beginners. Though, it might give some inspiration to
     a beginner for things they might want to learn about. If you wish to know more
     about a certain topic, you’ll have to research it yourself.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[Setting the stage](#1-setting-the-stage)'
+  id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Getting the assembly of a compiled method](#2-getting-the-assembly-of-a-compiled-method)'
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Printing inlining traces](#3-printing-inlining-traces)'
+  id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[A closer look at compile commands](#4-a-closer-look-at-compile-commands)'
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Tracking down escaping objects](#5-tracking-down-escaping-objects)'
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: '[Debugging compilation using a native debugger](#6-debugging-compilation-using-a-native-debugger)'
+  id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 1\. Setting the stage
+  id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -66,14 +81,17 @@
     snippets of Java code. Our goal is to be able to trigger a JIT compilation for
     a particular piece of Java code, so that we can use some of HotSpot’s options
     for debugging the compilation.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'I define a ‘payload’ method, which will hold the code that we wish to JIT compile.
     Then, we trigger the JIT compilation of this payload simply by invoking the method
     a bunch of times. Here is the code:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-17
   prefs: []
   type: TYPE_PRE
 - en: Tier 4 JIT compilation, done by the C2 JIT compiler, which is the highest/most
@@ -82,6 +100,7 @@
     It is also a VM flag, so the threshold can be configured from the command line
     as well. I’m invoking the payload 20K times here to be on the safe side, since
     the invocation counter is not necessarily 100% accurate.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'I just compile the program to bytecode with `javac`. Then, when running it,
@@ -90,6 +109,7 @@
     get a standalone compilation of the `payload` method, which is required to be
     able to inspect the compilation of that particular method in isolation from the
     loop in `main`.'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The other important flag we need to pass is `-Xbatch`. JIT compilation is by
@@ -99,20 +119,25 @@
     debug the compilation. `-Xbatch` makes it so the thread that requests a compilation
     is stopped while the compilation is happening. FWIW, `-Xbatch` is an alias for
     `-XX:-BackgroundCompilation`, i.e. turning off background compilation [2](https://github.com/openjdk/jdk/blob/752121114f424d8e673ee8b7bb85f7705a82b9cc/src/hotspot/share/runtime/globals.hpp#L272-L274)
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you run the test program with these 2 flags (and any other needed flags),
     the output is not very interesting yet:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: Next, let’s see how we can start using this test setup to get interesting information
     out of the compilation of the payload method.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Getting the assembly of a compiled method
+  id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -125,6 +150,7 @@
     using the capstone-based hsdis, as it’s easiest to build, and also what I’m using.
     I’ve put the hsdis library file on the `PATH`, where it can be loaded automatically
     by HotSpot.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now we just run the program again with a couple of additional VM flags to print
@@ -138,22 +164,27 @@
     also pass `-XX:PrintAssemblyOptions=intel`. This last flag is diagnostic, so we
     also have to pass `-XX:+UnlockDiagnosticVMOptions` *before* the `PrintAssemblyOptions`
     flag. Putting it all together, we run the program as follows:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: Note that I’m using powershell. The ticks are the powershell equivalent of `\`
     in a unix shell. I’ve put this command in a script file to make it easier to edit
     and re-run.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'The generated output is architecture specific. I’m using an x64 machine, which
     gives me x64 assembly. If you are using an AArch64 machine, such as Apple’s M1,
     the output will be different. The output I get for my test program above as follows:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'The thing to focus on is the `[Disassembly]` section of the output. Even though
@@ -163,39 +194,49 @@
     for the contents of the `payload` method, then most of the above is irrelevant.
     However, I will walk through it once so that we know which parts we can typically
     ignore:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: Setting up the stack frame. Allocates a bit of memory on the thread’s stack,
     and saves the contents of the `rbp` register to the stack.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: NMethod entry barrier. ‘nmethod’ is the name for a compiled Java method in HotSpot.
     The nmethod entry barrier is needed to make some GCs work. I won’t get into that
     right now.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: Cleaning up the frame.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: Safepoint poll. The VM needs threads to occasionally poll for safe points. At
     a safe point, the JVM state for the current thread is fully known and recoverable.
     This is a point in the code where the VM might want to inspect the thread to do
     various VM operations.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Return instruction
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: I’m going to ignore the rest for now. The important part is that the code for
@@ -204,14 +245,17 @@
     to find the generated code for a snippet is to look for the nmethod entry barrier
     and work forwards from there, or to look for the return instruction and work backwards
     from there.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s modify our `payload` method and see what happens to the generated assembly.
     I’m going to change my payload method to add two numbers together and return the
     result:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: 'I just call it with some dummy arguments in the `main` method. The values don’t
@@ -219,16 +263,20 @@
     JIT compiler will not be able to ‘see’ the actual value of the arguments, and
     has to assume that they could be anything. For similar reasons, it is safe to
     discard the return value in the `main` method:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: 'Recompiling with `javac`, and re-running the program with the flags above,
     gets me this bit of assembly:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: 'I’ve just copied the relevant bits here, starting from the method entry to
@@ -236,25 +284,31 @@
     the arguments are being passed. The HotSpot JITs use a custom calling convention
     for Java methods. So, this can be different from the calling convention used by
     e.g. C:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: 'The assembly for the code `return a + b;` can be found between the nmethod
     entry barrier and the frame cleanup:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: A clever way of adding two values together in a single instruction, and storing
     the result in the `eax` register, which is the register in which integer values
     are returned in the Java compiled calling convention.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: That should give you a basic idea of what is needed to start analysing the code
     generated by the JIT compilers for a particular snippet of Java code.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: A thing to note here is that this assembly was generated with a release build,
@@ -266,9 +320,11 @@
     is building the JDK yourself. This is relatively easy, if you follow the steps
     in the [build guide](https://github.com/openjdk/jdk/blob/master/doc/building.md).
     For a fastdebug build, just make sure to configure the build with `--with-debug-level=fastdebug`.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. Printing inlining traces
+  id: totrans-split-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -279,12 +335,15 @@
     trying to understand the performance of a snippet of Java code. While this information
     is technically present in the assembly as well, the inlining trace gives a much
     nicer high-level overview.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'To start, let’s modify our payload method to call another method:'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: 'We can generate an inlining trace for this compilation using another `CompileCommand`
@@ -292,9 +351,11 @@
     the assembly, I’m going to change the `print` option in that flag to `PrintInlining`,
     which will give us an inlining trace: `-XX:CompileCommand=PrintInlining,TestJIT::payload`.
     The output I get is simply:'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: The format of an inlining trace is not really documented, unfortunately. The
@@ -312,16 +373,20 @@
     indentation of the lines indicates the ‘level’ of inlining that occurred. Since
     the `yetAnotherMethod` method is inlined transitively through `otherMethod`, its
     line indented by 2 extra spaces.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s see what happens if we disable inlining of `otherMethod` using the `-XX:CompileCommand=dontinline,TestJIT::otherMethod`
     flag. Now the inlining trace looks like this:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: That should cover the basics of inlining traces.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'Some notes for debugging profile pollution: profiling happens for instance
@@ -332,6 +397,7 @@
     a lot of different receiver types, C2 can fail to inlining such method calls.
     This is sometimes called profile pollution: the profile for the call is ‘polluted’
     with many different receiver types.'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: Inlining traces can be useful to diagnose profile pollution. Polluted methods
@@ -346,18 +412,22 @@
     ` 2591 308 b 4 AbsMapProfiling::payload (139 bytes)` followed by the inlining
     trace for that compilation). For the most relevant information, you probably want
     to look at the trace for that last compilation of the method.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: 4\. A closer look at compile commands
+  id: totrans-split-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'By now you’ve probably noticed how useful the `-XX:CompileCommand=...` option
     is. This command is used to control compiler settings on a per-method basis. To
     get more information about the `CompileCommand` flag, we can use:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: This will output the standard Java help message, but if you scroll up above
@@ -365,37 +435,46 @@
     This describes the syntax of the flag, and lists all the options that can be used
     in combination with the flag. A lot of the flags are also listed in the [`./src/hotspot/share/compiler/compilerDirectives.hpp`
     file](https://github.com/openjdk/jdk/blob/bcba5e97857fd57ea4571341ad40194bb823cd0b/src/hotspot/share/compiler/compilerDirectives.hpp).
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: Besides specifying these compile commands on the command line, it’s also possible
     to specify them through a json file, which gives slightly more flexibility wrt.
     which compiler the option applies to. More information about that can be found
     in [the JEP](https://openjdk.org/jeps/165)
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: If you look at the compilerDirectives file, you might notice that some options
     are only available in non-product builds.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: 5\. Tracking down escaping objects
+  id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: For this section, I’m going to be using a ‘fastdebug’ build of HotSpot. You
     will not be able to use a release build if you wish to follow along.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'You might have encountered this when running [JMH](https://github.com/openjdk/jmh)
     benchmarks with `-prof gc`. You have a benchmark like so:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: 'And when running it with `-prof gc` you see some allocation happening:'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: 96 bytes per operation are being allocated. But, HotSpot has escape analysis
@@ -405,55 +484,68 @@
     compile command (which is not available in release builds). This command prints
     a trace of the escape analysis algorithm, which we can use to track down which
     objects escape, and why.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s start by modifying our payload to include the code from the benchmark:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: 'Note that I’ve turned the payload method into an instance method, to make that
     work I’m simply creating an instance of the TestJIT class and invoking the payload
     method on that:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: 'To get an escape analysis trace, I change the `PrintInlining` option to `TraceEscapeAnalysis`
     in the base command: `-XX:CompileCommand=TraceEscapeAnalysis,TestJIT::payload`.
     I also pipe the output to a file `... > EA.txt`, since it’s quite long.'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'The output I get is long, and I wont include it in full here. The important
     thing to look for are the lines like this:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: Notice the `ea_inv=0` at the end. Escape analysis can run for multiple iterations.
     To find escaping objects however, only the last iteration is relevant. So, I just
     search for `ea_inv`, and find the last iteration which is `ea_inv=1`, and delete
     the rest of the trace before that.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: 'The rest of the trace should be split into 2 parts: the initial work list,
     whose start is marked by the line of text above, and then the actual calculation
     trace, which is marked by the following line:'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-89
   prefs: []
   type: TYPE_PRE
 - en: 'The next step is to find our object allocations in the initial work list. Object
     allocations are represented by `Allocate` nodes in C2, so we can look for the
     string `''Allocate ===''`. Be sure to only look at the allocations in the initial
     work list. There should be 2 for the test program I’ve shown:'
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-91
   prefs: []
   type: TYPE_PRE
 - en: 'These allocations start out as non-escaping, but at some point they are discovered
@@ -462,25 +554,32 @@
     @ bci:0 (line 12)` and `TestJIT$Scope::<init> @ bci:5 (line 20)`. So we have 2
     allocations, one in the payload method on line 12, and one in the constructor
     of `Scope` on line 20\. These are the lines:'
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-93
   prefs: []
   type: TYPE_PRE
 - en: 'And:'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-95
   prefs: []
   type: TYPE_PRE
 - en: Exactly where we are using the `new` operator!
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, let’s try and find why these objects are escaping. I’ll start by searching
     for `JavaObject(9)` in the ‘calculating escape states …’ messages. I find this:'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-98
   prefs: []
   type: TYPE_PRE
 - en: 'We can see here that the state of `JavaObject(9)` is updated to `ArgEscape(GlobalEscape)`,
@@ -488,21 +587,26 @@
     Scalar Replaceable). To find the reason for this, we have to follow back the chain
     of state updates in the log to the root. In this message we can see the state
     is propagated from `LocalVar(28)`. When I search for that, I find this:'
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-100
   prefs: []
   type: TYPE_PRE
 - en: 'i.e. the state for `LocalVar(28)` was itself propagated from `LocalVar(41)`.
     If I keep following the chain back, I eventually get to:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-102
   prefs: []
   type: TYPE_PRE
 - en: i.e. our object escapes through an out-of-line call to `TestJIT$Scope::close`!
     And, if we follow the same process for `JavaObject(10)`, our other allocation,
     we end up at the same call. So, both objects escape through this call.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: 'I’ll say that the process of following the log is somewhat tedious. Lucky for
@@ -510,22 +614,27 @@
     back information about escaping objects. You can find it [here](https://cr.openjdk.org/~jvernee/TraceEAParser.java).
     If I invoke that script on the trace: `java .\TraceEAParser.java EA.Txt`, I get
     the following:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-split-105
   prefs: []
   type: TYPE_PRE
 - en: A nice summary of the escaping allocations (if I do say so myself ;)). Again,
     we can see here that there are 2 escaping allocations which are both escaping
     through a call to `TestJIT$Scope::close`.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, for the reason why this out of line call is here, we can generate an inlining
     trace, as shown in [section 3](#3-printing-inlining-traces). If we look for `TestJIT$Scope::close`
     in the trace, we find this:'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: Unfortunately, `TestJIT$Scope::close` is not being inlined, which makes our
@@ -535,9 +644,11 @@
     more useful tool to track down a problematic piece of code in order to apply a
     spot fix. But, unfortunately when dealing with performance, there is not always
     a pot of gold at the end of the rainbow.
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: 6\. Debugging compilation using a native debugger
+  id: totrans-split-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -547,21 +658,26 @@
     falls short. For this, we need a ‘slowdebug’ build (obtained in a similar way
     to a fastdebug build). This is needed so that the VM is actually debugable without
     too many issues using a native debugging tool.'
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: To set up debugging of the VM, I first set up a VSCode project by running `make
     vscode-project` in the JDK build system. That should generate a `./build/<config>/jdk.code-workspace`
     file which I can open in VSCode through `File -> Open Workspace from File...`.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, I add these 2 lines of code to the start of the `main` method in our
     test program:'
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-split-114
   prefs: []
   type: TYPE_PRE
 - en: I print out the current process id, and then ‘wait’ by reading from stdin.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: 'Next, I add the `-XX:CompileCommand=BreakAtCompile,TestJIT::payload,true` command
@@ -575,6 +691,7 @@
     from the `C/C++` VSCode plugin. Adding the run configuration is only needed once,
     after which I can just click the little green arrow in the top left with the ‘(Windows)
     Attach’ run configuration selected.'
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: After attaching the native debugger using the printed pid, and pressing ‘enter’
@@ -582,21 +699,26 @@
     back up and throws me somewhere into the HotSpot compiler code. At this point
     I can set other breakpoints in the compiler code, and begin debugging the compilation
     of the payload method.
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: That should give you a basic idea of how to debug a compilation with a native
     debugger.
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-119
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: That’s all I have for now. Hopefully showing some of the debugging techniques
     I use gave you some inspiration for debugging HotSpot’s JIT compilers yourself.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks for reading
+  id: totrans-split-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL

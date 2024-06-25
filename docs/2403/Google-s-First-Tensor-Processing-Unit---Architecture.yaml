@@ -1,84 +1,100 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:38:54'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Google's First Tensor Processing Unit - Architecture
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://thechipletter.substack.com/p/googles-first-tpu-architecture](https://thechipletter.substack.com/p/googles-first-tpu-architecture)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: … we say tongue-in-cheek that TPU v1 “launched a thousand chips.”
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In [Google’s First Tensor Processing Unit - Origins](https://thechipletter.substack.com/p/googles-first-tensor-processing-unit),
     we saw why and how Google developed the first Tensor Processing Unit (or TPU v1)
     in just 15 months, starting in late 2013\.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Today’s post will look in more detail at the architecture that emerged from
     that work and at its performance.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[Share](https://thechipletter.substack.com/p/googles-first-tpu-architecture?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: A quick reminder of the objectives of the TPU v1 project. As Google saw not
     only the opportunities provided by a new range of services using Deep Learning
     but also the huge scale and the cost of the hardware that would be needed to power
     these services, the aims of the project would be …
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: … to develop an Application Specific Integrated Circuit (ASIC) that would generate
     a 10x cost-performance advantage on inference when compared to GPUs.
+  id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: and to …
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Build it quickly
+  id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Achieve high performance
+  id: totrans-split-14
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '......at scale'
+  id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '...for new workloads out-of-the-box...'
+  id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: all while being cost-effective
+  id: totrans-split-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Before we look at the TPU v1 that emerged from the project in more detail, a
     brief reminder of the Tensor operations that give the TPU its name.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Why is a Tensor Processing Unit so called? Because it is designed to speed up
     operations involving tensors. Precisely, what operations though? The operations
     are referred to … as a “map (multilinear relationship) between different objects
     such as vectors, scalars, and even other tensors”.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -86,10 +102,7 @@
     relationship between two one-dimensional arrays. The mathematically inclined will
     recognize the process of getting from one vector to the other as multiplying a
     vector by a matrix to get another vector.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -98,20 +111,24 @@
     arbitrary higher-dimensional arrays, in practice the TPU hardware that we will
     consider is designed to perform calculations associated with one and two-dimensional
     arrays. Or, more specifically, vector and matrix operations.
+  id: totrans-split-21
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Let’s look at one of these operations, matrix multiplication. If we take two
     2x2 matrices (2x2 arrays) then we multiply them together to get another 2x2 matrix
     by multiplying the elements as follows.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'Why are matrix multiplications key to the operation of neural networks? We
     can look at a simple neural network with four layers as follows (only the connections
     from the first node in each later layer are shown for simplicity):'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Where ‘f’ here is the [activation function](https://en.wikipedia.org/wiki/Activation_function).
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: So the hidden and output layers are the results of applying the activation function
@@ -119,14 +136,17 @@
     input values times the matrix of weights. With a number of data inputs this is
     equivalent to applying the activation function to each entry in a matrix that
     is the result of a matrix multiplication.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: As we’ve seen, the approach adopted by the TPU v1 team was an architecture first
     set out by H.T Kung and Charles E. Leiserson in their 1978 paper [Systolic Arrays
     (for VLSI)](https://www.eecs.harvard.edu/htk/static/files/1978-cmu-cs-report-kung-leiserson.pdf).
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: A systolic system is a network of processors which rhythmically compute and
@@ -134,64 +154,58 @@
     processor is analogous to that of the heart. Every processor regularly pumps data
     in and out, each time performing some short computation so that a regular flow
     of data is kept up in the network.
+  id: totrans-split-28
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: So how is the systolic approach used in the TPU v1 to efficiently perform matrix
     multiplications? Let’s return to our 2x2 matrix multiplication example.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: If we have a 2x2 array of multiplication units that are connected in a simple
     grid, and we feed the elements of the matrices that we are multiplying, into the
     grid in the right order then the results of the matrix multiplication will naturally
     emerge from the array.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: The calculation can be represented in the following diagram. The squares in
     each corner represent a multiply / accumulate unit (MAC) that can perform a multiplication
     and addition operation.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: In this diagram, the values in yellow are the inputs that are fed into the matrix
     from the top and the left. The light blue values are the partial sums that are
     stored. The dark blue values are the final results
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: .Let’s take it step by step.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '*Step 1:*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Values a11 and b11 are loaded into the top left multiply/accumulate unit (MAC).
     They are multiplied together and the result is stored.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Step 2:*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Values a12 and b21 are loaded into the top left MAC. They are multiplied together
     and added to the previously calculated result. This gives the top left value of
     the results matrix.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-37
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -199,18 +213,12 @@
     the newly loaded value a21 and the result is stored. Also, a11 is transferred
     to the bottom left MAC where it is multiplied by the newly loaded value b12, and
     the result is stored.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Step 3:*'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -220,42 +228,31 @@
     loaded value b22, and the result is added to the previously stored result. In
     this step, we have calculated the top right and bottom left values of the results
     matrix.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Meanwhile, a12 and b21 are transferred to the bottom right MAC where they are
     multiplied and the result is stored.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*Step 4: *'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-42
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Finally, a22 and b22 are transferred to the bottom right MAC where they are
     multiplied and the result is added to the previously stored value giving the bottom
     right value of the results matrix.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-43
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: So the results of the matrix multiplication emerge down a moving ‘diagonal’
     in the matrix of MACs.
+  id: totrans-split-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -264,64 +261,77 @@
     In practice, a new matrix multiplication would start top left as soon as the MAC
     is free. As a result the unit is capable of a new matrix multiplication every
     two cycles.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: This is a simplified representation of how a systolic array works and we’ve
     glossed over some of the details of the implementation of the systolic array in
     TPU v1\. I hope that the principles of how this architecture works are clear though.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: This is the simplest possible matrix multiplication but can be extended to bigger
     matrices with larger arrays of multiplication units.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: The key point is that if data is fed into the systolic array in the right order
     then the flow of values and results through the system will ensure that the required
     results emerge from the array over time.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Crucially there is no need to store and fetch intermediate results from a ‘main
     memory’ area. Intermediate results are automatically available when needed due
     to the structure of the matrix multiply unit and the order in which inputs are
     fed into the unit.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: 'Of course, the matrix multiply unit does not sit in isolation and the simplest
     presentation of the complete system is as follows:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: The first thing to note is that TPUv1 relies on communication with the host
     computer over a [PCIe](https://en.wikipedia.org/wiki/PCI_Express) (high speed
     serial bus) interface. It also has direct access to its own DDR3 Dynamic RAM storage.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can expand this to a more detailed presentation of the design:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s pick some key elements from this presentation of the design, starting
     at the top and moving (broadly) clockwise:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '**DDR3 DRAM / Weight FIFO:** Weights are stored in DDR3 RAM chips connected
     to the TPU v1 via DDR3-2133 interfaces. Weights are ‘pre-loaded’ onto these chips
     from the host computer’s memory via PCIe and can then be transferred into the
     ‘Weight FIFO’ memory ready for use by the matrix multiply unit.'
+  id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Matrix Multiply Unit:** This is a ‘systolic’ array with 256 x 256 matrix
     multiply/accumulate units that is fed by 256 ‘weight’ values from the top and
     256 data inputs from the left.'
+  id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Accumulators:** The results emerge from the systolic matrix unit at the bottom
     and are stored in ‘accumulator’ memory storage.'
+  id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Activation:** The activation functions described in the neural network above
     are applied here.'
+  id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -329,6 +339,7 @@
     functions are stored in a ‘unified buffer’ memory where they are ready to be fed
     back as inputs to the Matrix Multiply Unit to calculate the values needed for
     the next layer.'
+  id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -336,58 +347,72 @@
     matrix multiply unit. TPU v1 performs 8-bit x 8-bit integer multiplications, making
     use of quantization to avoid the need for more die-area-hungry floating-point
     calculations.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: The TPU v1 uses a CISC (Complex Instruction Set Computer) design with around
     only about 20 instructions. It’s important to note that these instructions are
     sent to it by the host computer over the PCIe interface, rather than being fetched
     from memory.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'The five key instructions are as follows:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '***Read_Host_Memory***'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: Reads input values from the host computer’s memory into the Unified Buffer over
     PCIe.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '***Read_Weights***'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Read weights from the weight memory into the Weight FIFO. Note that the weight
     memory will already have been loaded with weights read from the computer’s main
     memory over PCIe.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '***Matrix_Multiply / Convolve***'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: From the paper this instruction
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: … causes the Matrix Unit to perform a matrix multiply or a convolution from
     the Unified Buffer into the Accumulators. A matrix operation takes a variable-sized
     B*256 input, multiplies it by a 256x256 constant weight input, and produces a
     B*256 output, taking B pipelined cycles to complete.
+  id: totrans-split-68
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: This is the instruction that implements the systolic array matrix multiply.
     It can also perform convolution calculations needed for Convolutional Neural Networks.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '***Activate***'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: From the paper this instruction
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: Performs the nonlinear function of the artificial neuron, with options for ReLU,
     Sigmoid, and so on. Its inputs are the Accumulators, and its output is the Unified
     Buffer.
+  id: totrans-split-72
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -397,29 +422,36 @@
     and [Sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) are two of the most
     popular activation functions. Having these implemented in hardware will have provided
     a useful speed-up in the application of the activation functions.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '***Write_Host_Memory***'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: Writes results to the host computer’s memory from the Unified Buffer over PCIe.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'It’s probably worth pausing for a moment to reflect on the elegance of these
     five instructions in providing an almost complete implementation of inference
     in the TPU v1\. In pseudo-code, we could describe the operation of the TPU v1
     broadly as follows:'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: 'It’s also useful to emphasize the importance of the systolic unit in making
     this possible and efficient. As described by the TPU v1 team (and as we’ve already
     seen):'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: .. the matrix unit uses systolic execution to save energy by reducing reads
@@ -428,22 +460,21 @@
     data flows in from the left, and the weights are loaded from the top. A given
     256-element multiply-accumulate operation moves through the matrix as a diagonal
     wavefront.
+  id: totrans-split-80
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The TPU v1’s hardware would be of little use without a software stack to support
     it. Google developed and used Tensorflow so creating ‘drivers’ so that Tensorflow
     could work with the TPU v1 was the main step needed.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: The TPU software stack had to be compatible with those developed for CPUs and
     GPUs so that applications could be ported quickly to the TPU. The portion of the
     application run on the TPU is typically written in TensorFlow and is compiled
     into an API that can run on GPUs or TPUs.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-82
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -452,6 +483,7 @@
     It is designed for long-term stability. The User Space driver changes frequently.
     It sets up and controls TPU execution, reformats data into TPU order, translates
     API calls into TPU instructions, and turns them into an application binary.
+  id: totrans-split-83
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -460,16 +492,19 @@
     the die area of the Intel Haswell CPU and Nvidia’s K80 GPU chips, each of which
     was built with more advanced processes, that Google was using in its data centers
     at this time.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: We have already seen how simple the TPU v1’s instruction set was, with just
     20 CISC instructions. The simplicity of the ISA leads to a very low ‘overhead’
     in the TPU v1’s die for decoding and related activities with just 2% of the die
     area dedicated to what are labeled as ‘control’.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: By contrast, 24% of the die area is dedicated to the Matrix Multiply Unit and
     29% to the ‘Unified Buffer’ memory that stores inputs and intermediate results.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: At this point, it’s useful to remind ourselves that the TPU v1 was designed
@@ -477,25 +512,31 @@
     provided at Google’s scale - more efficient. It was not designed to improve the
     speed or efficiency of training. Although they have some features in common inference
     and training provide quite different challenges when developing specialized hardware.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: So how did the TPU v1 do?
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: In 2013 the key comparisons for the TPU v1 were with Intel’s Haswell CPU and
     Nvidia’s K80 GPU.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: 'And crucially the TPU v1 was much more energy efficient that GPUs:'
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: In the first post on the TPU v1, we focused on the fact that an organization
     like Google could marshal the resources to build the TPU v1 quickly.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: In this post we’ve seen how the custom architecture of the TPU v1 was crucial
     in enabling it to generate much better performance with much lower energy use
     than contemporary CPUs and GPUs.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: The TPU v1 was only the start of the story. TPU v1 was designed quickly and
@@ -503,9 +544,11 @@
     had a number of clear limitations and was not designed for training. Both inside
     and outside Google firms would soon start to look at how TPU v1 could be improved.
     We’ll look at some of its successors in later posts.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: After the paywall, a small selection of further reading and viewing on Google’s
     TPU v1.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL

@@ -1,33 +1,42 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:38:05'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: zeux.io - Condvars and atomics do not mix
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://zeux.io/2024/03/23/condvars-atomic/](https://zeux.io/2024/03/23/condvars-atomic/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Condvars and atomics do not mix
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 23 Mar 2024
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'When using `std::condition_variable`, there’s an easy to remember rule: all
     variables accessed in wait predicate must be changed under a mutex. However, this
     is easy to accidentally violate by throwing atomics in the mix.'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: This post is much shorter than usual, and it was originally written in 2022
@@ -39,13 +48,16 @@
     experiment with posting shorter technical content like this more regularly in
     the coming months, including reposting my earlier Cohost posts (of which this
     is one of).
+  id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Consider how a typical job pool worker function might look like:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-11
   prefs: []
   type: TYPE_PRE
 - en: 'This code is conserving CPU resources in case the work queue is empty by waiting
@@ -54,38 +66,48 @@
     `std::thread` object running this code - but if the thread is waiting for work,
     `join()` will hang because work never arrives! No problem, let’s add `std::atomic<bool>
     m_kill_flag`, and change the loop accordingly:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: 'Now all we need to do is raise the flag before joining the threads:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: All good? Not so fast! This code has a race condition, and may occasionally
     hang!
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'The fact that `m_kill_flag` is an atomic here is doing us a disservice: if
     we change it to a regular bool, then Clang’s thread sanitizer dutifully complains
     that the write to the boolean is unprotected:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: The boolean is read under the mutex, but it was written without the mutex being
     held. It may feel like an overkill to grab a mutex to toggle a boolean, and using
     `std::atomic` fixes ThreadSanitizer report - but doesn’t fix the race.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'Consider that `wait(pred)` is equivalent to a loop like this:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: What can happen in case above is that the thread checks the kill flag, which
@@ -94,6 +116,7 @@
     that `notify_all` can wake it), the main thread sets the flag to true and calls
     `notify_all`. The notification state isn’t “sticky” - `notify_all` will not wake
     threads that aren’t currently waiting on the condition variable!
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: After this main thread proceeds to call join, and the worker thread calls `cvar.wait()`
@@ -101,18 +124,22 @@
     Thus the thread waits on condition variable forever, and main thread waits to
     join the thread forever - a deadlock, that unfortunately escapes ThreadSanitizer’s
     attention because `std::atomic` silences the report.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'The correct way to go here is to ditch the atomic and grab the mutex in the
     destructor:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: This ensures that the state of kill flag can’t change between checking the predicate
     state, and the work that the condition variable does to atomically unlock the
     mutex and add the thread to the condition variable wait list, fixing the race.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Note that `notify_all` can also be called outside of the scope; the code above
@@ -121,6 +148,7 @@
     will serialize with each other on wakeup so it’s not likely to be a significant
     issue in this case, but it’s something to keep in mind in other cases, especially
     when using `notify_one`.
+  id: totrans-split-27
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -131,5 +159,6 @@
     - but what’s often desired is “logical” atomicity, where whole system invariants
     continue to hold, and issues around this are easy to miss especially when tools
     like ThreadSanitizer only check individual accesses.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL

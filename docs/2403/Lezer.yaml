@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:37:49'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://marijnhaverbeke.nl/blog/lezer.html](https://marijnhaverbeke.nl/blog/lezer.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,54 +31,65 @@
     happen when you generalize parsing techniques to work for different grammars.
     Since compiler textbooks usually describe general approaches to parsing, they
     may be to blame for putting people off.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: This post describes a [new parsing system](https://lezer.codemirror.net) I wrote
     for [CodeMirror](https://codemirror.net), a source code editor. It frames the
     system with some history, and digresses into some neat architectural details.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Editor features like syntax highlighting, bracket matching, code folding, and
     autocompletion all involve some level of parsing. Unfortunately, since editors
     have to handle many different languages, they require a generalized approach to
     parsing.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: CodeMirror is in the process of being rewritten, and I wanted to improve the
     way it parses its content. Parsing inside of an editor comes with its own unique
     set of constraints, which can be hard to satisfy. Though I had been planning new
     approaches for years, all I had to show for it so far were a pile of dead ends.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'The constraints that make the parsing problem in a code editor hard are roughly
     these:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: The document is constantly changing.
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You can't do anything expensive. If the parsing works takes too long, it'll
     introduce latency that makes editing feel [slugglish](https://input-delay.glitch.me/)
     and unresponsive.
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The input is often not in a finished, syntactically correct form. But you still
     have to make some sense of it—nobody wants an editor where most features stop
     working when you have a syntax error in your document.
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: You often want to be able to mix several languages/grammars in a single document
     (think HTML with JavaScript and CSS embedded in it).
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Keeping those in mind, let's go over the approaches I've tried.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: A Brief History of CodeMirror Parsing
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -82,6 +99,7 @@
     labels each piece with some syntactic category (such as `variable`, `keyword`,
     or `number`). The tokenizers can be stateful, which allows them to secretly be
     full parsers if they want to.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: This state must by copyable, so that the editor can strategically store tokenizer
@@ -90,9 +108,11 @@
     in the code in the visible viewport, this means the complexity of re-tokenizing
     is bounded by the distance between the change and the end of the viewport. Since
     most changes happen inside of that viewport, this works well in practice.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Such tokenizers are awkward to write directly, so over the years several attempts
@@ -107,6 +127,7 @@
     [extension](http://cm/demo/simplemode.html) because the base spec was too limiting.
     There are a few CodeMirror modes still based on that code, but it was no real
     success.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: I think the reason such state machines (and the somewhat related [TextMate grammars](https://macromates.com/manual/en/language_grammars)
@@ -119,9 +140,11 @@
     tokens into a single expression to avoid creating intermediate states. This “abstraction”
     has a tendency to produce uglier, less maintainable code than what you'd get when
     writing the tokenizer as plain code.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: So in 2017, I started an ambitious project to create a better way to abstractly
@@ -132,11 +155,13 @@
     based on context-free grammars and had some interesting properties, such as being
     able to combine multiple grammars to create a new grammar (which is great for
     mixed-language documents).
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: So I spent several months building a parsing system that took a PEG-like grammar,
     compiled it down to a state machine, and made it possible to run that state machine
     as a CodeMirror language mode.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: This [system](https://github.com/codemirror/grammar-mode) is a marvel. It uses
@@ -144,6 +169,7 @@
     to generate the state machines. The result works quite well, and is used in several
     real-world systems today. But unfortunately, if I'm honest, it is a tragically
     bad idea taken way too far.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Parsing expression grammars are parsed by backtracking. And as such, they are
@@ -153,6 +179,7 @@
     PEG at all, but a system where you had to explicitly annotate where the parser
     should look ahead. Though grammars written this way were relatively readable,
     they involved a lot of finicky, error-prone kludges to resolve local ambiguity.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Also, parsing PEG is just really inefficient. Such grammars are “scannerless”
@@ -162,48 +189,58 @@
     in the compiler was intended to recover the tokens that were implicit in the grammar,
     in order to recover some efficiency. But the system never came close to hand-written
     language modes in terms of speed.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Tree-sitter
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: So, though I knew I needed a new approach, I went into the CodeMirror 6 rewrite
     without any specific idea on what that approach would look like.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: And then I saw [tree-sitter](http://tree-sitter.github.io/tree-sitter/), and
     was enlightened.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 'Tree-sitter is a parser system written with the code editor use case in mind,
     and is in the process of being integrated into the [Atom editor](https://atom.io/).
     It takes a much more ambitious approach to what a parser inside an editor should
     do: It builds up a full, accurate syntax tree for the content.'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: You can do so much more with an actual syntax tree than with a sequence of tokens.
     Whereas tokens, possibly augmented with some information stored in the tokenizer
     state, allow you to sort of approximate understanding some aspects of the code's
     structure, a tree usually gives you precisely the information you need.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Most of the ideas that tree-sitter uses aren't new, in fact a [paper](https://www.researchgate.net/profile/SL_Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)
     from 2000 describes a somewhat similar system. But as far as I know, tree-sitter
     is the first system that puts them all together into a practical piece of software.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Unfortunately, tree-sitter is written in C, which is still awkward to run in
     the browser (and CodeMirrror targets non-WASM browsers). It also generates very
     hefty grammar files because it makes the size/speed trade-off in a different way
     than a web system would.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: But good ideas can be ported. [Lezer](https://lezer.codemirror.net) is a JavaScript-based
     system heavily inspired by tree-sitter.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: LR Parsing and Context-Free Grammars
+  id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -211,11 +248,13 @@
     context-free grammars and [LL](https://en.wikipedia.org/wiki/LL_parser) or [LR](https://en.wikipedia.org/wiki/LR_parser)
     parsing algorithms were just not suitable for the editor use case. My arguments
     for this were...
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '*Context-free grammars are a limiting abstraction that breaks down as soon
     as the language does anything funky. Needing the grammar to be LR or LL to please
     the parser generator further pins you into a corner.*'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: This is not wrong. Expressing operator precedence in a pure context-free grammar
@@ -223,50 +262,61 @@
     you need to implement something like automatic semicolon insertion or whitespace-sensitivity,
     which would be a couple of lines of code in a hand-written grammar, you can't
     express that directly, and have to somehow escape the context-free abstraction.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Making such a grammar suitable for an LR parser generator can be even more tricky,
     and often requires you to have a rather deep understanding of how the parser generator
     works.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: But like many things, once you get to know them, they aren't that bad. Parser
     generators can support precedence declarations, which make operator parsing a
     lot less terrible. They can even output decent error messages.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Supporting dynamic resolution of ambiguities through something like [GLR parsing](https://en.wikipedia.org/wiki/GLR_parser)
     can provide a practical way out of situations that parser generators are traditionally
     bad at.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: And contrary to some of the abstractions I mentioned before, this one actually
     gets us something. Context-free grammars, when combined with a proper parser generator,
     really do give us fast parsers from readable, compact grammar declarations.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '*A strict separation between the tokenizer and parser is problematic.*'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: It is, in many languages (think of JavaScript's ambiguity between regular expressions
     and the division operator). It also tends to make mixed-language parsing harder.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: But just because this type of parser is traditionally ran with a completely
     separate tokenizer doesn't mean it has to be. Having the parse state drive the
     tokenizer is largely unproblematic. You can even have the parser generator set
     this up [automatically](#contextual-tokens), without user involvement.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '*Generated parsers are way too big.*'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: A naively generated LR parser is *huge*, and many tools spit out embarrassingly
     big files. But with careful parser state deduplication and table compression such
     a parser can be made about as compact as a hand-written one.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '*Making such a parser error-tolerant is extremely cumbersome.*'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: If you search the scholarly literature for approaches to error-tolerance in
@@ -274,15 +324,18 @@
     but none of them are very practical. Most require the grammar writer to explicitly
     annotate the grammar with error-recovery strategies, bloating the grammar and
     putting the responsibility for getting it right on every grammar author.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Tree-sitter ingeniously abuses [GLR parsing](https://en.wikipedia.org/wiki/GLR_parser),
     where the parser can try multiple interpretations simultaneously, to integrate
     automatic error-correction without a lot of extra complexity. Lezer copies [this
     approach](#error-recovery).
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -291,11 +344,13 @@
     a bit less advanced than tree-sitter in some areas, a bit more advanced in others,
     and simply different on quite a lot of points, as determined by a different set
     of priorities and tastes.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: CodeMirror 6 will retain the ability to run a classical stateful tokenizer,
     but its recommended way to define a language mode is to write a Lezer grammar
     and wrap it in a CodeMirror-specific packages that adds some editor-related metadata.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer is an [LR](https://en.wikipedia.org/wiki/LR_parser) (with opt-in [GLR](https://en.wikipedia.org/wiki/GLR_parser))
@@ -304,37 +359,44 @@
     of the old parse tree. It automatically tries to recover and continue parsing
     when it runs into a syntax error, leaving markers in the output tree that indicate
     where the recovery happened.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer consists of an off-line parser generator tool, which takes a grammar description
     and outputs a JavaScript module containing a parser for that grammar, and a parser
     run-time system (which such output files depend on) to do the actual parsing.
     Only the run-time system and the generated parser need to be loaded by the editor.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: The parser outputs non-abstract syntax trees, meaning that it just creates a
     raw tree structure containing the constructs it parsed (with information on where
     it found them), without organizing them into a clean, easy-to-use data structure.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: The system is optimized for compactness, both in parser table size and syntax
     tree size. It needs to be practical to ship a bunch of parsers to a user on the
     web without producing megabytes of network traffic, and it needs to be realistic
     to keep syntax trees for large documents around without running out of memory.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: The [Lezer guide](https://lezer.codemirror.net/docs/guide/) provides a more
     thorough introduction, as well as a description of its grammar notation. In this
     blog post, I want to go into the neat implementation details that aren't relevant
     in user documentation.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: Error Recovery
+  id: totrans-split-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The point where I became convinced that I definitely needed to use or copy tree-sitter
     was when I understood its error recovery strategy.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Say you reach a point where you can no longer proceed normally because there
@@ -342,49 +404,58 @@
     meaningful constructs that could still be parsed. We want those constructs in
     our syntax tree. But our regular parsing process is stuck—it doesn't know how
     to get from the error to a state where the parse can continue.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: I definitely did not want to require the grammar author to add error recovery
     hints to their grammar. These tend to clutter up the grammar and are error-prone
     to write. Writing a grammar is hard enough without that distraction.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: You can see error recovery as a search problem. There might be a parse state
     and input position (past the error) where the parse can meaningfully continue.
     We just have to find it.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: The actions encoded in the parse tables, along with some recovery-specific actions
     that the parser wouldn't normally take, provide a kind of search tree. You start
     at the state(s) where the error occurred, and keep exploring new states from there.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: But what does the accept condition look like? When do you know that you've found
     an acceptable solution? You could define that precisely, for example as the state
     that can handle the next N tokens without further errors. But we can also be vague.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: The solution found by [Max Brunsfeld](https://github.com/maxbrunsfeld) in tree-sitter
     is to use the same mechanism that's used to parse ambiguous grammars. A GLR parser
     can split its parse stack and run both sides alongside each other for a while
     until it becomes clear which one works out.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: That's pretty much exactly what a search algorithm does—it tracks a number of
     branches that it still has to explore, and continues to explore them, possibly
     pruning unpromising branches with some heuristic, until it finds a solution.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: To be able to get good results, or at least *some* result, in messy situations
     like longer stretches of invalid input, each branch has a badness score associated
     with it, which is increased (linearly) each time a recovery action is taken, and
     decreased (asymptotically) every time it can consume a token normally.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: What we want to do is, after an error, try all kinds of possible recovery tricks,
     which recursively branch off a large amount of states. But then, after a bit of
     that, we should consolidate to one or, at most, a few parse states again, because
     parsing input in a whole bunch of different ways is expensive.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: To get this effect, Lezer forbids states with a badness higher than a given
@@ -395,22 +466,27 @@
     In cases where the input continues to make no sense, all branches will eventually
     get a badness score exceeding the maximum, and the parser will only continue one
     of them.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: 'The recovery strategies used are:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Skip the next token, and try again with the same state after that.
+  id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Invent a token—take any of the tokens that are valid in this state, and continue
     to the state that consuming them would produce. This is the main source of branching,
     since many states allow a lot of tokens.
+  id: totrans-split-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Force the end of the innermost production that's currently being parsed.
+  id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -420,15 +496,18 @@
     dampened). The system is biased a bit towards the token-skipping rule, so that
     if all else fails it'll, in effect, just continue skipping tokens until it stumbles
     into a situation where it can continue parsing.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: Post-Order Parser Output
+  id: totrans-split-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When you have a parser that may be splitting its state—a lot—and build up parts
     of the tree multiple times, that duplicate tree building and the bookkeeping involved
     in it can cause a lot of unnecessary work.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: 'The order in which an LR parser creates nodes is inner-to-outer. It will, for
@@ -437,16 +516,19 @@
     tree structure right away, the parser just keeps a flat log of the nodes it created.
     This can be an array in which the nodes are arranged in [post-order](https://en.wikipedia.org/wiki/Tree_traversal#Post-order_(LRN)),
     with children coming before parents.'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: The parser just appends to this array. When splitting the state, one state keeps
     the existing array, and the other gets a new empty array along with a pointer
     to the state that has the rest of the array, and the length of that array at the
     time of the split.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: Now splitting involves no node copying at all. You do need to copy the state
     stack, which LR parser use to track context, but that is generally shallow.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: In addition, node allocation becomes as cheap as appending a few numbers to
@@ -454,23 +536,28 @@
     rules as uninteresting, to keep the tree small), you don't have to do anything
     at all. The control stacks stores the output array position at the start of each
     rule, and can use that to emit enough data to later reconstruct parent-child relationships.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: After a parse finishes successfully, the final state's parent-array pointers
     can be used to find all the nodes that make up the tree, and construct an actual
     tree structure out of them.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: One tricky issue occurs when skipped content (whitespace and comments) produces
     nodes. If you have code like this...
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-85
   prefs: []
   type: TYPE_PRE
 - en: '... the comment should *not* be part of the if statement''s node. Yet the parser
     only knows for sure that it can finish that node after seeing the next statement
     (there might be an `else` still coming).'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: In cases like this, where the output array contains skipped nodes immediately
@@ -478,9 +565,11 @@
     of the node *before* them. Fortunately, this occurs relatively rarely (unless
     you add nodes for whitespace, in which case it'll happen at the end of every rule
     that has a possible continuation).
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Buffer Trees
+  id: totrans-split-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -489,11 +578,13 @@
     a lot of extra overhead for pointers and allocation headers. They can also have
     terrible locality, since who knows how far from each other the memory allocator
     will put the nodes.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: Unfortunately, we can't just use a flat representation for our syntax trees.
     The incremental parser has to be able to reuse parts of it without copying those
     parts into a different buffer.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: But we *can* use it for parts of the tree. Storing the coarse structure as a
@@ -501,12 +592,14 @@
     characters long) as flat arrays, gives us the best of both worlds. Since most
     nodes, by number, live in the fine structure, this saves a large amount of overhead
     (and helps with locality).
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: That does mean that we can't reuse small nodes. But since their size is limited,
     the amount of work that is involved in re-parsing them is also limited. And by
     removing them from consideration, the incremental parser can avoid quite a bit
     of the work involved in preparing and scanning the tree for reuse.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: A small node stores its content in a typed array of 16-bit unsigned integers.
@@ -518,12 +611,14 @@
     sort of tell you which nodes are children), but Lezer supports zero-length nodes,
     which might land on the end of their parent node and make it ambiguous whether
     they belong to it or not.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: Client code, of course, doesn't want to deal with this representation. Lezer
     provides an abstract interface to searching in and walking through trees that
     hides the buffer structure, allowing you to conceptually work with a uniform tree
     of nodes.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer, like tree-sitter, stores the result of repetitions in the grammar (produced
@@ -531,9 +626,11 @@
     input is pathological (say, a thousand applications of a single binary operator
     in a row), you tend to get shallow, well-balanced syntax trees, which are cheap
     to search and allow effective reuse.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: Contextual Tokens
+  id: totrans-split-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -541,27 +638,32 @@
     a dozen and a few thousand parse states for your grammar. These represent syntactic
     positions like “after the opening paren of an argument list” or “after an expression,
     possibly expecting some expression suffix”.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: The parser generator can figure out which tokens are valid in a given state.
     It can also, for tokens specified as part of the grammar, automatically determine
     which tokens conflict (match the same input, or some prefix of each other).
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: A well-known example of conflicting tokens is the division operator versus regular
     expression syntax in JavaScript. But others are keywords that can also appear
     as property names, and the bitwise right shift operator (`>>`) versus two closing
     angle brackets in C++.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer will not complain about overlapping tokens if the tokens do not appear
     in the same parse states. This implicitly resolves the regular expression and
     property name issues, without any user interaction.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: When conflicting tokens do appear in the same place, such as division operators
     and C-style comments, you have to specify an explicit precedence ordering (comments
     take precedence) to tell the tool that you know what you're doing.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: Contextual tokenization is implemented with a concept called token groups. Tokens
@@ -572,6 +674,7 @@
     that are either in that group, or don't conflict with any other tokens. The check
     is optimized by storing group membership in a bitset, and seeing if the right
     bit is set with binary *and*.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: Tokens are compiled down to a single deterministic state machine, which is ran
@@ -581,20 +684,24 @@
     state is also tagged with a bitset that tells you which groups the tokens reachable
     from that state belong to, and the tokenizer stops running when it hits a state
     that has no overlap with the allowed tokens for the parse state.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: Skip Expressions
+  id: totrans-split-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Almost all programming languages have special syntactic elements like whitespace
     and comments that may occur between any tokens. Encoding these directly in the
     grammar is extremely tedious for most languages.
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: Traditionally, tokenizer just skip such elements when reading the next token.
     That works well in most contexts, but makes it awkward to include the elements
     in the parse tree.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer treats skipped things like they are part of the grammar (though in an
@@ -602,12 +709,14 @@
     to skip things that aren't single tokens (to implement something like nestable
     comments, for example, or to make sure your block comment nodes consist of smaller
     nodes so that you can incrementally parse giant block comments).
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: Each rule or group of rules may have its own set of skipped expressions, so
     that you can express different sublanguages in a grammar, for example something
     like the content of interpolated strings, without allowing spacing in places where
     the language doesn't allow it.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Each parse state has a pointer to a (shared) set of skip actions, which, for
@@ -616,9 +725,11 @@
     action just tells the parser to skip the token and stay in the same state. For
     compound elements, it causes the state that handles the rest of the element to
     be pushed onto the control stack.
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: Tree Node Tagging
+  id: totrans-split-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -626,10 +737,12 @@
     JavaScript to Haskell to CSS to YAML. As such, it is difficult to find a cross-language
     vocabulary to describe their constructs. In fact, it seems like that would be
     a separate multi-year project, and pull in a serious amount of complexity.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: Yet it would be nice if the parser output comes with some information that can
     be interpreted without knowing what language you are working with.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: After several iterations, what I decided on was a system where nodes have *names*,
@@ -638,27 +751,32 @@
     involves assigning values for some of these props to the node types used by the
     language—things like syntax highlighting style information and how to [indent](indent-from-tree.html)
     such nodes.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: Since the number of node types in a language is limited, we can allocate an
     object for each node type to hold this information, and have all nodes of that
     type point to the same object.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: To allow code outside the grammar to add props without mutating global state,
     parser instances can be extended with additional props, creating a copy that will
     output nodes with the props attached. This is especially useful in the context
     of mixed-language trees.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: Lezer has support for a limited form of grammar nesting. If language A can appear
     inside a document in language B, and the end of the region covered by A can be
     unambiguously found by scanning for a specific token, Lezer can temporarily switch
     to another set of parse tables while parsing such a region.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: The syntax tree will then contain nodes from both grammars. Having props directly
     attached to the nodes makes it much easier to work with such trees (as opposed
     to using a language-specific table that associates node names with metadata).
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL

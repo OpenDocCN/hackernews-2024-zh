@@ -1,52 +1,65 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:50:16'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Changes to `u128`/`i128` layout in 1.77 and 1.78 | Rust Blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.rust-lang.org/2024/03/30/i128-layout-update.html](https://blog.rust-lang.org/2024/03/30/i128-layout-update.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Rust has long had an inconsistency with C regarding the alignment of 128-bit
     integers on the x86-32 and x86-64 architectures. This problem has recently been
     resolved, but the fix comes with some effects that are worth being aware of.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'As a user, you most likely do not need to worry about these changes unless
     you are:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Assuming the alignment of `i128`/`u128` rather than using `align_of`
+  id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Ignoring the `improper_ctypes*` lints and using these types in FFI
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: There are also no changes to architectures other than x86-32 and x86-64\. If
     your code makes heavy use of 128-bit integers, you may notice runtime performance
     increases at a possible cost of additional memory use.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: This post documents what the problem was, what changed to fix it, and what to
     expect with the changes. If you are already familiar with the problem and only
     looking for a compatibility matrix, jump to the [Compatibility](#compatibility)
     section.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Background
+  id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -54,11 +67,13 @@
     in memory; size and alignment. A type's size is the amount of space it takes up
     in memory, and its alignment specifies which addresses it is allowed to be placed
     at.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: The size of simple types like primitives is usually unambiguous, being the exact
     size of the data they represent with no padding (unused space). For example, an
     `i64` always has a size of 64 bits or 8 bytes.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'Alignment, however, can vary. An 8-byte integer *could* be stored at any memory
@@ -66,182 +81,219 @@
     if it is instead stored at a multiple of 8 (8-byte aligned). So, like in other
     languages, primitives in Rust have this most efficient alignment by default. The
     effects of this can be seen when creating composite types ([playground link](https://play.rust-lang.org/?version=beta&mode=debug&edition=2021&gist=52f349bdea92bf724bc453f37dbd32ea)):'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: 'Output:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: We see that within a struct, a type will always be placed such that its offset
     is a multiple of its alignment - even if this means unused space (Rust minimizes
     this by default when `repr(C)` is not used).
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'These numbers are not arbitrary; the application binary interface (ABI) says
     what they should be. In the x86-64 [psABI](https://www.uclibc.org/docs/psABI-x86_64.pdf)
     (processor-specific ABI) for System V (Unix & Linux), *Figure 3.1: Scalar Types*
     tells us exactly how primitives should be represented:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '| C type | Rust equivalent | `sizeof` | Alignment (bytes) |'
+  id: totrans-split-21
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- |'
+  id: totrans-split-22
   prefs: []
   type: TYPE_TB
 - en: '| `char` | `i8` | 1 | 1 |'
+  id: totrans-split-23
   prefs: []
   type: TYPE_TB
 - en: '| `unsigned char` | `u8` | 1 | 1 |'
+  id: totrans-split-24
   prefs: []
   type: TYPE_TB
 - en: '| `short` | `i16` | 2 | 2 |'
+  id: totrans-split-25
   prefs: []
   type: TYPE_TB
 - en: '| **`unsigned short`** | **`u16`** | **2** | **2** |'
+  id: totrans-split-26
   prefs: []
   type: TYPE_TB
 - en: '| `long` | `i64` | 8 | 8 |'
+  id: totrans-split-27
   prefs: []
   type: TYPE_TB
 - en: '| **`unsigned long`** | **`u64`** | **8** | **8** |'
+  id: totrans-split-28
   prefs: []
   type: TYPE_TB
 - en: The ABI only specifies C types, but Rust follows the same definitions both for
     compatibility and for the performance benefits.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: The Incorrect Alignment Problem
+  id: totrans-split-30
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'If two implementations disagree on the alignment of a data type, they cannot
     reliably share data containing that type. Rust had inconsistent alignment for
     128-bit types:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: '[PRE3]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: '[PRE4]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: '[PRE5]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: '([Godbolt link](https://godbolt.org/z/h94Ge1vMW)) Looking back at the [psABI](https://www.uclibc.org/docs/psABI-x86_64.pdf),
     we can see that Rust has the wrong alignment here:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '| C type | Rust equivalent | `sizeof` | Alignment (bytes) |'
+  id: totrans-split-37
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- |'
+  id: totrans-split-38
   prefs: []
   type: TYPE_TB
 - en: '| `__int128` | `i128` | 16 | 16 |'
+  id: totrans-split-39
   prefs: []
   type: TYPE_TB
 - en: '| `unsigned __int128` | `u128` | 16 | 16 |'
+  id: totrans-split-40
   prefs: []
   type: TYPE_TB
 - en: 'It turns out this isn''t because of something that Rust is actively doing incorrectly:
     layout of primitives comes from the LLVM codegen backend used by both Rust and
     Clang, among other languages, and it has the alignment for `i128` hardcoded to
     8 bytes.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Clang uses the correct alignment only because of a workaround, where the alignment
     is manually set to 16 bytes before handing the type to LLVM. This fixes the layout
     issue but has been the source of some other minor problems. Rust does no such
     manual adjustement, hence the issue reported at [https://github.com/rust-lang/rust/issues/54341](https://github.com/rust-lang/rust/issues/54341).
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: The Calling Convention Problem
+  id: totrans-split-43
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'There is an additional problem: LLVM does not always do the correct thing when
     passing 128-bit integers as function arguments. This was a [known issue in LLVM](https://github.com/llvm/llvm-project/issues/41784),
     before its [relevance to Rust was discovered](https://github.com/rust-lang/rust/issues/54341#issuecomment-1064729606).'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'When calling a function, the arguments get passed in registers (special storage
     locations within the CPU) until there are no more slots, then they get "spilled"
     to the stack (the program''s memory). The ABI tells us what to do here as well,
     in the section *3.2.3 Parameter Passing*:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'Arguments of type `__int128` offer the same operations as INTEGERs, yet they
     do not fit into one general purpose register but require two registers. For classification
     purposes `__int128` is treated as if it were implemented as:'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-47
   prefs:
   - PREF_BQ
   type: TYPE_PRE
-- en: ''
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
 - en: with the exception that arguments of type `__int128` that are stored in memory
     must be aligned on a 16-byte boundary.
+  id: totrans-split-48
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: We can try this out by implementing the calling convention manually. In the
     below C example, inline assembly is used to call `foo(0xaf, val, val, val)` with
     `val` as `0x11223344556677889900aabbccddeeff`.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: x86-64 uses the registers `rdi`, `rsi`, `rdx`, `rcx`, `r8`, and `r9` to pass
     function arguments, in that order (you guessed it, this is also in the ABI). Each
     register fits a word (64 bits), and anything that doesn't fit gets `push`ed to
     the stack.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: 'Running the above with GCC prints the following expected output:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'But running with Clang 17 prints:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: Surprise!
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'This illustrates the second problem: LLVM expects an `i128` to be passed half
     in a register and half on the stack when possible, but this is not allowed by
     the ABI.'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Since the behavior comes from LLVM and has no reasonable workaround, this is
     a problem in both Clang and Rust.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Solutions
+  id: totrans-split-59
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -250,12 +302,14 @@
     Unfortunately, this wound up reverted. It was later attempted again in [D86310](https://reviews.llvm.org/D86310)
     by LLVM contributor Harald van Dijk, which is the version that finally landed
     in October 2023.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Around the same time, Nikita Popov fixed the calling convention issue with [D158169](https://reviews.llvm.org/D158169).
     Both of these changes made it into LLVM 18, meaning all relevant ABI issues will
     be resolved in both Clang and Rust that use this version (Clang 18 and Rust 1.78
     when using the bundled LLVM).
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: However, `rustc` can also use the version of LLVM installed on the system rather
@@ -263,15 +317,19 @@
     from differing alignment with the same `rustc` version, [a proposal](https://github.com/rust-lang/compiler-team/issues/683)
     was introduced to manually correct the alignment like Clang has been doing. This
     was implemented by Matthew Maurer in [#116672](https://github.com/rust-lang/rust/pull/116672/).
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'Since these changes, Rust now produces the correct alignment:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: '[PRE11]'
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
 - en: 'As mentioned above, part of the reason for an ABI to specify the alignment
@@ -283,9 +341,11 @@
     as nicely in memory, leading to an increase in usage. Unfortunately this meant
     some of the performance wins needed to be sacrificed to avoid an increased memory
     footprint.'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: Compatibility
+  id: totrans-split-67
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -294,57 +354,73 @@
     starting with 1.78) will be completely compatible with any version of GCC, as
     well as Clang 18 and above (released March 2024). All other combinations have
     some incompatible cases, which are summarized in the table below:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '| Compiler 1 | Compiler 2 | status |'
+  id: totrans-split-69
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-70
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.78 with bundled LLVM (18) | GCC (any version) | Fully compatible
     |'
+  id: totrans-split-71
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.78 with bundled LLVM (18) | Clang ≥ 18 | Fully compatible |'
+  id: totrans-split-72
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.77 with LLVM ≥ 18 | GCC (any version) | Fully compatible |'
+  id: totrans-split-73
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.77 with LLVM ≥ 18 | Clang ≥ 18 | Fully compatible |'
+  id: totrans-split-74
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.77 with LLVM ≥ 18 | Clang < 18 | Storage compatible, has calling
     bug |'
+  id: totrans-split-75
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.77 with LLVM < 18 | GCC (any version) | Storage compatible, has
     calling bug |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '| Rust ≥ 1.77 with LLVM < 18 | Clang (any version) | Storage compatible, has
     calling bug |'
+  id: totrans-split-77
   prefs: []
   type: TYPE_TB
 - en: '| Rust < 1.77 | GCC (any version) | Incompatible |'
+  id: totrans-split-78
   prefs: []
   type: TYPE_TB
 - en: '| Rust < 1.77 | Clang (any version) | Incompatible |'
+  id: totrans-split-79
   prefs: []
   type: TYPE_TB
 - en: '| GCC (any version) | Clang ≥ 18 | Fully compatible |'
+  id: totrans-split-80
   prefs: []
   type: TYPE_TB
 - en: '| GCC (any version) | Clang < 18 | Storage compatible with calling bug |'
+  id: totrans-split-81
   prefs: []
   type: TYPE_TB
 - en: Effects & Future Steps
+  id: totrans-split-82
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: As mentioned in the introduction, most users will notice no effects of this
     change unless you are already doing something questionable with these types.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Starting with Rust 1.77, it will be reasonably safe to start experimenting with
@@ -353,5 +429,6 @@
     about lifting the lint in an upcoming version, but we want to be cautious and
     avoid introducing silent breakage for users whose Rust compiler may be built with
     an older LLVM.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL

@@ -1,34 +1,44 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:50:19'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'research!rsc: The xz attack shell script'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://research.swtch.com/xz-script](https://research.swtch.com/xz-script)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The xz attack shell script
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Posted on Tuesday, April 2, 2024.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Updated Wednesday, April 3, 2024.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[## Introduction](#introduction)'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Andres Freund [published the existence of the xz attack](https://www.openwall.com/lists/oss-security/2024/03/29/4)
@@ -37,12 +47,14 @@
     he says that he dug into this after “observing a few odd symptoms around liblzma
     (part of the xz package) on Debian sid installations over the last weeks (logins
     with ssh taking a lot of CPU, valgrind errors).”
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'At a high level, the attack is split in two pieces: a shell script and an object
     file. There is an injection of shell code during `configure`, which injects the
     shell code into `make`. The shell code during `make` adds the object file to the
     build. This post examines the shell script. (See also [my timeline post](xz-timeline).)'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: The nefarious object file would have looked suspicious checked into the repository
@@ -55,6 +67,7 @@
     better "source code" than the files themselves.” This is a fact of life for parsing
     libraries like liblzma. The attacker looked like they were just [adding a few
     new test files](https://git.tukaani.org/?p=xz.git;a=commitdiff;h=cf44e4b7f5dfdbf8c78aef377c10f71e274f63c0).
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Unfortunately the nefarious object file turned out to have a bug that caused
@@ -66,6 +79,7 @@
     mechanism, so the new nefarious script contains an extension mechanism that lets
     it look for updated scripts in new test files, which wouldn’t draw as much attention
     as rewriting existing ones.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: The effect of the scripts is to arrange for the nefarious object file’s `_get_cpuid`
@@ -79,9 +93,11 @@
     exactly what the backdoor introduced. The resolver then looked through the tables
     for `RSA_public_decrypt` and replaced it with a nefarious version that [runs attacker
     code when the right SSH certificate is presented](https://github.com/amlweems/xzbot).[](#configure)
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[Configure](#configure)'
+  id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -92,61 +108,77 @@
     to the script. Usually, the `configure` script and its support libraries are only
     added to the tarball distributions, not the source repository. The xz distribution
     works this way too.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'The attack kicks off with the attacker adding an unexpected support library,
     `m4/build-to-host.m4` to the xz-5.6.0 and xz-5.6.1 tarball distributions. Compared
     to the standard `build-to-host.m4`, the attacker has made the following changes:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: All in all, this is a fairly plausible set of diffs, in case anyone thought
     to check. It bumps the version number, updates the copyright year to look current,
     and makes a handful of inscrutable changes that don’t look terribly out of place.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Looking closer, something is amiss. Starting near the bottom,
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
 - en: 'Let’s see which files in the distribution match the pattern (simplifying the
     `grep` command):'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: That’s surprising! So this script sets `gl_am_configmake=./tests/files/bad-3-corrupt_lzma2.xz`
     and `HAVE_PKG_CONFIGMAKE=1`. The `gl_path_map` setting is a [tr(1)](https://linux.die.net/man/1/tr)
     command that swaps tabs and spaces and swaps underscores and dashes.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Now reading the top of the script,
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: extracts the final dot-separated element of that filename, leaving `xz`. That
     is, it’s the file name suffix, not a prefix, and it is the name of the compression
     command that is likely already installed on any build machine.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'The next section is:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: We know that `gl_am_configmake=./tests/files/bad-3-corrupt_lzma2.xz`, so this
     sets the `gl_[$1]_config` variable to the string
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: At first glance, especially in the original quoted form, the `sed` command looks
@@ -156,74 +188,93 @@
     `sed` prints each line of input. So `sed "r\n"` is just an obfuscated `cat` command,
     and remember that `$gl_path_map` is the `tr` command from before, and `$gl_[$1]_prefix`
     is `xz`. To the shell, this command is really
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: But right now it’s still just a string; it hasn’t been run. That changes with
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: 'The final `"eval \$gl_[$1]_config"` runs that command. If we run it on the
     xz 5.6.0 repo, we get:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: I have inserted some line breaks, here and in later script fragments, to keep
     the lines from being too long in the web page.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'Why the Hello and World? The README text that came with the test file describes
     it:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: bad-3-corrupt_lzma2.xz has three Streams in it. The first and third streams
     are valid xz Streams. The middle Stream has a correct Stream Header, Block Header,
     Index and Stream Footer. Only the LZMA2 data is corrupt. This file should decompress
     if `--single-stream` is used.
+  id: totrans-split-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The first and third streams are the Hello and World, and the middle stream has
     been corrupted by swapping the byte values unswapped by the `tr` command.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: 'Recalling that xz 5.6.1 shipped with different “test” files, we can also try
     xz 5.6.1:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: The first difference is that the script makes sure (very sure!) to exit if not
     being run on Linux. The second difference is that the long “`export i`” line deviates
     in the final head command offset (724 vs 939) and then the tail offset and the
     `tr` argument. Let’s break those down.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: 'The `head` command prints a prefix of its input. Let’s look at the start:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: 'This discards the first kilobyte of standard input, prints the next two kilobytes,
     discards the next kilobyte, and prints the next two kilobytes. And so on. The
     whole command for 5.6.1 is:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: 'The shell variable `i` is set to this long command. Then the script runs:'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: The first `xz` command uncompresses another malicious test file. The `eval`
@@ -233,19 +284,24 @@
     to pull these specific byte ranges out of the file, they wouldn’t recognize it
     as a valid lzma input!?). The second `xz` command decodes the translated bytes
     as a raw lzma stream, and then of course the result is piped through the shell.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Skipping the shell pipe, we can run this, obtaining a very long shell script.
     I have added commentary in between sections of the output.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: So far, setting up environment variables.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'A line that only appears in 5.6.1, exiting when not run on Linux. In general
@@ -253,9 +309,11 @@
     will examine the 5.6.1 script, with the additions marked. This line is an attempted
     robustness fix with a bug (pointed out by Jakub Wilk): there are no spaces around
     the `=`, making the line a no-op.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: 'The first of many odd eval statements, for variables that do not appear to
@@ -263,17 +321,21 @@
     is debugging the script, setting, say, `zrKcVq=env` inserts a debug print during
     execution. Another possibility is that these are extension points that can be
     set by some other mechanism, run before this code, in the future.'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: 'If `config.status` exists, we read various variables from it into the shell,
     along with two extension points. Note that we are still inside the config.status
     check (let’s call it “if #1”) as we continue through the output.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-61
   prefs: []
   type: TYPE_PRE
 - en: This section is entirely new in 5.6.1\. It looks for a single test file to contain
@@ -283,104 +345,133 @@
     changes are needed in this script, a new script can be added in a different test
     file, instead of having to [make up reasons to regenerate existing binary test
     files](https://git.tukaani.org/?p=xz.git;a=commitdiff;h=74b138d2a6529f2c07729d7c77b1725a8e8b16f1).
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: The next chunk continues with script that was present in 5.6.0.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: Two different checks that [GNU indirect function](https://maskray.me/blog/2021-01-18-gnu-indirect-function)
     support is enabled. If not, stop the script. The backdoor requires this functionality.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: Require shared library support.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: Require an x86-64 Linux system.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: Require all the crc ifunc code (in case it has been patched out?).
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE22]'
+  id: totrans-split-72
   prefs: []
   type: TYPE_PRE
 - en: Require gcc (not clang, I suppose) and GNU ld.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE23]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: Require the backdoor-containing test files. Of course, if these files didn’t
     exist, it’s unclear how we obtained this script in the first place, but better
     safe than sorry, I suppose.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE24]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: 'Add a bunch of checks when the file `debian/rules` exists or `$RPM_ARCH` is
     set to `x86_64`. Note that we are now inside two `if` statements: the `config.status`
     check above, and this one (let’s call it “if #2”).'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE25]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: Check that `liblzma/Makefile` contains all the lines that will be used as anchor
     points later for inserting new text into the Makefile.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE26]'
+  id: totrans-split-80
   prefs: []
   type: TYPE_PRE
 - en: '`$O` was set at the very start of the script. This is checking that the libtool
     file, presumably generated during the build process, configures the compiler for
     a PIC (position independent code) build.'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE27]'
+  id: totrans-split-82
   prefs: []
   type: TYPE_PRE
 - en: '`$U` was also set at the start of the script: `U="bad-3-corrupt_lzma2.xz"`.
     Real work is starting!'
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE28]'
+  id: totrans-split-84
   prefs: []
   type: TYPE_PRE
 - en: '`sed -i` runs an in-place modification of the input file, in this case `liblzma/Makefile`.
     Specifically, find the `ACLOCAL_M4` line we grepped for earlier (`/$j/`) and insert
     the `am__test` setting from `$b` (`i$b`).'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE29]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: Shell quoting inside a quoted string inside a Makefile really is something special.
     This is escaping the backslashes in the tr command enough times that it will work
     to insert them into the Makefile after the `am__install_max` line (`$w`).
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE30]'
+  id: totrans-split-88
   prefs: []
   type: TYPE_PRE
 - en: 'More added lines. It’s worth stopping for a moment to look at what’s happened
     so far. The script has added these lines to `src/liblzma/Makefile`:'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE31]'
+  id: totrans-split-90
   prefs: []
   type: TYPE_PRE
 - en: 'These look plausible but fall apart under closer examination: for example,
@@ -388,13 +479,16 @@
     `configure` has run, the generated `Makefile` still looks plausibly inscrutable.
     And the lines have been added in scattered places throughout the `Makefile`; no
     one will see them all next to each other like in this display. Back to the script:'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE32]'
+  id: totrans-split-92
   prefs: []
   type: TYPE_PRE
 - en: Add `liblzma_la_LDFLAGS += -Wl,--sort-section=name,-X` to the Makefile. If the
     `LDFLAGS` do not already say `-z,now` or `-Wl,now`, add `-z,now`.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: 'The “`-Wl,now`” forces `LD_BIND_NOW` behavior, in which the dynamic loader
@@ -407,51 +501,64 @@
     This early invocation of the backdoor setup lets it run while the tables are still
     writable, allowing the backdoor to replace the entry for `RSA_public_decrypt`
     with its own version. But we are getting ahead of ourselves. Back to the script:'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE33]'
+  id: totrans-split-95
   prefs: []
   type: TYPE_PRE
 - en: We checked earlier that the libtool file said `pic_flag=" -fPIC -DPIC"`. The
     sed command changes it to read `pic_flag=" -fPIC -DPIC -fno-lto -ffunction-sections
     -fdata-sections"`.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: It is not clear why these additional flags are important, but in general they
     disable linker optimizations that could plausibly get in the way of subterfuge.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE34]'
+  id: totrans-split-98
   prefs: []
   type: TYPE_PRE
 - en: Shell quoting continues to be trippy, but we’ve reached the final change. This
     adds the line
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE35]'
+  id: totrans-split-100
   prefs: []
   type: TYPE_PRE
 - en: to one place in the Makefile, and then adds a long script that sets up some
     variables, entirely as misdirection, that ends with
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE36]'
+  id: totrans-split-102
   prefs: []
   type: TYPE_PRE
 - en: 'The `sed rpath` command is just as much an obfuscated `cat` as `sed "r\n"`
     was, but `-rpath` is a very common linker flag, so at first glance you might not
     notice it’s next to the wrong command. Recalling the `am__test` and related lines
     added above, this pipeline ends up being equivalent to:'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE37]'
+  id: totrans-split-104
   prefs: []
   type: TYPE_PRE
 - en: Our old friend! We know what this does, though. It runs the very script we are
     currently reading in this post. [How recursive!](https://research.swtch.com/zip)[](#make)
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: '[Make](#make)'
+  id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -460,36 +567,45 @@
     directory. In that context, the variables at the top have been set, but all the
     editing we just considered was skipped over by “if #1” not finding `./config.status`.
     Now let''s keep executing the script.'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE38]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: 'That `fi` closes “if #2”, which checked for a Debian or RPM build. The upcoming
     `elif` continues “if #1”, which checked for config.status, meaning now we are
     executing the part of the script that matters when run during `make` in the `liblzma`
     directory:'
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE39]'
+  id: totrans-split-110
   prefs: []
   type: TYPE_PRE
 - en: If we see the built objects for the crc code, we are running as part of `make`.
     Run the following code.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE40]'
+  id: totrans-split-112
   prefs: []
   type: TYPE_PRE
 - en: We start this section with another extension hook. This time the magic strings
     are `'jV!.^%'` and `'%.R.1Z'`. As before, there are no test files with these strings.
     This was for future extensibility.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: 'On to the code shared with 5.6.0:'
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE41]'
+  id: totrans-split-115
   prefs: []
   type: TYPE_PRE
 - en: Check that the ifunc-enabled CRC source files look right. Interestingly, Lasse
@@ -498,32 +614,40 @@
     all this code well before then and that the first version checked `crc_clmul.c`.
     They were probably very annoyed when Lasse Collin accidentally broke their in-development
     backdoor by cleaning up the file names!
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE42]'
+  id: totrans-split-117
   prefs: []
   type: TYPE_PRE
 - en: Check that the build configuration has the extra flags we added before.
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE43]'
+  id: totrans-split-119
   prefs: []
   type: TYPE_PRE
 - en: Check that no one has added `lazy` to the linker options, which might override
     the `-Wl,now`. (This code really needs to run before the tables it patches get
     marked read-only!)
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE44]'
+  id: totrans-split-121
   prefs: []
   type: TYPE_PRE
 - en: 'This is selecting between two different offset values depending on the content
     of `gettext.m4`. The distributed xz tarballs do not contain that string in `gettext.m4`
     (it does appear in `build-to-host.m4`), so the `grep` finds nothing, `$Y` is the
     empty string, and the true case of the `if` executes: `N=0` and `W=88792`.'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE45]'
+  id: totrans-split-123
   prefs: []
   type: TYPE_PRE
 - en: 'I inserted a line break here. Remember the “corrupt” test file script set `i`
@@ -533,9 +657,11 @@
     probably means just the prefix that we skipped before. The sed command is inserting
     a newline after every byte of that output, setting up for piping into the remainder
     of the command line:'
+  id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE46]'
+  id: totrans-split-125
   prefs: []
   type: TYPE_PRE
 - en: I inserted another line break here. What is this? [@nugxperience on Twitter
@@ -544,12 +670,15 @@
     substitution cipher wasn’t secure enough for this step. This is the 5.6.1 version;
     the 5.6.0 version is the same except that the second loop counts to 4096 instead
     of 8192.
+  id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
 - en: 'Back to the script:'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE47]'
+  id: totrans-split-128
   prefs: []
   type: TYPE_PRE
 - en: We finally made it to the end of this long line. The decrypted output is piped
@@ -560,15 +689,19 @@
     that extracts either the full 88,792 byte input or zero bytes, depending on `gettext.m4`
     from before, and writes it to `liblzma_la-crc64-fast.o`. In our build, we are
     taking the full input.
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE48]'
+  id: totrans-split-130
   prefs: []
   type: TYPE_PRE
 - en: If all that failed, stop quietly.
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE49]'
+  id: totrans-split-132
   prefs: []
   type: TYPE_PRE
 - en: Wait what? Oh! Notice the two different file names `crc64_fast` versus `crc64-fast`.
@@ -576,16 +709,20 @@
     the one we extracted is in the current directory. This is backing up the real
     file (the underscored one) into a file with a very similar name (the hyphenated
     one).
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE50]'
+  id: totrans-split-134
   prefs: []
   type: TYPE_PRE
 - en: This string `$V` begins with “`#endif`”, which is never a good sign. Let’s move
     on for now, but we’ll take a closer look at that text shortly.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE51]'
+  id: totrans-split-136
   prefs: []
   type: TYPE_PRE
 - en: This `if` statement is running a pipeline of sed commands piped into `$CC` with
@@ -596,20 +733,25 @@
     real object file that would have been built originally for `crc64_fast.c`. The
     `sed` `1i` tells the compiler the file name to record in debug info, since the
     compiler is reading standard input—very tidy! But what are the edits?
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: 'The file starts out looking like:'
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE52]'
+  id: totrans-split-139
   prefs: []
   type: TYPE_PRE
 - en: 'The sed commands add an `_` prefix to the name of the function in the return
     condition, and then add `$V` after the `include` line, producing (with reformatting
     of the C code):'
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE53]'
+  id: totrans-split-141
   prefs: []
   type: TYPE_PRE
 - en: That is, the crc64_resolve function, which is the ifunc resolver that gets run
@@ -620,14 +762,17 @@
     But `_get_cpuid` is provided by the backdoor .o, and it does a lot more before
     returning the cpuid information. In particular it rewrites the GOT and PLT to
     hijack calls to RSA_public_decrypt.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: 'But let’s get back to the shell script, which is still running from inside
     `src/liblzma/Makefile` and just successfully inserted the backdoor into `.libs/liblzma_la-crc64_fast.o`.
     We are now in the `if` compiler success case:'
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE54]'
+  id: totrans-split-144
   prefs: []
   type: TYPE_PRE
 - en: 'This does the same thing for `crc32_fast.c`, except it doesn’t add the backdoored
@@ -635,64 +780,83 @@
     the script bothers to intercept both the crc32 and crc64 ifuncs; either one should
     have sufficed. Perhaps they wanted the dispatch code for both to look similar
     in a debugger. Now we’re in the doubly nested `if` compiler success case:'
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE55]'
+  id: totrans-split-146
   prefs: []
   type: TYPE_PRE
 - en: If we can relink the .la file, then...
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE56]'
+  id: totrans-split-148
   prefs: []
   type: TYPE_PRE
 - en: If the relink succeeded but didn’t write the file, assume it failed and restore
     the backups.
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE57]'
+  id: totrans-split-150
   prefs: []
   type: TYPE_PRE
 - en: No matter what, remove the libraries. (The `Makefile` link step is presumably
     going to happen next and recreate them.)
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE58]'
+  id: totrans-split-152
   prefs: []
   type: TYPE_PRE
 - en: This is the `else` for the link failing. Restore from backups.
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE59]'
+  id: totrans-split-154
   prefs: []
   type: TYPE_PRE
 - en: Now we are in the inner compiler success case. Delete backups.
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE60]'
+  id: totrans-split-156
   prefs: []
   type: TYPE_PRE
 - en: This is the else for the crc32 compilation failing. Restore from backups.
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE61]'
+  id: totrans-split-158
   prefs: []
   type: TYPE_PRE
 - en: This is the else for the crc64 compilation failing. Restore from backup. (This
     is not the cleanest shell script in the world!)
+  id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE62]'
+  id: totrans-split-160
   prefs: []
   type: TYPE_PRE
 - en: Now we are at the end of the Makefile section of the script. Delete the backup.
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE63]'
+  id: totrans-split-162
   prefs: []
   type: TYPE_PRE
 - en: Close the “`elif` we’re in a Makefile”, one more extension point/debug print,
     and we’re done! The script has injected the object file into the objects built
     during `make`, leaving no trace behind.
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL

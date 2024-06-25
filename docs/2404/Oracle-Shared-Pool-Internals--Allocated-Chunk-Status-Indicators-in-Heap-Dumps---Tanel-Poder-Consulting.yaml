@@ -1,38 +1,48 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:32:10'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Oracle Shared Pool Internals: Allocated Chunk Status Indicators in Heap Dumps
     | Tanel Poder Consulting'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/](https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <main>
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Over time, Oracle has been adding more contextual information into each allocated
     heap memory chunk, to make it easier to see what for your heap memory is used.
     This instrumentation is used for private (PGA,UGA,etc) heaps too, but this article
     focuses only on shared pool heaps.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'A few examples from past are:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: '[Library cache object hash values added to allocated shared pool chunk names](/2010/11/04/a-little-new-feature-for-shared-pool-geeks/)
     (2010)'
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -41,6 +51,7 @@
     like library cache lock (and pin in older DB versions) that a session must allocate
     when accessing library cache objects. The NNN is in this case is not showing some
     hash value, but the SID of the allocating session.
+  id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -50,50 +61,62 @@
     (2020). That would tell you which existing cursors have been executed more than
     once (pinned at least 3 times - once for loading the object into cache + at least
     2 executions).
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Newer Oracle versions print out even more info about chunk status indicators
     in heap dumps, for example:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: Recreatable chunks have 2 charaters indicating their status.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'First character:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '**P** - chunk is pinned'
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**U** - chunk is unpinned'
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Second character:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '**C** - chunk is just created (pinned only once for KGL parent objects, twice
     for child objects)'
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**T** - chunk is in the *transient* end of the LRU list (loaded and used only
     once, heap is pinned only twice)'
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**R** - chunk is in the *recurrent* end of the LRU list (loaded and used twice
     or more, heap is pinned at least 3 times)'
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The 3-digit number in `recrPC001` is the CON_ID of the allocating container/PDB,
     if you’re using multitenant database.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: You might wonder what’s the difference between C and T above. It looks like
@@ -102,49 +125,61 @@
     data dictionary cache objects KQR PO/SO), but for actual library cache object
     “payload”, like cursors, PL/SQL objects, it first uses the (C) flag, which then
     gets changed to (R) if executed for more than once.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'Query executed only once:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: 'The same query executed twice:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: In the above output, you see how `recrUC001` turned into `recrUR001` and the
     chunk was moved below the `SEPARATOR` special marker in the LRU list.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s an example of a few library cache object handle (KGLHD) objects, that
     don’t even have the object name hash value included in the allocations (you can
     find the right ones using `v$db_object_cache.addr` or `v$sql.address/child_address`)
     in a heapdump:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: For such allocations, Oracle seems to immediately mark chunks as (R) or (T)
     and not use the (C) flag at all.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'Nowadays, Oracle tries make library cache’s heap allocations use standardized/fixed
     sizes of individual chunks (*_kgl_fixed_extents* = 4096) to reduce heap fragmentation.
     Thus, you’ll see a lot of `freeable` chunks if your cursor (or PL/SQL object)
     requires more than 4kB of memory for its heaps:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: These *freeable* chunks are not linked into the LRU list that shared pool manager
     searches through. Oracle doesn’t free random freeable chunks on their own - and
     it doesn’t see them anyway as they are not linked into the LRU list.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Shared pool LRU list scan must find an unpinned *recreatable* chunk (the first
@@ -156,8 +191,10 @@
     its leading recreatable chunk to be unpinned - there’s no point in freeing only
     the leading 4kB of a 100kB SQL Area heap and leaving the rest of it in some partially
     allocated unusable state.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: </main>
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL

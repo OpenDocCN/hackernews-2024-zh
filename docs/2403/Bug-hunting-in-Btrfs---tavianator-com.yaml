@@ -1,50 +1,58 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:31:28'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Bug hunting in Btrfs - tavianator.com
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://tavianator.com/2024/btrfs_bug.html](https://tavianator.com/2024/btrfs_bug.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: <main>
+  id: totrans-split-6
   prefs: []
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_H1
   type: TYPE_NORMAL
 - en: 'The other day I was implementing [multi-threaded `stat()` calls](/cgit/bfs.git/commit/?id=89ecb2a08467cd8aa6ba70f8519df494652cac96)
     in [`bfs`](../projects/bfs.html). When I ran some benchmarks, I saw something
     that made my heart skip a beat:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: If you're not familiar, "structure needs cleaning" is the human-readable description
     of `EUCLEAN`, an `errno` value that usually indicates filesystem corruption. Fearing
     the worst, I checked `dmesg` and saw
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: I immediately rebooted into a live environment and ran `btrfs check`, but to
     my surprise, there were no errors found. `btrfs scrub` also found no evidence
     of corruption. And in fact, the file from the error message was completely fine.
     Whatever the issue was, it seemed to have gone away on its own.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'I searched Google for that "corrupted node" message and found that it had happened
@@ -52,6 +60,7 @@
     just after merging a Btrfs pull request. (This was not the first time Linus and
     I had hit the same bug. We both have the same CPU in our desktops. Last time it
     led to one of my [favourite bugfixes ever](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f).)'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: But the difference between me and Linus was that I could (semi-)reliably reproduce
@@ -60,11 +69,8 @@
     error. I reported my [findings](https://lore.kernel.org/linux-btrfs/20240206033807.15498-1-tavianator@tavianator.com/)
     to the Btrfs mailing list, and though it led to some discussion about potential
     causes, we didn't narrow down the root cause.
+  id: totrans-split-13
   prefs: []
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_H2
   type: TYPE_NORMAL
 - en: Based on the logs, the Btrfs developers assumed the problem had to do allocation
     of [`struct extent_buffer`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/extent_io.h?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f#n76)
@@ -75,6 +81,7 @@
     those pages hold the actual contents of the extents that are read or written.
     The abstraction helps with file system block sizes that are different from the
     system page size.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Allocating an `extent_buffer` and its pages is [more complicated than you might
@@ -82,6 +89,7 @@
     Each `struct extent_buffer` holds an array of `struct folio`, and those folios
     have a private reference that points back to the `extent_buffer`. There should
     only ever be one `extent_buffer` at a time for any particular extent.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: To reduce locking on the allocation path, the `extent_buffer` and the corresponding
@@ -90,6 +98,7 @@
     locking. At the point of insertion, if it turns out someone else beat us to allocating
     the same extent, we instead take an extra reference to that `extent_buffer` and
     free the one we just allocated (and its pages).
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: This code path had undergone some churn recently, both [changing the race detection/handling
@@ -102,11 +111,8 @@
     reading these blocks in, and those checks were failing, causing the errors. But
     the on-disk blocks themselves were fine, and the next time we read them in, everything
     worked.
+  id: totrans-split-17
   prefs: []
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_H2
   type: TYPE_NORMAL
 - en: One of the best bug hunting tools for the Linux kernel is [`git bisect`](https://git-scm.com/docs/git-bisect).
     Unfortunately, bisecting bugs like this is challenging. For intermittent issues,
@@ -115,12 +121,14 @@
     commit to start from, but that was hard to find. I thought at first the bug was
     new in Linux 6.7, but I could still reproduce it on 6.6 and 6.5. The Btrfs devs
     suggested I start from 6.0.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Bisecting can also be dangerous because you are running arbitrary old mid-development-cycle
     kernel commits that may have since had bugs fixed in the official releases. It's
     safer to do it from a virtual machine, but so far I had been unable to reproduce
     the bug on a VM. So started bisecting on my actual desktop.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Normally I would be far too scared to bisect a filesystem corruption bug on
@@ -130,17 +138,15 @@
     2,073,625 uncorrectable read errors is a new record for me, so I was too scared
     to continue the bisect. I restored what I could from backups and carried on with
     my life.
+  id: totrans-split-20
   prefs: []
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_H2
   type: TYPE_NORMAL
 - en: A few weeks later, Btrfs developer Qu Wenruo got back to me with some [extra
     debugging patches](https://lore.kernel.org/linux-btrfs/c7241ea4-fcc6-48d2-98c8-b5ea790d6c89@gmx.com/)
     and I decided to give it another shot. I ran his patch on bare metal, but wasn't
     able to reproduce the bug with the debugging patch applied. Such is life when
     debugging race conditions!
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'I also tried again to reproduce the issue in a VM. I configured it to more
@@ -150,53 +156,62 @@
     the issue in a VM, though it took around 30 runs of my reproducer instead of the
     ~10 it took in real life. But this time I could still reproduce it with the debugging
     patch applied.'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'After a couple runs and tweaking the trace messages to make cross-referencing
     easier, I noticed something odd. Looking at just the lines from the trace corresponding
     to the "corrupted" error message, I saw this:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: The only relevant operations seem to be allocating this `extent_buffer`, and
     then reading it ... twice. Reading it once ought to be enough, I thought, so I
     looked more closely at the code that actually reads them in and managed to eyeball
     the bug.
+  id: totrans-split-25
   prefs: []
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_H2
   type: TYPE_NORMAL
 - en: 'Just like how multiple threads might try to allocate the same `extent_buffer`
     at the same time, they might also try to read it at the same time. To ensure the
     read only happens once, a custom locking protocol is used:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'The logic is intended to work like this:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: '[PRE5]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'Unfortunately, this locking protocol has a bug:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: '[PRE7]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: '[PRE8]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: If the first thread starts *and finishes* the I/O between the second thread
@@ -205,82 +220,98 @@
     the `UPTODATE` bit is already set, the third will return without waiting for the
     read to complete. That thread will then think it's safe to access the `extent_buffer`'s
     pages, despite them currently being under I/O, leading to a data race!
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'The fix is to use [double-checked locking](https://en.wikipedia.org/wiki/Double-checked_locking):
     after setting the `READING` bit, check `UPTODATE` again so we don''t kick off
     more useless (actively harmful, even) I/O.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: '[PRE10]'
+  id: totrans-split-38
   prefs: []
   type: TYPE_PRE
 - en: '[PRE11]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: I submitted [a patch](https://lore.kernel.org/linux-btrfs/1ca6e688950ee82b1526bb3098852af99b75e6ba.1710551459.git.tavianator@tavianator.com/)
     that adds this missing check, as well as a couple [cleanup patches](https://lore.kernel.org/linux-btrfs/cover.1710769876.git.tavianator@tavianator.com/T/).
     With that fix, I can run the reproducer overnight without triggering any more
     errors.
+  id: totrans-split-40
   prefs: []
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_H2
   type: TYPE_NORMAL
 - en: You might be surprised that this race was not benign. After all, we're reading
     some disk blocks into memory that already holds the contents of those same disk
     blocks. It's still technically a data race to read and write memory at the same
     time, even if the writes don't modify the memory, but usually it would be unobservable
     in practice.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: '[PRE13]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: '[PRE14]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'The reason I could observe it was already mentioned above: full disk encryption.
     When dm-crypt processes a disk read, it reads the *encrypted* contents into memory
     and then decrypts them in-place.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: '[PRE16]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: '[PRE17]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: '[PRE18]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: '[PRE19]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: 'It''s obvious why this causes problems: sometimes the racing thread will see
     valid metadata, but sometimes it will see encrypted bytes that appear totally
     random. I even captured a trace where the error messages show the extent being
     gradually filled in:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: There you can see the *same block* switch from an internal node to a leaf, and
     the block number change from a random number to the start of the extent, over
     about 0.02 seconds.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: </main>
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL

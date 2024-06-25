@@ -1,51 +1,64 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:40:55'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Bytecode VMs in surprising places
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://dubroy.com/blog/bytecode-vms-in-surprising-places/](https://dubroy.com/blog/bytecode-vms-in-surprising-places/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: April 30, 2024
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In response to a question on Twitter^(, Richard Hipp wrote about [why SQLite
     uses a bytecode VM](https://sqlite.org/draft/whybytecode.html) for executing SQL
     statements.)
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Most people probably associate bytecode VMs with general-purpose programming
     languages, like JavaScript or Python. But sometimes they appear in surprising
     places! Here are a few that I know about.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: eBPF
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Did you know that inside the Linux kernel, there’s an extension mechanism that
     includes a bytecode interpreter and a JIT compiler?
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'I had no idea. Well, it’s called [eBPF](https://en.wikipedia.org/wiki/EBPF),
     and it’s pretty interesting: a register-based VM with ten general-purpose registers
     and over a hundred different opcodes.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'The “BPF” in eBPF stands for *Berkeley packet filter*, and the basic idea is
     described in [a 1993 USENIX paper](https://www.tcpdump.org/papers/bpf-usenix93.pdf):'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Many versions of Unix provide facilities for user-level packet capture, making
@@ -57,6 +70,7 @@
     filter evaluator that performs sub-optimally on current RISC CPUs. The BSD Packet
     Filter (BPF) uses a new, register-based filter evaluator that is up to 20 times
     faster than the original design.
+  id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -64,12 +78,14 @@
     acyclic control flow graph representing a filter function for network packets.
     And for a long time, the Linux implementation was equally simple: two general-purpose
     registers, a switch-style interpreter, and no backwards branches.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'A patch in 2011 added [a JIT compiler for x86-64](https://lwn.net/Articles/437981/).
     In 2012, [the first non-networking use case appeared](https://lwn.net/Articles/475043/).
     Then, in 2014, the BPF implementation was substantially extended on its way to
     becoming [the universal in-kernel virtual machine](https://lwn.net/Articles/599755/):'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: It expands the set of available registers from two to ten, adds a number of
@@ -77,72 +93,73 @@
     registers, makes it possible for BPF programs to call a (rigidly controlled) set
     of kernel functions, and more. Internal BPF is more readily compiled into fast
     machine code and makes it easier to hook BPF into other subsystems.
+  id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: DWARF expressions
+  id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'DWARF is a file format used by compilers like GCC and LLVM to include debug
     information in compiled binaries. Say you’re trying to debug the following C++
     code:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: In a debugger, you might want to print the value of the `ans` variable. But
     depending on the compiler and the code, this could be surprisingly difficult!
     It could be in a register, on the stack, or it might have been optimized away
     (to name just a few possibilities).
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'The solution is allow the compiler to specify an *expression* that will compute
     the value of the local variable. So the [DWARF spec](https://dwarfstd.org/doc/DWARF5.pdf)
     includes an expression language:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '**2.5 DWARF Expressions**'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: DWARF expressions describe how to compute a value or specify a location. They
     are expressed in terms of DWARF operations that operate on a stack of values.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-23
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: A DWARF expression is encoded as a stream of operations, each consisting of
     an opcode followed by zero or more literal operands. The number of operands is
     implied by the opcode.
+  id: totrans-split-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: It’s up to the debugger to evaluate the expressions. GDB and LLDB both have
     a switch-based interpreter for DWARF expressions.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: GDB agent expressions
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: But it turns out that GDB has another bytecode interpreter!
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: Using GDB’s `trace` and `collect` commands, the user can specify locations in
     the program, and arbitrary expressions to evaluate when those locations are reached.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-28
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -151,10 +168,7 @@
     expression evaluator on the agent, GDB translates expressions in the source language
     into a simpler bytecode language, and then sends the bytecode to the agent; the
     agent then executes the bytecode, and records the values for GDB to retrieve later.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -168,37 +182,40 @@
     is small, and strict limits on the memory and time required to evaluate an expression
     are easy to determine, making it suitable for use by the debugging agent in real-time
     applications.
+  id: totrans-split-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '*(From [Debugging with GDB, Appendix F: The GDB Agent Expression Mechanism](https://sourceware.org/gdb/current/onlinedocs/gdb.html/Agent-Expressions.html))*'
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: WinRAR
+  id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: WinRAR ^(is a file compression utility for Windows with a proprietary file format.
     Tavis Ormandy, a vulnerability researcher at Google, [discovered that the RAR
     format includes a bytecode encoding for data transformation](https://blog.cmpxchg8b.com/2012/09/fun-with-constrained-programming.html):)
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Believe it or not, RAR files can contain bytecode for a simple x86-like virtual
     machine called the RarVM. This is designed to provide filters (preprocessors)
     to perform some reversible transformation on input data to increase redundancy,
     and thus improve compression.
+  id: totrans-split-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'His [rarvmtools repo](https://github.com/taviso/rarvmtools) includes some details
     on the architecture:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Familiarity with x86 (and preferably intel assembly syntax) would be an advantage.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -207,15 +224,18 @@
     there are no restrictions on setting r7 to whatever you like, although if you
     do something stack related it will be masked to fit within the address space for
     the duration of that operation.
+  id: totrans-split-37
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Some others:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: The [TrueType](https://developer.apple.com/fonts/TrueType-Reference-Manual/)
     font specification includes a set of over 200 instructions used for glyph rendering
     and hinting.
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -223,9 +243,11 @@
     language, but a relatively powerful stack-based programming language. PostScript
     files are plain text, so a PostScript renderer doesn’t necessarily use bytecode,
     but the spec also includes a binary encoding.'
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 👉 *[Discuss on Hacker News](https://news.ycombinator.com/item?id=40211205).*
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL

@@ -1,65 +1,65 @@
 - en: <!--yml
-  id: totrans-0
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
   zh: <!--yml
 - en: 'category: 未分类'
-  id: totrans-1
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
   zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:04:00'
-  id: totrans-2
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
   zh: 'date: 2024-05-27 13:04:00'
 - en: -->
-  id: totrans-3
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
   zh: -->
 - en: A Whirlwind Tutorial on Creating Really Teensy ELF Executables for Linux
-  id: totrans-4
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
   zh: Linux 下创建真正微小 ELF 可执行文件的快速教程
 - en: 来源：[https://www.muppetlabs.com/%7Ebreadbox/software/tiny/teensy.html](https://www.muppetlabs.com/%7Ebreadbox/software/tiny/teensy.html)
-  id: totrans-5
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
   zh: 来源：[https://www.muppetlabs.com/%7Ebreadbox/software/tiny/teensy.html](https://www.muppetlabs.com/%7Ebreadbox/software/tiny/teensy.html)
 - en: A Whirlwind Tutorial on Creating Really Teensy ELF Executables for Linux
-  id: totrans-6
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
   zh: Linux 下创建真正微小 ELF 可执行文件的快速教程
 - en: (or, "Size *Is* Everything")
-  id: totrans-7
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
   zh: （或者，“大小确实重要”）
 - en: '* * *'
-  id: totrans-8
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
 - en: '> She studied it carefully for about 15 minutes. Finally, she spoke. "There''s
     something written on here," she said, frowning, "but it''s really teensy."'
-  id: totrans-9
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
   zh: '> 她仔细地研究了大约 15 分钟。最后，她开口了。“这上面写着什么。”她皱着眉说，“但是字真的很小。”'
 - en: '[Dave Barry, "The Columnist''s Caper"]'
-  id: totrans-10
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
   zh: '[戴夫·巴里，《专栏作家的大案》](https://www.muppetlabs.com/%7Ebreadbox/software/tiny/teensy.html)'
 - en: If you're a programmer who's become fed up with software bloat, then may you
     find herein the perfect antidote.
-  id: totrans-11
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
   zh: 如果你是一个对软件膨胀感到厌倦的程序员，那么也许你会在这里找到完美的解药。
@@ -68,7 +68,7 @@
     the inner workings of the ELF file format and the Linux operating system. But
     hopefully you can also learn something about how to make really teensy ELF executables
     in the process.)
-  id: totrans-12
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
   zh: 本文探讨了挤压简单程序中多余字节的方法。（当然，本文档的更实际目的是描述 ELF 文件格式和 Linux 操作系统的一些内部工作原理。但希望在此过程中你也能学到如何制作真正微小的
@@ -77,7 +77,7 @@
     specific to ELF executables on a Linux platform running under an Intel x86 architecture.
     I imagine that a good bit of the information is applicable to other ELF-based
     Unices, but my experiences with such are too limited for me to say with certainty.
-  id: totrans-13
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
   zh: 请注意，这里提供的信息和示例在很大程度上是针对运行在 Intel x86 架构下的 Linux 平台上的 ELF 可执行文件。我想大部分信息也适用于其他基于
@@ -85,19 +85,19 @@
 - en: Please also note that if you aren't a little bit familiar with assembly code,
     you may find parts of this document sort of hard to follow. (The assembly code
     that appears in this document is written using Nasm; see [http://www.nasm.us/](http://www.nasm.us/).)
-  id: totrans-14
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
   zh: 如果你对汇编代码不太熟悉的话，可能会发现本文档的某些部分有些难以理解。（本文档中出现的汇编代码是使用 Nasm 编写的；参见 [http://www.nasm.us/](http://www.nasm.us/)。）
 - en: '* * *'
-  id: totrans-15
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
 - en: In order to start, we need a program. Almost any program will do, but the simpler
     the program the better, since we're more interested in how small we can make the
     executable than what the program does.
-  id: totrans-16
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
   zh: 为了开始，我们需要一个程序。几乎任何程序都可以，但程序越简单越好，因为我们更关心能否尽可能地减小可执行文件的大小，而不是程序的功能。
@@ -105,115 +105,115 @@
     a number back to the operating system. Why not? After all, Unix already comes
     with no less than two such programs: true and false. Since 0 and 1 are already
     taken, we''ll use the number 42.'
-  id: totrans-17
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
   zh: 让我们来看一个非常简单的程序，什么也不做，只是将一个数字返回给操作系统。为什么不呢？毕竟，Unix 已经带有不止两个这样的程序：true 和 false。由于
     0 和 1 已经被使用了，我们将使用数字 42。
 - en: 'So, here is our first version:'
-  id: totrans-18
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
   zh: 那么，这是我们的第一个版本：
 - en: '[PRE0]'
-  id: totrans-19
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
   zh: '[PRE0]'
 - en: 'which we can compile and test like so:'
-  id: totrans-20
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
   zh: 我们可以这样编译和测试：
 - en: '[PRE1]'
-  id: totrans-21
+  id: totrans-split-21
   prefs: []
   type: TYPE_PRE
   zh: '[PRE1]'
 - en: 'So. How big is it? Well, on my machine, I get:'
-  id: totrans-22
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
   zh: 那么。它有多大呢？在我的机器上，我得到的结果是：
 - en: '[PRE2]'
-  id: totrans-23
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
   zh: '[PRE2]'
 - en: (Yours will probably differ some.) Admittedly, that's pretty small by today's
     standards, but it's almost certainly bigger than it needs to be.
-  id: totrans-24
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
   zh: （你的版本可能有所不同。）诚然，按今天的标准来说，这还算是相当小的，但它几乎肯定比实际需要的要大。
 - en: 'The obvious first step is to strip the executable:'
-  id: totrans-25
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
   zh: 显而易见的第一步是剥离可执行文件：
 - en: '[PRE3]'
-  id: totrans-26
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
   zh: '[PRE3]'
 - en: That's certainly an improvement. For the next step, how about optimizing?
-  id: totrans-27
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
   zh: 这肯定是一个改进。接下来，如何优化呢？
 - en: '[PRE4]'
-  id: totrans-28
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
   zh: '[PRE4]'
 - en: 'That also helped, but only just. Which makes sense: there''s hardly anything
     there to optimize.'
-  id: totrans-29
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
   zh: 这也有所帮助，但仅此而已。这是有道理的：几乎没有任何东西可以优化。
 - en: It seems unlikely that there's much else we can do to shrink a one-statement
     C program. We're going to have to leave C behind, and use assembler instead. Hopefully,
     this will cut out all the extra overhead that C programs automatically incur.
-  id: totrans-30
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
   zh: 看起来一个仅有一条语句的 C 程序几乎不可能再进行更多的缩减了。我们将不得不离开 C，改用汇编语言。希望这样能够去掉 C 程序自动引入的所有额外开销。
 - en: 'So, on to our second version. All we need to do is return 42 from main(). In
     assembly language, this means that the function should set the accumulator, eax,
     to 42, and then return:'
-  id: totrans-31
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
   zh: 所以，到了我们的第二个版本。我们只需要在 main() 中返回 42。在汇编语言中，这意味着函数应该将累加器 eax 设置为 42，然后返回：
 - en: '[PRE5]'
-  id: totrans-32
+  id: totrans-split-32
   prefs: []
   type: TYPE_PRE
   zh: '[PRE5]'
 - en: 'We can then build and test like so:'
-  id: totrans-33
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
   zh: 我们可以这样构建和测试：
 - en: '[PRE6]'
-  id: totrans-34
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
   zh: '[PRE6]'
 - en: (Hey, who says assembly code is difficult?) And now how big is it?
-  id: totrans-35
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
   zh: （嘿，谁说汇编代码很难？）现在它有多大呢？
 - en: '[PRE7]'
-  id: totrans-36
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
   zh: '[PRE7]'
 - en: Looks like we shaved off a measly twelve bytes. So much for all the extra overhead
     that C automatically incurs, eh?
-  id: totrans-37
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
   zh: 看起来我们仅减少了区区十二个字节。所以 C 自动引入的所有额外开销都如何呢？
@@ -221,75 +221,75 @@
     the main() interface. The linker is still adding an interface to the OS for us,
     and it is that interface that actually calls main(). So how do we get around that
     if we don't need it?
-  id: totrans-38
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
   zh: 嗯，问题在于我们仍然通过使用 main() 接口引入了大量开销。链接器仍然为我们添加了一个与操作系统的接口，并且实际上是这个接口调用了 main()。那么如果我们不需要它，该如何绕过呢？
 - en: The actual entry point that the linker uses by default is the symbol with the
     name <def>_start</def>. When we link with gcc, it automatically includes a _start
     routine, one that sets up argc and argv, among other things, and then calls main().
-  id: totrans-39
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
   zh: 链接器默认使用的实际入口点是带有名称 <def>_start</def> 的符号。当我们使用 gcc 进行链接时，它会自动包含一个 _start 程序，用于设置
     argc 和 argv 等，然后调用 main()。
 - en: 'So, let''s see if we can bypass this, and define our own _start routine:'
-  id: totrans-40
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
   zh: 那么，让我们看看是否可以绕过这一点，并定义我们自己的 _start 程序：
 - en: '[PRE8]'
-  id: totrans-41
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
   zh: '[PRE8]'
 - en: Will gcc do what we want?
-  id: totrans-42
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
   zh: gcc 会如我们所愿吗？
 - en: '[PRE9]'
-  id: totrans-43
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
   zh: '[PRE9]'
 - en: No. Well, actually, yes it will, but first we need to learn how to ask for what
     we want.
-  id: totrans-44
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
   zh: 不。嗯，实际上会，但首先我们需要学会如何要求我们想要的东西。
 - en: 'It so happens that gcc recognizes an option called <def>-nostartfiles</def>.
     From the gcc info pages:'
-  id: totrans-45
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
   zh: 正好 gcc 识别出一个名为 <def>-nostartfiles</def> 的选项。从 gcc 的信息页上看：
 - en: -nostartfiles
-  id: totrans-46
+  id: totrans-split-46
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
   zh: -nostartfiles
 - en: Do not use the standard system startup files when linking. The standard libraries
     are used normally.
-  id: totrans-47
+  id: totrans-split-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
   zh: 在链接时不使用标准的系统启动文件。通常使用标准库。
 - en: 'Aha! Now let''s see what we can do:'
-  id: totrans-48
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
   zh: 啊哈！现在让我们看看我们能做什么：
 - en: '[PRE10]'
-  id: totrans-49
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
   zh: '[PRE10]'
 - en: Well, gcc didn't complain, but the program doesn't work. What went wrong?
-  id: totrans-50
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
   zh: 嗯，gcc 没有抱怨，但程序不工作。出了什么问题？
@@ -302,14 +302,14 @@
     After this comes the elements of the argv array, including the terminating NULL
     element, followed by the elements of envp. And that's all. There is no return
     address on the stack.
-  id: totrans-51
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
   zh: 我们所犯的错误在于将 _start 当作 C 函数处理，并试图从中返回。实际上，它根本不是一个函数。它只是目标文件中的一个符号，链接器用它来定位程序的入口点。当我们的程序被调用时，它是直接调用的。如果我们看一下栈顶的值，会发现它是数字
     1，这显然不像是地址。事实上，栈上存储的是我们程序的 argc 值。在这之后是 argv 数组的元素，包括终止的 NULL 元素，然后是 envp 的元素。就是这些。栈上没有返回地址。
 - en: So, how does _start ever exit? Well, it calls the exit() function! That's what
     it's there for, after all.
-  id: totrans-52
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
   zh: 那么，_start 怎么退出呢？嗯，它调用 exit() 函数！毕竟，这就是它的存在意义。
@@ -318,7 +318,7 @@
     of the process, but those tasks will never have been started, because we're bypassing
     the library's startup code. So we need to bypass the library's shutdown code as
     well, and go directly to the operating system's shutdown processing.
-  id: totrans-53
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
   zh: 其实，我撒了个谎。它实际上是调用 _exit() 函数。（注意前面的下划线。）exit() 要为进程完成一些任务，但这些任务从未启动过，因为我们绕过了库的启动代码。因此，我们还需要绕过库的关闭代码，直接进入操作系统的关闭处理。
@@ -326,98 +326,98 @@
     that takes a single integer argument. So all we need to do is push the number
     onto the stack and call the function. (We also need to declare _exit() as external.)
     Here''s our assembly:'
-  id: totrans-54
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
   zh: 所以，让我们再试一次。我们要调用 _exit()，这是一个带有单个整数参数的函数。所以我们要做的就是将这个数字推送到栈上并调用这个函数。（我们还需要将
     _exit() 声明为外部函数。）这是我们的汇编代码：
 - en: '[PRE11]'
-  id: totrans-55
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
   zh: '[PRE11]'
 - en: 'And we build and test as before:'
-  id: totrans-56
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
   zh: 然后我们像之前一样构建和测试：
 - en: '[PRE12]'
-  id: totrans-57
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
   zh: '[PRE12]'
 - en: Success at last! And now how big is it?
-  id: totrans-58
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
   zh: 终于成功了！现在它有多大？
 - en: '[PRE13]'
-  id: totrans-59
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
   zh: '[PRE13]'
 - en: Almost half the size! Not bad. Not bad at all. Hmmm ... so what other interesting
     obscure options does gcc have?
-  id: totrans-60
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
   zh: 将近一半的大小！不错。不错。嗯……gcc还有哪些其他有趣而又隐秘的选项呢？
 - en: 'Well, this one, appearing immediately after -nostartfiles in the documentation,
     is certainly eye-catching:'
-  id: totrans-61
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
   zh: 嗯，这个出现在文档中的`-nostartfiles`之后，确实引人注目：
 - en: -nostdlib
-  id: totrans-62
+  id: totrans-split-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
   zh: '`-nostdlib`'
 - en: Don't use the standard system libraries and startup files when linking. Only
     the files you specify will be passed to the linker.
-  id: totrans-63
+  id: totrans-split-63
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
   zh: 链接时不使用标准系统库和启动文件。只传递您指定的文件给链接器。
 - en: 'That''s gotta be worth investigating:'
-  id: totrans-64
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
   zh: 那肯定值得调查一下：
 - en: '[PRE14]'
-  id: totrans-65
+  id: totrans-split-65
   prefs: []
   type: TYPE_PRE
   zh: '[PRE14]'
 - en: Oops. That's right ... _exit() is, after all, a library function. It has to
     be filled in from somewhere.
-  id: totrans-66
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
   zh: 噢。没错…… _exit()毕竟是一个库函数。必须从某处填写它。
 - en: Okay. But surely, we don't need libc's help just to end a program, do we?
-  id: totrans-67
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
   zh: 好吧。但是，毫无疑问，我们不需要libc的帮助来结束一个程序，对吧？
 - en: No, we don't. If we're willing to leave behind all pretenses of portability,
     we can make our program exit without having to link with anything else. First,
     though, we need to know how to make a <def>system call</def> under Linux.
-  id: totrans-68
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
   zh: 不，我们不需要。如果我们愿意放弃所有可移植性的假设，我们可以使我们的程序退出，而无需与任何其他东西链接。不过，在此之前，我们需要知道如何在Linux下进行<def>系统调用</def>。
 - en: '* * *'
-  id: totrans-69
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
 - en: Linux, like most operating systems, provides basic necessities to the programs
     it hosts via system calls. This includes things like opening a file, reading and
     writing to file handles — and, of course, shutting down a process.
-  id: totrans-70
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
   zh: Linux像大多数操作系统一样，通过系统调用为其托管的程序提供基本必需品。这包括诸如打开文件、读写文件句柄以及当然关闭进程等操作。
@@ -430,7 +430,7 @@
     is required, respectively. Upon return from a system call, eax will contain the
     return value. If an error occurs, eax will contain a negative value, with the
     absolute value indicating the error.'
-  id: totrans-71
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
   zh: Linux系统调用接口是一条单一的指令：<def>int 0x80</def>。所有系统调用都通过这个中断完成。要进行系统调用，eax应包含指示调用哪个系统调用的编号，如果有的话，其他寄存器用于保存参数。如果系统调用需要一个参数，它将在ebx中；如果需要两个参数，将使用ebx和ecx。同样地，如果需要第三、第四或第五个参数，则使用edx、esi和edi。从系统调用返回时，eax将包含返回值。如果发生错误，eax将包含负值，其绝对值表示错误。
@@ -438,228 +438,228 @@
     A quick peek will tell us that the exit system call is assigned the number 1\.
     Like the C function, it takes one argument, the value to return to the parent
     process, and so this will go into ebx.
-  id: totrans-72
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
   zh: 不同系统调用的编号列在`/usr/include/asm/unistd.h`中。快速浏览可以告诉我们，退出系统调用分配的编号是1。像C函数一样，它接受一个参数，即返回给父进程的值，因此这将放入ebx中。
 - en: 'We now know all we need to know to create the next version of our program,
     one that won''t need assistance from any external functions to work:'
-  id: totrans-73
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
   zh: 现在我们知道了所有必要的信息，可以创建程序的下一个版本，而无需从任何外部函数获得帮助：
 - en: '[PRE15]'
-  id: totrans-74
+  id: totrans-split-74
   prefs: []
   type: TYPE_PRE
   zh: '[PRE15]'
 - en: 'Here we go:'
-  id: totrans-75
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
   zh: 我们开始吧：
 - en: '[PRE16]'
-  id: totrans-76
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
   zh: '[PRE16]'
 - en: Ta-da! And the size?
-  id: totrans-77
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
   zh: 咔嚓！大小呢？
 - en: '[PRE17]'
-  id: totrans-78
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
   zh: '[PRE17]'
 - en: Now *that's* tiny! Almost a fourth the size of the previous version!
-  id: totrans-79
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
   zh: 现在*这*才算小！几乎是之前版本的四分之一大小！
 - en: So ... can we do anything else to make it even smaller?
-  id: totrans-80
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
   zh: 所以...我们还能做些什么来使它更小吗？
 - en: How about using shorter instructions?
-  id: totrans-81
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
   zh: 如何使用更短的指令？
 - en: 'If we generate a list file for the assembly code, we''ll find the following:'
-  id: totrans-82
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
   zh: 如果我们为汇编代码生成一个列表文件，我们将找到以下内容：
 - en: '[PRE18]'
-  id: totrans-83
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
   zh: '[PRE18]'
 - en: Well, gee, we don't need to initialize all of ebx, since the operating system
     is only going to use the lowest byte. Setting bl alone will be sufficient, and
     will take two bytes instead of five.
-  id: totrans-84
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
   zh: 哎呀，我们不需要初始化ebx的所有内容，因为操作系统只会使用最低字节。仅设置bl就足够了，而且只需两个字节而不是五个字节。
 - en: We can also set eax to one by xor'ing it to zero and then using a one-byte increment
     instruction; this will save two more bytes.
-  id: totrans-85
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
   zh: 我们还可以通过将eax异或为零然后使用一个一字节的增量指令将其设置为一；这将节省两个字节。
 - en: '[PRE19]'
-  id: totrans-86
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
   zh: '[PRE19]'
 - en: I think it's pretty safe to say that we're not going to make this program any
     smaller than that.
-  id: totrans-87
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
   zh: 我认为可以非常肯定地说，我们不会将这个程序做得比这更小了。
 - en: 'As an aside, we might as well stop using gcc to link our executable, seeing
     as we''re not using any of its added functionality, and just call the linker,
     ld, ourselves:'
-  id: totrans-88
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
   zh: 作为旁注，既然我们没有使用它的任何附加功能，我们也可以停止使用gcc来链接我们的可执行文件，只需自己调用链接器ld：
 - en: '[PRE20]'
-  id: totrans-89
+  id: totrans-split-89
   prefs: []
   type: TYPE_PRE
   zh: '[PRE20]'
 - en: Four bytes smaller. (Hey! Didn't we shave five bytes off? Well, we did, but
     alignment considerations within the ELF file caused it to require an extra byte
     of padding.)
-  id: totrans-90
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
   zh: 小了四个字节。（嘿！我们不是削减了五个字节吗？是的，我们确实是这样做了，但是在ELF文件中的对齐考虑导致它需要额外的一个填充字节。）
 - en: So ... have we reached the end? Is this as small as we can go?
-  id: totrans-91
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
   zh: 所以...我们到底达到了尽头吗？这就是我们能做到的最小尺寸了吗？
 - en: Well, hm. Our program is now seven bytes long. Do ELF files really require 361
     bytes of overhead? What's in this file, anyway?
-  id: totrans-92
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
   zh: 唔。我们的程序现在只有七个字节长了。ELF文件真的需要361字节的开销吗？这个文件里到底有什么？
 - en: 'We can peek into the contents of the file using objdump:'
-  id: totrans-93
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
   zh: 我们可以使用objdump来查看文件的内容：
 - en: '[PRE21]'
-  id: totrans-94
+  id: totrans-split-94
   prefs: []
   type: TYPE_PRE
   zh: '[PRE21]'
 - en: 'The output may look like gibberish, but right now let''s just focus on the
     list of sections:'
-  id: totrans-95
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
   zh: 输出可能看起来像胡言乱语，但现在让我们专注于段列表：
 - en: '[PRE22]'
-  id: totrans-96
+  id: totrans-split-96
   prefs: []
   type: TYPE_PRE
   zh: '[PRE22]'
 - en: The complete .text section is listed as being seven bytes long, just as we specified.
     So it seems safe to conclude that we now have complete control of the machine-language
     content of our program.
-  id: totrans-97
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
   zh: 完整的.text部分显示为七个字节长，正如我们所指定的那样。因此，可以安全地得出结论，我们现在完全控制了程序的机器语言内容。
 - en: But then there's this other section named ".comment". Who ordered *that*? And
     it's 28 bytes long, even! We may not be sure what this .comment section is, but
     it seems a good bet that it isn't a necessary feature....
-  id: totrans-98
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
   zh: 但是还有另一个名为".comment"的部分。谁要求*那个*？它甚至有28个字节长！我们可能不确定这个.comment部分是什么，但很可能不是一个必要的功能……
 - en: 'The .comment section is listed as being located at file offset 00000087 (hexadecimal).
     If we use a hexdump program to look at that area of the file, we will see:'
-  id: totrans-99
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
   zh: .comment 部分被列在文件偏移 00000087（十六进制）处。如果我们使用一个 hexdump 程序来查看文件的这一区域，我们会看到：
 - en: '[PRE23]'
-  id: totrans-100
+  id: totrans-split-100
   prefs: []
   type: TYPE_PRE
   zh: '[PRE23]'
 - en: Well, well, well. Who'd've thought that Nasm would undermine our quest like
     this? Maybe we should switch to using gas, AT&T syntax notwithstanding....
-  id: totrans-101
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
   zh: 唔，唔，唔。谁能想到 Nasm 会像这样破坏我们的探索？也许我们应该转而使用 gas，尽管 AT&T 语法仍然......
 - en: 'Alas, if we do:'
-  id: totrans-102
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
   zh: 唉，如果我们这样做：
 - en: '[PRE24]'
-  id: totrans-103
+  id: totrans-split-103
   prefs: []
   type: TYPE_PRE
   zh: '[PRE24]'
 - en: '... we will find:'
-  id: totrans-104
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
   zh: '... 我们将会发现：'
 - en: '[PRE25]'
-  id: totrans-105
+  id: totrans-split-105
   prefs: []
   type: TYPE_PRE
   zh: '[PRE25]'
 - en: '... no difference!'
-  id: totrans-106
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
   zh: '... 没有区别！'
 - en: 'Well, actually there is some difference. Turning once again to objdump, we
     see:'
-  id: totrans-107
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
   zh: 嗯，实际上有些区别。再次转向 objdump，我们看到：
 - en: '[PRE26]'
-  id: totrans-108
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
   zh: '[PRE26]'
 - en: No comment section, but now we have two useless sections for storing our nonexistent
     data. And even though these sections are zero bytes long, they incur overhead,
     bringing our file size up for no good reason.
-  id: totrans-109
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
   zh: 没有注释部分，但现在我们有两个用来存储不存在数据的无用部分。尽管这些部分的长度为零字节，它们仍然产生开销，毫无道理地增加了我们的文件大小。
 - en: Okay, so just what is all this overhead, and how do we get rid of it?
-  id: totrans-110
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
   zh: 好了，那么所有这些额外开销究竟是什么，我们该如何摆脱它？
 - en: Well, to answer these questions, we must begin diving into some real wizardry.
     We need to understand the ELF format.
-  id: totrans-111
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
   zh: 好吧，要回答这些问题，我们必须开始深入研究一些真正的魔法。我们需要理解 ELF 格式。
 - en: '* * *'
-  id: totrans-112
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
@@ -669,7 +669,7 @@
     This specification covers a lot of territory, so if you''d prefer to not read
     the whole thing yourself, I''ll understand. Basically, here''s what we need to
     know:'
-  id: totrans-113
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
   zh: 关于 Intel-386 架构 ELF 格式的权威文档可以在 [http://refspecs.linuxbase.org/elf/elf.pdf](http://refspecs.linuxbase.org/elf/elf.pdf)
@@ -684,7 +684,7 @@
     whether the ELF file is an executable, an object file, or a shared-object library;
     the program''s starting address; and the locations within the file of the <def>program
     header table</def> and the <def>section header table</def>.'
-  id: totrans-114
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
   zh: 每个ELF文件都以一个称为<def>ELF头部</def>的结构开始。该结构长为52字节，包含描述文件内容的几个信息。例如，前16字节包含一个"标识符"，其中包括文件的魔术数字签名（7F
@@ -700,26 +700,26 @@
     header table is optional for object files, and in practice is never present. Likewise,
     the section header table is optional for executables — but is almost *always*
     present!
-  id: totrans-115
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
   zh: 这两个表可以出现在文件的任何位置，但通常前者紧随在ELF头部之后，后者出现在或接近文件的末尾。这两个表具有类似的目的，即识别文件的组成部分。然而，节头部表更专注于标识程序各部分在文件中的位置，而程序头部表描述了这些部分在内存中如何加载的位置和方式。简而言之，节头部表用于编译器和链接器使用，而程序头部表用于程序加载器使用。对于目标文件，程序头部表是可选的，在实践中几乎不会出现。同样地，对于可执行文件来说，节头部表是可选的，但几乎*总是*存在！
 - en: So, this is the answer to our first question. A fair piece of the overhead in
     our program is a completely unnecessary section header table, and maybe some equally
     useless sections that don't contribute to our program's memory image.
-  id: totrans-116
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
   zh: 所以，这就是我们第一个问题的答案。我们程序中的一个相当大的开销是一个完全不必要的节头表，也许还有一些同样无用的部分，这些部分不会对我们程序的内存映像产生贡献。
 - en: 'So, we turn to our second question: how do we go about getting rid of all that?'
-  id: totrans-117
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
   zh: 因此，我们转向我们的第二个问题：我们如何才能摆脱所有这些？
 - en: Alas, we're on our own here. None of the standard tools will deign to make an
     executable without a section header table of some kind. If we want such a thing,
     we'll have to do it ourselves.
-  id: totrans-118
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
   zh: 唉，我们在这里是自己一个人了。没有标准工具愿意制作没有任何种类节头表的可执行文件。如果我们想要这样的东西，我们必须自己来做。
@@ -727,7 +727,7 @@
     hexadecimal values by hand, though. Good old Nasm has a flat binary output format,
     which will serve us well. All we need now is the image of an empty ELF executable,
     which we can fill in with our program. Our program, and nothing else.
-  id: totrans-119
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
   zh: 然而这并不意味着我们必须拿出二进制编辑器，手工编写十六进制值。好在老式的Nasm有一个扁平的二进制输出格式，这对我们非常有用。现在我们所需的只是一个空白的ELF可执行文件的图像，我们可以用我们的程序来填充它。我们的程序，仅此而已。
@@ -735,12 +735,12 @@
     created by the standard tools, to figure out what our empty ELF executable should
     look like. But, if you''re the impatient type, you can just use the one I''ve
     supplied here:'
-  id: totrans-120
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
   zh: 我们可以查看ELF规范和 /usr/include/linux/elf.h，以及标准工具创建的可执行文件，来了解我们的空白ELF可执行文件应该是什么样子。但是，如果你是急性子，你可以直接使用我这里提供的一个：
 - en: '[PRE27]'
-  id: totrans-121
+  id: totrans-split-121
   prefs: []
   type: TYPE_PRE
   zh: '[PRE27]'
@@ -752,62 +752,62 @@
     address for executables to load), and to begin executing the code at _start, which
     appears immediately after the program header table. No .data segment, no .bss
     segment, no commentary — nothing but the bare necessities.
-  id: totrans-122
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
   zh: 这个图像包含一个ELF头部，标识文件为Intel 386可执行文件，没有节头表和一个程序头表，其中包含一个条目。该条目指示程序加载器将整个文件加载到内存中（程序包含其ELF头部和程序头表在其内存映像中是正常行为），从内存地址0x08048000开始加载（这是可执行文件加载的默认地址），并且从程序头表后紧接着的_start处开始执行代码。没有
     .data 段，没有 .bss 段，没有注释 — 只有必需的内容。
 - en: 'So, let''s add in our little program:'
-  id: totrans-123
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
   zh: 所以，让我们加入我们的小程序：
 - en: '[PRE28]'
-  id: totrans-124
+  id: totrans-split-124
   prefs: []
   type: TYPE_PRE
   zh: '[PRE28]'
 - en: 'and try it out:'
-  id: totrans-125
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
   zh: 并且尝试它：
 - en: '[PRE29]'
-  id: totrans-126
+  id: totrans-split-126
   prefs: []
   type: TYPE_PRE
   zh: '[PRE29]'
 - en: 'We have just created an executable completely from scratch. How about that?
     And now, take a look at its size:'
-  id: totrans-127
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
   zh: 我们刚刚完全从头开始创建了一个可执行文件。怎么样？现在，看看它的大小：
 - en: '[PRE30]'
-  id: totrans-128
+  id: totrans-split-128
   prefs: []
   type: TYPE_PRE
   zh: '[PRE30]'
 - en: '*Ninety-one* *bytes*. Less than one-fourth the size of our previous attempt,
     and less than one-*fortieth* the size of our first!'
-  id: totrans-129
+  id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
   zh: '*九十一个* *字节*。比我们上一个尝试的大小小了四分之一，比我们第一次尝试的大小小了四十分之一！'
 - en: What's more, this time we can account for every last byte. We know exactly what's
     in the executable, and why it needs to be there. This is, finally, the limit.
     We can't get any smaller than this.
-  id: totrans-130
+  id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
   zh: 更重要的是，这一次我们可以对每一个字节负责。我们完全知道可执行文件中的内容，以及为什么需要这些内容。这终于是极限了。比这还小我们就不能再做了。
 - en: Or can we?
-  id: totrans-131
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
   zh: 或者，我们能吗？
 - en: '* * *'
-  id: totrans-132
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
@@ -816,7 +816,7 @@
     to be located anywhere (except the ELF header, which must be at the top of the
     file), and they can even overlap each other. 2) Some of the fields in the headers
     aren't actually used.
-  id: totrans-133
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
   zh: 嗯，如果你真的停下来读一下ELF规范，你可能会注意到一些事实。1）ELF文件的不同部分可以放在任何地方（除了必须在文件顶部的ELF头部），它们甚至可以彼此重叠。2）头部中的一些字段实际上是不被使用的。
@@ -825,37 +825,37 @@
     of the ELF standard. So the OS shouldn't care at all what's in there. And we're
     already loading everything into memory anyway, and our program is only seven bytes
     long....
-  id: totrans-134
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
   zh: 特别是，我在考虑那个16字节识别字段末尾的一串零。它们纯粹是填充，为ELF标准的未来扩展腾出空间。所以操作系统根本不应关心里面是什么。而且我们已经把所有东西加载到内存中了，我们的程序只有七个字节长……
 - en: Can we put our code inside the ELF header itself?
-  id: totrans-135
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
   zh: 我们是否能把我们的代码放在ELF头部本身？
 - en: Why not?
-  id: totrans-136
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
   zh: 为什么不呢？
 - en: '[PRE31]'
-  id: totrans-137
+  id: totrans-split-137
   prefs: []
   type: TYPE_PRE
   zh: '[PRE31]'
 - en: After all, bytes are bytes!
-  id: totrans-138
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
   zh: 毕竟，字节就是字节！
 - en: '[PRE32]'
-  id: totrans-139
+  id: totrans-split-139
   prefs: []
   type: TYPE_PRE
   zh: '[PRE32]'
 - en: Not bad, eh?
-  id: totrans-140
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
   zh: 不错，对吧？
@@ -863,18 +863,18 @@
     ELF header and one program header table entry, both of which we absolutely require
     in order to get loaded into memory and run. So there's nothing left to reduce
     now!
-  id: totrans-141
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
   zh: 现在我们已经降到了最低点。我们的文件正好与一个ELF头部和一个程序头表条目一样长，这两者是我们必须的，才能被加载到内存中运行。所以现在没有什么可以再减少的了！
 - en: Except ...
-  id: totrans-142
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
   zh: 除了……
 - en: Well, what if we could do the same thing to the program header table that we
     just did to the program? Have it overlap with the ELF header, that is. Is it possible?
-  id: totrans-143
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
   zh: 好吧，如果我们能对程序头表做与我们刚才对程序所做的事情一样的事情呢？让它与ELF头部重叠，这可能吗？
@@ -882,53 +882,53 @@
     the ELF header bear a certain kind of resemblence to the first eight bytes in
     the program header table. A certain kind of resemblence that might be described
     as "identical".
-  id: totrans-144
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
   zh: 的确是可以的。看看我们的程序。注意ELF头部中的最后八个字节与程序头表中的前八个字节有某种相似之处。一种可能被描述为“相同”的相似之处。
 - en: So ...
-  id: totrans-145
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
   zh: 所以……
 - en: '[PRE33]'
-  id: totrans-146
+  id: totrans-split-146
   prefs: []
   type: TYPE_PRE
   zh: '[PRE33]'
 - en: 'And sure enough, Linux doesn''t mind our parsimony one bit:'
-  id: totrans-147
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
   zh: 而Linux确实一点也不介意我们的节俭：
 - en: '[PRE34]'
-  id: totrans-148
+  id: totrans-split-148
   prefs: []
   type: TYPE_PRE
   zh: '[PRE34]'
 - en: Now we've *really* gone as low as we can go. There's no way to overlap the two
     structures any more than this. The bytes simply don't match up. This is the end
     of the line!
-  id: totrans-149
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
   zh: 现在我们*真的*已经降到了最低点。没有办法比这更重叠这两个结构了。这些字节根本无法匹配。这就是终点！
 - en: Unless, that is, we could change the contents of the structures to make them
     match even further....
-  id: totrans-150
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
   zh: 除非，也就是说，我们能改变结构的内容，使它们更进一步地匹配……
 - en: How many of these fields is Linux actually looking at, anyway? For example,
     does Linux actually check to see if the e_machine field contains 3 (indicating
     an Intel 386 target), or is it just assuming that it does?
-  id: totrans-151
+  id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
   zh: Linux实际上看了这些字段中的多少？例如，Linux是否真的检查e_machine字段是否包含3（表示Intel 386目标），还是只是假定它包含？
 - en: As a matter of fact, in that case it does. But a surprising number of other
     fields are being quietly ignored.
-  id: totrans-152
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
   zh: 事实上，在这种情况下确实如此。但令人惊讶的是，许多其他字段正在悄悄地被忽略。
@@ -949,7 +949,7 @@
     table entries. This one was unchecked in older kernels, but now it needs to be
     set correctly. Everything else in the ELF header is about the section header table,
     which doesn''t come into play with executable files.'
-  id: totrans-153
+  id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
   zh: 所以：下面是 ELF 头部中的必要和非必要部分。前四个字节必须包含魔术数字，否则 Linux 将不予处理。然而，e_ident 字段中的其他三个字节未经检查，这意味着我们至少有连续的十二个字节可以随意设置。e_type
@@ -973,7 +973,7 @@
     used when relocating segments containing position-independent code (as for shared
     libraries), so for an executable file Linux will ignore whatever garbage we store
     here.
-  id: totrans-154
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
   zh: 那么现在来看程序头表条目如何处理？好吧，p_type 必须包含 1，以标记它为一个可加载段。p_offset 确实需要正确的文件偏移量来开始加载。同样，p_vaddr
@@ -985,12 +985,12 @@
     will reveal that most of the necessary fields in the ELF header are in the first
     half - the second half is almost completely free for munging. With this in mind,
     we can interpose the two structures quite a bit more than we did previously:'
-  id: totrans-155
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
   zh: 总而言之，这是相当多的灵活性。特别是，稍加审视就会发现 ELF 头部中大部分必要字段位于前半部分——而后半部分几乎完全可以用于混淆。考虑到这一点，我们可以将这两个结构交叉排列得比之前更多：
 - en: '[PRE35]'
-  id: totrans-156
+  id: totrans-split-156
   prefs: []
   type: TYPE_PRE
   zh: '[PRE35]'
@@ -1002,31 +1002,31 @@
     definitely ignored. The other is the e_phentsize field, which coincides with the
     top half of the p_vaddr field. These are made to match up by selecting a non-standard
     load address for our program, with a top half equal to 0x0020.
-  id: totrans-157
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
   zh: 正如你可以（希望）看到的那样，程序头表的前二十个字节现在与 ELF 头部的最后二十个字节重叠。实际上，这两者非常好地嵌合在一起。重叠区域内只有 ELF
     头部的两个部分是重要的。第一个是 `e_phnum` 字段，恰好与 `p_paddr` 字段重合，后者是程序头表中少数几个绝对被忽略的字段之一。另一个是 `e_phentsize`
     字段，它与 `p_vaddr` 字段的上半部分重合。通过选择一个非标准的程序加载地址，其上半部分等于 `0x0020`，这些字段得以匹配。
 - en: Now we have *really* left behind all pretenses of portability ...
-  id: totrans-158
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
   zh: 现在我们真正抛弃了所有的可移植性假设……
 - en: '[PRE36]'
-  id: totrans-159
+  id: totrans-split-159
   prefs: []
   type: TYPE_PRE
   zh: '[PRE36]'
 - en: '... but it works! And the program is twelve bytes shorter, exactly as predicted.'
-  id: totrans-160
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
   zh: ……但它确实起作用！而且程序正好少了十二个字节，完全符合预期。
 - en: This is where I say that we can't do any better than this, but of course, we
     already know that we can — if we could get the program header table to reside
     *completely* within the ELF header. Can this holy grail be achieved?
-  id: totrans-161
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
   zh: 这就是我说我们不能再做得比这更好的地方，但当然，我们已经知道我们可以——如果我们可以使程序头表完全位于 ELF 头部内。这个圣杯能够实现吗？
@@ -1036,14 +1036,14 @@
     This puts the first part of the program header table comfortably within the e_ident
     area, but still leaves problems with the rest of it. After some experimenting,
     it looks like it isn't going to quite be possible.
-  id: totrans-162
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
   zh: 好吧，我们不能再将其上移十二个字节，否则会遇到无法调和两个结构中的几个字段的绝望障碍。唯一的其他可能性是让它紧接着第四个字节开始。这将使程序头表的第一部分舒适地位于
     e_ident 区域内，但仍然存在其余部分的问题。经过一些实验，看起来这似乎不太可能。
 - en: However, it turns out that there are still a couple more fields in the program
     header table that we can pervert.
-  id: totrans-163
+  id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
   zh: 然而，事实证明程序头表中还有几个字段可以倒置。
@@ -1051,24 +1051,24 @@
     Obviously it needs to be at least as big as p_filesz, but there wouldn't be any
     harm if it was larger. Just because we ask for memory doesn't mean we have to
     use it, after all.
-  id: totrans-164
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
   zh: 我们注意到，`p_memsz` 指示分配多少内存用于存储器段。显然，它至少应与 `p_filesz` 一样大，但如果更大也没有坏处。毕竟，我们要求内存并不意味着我们必须使用它。
 - en: 'Secondly, it turns out that, contrary to all my expectations, the executable
     bit can be dropped from the p_flags field. It turns out that the readable and
     executable bits are redundant: either one will imply the other.'
-  id: totrans-165
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
   zh: 其次，事实证明，与我所有的期望相反，`p_flags` 字段中的可执行位可以被移除。原来可读和可执行位是多余的：任何一个都将意味着另一个。
 - en: 'So, with these facts in mind, we can reorganize the file into this little monstrosity:'
-  id: totrans-166
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
   zh: 因此，考虑到这些事实，我们可以将文件重新组织为这个小怪物：
 - en: '[PRE37]'
-  id: totrans-167
+  id: totrans-split-167
   prefs: []
   type: TYPE_PRE
   zh: '[PRE37]'
@@ -1077,7 +1077,7 @@
     into the file for the program header table, which is exactly where we've located
     it. The program (remember that?) has been moved down to lower part of the ELF
     header, beginning at the e_shoff field and ending inside the e_flags field.
-  id: totrans-168
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
   zh: '`p_flags` 字段已从 5 更改为 4，正如我们注意到我们可以这样做。这个 4 也是 `e_phoff` 字段的值，它给出了程序头表在文件中的偏移量，而这正是我们定位它的地方。程序（还记得吗？）已被移动到
@@ -1087,7 +1087,7 @@
     small number, which is good since it's also the p_memsz number. (Actually, with
     virtual memory it hardly matters — we could have left it at our original value
     and it would work just as well. But there's no harm in being polite.)
-  id: totrans-169
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
   zh: 请注意，加载地址已更改为一个更低的数字——事实上，尽可能低。这将使 `e_entry` 字段中的值保持在一个相当小的数字，这是很好的，因为它也是 `p_memsz`
@@ -1102,7 +1102,7 @@
     p_filesz to equal p_memsz. That means they're both larger than the real file size
     — quite a bit larger, in fact — but it absolves the loader from having to write
     to read-only memory, which is all it cared about.
-  id: totrans-170
+  id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
   zh: 更改到 `p_filesz` 可能需要解释。因为我们没有在 `p_flags` 字段中设置写入位，Linux 不会允许我们定义大于 `p_filesz`
@@ -1110,12 +1110,12 @@
     `p_memsz` 值降低到等于 `p_filesz`（这将使其无法与 `e_entry` 共享）。然而，另一种解决方案存在，即将 `p_filesz` 增加到等于
     `p_memsz`。这意味着它们都比实际文件大小大得多——事实上大得多——但它使加载器免于写入只读内存，这正是它关心的。
 - en: And so ...
-  id: totrans-171
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
   zh: '-   因此...'
 - en: '[PRE38]'
-  id: totrans-172
+  id: totrans-split-172
   prefs: []
   type: TYPE_PRE
   zh: '[PRE38]'
@@ -1123,7 +1123,7 @@
     embedded within the ELF header, our executable file is now exactly as big as the
     ELF header! No more, no less. And *still* running without a single complaint from
     Linux!'
-  id: totrans-173
+  id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
   zh: ……因此，随着程序头表和程序本身完全嵌入到ELF头部中，我们的可执行文件现在正好与ELF头部一样大！不多，也不少。而且*依然*可以在Linux上运行而毫无怨言！
@@ -1131,17 +1131,17 @@
     There can be no question about it, right? After all, we have to have a complete
     ELF header (even if it is badly mangled), or else Linux wouldn't give us the time
     of day!
-  id: totrans-174
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
   zh: 现在，最终，我们真正且无疑地达到了绝对的最小可能。这点毋庸置疑，对吧？毕竟，我们必须拥有一个完整的ELF头部（即使它被严重破坏），否则Linux就不会浪费时间与我们交流！
 - en: Right?
-  id: totrans-175
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
   zh: 对吧？
 - en: Wrong. We have one last dirty trick left.
-  id: totrans-176
+  id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
   zh: 错了。我们还有最后一个卑鄙的手段。
@@ -1149,22 +1149,22 @@
     header, Linux will still play ball, and fill out the missing bytes with zeros.
     We have no less than seven zeros at the end of our file, and if we drop them from
     the file image:'
-  id: totrans-177
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
   zh: 如果文件的大小不完全符合完整的ELF头部大小，Linux仍然会正常工作，并用零填充缺失的字节。我们的文件末尾有不少于七个零，如果我们从文件镜像中删除它们：
 - en: '[PRE39]'
-  id: totrans-178
+  id: totrans-split-178
   prefs: []
   type: TYPE_PRE
   zh: '[PRE39]'
 - en: '... we can, incredibly enough, still produce a working executable:'
-  id: totrans-179
+  id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
   zh: ……令人难以置信的是，我们仍然可以产生一个可运行的可执行文件：
 - en: '[PRE40]'
-  id: totrans-180
+  id: totrans-split-180
   prefs: []
   type: TYPE_PRE
   zh: '[PRE40]'
@@ -1173,12 +1173,12 @@
     entries in the program header table, needs to be non-zero, needs to be present,
     and needs to be in the 45th position from the start of the ELF header. We are
     forced to conclude that there is nothing more that can be done.'
-  id: totrans-181
+  id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
   zh: '*最后*，我们终于走到了尽头。无法回避的事实是文件的第45个字节，指定程序头表中条目数，必须是非零且必须存在，并且必须位于距离ELF头部开头的第45个位置。我们不得不得出结论，没有更多可以做的了。'
 - en: '* * *'
-  id: totrans-182
+  id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
@@ -1187,7 +1187,7 @@
     the size of the smallest file we could create using pure C code. We have stripped
     everything out of the file that we could, and put to dual purpose most of what
     we couldn't.
-  id: totrans-183
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
   zh: 这个45字节的文件比我们使用标准工具创建的最小ELF可执行文件小于八分之一，比我们使用纯C代码创建的最小文件小于五十分之一。我们已经剥离了文件中的所有可能，并且将大部分无法剥离的内容双重利用。
@@ -1195,39 +1195,39 @@
     and it's a wonder that Linux will even consent to sneeze on it, much less give
     it a process ID. This is not the sort of program to which one would normally be
     willing to confess authorship.
-  id: totrans-184
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
   zh: 当然，这个文件中一半的数值违反了ELF标准的某些部分，真是奇迹般地Linux甚至愿意打个喷嚏在上面，更不用说给它一个进程ID了。这不是你通常愿意承认自己编写的程序类型。
 - en: On the other hand, every single byte in this executable file can be accounted
     for and justified. How many executables have you created lately that you can say
     *that* about?
-  id: totrans-185
+  id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
   zh: 另一方面，这个可执行文件中的每一个字节都可以被解释和证明。最近你创建了多少个可执行文件，你可以对*这*说这种话？
 - en: '[(next)](teensyps.html)'
-  id: totrans-186
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
   zh: '[(下一页)](teensyps.html)'
 - en: '* * *'
-  id: totrans-187
+  id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
   zh: '* * *'
 - en: '[Tiny](http://www.muppetlabs.com/~breadbox/software/tiny/)'
-  id: totrans-188
+  id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
   zh: '[微型](http://www.muppetlabs.com/~breadbox/software/tiny/)'
 - en: '[Software](http://www.muppetlabs.com/~breadbox/software/)'
-  id: totrans-189
+  id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
   zh: '[软件](http://www.muppetlabs.com/~breadbox/software/)'
 - en: '[Brian Raiter](http://www.muppetlabs.com/~breadbox/)'
-  id: totrans-190
+  id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
   zh: '[布莱恩·雷特尔](http://www.muppetlabs.com/~breadbox/)'

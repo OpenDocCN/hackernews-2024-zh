@@ -1,39 +1,49 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:58:12'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Bending pause times to your will with Generational ZGC | by Netflix Technology
     Blog | Netflix TechBlog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://netflixtechblog.com/bending-pause-times-to-your-will-with-generational-zgc-256629c9386b?gi=f77216038c95](https://netflixtechblog.com/bending-pause-times-to-your-will-with-generational-zgc-256629c9386b?gi=f77216038c95)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Bending pause times to your will with Generational ZGC
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '*The surprising and not so surprising benefits of generations in the Z Garbage
     Collector.*'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: By Danny Thomas, JVM Ecosystem Team
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The latest long term support release of the JDK delivers generational support
     for the [Z Garbage Collector](https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html).
     Netflix has switched by default from G1 to Generational ZGC on JDK 21 and later,
     because of the significant benefits of concurrent garbage collection.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: More than half of our critical streaming video services are now running on JDK
@@ -41,9 +51,11 @@
     the benefits we’ve seen. If you’re interested in how we use Java at Netflix, Paul
     Bakker’s talk [How Netflix Really Uses Java](https://www.infoq.com/presentations/netflix-java/),
     is a great place to start.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Reduced tail latencies
+  id: totrans-split-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -53,22 +65,27 @@
     with reliability features such as retries, hedging and fallbacks. Each of these
     errors is a canceled request resulting in a retry so this reduction further reduces
     overall service traffic by this rate:'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Errors rates per second. Previous week in white vs current cancellation rate
     in purple, as ZGC was enabled on a service cluster on November 16
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'Removing the noise of pauses also allows us to identify actual sources of latency
     end-to-end, which would otherwise be hidden in the noise, as maximum pause time
     outliers can be significant:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Maximum GC pause times by cause, for the same service cluster as above. Yes,
     those ZGC pauses really are usually under one millisecond
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Efficiency
+  id: totrans-split-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -77,20 +94,24 @@
     store and load barriers, work performed in thread local handshakes, and the GC
     competing with the application for resources. We considered that an acceptable
     trade off, as avoiding pauses provided benefits that would outweigh that overhead.'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: In fact, we’ve found for our services and architecture that there is no such
     trade off. For a given CPU utilization target, ZGC improves both average and P99
     latencies with equal or better CPU utilization when compared to G1.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: The consistency in request rates, request patterns, response time and allocation
     rates we see in many of our services certainly help ZGC, but we’ve found it’s
     equally capable of handling less consistent workloads (with exceptions of course;
     more on that below).
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Operational simplicity
+  id: totrans-split-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -99,33 +120,39 @@
     large amounts of on-heap data to avoid external service calls for efficiency.
     These periodic refreshes of on-heap data are great at taking G1 by surprise, resulting
     in pause time outliers well beyond the default pause time goal.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: This long lived on-heap data was the major contributor to us not adopting non-generational
     ZGC previously. In the worst case we evaluated, non-generational ZGC caused 36%
     more CPU utilization than G1 for the same workload. That became a nearly 10% improvement
     with generational ZGC.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Half of all services required for streaming video use our [Hollow](https://hollow.how/))
     library for on-heap metadata. Removing pauses as a concern allowed us to [remove
     array pooling mitigations](https://github.com/Netflix/hollow/commit/4f21ab593543bb622d9ccea2f8e6295eae5e8080),
     freeing hundreds of megabytes of memory for allocations.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Operational simplicity also stems from ZGC’s heuristics and defaults. No explicit
     tuning has been required to achieve these results. Allocation stalls are rare,
     typically coinciding with abnormal spikes in allocation rates, and are shorter
     than the average pause times we saw with G1.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Memory overhead
+  id: totrans-split-25
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: We expected that losing [compressed references](https://shipilev.net/jvm/anatomy-quarks/23-compressed-references/)
     on heaps < 32G, due to [colored pointers requiring 64-bit object pointers](https://youtu.be/YyXjC68l8mw?t=816),
     would be a major factor in the choice of a garbage collector.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: We’ve found that while that’s an important consideration for stop-the-world
@@ -134,20 +161,24 @@
     Erik Österlund at Oracle for explaining the less intuitive benefits of colored
     pointers when it comes to concurrent garbage collectors, which lead us to evaluating
     ZGC more broadly than initially planned.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'In the majority of cases ZGC is also able to consistently make more memory
     available to the application:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Used vs available heap capacity following each GC cycle, for the same service
     cluster as above
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: ZGC has a fixed overhead 3% of the heap size, requiring more native memory than
     G1\. Except in a couple of cases, there’s been no need to lower the maximum heap
     size to allow for more headroom, and those were services with greater than average
     native memory needs.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Reference processing is also only performed in major collections with ZGC. We
@@ -156,64 +187,79 @@
     [performance problem with JSON thread dump support](https://bugs.openjdk.org/browse/JDK-8321178),
     but that’s a unusual situation caused by a framework accidentally creating an
     unused ExecutorService instance for every request.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Transparent huge pages
+  id: totrans-split-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Even if you’re not using ZGC, you probably should be using huge pages, and [transparent
     huge pages](https://shipilev.net/jvm/anatomy-quarks/2-transparent-huge-pages/)
     is the most convenient way to use them.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: ZGC uses shared memory for the heap and many Linux distributions configure shmem_enabled
     to *never*, which silently prevents ZGC from using huge pages with -XX:+UseTransparentHugePages.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here we have a service deployed with no other change but shmem_enabled going
     from never to advise, reducing CPU utilization significantly:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Deployment moving from 4k to 2m pages. Ignore the gap, that’s our immutable
     deployment process temporarily doubling the cluster capacity
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Our default configuration:'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Sets heap minimum and maximums to equal size
+  id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Configures -XX:+UseTransparentHugePages -XX:+AlwaysPreTouch
+  id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Uses the following transparent_hugepage configuration:'
+  id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_PRE
 - en: What workloads weren’t a good fit?
+  id: totrans-split-42
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: There is no best garbage collector. Each trades off collection throughput, application
     latency and resource utilization depending on the goal of the garbage collector.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: For the workloads that have performed better with G1 vs ZGC, we’ve found that
     they tend to be more throughput oriented, with very spiky allocation rates and
     long running tasks holding objects for unpredictable periods.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: A notable example was a service where very spiky allocation rates and large
     numbers of long lived objects, which happened to be a particularly good fit for
     G1’s pause time goal and old region collection heuristics. It allowed G1 to avoid
     unproductive work in GC cycles that ZGC couldn’t.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: The switch to ZGC by default has provided the perfect opportunity for application
@@ -221,9 +267,11 @@
     cases had been using G1 by default, where they would have seen better throughput
     from the parallel collector. In one large precompute workload we saw a 6–8% improvement
     in application throughput, shaving an hour off the batch time, versus G1.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Try it for yourself!
+  id: totrans-split-47
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -231,5 +279,6 @@
     one of the most impactful changes we’ve made to our operational defaults in a
     decade. We’d encourage you to try generational ZGC for yourself. It might surprise
     you as much as it surprised us.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL

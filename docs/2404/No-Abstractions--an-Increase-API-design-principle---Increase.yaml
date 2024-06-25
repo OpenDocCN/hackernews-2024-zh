@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:31:19'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'No Abstractions: an Increase API design principle — Increase'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://increase.com/articles/no-abstractions](https://increase.com/articles/no-abstractions)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: API resources
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: are the nouns of your API. Deciding how to name and model these nouns is arguably
@@ -26,51 +33,63 @@
     organize your users’ mental model of how your product works and what it can do.
     At Increase, our team has used a principle called “no abstractions” to help. What
     do we mean by this?
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Much of our team came from Stripe, and when designing our API we considered
     the same values that have been successful there. Stripe excels at designing
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: abstractions
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: in their API — extracting the essential features of a complex domain into something
     their users can easily understand and work with. In their case this most notably
     means
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '[modeling](https://stripe.com/blog/payment-api-design)'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: payments across many different networks into an API resource called a
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PaymentIntent](https://docs.stripe.com/api/payment_intents)'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: . For example, Visa and Mastercard have subtly different reason codes for why
     a chargeback can be initiated, but Stripe combines those codes into a single enum
     so that their users don’t need to consider the two networks separately.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: This makes sense because many of Stripe’s users are early startups working on
     products totally unrelated to payments. They don't necessarily know, or need to
     know, about the nuances of credit cards. They want to integrate Stripe quickly,
     get back to building their product, and stop thinking about payments.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: “For Increase users, trying to hide the underlying complexity of these networks
     would irritate them, not simplify their lives.”
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Increase’s users are not like this. They often have deep existing knowledge
     of payment networks, think about financial technology all the time, and come to
     us because of our direct network connections and the depth of integration that
     lets them build. They want to know
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[exactly](https://status.increase.com/#ach-submission-timeline)'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: when the FedACH window closes and when transfers will land. They understand
@@ -78,28 +97,35 @@
     in different return timing. Trying to hide the underlying complexity of these
     networks (by, for example, modeling ACH transfers and wire transfers with a single
     API resource) would irritate them, not simplify their lives.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: 'Early conversations with these users helped us articulate what we dubbed the
     “no abstractions” principle as we built the first version of our API. Some examples
     of the way this mindset has subsequently affected its design:'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Real-world naming
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Instead of inventing our own names for API resources and their attributes, we
     tend to use the vocabulary of the underlying networks. For example, the parameters
     we expose when making an ACH transfer via our API are named after fields in the
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[Nacha specification](https://achdevguide.nacha.org/ach-file-details)'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: .
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Immutability
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'Similar to how we use network nomenclature, we try to model our resources after
@@ -111,19 +137,24 @@
     object in our API has a field called `status` that changes over time, and several
     immutable sub-objects that are created as the transfer moves through its lifecycle.
     A newly-minted `ach_transfer` object looks like:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: 'After that same transfer has moved through our pipeline and we’ve submitted
     it to FedACH, it looks like:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: Separating resources by use case
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: If, for a given API resource, the set of actions a user can take on different
@@ -132,19 +163,24 @@
     different (the complete opposite, really) than the actions you can take on a received
     ACH transfer, so we separate these into `ach_transfer` and `inbound_ach_transfer`
     resources.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: This approach can make our API more verbose and intimidating at first glance
     — there are a lot of resources on the left-hand side of our
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[documentation](https://increase.com/documentation/api)'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: page! We think it makes things more predictable over the long-term, though.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Importantly, our engineering team has committed to this approach. When you design
@@ -152,40 +188,51 @@
     time. Committing to foundational principles upfront has reduced the cognitive
     load for these decisions. For example, when sending a wire transfer to the Federal
     Reserve, there’s a required field called
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[Input Message Accountability Data](https://increase.com/documentation/fedwire#technical-implementation)'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: which serves as a globally-unique ID for that transfer. When building support
     for wire transfers, an engineer in an abstraction-heavy API might have to deliberate
     how to name this field in a “user-friendly” way -
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '`trace_number`'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '?'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '`reference_number`'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '?'
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '`id`'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '? At Increase that hypothetical engineer names the field'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '`input_message_accountability_data`'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: and moves on. When an Increase user encounters this field for the first time,
     while it might not be the most immediately recognizable name at first, it helps
     them understand immediately how this maps to the underlying system.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: No Abstractions isn’t right for every API, but considering the level of abstraction
@@ -195,5 +242,6 @@
     things. If you’re building an abstraction-heavy API, be prepared to think hard
     before adding new features. If you’re building an abstraction-light API, commit
     to it and resist the temptation to add abstractions when it comes along.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL

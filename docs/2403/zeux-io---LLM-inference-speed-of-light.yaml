@@ -1,28 +1,36 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:03:50'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: zeux.io - LLM inference speed of light
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://zeux.io/2024/03/15/llm-inference-sol/](https://zeux.io/2024/03/15/llm-inference-sol/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: LLM inference speed of light
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 15 Mar 2024
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: In the process of working on [calm](https://github.com/zeux/calm), a minimal
@@ -30,14 +38,17 @@
     a critical consideration was establishing the speed of light for the inference
     process, and measuring the progress relative to that speed of light. In this post
     we’ll cover this theoretical limit and its implications.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: If you’re interested in more derivation and some graphs, [this notebook](https://github.com/zeux/calm/blob/main/tools/sol.ipynb)
     does the same modeling in Python.
+  id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Inference mechanics
+  id: totrans-split-10
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -51,6 +62,7 @@
     token, and the process repeats. This means that there is no possibility of parallelism
     when generating one sequence of text - the generation process can be modeled one
     token at a time^.)
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'Broadly, the language model does two types of operations when processing a
@@ -65,6 +77,7 @@
     it and all key vectors for all previous positions, then normalizes the resulting
     set of scalars and computes a value vector by computing a weighted sum of all
     value vectors for all previous positions, using the dot product as the score.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, both matrix-vector multiplication and attention computation have one important
@@ -73,19 +86,23 @@
     does one multiply-add (2 FLOPs) per matrix element; attention computation does
     one multiply-add per key element for dot product, and one multiply-add per value
     element for computing a weighted sum.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'Modern CPUs and GPUs have a much higher rate of ALU operations (multiplies,
     adds) compared to the rate at which they can read inputs from memory. For example:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: AMD Ryzen 7950X has 67 GB/s memory bandwidth and 2735 GFLOPS, for a 40:1 FLOP:byte
     ratio
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: NVidia GeForce RTX 4090 has 1008 GB/s memory bandwidth and 83 TFLOPS, for a
     82:1 FLOP:byte ratio
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -93,6 +110,7 @@
     and 67 TFLOPS, for a seemingly more modest 20:1 FLOP:byte; however, for problems
     that look like a matrix multiplication, tensor cores provide ~494 TFLOPS without
     sparsity for a 147:1 FLOP:byte ratio.
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -101,15 +119,18 @@
     FP8 matrices, which brings the FLOP:byte ratio to 590:1\. Needless to say, in
     any of these configurations and regardless of whether tensor cores are used or
     what the floating-point format is, ALU is in abundance.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Thus, any problem that only needs to do two operations per element must be bandwidth-limited,
     and we should be able to estimate the minimum amount of time it can take to run
     the inference process from the model configuration, the size of the KV-cache,
     and the available bandwidth.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Mistral speed-of-light
+  id: totrans-split-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -117,29 +138,35 @@
     at a model like [Mistral 7B](https://mistral.ai/news/announcing-mistral-7b/),
     which has 7.2 billion parameters (so the total number of all matrix elements is
     7.2B).
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'The composition of the parameters is as follows:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 4096 * 32000 = 131M parameters for embedding matrix; this matrix isn’t used
     in a matrix-vector multiply, as just a single row of the matrix is read per token,
     so we will not include this in the bandwidth calculations
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 32 * (4096 * (128 * 32 + 128 * 8 * 2) + 4096 * 128 * 32) = 1342M parameters
     for computing attention-related vectors
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 32 * (4096 * 14336 * 3) = 5637M parameters for transforming hidden state via
     a feed-forward network
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 4096 * 32000 = 131M parameters for converting the hidden state into token probabilities;
     this is used in a matrix multiply unlike the embedding matrix
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -149,6 +176,7 @@
     again when running inference for the next token, caches are measured in tens of
     megabytes, and as such we can assume this process can not run faster than memory
     bandwidth as the weights won’t stay in cache between runs^.)
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: This covers matrix math; attention computation needs to read the KV-cache up
@@ -156,6 +184,7 @@
     the model sees when generating the new one - that includes the system prompt (usually
     hidden from the user), user prompt, previous model output, and can include multiple
     user prompts for a longer chat session.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: For Mistral, KV-cache stores 8 128-element vectors for each key for each layer
@@ -163,6 +192,7 @@
     128 * 8 * 2 = 65K elements per token; if the KV-cache is using FP16 for individual
     elements, then for token number P we will need to read P * 130 KB of memory -
     for example, token number 1000 will need to read 130 MB of data from KV-cache.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: From these numbers, it’s now easy to compute the minimal amount of time required
@@ -171,15 +201,18 @@
     (KV-cache impact is negligibly small). If we use 8-bit weights, we need to read
     7.1 GB and that takes ~7.0 ms. These are *lower bounds* - they represent the minimum
     theoretically possible time per token.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Are theoretical bounds useful?
+  id: totrans-split-31
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: We’ve done a bunch of math and arrived at a few numbers that tell us we can’t
     run inference faster than a given threshold - is this useful? Let’s look at a
     few reasons why it could be.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'To actually reach that time, you need a high-quality software implementation,
@@ -192,6 +225,7 @@
     both `calm` and `llama.cpp` only reach ~65% of the theoretical 100 GB/s bandwidth,
     suggesting that the quoted peak bandwidth can only be fully utilized with the
     help of iGPU.)'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Bandwidth scales linearly with the number of bytes used per element; this means
@@ -201,6 +235,7 @@
     achieves ~17.1 ms/tok for Mistral 7B when using 16-bit weights (82% of peak),
     ~10.3ms/tok for 8.5-bit weights (71% of peak) and ~6.7ms/tok for 4.5-bit weights
     (58% of peak), suggesting significant optimization opportunities for smaller formats.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: In addition to providing a lower bound on decoding time, the modeling above
@@ -218,11 +253,13 @@
     batching typically does not help with KV-cache bandwidth (unless the requests
     share a very large prefix) because KV-cache size and bandwidth increases with
     the number of requests, whereas the weight matrix stays constant.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'Mixture of Experts models like Mixtral have slightly different scaling characteristics:
     batching initially only increases the bandwidth required, but once the expert
     utilization becomes significant the inference becomes increasingly ALU bound.'
+  id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -233,9 +270,11 @@
     it to run LLM inference at ~0.7x the speed of RTX 4090 - this can be different
     from the relative performance in other workloads such as gaming, ray tracing or
     inference of other types of neural networks!
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-38
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -243,6 +282,7 @@
     known apriori, using theoretical speed of light modeling as grounding is really
     important, as it helps validate the quality of implementations and predict the
     impact of architectural changes.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Ideally, your inference implementation should carefully calculate the achieved
@@ -250,9 +290,11 @@
     of guidance - as this is the value that you know the limit for! Do make sure to
     calculate it carefully though - `calm` had several cases where an architectural
     quirk made the computed bandwidth slightly incorrect :)
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'Appendix: Group query attention'
+  id: totrans-split-41
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -262,6 +304,7 @@
     is using windowed attention which limits the bandwidth consumed to a window of
     4096 tokens), but the other, perhaps more important reason, is the use of group-query
     attention.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: In group-query attention (with a 4x ratio), to produce 4 dot-products for the
@@ -271,18 +314,21 @@
     the KV-cache - instead of reading each element from the KV-cache and only doing
     one multiply-add operation on it, we’re now doing 4, which rebalances ALU:bandwidth
     ratio somewhat in our favor.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is also critical for KV-cache memory size, but that may not be apparent
     for such short contexts: 4096-token context takes 0.5 GiB with Mistral, but a
     comparable model without GQA (like Llama 7B) would “only” need 2 GiB. Let’s look
     at a recent model that does *not* use GQA, Cohere’s [Command-R](https://txt.cohere.com/command-r/).'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: The model itself has ~35B parameters, so at 16 bits/weight, we would need to
     read 70 GB of weights for each token during inference^(. For each token it needs
     to store 40 * 128 * 64 * 2 = 655K elements in the KV-cache, which at 16 bits/element
     is 1.3 MB per token.)
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Thus a 4096-token context would take ~5.3 GB; that’s already somewhat significant
@@ -290,6 +336,7 @@
     model is advertised to have 200K token context window – to compute the last token
     of the 200K context window, you would need to read 260 GB! (let’s ignore the fact
     that you would also need 260 GB of VRAM to store it)
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: In a typical “production” (still single-user) setting, things shift even more.
@@ -299,6 +346,7 @@
     weights and ~65 GB for KV-cache, and to compute the last token we need to read
     all of that from memory. Suddenly attention computation is going from being insignificantly
     small to taking ~75% of the time, assuming both run at peak bandwidth!
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: While 100K context may seem a little extreme, in a multi-user context this is
@@ -307,6 +355,7 @@
     (= per 64+ user requests), but every user request would typically have its own
     KV-cache, so attention stays bandwidth bound - and requires a lot of memory to
     fit all users’ requests on a single node!
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: If these models used 4x GQA, the size and required bandwidth for KV-cache would
@@ -316,5 +365,6 @@
     to see the technical report as it may contain relevant ablation studies, but purely
     from the cost/performance point of view, GQA needs to be evaluated for every transformer-based
     LLM as the benefits are too significant to ignore.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL

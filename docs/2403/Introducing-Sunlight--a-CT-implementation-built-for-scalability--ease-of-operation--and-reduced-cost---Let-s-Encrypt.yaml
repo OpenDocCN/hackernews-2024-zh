@@ -1,21 +1,27 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:59:26'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Introducing Sunlight, a CT implementation built for scalability, ease of operation,
     and reduced cost - Let's Encrypt
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://letsencrypt.org/2024/03/14/introducing-sunlight.html](https://letsencrypt.org/2024/03/14/introducing-sunlight.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -26,6 +32,7 @@
     transparency logging community, including the Chrome and TrustFabric teams at
     Google, the Sigsum project, and other CT log and monitor operators. Their insights
     have been instrumental in shaping the project’s direction.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: CT plays an important role in the Web PKI, enhancing the ability to monitor
@@ -34,14 +41,17 @@
     issues over four million certificates daily, each of which must be logged in two
     separate CT logs. Our well-established “Oak” log currently holds over 700 million
     entries, reflecting the significant scale of these challenges.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: In this post, we’ll explore the motivation behind Sunlight and how its design
     aims to improve the robustness and diversity of the CT ecosystem, while also improving
     the reliability and performance of Let’s Encrypt’s logs.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Bottlenecks from the Database
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -52,6 +62,7 @@
     We’ve [scaled that up](https://letsencrypt.org/2022/05/19/nurturing-ct-log-growth)
     by splitting each year’s worth of data into a “shard” with its own database, and
     then later shrinking the shards to cover six months instead of a full year.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'The approach of splitting into more and more databases is not something we
@@ -60,6 +71,7 @@
     big enough to be concerning for a single database: We previously had a test log
     fail when we ran into a [16TiB limit](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MySQL.KnownIssuesAndLimitations.html#MySQL.Concepts.Limits.FileSize)
     in MySQL.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Scaling read capacity up requires large database instances with fast disks and
@@ -68,9 +80,11 @@
     the database in the process. When rate limits are imposed to prevent overloading,
     clients are forced to slowly crawl the API, diminishing CT’s efficiency as a fast
     mechanism for detecting mis-issued certificates.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Serving Tiles
+  id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -81,6 +95,7 @@
     particular, the [Go Checksum Database](https://golang.org/design/25530-sumdb)
     is inspired by Certificate Transparency, but uses a more efficient format for
     publishing its data as a series of easily stored and cached tiles.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'Certificate Transparency logs are a binary tree, with every node containing
@@ -89,6 +104,7 @@
     tree is digitally signed. This forms a cryptographically verifiable structure
     called a Merkle Tree, which can be used to check if a certificate is in the tree,
     and that the tree is append-only.'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Sunlight tiles are files containing 256 elements each, either hashes at a certain
@@ -97,6 +113,7 @@
     or you can read [the relevant section of the Sunlight specification](https://c2sp.org/sunlight#merkle-tree).
     Even Trillian, the current implementation of CT we run, [uses a subtree system](https://github.com/google/trillian/blob/master/docs/storage/storage.md)
     similar to these tiles as its internal storage.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Unlike the dynamic endpoints in previous CT APIs, serving a tree as tiles doesn’t
@@ -105,21 +122,25 @@
     in contrast with CT APIs like get-proof-by-hash which have a different response
     for every certificate, so there’s no shared cache. The leaf tiles can also be
     stored compressed, saving even more storage!
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The idea of exposing the log as a series of static tiles is motivated by our
     desire to scale out the read path horizontally and relatively inexpensively. We
     can directly expose tiles in cloud object storage like S3, use a caching CDN,
     or use a webserver and a filesystem.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Object or file storage is readily available, can scale up easily, and costs
     significantly less than databases from cloud providers. It seemed like the obvious
     path forward. In fact, we already have an S3-backed cache in front of our existing
     CT logs, which means we are currently storing our data twice.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Running More Logs
+  id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -127,6 +148,7 @@
     on the write path. With Trillian, we run a collection of nodes along with etcd
     for leader election to choose which will handle writing. This is somewhat complex,
     and we believe the CT ecosystem allows a different tradeoff.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The key realization is that Certificate Transparency is already a distributed
@@ -134,6 +156,7 @@
     failing over from any unavailable ones to the others. Each individual log’s write
     path doesn’t require a highly available leader election system. A simple single-node
     writer can meet the 99% Service Level Objective of a CT log.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: The single-node Sunlight architecture lets us run multiple independent logs
@@ -142,9 +165,11 @@
     needed. We use a simple compare-and-swap mechanism to store checkpoints and prevent
     accidentally running two instances at once, which could result in a forked tree,
     but that has much less overhead than leader election.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: No More Merge Delay
+  id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -156,21 +181,25 @@
     not slow down issuance, there have been multiple incidents and near-misses where
     a log stops operating with unmerged certificates, missing its maximum merge delay,
     and breaking that promise.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: Sunlight takes a different approach, holding submissions while it batches and
     integrates certificates in the log, eliminating the merge delay. While this leads
     to a small latency increase, we think it’s worthwhile to avoid one of the more
     common CT log failure cases.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: It also lets us embed the final leaf index in an extension of our SCTs, bringing
     CT a step closer to direct client verification of Merkle tree proofs. The extension
     also makes it possible for clients to fetch the proof of log inclusion from the
     new static tile-based APIs, without requiring server-side lookup tables or databases.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: A Sunny Future
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -183,6 +212,7 @@
     CT programs to consider trusting logs running on this new architecture. We hope
     Sunlight logs will be made usable for SCTs by the CT programs run by the browsers
     in the future, allowing CAs to rely on them to meet the browser CT logging requirements.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: We’ve gotten positive feedback so far, with comments such as “Google’s TrustFabric
@@ -191,6 +221,7 @@
     for other ecosystems with [serverless tooling](https://github.com/transparency-dev/serverless-log),
     and will be folding this into Trillian and ctfe, along with adding support for
     the Sunlight API.”
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: If you have feedback on the design, please join in the conversation on the [ct-policy
@@ -198,6 +229,7 @@
     [#sunlight](https://transparency-dev.slack.com/archives/C06PCS2P75Y) channel on
     the transparency-dev Slack ([invitation](https://join.slack.com/t/transparency-dev/shared_invite/zt-27pkqo21d-okUFhur7YZ0rFoJVIOPznQ)
     to join).
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'We’d like to thank Chrome for supporting the development of Sunlight, and Amazon
@@ -205,5 +237,6 @@
     monitors or values CT, please consider a financial gift of support. Learn more
     at [https://www.abetterinternet.org/sponsor/](https://www.abetterinternet.org/sponsor/)
     or contact us at: [sponsor@abetterinternet.org](mailto:sponsor@abetterinternet.org).'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL

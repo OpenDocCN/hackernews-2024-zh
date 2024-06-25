@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:32:55'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Chris''s Wiki :: blog/tech/WriteBufferingAndSyncs'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/tech/WriteBufferingAndSyncs](https://utcc.utoronto.ca/~cks/space/blog/tech/WriteBufferingAndSyncs)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -27,6 +33,7 @@
     before the programs doing it consider this write IO 'done'. You might get this
     situation where you're writing and rewriting mail folders, or where the dominant
     write source is updating a [write ahead log](https://en.wikipedia.org/wiki/Write-ahead_logging).
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In this situation where the data being written is almost always going to be
@@ -42,9 +49,11 @@
     asks for the disk flush, where you have to synchronously wait for them), because
     the process may be able to generate data faster if it's not stalling waiting for
     individual writes to make it to disk.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: (In OS tuning jargon, we'd say that you want writeback to start almost immediately.)
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: However, journaling filesystems and concurrency add some extra complications.
@@ -58,6 +67,7 @@
     long flush, and this flush will delay the flushes done by other processes writing
     less data, because everything is running through the chokepoint that is the filesystem's
     journal.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: In this situation I think you want the process that's writing a lot of data
@@ -70,6 +80,7 @@
     writes with all processes getting an equal fair share of the disk write bandwidth.
     Even in this situation the processes with less data to write and flush will finish
     faster, lowering their latency.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: To translate this to typical system settings, I believe that you want to aggressively
@@ -79,11 +90,13 @@
     you'd set things to trigger writebacks almost immediately and then force processes
     doing write IO to wait for disk writes to complete once you have more than a relatively
     small volume of outstanding writes.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: (This is in contrast to typical operating system settings, which will often
     allow you to use a relatively large amount of system RAM for asynchronous writes
     and not aggressively start writeback. This especially would make a difference
     on systems with a lot of RAM.)
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL

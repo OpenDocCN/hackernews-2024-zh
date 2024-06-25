@@ -1,21 +1,27 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:40:24'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Context: The Missing Feature of Programming Languages | by Keaton Brandt |
     Source and Buggy | Medium'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/source-and-buggy/context-the-missing-feature-of-programming-languages-7c1095fe8d32](https://medium.com/source-and-buggy/context-the-missing-feature-of-programming-languages-7c1095fe8d32)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -23,16 +29,19 @@
     limitations when writing code. Conceptually though, any function that allocates
     memory is inherently context-dependent: its outcome depends not only on the arguments
     passed in but also on the amount of contiguous RAM the system is able to grant.'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '**Context [Noun]:** Any state that can affect a function’s outcome or performance
     without being passed in as an argument.'
+  id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Other basic examples of context include: Global variables, calls to external
     services, information about the current thread (eg. whether it’s the UI thread),
     and information about the current stack (eg. to create a stack trace for an exception).'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The problem with context is that its assumptions and mutations are happening
@@ -41,6 +50,7 @@
     context a function relies on (whether it reads from `stdin`, for example), and
     functions don’t report it. It’s not a black market but it is a [dangerously unregulated
     one](https://en.wikipedia.org/wiki/Gun_law_in_the_United_States).
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: When I call `getTimestamp(user.registeredAt, TimeZone.PST)` I can *assume* that
@@ -50,12 +60,15 @@
     timeline for Daylight Savings Time, either from a database or from the network.
     As programmers we have to rely on intuition for cases like this, which is not
     exactly a strong foundation for stability.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: If programmers were structural engineers
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Coralling Context
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -64,6 +77,7 @@
     could cause a deadlock because it cannot know if the implementation of that function
     relies on locking. The simplest way to deal with context is to simply get rid
     of it, and pass *everything* as function arguments.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: For example, we could require that all locks in our codebase must only be grabbed
@@ -73,9 +87,11 @@
     computationally-expensive operations could be constructed on a background thread
     and only passed to functions called from within that thread, preventing those
     services from blocking work on the UI thread. Problem solved!
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Crap, I did it again. *Actually this still kind of sucks.*
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Setting aside the fact that this will quickly result in functions with *dozens*
@@ -85,24 +101,29 @@
     compiler error or a runtime error or a test failure. All it takes is one person
     to accidentally pass a `LockGrabber` to another function while holding a lock
     and suddenly all the carefully-crafted architectural guarantees go out the window.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'This idea of moving away from implicit context and towards explicit arguments
     for everything is a good start, but it’s untenable without help from the compiler.
     Here’s an example of how a context-aware compiler could work:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The `with` and `without` functions here change the context, allowing the compiler
     to identify a deadlock. The syntax is inspired by Kotlin’s Context Receivers (more
     on that later).
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'Behind the scenes the compiler is basically just passing extra arguments around,
     but with constraints automatically enforced and without cluttering up the code.
     A polite compiler would even give us a helpful error message, like:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: It’s not always wise to integrate new features directly into a programming language,
@@ -112,9 +133,11 @@
     languages as well — not tacked on top. The standard library should be context-aware,
     as should IDEs and debuggers and build tools. The complexity introduced by managing
     context is bad, but the complexity introduced by ignoring it is so much worse.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'Kotlin: A (partial) case study'
+  id: totrans-split-22
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -125,9 +148,11 @@
     Android’s clone of Swift, it actually *predates* Swift. (This is the part where
     I disclose that I work on the Android team at Google so this is a bit of a sore
     spot for me personally)
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two features in Kotlin relating to context:'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[**CoroutineContext**](https://kotlinlang.org/docs/coroutine-context-and-dispatchers.html)
@@ -136,30 +161,36 @@
     It can technically be used as an arbitrary key-value store to pass other data
     around, but that usage cannot be checked at compile time and so is generally discouraged.
     I have nothing against it, but it’s not what this article is about.'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '**The experimental** [**Context Receivers**](https://github.com/Kotlin/KEEP/blob/master/proposals/context-receivers.md)
     **API** is a compile-time language feature that allows function arguments to be
     supplied from context rather than being passed in manually. Could this be exactly
     what I’ve been waiting for? It looks pretty close!'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'This working example prints “LOG: Hi Keaton!”'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'While this does make the pass-everything-as-an-argument approach more feasible,
     it has two major drawbacks:'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '**There is no** `**without**` **function.** I can add the user and the logger
     to the context with `with`, but `sayHi` has no option to call other functions
     without that same context being present. You win this time, deadlocks.'
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '**Context is explicit.** Any function that calls `sayHi` needs to specify `UserAccount`
     and `Logger` as context for itself in order to forward that context to `sayHi`.
     The compiler isn’t smart enough to do that itself. As an example, this won’t work:'
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -170,6 +201,7 @@
     require updating all of functions that call it, transitively. So we haven’t avoided
     the inevitable function-with-a-dozen-arguments problem, only glazed it with some
     syntactic sugar.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: There’s still a big gap between my ideal solution and the reality of what’s
@@ -182,9 +214,11 @@
     that would be explicitly stated in other languages (Kotlin elides most data types,
     some `return` statements, and doesn’t even *have* `await` statements). Context
     would be just another thing to decorate.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 'Addendum: Other case studies in Context'
+  id: totrans-split-33
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -192,6 +226,7 @@
     feedback about academic work in this area and I wanted to briefly share some of
     it. I’m not a programming-language researcher so I won’t attempt anything more
     than a high-level overview, but I will link out to some great in-depth sources.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, the bad news: Nobody I’ve talked to knows of any real-world production-ready
@@ -199,6 +234,7 @@
     that supports something like `without` is [Flix](https://flix.dev/), a neat little
     research language. Functional languages like Haskell, OCaml, and Scala have strongly-typed
     Effects that can do everything else, just not `without`.'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: In Programming Language jargon an Effect is anything a function *does* beyond
@@ -207,6 +243,7 @@
     battle, the other half is knowing when a function *reads* state. This is not an
     Effect, but rather a [Coeffect](https://tomasp.net/coeffects/) — although sometimes
     it all gets lumped together under the banner of ‘Effects’ or ‘Effect Systems’.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: 'Examples of research languages that have explored different approaches to Effects
@@ -217,13 +254,16 @@
     helpful. After all, if “the best integration test is a good compiler”, a useful
     corollary would be “the worst integration test is crashing the production build
     and hoping somebody emails you about it”.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: There are plenty of academic papers on this subject, my favorites are this [Coeffect](https://tomasp.net/coeffects/)
     website based on a PhD thesis and [Effects as Capabilities](https://dl.acm.org/doi/10.1145/3428194).
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Exception Handling is Context
+  id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -231,9 +271,11 @@
     is basically a special case of context. A thrown Exception propagates up the call
     stack until it finds a `catch` block that accepts it. We could hack this system
     to accomplish something that looks an awful lot like context:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'This example prints: “Hi!” then “HI!”'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: This would work for `sayHi` and any functions it calls internally, without having
@@ -241,21 +283,25 @@
     after the `throw LogText()` line will never run. The other problem is that this
     still isn’t actually checked at compile-time. Calling `sayHi` without a catch
     block for `LogText` will just … crash the entire program. Oof.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: Neither of those is a fundamental problem, just a language design choice. Exception
     handlers could have a `continue` keyword that resumes the throwing function as
     though it had never thrown an exception. Compilers could ensure that every thrown
     exception is caught somewhere — Java does this already, although it ignores RuntimeExceptions.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Personally I don’t think hacking try/catch blocks is a great way to implement
     context management, but it does go to show that context is not a wild new paradigm
     that will totally break every existing language feature and slow compilers down
     to a crawl. It’s just exception handling on steroids.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-45
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -265,12 +311,14 @@
     files but also an interconnected graph of logic that is often too vast to fit
     within our feeble human minds. It is hubris to think we can catch all deadlocks
     or optimize thread utilization without some computational help.'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: As with everything, there are tradeoffs. My ideal solution here adds complexity
     to programming languages and slows down compilers. It would require developing
     a new set of Best Practices, which can only be identified once people have failed
     in every conceivable way.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: The advantage is that it enables programmers to have more expressive power,
@@ -278,6 +326,7 @@
     do to our codebases. *In this house, we don’t make network calls from the UI thread*.
     I could write that in code review guidelines but even the smartest engineers make
     mistakes sometimes. The only real guarantee is a compile-time guarantee.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Of course, writing a blog post is very different from solving a problem. The
@@ -287,5 +336,6 @@
     language. It’s not an easy path from Point A to Point B, there’s a lot of odd
     and improbable steps in between. The path from an idea to a product is, like so
     many things, a Rube Goldberg Machine.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL

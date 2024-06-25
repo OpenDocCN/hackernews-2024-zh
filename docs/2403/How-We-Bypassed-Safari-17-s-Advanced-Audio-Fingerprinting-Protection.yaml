@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:45:29'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: How We Bypassed Safari 17's Advanced Audio Fingerprinting Protection
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://fingerprint.com/blog/bypassing-safari-17-audio-fingerprinting-protection/](https://fingerprint.com/blog/bypassing-safari-17-audio-fingerprinting-protection/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,9 +28,11 @@
     audio files can be used to identify web visitors? Apple knows, and the company
     decided to fight the identification possibility in Safari 17, but their measures
     don’t fully work.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#identifying-with-audio)Identifying with audio'
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -34,15 +42,18 @@
     to render an audio signal with [OfflineAudioContext](https://developer.mozilla.org/en-US/docs/Web/API/OfflineAudioContext)
     interface, which then transforms into a single number by adding all audio signal
     samples together. The number is the fingerprint, also called “identifier”.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The audio identifier is stable, meaning it doesn’t change when you clear the
     cookies or go into incognito mode. This is the key feature of fingerprinting.
     However, the identifier is not very unique, and many users can have the same identifier.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Audio fingerprinting is a part of [FingerprintJS](https://github.com/fingerprintjs/fingerprintjs),
     our library with source code available on GitHub.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Fingerprinting is used to identify bad actors when they want to remain anonymous.
@@ -50,9 +61,11 @@
     credentials. Fingerprinting can identify repeat bad actors, allowing you to prevent
     them from committing fraud. However, many people see it as a privacy violation
     and therefore don’t like it.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#how-safari-17-breaks-audio-fingerprinting)How Safari 17 breaks audio fingerprinting'
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -60,6 +73,7 @@
     advanced fingerprinting protection in Safari 17\. Advanced fingerprinting protection
     aims to reduce fingerprinting accuracy by limiting available information or adding
     randomness.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: By default, the advanced protection is enabled in private (incognito) mode and
@@ -67,6 +81,7 @@
     fingerprinting protection also affects [Screen API](https://developer.mozilla.org/en-US/docs/Web/API/Screen)
     and [Canvas API](https://developer.mozilla.org/en-US/docs/Glossary/Canvas), but
     we’ll focus only on Audio API in this article.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'An audio signal produced with the Audio API is an array of numbers representing
@@ -75,91 +90,115 @@
     A noised sample lies between `sample*(1-magnitude)` and `sample*(1+magnitude)`,
     and the distribution is [uniform](https://en.wikipedia.org/wiki/Continuous_uniform_distribution).
     This is how it’s [implemented in Safari](https://github.com/WebKit/WebKit/blob/167dc5118a3f6228a19df40e673ea0a6d03b9bec/Source/WebCore/platform/audio/AudioUtilities.cpp#L80):'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: '*Note: Safari is being developed actively, so this and the other facts may
     be outdated when you read the article.*'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'All Audio API interfaces that allow reading the audio signal apply noise:'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: The noise is different every time it’s applied. As a result, the whole audio
     fingerprint changes every time it’s calculated in private mode. These changes
     cause the fingerprint to mismatch in normal and private modes. This breaks the
     stability; therefore, the fingerprint can’t be used for identification.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The fingerprint fluctuates between `124.03516` and `124.04545` in Safari 17
     on an M1 MacBook Air. The difference is about 0.008%. That may not sound like
     much, but further on, we’ll explain why this is a huge difference.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#how-we-bypass-safari-17s-advanced-fingerprinting-protection)How we bypass
     Safari 17’s advanced fingerprinting protection'
+  id: totrans-split-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The goal is to remove the noise added by Safari. To achieve this, we must improve
     [our fingerprinting algorithm](https://github.com/fingerprintjs/fingerprintjs/blob/a555410e925e0d6a4d548aa555b6945bd713e9cd/src/sources/audio.ts#L41)
     in 3 steps:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Reduce the dispersion of the noise.
+  id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Push browser identifier numbers farther apart.
+  id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Round the fingerprint to remove the remaining noise.
+  id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: We’ll call this improved algorithm “the new algorithm” throughout the article.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: 'Steps 1 and 2 are necessary because Safari’s range of added noise is much bigger
     than the difference between fingerprints produced by various browsers. This table
     shows audio fingerprints produced by some browsers and the percent difference
     between them and the closest fingerprint from other browsers:'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '| Browser | Fingerprint | Difference from the closest browser |'
+  id: totrans-split-28
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-29
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Safari 17.0 | 124.04345259929687 | 0.0000023% |'
+  id: totrans-split-30
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Safari 16.6 | 124.04345808873768 | 0.0000044% |'
+  id: totrans-split-31
   prefs: []
   type: TYPE_TB
 - en: '| iPhone SE, Safari 13.1 | 35.10893253237009 | 1.8% |'
+  id: totrans-split-32
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Chrome 116 | 124.04344968475198 | 0.0000023% |'
+  id: totrans-split-33
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Chrome 116 | 124.04347657808103 | 0.000015% |'
+  id: totrans-split-34
   prefs: []
   type: TYPE_TB
 - en: '| Galaxy S23, Chrome 114 | 124.08072766105033 | 0.030% |'
+  id: totrans-split-35
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Firefox 118 | 35.749968223273754 | 0.0000055% |'
+  id: totrans-split-36
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Firefox 118 | 35.74996626004577 | 0.0000055% |'
+  id: totrans-split-37
   prefs: []
   type: TYPE_TB
 - en: '| BrowserStack Windows 8, Firefox 67 | 35.7383295930922 | 0.033% |'
+  id: totrans-split-38
   prefs: []
   type: TYPE_TB
 - en: As you can see, the smallest difference is 0.0000023%, much smaller than the
@@ -167,15 +206,18 @@
     down by 1 decimal place, but we can’t round to fewer than 6 decimal places. Otherwise,
     some browsers from the above table will be indistinguishable. In other words,
     the fingerprint will have poor uniqueness.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#step-1-cutting-through-the-noise)Step 1: Cutting through the noise'
+  id: totrans-split-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The base idea for noise reduction is combining many separate audio fingerprints
     together. Each fingerprint is collected using the same algorithm, so the only
     difference is the noise added by the browser.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: First, let’s take a closer look at the [fingerprinting algorithm](https://github.com/fingerprintjs/fingerprintjs/blob/a555410e925e0d6a4d548aa555b6945bd713e9cd/src/sources/audio.ts#L41).
@@ -184,30 +226,36 @@
     Therefore, according to [the central limit theorem](https://en.wikipedia.org/wiki/Central_limit_theorem),
     the fingerprint noise has a [normal distribution](https://en.wikipedia.org/wiki/Normal_distribution).
     The mean of the distribution is the un-noised fingerprint that we want to find.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'The mean can be found using a large number of random samples (don’t confuse
     this with “audio samples”). This won’t be the true mean, but the more random samples
     there are, the more precise the result is. Uniform and normal distributions require
     different methods to find the mean:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: For a uniform distribution, the most precise formula is `(min+max)/2`, where
     `min` and `max` are the minimum and the maximum random samples
+  id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: For a normal distribution, the most precise formula is the average of all the
     random samples
+  id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: 'Finding the mean of a uniform noise is much easier than a normally distributed
     noise. For a given precision, one needs much fewer samples in case of a uniform
     distribution to guess the mean. This JavaScript code proves the point in practice:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: The old audio fingerprint is more computation-demanding and requires 100 times
@@ -215,6 +263,7 @@
     time, we changed the fingerprinting algorithm to collect only one audio sample,
     which has a uniform noise distribution. The exact number of randomized samples
     needed depends on the rounding precision we need, which will be demonstrated later.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: The algorithm change also means new fingerprints aren’t compatible with old
@@ -222,10 +271,12 @@
     to the old fingerprint identifiers is useless. Note that you need to use [a special
     approach](https://github.com/fingerprintjs/fingerprintjs/blob/5ae80b7b946fcd824e35d033bc44e180334109f6/docs/version_policy.md#how-to-update-without-losing-the-identifiers)
     to switch from the old fingerprint to the new one without losing the visitor identities.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#getting-many-noised-copies-of-the-same-audio-sample)Getting many noised
     copies of the same audio sample'
+  id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -234,6 +285,7 @@
     returns the audio samples that the fingerprint is calculated from. This approach
     doesn’t work because noise is [applied once per](https://github.com/WebKit/WebKit/blob/167dc5118a3f6228a19df40e673ea0a6d03b9bec/Source/WebCore/Modules/webaudio/AudioBuffer.cpp#L336)
     each `AudioBuffer` instance, and `getChannelData` returns the same signal.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: This can be circumvented by creating many `AudioBuffer` instances by running
@@ -241,26 +293,31 @@
     the fastest time is 7 seconds on an M1 MacBook. For 60,000, Safari can’t even
     finish the process. This is way too long for a fingerprint. Therefore, this approach
     is not viable.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'A better approach is to make an `AudioBuffer` instance with the same audio
     signal on repeat:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: Render an audio signal as usual, but don’t call `getChannelData`, because it
     will [add noise](https://github.com/WebKit/WebKit/blob/167dc5118a3f6228a19df40e673ea0a6d03b9bec/Source/WebCore/Modules/webaudio/AudioBuffer.cpp#L167)
     to the signal.
+  id: totrans-split-54
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Create another `OfflineAudioContext` instance, much longer than the original
     instance. Use the original signal as a source using an [`AudioBufferSourceNode`](https://developer.mozilla.org/en-US/docs/Web/API/AudioBufferSourceNode).
+  id: totrans-split-55
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Make the `AudioBufferSourceNode` loop the needed piece of the original signal
     using `loop`, `loopStart`, and `loopEnd`. The piece can be as narrow as a single
     audio sample.
+  id: totrans-split-56
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -268,72 +325,93 @@
     audio signal will consist of the original signal followed by the piece repeating
     until the end. Safari adds a noise after the looping, so the repeating copy has
     the same audio samples with different noise applied.
+  id: totrans-split-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: 'Here’s how to implement this approach:'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-59
   prefs: []
   type: TYPE_PRE
 - en: Any number of noised sample copies can be produced in 2 audio renderings.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'The code below combines the methods to denoise a single selected audio sample:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: At this point, the noise is suppressed, not removed completely. The resulting
     number is still not stable, but the variance is smaller than that of a raw audio
     sample.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'This table shows how the denoising precision and time in the above code snippet
     depend on the number of samples (`cloneCount`):'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: '| Number of copies | Result range: (max-min)/min in 100 runs | Time on an M1
     MacBook |'
+  id: totrans-split-65
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-66
   prefs: []
   type: TYPE_TB
 - en: '| 2,048 | 0.194% | 2.0ms |'
+  id: totrans-split-67
   prefs: []
   type: TYPE_TB
 - en: '| 4,096 | 0.190% | 2.3ms |'
+  id: totrans-split-68
   prefs: []
   type: TYPE_TB
 - en: '| 8,192 | 0.000387% | 2.6ms |'
+  id: totrans-split-69
   prefs: []
   type: TYPE_TB
 - en: '| 16,384 | 0.0000988% | 2.9ms |'
+  id: totrans-split-70
   prefs: []
   type: TYPE_TB
 - en: '| 32,768 | 0.0000411% | 4.0ms |'
+  id: totrans-split-71
   prefs: []
   type: TYPE_TB
 - en: '| 65,536 | 0.0000123% | 4.1ms |'
+  id: totrans-split-72
   prefs: []
   type: TYPE_TB
 - en: '| 131,072 | 0.00000823% | 5.2ms |'
+  id: totrans-split-73
   prefs: []
   type: TYPE_TB
 - en: '| 262,144 | 0% (the ultimate precision) | 7.5ms |'
+  id: totrans-split-74
   prefs: []
   type: TYPE_TB
 - en: '| 524,288 | 0% | 11.9ms |'
+  id: totrans-split-75
   prefs: []
   type: TYPE_TB
 - en: '| 1,048,576 | 0% | 20.5ms |'
+  id: totrans-split-76
   prefs: []
   type: TYPE_TB
 - en: '[](#step-2-push-browser-identifier-numbers-farther-apart)Step 2: Push browser
     identifier numbers farther apart'
+  id: totrans-split-77
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -342,96 +420,122 @@
     fewer copies there are, the better. However, fewer copies mean bigger result dispersion,
     so it’s necessary to increase the difference between the audio samples in browsers
     too. These differences can be achieved by changing the base signal.
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#audio-nodes-with-heavy-distortion)Audio nodes with heavy distortion'
+  id: totrans-split-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'After hours of experimenting with all the built-in audio nodes, we found an
     audio signal generator that gives a much bigger audio sample variance between
     browsers. The generator is a chain of audio nodes:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: The initial signal is produced by a square [OscillatorNode](https://developer.mozilla.org/en-US/docs/Web/API/OscillatorNode).
+  id: totrans-split-81
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Then, the signal goes through a [DynamicsCompressorNode](https://developer.mozilla.org/en-US/docs/Web/API/DynamicsCompressorNode).
+  id: totrans-split-82
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Finally, the signal is processed by a [BiquadFilterNode](https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode)
     of type “allpass”.
+  id: totrans-split-83
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: It is not necessary to know what the audio nodes do in detail. They can be treated
     as black boxes.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: 'The audio sample number 3396 of the signal has the biggest difference between
     browsers. The number 3396 was found by simply comparing all samples of the audio
     signals in different browsers. This is how the signal is implemented in code:'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-86
   prefs: []
   type: TYPE_PRE
 - en: 'The following table shows the resulting audio sample in different browsers:'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: '| Browser | Audio sample | Difference from the closest browser |'
+  id: totrans-split-88
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-89
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Safari 17.0 | 0.000059806101489812136 | 0.0014% |'
+  id: totrans-split-90
   prefs: []
   type: TYPE_TB
 - en: '| iPhone 13, Safari 15.4 (BrowserStack) | 0.00005980528294458054 | 0.0014%
     |'
+  id: totrans-split-91
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Safari 16.6 | 0.00006429151108022779 | 0.046% |'
+  id: totrans-split-92
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Chrome 116 | 0.0000642621744191274 | 0.046% |'
+  id: totrans-split-93
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Chrome 116 | 0.00006128742097644135 | 2.42% |'
+  id: totrans-split-94
   prefs: []
   type: TYPE_TB
 - en: '| Galaxy S23, Chrome 114 | 0.0000744499484426342 | 11.8% |'
+  id: totrans-split-95
   prefs: []
   type: TYPE_TB
 - en: '| Acer Chromebook 314, Chrome 117 | 0.00008321150380652398 | 10.53% |'
+  id: totrans-split-96
   prefs: []
   type: TYPE_TB
 - en: '| iPhone SE, Safari 13.1 | 0.00011335541057633236 | 26.6% |'
+  id: totrans-split-97
   prefs: []
   type: TYPE_TB
 - en: '| BrowserStack Windows 8, Firefox 67 | 0.00016917561879381537 | 0.0063% |'
+  id: totrans-split-98
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Firefox 118 | 0.00016918622714001685 | 0.0040% |'
+  id: totrans-split-99
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Firefox 118 | 0.00016919305198825896 | 0.0040% |'
+  id: totrans-split-100
   prefs: []
   type: TYPE_TB
 - en: Now the smallest difference is 0.0014%, which is much bigger than the original
     fingerprint (0.0000023%). It means that a much coarser denoising is possible.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#step-3-round-the-result)Step 3: Round the result'
+  id: totrans-split-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The final step is stabilizing the sample to be used as a fingerprint. The sample
     range is small but still unstable, which is not suitable for FingerprintJS, because
     even a tiny change to the sample causes the whole fingerprint to change.
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: Rounding is a way to stabilize the audio sample. Usually, rounding preserves
@@ -440,127 +544,161 @@
     it’s relative to the audio sample number. Therefore, some number of *significant*
     digits should be preserved during rounding. Significant digits are all digits
     after the beginning zeros. You can see a rounding implementation on [GitHub](https://github.com/fingerprintjs/fingerprintjs/blob/c411aff111e5c79cdc37608d42632d4a66a8c1dc/src/sources/audio.ts#L244).
+  id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
 - en: The table above shows that 5 significant digits are enough to tell the selected
     browsers apart. But since we can’t check all browsers in the world and can’t predict
     how they will change in the future, we use a few more digits, just in case.
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: 'The table below shows the number of audio sample copies needed to make the
     denoising result stable in private mode of Safari 17 after rounding with the given
     precision:'
+  id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
 - en: '| Significant digits | # of copies | Time in Safari 17 on an M1 MacBook (warm)
     | Time in Chrome 116 on an M1 MacBook (warm) | Time in Chrome 114 on Pixel 2 (warm)
     |'
+  id: totrans-split-107
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- | --- | --- |'
+  id: totrans-split-108
   prefs: []
   type: TYPE_TB
 - en: '| 6 | 15,000 | 3ms | 4ms | 13ms |'
+  id: totrans-split-109
   prefs: []
   type: TYPE_TB
 - en: '| 7, but the last is the nearest multiple of 5 | 30,000 | 4ms | 5ms | 15ms
     |'
+  id: totrans-split-110
   prefs: []
   type: TYPE_TB
 - en: '| 7, but the last is the nearest even digit | 70,000 | 6ms | 7ms | 16ms |'
+  id: totrans-split-111
   prefs: []
   type: TYPE_TB
 - en: '| 7 and more | 400,000 | 12ms | 13ms | 34ms |'
+  id: totrans-split-112
   prefs: []
   type: TYPE_TB
 - en: '*A ”warm” browser is a browser that has run the given code before. A browser
     becomes “cold” when it’s restarted. A warm browser produces more stable time measurements.*'
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: We chose “7, but the last is 0 or 5” as a good balance between the performance
     and uniqueness. We also increased the number of copies to 40,000 to increase stability.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: The rounded number is the final new audio fingerprint that doesn’t change, even
     when Safari 17’s advanced fingerprinting protection is on. Uniqueness is an important
     property of fingerprinting. The new fingerprint has the same uniqueness as the
     old audio fingerprint.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#performance)Performance'
+  id: totrans-split-116
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'The following table shows the fingerprinting time on a blank page in warm browsers:'
+  id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
 - en: '| Browser | Old fingerprint | New fingerprint |'
+  id: totrans-split-118
   prefs: []
   type: TYPE_TB
 - en: '| --- | --- | --- |'
+  id: totrans-split-119
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Safari 17.3 | 2ms | 4ms |'
+  id: totrans-split-120
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Chrome 120 | 5ms | 8ms |'
+  id: totrans-split-121
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Air 2020, Firefox 121 | 6ms | 8ms |'
+  id: totrans-split-122
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Safari 16.6 | 4ms | 6ms |'
+  id: totrans-split-123
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Chrome 120 | 5ms | 7ms |'
+  id: totrans-split-124
   prefs: []
   type: TYPE_TB
 - en: '| MacBook Pro 2015, Firefox 121 | 5ms | 7ms |'
+  id: totrans-split-125
   prefs: []
   type: TYPE_TB
 - en: '| iPhone 13 mini, Safari 17.3 | 8ms | 12ms |'
+  id: totrans-split-126
   prefs: []
   type: TYPE_TB
 - en: '| iPhone SE, Safari 13.1 | 9ms | 17ms |'
+  id: totrans-split-127
   prefs: []
   type: TYPE_TB
 - en: '| Acer Chromebook 314, Chrome 120 | 7ms | 13ms |'
+  id: totrans-split-128
   prefs: []
   type: TYPE_TB
 - en: '| Galaxy S23, Chrome 120 | 6ms | 8ms |'
+  id: totrans-split-129
   prefs: []
   type: TYPE_TB
 - en: '| Galaxy J7 Prime, Chrome 120 | 33ms | 45ms |'
+  id: totrans-split-130
   prefs: []
   type: TYPE_TB
 - en: '| Pixel 3, Chrome 120 | 8ms | 15ms |'
+  id: totrans-split-131
   prefs: []
   type: TYPE_TB
 - en: '| BrowserStack Windows 11, Chrome 120 | 5ms | 7ms |'
+  id: totrans-split-132
   prefs: []
   type: TYPE_TB
 - en: '| BrowserStack Windows 11, Firefox 121 | 10ms | 18ms |'
+  id: totrans-split-133
   prefs: []
   type: TYPE_TB
 - en: Compared to the old fingerprinting algorithm, the performance of the new one
     degrades 1.5–2 times. Even so, the new fingerprint algorithm takes little time
     to compute, even on low-end devices.
+  id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
 - en: The browser delegates some work to the OfflineAudioRender thread, freeing the
     main thread. Therefore, the page stays responsive during most of the audio fingerprint
     calculation. Web Audio API is not available for [web workers](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API),
     so we cannot calculate audio fingerprints there.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: To improve the performance, the new fingerprint can be used only in Safari 17
     while keeping the old algorithm in other browsers. Check whether the current browser
     is Safari 17 or newer using the user-agent string. Based on that, run either the
     old or the new fingerprinting algorithm.
+  id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#how-it-works-in-privacy-focused-browsers)How it Works in Privacy-Focused
     Browsers'
+  id: totrans-split-137
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -570,6 +708,7 @@
     however, follows an approach like Safari 17 and adds noise to the audio signal.
     Our [previous article](https://fingerprint.com/blog/audio-fingerprinting/#brave)
     explains more about Brave’s audio fingerprinting protection.
+  id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
 - en: The Brave noise has an important difference. While Safari adds a random noise
@@ -577,24 +716,29 @@
     factor”) once and uses it for all audio samples. That is, all audio samples are
     multiplied by the same number. The fudge factor persists within a page. It changes
     only in a new regular or incognito session.
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-140
   prefs: []
   type: TYPE_PRE
 - en: No matter how many audio sample copies we make, the noise addition will be the
     same in every copy. The copies won’t be dispersed around the true (before noising)
     audio sample. Therefore, [the mathematical denoising method](#step-1-cutting-through-the-noise)
     doesn’t work.
+  id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
 - en: Nevertheless, the Brave denoising method described in [the previous article](https://fingerprint.com/blog/audio-fingerprinting/#brave)
     still works. [The method for increasing the difference between fingerprints produced
     by browsers](#step-2-push-browser-identifier-numbers-farther-apart) can also increase
     the error tolerance.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: '[](#usage-in-fingerprintjs)Usage in FingerprintJS'
+  id: totrans-split-143
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -602,21 +746,25 @@
     It was first published in version [4.2.0](https://github.com/fingerprintjs/fingerprintjs/releases/tag/v4.2.0).
     You can see the full code for the audio fingerprint implementation [in our GitHub
     repository](https://github.com/fingerprintjs/fingerprintjs/blob/c411aff111e5c79cdc37608d42632d4a66a8c1dc/src/sources/audio.ts).
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: Audio fingerprinting is one of the many signals our [source-available library](https://github.com/fingerprintjs/fingerprintjs)
     uses to generate a browser fingerprint. However, we do not blindly incorporate
     every signal available in the browser. Instead, we analyze the stability and uniqueness
     of each signal separately to determine their impact on fingerprint accuracy.
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: For audio fingerprinting, we found that the signal contributes only slightly
     to uniqueness but is highly stable, resulting in a slight net increase in fingerprint
     accuracy.
+  id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to learn more about Fingerprint join us on [Discord](https://discord.gg/39EpE2neBg)
     or reach out to us at [oss-support@fingerprint.com](mailto:oss-support@fingerprint.com)
     for support using FingerprintJS.
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL

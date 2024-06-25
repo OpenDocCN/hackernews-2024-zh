@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:47:56'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'Landlock: unprivileged access control — The Linux Kernel documentation'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://docs.kernel.org/userspace-api/landlock.html](https://docs.kernel.org/userspace-api/landlock.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -25,6 +31,7 @@
     expected to help mitigate the security impact of bugs or unexpected/malicious
     behaviors in user space applications. Landlock empowers any process, including
     unprivileged ones, to securely restrict themselves.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can quickly make sure that Landlock is enabled in the running system by
@@ -32,71 +39,89 @@
     landlock || journalctl -kb -g landlock` . Developers can also easily check for
     Landlock support with a [related system call](#landlock-abi-versions). If Landlock
     is not currently supported, we need to [configure the kernel appropriately](#kernel-support).'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Landlock rules
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: A Landlock rule describes an action on an object which the process intends to
     perform. A set of rules is aggregated in a ruleset, which can then restrict the
     thread enforcing it, and its future children.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'The two existing types of rules are:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Filesystem rules
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: For these rules, the object is a file hierarchy, and the related filesystem
     actions are defined with filesystem access rights.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: Network rules (since ABI v4)
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: For these rules, the object is a TCP port, and the related actions are defined
     with network access rights.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Defining and enforcing a security policy
+  id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: We first need to define the ruleset that will contain our rules.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: For this example, the ruleset will contain rules that only allow filesystem
     read actions and establish a specific TCP connection. Filesystem write actions
     and other TCP actions will be denied.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: The ruleset then needs to handle both these kinds of actions. This is required
     for backward and forward compatibility (i.e. the kernel and user space may not
     know each other’s supported restrictions), hence the need to be explicit about
     the denied-by-default access rights.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-19
   prefs: []
   type: TYPE_PRE
 - en: Because we may not know on which kernel version an application will be executed,
     it is safer to follow a best-effort security approach. Indeed, we should try to
     protect users as much as possible whatever the kernel they are using.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: 'To be compatible with older Linux versions, we detect the available Landlock
     ABI version, and only use the available subset of access rights:'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: This enables to create an inclusive ruleset that will contain our rules.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: We can now add a new rule to this ruleset thanks to the returned file descriptor
@@ -105,37 +130,46 @@
     To add `/usr` to the ruleset, we open it with the `O_PATH` flag and fill the &[`struct
     landlock_path_beneath_attr`](#c.landlock_path_beneath_attr "landlock_path_beneath_attr")
     with this file descriptor.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: It may also be required to create rules following the same logic as explained
     for the ruleset creation, by filtering access rights according to the Landlock
     ABI version. In this example, this is not required because all of the requested
     `allowed_access` rights are already available in ABI 1.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: 'For network access-control, we can add a set of rules that allow to use a port
     number for a specific action: HTTPS connections.'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: The next step is to restrict the current thread from gaining more privileges
     (e.g. through a SUID binary). We now have a ruleset with the first rule allowing
     read access to `/usr` while denying all other handled accesses for the filesystem,
     and a second rule allowing HTTPS connections.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: The current thread is now ready to sandbox itself with the ruleset.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: If the `landlock_restrict_self` system call succeeds, the current thread is
@@ -143,12 +177,15 @@
     children as well. Once a thread is landlocked, there is no way to remove its security
     policy; only adding more restrictions is allowed. These threads are now in a new
     Landlock domain, merge of their parent one (if any) with the new ruleset.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Full working code can be found in [samples/landlock/sandboxer.c](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/samples/landlock/sandboxer.c).
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: Good practices
+  id: totrans-split-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -162,6 +199,7 @@
     change the location of such directory without relying on the destination directory
     access rights (except those that are required for this operation, see `LANDLOCK_ACCESS_FS_REFER`
     documentation).
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Having self-sufficient hierarchies also helps to tighten the required access
@@ -171,9 +209,11 @@
     this case, granting read-write access to `~/tmp/`, instead of write-only access,
     would potentially allow to move `~/tmp/` to a non-readable directory and still
     keep the ability to list the content of `~/tmp/`.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Layers of file path access rights
+  id: totrans-split-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -181,21 +221,25 @@
     with a new layer of policy. Indeed, this complementary policy is stacked with
     the potentially other rulesets already restricting this thread. A sandboxed thread
     can then safely add more constraints to itself with a new enforced ruleset.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: One policy layer grants access to a file path if at least one of its rules encountered
     on the path grants the access. A sandboxed thread can only access a file path
     if all its enforced policy layers grant the access as well as all the other system
     access controls (e.g. filesystem DAC, other LSM policies, etc.).
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: Bind mounts and OverlayFS
+  id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Landlock enables to restrict access to file hierarchies, which means that these
     access rights can be propagated with bind mounts (cf. [Shared Subtrees](../filesystems/sharedsubtree.html))
     but not with [Overlay Filesystem](../filesystems/overlayfs.html).
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: A bind mount mirrors a source file hierarchy to a destination. The destination
@@ -204,6 +248,7 @@
     when they are encountered on a path, which means that they can restrict access
     to multiple file hierarchies at the same time, whether these hierarchies are the
     result of bind mounts or not.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: An OverlayFS mount point consists of upper and lower layers. These layers are
@@ -215,9 +260,11 @@
     mounts. A policy restricting an OverlayFS layer will not restrict the resulted
     merged hierarchy, and vice versa. Landlock users should then only think about
     file hierarchies they want to allow access to, regardless of the underlying filesystem.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Inheritance
+  id: totrans-split-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -227,15 +274,18 @@
     with task’s *credentials(7)*. For instance, one process’s thread may apply Landlock
     rules to itself, but they will not be automatically applied to other sibling threads
     (unlike POSIX thread credential changes, cf. *nptl(7)*).
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: When a thread sandboxes itself, we have the guarantee that the related security
     policy will stay enforced on all this thread’s descendants. This allows creating
     standalone and modular security policies per application, which will automatically
     be composed between themselves according to their runtime parent policies.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Ptrace restrictions
+  id: totrans-split-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -244,31 +294,38 @@
     To be allowed to use *ptrace(2)* and related syscalls on a target process, a sandboxed
     process should have a subset of the target process rules, which means the tracee
     must be in a sub-domain of the tracer.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: Truncating files
+  id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The operations covered by `LANDLOCK_ACCESS_FS_WRITE_FILE` and `LANDLOCK_ACCESS_FS_TRUNCATE`
     both change the contents of a file and sometimes overlap in non-intuitive ways.
     It is recommended to always specify both of these together.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: A particularly surprising example is *creat(2)*. The name suggests that this
     system call requires the rights to create and write files. However, it also requires
     the truncate right if an existing file under the same name is already present.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: It should also be noted that truncating files does not require the `LANDLOCK_ACCESS_FS_WRITE_FILE`
     right. Apart from the *truncate(2)* system call, this can also be done through
     *open(2)* with the flags `O_RDONLY | O_TRUNC`.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: The truncate right is associated with the opened file (see below).
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: Rights associated with file descriptors
+  id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -278,6 +335,7 @@
     *ftruncate(2)* and *ioctl(2)*. The behavior is similar to opening a file for reading
     or writing, where permissions are checked during *open(2)*, but not during the
     subsequent *read(2)* and *write(2)* calls.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: As a consequence, it is possible that a process has multiple open file descriptors
@@ -287,22 +345,27 @@
     the enforcement. It is also possible to pass such file descriptors between processes,
     keeping their Landlock properties, even when some of the involved processes do
     not have an enforced Landlock ruleset.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Current limitations
+  id: totrans-split-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Filesystem topology modification
+  id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Threads sandboxed with filesystem restrictions cannot modify filesystem topology,
     whether via *mount(2)* or *pivot_root(2)*. However, *chroot(2)* calls are not
     denied.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: Special filesystems
+  id: totrans-split-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -315,9 +378,11 @@
     access to such sensitive `/proc` files are automatically restricted according
     to domain hierarchies. Future Landlock evolutions could still enable to explicitly
     restrict such paths with dedicated ruleset flags.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: Ruleset layers
+  id: totrans-split-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -328,38 +393,46 @@
     carefully build rulesets once in the life of a thread, especially for applications
     able to launch other applications that may also want to sandbox themselves (e.g.
     shells, container managers, etc.).
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: IOCTL support
+  id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The `LANDLOCK_ACCESS_FS_IOCTL_DEV` right restricts the use of *ioctl(2)*, but
     it only applies to *newly opened* device files. This means specifically that pre-existing
     file descriptors like stdin, stdout and stderr are unaffected.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: Users should be aware that TTY devices have traditionally permitted to control
     other processes on the same TTY through the `TIOCSTI` and `TIOCLINUX` IOCTL commands.
     Both of these require `CAP_SYS_ADMIN` on modern Linux systems, but the behavior
     is configurable for `TIOCSTI`.
+  id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
 - en: On older systems, it is therefore recommended to close inherited TTY file descriptors,
     or to reopen them from `/proc/self/fd/*` without the `LANDLOCK_ACCESS_FS_IOCTL_DEV`
     right, if possible.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: Landlock’s IOCTL support is coarse-grained at the moment, but may become more
     fine-grained in the future. Until then, users are advised to establish the guarantees
     that they need through the file hierarchy, by only allowing the `LANDLOCK_ACCESS_FS_IOCTL_DEV`
     right on files where it is really required.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '## Kernel support'
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: Build time configuration
+  id: totrans-split-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -369,50 +442,63 @@
     is set with `CONFIG_LSM`. The kernel configuration should then contains `CONFIG_LSM=landlock,[...]`
     with `[...]` as the list of other potentially useful security modules for the
     running system (see the `CONFIG_LSM` help).
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: Boot time configuration
+  id: totrans-split-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: If the running kernel does not have `landlock` in `CONFIG_LSM`, then we can
     enable Landlock by adding `lsm=landlock,[...]` to [The kernel’s command-line parameters](../admin-guide/kernel-parameters.html)
     in the boot loader configuration.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, if the current built-in configuration is:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: '...and if the cmdline doesn’t contain `landlock` either:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: '...we should configure the boot loader to set a cmdline extending the `lsm`
     list with the `landlock,` prefix:'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: 'After a reboot, we can check that Landlock is up and running by looking at
     kernel logs:'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: 'The kernel may be configured at build time to always load the `lockdown` and
     `capability` LSMs. In that case, these LSMs will appear at the beginning of the
     `LSM: initializing` log line as well, even if they are not configured in the boot
     loader.'
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Network support
+  id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -421,5 +507,6 @@
     Otherwise, [`sys_landlock_add_rule()`](#c.sys_landlock_add_rule "sys_landlock_add_rule")
     returns an `EAFNOSUPPORT` error, which can safely be ignored because this kind
     of TCP operation is already not possible.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL

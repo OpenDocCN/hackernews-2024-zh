@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:39:26'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Solving Crew Battle Strategy With Math
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.alexirpan.com/2024/03/23/crew-battle.html](https://www.alexirpan.com/2024/03/23/crew-battle.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -24,6 +30,7 @@
     each team picks a player simultaneously. They fight, and the loser is eliminated,
     while the winner stays in. The losing team then picks a player to go in. Elimination
     matches repeat until one team is out of players.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: These events are always pretty hype. People like team sports! They’re also often
@@ -31,6 +38,7 @@
     can emphasize and play up regional rivalries. The strategy for deciding who to
     send in can be complicated, and although it’s usually done by intuition, I’ve
     always wondered what optimal strategy would be.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: The reason it’s complicated is that fighting game character matchups aren’t
@@ -42,15 +50,18 @@
     pressure. But if we ignored those factors, is that actually correct? When do you
     send in your 2nd strongest player, or weakest player? **What is the optimal crew
     battle strategy?**
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Theory
+  id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let’s formalize the problem a bit. For the sake of simplicity, I will ignore
     that Smash games have stocks, and assume each match is a total win or loss. I
     expect the conclusions to be similar anyways.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s call the teams \(A\) and \(B\). There are \(n\) players on each team,
@@ -59,12 +70,14 @@
     as an \(n \times n\) matrix of probabilities, where row \(i\) column \(j\) is
     the probability \(a_i\) beats \(b_j\). We’ll denote that as \(\Pr(a_i > b_j)\).
     This matrix doesn’t need to be symmetric, or have its rows or columns sum to 1.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{bmatrix} \Pr(a_1 > b_1) & \Pr(a_1 > b_2) & \cdots & \Pr(a_1 > b_n)
     \\ \Pr(a_2 > b_1) & \Pr(a_2 > b_2) & \cdots & \Pr(a_2 > b_n) \\ \vdots & \vdots
     & \ddots & \vdots \\ \Pr(a_n > b_1) & \Pr(a_n > b_2) & \cdots & \Pr(a_n > b_n)
     \end{bmatrix}\]
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: 'We’ll call this the **matchup matrix**. Each team knows the matchup matrix,
@@ -72,27 +85,33 @@
     we could take the example of a rock-paper-scissors crew battle. Each team has
     3 players: a rock player, a paper player, and a scissors player. That would give
     the following matchup matrix.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{array}{c|ccc} & \textbf{rock} & \textbf{paper} & \textbf{scissors}
     \\ \hline \textbf{rock} & 0.5 & 0 & 1 \\ \textbf{paper} & 1 & 0.5 & 0 \\ \textbf{scissors}
     & 0 & 1 & 0.5 \end{array}\]
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'Normally, in RPS you’d play again on a tie. Since there are no ties in crew
     battles, we’ll instead say that if both players match, we pick a winner randomly.
     Here’s an example game:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: This is a pretty silly crew battle because of the lack of drama, but we’ll come
     back to this example later.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'First off: given a generic matchup matrix, should we expect there to be an
     efficient algorithm that solves the crew battle?'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: My suspicion is, probably not. Finding the optimal strategy is at some level
@@ -103,40 +122,49 @@
     a quick search I did indicates those are already suspected to be hard to solve
     generally. (See [Daskalakis, Goldberg, Papadimitriou 2009](https://people.csail.mit.edu/costis/simplified.pdf)
     if curious.)
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Still, even though there isn’t an efficient algorithm, there definitely is **an**
     algorithm. Let’s define a function \(f\), where \(f(p, team, S_A, S_B)\) is the
     probability team \(A\) wins if
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: The player who just won is \(p\).
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The team deciding to who to send in is \(team\) (the team that \(p\) is **not**
     on).
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: \(S_A\) is the set of players left on team A, ignoring player \(p\).
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: \(S_B\) is the set of players left on team B, ignoring player \(p\).
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Such an \(f\) can be defined recursively. Here are the base cases.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: If \(team = A\) and \(S_A\) is empty, then \(f(p, team, S_A, S_B) = 0\), since
     A has lost due to having 0 players left.
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: If \(team = B\) and \(S_B\) is empty, then \(f(p, team, S_A, S_B) = 1\), since
     A has won due to B having 0 players left.
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -144,33 +172,40 @@
     is empty. When a team is on their last player, they will have 0 players left to
     send in, but their last player could still beat the entire other team if they
     play well enough.)'
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Here are the recursive cases.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{align*} f(a_i, B, S_A, S_B) = \min_{j \in S_B} & \Pr(a_i > b_j) f(a_i,
     B, S_A, S_B - \{b_j\}) \\ & + (1-\Pr(a_i > b_j)) f(b_j, A, S_A, S_B - \{b_j\})
     \end{align*}\]
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: (It is Team B’s turn. They want to play the player \(b_j\) that minimizes the
     probability that team A wins. The current player will either stay as \(a_i\) or
     change to \(b_j\).)
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{align*} f(b_j, A, S_A, S_B) = \max_{i \in S_A} & \Pr(a_i > b_j) f(a_i,
     B, S_A - \{a_i\}, S_B) \\ & + (1-\Pr(a_i > b_j)) f(b_j, A, S_A - \{a_i\}, S_B)
     \end{align*}\]
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: (The reverse, where it’s team A’s turn and they want to maximize the probability
     A wins.)
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Computing this \(f\) can be done with dynamic programming, in \(O(n^22^{2n})\)
     time. That’s not going to work at big scales, but I only want to study teams of
     like, 3-5 players, so this is totally doable.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: One neat thing about crew battles is that after the first match, it turns into
@@ -180,6 +215,7 @@
     - there will be exactly one reply that’s best. And that means the probability
     of winning the crew battle assuming optimal play is locked in as soon as the first
     match is known.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: This means we can reduce all the crew battle outcomes down to a single \(n \times
@@ -187,6 +223,7 @@
     Each entry \(C_{ij}\) in the crew battle matrix is the probability that team A
     wins the crew battle, if in the very first match A sends in \(a_i\) and B send
     in \(b_j\).
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: \[\begin{align*} C_{ij} = &\Pr(a_i > b_j) f(a_i, B, S_A - \{a_i\}, S_B - \{b_j\})
@@ -194,6 +231,7 @@
     \[C = \begin{bmatrix} C_{11} & C_{12} & \cdots & C_{1n} \\ C_{21} & C_{22} & \cdots
     & C_{2n} \\ \vdots & \vdots & \ddots & \vdots \\ C_{n1} & C_{n2} & \cdots & C_{nn}
     \end{bmatrix}\]
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: This turns our original more complicated problem into exactly a 1 round matrix
@@ -202,32 +240,39 @@
     But computing \(f\) by hand is really annoying, and likely does not have a closed
     form. There’s no way to get \(f\) computed for arbitrary crew battles unless we
     use code.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: So I Wrote Some Python Code to Compute \(f\) for Arbitrary Crew Battles
+  id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Let’s consider the RPS crew battle again. Here’s the matchup matrix:'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '\[matchup: \begin{array}{c|ccc} & \textbf{rock} & \textbf{paper} & \textbf{scissors}
     \\ \hline \textbf{rock} & 0.5 & 0 & 1 \\ \textbf{paper} & 1 & 0.5 & 0 \\ \textbf{scissors}
     & 0 & 1 & 0.5 \end{array}\]'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: and here’s what my code outputs for the crew battle matrix, assuming optimal
     play.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '\[crew battle: \begin{array}{c|ccc} & \textbf{rock} & \textbf{paper} & \textbf{scissors}
     \\ \hline \textbf{rock} & 0.5 & 0 & 1 \\ \textbf{paper} & 1 & 0.5 & 0 \\ \textbf{scissors}
     & 0 & 1 & 0.5 \end{array}\]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: No, that’s not a typo. The two are identical! Let’s consider a crew battle of
     “noisy RPS”, where rock is only favored to beat scissors, rather than 100% to
     win, and so on.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '\[matchup: \begin{array}{c|ccc} & \textbf{rock} & \textbf{paper} & \textbf{scissors}
@@ -236,24 +281,30 @@
     & \textbf{rock} & \textbf{paper} & \textbf{scissors} \\ \hline \textbf{rock} &
     0.500 & 0.399 & 0.601 \\ \textbf{paper} & 0.601 & 0.500 & 0.399 \\ \textbf{scissors}
     & 0.399 & 0.601 & 0.500 \\ \end{array}\]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Intuitively, I feel it makes sense that this pulls towards the original RPS
     matrix - in some sense, the crew battle is like playing 3 rounds of RPS instead
     of 1, just with more complicated restrictions.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: Here’s the log of a sample game.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-48
   prefs: []
   type: TYPE_PRE
 - en: Bad beat for team B here, getting entirely swept by rock.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: For good measure, here’s a random matchup matrix and the corresponding game
     matrix.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '\[matchup: \begin{array}{c|ccc} & \textbf{b}_1 & \textbf{b}_2 & \textbf{b}_3
@@ -262,6 +313,7 @@
     \begin{array}{c|ccc} & \textbf{b}_1 & \textbf{b}_2 & \textbf{b}_3 \\ \hline \textbf{a}_1
     & 0.449 & 0.459 & 0.757 \\ \textbf{a}_2 & 0.748 & 0.631 & 0.722 \\ \textbf{a}_3
     & 0.610 & 0.746 & 0.535 \\ \end{array}\]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Alright. Let’s try something new. What if all player matchups are transitive?
@@ -272,6 +324,7 @@
     Since the matchup matrix is the win probability of A, the values go down when
     reading across a row (fighting better B players), and up when going down a column
     (fighting better A players)
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '\[matchup: \begin{array}{c|ccc} & \textbf{b}_1 & \textbf{b}_2 & \textbf{b}_3
@@ -280,15 +333,18 @@
     \begin{array}{c|ccc} & \textbf{b}_1 & \textbf{b}_2 & \textbf{b}_3 \\ \hline \textbf{a}_1
     & 0.385 & 0.385 & 0.385 \\ \textbf{a}_2 & 0.385 & 0.385 & 0.385 \\ \textbf{a}_3
     & 0.385 & 0.385 & 0.385 \\ \end{array}\]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: …Huh. This suggests *it doesn’t matter who each team sends out first*. The probability
     of winning the crew battle is the same. Trying this with several random 3x3s reveals
     the same pattern.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: Maybe this is just because 3-player crew battles are weird? Let’s try this on
     a 5-player crew battle.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '\[matchup: \begin{array}{c|ccccc} & \textbf{b}_1 & \textbf{b}_2 & \textbf{b}_3
@@ -301,18 +357,22 @@
     0.731 & 0.731 \\ \textbf{a}_2 & 0.731 & 0.731 & 0.731 & 0.731 & 0.731 \\ \textbf{a}_3
     & 0.731 & 0.731 & 0.731 & 0.731 & 0.731 \\ \textbf{a}_4 & 0.731 & 0.731 & 0.731
     & 0.731 & 0.731 \\ \textbf{a}_5 & 0.731 & 0.731 & 0.731 & 0.731 & 0.731 \\ \end{array}\]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: Same thing occurs! Let’s play a sample game. Even if the win probability is
     the same no matter who starts, surely the choice of who to send out in the future
     matches matter.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: The probability of A winning the crew battles shifts as matches are decided
     in favor of A or B, but the win probability *does not change* for any of the choices.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: I found this pretty surprising! Going into this I assumed there would be some
@@ -322,9 +382,11 @@
     However, this model is very common. It’s called the [Bradley-Terry model](https://en.wikipedia.org/wiki/Bradley%E2%80%93Terry_model)
     and is the basis of Elo ratings. (And the basis for tuning AI chatbot responses
     based on human feedback.)
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: Let’s write up this observation more formally.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '**Conjecture:** Suppose you have an \(N\) player crew battle, with players
@@ -332,13 +394,16 @@
     suppose each player has a non-negative skill level \(p\), and every matchup follows
     \(\Pr(a_i > b_j) = p_{a_i} / (p_{a_i} + p_{b_j})\). Then the probability \(A\)
     wins the crew battle does not depend on strategy.'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: I haven’t proved this myself, but it feels very provable. Consider it an exercise
     to prove it yourself.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: So…What Does This Mean?
+  id: totrans-split-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -350,6 +415,7 @@
     they’ll most likely get wrecked. And conversely, it suggests a crew should *avoid*
     sending Hungrybox in if Generic Netplay Fox is in the ring, even though Hungrybox
     would probably win.
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: This is a pretty extreme conclusion, and I wouldn’t blindly follow it. Psychologically,
@@ -361,9 +427,11 @@
     that the lopsided matchups are the only ways to get edges via strategy, the math
     suggests that team captains actually don’t have much leverage over the outcome
     of the crew battle.
+  id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
 - en: If your crew loses, you don’t get to blame bad crew battle strategy. Your crew
     is just worse. Deal with it, take the L.
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL

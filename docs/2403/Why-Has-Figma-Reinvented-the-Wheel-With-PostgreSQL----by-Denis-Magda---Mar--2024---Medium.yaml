@@ -1,25 +1,32 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:48:53'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Why Has Figma Reinvented the Wheel With PostgreSQL? | by Denis Magda | Mar,
     2024 | Medium
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/@magda7817/why-has-figma-reinveted-the-wheel-with-postgresql-3a1cb2e9297c](https://medium.com/@magda7817/why-has-figma-reinveted-the-wheel-with-postgresql-3a1cb2e9297c)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Why Has Figma Reinvented the Wheel With PostgreSQL?
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -28,45 +35,54 @@
     team was aware of, and evaluated, several existing options that could have made
     their database layer horizontally scalable. But still, they decided to build their
     own sharding solution from scratch.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'In this article, I’ll share my thoughts (and sometimes speculate) on the following:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: First, why a knowledgeable and experienced Figma engineering team decided to
     reinvent the wheel instead of selecting one of the existing options from a broad
     PostgreSQL ecosystem?
+  id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Second, how does the future look for Figma’s custom solution? Will the team
     double down on their sharding solution or eventually migrate to one of the existing
     and more mature options?
+  id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Lastly, if Figma eventually migrates to another option from the PostgreSQL ecosystem,
     then what that option will be?
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Quick Solution Overview
+  id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: I do understand that not everyone has time to read [Figma’s article](https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/)
     from cover to cover, that’s why I’d like to give a brief overview of their custom
     solution.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Sharding is a technique that distributes data and load across several standalone
     database instances. It allows you to split the original dataset into shards, which
     are then distributed across multiple database instances.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: To get sharding working, you need to come up with a sharding key and a hash
     function. Then, you write the logic that uses the hash function to map a key with
     an associated record to a shard, and then the shard to a database node.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: The Figma team solved this first step easily by selecting the most suitable
@@ -75,47 +91,57 @@
     that allows storing related data together on the same shards/nodes. For instance,
     all the comments that were left for a specific Figma file are stored together
     on the same node with the file record.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, this first step in any sharding implementation is the most straightforward.
     The most challenging parts come next. Once you’ve distributed your data across
     several database servers, you need to decide on:'
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: How to maintain data integrity by supporting global unique indexes and foreign
     keys?
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to coordinate, commit, and roll back cross-shard/node transactions?
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to roll out schema changes atomically across all database nodes?
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to reshard and rebalance the data when necessary?
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to route the queries from the application layer? Should there be a coordinator,
     or does this become the responsibility of app developers?
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: How to make the overall solution highly available (with standbys, replicas,
     failover solutions)?
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: And many other considerations…
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The Figma team acknowledged most of these challenges and made efforts to address
     several of them. For instance, they introduced a coordinator component, named
     DBProxy, which significantly eases the work for application developers.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: The coordinator plays a pivotal role in any sharding solution, provided it’s
@@ -123,9 +149,11 @@
     to by various names, such as coordinator, router, director, or proxy. The client
     or application connects to the coordinator, which then either routes requests
     to the specific database nodes or broadcasts them across the entire fleet.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Why Custom Sharding Solution?
+  id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -134,23 +162,28 @@
     tasks to solve. But it’s also a big investment for a company that sponsors the
     development — someone needs to build and then support/maintain the solution in
     production.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'The Figma team certainly was aware of the trade-offs between the custom vs.
     existing solution and evaluated several existing options:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: There are many popular open source and managed solutions for horizontally sharded
     databases that are compatible with Postgres or MySQL. During our evaluation, we
     explored CockroachDB, TiDB, Spanner, and Vitess.
+  id: totrans-split-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: But still, they decided to go ahead and create their own sharding solution from
     scratch. Why would they do that?
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'They justify their custom implementation by saying that:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: However, switching to any of these alternative databases would have required
@@ -159,6 +192,7 @@
     runway remaining. De-risking an entirely new storage layer and completing an end-to-end-migration
     of our most business-critical use cases would have been extremely risky on the
     necessary timeline.
+  id: totrans-split-33
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -168,15 +202,18 @@
     such as TiDB or Spanner. However, this doesn’t explain why [CitusData](https://www.citusdata.com),
     the default go-to sharding extension for PostgreSQL, wouldn’t work for them. They
     haven’t even added CitusData to their evaluation list.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, if you continue reading the article carefully, you’ll notice the team
     mentioning the following:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: over the past few years, we’ve developed a lot of expertise on how to reliably
     and performantly run **RDS Postgres** in-house. While migrating, we would have
     had to rebuild our domain expertise from scratch.
+  id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -186,12 +223,14 @@
     provided by large cloud providers and smaller vendors. While these services usually
     offer all the core PostgreSQL capabilities, the list of supported extensions is
     at the mercy of the service provider.
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, we have CitusData, a mature PostgreSQL extension for sharding, and we
     know that Figma uses RDS, a fully-managed PostgreSQL service by Amazon. However,
     if you check [the list of PostgreSQL extensions](https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html)
     supported by RDS, CitusData isn’t included:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: So, now, let me speculate. The real reason why Figma reinvented the wheel by
@@ -199,9 +238,11 @@
     this — *Figma wanted to stay on RDS, and since Amazon had decided not to support
     the CitusData extension in the past, the Figma team had no choice but to develop
     their own sharding solution from scratch.*
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: What Does the Future Look Like?
+  id: totrans-split-40
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -209,13 +250,16 @@
     have been very open about the choices and trade-offs they had to confront. I deeply
     respect their decision and believe that the path they chose was the most sensible
     at the time.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: However, does this imply that the Figma team will continue to use and invest
     in their own sharding solution? What does the future hold?
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'The team gives us the following hint:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Once we’ve bought ourselves sufficient runway, **we will also reassess our original
@@ -224,15 +268,18 @@
     and mature. We **will finally have bandwidth to reevaluate the tradeoffs** of
     continuing down our current path versus switching to an open source or managed
     solution.
+  id: totrans-split-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'Overall, the future might look as follows:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: 'Option #1: Figma continues investing in its own custom solution for sharding
     and makes it open source once it becomes mature enough. However, they would then
     need to find a way to differentiate from the CitusData extension.'
+  id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -242,6 +289,7 @@
     solution for Postgres for AWS users. However, they would need to assess the TCO
     (Total Cost of Ownership) carefully, as many who have evaluated this new service
     suggest that “Limitless” might also imply limitless costs.'
+  id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -251,10 +299,12 @@
     or even [YugabyteDB](https://www.yugabyte.com), a distributed shared-nothing database
     built on Postgres. YugabyteDB might be a likely option, considering that the team
     previously explored TiDB and CockroachDB.'
+  id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Alright, I hope you enjoyed this “investigation.” Let’s wish the Figma team
     luck and keep an eye on how the story of their sharding solution evolves!
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL

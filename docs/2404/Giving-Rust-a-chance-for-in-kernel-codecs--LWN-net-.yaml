@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:33:13'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Giving Rust a chance for in-kernel codecs [LWN.net]
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://lwn.net/Articles/970565/](https://lwn.net/Articles/970565/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -22,12 +28,15 @@
     LWN](/subscribe/) is helping to keep us publishing, but, beyond that, subscribers
     get immediate access to all site content and access to a number of extra site
     features. Please sign up today! |'
+  id: totrans-split-6
   prefs: []
   type: TYPE_TB
 - en: April 26, 2024
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: This article was contributed by Daniel Almeida
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Video playback is undeniably one of the most important features in modern consumer
@@ -38,6 +47,7 @@
     and hardware implementations are now common, but programming these devices is
     becoming increasingly difficult and fraught with opportunities for exploitation.
     I hope to convey how Rust can help fix this problem.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: Some time ago, I [proposed](/ml/linux-kernel/20230406215615.122099-1-daniel.almeida@collabora.com/)
@@ -50,9 +60,11 @@
     flow of the [Rust-for-Linux](https://rust-for-linux.com/) community so far by
     realizing that we can convert error-prone driver sections without writing a whole
     layer of Rust bindings.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: The dangers of stateless decoders
+  id: totrans-split-11
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -65,6 +77,7 @@
     decoding each and every frame. Note that this metadata directs the decoding, and
     is used to make control-flow decisions within the codec; erroneous or incorrect
     metadata can easily send a codec astray.
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: User space is responsible for parsing this metadata and feeding it to the drivers,
@@ -73,6 +86,7 @@
     to comb through and transfer this data to the hardware. The parsing algorithms
     are laid out by the codec specification, which are usually hundreds of pages long
     and subject to errata like any other technical document.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Given the above, it is easy to see the finicky nature of stateless decoder drivers.
@@ -81,9 +95,11 @@
     stream exploiting the [weaknesses](https://github.com/h26forge/h26forge/blob/main/docs/MOTIVATION.md)
     that are inherent to the decoding process. Interested readers can refer themselves
     to the [actual paper](https://wrv.github.io/h26forge.pdf).
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: The role of Video4Linux2 codec libraries
+  id: totrans-split-15
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -91,6 +107,7 @@
     of a workload in hardware, but often not all of it. For codec drivers in particular,
     this means that the metadata is not only used to control the decoding process
     in the device, it is also fed to codec algorithms that run in the CPU.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: These codec algorithms are laid out in the codec's specification, and it would
@@ -100,6 +117,7 @@
     [`v4l2-h264.c`](https://elixir.bootlin.com/linux/latest/source/drivers/media/v4l2-core/v4l2-h264.c),
     and [`v4l2-jpeg.c`](https://elixir.bootlin.com/linux/latest/source/drivers/media/v4l2-core/v4l2-jpeg.c)
     in the kernel sources.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: What's more, with the introduction of more AV1 drivers and the proposed V4L2
@@ -112,9 +130,11 @@
     A tentative user-space API for H.264 alongside a driver for Hantro devices was
     also [submitted](/ml/linux-media/20231116154816.70959-1-andrzej.p@collabora.com/)
     last year, although the discussion is still on a RFC level.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Why Rust?
+  id: totrans-split-19
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -126,6 +146,7 @@
     potential to finally bring relief to problems such as complex locking, error handling,
     bounds checking, and hard-to-track ownership that span a large number of domains
     and subsystems.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Codec code is also plagued by many of the pitfalls listed above and we have
@@ -134,6 +155,7 @@
     control flow on the fly and also to index into various memory locations. That
     has been shown to be a major problem in the user-space stack, and the problem
     is even more critical at the kernel level.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: Rust can help by making a whole class of errors impossible, thus significantly
@@ -143,9 +165,11 @@
     more succinctly through the use of more modern abstractions such as iterators,
     ranges, generics, and the like. These add up to a more secure driver and, thus,
     a more secure system.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Porting codec code to Rust, piece by piece
+  id: totrans-split-23
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -157,6 +181,7 @@
     Name-mangling also has to be turned off for whatever symbols the programmer plans
     to expose, while a `[repr(C)]` annotation ensures that the Rust compiler will
     lay out structs, unions, and arrays as C would for interoperability.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Once the symbol and machine code are in the object file, calling these functions
@@ -165,6 +190,7 @@
     is a problem that is solved by employing [`cbindgen`](https://github.com/mozilla/cbindgen),
     a standalone tool from Mozilla that is capable of generating an equivalent C header
     from a Rust file.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'With that header in place, the linker will do the rest, and a seamless transition
@@ -172,23 +198,28 @@
     other Rust functions that do not have to be annotated with `#[no_mangle]` or `extern
     "C"`, which is why it''s advisable to use the C entry point only as a facade for
     the native Rust code:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: In this example, `v4l2_vp9_fw_update_probs_rs()` is called from C, but immediately
     jumps to `fw_update_probs()`, a native Rust function where the actual implementation
     lives.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: In a C driver, the switch is as simple as calling the `_rs()` version instead
     of the C version. The parameters needed by a Rust function can be neatly packed
     into a struct on the C side, freeing the programmer from writing abstractions
     for a lot of types.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: Putting that to the test
+  id: totrans-split-30
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -196,6 +227,7 @@
     time, I believe it is now time to rewrite our codec libraries, together with any
     driver code that directly accesses the bit stream parameters. Thankfully, it is
     easy to test codec drivers and their associated libraries, at least for decoders.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 'The [Fluster tool](https://github.com/fluendo/fluster) by Fluendo can automate
@@ -205,12 +237,14 @@
     and, even, the V4L2 framework. My plan is to see Rust code being tested on [KernelCI](https://kernelci.org/)
     in the near future so as to assess its stability and establish a case for its
     upstreaming.'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: By gating any new Rust code behind a `KConfig` option, users can keep running
     the C implementation while the continuous-integration system tests the Rust version.
     It is by establishing this level of trust that I hope to see Rust gain ground
     in the kernel.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: Readers willing to judge this initiative may refer to the [patch set](/ml/linux-media/20240227215146.46487-1-daniel.almeida@collabora.com/)
@@ -219,12 +253,14 @@
     to use the new version. It then converts error-prone parts of `rkvdec` itself
     into Rust, which encompasses all code touching the VP9 bit stream parameters directly,
     showing how Rust and C can both coexist within a driver.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: So far, only one person has replied, noting that the patches did not introduce
     any regressions for them. I plan on discussing this idea further in the next Media
     Summit, the annual gathering of the kernel media developers that is yet to take
     place this year.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: 'In my opinion, not only should we strive to convert the existing libraries
@@ -233,9 +269,11 @@
     will be no more space for C codec libraries in the media tree. As for drivers,
     I hope to see Rust used where it matters: in places where its safety and improved
     ergonomics proves worth the hassle.'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Getting involved
+  id: totrans-split-37
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
@@ -249,17 +287,22 @@
     by Mozilla. Lastly, reading through a codec driver like `rkvdec` and the [V4L2
     memory-to-memory stateless video decoder interface documentation](https://www.kernel.org/doc/html/latest/userspace-api/media/v4l/dev-stateless-decoder.html)
     can also be helpful.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: (
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/970565/)'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: to post comments)
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL

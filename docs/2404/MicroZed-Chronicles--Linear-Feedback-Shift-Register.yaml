@@ -1,54 +1,67 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:57:12'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'MicroZed Chronicles: Linear Feedback Shift Register'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.adiuvoengineering.com/post/microzed-chronicles-linear-feedback-shift-register](https://www.adiuvoengineering.com/post/microzed-chronicles-linear-feedback-shift-register)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: As a follow on from last week, one of the techniques I like to use to stimulate
     or capture data in our FPGA designs is a Linear Feedback Shift Register (LFSR).
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: In the ten-plus years of this blog, I have never talked much about LFSRs, so
     I am going to focus this blog on exploring them as they are helpful for our FPGA
     designs. These days, we are a little spoiled with the modern fabric being so capable.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: 'LFSRs can be used for a range of applications in our FPGAs:'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: Generating random test patterns – Leveraging the pseudo random nature of the
     LFSR to generate data for test patterns.
+  id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Counters – using a LFSR as a counter can often provide a more efficient and
     higher performing implementation than alternate approaches.
+  id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Data scrambling / descrambling – The output from the LFSR can be combined with
     data to ensure that long runs of ones or zeros are removed which could result
     in synchronization problems when received.
+  id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Error detection and correction – By selecting the specific polynomial to generate
     code words, we are able to detect errors in the transmission when the data is
     received and applied to the same LFSR. Ethernet is a commonly used example.
+  id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -60,31 +73,37 @@
     will repeat after 2^n-1 iterations. This is a result of the two methods of implementing
     a LFSR. Both have illegal values which prohibit further operation and as such,
     are avoided.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: 'The two methods of implementation for a LFSR are as follows:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: Galois – In this architecture, the XOR/XNOR gates are implemented between register
     stages within the shift register and the output of the last stage is wrapped around
     to the first register input and connected to the XOR/XNOR gate input. This means
     when the output is 0, the register simply shifts.
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Implementing both architectures can result in maximal length LFSR being implemented.
     However, we do need to do a translation between the location of the taps in a
     Fibonacci implementation versus a Galois implementation.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: For a Fibonacci implementation of a simple 8-bit LFSR, we will have taps at
     4,5,6,8 when the registers are numbered 1 to 8 (with 1 being the input and 8 being
     the output element). This leads to a diagram as below.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: For a Galois implementation, however, the taps need to be updated so the register
     position is updated. Be aware that it is also common to number Galois registers
     in the opposite direction to Fibonacci.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: One advantage of using a Galois implementation is that there is never more than
@@ -95,6 +114,7 @@
     for larger XOR/XNOR Implementations with six input LUT. As such, the usage of
     Fibonacci or Galois implementation comes down to the engineer understanding what
     is best suited for your application.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: The use of an XNOR or XOR gate depends on the application, however, both Fibonacci
@@ -104,43 +124,52 @@
     at zero (see my blog on resets here), it makes sense for us to use the XNOR style
     approach, although it is possible to create a modulo 2^n counter with a little
     extra decoding logic.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: In the remainder of this blog, we are going to create simple LFSR implementations
     using the Galois and Fibonacci techniques and demonstrate the result when implemented
     in an AMD 7 series device.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The source code for both can be seen below. For the test bench, I run through
     the sequence and record them to text files which ensures I can double check that
     the sequence is correct. As a maximal length sequence, it should repeat after
     255 iterations.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: '[PRE1]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: If we modify the design slightly, the parallel word is not being output but
     instead, a serial output is generated. This is a common use case. We can then
     synthesize the design and observe how it is implemented. Note how it uses SRL
     whenever it can.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: In our next blog, we will be using a LFSR as part of our miniseries that looks
     at how we are able to capture data using the ILA and test equipment.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: If you are looking for a list of LFSR feedback taps, the great Peter Alfke wrote
     an interesting [app note](https://docs.amd.com/v/u/en-US/xapp052) a while back
     which targets now obsolete devices and provides a great introduction to LFSR,
     along with an extensive LFSR table of taps.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: If you enjoyed the blog why not take a look at the free webinars, workshops
     and training courses we have created over the years. Highlights include
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Do you want to know more about designing embedded systems from scratch? Check
@@ -153,5 +182,6 @@
     [USB](https://www.adiuvoengineering.com/post/microzed-chronicles-smart-sensor-iot-board-getting-usb-up-and-running),
     [Sensors](https://www.adiuvoengineering.com/post/microzed-chronicles-petalinux-i2c-in-the-ps-and-axi-iic))
     and view the schematics [here](https://www.adiuvoengineering.com/post/sensorsthink-board-schematic).
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL

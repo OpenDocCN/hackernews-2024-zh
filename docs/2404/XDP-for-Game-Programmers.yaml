@@ -1,26 +1,33 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 12:54:06'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: XDP for Game Programmers
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://mas-bandwidth.com/xdp-for-game-programmers/](https://mas-bandwidth.com/xdp-for-game-programmers/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: I'm [Glenn Fiedler](https://www.linkedin.com/in/glenn-fiedler-11b735302/?ref=mas-bandwidth.com)
     and welcome to **Más Bandwidth**, my new blog at the intersection of game network
     programming and scalable backend engineering.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: What's this new blog about? Games with thousands of players. Virtual worlds.
@@ -29,11 +36,13 @@
     in AR. Telepresence and remote working in virtual reality. Game streaming *(eww
     gross!).* OK, everything but that last one and I'm going to explain why in a later
     article.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: But seriously. Within 10 years, everybody is going to have 10gbps internet.
     How will this change how games are made? How are we going to use all this bandwidth?
     5v5 shooters just aren't going to cut it anymore. **What's next?**
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: As a fitting first post to this blog, if ever you find yourself, as I did, needing
@@ -42,27 +51,33 @@
     each packet in the kernel and passing it down to user space and back up to the
     kernel and out to the NIC limits the throughput you can achieve. We're talking
     10gbps and above here.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: The good news is that in the last 5 years the Linux kernel bypass technology
     known as XDP/eBPF has matured enough that it has moved from the domain of kernel
     hackers, to now at the beginning of 2024, being generally usable by normal people
     like you and me.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: So in this article I'm going to give you a quick overview of how XDP/eBPF works,
     show you what you can actually do with XDP/eBPF, *and* give you some working example
     code ([https://github.com/mas-bandwidth/xdp](https://github.com/mas-bandwidth/xdp?ref=mas-bandwidth.com))
     for some simple XDP programs so you can start using this technology in your applications.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: You can do some truly amazing things in XDP so read on!
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: What is XDP and how does it work?
+  id: totrans-split-14
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -70,33 +85,41 @@
     a function that gets called at the very earliest point when a packet comes off
     the NIC, right before the Linux kernel does any allocations or processing for
     the packet.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is incredible. This is powerful. This is programmer crack. You can write
     a function that runs inside the Linux Kernel and you can do *almost anything you
     want*. You can:'
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Drop the packet
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Modify the packet contents, or replace it entirely
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Grow or shrink the packet at head or the tail
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Send a response packet, or forward the packet to another address
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '*OR*'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '*Pass the packet down to the kernel for regular processing*'
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -105,35 +128,42 @@
     an entire TCP/IP network stack to make sure that everything works correctly under
     the hood (the NIC is doing a lot more than just processing UDP packets for your
     game...).
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: Now you can just laser focus your XDP program to apply, for example, only to
     IPv4 UDP packets sent to port 40000, and pass everything else on to the Linux
     kernel for regular processing. Easy.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '***Correction:** Apparently these days you can use a "bifurcated driver" with
     DPDK now to pass certain packets back to the OS. This wasn''t available the last
     time I worked with DPDK, which was quite some time ago. I still prefer XDP over
     DPDK though.*'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: What is eBPF**?**
+  id: totrans-split-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: eBPF stands for "extended Berkeley Packet Filter" and it's the technology that
     lets you compile, link and run your XDP program in the Linux Kernel.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: In short, eBPF is a byte code and lightweight VM that runs functions inside
     the Linux Kernel. There are many different places that eBPF functions can be inserted,
     and XDP is just one of them.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Because eBPF functions run inside the Linux kernel, they must not crash and
     they absolutely must halt. To make sure this is true, BPF functions have to pass
     a verifier before they can be loaded into the Kernel.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: In practice, this means that XDP functions are very slightly limited in what
@@ -142,108 +172,137 @@
     of bounds. But in practice, as long as you keep things simple, and you're willing
     to creatively do battle with the verifier, you can *usually* convince it that
     your program is safe.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Setting up for eBPF/XDP on Ubuntu 22.04 LTS
+  id: totrans-split-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Before you can get started wring XDP programs, you need to set up your machine
     so that it can compile, link and run eBPF programs, and load them in the kernel.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: Starting from an Ubuntu 22.04 LTS distribution.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'First you need to make sure you have the 6.5 Linux kernel:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: 'If the output from this isn''t version 6.5, update your kernel with:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: 'Run the following in your command line:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: In summary, the key step is building **libxdp** from source, and then building
     and installing the exact version of **libbpf** that is *included* in **libxdp**.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: I can only guess why this is necessary, but without this, I have found no other
     way to get XDP fully working on Ubuntu 22.04, including all functionality like
     BTFs, kfuncs and kernel modules. More on those later.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: XDP Reflect
+  id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Now we'll build and run a simple XDP program. In this program we'll just reflect
     UDP packets sent to us on port 40000 back to the sender. All other packets are
     passed to the kernel for regular processing.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'First, clone my [XDP example repo](https://github.com/mas-bandwidth/xdp?ref=mas-bandwidth.com)
     from GitHub:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE
 - en: 'Change into the reflect dir and make the program:'
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-47
   prefs: []
   type: TYPE_PRE
 - en: Run the UDP reflect program, passing in the name of the network interface to
     attach the program to. You can use **ifconfig** to list the network interfaces
     on your Linux machine.
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: 'Open up another terminal window to watch logs from the XDP program:'
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: 'Next clone the XDP repo again on another machine, and run the corresponding
     client for the reflect program, replacing 192.168.1.40 with the IP address of
     your Linux machine running the XDP program:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'If everything is working, you should see logs like this:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: Congratulations, just you've built and run your first XDP program, and it's
     no toy. If you simply comment out the **#define DEBUG 1** line in reflect_xdp.c,
     it's capable of reflecting packets at line rate on a 10G NIC.
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: XDP Drop
+  id: totrans-split-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Next we'll run a program that listens on a UDP port and drops packets that don't
     match a pattern. This type of XDP program can be useful to harden your game server
     against DDoS, although it's certainly not a panacea.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: 'The general idea is to hash key packet data, for example: packet length, source
@@ -251,6 +310,7 @@
     changes every minute if you want to get fancy. While it''s not perfect, and it
     doesn''t protect against packet replay attacks, at least a randomly generated
     UDP packet will fail the pattern check.'
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: The trick is to *shmear* this 8 byte hash across 15 bytes at the start of the
@@ -259,40 +319,50 @@
     has a very narrow range of values that are actually valid, and most are not. Now
     we have an extremely low entropy pattern we can check for, without even calculating
     the hash.
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here''s an example that takes the hash and fills a 16 byte header, with 15
     bytes of a low entropy encoding of the hash, and the first byte reserved for packet
     type:'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: 'To run the xdp drop program just change into the ''drop'' directory and run
     it on your network interface:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-64
   prefs: []
   type: TYPE_PRE
 - en: 'And then on another computer, run the drop client, replacing the addresses
     with the client and drop XDP program addresses respectively:'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: 'On the XDP machine you''ll see in the logs that the packet filter passed:'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: Try modifying the client.go to send randomly generated packet data without the
     header. You'll see in the logs now that the packet filter drops the packets. The
     encoding of the hash is so low entropy that it's virtually impossible for a randomly
     generated packet to pass the packet filter.
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: If you end up using this technique in production, *please* make sure to change
@@ -301,15 +371,18 @@
     you can reconstruct the hash on the receiver side and drop the packet in XDP when
     the hash doesn't match the expected value. Now people can't spoof their source
     address or port!
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: XDP Whitelist
+  id: totrans-split-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: What about an even simpler approach? Why not just maintain a list of IP addresses
     that are allowed to communicate with the game server, and drop any packets that
     aren't from a whitelisted address?
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Sure, you need to do some work in the backend to "open" client addresses on
@@ -317,41 +390,51 @@
     when clients disconnect... but this is do-able, and now, packets thrown at your
     game server from random addresses will be dropped by XDP, before the Linux kernel
     does any work to process them.
+  id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
 - en: 'To do this we need a way to communicate the whitelist to the XDP program. And
     here we get to use a new feature of BPF: **Maps**.'
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: Maps are an incredibly rich set of data structures that you can use from BPF.
     Arrays, Hashes, Per-CPU arrays, Per-CPU hashes and so on. All of these data structures
     are lockless, and you can read and write to them both from inside BPF programs,
     and from user space programs.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: 'If you see where I''m going here, you now have a way to communicate from your
     BPF program back out to user space and vice-versa. It''s almost too easy now:
     just call functions in your user space program to add and remove entries from
     a whitelist hash map.'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: 'Run the whitelist XDP program, replacing the interface name with your own:'
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: 'And then on another computer, run the whitelist client, replacing the addresses
     with the client and drop XDP program addresses respectively:'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-80
   prefs: []
   type: TYPE_PRE
 - en: 'If you look at the logs from the XDP program:'
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-82
   prefs: []
   type: TYPE_PRE
 - en: You'll see that it prints out that it's dropping the packets because they're
@@ -359,6 +442,7 @@
     machine running client.go, then reload the XDP program. Run the client.go again,
     and the packets should pass. At this point, if you bind a UDP socket to port 40000
     on the XDP machine, it would receive only packets that pass the whitelist check.
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: If you use this in production, you'll need to write your own system to add and
@@ -368,14 +452,17 @@
     a secret key per-client to make the packet filter hash more secure? You can combine
     whitelist with packet filters and hash checks to stop attackers from spoofing
     their IPv4 source address to get through the whitelist.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: XDP Relay
+  id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: What if your game server gets still gets overloaded by DDoS attacks even though
     XDP is dropping packets with whitelists, packet filter checks and hash checks?
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: The DDoS attacks are getting bigger. Much bigger. Congratulations, your game
@@ -383,26 +470,31 @@
     only forwards valid packets, hiding the IP address of your game server entirely?
     You could have relays in each datacenter protecting your game servers, and these
     relays could have 10, 40 or 100gbps NICs.
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: I'm leaving this one as an exercise for the reader. Combine the whitelist approach
     above with enough information in the whitelist hash value entry for the relay
     to forward the packet from the client to the server and vice-versa.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now drop any packets from addresses that aren''t in the whitelist as quickly
     as possible. Bonus points: track sequence numbers per-client connection to avoid
     replay attacks and rate limit the client connection to some maximum bandwidth
     envelope per-client. This is starting to become a pretty solid system.'
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: At this point you basically have your own version of Steam Data Relay (SDR)
     that isn't free. It's quite possibly even better than SDR. Well done! If you have
     infinite resources and your own money printing machine in your basement like Valve
     has, you can afford to run this system at scale too.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: Network Acceleration with XDP
+  id: totrans-split-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -410,16 +502,19 @@
     bad network performance like much higher latency than usual, high jitter or high
     packet loss? It's difficult to believe, but it's true. I have the data from more
     than 50 million unique players to prove it.
+  id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
 - en: Even more interesting is the fact that this bad network performance moves around
     and affects ~90% of your players every month. It's not the same 5-10% of players
     every day.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: This is not just some small minority of players with bad internet connections,
     this is a systemic problem. An inconsistency in network performance from one match
     to the next that affects the majority of your players.
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: My company [Network Next](https://networknext.com/?ref=mas-bandwidth.com) fixes
@@ -427,12 +522,15 @@
     Google cloud to their own datacenters with premium transit, Amazon to their own
     datacenters with Amazon Global Accelerator, and we massively outperform Steam
     Data Relay (SDR).
+  id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
 - en: And the Network Next relays are implemented in XDP.
+  id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
 - en: Crypto in XDP
+  id: totrans-split-97
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -441,6 +539,7 @@
     quickly, but my decision whether I would forward or drop packets was based not
     only on whitelists, packet filters and hash checks, but also on cryptographic
     tests like sha256 and chachapoly.
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: While it's certainly possible that I could fight the verifier and write my own
@@ -450,10 +549,12 @@
     It has an uncanny ability *not* to not be able to see why your code is completely
     fucking safe. Seriously, by the end of writing an XDP program you really want
     to punch it in the face.
+  id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
 - en: Coming to the rescue are the last two features of BPF that we'll discuss in
     this article. **BTF** and **kfuncs**.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: In short, you can write your own kernel module, then export functions from that
@@ -463,50 +564,62 @@
     These annotations are done via BTF, a sort of light weight type system that exports
     type data from the Linux kernel, *including kernel modules*, so they can be accessed
     from BPF.
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: Using this we can implement this function inside our own custom **crypto_module**
     kernel module to perform sha256 using the existing Linux kernel crypto primitives.
+  id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
 - en: 'To see this in action, first build and load the kernel module:'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-104
   prefs: []
   type: TYPE_PRE
 - en: 'Next, build and run the XDP program, replacing the network interface name with
     your own:'
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-106
   prefs: []
   type: TYPE_PRE
 - en: 'Now on another computer, change into the crypto dir and run the client, replacing
     the address with the IP address of the machine running the XDP program:'
+  id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-108
   prefs: []
   type: TYPE_PRE
 - en: If everything goes correctly, you'll see the XDP program respond with a 32 byte
     packets for each packet you send, containing the sha256 of the first 256 bytes
     of your packets. Why only the first 256 bytes? Well, to understand this, you need
     to understand the limitations of the BPF verifier...
+  id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
 - en: Limitations of the BPF Verifier
+  id: totrans-split-110
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: With kfuncs, it would seem that you should be able to now, pass the entire *void
     * packet*, and *int packet__sz* from XDP in to a kfunc and process it entirely
     inside your kernel module.
+  id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
 - en: Well, not so fast. The BPF verifier has some limitations and these restrict
     what you can do (at least in 2024). Hopefully these get fixed in the future by
     the Linux BPF developers.
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: The best way I can describe the limitations of the BPF for XDP programs is that
@@ -515,11 +628,13 @@
     enough bytes in the packet to read the ethernet header, then move the pointer
     right by some constant amount, read the ip header, move a constant amount to the
     right again and read the UDP header, and so on.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: But if you try to write code that reads the last 2 bytes in a packet, I simply
     cannot find any way to make this code pass the verifier, even though the code
     is completely safe, and does not read memory outside of bounds.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: The next limitation is that it seems (in 2024) that you can only pass constant
@@ -528,14 +643,17 @@
     a pointer to the packet data and a constant size of 256 bytes, and this passes
     the verifier. But if you pass in the *actual size* of the packet derived from
     the XDP context, there just seems to be no way to convince the verifier it's safe.
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: This is huge shame, because if we could simply pass the XDP packet into a kernel
     module and do some stuff there, we'd *really* be cooking with gas. Again, hopefully
     this gets fixed in a future version of BPF.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-117
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -543,6 +661,7 @@
     22.04 LTS with Kernel 6.5\. Previously unstable and the domain of only neck-bearded
     kernel hackers, it's now now stable and mature enough for general use by game
     developers.
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: It's a surprisingly powerful and easy to use system once you get the hang of
@@ -551,6 +670,7 @@
     do all this at line rate of 10gbps and above with minimal work. View the example
     source code for the article ([https://github.com/mas-bandwidth/xdp](https://github.com/mas-bandwidth/xdp?ref=mas-bandwidth.com))
     and see for yourself.
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: I know it sounds crazy, but in the future I'm actually exploring implementing
@@ -560,16 +680,20 @@
     to user space for processing. For example, if you were creating a new MMO or hyper
     player count game in 2024, I can't think of a better foundational technology than
     XDP/eBPF.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: I hope this article helps you get started writing XDP programs, they're extremely
     powerful and fun to write, even if the verifier drives you crazy. I look forward
     to seeing what you'll create with it!
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: Best wishes,
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: '- Glenn'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL

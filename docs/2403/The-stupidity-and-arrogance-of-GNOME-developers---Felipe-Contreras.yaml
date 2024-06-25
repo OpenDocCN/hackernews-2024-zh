@@ -1,50 +1,62 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:30:14'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: The stupidity and arrogance of GNOME developers | Felipe Contreras
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://felipec.wordpress.com/2024/03/18/stupid-gnome-developers/](https://felipec.wordpress.com/2024/03/18/stupid-gnome-developers/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'About a year ago I wrote a blog post explaining how the horrible development
     practices of people in the GNOME project lead to a bug in vte that was annoying
     me, even though I don’t use GNOME: [GNOME’s horrid coding practices](https://felipec.wordpress.com/2023/02/24/gnomes-horrid-coding-practices/).'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: The post is highly technical, but if you manage to go through it, it’s clear
     they made a mistake, and they refused to acknowledge their mistake, even though
     several users complained about the bug for years (not just me).
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: But the real problem is not that they refused to fix the bug, it’s that I provided
     them with a perfectly valid fix, and they refused to even look into the merit
     of it, only because of their ego.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'Today there’s an update: they came up with a [fix of their own](https://gitlab.gnome.org/GNOME/vte/-/commit/1bcf4bca).
     However, the irony is that their fix is an obfuscated and poorer version of my
     own fix.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: What’s the problem then? Many are going to presume this is some kind of “I told
     you so” retribution to elevate my ego. No, the problem is that my fix was available
     **three years ago**. All they managed to accomplish by ignoring and censoring
     me, is hurt their own users.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: They could have applied my fix a long time ago.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now, before going into the complex details, I think it’s useful to clarify
@@ -52,77 +64,95 @@
     when the event happens. But even though the issue is complex, the fix is **extremely
     simple**: send the signal of the event right after the event happens. That’s literally
     it. That’s what my fix did, and that’s what they ultimately ended up doing.'
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: For three years they argued that delaying the signal was good, only to come
     up with a patch that doesn’t delay the signal, which is exactly what I argued
     should be the case in the first place.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: If they made a mistake and realized it several years later, that would be understandably
     human, but that’s not what’s happening. I’m arguing they are stupid not because
     they made mistakes, but because they still haven’t realized that’s what they did.
     So it’s very likely that they will make the same mistakes again.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is a summary of the mistakes they did when dealing with this regression:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: Did not detect the introduction of a regression
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Refused to revert the change that introduced the regression
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Worked around the regression
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Refused a perfectly valid fix
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Refused to consider the merit of the valid fix
+  id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Refused to consider other alternatives to mitigate the regression
+  id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Locked and censored the issue in their tracker
+  id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Refused to acknowledge there was a bug despite multiple reports
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Ultimately applied the valid fix anyway
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Never acknowledged the valid fix was already available
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The issue
+  id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To understand the issue we don’t need to understand everything there is about
     virtual terminals, all we need to understand are **two signals**: `child-exited`
     and `end-of-stream`.'
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: child-exited
+  id: totrans-split-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: When you run a terminal (like gnome-terminal) there is always a process that
     is driving everything, for example `bash`. This is the “child” process.
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: When the child exits, typically you would want the terminal to exit as well
@@ -130,13 +160,16 @@
     user to decide what to do, but the job of the terminal library — vte in this case
     — is to provide the relevant information to the terminal — like gnome-terminal
     — in order to do what the end user wants.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: This is a convoluted way of saying that when bash exits, that needs to be communicated
     to gnome-terminal so it can exit right away — as 99.9% of the users would want.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: end-of-stream
+  id: totrans-split-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -144,85 +177,105 @@
     of the standard output. So when bash exits, there would be no more output — because
     the program cannot execute any more commands: it’s done. Once the program is done,
     all the file descriptors are cosed — including `stdout`.'
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: But this isn’t always the case. A process can always launch subprocesses. And
     each one of those subprocesses would inherit the standard streams. So all the
     children of bash are going to inherit the standard output of bash.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: In the above example, bash exits immediately, but it spawned a child, and that
     child is going to print “bye grandpa” after 10 seconds. This means the `stdout`
     file descriptor cannot be closed yet (not until all the children of bash exit).
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: So the `end-of-stream` signal is **not** going to be sent when the child exits,
     but when the grandchild exits, because the `stdout` file descriptor is going to
     remain open when bash exits.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Give it to me straight
+  id: totrans-split-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: What does this mean in practical terms?
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: 'In practical terms it means that when bash exits, the `stdout` file descriptor
     might not be closed yet. In other words: the `end-of-stream` signal might come
     **after** the `child-exited` signal.'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: The [bug](https://gitlab.gnome.org/GNOME/vte/-/issues/204) that was introduced
     in 2019, is that if the `end-of-stream` signal hadn’t come yet, then the `child-exited`
     signal was delayed. And this delay could be **infinite**.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: So how on Earth would a terminal — like gnome-terminal — know when to exit?
     It didn’t. And that was the regression.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: 'To exit immediately, the terminal needed to receive the `child-exited` signal
     **immediately**. And after the commit [7888602c](https://gitlab.gnome.org/GNOME/vte/-/commit/7888602c)
     (lib: Rework child exit and EOF handling) that wasn’t happening anymore: it was
     delayed *ad infinitum*.'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: First the delay was infinite, then it was capped to [5 seconds](https://gitlab.gnome.org/GNOME/vte/-/commit/058adf5f),
     and eventually it was capped to [2 seconds](https://gitlab.gnome.org/GNOME/vte/-/commit/12a54279).
     But the delay was there, and that was the problem.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: The fix
+  id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: If the user wants the terminal to exit immediately, then the `child-exited`
     signal needs to be sent immediately. It’s as simple as that.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Stupidly obvious
+  id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The complexity of the explanation of the issue above might have thrown some
     people off, so I want to make sure people understand the fix.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: The fix is to send the signal of the event, when the event happens. So the fix
     is to send the `child-exited` signal, when the child exits.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t know how the fix could be any simpler.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t pay you to think
+  id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -230,88 +283,92 @@
     and let me know when it’s bellow $850”. Then if you learn that the stock price
     is at $825 you would be understandably upset with this guy, but don’t worry, you
     assistant has an explanation.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: He might calmly explain to you “I know your objective is to make money, so I
     surmised the best way to make money is to buy the stock when the price is $800,
     the price is only $825, so it’s not yet time to buy”.
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: But you didn’t tell him “notify me when you think it’s time to buy”, did you?
     You never delegated that decision to him.
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: 'This bug is very similar. The terminal is telling vte: “please notify me when
     the child exits”, and vte comes back and says “it’s still not time to close the
     terminal”. But that is **not** what the terminal asked.'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: 'You see, it’s not just that GNOME developers think they know better than their
     users, it’s also that the developers of GNOME libraries think they know better
     than the users of those libraries: the developers of vte think they know better
     than the developers of xfce4-terminal (and countless others).'
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: They claimed it was desirable to send the `child-exited` signal when they believed
     the terminal should be closed, instead of when the child had exited.
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: Rogue library
+  id: totrans-split-59
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: '[I did explain to them](https://gitlab.gnome.org/GNOME/vte/-/issues/204#note_1703057)
     that the `child-exited` signal should be sent when the child exits.'
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: One has to do pretty advanced mental gymnastics to argue that a `child-exited`
     signal is not useful to issue at the moment a child exits.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Felipe Contreras
+  id: totrans-split-62
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '[They argued](https://gitlab.gnome.org/GNOME/vte/-/issues/204#note_1702760)
     that it was **they** the ones that should decide when the terminal can be closed:'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'To summarize the experience we have gained so far, both in the original bug,
     and then to the less-than-ideal “fix” to that bug (which broke something else),
     the desired behavior is the combination of **all of these, at the same time**:'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-64
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Process all output from the immediate child.
+  id: totrans-split-65
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
 - en: After that, quit (or restart, or whatever) ASAP.
+  id: totrans-split-66
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
 - en: No need to process all the output from grandchildren, their descendants, or
     other processes that somehow got access to the tty line.
+  id: totrans-split-67
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
-- en: ''
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
 - en: Egmont Koblinger
+  id: totrans-split-68
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -320,80 +377,101 @@
     But even if this was somehow possible, it should be up to the terminal to decide
     when to exit: if the terminal wants to exit before all the output from the child
     has been processed, it should be able to do so.'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: Ultimately is I — the end user — the one that should decide, not the terminal,
     and certain not the terminal library. The job of the library is to help achieve
     what the end user wants, not make decisions for the end user.
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: If the end user wants the terminal to close immediately and not display any
     output, vte should just shut up and do that.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: In the end his solution did not achieve anything my solution didn’t either,
     as we’ll soon see.
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: Proof
+  id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: At this point you might be thinking that there’s no way GNOME developers could
     possibly be so oblivious about their own code that an outsider like me could pinpoint
     to such glaring mistakes.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: Well, let’s see.
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is the core of the problem before the latest fix was applied, in the `Terminal::child_watch_done`
     method:'
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-77
   prefs: []
   type: TYPE_PRE
 - en: 'You don’t need to understand what all that is doing, all you need to know is
     that my fix changed that to:'
+  id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-79
   prefs: []
   type: TYPE_PRE
 - en: What did their fix do?
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: There is more code, but at the end they call the `Widget::emit_child_exited`
     method, which is exactly the same thing I did.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: So now they are sending the `child-exited` signal, when the child exits. **Brilliant
     idea!**
+  id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
 - en: You may be thinking that perhaps the rationale as to why the signal can be sent
     at that moment comes from the extra code above, I’ll get into that. But the important
     thing is that after it’s done, the signal is sent. Period.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: The difference
+  id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: Perhaps the chunk of code they added changes everything?
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: 'Here’s a video showing what happens with their fix:'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: 'And here’s the video showing what happens with my fix:'
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: Can you spot the difference? I doubt that you can, because there is **no difference**.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: So [reading that 64 k of data](https://gitlab.gnome.org/GNOME/vte/-/blob/aeb663ae/src/vte.cc#L3699-3715)
@@ -402,23 +480,28 @@
     because this isn’t even the use case that matters. The relevant use case — as
     we’ll see below — is when the terminal is held open, so there’s even more time
     to receive the data.
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
 - en: They delayed the fix for **absolutely no gain**.
+  id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
 - en: Defence
+  id: totrans-split-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Maybe I’m being unfair and they probably had a good reason. Let’s explore their
     rationale.
+  id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
 - en: 'The developers created yet another issue ticket to discuss their “proper” fix
     ([Exit delay in presence of grandchildren processes](https://gitlab.gnome.org/GNOME/vte/-/issues/2627)).
     There Egmont spent 4102 words just to begin to justify his proposal. But in the
     end his proposal is simple:'
+  id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
 - en: Approaching from two different directions, the traffic-based safety cap seems
@@ -427,66 +510,77 @@
     When we notice that the child has quit, we synchronously read up to `EOF`, `EAGAIN`,
     any other error condition, or about 64k of data, whichever comes first, and process
     that data before emitting the ever so slightly deferred `child-exited` signal.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-95
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Egmont Koblinger
+  id: totrans-split-96
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: 'This explains the chunk of code we saw before: it’s trying to read 64 k of
     data synchronously before sending the `child-exited` signal, so now it’s only
     “ever so slightly deferred”.'
+  id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
 - en: I already proved that chunk makes no difference, but let’s assume that they
     are right and it did make a difference. Why would reading 64 k data be important?
+  id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
 - en: The origin story
+  id: totrans-split-99
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: The regression traces back to trying to fix issue [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     (End of cmd output discarded with “Hold the terminal open”). But the thing to
     keep in mind is that this is only relevant when you **hold** the terminal open.
+  id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
 - en: 'Say you launch a terminal in order to run a single command:'
+  id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-102
   prefs: []
   type: TYPE_PRE
 - en: 'Naturally you would like to see the output of that command. But if the terminal
     exits when the command finishes, then you won’t see anything. In order to see
     the output after the child has exited, you need to hold the terminal open:'
+  id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-104
   prefs: []
   type: TYPE_PRE
 - en: 'The issue reported in [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     is that not all the output was displayed, if two things happened:'
+  id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
 - en: The output is more than 8 k of data
+  id: totrans-split-106
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The terminal is held open
+  id: totrans-split-107
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: So it was very marginal issue which probably affected less than 1% of users
     (more like 0.01%).
+  id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
 - en: Worse than the disease
+  id: totrans-split-109
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -496,9 +590,11 @@
     fixed the problem. But after I spent an inordinate amount of time splitting the
     more than 600 lines of code changed into [25 logically atomic commits](https://github.com/GNOME/vte/compare/master...felipec:vte:eos-rewrite),
     it became clear what fixed the issue:'
+  id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-111
   prefs: []
   type: TYPE_PRE
 - en: 'It would take time to explain what a PTY is, but you don’t need to know that:
@@ -506,27 +602,33 @@
     PTY is closed, the link between the terminal and the child process is severed.
     This means the streams are forcibly closed, and therefore any output coming from
     the child process after this point would be lost.'
+  id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
 - en: If the PTY is not closed, then the terminal is able to receive output from the
     child **after** the `child-exited` signal is raised.
+  id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
 - en: Essentially the fix decouples the closing of the streams from the `child-exited`
     signal.
+  id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
 - en: 'So what did the following 24 changes do? Nothing useful. In fact, the last
     2 changes rejoined the two signals. Before: the streams were being closed when
     `child-exited` was sent, and after: the `child-exited` signal was sent when the
     streams were closed.'
+  id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
 - en: So one issue was replaced by another issue, except that the new issue was **much
     worse**.
+  id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
 - en: The myth
+  id: totrans-split-117
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
@@ -534,6 +636,7 @@
     that was needed to avoid the issue reported in [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     was to not close the PTY, and thus decoupling the two events: closing of the streams
     from the child exiting.'
+  id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
 - en: Because they are unable to put themselves in the shoes of the terminal, they
@@ -545,47 +648,59 @@
     In the issue [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366) it’s explicitly
     stated that the problem is relevant only when the “hold the terminal open” option
     is selected.
+  id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
 - en: When “hold the terminal open” is selected, `child-exited` does not terminate
     the terminal.
+  id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
 - en: The terminal is able to keep displaying output from the child, even after `child-exited`
     was sent, as long as the file descriptors are not closed.
+  id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
 - en: 'So they didn’t need to delay `child-exited`: all they needed to do is not close
     the PTY.'
+  id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
 - en: 'They never actually understood why the patch fixed the issue: they wrongly
     attributed it to delaying the signal.'
+  id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
 - en: The 64 k chunk
+  id: totrans-split-124
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'We come back to their fix:'
+  id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-126
   prefs: []
   type: TYPE_PRE
 - en: 'There’s always going to be a PTY, so you can ignore the `if (pty())` condition,
     then the logic consists of 3 steps:'
+  id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
 - en: Read a chunk of 64 k data
+  id: totrans-split-128
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Close the PTY
+  id: totrans-split-129
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
 - en: Emit `child-exited`
+  id: totrans-split-130
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -593,6 +708,7 @@
     sending `child-exited` is going to close the PTY (in fact terminate the entire
     program), but not when the “hold the terminal open” option is selected, which
     is what started it all. So data can be read **after** `child-exited` in this case.
+  id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
 - en: 'So we don’t need to do step 2 (which in fact has a comment saying it’s **optional**
@@ -600,89 +716,112 @@
     and it is held open, therefore it makes a difference), and if we don’t do step
     2, then we don’t need to do step 1 either: because the data can be read after
     `child-exited` is emitted.'
+  id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
 - en: If you skip step 2 and step 1 (which are unnecessary), then the code is **exactly
     the same** as my fix.
+  id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
 - en: Verdict
+  id: totrans-split-134
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: They have no defence. Their code makes **no difference**.
+  id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
 - en: The journey
+  id: totrans-split-136
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: In November 2019 this is what the relevant code in `Terminal::child_watch_done`
     looked like before introducing the regression.
+  id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-138
   prefs: []
   type: TYPE_PRE
 - en: 'At this point the bug reported in [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     was present: displaying more than 8 k data right as the child exits didn’t work.'
+  id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
 - en: 'However, the fix was simply to remove the `unset_pty()` line and don’t close
     the PTY. Instead, they chose to add several layers of complexity:'
+  id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-141
   prefs: []
   type: TYPE_PRE
 - en: So while trying to fix issue [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     which was very marginal — it happened only when the data exceeded 8 k and the
     terminal was configured to remain open and affected less than 0.1% of users —
     they introduced a regression that affected 100% of users.
+  id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
 - en: The thing to note is that m_child_exited_after_eos_pending is going to eventually
     trigger the `child-exited` signal by forcing an `end-of-stream` signal, but that
     could take up to 2 seconds.
+  id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
 - en: 'They argued for years that this was necessary in order for the use case described
     in issue [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366) to work. But
     that wasn’t true: they never understood that what fixed the issue was removing
     the `unset_pty()` call.'
+  id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally in August 2023 — around 4 years later — they finally fix the regression
     with:'
+  id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-146
   prefs: []
   type: TYPE_PRE
 - en: 'But they reintroduce the `unset_pty()`, when the comment itself says “**optional**“.
     If you remove that the code above that reads 64 k of data unecessarily, we end
     up with:'
+  id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-148
   prefs: []
   type: TYPE_PRE
 - en: Which was **precisely** [my fix](https://github.com/felipec/vte/commit/8158d9c3#diff-5a3d8ae32aded628803bb443f43eac61814650c78132f6e128d2c7be4712538fR3220-R3221).
+  id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
 - en: 'So let’s get this straight, we went from this code in 2019:'
+  id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-151
   prefs: []
   type: TYPE_PRE
 - en: 'To this code in 2023:'
+  id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-153
   prefs: []
   type: TYPE_PRE
 - en: Which does exactly the same as my fix that they rejected for **no good reason**.
+  id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
 - en: All these years I argued that the two signals should be decoupled, and eventually
@@ -691,26 +830,33 @@
     did we (the open source community) gain by this ordeal? **Absolutely nothing**.
     The code they eventually added and wasn’t present in my fix makes **no difference**
     whatsoever.
+  id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
 - en: But wait…
+  id: totrans-split-156
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When I said it makes no difference, that’s a lie, it’s actually **worse**.
+  id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
 - en: If you run the following command you would expect to see the “bye grandpa” output
     after 10 seconds.
+  id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-159
   prefs: []
   type: TYPE_PRE
 - en: But it does not happen… because they decided to [close the PTY](https://gitlab.gnome.org/GNOME/vte/-/blob/aeb663ae/src/vte.cc#L3714).
+  id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
 - en: In my fix that command works fine.
+  id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
 - en: I’ve opened a new [issue ticket](https://gitlab.gnome.org/GNOME/vte/-/issues/2762)
@@ -718,9 +864,11 @@
     which is simply removing the unnecessary call to `unset_pty()`. If they apply
     my fix, then it becomes even more obvious that reading those 64 k is completely
     unnecessary. But I would not be holding my breath.
+  id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
 - en: Lack of attention
+  id: totrans-split-163
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -728,123 +876,126 @@
     I thought might be unnecessary, and while doing so I found that they indeed were
     unnecessary. I did so very carefully to make sure I wasn’t missing anything, and
     especially because all this code was new to me.
+  id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
 - en: 'That’s how I realized vte developers were not careful at all: they often removed
     the calls to methods without removing the methods.'
+  id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
 - en: 'Take for example this chunk:'
+  id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-167
   prefs: []
   type: TYPE_PRE
 - en: The call to `queue_child_exited()` is removed, but after that there isn’t any
     call to that method, so why aren’t they removing the method? Because they aren’t
     paying **attention** to their own code.
+  id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
 - en: '`Terminal::queue_child_exited` queues a call to `emit_child_exited_idle_cb`
     (which probably could have been called directly anyway), and that calls `Terminal::emit_child_exited`
     (which probably didn’t need to be a separate function), and that finally calls:'
+  id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-170
   prefs: []
   type: TYPE_PRE
 - en: Which is now called right away, so obviously it’s not needed anymore.
+  id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
 - en: All these methods can be removed, and therefore `m_child_exit_status` can be
     removed as well.
+  id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
 - en: The same happened in the [regression patch](https://gitlab.gnome.org/GNOME/vte/-/commit/7888602c),
     where they removed the definition of `Terminal::pty_channel_eof`, but not the
     declaration.
+  id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
 - en: My [version of the fix](https://github.com/felipec/vte/commit/8158d9c3) did
     correctly remove all the code that was not used any more. That’s why I say their
     version is poorer.
+  id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
 - en: I’ve [sent a patch](https://gitlab.gnome.org/GNOME/vte/-/issues/2761) to fix
     all their oversights, but I think we all can guess how that is likely going to
     go.
+  id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
 - en: Really?
+  id: totrans-split-176
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'After it was all said and done, Egmont found an [interesting comment](https://gitlab.gnome.org/GNOME/vte/-/issues/2627#note_1753270)
     in the luit command:'
+  id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
 - en: -x Exit as soon as the child dies. This may cause luit to lose data at the end
     of the child’s output.
-  prefs:
-  - PREF_BQ
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-178
   prefs:
   - PREF_BQ
   - PREF_BQ
   type: TYPE_NORMAL
 - en: luit(1)
+  id: totrans-split-179
   prefs:
   - PREF_BQ
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
-  prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: …
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-180
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: They suffer from the same dilemma, and delegate the decision to the user.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-181
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Egmont Koblinger
+  id: totrans-split-182
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: No shirt Sherlock. The end user should decide how the software behaves? Who
     would have thought of that?
+  id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
 - en: But you are wrong, they are not “delegating” the decision to the end user, it
     was always the user’s decision in the first place.
+  id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
 - en: First principle of software
+  id: totrans-split-185
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: I am convinced most developers do not even understand what software is, and
     it’s very clear that includes GNOME developers.
+  id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
 - en: 'The biggest thing any program can do is not the technical details of the program
     itself: it’s how useful the program is to users.'
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-187
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -852,48 +1003,49 @@
     experience, to me that is the absolute worst failure that a software project can
     make. It’s the complete no-no to ever break userspace – or for other projects
     – to ever break features that your users depend on.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-188
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Because no project is more important than the users of the project.
-  prefs:
-  - PREF_BQ
-  type: TYPE_NORMAL
-- en: ''
+  id: totrans-split-189
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Linus Torvalds
+  id: totrans-split-190
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: The whole point of software is to be **useful** to users. That’s it.
+  id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
 - en: Your job Egmont — the developer, is to make things easier for me — the end user.
     Not harder.
+  id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
 - en: It’s the end user that should decide how the software behaves. If you are purposely
     making the software **less useful** to the end users, you are **failing** as a
     software developer. Period.
+  id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
 - en: Their sins
+  id: totrans-split-194
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
 - en: 'Once you understand what software is, the list of catastrophic mistakes they
     did is obvious:'
+  id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
 - en: They didn’t revert the patch that introduced the **regression**. This is what
     projects that do understand the purpose of software do, I provided an example
     from the Linux project in my [other blog post](https://felipec.wordpress.com/2023/02/24/gnomes-horrid-coding-practices/).
+  id: totrans-split-196
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -901,6 +1053,7 @@
     want to revert the whole patch — which is understandable because it’s a big patch
     with 600 lines of code (an awful practice to begin with) — they could have changed
     one line of code to restore the previous behavior.
+  id: totrans-split-197
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -908,6 +1061,7 @@
     to go back to a state where issue [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     was still present, they could have considered a middle ground, at least until
     a proper fix is found.
+  id: totrans-split-198
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -915,6 +1069,7 @@
     considered their solution to be correct, locking the issue and threatening people
     who criticized this approach with permanent bans is not what a project that cares
     about being useful to its users should do.
+  id: totrans-split-199
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -922,6 +1077,7 @@
     the fix for [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366) was paramount,
     they could have analyzed the fixes that claimed to not break [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366),
     as my fix did, but they didn’t.
+  id: totrans-split-200
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
@@ -929,77 +1085,94 @@
     finally introduced in 2023: [read 64 k of data](https://gitlab.gnome.org/GNOME/vte/-/blob/aeb663ae/src/vte.cc#L3699-3715)
     was somehow necessary (even though it doesn’t make any difference), they shouldn’t
     have enabled the new behavior until they had that “proper” code.'
+  id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
 - en: If that meant that issue [2366](https://gitlab.gnome.org/GNOME/vte/-/issues/2366)
     would not have been properly fixed until 2023, then so be it.
+  id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
 - en: It is better to make 0.01% of users suffer for 4 more years, than introduce
     a regression and make 100% of users suffer for 4 years. Who could argue otherwise?
+  id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
 - en: But that’s not even the case, because my fix made everything work correctly,
     and it was available years ago.
+  id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-205
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: These people made their users suffer unnecessarily for 4 years, for **no reason**.
+  id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
 - en: When I say they are “stupid”, it’s not out of spite, it’s an objective fact.
     Who argues that the `child-exited` signal should not be sent when the child exits,
     only to eventually write a patch that does precisely that?
+  id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
 - en: And when I say they are “arrogant” it’s not because they rejected my solution,
     it’s because they couldn’t even entertain the possibility that some outsider could
     be more correct than them, and that’s why they didn’t even look at my patch.
+  id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
 - en: This is just one issue that we can leave behind in the past, but the real problem
     is their bad development practices and their shitty attitude. That is not constrained
     to the vte project, but the whole of GNOME and I have similar horror stories in
     other components to prove it.
+  id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
 - en: This isn’t about me, or my fix, this is about documenting the way GNOME developers
     operate in the details, and I think any objective observer would reach the conclusion
     that it’s simply not great.
+  id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
 - en: Postscript
+  id: totrans-split-211
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Because this isn’t my first rodeo, I can already foresee the criticism of this
     article: people are going to focus on my persona and my tone, not on what matters:
     **GNOME**‘s shitty practices.'
+  id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let’s make one thing clear: even if Satan was the one providing a patch, if
     the patch is valid and fixes a real issue, you apply the patch, period. Why? Because
     that’s what is best for the users.'
+  id: totrans-split-213
   prefs: []
   type: TYPE_NORMAL
 - en: 'I did nothing but try to fix their awful code. The issue is not me. I don’t
     even care what they do, I already moved on to a non-vte terminal: kitty (which
     does have an option to exit immediately: [close_on_child_death](https://sw.kovidgoyal.net/kitty/conf/#opt-kitty.close_on_child_death)).'
+  id: totrans-split-214
   prefs: []
   type: TYPE_NORMAL
 - en: People should ignore me and focus on how the GNOME project is going to handle
     similar situations in the future, even though I know many are going to do precisely
     the opposite.
+  id: totrans-split-215
   prefs: []
   type: TYPE_NORMAL
 - en: Bonus
+  id: totrans-split-216
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Some people don’t believe that my fix is valid, so I created a video showing
     step by step how it does work perfectly fine, contrary to what Egmont claimed.
+  id: totrans-split-217
   prefs: []
   type: TYPE_NORMAL

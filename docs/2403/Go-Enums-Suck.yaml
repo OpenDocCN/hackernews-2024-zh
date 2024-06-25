@@ -1,24 +1,31 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 14:29:32'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Go Enums Suck
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.zarl.dev/articles/enums](https://www.zarl.dev/articles/enums)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Go Enums Suck
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -26,16 +33,20 @@
     there is a Go idiomatic way to achieve roughly the same thing. Go does have however
     the `iota` keyword. This is basically a self incrementing integer - so you end
     up writing Enums something like this:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: 'This is fine however it is nothing but an integer under the covers this means
     what we actually have is:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: 'This also means any function that uses these or a struct that contains these
@@ -43,9 +54,11 @@
     case is correctly handled. So for this we either decide which will be the default
     case or what I usually do is specify an `Unknown` case and use this as a validation
     check. So now we have :'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: 'But what you notice here is we have no string representation of these Enums
@@ -53,27 +66,33 @@
     and instantiate this with the defined string constants. We also now need to handle
     in inverse scenario of a `string` to an `Operation` for example if we are reading
     the value off the wire via JSON for example. Adding the string maps:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: 'Now that we have these maps set up we should really put them to use, for this
     I usually make 1 method and 1 function, the `String()` method on the Enum type
     and a package level function Parse which takes the `any` type and can return an
     Operation type. This looks like:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: This lets us use the Enum in JSON for example, it can be represented as an `int`
     or a `string` it’s up to you, but I almost always go for the `string` representation
     in JSON. And of course it’s the 2 most used interfaces in the world. The JSON
     Marshall and Unmarshall interfaces.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-18
   prefs: []
   type: TYPE_PRE
 - en: 'OK so now that we have all the individual Enums defined I like to group them
@@ -81,27 +100,34 @@
     when referencing it. Start with making a container wrapper with a `Operation`
     for each case then define a public variable of the container type with all the
     correct mappings. This ends up looking like:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-20
   prefs: []
   type: TYPE_PRE
 - en: This allows us to use these Enums like below if for example we are importing
     from the `cmd` pkg.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: With this container we can also extend the functionality to return all Enums
     as a slice for iteration over all the values if required excluding the `Unknown`
     value.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: Job Done. Or is it….
+  id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -111,18 +137,22 @@
     we have done here. There is also the fact that we have our container but the original
     definitions are also public and can be accessed from outside the package so we
     have two things that are functionally the same.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: To limit this the first thing I did was to make the operation Enum type private
     so `Operation` became `operation` and made all instances of the operation type
     private also. I then defined a new public struct called `Operation` which contains
     this private `operation` Enum.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-29
   prefs: []
   type: TYPE_PRE
 - en: This now makes it impossible to just pass an `int` to any function or struct
@@ -132,15 +162,19 @@
     it will be Invalid and will report as `Unknown`. So now that this has been done
     we need to change our public container to accommodate our new `Operation` struct
     but as you can see the container does not need to change but the assignment does.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: We also now need to change our Parse function to handle the wrapped `operation`
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: With this new structure we still have the same nice syntax for accessing the
@@ -148,6 +182,7 @@
     the use of the singleton Enum container for getting the appropriate value and
     it also makes Intellisense in the IDE better as there is less public variables
     exposed meaning the drop down is cleaner.
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Now I know - this is a metric ton of work just to get nice Enums, but to be
@@ -156,12 +191,15 @@
     agree that this is way to much work and it’s repetitive work at that, which can
     easily require rework with the adding of Enums or the changing of Enums means
     making sure everything has been done correctly for all the string maps etc.
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: So ………..
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: goenums
+  id: totrans-split-37
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -169,29 +207,37 @@
     that generates Enums in the same style as I have laid out above. It’s a simple
     `text/template` based tool that can turn some simple JSON configuration into a
     formatted go file.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: 'It turns this:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'Into this:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: Note that the config is a JSON array this allows specifying many different Enums
     and have them all get generated in one shot. More about goenums can be found on
     the github at [https://www.github.com/zarldev/goenums](https://www.github.com/zarldev/goenums)
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[](https://www.zarl.dev/articles/enums-take-two)'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[I have done a follow-up to this, it better reflects the current goenums code.](https://www.zarl.dev/articles/enums-take-two)'
+  id: totrans-split-45
   prefs:
   - PREF_H1
   type: TYPE_NORMAL

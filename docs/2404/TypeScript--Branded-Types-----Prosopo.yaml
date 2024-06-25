@@ -1,80 +1,100 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:29:40'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: 'TypeScript: Branded Types 🔧 - Prosopo'
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://prosopo.io/articles/typescript-branding/](https://prosopo.io/articles/typescript-branding/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**[PART 1: TypeScript Mapped Type Magic](/articles/typescript-mapped-type-magic/)**'
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: Ahoy there TypeScript warriors! 👋 Today we're extending our work in the [TypeScript
     mapped types article](/articles/typescript-mapped-type-magic/) to provide *branding*.
     The previous article discussed how to use TypeScript mapped types in a nominal
     rather than structural nature.
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: This is a fancy way of saying TypeScript is structural by default, i.e. it will
     see type `A` and `B` as equal when dealing with types. Making type `A` and `B`
     nominal would make TypeScript differentiate them apart, even though their structure
     is the same.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: In this post, we're building on that work to produce a way to *brand* a type,
     providing an automated and easy-to-use way of making a type nominal. Branding
     focuses on the type system only, rather than introducing runtime fields like in
     the previous post, which is a major benefit over the previous approach.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: What's the problem?
+  id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Branding, also known as opaque types, enable differentiation of types in TypeScript
     which otherwise would be classified as the same type. For example
+  id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-13
   prefs: []
   type: TYPE_PRE
 - en: '`A` and `B` are structurally the same, ergo TypeScript accepts any instance
     of `A` or `B` in place of each other:'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-15
   prefs: []
   type: TYPE_PRE
 - en: The function is looking for a value of type `A` as input, whereas we're passing
     it a value of type `B`. TypeScript compares the types structurally, and because
     they have exactly the same structure it deems this operation to be fine.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: But what if we need to tell `A` and `B` apart? What if, conceptually speaking,
     they must be different? What if we're doing something fancy with `A` and `B` which
     TypeScript is unaware of but we require the types to be different? That's exactly
     the situation we found ourselves in lately!
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: We need branding to do exactly that.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: The solution
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -83,12 +103,15 @@
     However, with branding we only need this field at a type-level rather than the
     runtime-level. Since types are erased after compilation, we need to add this field
     to a type without altering the runtime data whatsoever. Casting, anyone?
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: First, lets introduce the `brand` field.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-22
   prefs: []
   type: TYPE_PRE
 - en: 'Here we''re adding the `brand` field to type `A`. The brand field name is a
@@ -97,143 +120,183 @@
     introducing the worse kind of bugs: type bugs 🐛 . We''ve set the brand to `''A''`
     at the moment, though this could be anything you desire. It''s akin to the type
     name. Now let''s compare `A` and `B` again:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: 'Here''s the error:'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-26
   prefs: []
   type: TYPE_PRE
 - en: TypeScript won't let us pass an instance of `B` to the function accepting `A`
     because it's missing the `brand` field - brilliant! `A` and `B` are now different
     types. But what about if `B` had its own brand?
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-28
   prefs: []
   type: TYPE_PRE
 - en: Note that we're using the same `brand` variable from before. It's important
     to keep this constant, otherwise we're declaring fields with different names!
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'Now lets try the function again:'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: And here's the error
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: There we go! The error is saying that though both types have a `brand` field,
     the value for the brand is different for the two types, i.e. `'A' != 'B'`!
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: 'Let''s see what happens if the `brand` is the same:'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-36
   prefs: []
   type: TYPE_PRE
 - en: No error! `A` and `B` are seen as interchangeable types because they're structurally
     the same, having the same fields *and* same brand value of `'foobar'`. Excellent!
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: Make it generic!
+  id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'Awesome, so that works. But it''s a toy example, not fit for production. Let''s
     create a `Brand` type which can brand any type you wish:'
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'This type is very simple, it takes your type `T` and adds a `brand` field with
     `U` being the brand value. Here''s how to use it:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-42
   prefs: []
   type: TYPE_PRE
 - en: 'So now we can brand any type. For completeness, here''s the same kind of thing
     to *remove* the brand and go back to plain ol'' TypeScript types:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: And this will remove the `brand` field from any branded type. Also note that
     if the type is not branded, it will not be touched!
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Real world usage
+  id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Let's put this into practice. We've got a class which needs branding to identify
     its type when dealing with [mapped types](/articles/typescript-mapped-type-magic/).
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'For simplicity, lets boil the class down to a `Dog` class:'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: TypeScript won't let us construct a branded dog 😢 . We're going to need to do
     some casting using the constructor to brand the *constructor* rather than the
     *class* itself.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-51
   prefs: []
   type: TYPE_PRE
 - en: The `addBrand` function takes a constructor of a class and casts it to a branded
     type. This essentially makes an alias for the `Dog` class which can be used in
     exactly the same way as the `Dog` class, e.g. calling `new` on it.
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can `export` the `DogBranded` type to allow the outer world to use our class
     whilst ensuring it''s always branded:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-54
   prefs: []
   type: TYPE_PRE
 - en: 'Likewise, we can do the same for brand removal:'
+  id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-56
   prefs: []
   type: TYPE_PRE
 - en: This simply removes the brand by casting the type to a type mapped without the
     brand field.
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: 'And there we go: a sure-fire way to brand and un-brand your types in TypeScript
     😃'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: We've published this work as a library which you can access via [NPM](https://www.npmjs.com/package/@prosopo/ts-brand)!
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: At Prosopo, we're using TypeScript branding to fortify our types and do clever
     type mapping for our soon-to-be-released runtime type validator. Stay tuned for
     updates!
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: '**[PART 1: TypeScript Mapped Type Magic](/articles/typescript-mapped-type-magic/)**'
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:25:53'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: LLVM is Smarter Than Me - sulami's blog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://blog.sulami.xyz/posts/llvm-is-smarter-than-me/](https://blog.sulami.xyz/posts/llvm-is-smarter-than-me/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -26,47 +32,58 @@
     one at a time. Modern compilers can detect certain programming patterns where
     an operation is performed repeatedly on scalar values and group the operations
     to make use of the faster instructions.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'The book uses primarily C++ for its examples, but I was curious if the same
     pattern would work in Rust as well, without having to manually annotate anything.
     So I opened up the [compiler explorer](https://godbolt.org/) and typed in my first
     test, which looked like this:'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-8
   prefs: []
   type: TYPE_PRE
 - en: 'To make sure the compiler would feel safe to use SIMD instructions, I used
     `-C opt-level=3 -C target-cpu=skylake`, telling it that the target CPU supports
     them. But instead of SIMD instructions I got this assembly:'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-10
   prefs: []
   type: TYPE_PRE
 - en: 'Turns out I was outsmarted by the compiler, which used [constant folding](https://en.wikipedia.org/wiki/Constant_folding)
     to directly return the final value it computed at compile time. To avoid this
     optimization from happening we can pass an argument into the function, so that
     the compiler cannot know the final result:'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-12
   prefs: []
   type: TYPE_PRE
 - en: 'Which generates this assembly:'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-14
   prefs: []
   type: TYPE_PRE
 - en: 'Still there are no SIMD instructions in here, which would usually start with
     the letter `v`, such as [`vpaddd`](https://www.felixcloutier.com/x86/paddb:paddw:paddd:paddq)
     which adds integers in parallel. To compare, I wrote the equivalent program in
     C++:'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-16
   prefs: []
   type: TYPE_PRE
 - en: Compiler explorer defaults to GCC to compile C++. I used the equivalent `-O3
@@ -75,40 +92,49 @@
     LLVM-based C/C++ compiler that is also used by Rust, and it produced the exact
     same assembly as it did for the Rust version. This tells us the difference is
     not one of languages, but one of compilers.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: A quick comparative benchmark revealed the LLVM version to be significantly
     faster than GCC's vectorized loop, especially for large values of `n`, which is
     unsurprising when looking at the instructions, about 10 scalar instructions will
     beat hundreds of loops over vector instructions.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: 'The key here is that the sum of consecutive integers from zero to n has a closed
     form solution, which I only realized after looking more closely at the assembly:'
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: $$\sum^n_{i=0}{i} = \frac{n (n+1)}{2}$$
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: LLVM apparently detects that that is exactly what we are trying to do, and as
     a result it can do away with the looping altogether and directly calculate the
     result in one step, changing `sum` from O(n) to O(1). Colour me impressed.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'Finally, replicating the book''s example more closely, I managed to get LLVM
     to automatically vectorize a loop for me, using the following code:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: This works because LLVM has no idea about the contents of the array, so it cannot
     deduce a more efficient way of calculating their sum than to actually add them
     all up.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: My takeaway here is that LLVM is even better at generating optimal code than
     I would have expected, at least for trivial examples. I am happy that I can continue
     writing idiomatic code without feeling like I am trading off performance for readability.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL

@@ -1,20 +1,26 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:05:34'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Look ma, I wrote a new JIT compiler for PostgreSQL – Pinaraf's website
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://www.pinaraf.info/2024/03/look-ma-i-wrote-a-new-jit-compiler-for-postgresql/](https://www.pinaraf.info/2024/03/look-ma-i-wrote-a-new-jit-compiler-for-postgresql/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
@@ -26,6 +32,7 @@
     and I prefer other communication methods, but I would like to introduce pg-copyjit,
     the latest and shiniest way to ~~destroy and segfault~~ speed up your PostgreSQL
     server.
+  id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
 - en: 'Before going any further, a mandatory warning: all code produced here is experimental.
@@ -34,9 +41,11 @@
     of downtime on my business critical application”. Anyway, its current state is
     for professional hackers, I hope you know better than trusting experimental code
     with a production server.'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: In the beginning, there was no JIT, and then came the LLVM JIT compiler
+  id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -44,6 +53,7 @@
     introduced the PostgreSQL world to the magics of JIT compilation, using LLVM.
     They married and there was much rejoicing. Alas, darkness there was in the bright
     castle, for LLVM is a very very demanding husband.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'LLVM is a great compilation framework. Its optimizer produces very good and
@@ -64,15 +74,18 @@
     will not get enough from the performance boost to compensate the LLVM optimizer
     cost. If I can run the query 10ms faster but it needed 50ms to be optimized, it’s
     pure loss.'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: 'There is one way to make the LLVM JIT compiler more usable, but I fear it’s
     going to take years to be implemented: being able to cache and reuse compiled
     queries. I will not dig further into that topic in this post, but trust me, it’s
     not going to be a small feat to achieve.'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: And in 2021, copy-and-patch was described…
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -80,10 +93,12 @@
     Fast enough code mean at least a bit faster than the current interpreter… But
     writing a compiler is painful, writing several code generators (for different
     ISAs for instance) is even worse…
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: This is where the innovation of copy-and-patch comes into play and saves the
     day.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: With copy-patch, you write stencils in C. These stencils are functions with
@@ -91,28 +106,34 @@
     too complicated to explain here). Then when you want to compile something, you
     stitch stencils together, fill in the gaps, and jump straight into your brand
     new “compiled” function.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: And this is it. This is the magic of copy-and-patch. You only copy the stencils
     in a new memory area, patch the holes, and voilà.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: Of course, you can go further. You can figure out what computation can be done
     at compilation time, you can split loops in several stencils to unroll them, you
     can merge several stencils together to optimize them in one go (creating kind
     of meta-stencils…)
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: This paper caught the eyes of the Faster-CPython team, they implemented it in
     CPython 3.13, and this is when more people (including me) discovered it.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Bringing copy-and-patch to PostgreSQL
+  id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: So, what does it take to build a new JIT engine in PostgreSQL? Hopefully, not
     that much, otherwise I would likely not be blogging about this.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: When JIT compilation was introduced, it was suggested on hackers to make LLVM
@@ -128,6 +149,7 @@
     of the PostgreSQL interpreter. This is easy, and you have an automatic fallback
     to the PostgreSQL interpreter if you encounter any opcode you’ve not implemented
     yet.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: The copy and patch algorithm (implemented with only a few small optimizations
@@ -136,13 +158,16 @@
     to the “built” code. Otherwise, the compilation stops and the PostgreSQL interpreter
     will kick in. After appending the stencil, each of its holes are patched with
     the required value.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: For instance, let’s consider this basic unoptimized stencil, for the opcode
     CONST.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-24
   prefs: []
   type: TYPE_PRE
 - en: op is declared as extern ExprEvalStep op; (and NEXT_OP is a bit harder to explain,
@@ -151,15 +176,18 @@
     be inserted (using a relocation). When the stencil collection is built, this information
     is kept and used by the JIT compiler to use the current opcode structure address
     in order to get a working code.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: The build process for the stencils is quite fun, not complicated, but fun. The
     first step is to build the stencils to a single .o file, and then extract the
     assembly code and relocations from this .o file into C usable structures, that
     the JIT compiler will link to.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: And that’s about all there is.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: At first, I was extracting the assembly code manually. Using that way, I managed
@@ -169,9 +197,11 @@
     that may have sound weird), I wrote a DirtyPython (unofficial variant) script
     to automate the assembly code extraction, and in a few hours I implemented function
     calls, single table queries, more complicated data types, introduced a few optimizations…
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: Current state
+  id: totrans-split-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -180,6 +210,7 @@
     at once. Later I will add ARM64, and I would love to have some time to add support
     for some interesting targets like POWER64 or S390x (these may require some compiler
     patches, sadly, and access to such computers, nudge nudge wink wink)…
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: Performance-wise, well, keeping in mind that I’ve spent almost no time optimizing
@@ -190,6 +221,7 @@
     require 6,6ms. Sure, LLVM can create really fast code, but the whole idea here
     is to quickly generate fast enough code, and thus comparing both tools won’t make
     much sense.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: But still, you are all waiting for a benchmark, so here we go, benchmarking
@@ -198,24 +230,31 @@
     benchmark will be done later on a desktop computer without any kind of thermal
     envelope shenanigans. And I have not optimized my compiler, it’s still quite stupid
     and there is a lot of things that can and must be done.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '| **Query** | **Min/max (ms)** | **Median (ms) and stdev** |'
+  id: totrans-split-33
   prefs: []
   type: TYPE_TB
 - en: '| select * from b; — no JIT | 10.340/14.046 | 10.652/0.515 |'
+  id: totrans-split-34
   prefs: []
   type: TYPE_TB
 - en: '| select * from b; — JIT | 10.326/14.613 | 10.614/0.780 |'
+  id: totrans-split-35
   prefs: []
   type: TYPE_TB
 - en: '| select i, j from b where i < 10; — no JIT | 3.348/4.070 | 3.7333/0.073 |'
+  id: totrans-split-36
   prefs: []
   type: TYPE_TB
 - en: '| select i, j from b where i < 10; — JIT | 3.210/4.701 | 3.519/0.107 |'
+  id: totrans-split-37
   prefs: []
   type: TYPE_TB
 - en: Stupid benchmark on a laptop running non-optimized code, don’t trust these…
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: As you can see, even in the current unfinished state, as soon as there is CPU
@@ -223,11 +262,13 @@
     get better. It’s only logical, and what is important here is that even if the
     JIT is an extra, slightly time consuming step, it takes so little time even these
     queries can go a few percents faster.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: Note that even if I’ve implemented only a small handful of opcodes, I can run
     any query on my server, the JIT engine will only complain loudly about it and
     let the interpreter run the query…
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: For the more curious, the code is [dumped there on github](https://github.com/pinaraf/pg-copyjit).
@@ -237,9 +278,11 @@
     it, the build-stencils.sh file must be run manually first. But again, I do not
     document it yet because I simply can not provide any support for the code in its
     current state.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: TODO…
+  id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -247,6 +290,7 @@
     it possible to package it… The build scripts are Debian and PostgreSQL 16 specific.
     And, well, to be honest, at this point, I don’t care much and it will not trouble
     me, my focus is on implementing more opcodes, and searching for optimizations.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: I really hope I will reach a point where I can safely package this and deploy
@@ -254,26 +298,31 @@
     that can use it (a GIS server where queries are worth the optimization) and use
     this JIT on my web-application databases, where short query time is a must have,
     and the LLVM optimizations end up being counter-productive.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: I am also dead serious on porting this to other architectures. I love the old
     days of Alpha, Itanium, Sparc, M68k and other different architectures. I am not
     going to use this kind of system, but I miss the diversity, and I really don’t
     want to be a part of the monoculture issue here.
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Thanks
+  id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: First, huge thanks to my current day-job employer, Entr’ouvert. We are a small
     french SaaS company, free-software focused, and my colleagues simply let me toy
     on this between tickets and other DBA or sysadmin tasks.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'I would like to thank my DBA friends for supporting me and motivating me into
     doing this (won’t give their names, they know who they are). BTW: use [PoWA](https://powa.readthedocs.io/en/latest/),
     great tool, tell your friends…'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: 'Also, quick question: they suggest I shall go to PGConf.dev to show this, but
@@ -281,5 +330,6 @@
     go there. If you think it’s important or worth it, please, please, say so (comments
     below, or my email is p@this.domain), otherwise see you in future european PG
     events 🙂'
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL

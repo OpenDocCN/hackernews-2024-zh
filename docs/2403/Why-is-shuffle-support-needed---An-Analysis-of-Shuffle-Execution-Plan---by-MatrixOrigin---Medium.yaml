@@ -1,53 +1,66 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 15:01:28'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Why is shuffle support needed?. An Analysis of Shuffle Execution Plan | by MatrixOrigin
     | Medium
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://medium.com/@matrixorigin-database/why-is-shuffle-support-needed-5df13e8edaf2](https://medium.com/@matrixorigin-database/why-is-shuffle-support-needed-5df13e8edaf2)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Why is shuffle support needed?
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: An Analysis of Shuffle Execution Plan
+  id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: The basic principle of the shuffle algorithm is to bucket the input data, where
     each bucket’s data can be processed independently and output results. This reduces
     the size of the hash table when aggregating data.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: 'Taking the group operator as an example, there are two implementation methods:
     sort group and hash group.'
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: In hash group, with multiple concurrent operations, each operation hashes the
     input data and processes it in a hash table. All hash tables need to be merged
     together to obtain the final result. This method is called merge group.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Another method is to first shuffle and distribute the data, where each concurrent
     operation receives and processes different data, and directly outputs the results,
     without needing to merge the hash tables together. This method is called shuffle
     group.
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: '**Why is shuffle support needed? The main reasons are as follows.**'
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -58,6 +71,7 @@
     the memory limit of a single CN (compute node) and not considering the spill scenario
     can also cause out-of-memory (OOM) errors. Meanwhile, shuffle can split a large
     hash table into multiple smaller hash tables for processing.'
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: '**Enhancing the horizontal scalability of compute nodes:** Still taking merge
@@ -65,6 +79,7 @@
     done in single concurrency on a single CN. If the hash table has a large cardinality,
     this step becomes slow and a bottleneck, and adding more CNs cannot speed up such
     queries. Shuffle group does not have this single-point bottleneck.'
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: '**Improving performance:** When hash tables are too large, random access to
@@ -72,9 +87,11 @@
     significantly reduce performance. By using shuffle to split the hash table into
     multiple smaller hash tables for processing, the cache hit rate for random access
     to each small hash table is greatly increased, thereby improving overall performance.'
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: 'Part2: Shuffle Implementation Principle'
+  id: totrans-split-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -82,16 +99,20 @@
     the number of CNs and CPU cores in the runtime environment during pipeline compilation.
     For example, if the current tenant’s environment has 3 CNs, each with 10 cores,
     the shuffle operator will automatically calculate the number of buckets as 30.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: 'There are two bucketing algorithms for shuffle: range shuffle and hash shuffle.'
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Hash shuffle directly obtains the bucket number of the data through a hash function.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Range shuffle requires the optimizer to provide a bucketing strategy during
     the compilation stage.
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: For uniformly distributed data, the bucketing strategy is relatively simple.
@@ -100,24 +121,29 @@
     this column is to evenly distribute it based on the minimum and maximum values,
     with 100 million to 200 million going to bucket 1, 200 million to 400 million
     to bucket 2, and so on.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: For non-uniformly distributed data, the processing algorithm is more complex
     and will be detailed later.
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: During the compilation stage, MO’s optimizer decides whether to use range shuffle
     or hash shuffle, usually prioritizing range shuffle. If, for some reason, range
     shuffle cannot be used, hash shuffle will be used to ensure the uniformity of
     bucket distribution.
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: '**In the MO Pipeline, there are two operators corresponding to the shuffle
     algorithm: shuffle and dispatch.**'
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '**The function of the shuffle operator is to bucket the input data** and output
     the data after bucketing.'
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: For example, input a batch (MO is a columnar storage database, and the operator
@@ -125,6 +151,7 @@
     data, valued from 1, 2, 3 … up to 8192\. If it needs to be split into two buckets,
     a possible bucketing result is to put 1–4096 into a new batch, and 4097–8192 into
     another new batch, and then send these two new batches out.
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: Due to the possibility of very high concurrency, the data in each bucket may
@@ -132,6 +159,7 @@
     operator needs to maintain an internal memory pool to store the bucketed data
     and send it out when a certain amount is accumulated. Or, when the shuffle operator
     has read all the input data, it needs to send out all the data internally.
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: In the pipeline, most operators have one batch input corresponding to one batch
@@ -139,6 +167,7 @@
     pool, shuffle may have no output for a while, or it may continuously output multiple
     batches. The strategy of the memory pool has a significant impact on the performance
     of the shuffle operator.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: '**The dispatch operator is responsible for sending the data bucketed** by shuffle
@@ -148,43 +177,52 @@
     shuffleIDX field does not participate in the serialization and deserialization
     of the batch, so there must not be cross-CN network transmission between the shuffle
     and dispatch operators, otherwise, it will cause errors.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: The dispatch operator has three strategies for sending data. The first strategy
     is used in the vast majority of cases, while the latter two strategies are used
     in hybrid shuffle, which will be introduced later.
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: 1\. Directly find the unique corresponding destination based on shuffleIDX (which
     may be in a local CN or a remote CN) and send it there. There may be cross-CN
     network transmission.
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: 2\. Based on shuffleIDX, find the corresponding destination in the current CN
     and send it there. In this case, only a local copy is sent, and there will be
     no cross-CN network transmission.
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: 3\. Based on shuffleIDX, find the corresponding destination for each CN and
     send it there. In this case, a copy is sent to every CN, and there will definitely
     be cross-CN network transmission.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '**Currently, MO supports enabling shuffle for four operators: load, scan, group,
     and join.** However, in theory, any operator is agnostic to shuffle, and MO will
     support enabling the shuffle algorithm for more operators in the future.'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: Load Operator
+  id: totrans-split-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: The Load operator partially reuses the distribution logic of shuffle to ensure
     that data written to S3 can retain its original order in the case of multiple
     concurrent reads and writes.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: Scan Operator
+  id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -193,9 +231,11 @@
     here is done by block, before the actual block data reading stage. If it’s hash
     shuffle, it hashes the block name. If it’s range shuffle, it takes the mid-value
     of the min max in the block zonemap for range calculation.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Group Operator
+  id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -205,9 +245,11 @@
     the data outputted by the shuffle. At this point, the group operator does not
     need to merge groups, as each separate pipeline can directly output data to the
     next pipeline.
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Join Operator
+  id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -217,10 +259,12 @@
     for the input data on both sides to ensure that the same data is distributed to
     the same bucket. Each join operator can also directly output the join result without
     needing to merge.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: To check if a statement’s execution plan has shuffle enabled, you can use the
     explain statement to see if the execution plan contains the shuffle keyword.
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: For example, in tpch q4, you can see the lineitem table join the orders table,
@@ -229,8 +273,10 @@
     the l_orderkey column of the lineitem table. Since the same shuffle algorithm
     is used for joining the two tables, a shuffle will also be performed on the o_orderkey
     column of the orders table.
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-45
   prefs: []
   type: TYPE_PRE

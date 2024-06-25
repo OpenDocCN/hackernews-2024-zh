@@ -1,28 +1,36 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:25:39'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: An exploration of SBCL internals - simonsafar.com
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://simonsafar.com/2020/sbcl/](https://simonsafar.com/2020/sbcl/)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: An exploration of SBCL internals
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 2020/07/10
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: '[SBCL](http://www.sbcl.org) is a Common Lisp implementation, with a performant
@@ -31,6 +39,7 @@
     written towards people who already know a lot about how it works though). [This
     paper](https://research.gold.ac.uk/2336/1/sbcl.pdf) about SBCL''s fairly unique
     build process is also worth reading.'
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: The main goal of this article (... it might even turn into a series of articles)
@@ -39,27 +48,33 @@
     knowledge on the reader's part. It's also an experiment in "learning in the public";
     at the point of starting to write this, I don't actually know a lot about how
     SBCL works either. We're going to figure this out together.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: 'We''re going to try answering the following questions:'
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: How are Lisp objects represented in memory, at runtime? Where we do we store
     a string's length? What's a function object like? How about just a number? Or
     a Lisp symbol?
+  id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Where is actual compiled Lisp code? What kind of machine code do we generate?
     If a function calls another function, how do we resolve what we're calling into?
+  id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Where in memory are bindings for special variables? Or thread-locals?
+  id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Where is the REPL (... the actual loop) implemented?
+  id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
@@ -67,55 +82,68 @@
     the compiler directly, to turn a Lisp form into machine code? Can we take a machine
     code blob, turn it into a proper Lisp function by manually creating objects, and
     then call it?
+  id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Where is the memory allocator? How do ordinary functions call into it? Where
     does it call down into the OS?
+  id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: What's the rough theory behind the GC? How does it track pointers? Does it relocate
     memory?
+  id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Lisp systems generally start up by loading entire Lisp "cores". How do these
     files look like? Do we map them 1:1 to memory? Can we enumerate all the objects
     in them?
+  id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: What's "Genesis" or cold start, often encountered in SBCL source code?
+  id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: To follow along, we're assuming that you're reasonably familiar with Lisp, you're
     optimally not overly new to x86 assembly, and have SBCL installed (... my setup
     also includes Emacs and SLIME, but feel free to use whatever fits you best).
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Disassembly
+  id: totrans-split-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'Let''s start with a fairly basic tool: the disassembler. Let''s write a really
     basic function:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-23
   prefs: []
   type: TYPE_PRE
 - en: Then, we can invoke the disassembler by
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-25
   prefs: []
   type: TYPE_PRE
 - en: What we get is along the lines of
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-27
   prefs: []
   type: TYPE_PRE
 - en: The interesting part to look for is "MOV EDI, 66". Apparently, RDX and RDI are
@@ -124,6 +152,7 @@
     reasons yet unknown to us, we shift that integer to the left by one bit, thus
     we have 66 instead of 33... but the value is clearly related to the constant we
     entered.
+  id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
 - en: 'So... let''s try hacking this a little bit, to check this assumption. If you
@@ -132,13 +161,16 @@
     about adjusting the actual value in the code so that it reads, for example, 0x50?
     (... which is 80 as a decimal number... so if we call *(testfunc 0 0)*, we''d
     expect it to return 40, instead of the current 33.'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: 'So... we need a way of actually writing to memory locations. We even know *where*
     we''d want to write: at the top of the code listing, we can see'
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'indicating the origin, with helpful starting points for each instruction. Thus,
@@ -146,57 +178,73 @@
     ...4D is the second). SBCL provides a way for creating pointer values from integers:
     [sb-sys:int-sap](http://www.sbcl.org/manual/#Untyped-memory) does exactly this,
     which then we can read by invoking'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-33
   prefs: []
   type: TYPE_PRE
 - en: '(the zero value being the offset compared to the memory address). It is exactly
     what we expected. Then, we can *setf* the same byte to something we want:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-35
   prefs: []
   type: TYPE_PRE
 - en: 'If we disassemble our function now, we can see that the modification was indeed
     done:'
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-37
   prefs: []
   type: TYPE_PRE
 - en: '... and indeed, trying out our function again:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-39
   prefs: []
   type: TYPE_PRE
 - en: Well, Lisp is not magic after all!
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: Memory layout
+  id: totrans-split-41
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: Let's now look at how Lisp objects are laid out in memory! How does, for example,
     a cons cell look like? How about a symbol? Or a string?
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can use our trusty tool the disassembler to obtain addresses of things:'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-44
   prefs: []
   type: TYPE_PRE
 - en: '... it can''t get much simpler than this. What we get is...'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: So... um... that string "hello world" is supposed to be associated with... [RIP-122]?
     OK this is confusing. Let's try something else; we'll return here again towards
     the end of this article.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: 'At this point we can also introduce yet another really useful SBCL tool: **sb-kernel:get-lisp-obj-address**.
@@ -205,32 +253,40 @@
     by *sds*](https://stackoverflow.com/a/50613440/391376), warning *against* it.
     I do agree: don''t do this in production. It''s perfectly okay to use it for playing
     around with things though.'
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: Yet another tool is to actually dump out memory contents. There *might* be such
     a thing around, but it also doesn't take a lot of time to just write something
     that can dump out memory contents at a specified address.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-50
   prefs: []
   type: TYPE_PRE
 - en: We just turn the (numeric) address into a System Area Pointer, then iterate
     over offsets while printing hex numbers, inserting newlines at every 16th one.
     I'm sure you can come up with more elegant / featureful versions; this was very
     quick to write though.
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: 'So: let''s construct a string:'
+  id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-53
   prefs: []
   type: TYPE_PRE
 - en: 'and try finding its address:'
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE12]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'Well, we''re clearly onto something: 0x61 is the ASCII code for the letter
@@ -238,19 +294,23 @@
     in our test string. Also, we seem to be using 4 bytes for each character (...
     [UTF-32](https://en.wikipedia.org/wiki/UTF-32) I guess?) However... just looking
     at this pointer in hex...'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE13]'
+  id: totrans-split-57
   prefs: []
   type: TYPE_PRE
 - en: '... who in their right mind would allocate a string starting at such a weird
     address? Sure, x86 (unlike e.g. ARM) is more tolerant to unaligned access, but...
     it''s just plain ugly! And then what''s up with the nonzero bytes occurring at
     offsets 1, 5, 9 etc? This is definitely not how 4-byte integers should look like.'
+  id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
 - en: The answer to all of this is that 0x100614CBFF is not really a pointer. It's
     not *just* a pointer. It's a *tagged* pointer.
+  id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
 - en: In C, the compiler knows the type of arguments to functions ahead of time. If
@@ -259,6 +319,7 @@
     code gets generated. However, you could pass in *any type of object* to a Lisp
     function; how do we generate code that can decide which one is which and can handle
     both?
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: If speed is not a concern, we can just take the "everything is an object" approach.
@@ -266,12 +327,14 @@
     the Generic Object Type, which has a well-defined layout, stating somewhere what
     *actual* type the object has. The code we generate reads this value, and depending
     on the actual type, can perform different operations on different object types.
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: 'But then... how about *numbers*? This is where *boxing* comes in: in order
     to treat the number 42 as an object, we need to put it into an object that says
     "this is an object of type ''number'', whose value is 42". This is then stored
     somewhere on the heap.'
+  id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
 - en: 'Of course, this is not overly quick: instead of passing around numbers by value,
@@ -279,6 +342,7 @@
     then pack the return value into a similar box (if it''s a number), allocating
     memory if needed, and return a pointer to it. Even if we have actual compiled
     code, this is still a lot slower than Just Returning a Number, the way C does.'
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'Tagged pointers to the rescue. Instead of using an entire 64-bit register to
@@ -287,12 +351,15 @@
     type this *value* is. For my SBCL here, the tag is 4 bits long, at the end of
     the value: it''s just a single hex digit. The rest of the pointer is, well, an
     actual pointer.'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: 'So, if we just zero out that last hex digit on our pointer:'
+  id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE14]'
+  id: totrans-split-66
   prefs: []
   type: TYPE_PRE
 - en: '... the result now looks a lot more reasonable. This looks like a bunch of
@@ -302,29 +369,37 @@
     way basically every hex dump does). The first byte is... um... something, then
     yet another thing that is suspiciously like double the length (remember the one-bit
     shift for numbers from part 1? They''ll be explained soon!)...'
+  id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE15]'
+  id: totrans-split-68
   prefs: []
   type: TYPE_PRE
 - en: '... and then just a bunch of 0x61s for the "a"-s.'
+  id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
 - en: 'We can even poke around in the memory area, replacing the first "a" at offset
     16 with a "c":'
+  id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE16]'
+  id: totrans-split-71
   prefs: []
   type: TYPE_PRE
 - en: '... or making it shorter by editing the length at offset 8:'
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE17]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: (... with which we might or might have broken the memory allocator if it ever
     tries to free this, but we do not particularly care at this point.)
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is the point where having compiled SBCL for yourself becomes fairly useful.
@@ -334,34 +409,43 @@
     in the SBCL source code. This is a generated piece of code, basically explaining
     the SBCL runtime (written in C) just about to be built how Lisp objects look like.
     In case you don''t have it around, here is some of the relevant parts:'
+  id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE18]'
+  id: totrans-split-76
   prefs: []
   type: TYPE_PRE
 - en: This describes fairly well what we've seen so far. The "lowtag" is those 4 bytes
     at the end of Lisp objects; also, we're clearly on a 64-bit architecture here,
     with N_WORD_BITS being 64, 8 of them reserved for the lowtag. It also details
     various values for the lowtag, the important one being...
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE19]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: '... which is exactly that 0xF we''ve been seeing at the end of our string pointers.
     Apparently, a lot of things are "other pointer"-s.'
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: 'One exception is function pointers (0xB):'
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE20]'
+  id: totrans-split-81
   prefs: []
   type: TYPE_PRE
 - en: 'which, again, matches well with the values in the header. Same for lists (0x7):'
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE21]'
+  id: totrans-split-83
   prefs: []
   type: TYPE_PRE
 - en: Also, here comes the explanation for numbers. SBCL stores fixnums in the exact
@@ -369,13 +453,16 @@
     anything ending with a 0 bit as a number (... shifting the actual number bits
     to the left once). Meanwhile, if the last bit is 1, we can look at the rest of
     the final 4 bits to figure out what kind of pointer we're dealing with.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: '**Update 2024/04/22:** there is a [discussion on Hacker News](https://news.ycombinator.com/item?id=40115083)!
     (Also, if you''re looking for related articles, you might also like [Common Lisp
     for shell scripting](/2021/lisp_scripting/)).'
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: (also, maybe this should have a "part 2 at some point.)
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL

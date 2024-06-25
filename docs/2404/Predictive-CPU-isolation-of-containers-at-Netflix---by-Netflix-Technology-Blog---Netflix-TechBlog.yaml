@@ -1,33 +1,42 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-27 13:04:47'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Predictive CPU isolation of containers at Netflix | by Netflix Technology Blog
     | Netflix TechBlog
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://netflixtechblog.com/predictive-cpu-isolation-of-containers-at-netflix-91f014d856c7?gi=c53c45dcda8b](https://netflixtechblog.com/predictive-cpu-isolation-of-containers-at-netflix-91f014d856c7?gi=c53c45dcda8b)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: '**Predictive CPU isolation of containers at Netflix**'
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: By Benoit Rostykus, Gabriel Hartmann
+  id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Noisy Neighbors
+  id: totrans-split-8
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -35,10 +44,12 @@
     or through a wall of an apartment, it is always disruptive. The need for good
     manners in shared spaces turns out to be important not just for people, but for
     your Docker containers too.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: When you’re running in the cloud your containers are in a shared space; in particular
     they share the CPU’s memory hierarchy of the host instance.
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: Because microprocessors are so fast, computer architecture design has evolved
@@ -49,9 +60,11 @@
     If the container running on the core next to your container suddenly decides to
     fetch a lot of data from the RAM, it will inevitably result in more cache misses
     for you (and hence a potential performance degradation).
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Linux to the rescue?
+  id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -59,6 +72,7 @@
     scheduler to mitigate this performance isolation problem. In Linux, the current
     mainstream solution is CFS (Completely Fair Scheduler). Its goal is to assign
     running processes to time slices of the CPU in a “fair” way.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: CFS is widely used and therefore well tested and Linux machines around the world
@@ -70,25 +84,30 @@
     our customer-facing video streaming service, to batch jobs for encoding or machine
     learning. Maintaining performance isolation between these different applications
     is critical to ensuring a good experience for internal and external customers.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: We were able to meaningfully improve both the predictability and performance
     of these containers by taking some of the CPU isolation responsibility away from
     the operating system and moving towards a data driven solution involving combinatorial
     optimization and machine learning.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: The idea
+  id: totrans-split-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: CFS operates by very frequently (every few microseconds) applying a set of heuristics
     which encapsulate a general concept of best practices around CPU hardware use.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: Instead, what if we reduced the frequency of interventions (to every few seconds)
     but made better data-driven decisions regarding the allocation of processes to
     compute resources in order to minimize collocation noise?
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: One traditional way of mitigating CFS performance issues is for application
@@ -100,25 +119,30 @@
     B which is very latency-sensitive. This avoids thrashing caches too much for B
     and evens out the pressure on the [L3](https://en.wikipedia.org/wiki/Memory_hierarchy)
     caches of the machine.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: Optimizing placements through combinatorial optimization
+  id: totrans-split-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 'What the OS task scheduler is doing is essentially solving a resource allocation
     problem: I have X threads to run but only Y CPUs available, how do I allocate
     the threads to the CPUs to give the illusion of concurrency?'
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'As an illustrative example, let’s consider a toy instance of 16 [hyperthreads](https://en.wikipedia.org/wiki/Hyper-threading).
     It has 8 physical hyperthreaded cores, split on 2 NUMA sockets. Each hyperthread
     shares its L1 and L2 caches with its neighbor, and shares its L3 cache with the
     7 other hyperthreads on the socket:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: 'If we want to run container A on 4 threads and container B on 2 threads on
     this instance, we can look at what “bad” and “good” placement decisions look like:'
+  id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
 - en: The first placement is intuitively bad because we potentially create collocation
@@ -126,11 +150,13 @@
     the socket through the L3 cache while leaving a whole socket empty. The second
     placement looks better as each CPU is given its own L1/L2 caches, and we make
     better use of the two L3 caches available.
+  id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
 - en: Resource allocation problems can be efficiently solved through a branch of mathematics
     called combinatorial optimization, used for example for airline scheduling or
     logistics problems.
+  id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
 - en: 'We formulate the problem as a Mixed Integer Program (MIP). Given a set of K
@@ -139,32 +165,39 @@
     that each container gets the number of CPUs it requested. The loss function and
     constraints contain various terms expressing a priori good placement decisions
     such as:'
+  id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
 - en: avoid spreading a container across multiple NUMA sockets (to avoid potentially
     slow cross-sockets memory accesses or page migrations)
+  id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: don’t use hyper-threads unless you need to (to reduce L1/L2 thrashing)
+  id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: try to even out pressure on the L3 caches (based on potential measurements of
     the container’s hardware usage)
+  id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: don’t shuffle things too much between placement decisions
+  id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Given the low-latency and low-compute requirements of the system (we certainly
     don’t want to spend too many CPU cycles figuring out how containers should use
     CPU cycles!), can we actually make this work in practice?
+  id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
 - en: Implementation
+  id: totrans-split-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -174,35 +207,42 @@
     process defines a “fence” within which CFS operates for each container. In effect
     we remove the impact of CFS heuristics on performance isolation while retaining
     its core scheduling capabilities.
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: 'This user-space process is a Titus subsystem called [**titus-isolate**](https://github.com/Netflix-Skunkworks/titus-isolate)
     which works as follows. On each instance, we define three events that trigger
     a placement optimization:'
+  id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
 - en: '***add***: A new container was allocated by the Titus scheduler to this instance
     and needs to be run'
+  id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '***remove***: A running container just finished'
+  id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: '***rebalance***: CPU usage may have changed in the containers so we should
     reevaluate our placement decisions'
+  id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: We periodically enqueue rebalance events when no other event has recently triggered
     a placement decision.
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: Every time a placement event is triggered, **titus-isolate** queries a remote
     optimization service (running as a Titus service, hence also isolating itself…
     [turtles all the way down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down))
     which solves the container-to-threads placement problem.
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: 'This service then queries a local [GBRT](https://en.wikipedia.org/wiki/Gradient_boosting)
@@ -213,6 +253,7 @@
     and network configuration, app name…) as well as time-series features extracted
     from the last hour of historical CPU usage of the container collected regularly
     by the host from the kernel [CPU accounting controller](https://www.kernel.org/doc/Documentation/cgroup-v1/cpuacct.txt).'
+  id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
 - en: The predictions are then fed into a MIP which is solved on the fly. We’re using
@@ -222,17 +263,21 @@
     a hard time budget to the solver to drive the branch-and-cut strategy into a low-latency
     regime, with guardrails around the MIP gap to control overall quality of the solution
     found.
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: The service then returns the placement decision to the host, which executes
     it by modifying the cpusets of the containers.
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: 'For example, at any moment in time, an r4.16xlarge with 64 logical CPUs might
     look like this (the color scale represents CPU usage):'
+  id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
 - en: Results
+  id: totrans-split-44
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -241,10 +286,12 @@
     reducing job runtime variance (a reasonable proxy for isolation), as illustrated
     below. Here we see a real-world batch job runtime distribution with and without
     improved isolation:'
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: Notice how we mostly made the problem of long-running outliers disappear. The
     right-tail of unlucky noisy-neighbors runs is now gone.
+  id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
 - en: For services, the gains were even more impressive. One specific Titus middleware
@@ -255,14 +302,17 @@
     in cache invalidation logic. Our containers are now more predictable, faster and
     the machine is less used! It’s not often that you can have your cake and eat it
     too.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: Next Steps
+  id: totrans-split-48
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: We are excited with the strides made so far in this area. We are working on
     multiple fronts to extend the solution presented here.
+  id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
 - en: We want to extend the system to support CPU oversubscription. Most of our users
@@ -273,6 +323,7 @@
     a specific container to a shared cgroup of underutilized CPUs, to better improve
     overall isolation and machine utilization, if we can detect the sensitivity threshold
     of our users along the various axes of the following graph.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: We also want to leverage kernel [PMC events](http://www.brendangregg.com/blog/2017-05-04/the-pmcs-of-ec2.html)
@@ -285,9 +336,11 @@
     sort of interference model (“what would be the performance of container A in the
     next minute, if I were to colocate one of its threads on the same core as container
     B, knowing that there’s also C running on the same socket right now?”).
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: Conclusion
+  id: totrans-split-52
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
@@ -295,5 +348,6 @@
     engineers](https://jobs.netflix.com/jobs/860513) to help us push the boundary
     of containers performance and “machine learning for systems” and [systems engineers](https://jobs.netflix.com/jobs/869888)
     for our core infrastructure and compute platform.
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL

@@ -1,41 +1,52 @@
 - en: <!--yml
+  id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
 - en: 'category: 未分类'
+  id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
 - en: 'date: 2024-05-29 12:36:56'
+  id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
 - en: -->
+  id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
 - en: Underjord | Fundamentals of Object Storage
+  id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: 来源：[https://underjord.io/fundamentals-of-object-storage.html](https://underjord.io/fundamentals-of-object-storage.html)
+  id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
 - en: Fundamentals of Object Storage
+  id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
 - en: '2024-03-19'
+  id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
 - en: Underjord is a [tiny, wholesome team](/team.html) doing Elixir consulting and
     contract work. If you like the writing you should really try the code. See our
     [services](/services.html) for more information.
+  id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
 - en: I did a livestream where I talked about Object Storage. The how and the why.
     The Bad Old Days. And also the neat and interesting stuff just beyond the basics.
     I figured I’d cover that in text as well.
+  id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
 - en: You can [watch the stream here](https://youtube.com/live/Sg0Afr_4BMY).
+  id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
 - en: '*Transparency notice: The livestream and this blog post have been work supported
@@ -44,33 +55,39 @@
     software for clients. I am very glad and thankful that I have someone funding
     my publishing and creative ideas. Expect more output from me near term, and give
     them a try!*'
+  id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
 - en: Background
+  id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: When I cut my teeth architecting systems we didn’t have Objects outside of Object-Oriented
     programming languages and we had precious little Storage. And if we did have Storage
     it was either on the same physical server or some kind of NFS-based abomination.
+  id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
 - en: Imagine you set up your n-tier architecture. Application scales horizontally
     in front of the database. You can cache heavy loads with some Redis or Memcache
     that were the rad things then. For file storage we had to set up a shared store
     of some sort. And they were finicky bastards.
+  id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
 - en: The mounts would come loose and files got written in a local folder. The performance
     would randomly degrade. I remember installing a filesystem cache thing for my
     servers and with NFS it would suddenly just hard-lock the system at the kernel
     level. Because NFS lives or at least lived then, in the kernel.
+  id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
 - en: When it works well it can be very practical to have a networked filesystem pretend
     to be a real one. But it is a pretty little lie that you are telling yourself
     and the system you are building. And if you lean into the file-ish nature of the
     NFS lifestyle … well, there are risks. And scars you can get.
+  id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
 - en: I found AWS annoying when it arrived. Unreliable VPS:es that you weren’t supposed
@@ -78,6 +95,7 @@
     (all object storage is essentially S3-compatible these days). But much like the
     dumbness of EC2-instances enforced good scalability practices the simplicity of
     S3 made it tremendously effective.
+  id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
 - en: What people want from a network file store is usually reliability and space.
@@ -85,150 +103,192 @@
     And as data grows it must still fit. So essentially infinite unknown unbounded
     storage growth. And ideally you don’t want to pay more than disk utilization you
     currently need.
+  id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
 - en: Simplicity, restraint and constraints are good for starting most things. But
     especially to delivering on ambitious things. Like infinite* file storage.
+  id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
 - en: '* not actually infinite, but for most purposes close enough'
+  id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
 - en: Object Storage is much more clearly a service. It is not a file system. And
     when you scratch the surface the name clarifies itself a bit. It is not necessarily
     about “files” either. It is just the most successful NoSQL DB of all time probably.
     Keys, values and it doesn’t sweat the rest so much.
+  id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
 - en: 'The fundamental operations are:'
+  id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
 - en: Put object
+  id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Get object
+  id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: List objects
+  id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Delete object
+  id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: The full list is [much, much longer](https://docs.aws.amazon.com/AmazonS3/latest/API/API_Operations_Amazon_Simple_Storage_Service.html).
+  id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
 - en: With Elixir
+  id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: 'To show how we can work with Object Storage fundamentals in Elixir I set up
     a mix project: `mix new bla`. Then I added the following deps in `mix.exs`:'
+  id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
 - en: elixir mix.exs
+  id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE0]'
+  id: totrans-split-31
   prefs: []
   type: TYPE_PRE
 - en: 'I then created a `config/config.exs` with the following contents:'
+  id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
 - en: elixir config/config.exs
+  id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE1]'
+  id: totrans-split-34
   prefs: []
   type: TYPE_PRE
 - en: 'To get your deps: `mix deps.get`'
+  id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
 - en: To create a bucket, if you have the `fly` command-line tool ready to go it is
     very simple to do `fly tigris create`. It is also free until your **really** use
     it, 5Gb and 10k+ requests/month. Of course take whatever bucket you prefer. But
     that will spit out credentials.
+  id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
 - en: '`:ex_aws_s3` will automatically slurp up your credentials if you set them as
     environment variables but not the bucket name. If you need multiple buckets you
     can wrangle them explicitly. These examples assume one set of credentials.'
+  id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
 - en: 'I started the module I called `Tigris` like this:'
+  id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE2]'
+  id: totrans-split-40
   prefs: []
   type: TYPE_PRE
 - en: 'Then I tackled the listing of objects:'
+  id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE3]'
+  id: totrans-split-43
   prefs: []
   type: TYPE_PRE
 - en: 'You can try things in `iex -S mix` to get everything we have in this project
     compiled and ready to go in the prompt:'
+  id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
 - en: elixir iex
+  id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE4]'
+  id: totrans-split-46
   prefs: []
   type: TYPE_PRE
 - en: Next some putting and getting. I am not suggesting you do error handling like
     this. This is for the purposes of simplicity and the stream, not a best practice
     and definitely not financial or legal advice.
+  id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE5]'
+  id: totrans-split-49
   prefs: []
   type: TYPE_PRE
 - en: I tried those out in `iex` as well to show the fundamentals. Then I wanted to
     hint at scale I guess. `Task.async_stream/2` ensures things are run in plenty
     parallel according to your machine.
+  id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE6]'
+  id: totrans-split-52
   prefs: []
   type: TYPE_PRE
 - en: 'And then:'
+  id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
 - en: elixir iex
+  id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE7]'
+  id: totrans-split-55
   prefs: []
   type: TYPE_PRE
 - en: 'And then to tidy up. Don’t run this on buckets where you keep data you like
     or need:'
+  id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE8]'
+  id: totrans-split-58
   prefs: []
   type: TYPE_PRE
 - en: Presigned URLs
+  id: totrans-split-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
@@ -236,12 +296,15 @@
     Storage is that it can have features that spare your application server from a
     bunch of horrible work. Have you ever let your app receive a file upload only
     to save it somewhere else? Ludicrous! We have a service for that! There are protocols!
+  id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE9]'
+  id: totrans-split-62
   prefs: []
   type: TYPE_PRE
 - en: Use that. Get a presigned URL (you can configure expiration and such) for either
@@ -250,44 +313,55 @@
     about doing that with Tigris btw. Tigris will place the data globally close to
     the uploader. It will then replicate as a cache if needed to other regions but
     this means your customers in Australia get local latencies.
+  id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
 - en: 'This is equally nice for uploads and downloads. Your application server does
     not have to go between. At worst a download is:'
+  id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
 - en: Client asks your application server for a file.
+  id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Your application checks if the request makes sense and should be signed for.
+  id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Presign URL.
+  id: totrans-split-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Client receives a response with a redirect to the presigned URL.
+  id: totrans-split-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Transparent download but your application doesn’t serve the bytes.
+  id: totrans-split-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
 - en: Multipart upload (streaming up!)
+  id: totrans-split-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Up to 5Gb can be a single upload according to AWS. But typically that gets unwieldy.
     We can chunk uploads at 5Mb chunks.
+  id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE10]'
+  id: totrans-split-73
   prefs: []
   type: TYPE_PRE
 - en: This is a form of streaming upload. Which means if you need to do processing
@@ -295,26 +369,32 @@
     to about 5Mb (it depends) by streaming the upload instead of holding on to the
     whole beastly thing. This specifically builds a Stream from a file for upload
     but there are many variants you can do using the Elixir Stream and IO tools.
+  id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
 - en: Range requests (streaming down!)
+  id: totrans-split-75
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: Sometimes we just want a few parts of a file. Sometimes we want to build a hell-beast
     that does read-only SQLite VFS over S3 API. Sometimes we want to do a graceful
     streaming download. For this we have straight up HTTP range requests.
+  id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
 - en: elixir lib/tigris.ex
+  id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
 - en: '[PRE11]'
+  id: totrans-split-78
   prefs: []
   type: TYPE_PRE
 - en: This is incredibly useful and powerful. Sure. You might mostly be dealing with
     files. Until you don’t. Or until you realize how many file formats expose useful
     information with just the right bytes.
+  id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
 - en: Zip archives are streamable with [Packmatic](https://github.com/evadne/packmatic)
@@ -323,27 +403,33 @@
     and only get the index, and so, the file listing. And that means we can pick out
     files. One can do similar things with ID3 tags on MP3s and get metadata without
     getting the whole file.
+  id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
 - en: If you use the Elixir library [Explorer](https://hex.pm/packages/explorer) the
     underlying Rust library supports the S3 API and will let you lazily read data
     from .parquet files and such that are stored remotely. Same thing.
+  id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
 - en: I hope this clarifies why range requests are rather useful for a file storage
     service.
+  id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
 - en: Why the S3 API became standard
+  id: totrans-split-83
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
 - en: All Object Storage services I’ve used so far have exposed an S3-compatible API.
     It makes sense. It helps you support the expected featureset and you get a trillion
     clients and SDKs compatible with your thing for free.
+  id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
 - en: Is the S3 API just that good?
+  id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
 - en: I don’t think it is. And I had a whole spiel here about how it is simply good
@@ -359,9 +445,11 @@
     any new ground you break will be missing in client implementations. From my conversations
     with Ovais and his team we will still see innovations on Object Storage from them.
     I guess we’ll have to stay tuned to see if the S3 API can handle it.
+  id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
 - en: '* * *'
+  id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
 - en: If you want to share some of the more interesting usages you’ve seen of Object
@@ -369,13 +457,16 @@
     to reach out. I am on the Fediverse as [@lawik](https://twitter.com/lawik) and
     you can just email me as well at [lars@underjord.io](mailto:lars@underjord.io).
     Thanks for reading.
+  id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
 - en: Underjord is a [4 people team](/team.html) doing Elixir consulting and contract
     work. If you like the writing you should really try the code. See our [services](/services.html)
     for more information.
+  id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
 - en: 'Note: Or try the videos on [the YouTube channel](https://youtube.com/c/underjord).'
+  id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
