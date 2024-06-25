@@ -2,50 +2,60 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:56:47'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:56:47
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Faults, Errors and Failures - by Sir Whinesalot
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 故障、错误和失败 - 作者：Sir Whinesalot
 - en: 来源：[https://btmc.substack.com/p/you-cant-handle-errors](https://btmc.substack.com/p/you-cant-handle-errors)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://btmc.substack.com/p/you-cant-handle-errors](https://btmc.substack.com/p/you-cant-handle-errors)
 - en: 'Having somewhat recently become a father (one of the reasons my writing has
     slowed down to a crawl), I’ve had to deal with a very particular kind of error
     output: *crying*.'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近成为父亲（导致我写作速度变得极慢的原因之一）后，我不得不处理一种非常特殊的错误输出：*哭泣*。
 - en: 'From a computational perspective, it’s about equivalent to the following:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 从计算的角度来看，这大致相当于以下内容：
 - en: Loud and unspecific. Well, at least with a baby there’s a limited set of reasons
     for crying, so fixing the issue amounts to tackling each possible cause until
     something works. Good luck debugging the error message above though.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 大声且不具体。好吧，至少对于一个婴儿来说，哭泣的原因是有限的，所以解决问题就是解决每个可能的原因，直到有所作为。但是祝你好运，调试上面的错误消息。
 - en: That got me thinking, how does one end up with a useless error message like
     the above? What facilities should programming languages provide to make it easy
     for developers to handle errors properly and conveniently?
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这让我想到，一个人怎么会得到类似上面那样无用的错误消息呢？编程语言应该提供哪些设施，以便让开发人员方便地正确处理错误？
 - en: Originally this post was going to be a survey on error handling approaches,
     similar to my post on memory management approaches, but I decided against it in
     the end because I think looking at this problem from “outside the box” is important.
@@ -53,6 +63,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初，这篇文章本来是要对错误处理方法进行调查，类似于我在内存管理方法上的帖子，但最终我决定放弃，因为我认为从“超越传统思维”的角度看待这个问题很重要。也许有人能想出更好的“处理错误”的方法。
 - en: Lets starts from the beginning. What do we mean by *error*? Unfortunately the
     term “error” is not used consistently in the literature, but we can use 3 related,
     commonly used terms from the study of fault tolerance to distinguish different
@@ -60,6 +71,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从头开始。我们所说的*错误*是什么意思？不幸的是，“错误”这个术语在文献中并不一致，但我们可以使用来自容错研究中的3个相关、常用术语来区分“错误”一词的不同含义**：**
 - en: A **fault** (known colloquially as a *bug*), is static defect in software, meaning
     there’s some line (or lines) of code that are incorrect and will likely result
     in…
@@ -67,22 +79,26 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个**故障**（俗称*bug*），是软件中的静态缺陷，意味着有一行（或多行）代码是错误的，很可能会导致…
 - en: An **error**, which is an *unobserved*, incorrect internal state that will likely
     result in…
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个**错误**，这是一个*未观察到*的，不正确的内部状态，很可能会导致…
 - en: A **failure**, which is *observed*, incorrect behavior with respect to the software’s
     expected behavior.
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个**失败**，这是*观察到*的，与软件预期行为不符的不正确行为。
 - en: 'For example, consider the following piece of C# code:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑以下一段C#代码：
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
@@ -94,17 +110,20 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 循环停止条件中有一个*故障*（应该是`i < 5`），这将导致`i = 5`的*错误*状态，当用于索引向量时将触发*失败*（抛出IndexOutOfRange异常）。
 - en: '**The error is not the exception (failure) nor is it the incorrect loop condition
     (fault).**'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**错误不是异常（失败），也不是不正确的循环条件（故障）。**'
 - en: It is critical to understand this distinction for the rest of the article to
     make sense. Before tackling error *handling*, I’ll need to talk about error *prevention*,
     as the two often get mixed up, and it’ll help clarify what I mean.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 了解这种区别对于本文的其余部分是至关重要的。在处理错误之前，我需要谈论错误*预防*，因为这两者经常混淆，这将有助于澄清我的意思。
 - en: Testing, static type systems, model checking, sanitizers, fuzzers, and even
     certain language features like `foreach` loops (which would trivially avoid the
     problem above) are ways to indirectly *prevent* errors by either detecting or
@@ -112,12 +131,14 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试、静态类型系统、模型检查、消毒剂、模糊测试，甚至某些语言特性如`foreach`循环（可以轻松避免上面的问题）都是间接*预防*错误的方法，通过检测或预防*故障*。
 - en: I’m 100% pro all of the above, they’re all great. If you’re not using them and
     you could, then you should. Your users will thank you. Your colleagues will thank
     you. Your future self will thank you.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我完全支持上述所有内容，它们都很棒。如果你没有使用它们但可以使用，那么你应该使用。你的用户会感谢你。你的同事会感谢你。你未来的自己会感谢你。
 - en: Errors are almost always the result of faults. Barring cosmic rays, hardware
     issues or really unusual race conditions between the application and the operating
     system, if an error occurs it is because *the programmer screwed up* and introduced
