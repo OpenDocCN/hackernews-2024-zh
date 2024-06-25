@@ -1061,10 +1061,12 @@
   id: totrans-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次，事实证明，与我所有的期望相反，`p_flags` 字段中的可执行位可以被移除。原来可读和可执行位是多余的：任何一个都将意味着另一个。
 - en: 'So, with these facts in mind, we can reorganize the file into this little monstrosity:'
   id: totrans-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，考虑到这些事实，我们可以将文件重新组织为这个小怪物：
 - en: '[PRE37]'
   id: totrans-167
   prefs: []
@@ -1078,6 +1080,8 @@
   id: totrans-168
   prefs: []
   type: TYPE_NORMAL
+  zh: '`p_flags` 字段已从 5 更改为 4，正如我们注意到我们可以这样做。这个 4 也是 `e_phoff` 字段的值，它给出了程序头表在文件中的偏移量，而这正是我们定位它的地方。程序（还记得吗？）已被移动到
+    ELF 头的较低部分，从 `e_shoff` 字段开始，结束在 `e_flags` 字段内部。'
 - en: Note that the load address has been changed to a much lower number — about as
     low as it can be, in fact. This keeps the value in the e_entry field to a reasonably
     small number, which is good since it's also the p_memsz number. (Actually, with
@@ -1086,6 +1090,8 @@
   id: totrans-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，加载地址已更改为一个更低的数字——事实上，尽可能低。这将使 `e_entry` 字段中的值保持在一个相当小的数字，这是很好的，因为它也是 `p_memsz`
+    的数字。 （实际上，使用虚拟内存几乎无所谓——我们可以将其保留在原始值，它仍然可以正常工作。但是保持礼貌也无妨。）
 - en: The change to p_filesz may require an explanation. Because we aren't setting
     the write bit in the p_flags field, Linux won't let us define a p_memsz value
     greater than p_filesz, since it can't zero-initialize those extra bytes if they
@@ -1099,10 +1105,15 @@
   id: totrans-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 更改到 `p_filesz` 可能需要解释。因为我们没有在 `p_flags` 字段中设置写入位，Linux 不会允许我们定义大于 `p_filesz`
+    的 `p_memsz` 值，因为如果这些额外的字节不可写，则无法对其进行零初始化。由于我们不能改变 `p_flags` 字段而不使程序头表失调，你可能会认为唯一的解决方案是将
+    `p_memsz` 值降低到等于 `p_filesz`（这将使其无法与 `e_entry` 共享）。然而，另一种解决方案存在，即将 `p_filesz` 增加到等于
+    `p_memsz`。这意味着它们都比实际文件大小大得多——事实上大得多——但它使加载器免于写入只读内存，这正是它关心的。
 - en: And so ...
   id: totrans-171
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   因此...'
 - en: '[PRE38]'
   id: totrans-172
   prefs: []
