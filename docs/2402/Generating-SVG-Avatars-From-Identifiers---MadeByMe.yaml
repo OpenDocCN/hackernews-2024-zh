@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:23:02'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:23:02
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Generating SVG Avatars From Identifiers - MadeByMe
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从标识符生成SVG头像 - MadeByMe
 - en: 来源：[https://madebyme.today/projects/generating-svg-avatars-from-identifiers/](https://madebyme.today/projects/generating-svg-avatars-from-identifiers/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://madebyme.today/projects/generating-svg-avatars-from-identifiers/](https://madebyme.today/projects/generating-svg-avatars-from-identifiers/)
 - en: <main class="main">
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main class="main">
 - en: When you create a new social service on the internet, one of the things you
     need to think about is how to make a user’s space feel like their own. Services
     like [GitHub](https://github.blog/2013-08-14-identicons/), Roll20, or [Reddit](https://www.reddit.com/r/reddit/comments/vtkmni/introducing_collectible_avatars/)
@@ -37,39 +44,48 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您在互联网上创建一个新的社交服务时，您需要考虑其中一件事，即如何使用户的空间感觉像自己的。像[GitHub](https://github.blog/2013-08-14-identicons/)、Roll20或[Reddit](https://www.reddit.com/r/reddit/comments/vtkmni/introducing_collectible_avatars/)这样的服务会生成
+    —— 或允许您生成 —— 自定义头像（即[Identicons](https://en.wikipedia.org/wiki/Identicon)）供您的帐户使用。自动生成头像尤其不错，因为它不需要用户的任何参与。让我们试着自己解决这个问题。
 - en: I think this blog post is one of those things which are easier to understand
     if you’d see the end result first. So, for those interested here’s a spoiler.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为这篇博文是那种先看最终结果会更容易理解的事物之一。因此，对于有兴趣的人，这里有个剧透。
 - en: 'This is the end result:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是最终结果：
 - en: Avatar for identifier "Foo".
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 标识符“Foo”的头像。
 - en: The avatar has 24 segments and consists of 24 [`<path>`](https://www.w3.org/TR/SVG2/paths.html#PathElement)
     tags. The coordinates describing paths are static, but their colors are generated
     from [SHA-256](https://en.wikipedia.org/wiki/SHA-2) of the identifier.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 头像有24个部分，由24个[`<path>`](https://www.w3.org/TR/SVG2/paths.html#PathElement)标签组成。描述路径的坐标是静态的，但它们的颜色是根据标识符的[SHA-256](https://en.wikipedia.org/wiki/SHA-2)生成的。
 - en: '[PRE0]'
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The rest of this blog post focuses on translating the byte array into an avatar
     that looks *nice*.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 本博文的其余部分侧重于将字节数组翻译成一个看起来*不错*的头像。
 - en: '[#](#svg-scaffolding) SVG scaffolding'
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[#](#svg-scaffolding) SVG结构'
 - en: Let’s think how to prepare the SVG’s structure. We know that each segment must
     be its own [`<path>`](https://www.w3.org/TR/SVG2/paths.html#PathElement) element,
     so we can color them individually with the [fill](https://www.w3.org/TR/SVG2/painting.html#SpecifyingFillPaint)
@@ -80,20 +96,26 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们考虑如何准备SVG的结构。我们知道每个部分必须是自己的[`<path>`](https://www.w3.org/TR/SVG2/paths.html#PathElement)元素，因此我们可以用[fill](https://www.w3.org/TR/SVG2/painting.html#SpecifyingFillPaint)属性分别对它们上色。生成环形扇区可能具有挑战性
+    —— 这需要使用两个(!)[arcs](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands)，这实在太多了
+    —— 相反，我们可以稍微作弊，创建重叠的圆形扇区。这将使路径更简单，只需要一个(!)arc。
 - en: 'Starting with the `<svg>` tag we get:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 从`<svg>`标签开始：
 - en: '[PRE1]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Paths generation gets much easier if the center of “circles” is in $(0, 0)$.
     We can do that by setting the `viewBox` property as shown above: top-left corner
     is $(-1, -1)$, width is $2$, and height is $2$.'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果“圆圈”的中心位于$(0, 0)$，则路径生成会变得更加容易。我们可以通过设置`viewBox`属性来实现：左上角为$(-1, -1)$，宽度为$2$，高度为$2$，如上所示。
 - en: OK. Now we need to create circle sectors. SVG has some tags for constructing
     [basic shapes](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Shapes)
     (like circles, rectangles, or ellipses). Sadly, pizza slices are *not* considered
@@ -102,11 +124,13 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了。现在我们需要创建圆形扇区。SVG有一些用于构建[基本形状](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Basic_Shapes)（如圆圈、矩形或椭圆）的标签。可惜的是，披萨片并不被认为是“基本”的，所以这里没有`<pizza-slice>`来帮助我们。相反，我们需要使用[`<path>`](https://www.w3.org/TR/SVG2/paths.html#PathElement)标签。
 - en: '[#](#making-pizza-slices-pizza) Making pizza slices 🍕'
   id: totrans-split-20
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[#](#making-pizza-slices-pizza) 制作披萨片 🍕'
 - en: 'The [`<path>`](https://www.w3.org/TR/SVG2/paths.html#PathElement) tag is nice,
     because it allows you to construct any complex shape. For it to work we need to
     describe how we want our shape to look like with its special [path data](https://www.w3.org/TR/SVG2/paths.html#PathData)
@@ -114,18 +138,24 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '`<path>` 标签很好，因为它允许您构建任何复杂的形状。要使其工作，我们需要使用其特殊的 [路径数据](https://www.w3.org/TR/SVG2/paths.html#PathData)
+    语法来描述我们希望形状看起来的方式。它非常复杂，但我们只需要掌握其 4 个命令：'
 - en: the [absolute **“moveto”**](https://www.w3.org/TR/SVG2/paths.html#PathDataMovetoCommands)
     command — which establishes a new initial point,
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[绝对 **“moveto”**](https://www.w3.org/TR/SVG2/paths.html#PathDataMovetoCommands)
+    指令 — 用于设定新的起始点，'
 - en: the [absolute **“lineto”**](https://www.w3.org/TR/SVG2/paths.html#PathDataLinetoCommands)
     command — which draws a line from the current point to the given $(x, y)$,
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[绝对 **“lineto”**](https://www.w3.org/TR/SVG2/paths.html#PathDataLinetoCommands)
+    指令 — 用于从当前点画一条到给定 $(x, y)$ 的直线，'
 - en: the [absolute elliptical arc curve](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands)
     command — which draws an elliptical arc from the current point to the given $(x,
     y)$,
@@ -133,53 +163,69 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[绝对椭圆弧曲线](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands)
+    指令 — 用于从当前点画一条到给定 $(x, y)$ 的椭圆弧，'
 - en: the [**“closepath”**](https://www.w3.org/TR/SVG2/paths.html#PathDataClosePathCommand)
     command — which ends the current path by connecting it back to its initial point.
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[**“closepath”**](https://www.w3.org/TR/SVG2/paths.html#PathDataClosePathCommand)
+    指令 — 用于通过将当前路径连接回其起始点来结束当前路径。'
 - en: 'To start easy, let’s consider an example with 4 pizza slices:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了简单起见，让我们考虑一个有 4 个披萨块的例子：
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'It renders to:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 它呈现为：
 - en: $ r_1 = 1 $
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: $ r_1 = 1 $
 - en: '*Note*'
   id: totrans-split-30
   prefs:
   - PREF_H6
   type: TYPE_NORMAL
+  zh: '*注意*'
 - en: '*I added `overflow="visible"` to the SVG tag, because — with a non-zero stroke
     — the image is *slightly* bigger than its `viewBox` and the stroke lines get cut
     off at $(-1, 0)$, $(1, 0)$, $(0, 1)$, and $(-1, 0)$.*'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我在 SVG 标签中添加了 `overflow="visible"`，因为带有非零描边的图像*略大*于其 `viewBox`，并且描边在 $(-1,
+    0)$，$(1, 0)$，$(0, 1)$ 和 $(-1, 0)$ 处被截断。*'
 - en: '*We can see an interesting patter here: coordinates of the [**“lineto”**](https://www.w3.org/TR/SVG2/paths.html#PathDataLinetoCommands)
     command are the same, as the coordinates of the [elliptical arc curve](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands)
     command of the *previous* element.*'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我们可以看到这里有一个有趣的模式：[**“lineto”**](https://www.w3.org/TR/SVG2/paths.html#PathDataLinetoCommands)
+    指令的坐标与*前一个*元素的 [椭圆弧曲线](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands)
+    指令的坐标相同。*'
 - en: '**Ok, but how to divide these slices into halves?* — you may ask.*'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '**好的，但是如何将这些块划分成两半呢？* — 你可能会问。*'
 - en: '*To do that we need to find the points in the middle of the arcs.*'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '*为了做到这一点，我们需要找到弧线中点的点。*'
 - en: '*<svg xmlns="http://www.w3.org/2000/svg" id="slices-with-points" overflow="visible"
     viewBox="-1 -1 2 2"><text x=".70710678118" y="-.70710678118" text-anchor="start"
     dominant-baseline="text-top">(ax, ay)</text><text x=".70710678118" y=".70710678118"
@@ -190,16 +236,25 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '*<svg xmlns="http://www.w3.org/2000/svg" id="slices-with-points" overflow="visible"
+    viewBox="-1 -1 2 2"><text x=".70710678118" y="-.70710678118" text-anchor="start"
+    dominant-baseline="text-top">(ax, ay)</text><text x=".70710678118" y=".70710678118"
+    text-anchor="start" dominant-baseline="hanging">(bx, by)</text><text x="-.70710678118"
+    y="-.70710678118" text-anchor="end" dominant-baseline="text-top">(cx, cy)</text><text
+    x="-.70710678118" y=".70710678118" text-anchor="end" dominant-baseline="hanging">(dx,
+    dy)</text></svg>*'
 - en: '*$ r_1 = 1 $*'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ r_1 = 1 $*'
 - en: '*Fortunately — since the circle’s middle point is $(0, 0)$ and the arc points
     are in the middle of their arcs — we know that the absolute value of their coordinates
     is the same. So, our diagram simplifies to:*'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '*幸运的是 — 由于圆的中心点是 $(0, 0)$，弧线点位于其弧线中点 — 我们知道它们的坐标的绝对值是相同的。因此，我们的图表简化为：*'
 - en: '*<svg xmlns="http://www.w3.org/2000/svg" id="slices-with-same-points" overflow="visible"
     viewBox="-1 -1 2 2"><text x=".70710678118" y="-.70710678118" text-anchor="start"
     dominant-baseline="text-top">(a, -a)</text><text x=".70710678118" y=".70710678118"
@@ -210,37 +265,53 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '*<svg xmlns="http://www.w3.org/2000/svg" id="slices-with-same-points" overflow="visible"
+    viewBox="-1 -1 2 2"><text x=".70710678118" y="-.70710678118" text-anchor="start"
+    dominant-baseline="text-top">(a, -a)</text><text x=".70710678118" y=".70710678118"
+    text-anchor="start" dominant-baseline="hanging">(a, a)</text><text x="-.70710678118"
+    y="-.70710678118" text-anchor="end" dominant-baseline="text-top">(-a, -a)</text><text
+    x="-.70710678118" y=".70710678118" text-anchor="end" dominant-baseline="hanging">(-a,
+    a)</text></svg>*'
 - en: '*$ r_1 = 1 $*'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ r_1 = 1 $*'
 - en: '*Great. 👌*'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '*太好了。 👌*'
 - en: '*Now we can use the equation of a circle to find the middle points.*'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '*现在我们可以使用圆的方程找到中间点。*'
 - en: '*$ \begin{aligned} (x - x_0)^2 + (y - y_0)^2 &= r^2 \\[0.25em] (a - 0)^2 +
     (a - 0)^2 &= 1^2 \\[0.25em] 2a^2 &= 1 \\[0.25em] a^2 &= \frac{1}{2} \\[0.25em]
     a &= \sqrt{\frac{1}{2}} \end{aligned} $*'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ \begin{aligned} (x - x_0)^2 + (y - y_0)^2 &= r^2 \\[0.25em] (a - 0)^2 +
+    (a - 0)^2 &= 1^2 \\[0.25em] 2a^2 &= 1 \\[0.25em] a^2 &= \frac{1}{2} \\[0.25em]
+    a &= \sqrt{\frac{1}{2}} \end{aligned} $*'
 - en: '*By adding four more pizza slices we get:*'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '*再加四片披萨我们得到：*'
 - en: '*$ r_1 = 1 $*'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ r_1 = 1 $*'
 - en: '*[#](#layers-of-pizza) Layers of pizza*'
   id: totrans-split-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*[#](#layers-of-pizza) 披萨的层次*'
 - en: '*The next step is to create additional (smaller) layers of circle sectors.
     Let’s say we want three circles; there’re two obvious ways of selecting division
     points: equal radii, or equal areas. Equal radii is simpler, so let’s try this
@@ -248,21 +319,26 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '*下一步是创建额外（更小）的圆扇形层。假设我们想要三个圆；选择分割点有两种明显的方法：等半径或等面积。等半径比较简单，所以我们先试试这个。*'
 - en: '*If the outermost circle has a radius of $1$, then the middle circle will have
     a radius of $0.\overline{6}$, and the smallest one will have $0.\overline{3}$.*'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '*如果最外面的圆半径为$1$，那么中间的圆将为$0.\overline{6}$，最小的将为$0.\overline{3}$。*'
 - en: '*$ r_1 = 1 \quad\text{and}\quad r_2 = 0.\overline{6} \quad\text{and}\quad r_3
     = 0.\overline{3} $*'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ r_1 = 1 \quad\text{和}\quad r_2 = 0.\overline{6} \quad\text{和}\quad r_3 =
+    0.\overline{3} $*'
 - en: '*Not that it matters, but the smallest circle is a little *too* small for my
     liking. But, before we decide, we need to see circles with equal areas first.*'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '*虽然这并不重要，但我不太喜欢最小的圆太小了。但在决定之前，我们需要先看看等面积的圆。*'
 - en: '*$ \begin{aligned} \Pi r_1^2 - \Pi r_2^2 = \Pi r_2^2 - \Pi r_3^2 \quad&\text{and}\quad
     \Pi r_2^2 - \Pi r_3^2 = \Pi r_3^2 \\[0.25em] 1 - r_2^2 = r_2^2 - r_3^2 \quad&\text{and}\quad
     r_2^2 - r_3^2 = r_3^2 \\[0.25em] 1 = 2r_2^2 - r_3^2 \quad&\text{and}\quad r_2^2
@@ -272,36 +348,50 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ \begin{aligned} \Pi r_1^2 - \Pi r_2^2 = \Pi r_2^2 - \Pi r_3^2 \quad&\text{和}\quad
+    \Pi r_2^2 - \Pi r_3^2 = \Pi r_3^2 \\[0.25em] 1 - r_2^2 = r_2^2 - r_3^2 \quad&\text{和}\quad
+    r_2^2 - r_3^2 = r_3^2 \\[0.25em] 1 = 2r_2^2 - r_3^2 \quad&\text{和}\quad r_2^2
+    = 2r_3^2 \\[0.25em] 1 = 3r_3^2 \quad&\text{和}\quad r_2^2 = 2r_3^2 \\[0.25em] r_3
+    = \sqrt{\frac{1}{3}} \quad&\text{和}\quad r_2 = \sqrt{\frac{2}{3}} \end{aligned}
+    $*'
 - en: '*Which gives us this avatar:*'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这给了我们这个头像：*'
 - en: '*$ r_1 = 1 \quad\text{and}\quad r_2 = \sqrt{\frac{2}{3}} \quad\text{and}\quad
     r_3 = \sqrt{\frac{1}{3}} $*'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ r_1 = 1 \quad\text{和}\quad r_2 = \sqrt{\frac{2}{3}} \quad\text{和}\quad r_3
+    = \sqrt{\frac{1}{3}} $*'
 - en: '*Which is also not ideal, but the other way around&mldr; I was tinkering with
     the radii a bit and I think I found a [middle ground](https://en.wikipedia.org/wiki/Arithmetic_mean)
     with which I’m happy.*'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这也不理想，但反过来说&mldr; 我稍微调整了半径，我觉得我找到了一个[折衷方案](https://en.wikipedia.org/wiki/Arithmetic_mean)，我感到很满意。*'
 - en: '*$ r_1 = 1 \quad\text{and}\quad r_2 = \frac{0.\overline{6} + \sqrt{\frac{2}{3}}}{2}
     \quad\text{and}\quad r_3 = \frac{0.\overline{3} + \sqrt{\frac{1}{3}}}{2} $*'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '*$ r_1 = 1 \quad\text{和}\quad r_2 = \frac{0.\overline{6} + \sqrt{\frac{2}{3}}}{2}
+    \quad\text{和}\quad r_3 = \frac{0.\overline{3} + \sqrt{\frac{1}{3}}}{2} $*'
 - en: '*Radii in the circles above are the arithmetic average of the equal radii variant
     and the equal areas variant.*'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '*以上圆中的半径是等半径变体和等面积变体的算术平均值。*'
 - en: '*[#](#working-with-colors) Working with colors*'
   id: totrans-split-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '*[#](#working-with-colors) 使用颜色*'
 - en: '*With the SVG structure out of the way we can focus on selecting quasi-random
     colors for the circle segments based on the identifier’s hash. [SHA-256](https://en.wikipedia.org/wiki/SHA-2)
     hashes have 32 bytes; it’s more than we need — assuming we need a single byte
@@ -310,6 +400,8 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '*完成SVG结构后，我们可以专注于根据标识符的哈希选择准随机颜色来填充圆形段。[SHA-256](https://zh.wikipedia.org/wiki/SHA-2)哈希有32字节；这比我们需要的多
+    —— 假设我们需要每个圆形扇区一个字节 —— 这给我们带来另一个好处：如果需要，我们可以插入第4个圆。*'
 - en: '*For now though, let’s talk about the colors. If we’d use [HSL](https://en.wikipedia.org/wiki/HSL_and_HSV),
     we can split each byte into 4 pieces: 4 bits for hue (since it’s the most dominant),
     2 bits for saturation, and 2 bits for lightness. Path’s [fill](https://www.w3.org/TR/SVG2/painting.html#SpecifyingFillPaint)
@@ -318,18 +410,22 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '*不过，现在让我们来谈谈颜色。如果我们使用[HSL](https://zh.wikipedia.org/wiki/HSL%E5%92%8CHSV)模型，我们可以将每个字节分成4个部分：4位用于色调（因为它是最显著的），2位用于饱和度，2位用于亮度。路径的[fill](https://www.w3.org/TR/SVG2/painting.html#SpecifyingFillPaint)属性接受任何[paint](https://www.w3.org/TR/SVG2/painting.html#SpecifyingPaint)值，这基本上意味着我们需要将我们的颜色格式化为标准CSS的色调。*'
 - en: '[PRE3]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '*Alright, let’s generate an avatar for `"foo"` and see how it looks like.*'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '*好了，让我们为`"foo"`生成一个头像，看看它是什么样子。*'
 - en: '*Avatar for "foo".*'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '*"foo"的头像。*'
 - en: '*Well, it does not look terrible, but it’s not eye-catching either. To be perfectly
     honest, we should expect something like this; [SHA-256](https://en.wikipedia.org/wiki/SHA-2)
     returns (and for that matter all other hash functions too) a quasi-random values.
@@ -341,18 +437,22 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '*嗯，它看起来并不可怕，但也不太吸引人。说实话，我们应该预料到这样的结果；[SHA-256](https://zh.wikipedia.org/wiki/SHA-2)返回（以及其他所有哈希函数）准随机值。如果我们将这些*原始*字节转换为填充颜色，我们将得到准随机的颜色。为了使它更好看，我们需要稍微修改我们的算法；我们需要计算一个全局主题，如果可以的话，为头像的部分圆环颜色。我们可以通过将所有哈希字节折叠成一个单一字节来实现这一点。*'
 - en: '[PRE4]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '*This code renders:*'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这段代码渲染如下：*'
 - en: '*Avatar for "foo" with a theme.*'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '*"foo"的带有主题的头像。*'
 - en: '*It looks rather good, if I say so myself. The solution works as it’s suppose
     to: it *most probably* produces different avatars for different identifiers ([hash
     collisions](https://en.wikipedia.org/wiki/Hash_collision) do happen) and they
@@ -363,35 +463,43 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我觉得它看起来相当不错。这个解决方案按照预期运行：它*很可能*为不同的标识符生成不同的头像（[哈希碰撞](https://zh.wikipedia.org/wiki/%E5%93%88%E5%B8%8C%E7%A2%B0%E6%92%9E)确实会发生），它们看起来是可以接受的。然而，这些环似乎*相位*进入彼此
+    —— 它们的颜色太相似了。我们可以尝试另一个主题：一个环主题 —— 它将是代表单个环的所有字节的XOR折叠 —— 并检查结果。*'
 - en: '[PRE5]'
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '*With the final touch we get:*'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '*加上最后的修饰，我们得到：*'
 - en: '*Avatar for "foo" with a global theme and a ring theme.*'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '*"foo"的全局主题和环主题头像。*'
 - en: '*Which is exactly the thing that hides in the spoiler block at the top. If
     you restrained yourself and didn’t check it out: congratulations. Now feel free
     to do so. 😃*'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这正是隐藏在顶部剧透块中的东西。如果你克制住了自己没有去查看：恭喜你。现在可以随意查看了。 😃*'
 - en: '*[#](#conclusions) Conclusions*'
   id: totrans-split-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '*[#](#conclusions) 结论*'
 - en: '*Working on this blog post has been an effort I wanted to make to better understand
     how SVGs work from the inside, as well as, a challenge to reverse-engineer ideas
     from [Representing SHA-256 Hashes As Avatars](https://francoisbest.com/posts/2021/hashvatars).*'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '*撰写这篇博文是我努力想要更好地理解SVG内部工作原理的努力，同时也是一个从[Representing SHA-256 Hashes As Avatars](https://francoisbest.com/posts/2021/hashvatars)中逆向工程思想的挑战。*'
 - en: '*I’m not working on any service which would benefit from these avatars. If
     I happen to work on one in the future I’ll for sure like to try them out. To make
     this solution easier to re-use in other places, I’ve made a Rust crate called
@@ -401,6 +509,8 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我目前没有为任何受益于这些头像的服务工作。如果将来我做了一个这样的服务，我肯定会试试它们。为了让这个解决方案更容易在其他地方重用，我做了一个名为[`svg_avatars`](https://crates.io/crates/svg_avatars)的
+    Rust 包，它实现了这个确切的解决方案。这个包非常简洁，如果有人有任何提升它的想法，我会很乐意听取您的意见或查看您的 PR。*'
 - en: '*As a closing thought, one of the parameters of the [absolute elliptical arc
     curve](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands) command
     is the `sweep-flag` parameter. It allows you to determine, whether an arc should
@@ -410,16 +520,22 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '*作为结束思考，[绝对椭圆弧曲线](https://www.w3.org/TR/SVG2/paths.html#PathDataEllipticalArcCommands)命令的一个参数是
+    `sweep-flag` 参数。它允许您确定弧是笑脸还是哭脸。如果参数是 `1` — 就像我们的情况一样 — 那么弧是哭脸。然而，如果您将标志翻转为 `0`，那么所有的弧都会成为笑脸&mldr;*'
 - en: '**Smiley-face* avatar for "foo".*'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Smiley-face* 头像用于 "foo"。*'
 - en: '*&mldr;and the avatar [emerges](https://en.wikipedia.org/wiki/Emergence) as
     a spiderweb. Who does not love a single-line-change feature for Spooktober.*'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '*&mldr;并且头像[出现](https://en.wikipedia.org/wiki/Emergence)为一个蜘蛛网。谁不喜欢 Spooktober
+    的单行更改功能。*'
 - en: </main>
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
