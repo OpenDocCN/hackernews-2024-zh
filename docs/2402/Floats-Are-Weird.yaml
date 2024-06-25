@@ -2,36 +2,44 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:00:41'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:00:41'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Floats Are Weird
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 浮点数是奇怪的
 - en: 来源：[https://a.exozy.me/posts/floats-weird/](https://a.exozy.me/posts/floats-weird/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://a.exozy.me/posts/floats-weird/](https://a.exozy.me/posts/floats-weird/)
 - en: 'Floats are weird. Anyways, here’s a basic calculus exercise:'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 浮点数很奇怪。无论如何，这里有一个基本的微积分练习：
 - en: \[\lim_{x \to 0} \frac{e^x-1}{x} = 1\]
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\lim_{x \to 0} \frac{e^x-1}{x} = 1\]
 - en: However, I won’t prove that limit here, because this is a post about floats
     being weird, not a post about calculus. Instead, let’s try to approximate this
     limit numerically using Python, because what’s the worst that could happen? Let’s
@@ -39,10 +47,12 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在这里我不会证明这个极限，因为这篇文章是关于浮点数奇怪性，而不是微积分文章。相反，让我们尝试使用Python对这个极限进行数值近似，因为最坏的情况是什么？让我们将该分数写成一个Python函数，并插入越来越小的$x$。
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '`f(1e-9)` returns 1.000000082740371 and `f(1e-12)` returns 1.000088900582341,
     which is already weird. Shouldn’t the approximation get better with smaller $x$?
     However, trouble really strikes with `f(1e-15)`. It returns a shocking 1.1102230246251565,
@@ -50,30 +60,37 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '`f(1e-9)`返回1.000000082740371，而`f(1e-12)`返回1.000088900582341，这已经很奇怪了。随着较小的$x$，近似值难道不应该变得更好吗？然而，真正的麻烦出现在`f(1e-15)`。它返回一个惊人的1.1102230246251565，这有超过10%的误差！'
 - en: But, with this one weird trick&mldr;
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，有了这个奇怪的技巧&mldr;
 - en: '[PRE1]'
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '`g(1e-9)` returns 1.0000000005, `g(1e-12)` returns 1.0000000000005, and `g(1e-15)`
     returns 1.0000000000000004, giving us exactly what we want! 🤯'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '`g(1e-9)`返回1.0000000005，`g(1e-12)`返回1.0000000000005，而`g(1e-15)`返回1.0000000000000004，这正是我们想要的！
+    🤯'
 - en: Wait a minute! This new function is doing redundant computation! Why should
     we take $\log(e^x)$ when we can simply divide by $x$? How does this reduce the
     error so effectively?
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 等一下！这个新函数正在做冗余计算！为什么我们要取$\log(e^x)$，而不是简单地除以$x$？这是如何如此有效地减少错误的？
 - en: An assumption
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 假设
 - en: To explain this phenomenon, we need to make a huge simplifying assumption. For
     some operation like $x+y$ when done using floating-point arithmetic, the final
     answer won’t be exactly equal to the exact value of $x+y$. Let’s use $fl(x+y)$
@@ -84,6 +101,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解释这种现象，我们需要做一个巨大的简化假设。对于像$x+y$这样的某些操作，使用浮点运算时，最终答案不会完全等于$x+y$的精确值。让我们用$fl(x+y)$表示这个浮点计算的值。然后，我们假设$fl(x+y)
+    = (x+y)(1+\delta)$，其中$\delta$很小。$\delta$的上界取决于我们使用的浮点数类型。Python使用IEEE 754双精度浮点数，其$\delta$的大小最多为$2^{-53}$。
 - en: You might be wondering why we didn’t choose a different assumption that $|fl(x+y)
     - (x+y)| < \epsilon$ for some small $\epsilon$. This is because floating-point
     numbers become spaced out farther apart as they get larger, so $fl(x+y)$ for large
@@ -93,26 +112,32 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会想为什么我们没有选择一个不同的假设，即$|fl(x+y) - (x+y)| < \epsilon$，其中$\epsilon$很小。这是因为随着浮点数变得越来越大，它们之间的间隔也变得更大，因此对于大的$x,
+    y$，$fl(x+y)$可能与$x+y$有很大的绝对差异，但其相对差异$\frac{fl(x+y)}{x+y}$仍然很小。因此，我们最初的假设确实是正确的。
 - en: We will also assume that this $1+\delta$ assumption holds for other operations
     like subtraction, multiplication, exponentiation, and logarithms. Now we have
     the necessary tools to tackle the problem!
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还假设这种$1+\delta$假设对减法、乘法、指数运算和对数运算等其他操作同样成立。现在我们有了解决问题的必要工具！
 - en: Analyzing f
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分析f
 - en: First, let’s find $fl\left(\frac{e^x-1}{x}\right)$. Using our $1+\delta$ assumption
     repeatedly, we have
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们找出$fl\left(\frac{e^x-1}{x}\right)$。使用我们的$1+\delta$假设，我们有
 - en: \[fl\left(\frac{e^x-1}{x}\right) = \frac{(e^x(1+\delta_1)-1)(1+\delta_2)}{x}(1+\delta_3).\]
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: \[fl\left(\frac{e^x-1}{x}\right) = \frac{(e^x(1+\delta_1)-1)(1+\delta_2)}{x}(1+\delta_3).\]
 - en: You might remember from calculus that $e^x = 1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\dots$,
     which is a Taylor series. Since we are only plugging in very small values of $x$,
     $x^2$ and $x^3$ and other higher powers are very, very small numbers so we can
@@ -121,20 +146,26 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能还记得从微积分中$e^x = 1+x+\frac{x^2}{2!}+\frac{x^3}{3!}+\dots$，这是一个泰勒级数。因为我们只插入了非常小的$x$值，$x^2$、$x^3$和其他更高次幂都是非常非常小的数，所以我们可以简单地忽略它们。我们只说$e^x
+    \approx 1+x$。这在数学和物理中是一个常见的技巧。现在我们得到
 - en: \[fl\left(\frac{e^x-1}{x}\right) = \frac{((1+x)(1+\delta_1)-1)(1+\delta_2)}{x}(1+\delta_3)
     = \frac{(x+\delta_1+x\delta_1)(1+\delta_2)}{x}(1+\delta_3).\]
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: \[fl\left(\frac{e^x-1}{x}\right) = \frac{((1+x)(1+\delta_1)-1)(1+\delta_2)}{x}(1+\delta_3)
+    = \frac{(x+\delta_1+x\delta_1)(1+\delta_2)}{x}(1+\delta_3).\]
 - en: Again, since $x$ is small, $x\delta_1$ will be absolutely tiny, so we can also
     ignore it. Thus, the whole thing simplifies to
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，由于 $x$ 很小，$x\delta_1$ 将非常微小，所以我们也可以忽略它。因此，整个过程简化为
 - en: \[fl\left(\frac{e^x-1}{x}\right) = (1+\frac{\delta_1}{x})(1+\delta_2)(1+\delta_3).\]
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: \[fl\left(\frac{e^x-1}{x}\right) = (1+\frac{\delta_1}{x})(1+\delta_2)(1+\delta_3).\]
 - en: 'If we plug in $x = 10^{-15}, \delta_1 = 2^{-53}$, we get $1+\frac{\delta_1}{x}
     = 1.1110$ which is pretty similar to the actual error that we got at the beginning!
     Cool, now we can see the source of the error: $x$ is in the denominator, so as
@@ -142,29 +173,36 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将 $x = 10^{-15}, \delta_1 = 2^{-53}$ 代入，我们得到 $1+\frac{\delta_1}{x} = 1.1110$，这与一开始得到的实际误差非常相似！很棒，现在我们可以看到错误的源头了：$x$
+    在分母中，所以随着 $x$ 变小，误差增大。
 - en: Analyzing g
   id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分析 g
 - en: Next, let’s find $fl\left(\frac{e^x-1}{\log(e^x)}\right)$. Using our favorite
     assumption again, we get
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们找出 $fl\left(\frac{e^x-1}{\log(e^x)}\right)$。再次使用我们最喜欢的假设，我们得到
 - en: \[fl\left(\frac{e^x-1}{\log(e^x)}\right) = \frac{(e^x(1+\delta_1)-1)(1+\delta_2)}{\log(e^x(1+\delta_1))(1+\delta_4)}(1+\delta_3).\]
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: \[fl\left(\frac{e^x-1}{\log(e^x)}\right) = \frac{(e^x(1+\delta_1)-1)(1+\delta_2)}{\log(e^x(1+\delta_1))(1+\delta_4)}(1+\delta_3).\]
 - en: This looks pretty scary, but we can use our $e^x \approx 1+x$ and $x\delta_1
     \approx 0$ approximations to reduce it down to
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这看起来相当可怕，但我们可以使用 $e^x \approx 1+x$ 和 $x\delta_1 \approx 0$ 的近似将其简化为
 - en: \[fl\left(\frac{e^x-1}{\log(e^x)}\right) = \frac{(x+\delta_1)(1+\delta_2)}{\log(1+x+\delta_1)(1+\delta_4)}(1+\delta_3).\]
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: \[fl\left(\frac{e^x-1}{\log(e^x)}\right) = \frac{(x+\delta_1)(1+\delta_2)}{\log(1+x+\delta_1)(1+\delta_4)}(1+\delta_3).\]
 - en: 'Now we need one last Taylor series, for $\log(x)$. Since this post isn’t about
     calculus (although it kind of is), I’m just going to give you the Taylor series
     that we need: $\log(x) = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \frac{(x-1)^4}{4}
@@ -175,15 +213,21 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们需要最后一个 Taylor 级数，用于 $\log(x)$。由于这篇文章不是关于微积分的（尽管它有点），我只是给你我们需要的 Taylor 级数：$\log(x)
+    = (x-1) - \frac{(x-1)^2}{2} + \frac{(x-1)^3}{3} - \frac{(x-1)^4}{4} + \dots$（这个级数并不对所有
+    $x$ 收敛，但无所谓）。重要的是，$(x-1)^2$ 和更高阶的幂会非常小，因为我们将 $x$ 插入 $\log(x)$ 的 $1+x+\delta_1$。因此，我们可以忽略它们，并得出结论
+    $\log(x) \approx x-1$。
 - en: Something magical happens when we plug that approximation in. The $x+\delta_1$
     in the numerator and the denominator cancel out! We’re just left with
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们将这个近似值代入时，一些神奇的事情发生了。分子中的 $x+\delta_1$ 和分母中的 $x$ 抵消了！我们只剩下
 - en: \[fl\left(\frac{e^x-1}{\log(e^x)}\right) = \frac{1+\delta_2}{1+\delta_4}(1+\delta_3).\]
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: \[fl\left(\frac{e^x-1}{\log(e^x)}\right) = \frac{1+\delta_2}{1+\delta_4}(1+\delta_3).\]
 - en: Awesome! Now we can clearly see that for small $x$, the resulting error is tiny.
     You might be wondering why there isn’t an $x$ in this answer. When we plugged
     in $x = 10^{-6}$, it wasn’t all that close to 1\. This is because with $x = 10^{-6}$,
@@ -193,6 +237,9 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 太棒了！现在我们可以清楚地看到，对于小的 $x$，得到的误差是微小的。你可能会想知道为什么这个答案中没有 $x$。当我们插入 $x = 10^{-6}$
+    时，它并不接近于 1。这是因为当 $x = 10^{-6}$ 时，我们对 $e^x \approx 1+x$ 和 $\log(x) \approx x-1$
+    的近似并不完全有效，因为平方项确实会有所贡献。基本上，我们的答案只对 $x$ 非常小且接近 $10^{-15}$ 时才成立。
 - en: Intuitively, `g` is more accurate than `f` because the errors of the $e^x$ in
     the numerator and denominator end up cancelling each other out, but this is actually
     a pretty misleading explanation. The only way to see why this happens is to crunch
@@ -200,7 +247,9 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 直觉上，`g` 比 `f` 更准确，因为分子和分母中的 $e^x$ 的误差最终抵消了，但这实际上是一个相当误导人的解释。要看到为什么会发生这种情况，唯一的方法是仔细分析。
 - en: Anyways, floats are weird.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 总之，浮点数很奇怪。
