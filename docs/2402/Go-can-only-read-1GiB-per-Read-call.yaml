@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:45:26'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:45:26'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Go can only read 1GiB per Read call
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Go 每次 `Read` 调用只能读取 1GiB
 - en: 来源：[https://kgrz.io/go-file-read-max-size-buffer.html](https://kgrz.io/go-file-read-max-size-buffer.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://kgrz.io/go-file-read-max-size-buffer.html](https://kgrz.io/go-file-read-max-size-buffer.html)
 - en: <main class="post">
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main class="post">
 - en: 'UPDATE: I don’t mean to say that this is a bad choice, or that it’s a bug,
     or even a performance implication. It’s just a choice that was made which seemed
     a bit opaque without doing all the history spelunking I did here, and it’s interesting
@@ -35,6 +42,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 更新：我并不是说这是一个不好的选择，或者说这是一个 bug，或者是性能问题。这只是一个已经做出的选择，看起来有点不透明，如果不进行所有的历史挖掘的话，这个选择还是挺有趣的。
 - en: 'There’s a 1GiB limit for a single `Read` call for an `os.File` entity (object?
     struct?) in Go, even though native `read` syscall can fill a 2GiB buffer (as tested
     in my arm macos and Intel Linux machine). I ran into this when looking at a pprof
@@ -45,24 +53,31 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 Go 中的 `os.File` 对象（或结构体），单个 `Read` 调用的限制为 1GiB，尽管本地的 `read` 系统调用可以填充 2GiB
+    缓冲区（在我的 ARM macOS 和 Intel Linux 机器上测试过）。当我查看正在编写的示例单词计数程序的 pprof 概要时，我发现程序在 `syscall`
+    模块中花费了过多时间。在这种情况下，只能意味着 `read` 系统调用被调用了太多次。类似下面这样的情况将表现出这种行为：
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'That, on a 2.5G file would output something like:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一个 2.5G 文件上的输出可能如下：
 - en: '[PRE1]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Even though the initialised buffer size is 2GiB, only 1GiB is read into the
     buffer per iteration. Upon digging into the source code, it looks like this is
     a deliberate choice. The main change logs from the history point to the following:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管初始化的缓冲区大小为 2GiB，但每次迭代只读取了 1GiB 到缓冲区中。深入研究源代码后发现，这是一个有意为之的选择。主要变更日志如下：
 - en: '[https://codereview.appspot.com/89900044](https://codereview.appspot.com/89900044)
     as a fix for [golang/go#7812](https://github.com/golang/go/issues/7812). This
     had a fix for failing reads on file sizes greater than or equal to 2GiB on macos
@@ -72,6 +87,9 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[https://codereview.appspot.com/89900044](https://codereview.appspot.com/89900044)
+    作为对[golang/go#7812](https://github.com/golang/go/issues/7812)的修复。这个修复解决了在 macOS
+    和 FreeBSD 上读取大于或等于 2GiB 文件大小时读取失败的问题，通过限制每个`read`系统调用仅读取 2GiB-1 字节。对于其他操作系统，在这一点上并没有限制。'
 - en: '[https://codereview.appspot.com/94070044](https://codereview.appspot.com/94070044)
     as a followup of 1, where the limit was decreased without any OS checks to 1GiB,
     with an explanation that at least it would allow for aligned reads from disk,
@@ -80,16 +98,20 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[https://codereview.appspot.com/94070044](https://codereview.appspot.com/94070044)
+    作为对 1 的后续，其中限制被减少到 1GiB，没有进行任何操作系统检查，解释为至少可以允许从磁盘中读取对齐的数据，而不是可能会错过页缓存的奇数字节（我的理解）。'
 - en: Note that a lot has changed since that changeset, and the current file reference
     for that `_unix.go` file in the changeset is [src/internal/poll/fd_unix.go](https://github.com/golang/go/blob/release-branch.go1.22/src/internal/poll/fd_unix.go#L132-L137).
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，自那次更改以来已经发生了很多变化，而该 `_unix.go` 文件在更改集中的当前文件引用为[src/internal/poll/fd_unix.go](https://github.com/golang/go/blob/release-branch.go1.22/src/internal/poll/fd_unix.go#L132-L137)。
 - en: 'Aside: System limits'
   id: totrans-split-16
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 旁注：系统限制
 - en: 'As per the linux [`read` syscall documentation](https://www.man7.org/linux/man-pages/man2/read.2.html#NOTES),
     the maximum bytes that can be transferred is 2GiB. And I tested this out with
     rudimentary scripts in Rust and C. The Rust program is taken verbatim from the
@@ -98,25 +120,33 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据 Linux 的[`read`系统调用文档](https://www.man7.org/linux/man-pages/man2/read.2.html#NOTES)，可以传输的最大字节数为
+    2GiB。我用 Rust 和 C 中的基本脚本进行了测试。Rust 程序直接从 [`read_to_end()`的示例](https://doc.rust-lang.org/std/io/trait.Read.html#method.read_to_end)
+    中取得。在 `strace` 下运行的输出如下（这里进行了截断）：
 - en: '[PRE2]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'And a similar, simple C program results in similar output, when using the `read`
     syscall in a loop until the file is read:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，一个类似的简单 C 程序在使用 `read` 系统调用在循环中读取文件时也会产生类似的输出：
 - en: '[PRE3]'
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Although that’s neither here nor there, it’s still interesting that Go’s choice
     has been to pick 2GiB-1 and then 1GiB justifying the odd buffer size in the former.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这不是重点，但有趣的是 Go 的选择是选择了 2GiB-1，然后是 1GiB，以此来解释之前奇怪的缓冲区大小。
 - en: </main>
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '`</main>`'
