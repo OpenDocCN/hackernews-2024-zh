@@ -8,17 +8,17 @@ date: 2024-05-27 15:00:53
 
 # Ludum mortuus est
 
-> 来源：[https://www.brokentoys.org/ludum-mortuus-est/](https://www.brokentoys.org/ludum-mortuus-est/)
+> 来源：[`www.brokentoys.org/ludum-mortuus-est/`](https://www.brokentoys.org/ludum-mortuus-est/)
 
-希望你喜欢2023年的游戏，因为那就是全部了
+希望你喜欢 2023 年的游戏，因为那就是全部了
 
-有[约330,000人](https://uniglobalunion.org/report/the-video-game-industry)在视频游戏行业工作。
+有[约 330,000 人](https://uniglobalunion.org/report/the-video-game-industry)在视频游戏行业工作。
 
-他们中有9,000人[在2023年被裁员了](https://www.theverge.com/24009039/video-game-layoffs-2023)。
+他们中有 9,000 人[在 2023 年被裁员了](https://www.theverge.com/24009039/video-game-layoffs-2023)。
 
-这个月又有3,000人被裁员了[**this month**](https://kotaku.com/game-industry-layoffs-how-many-2024-unity-twitch-1851155818)。你知道的，还有半个月呢。
+这个月又有 3,000 人被裁员了[**this month**](https://kotaku.com/game-industry-layoffs-how-many-2024-unity-twitch-1851155818)。你知道的，还有半个月呢。
 
-今天又有100人被裁员了。
+今天又有 100 人被裁员了。
 
 这还不包括游戏媒体未报道的裁员情况，游戏媒体也在经历自己的裁员（我个人知道的情况有很多）。
 
@@ -34,19 +34,19 @@ date: 2024-05-27 15:00:53
 
 * * *
 
-老牌行业人士和观察家们知道，对于许多公司来说，在游戏发布后不久，大部分开发人员都会被解雇。如果工作室足够大，有时他们会被要求转移到另一个正在进行的项目上。否则，嗯，这就是这个行业的本质。你要么是老板，要么你就[按件计酬](https://en.wikipedia.org/wiki/Piece_work)。达成的交易（有时是明显的，有时是未明确的）是，你要么在那里获得显著的绩效奖金（我在2000年代为*黑暗时代驼背*工作时赚到的奖金远远超过了我的实际工资），要么是为了建立联系和一份可以用来获取重要绩效奖金项目的履历项目。最终你升级出去，创立自己的公司。或者退休（这还是一回事吗？我今年57岁了，这不仅仅是学术上的兴趣。）
+老牌行业人士和观察家们知道，对于许多公司来说，在游戏发布后不久，大部分开发人员都会被解雇。如果工作室足够大，有时他们会被要求转移到另一个正在进行的项目上。否则，嗯，这就是这个行业的本质。你要么是老板，要么你就[按件计酬](https://en.wikipedia.org/wiki/Piece_work)。达成的交易（有时是明显的，有时是未明确的）是，你要么在那里获得显著的绩效奖金（我在 2000 年代为*黑暗时代驼背*工作时赚到的奖金远远超过了我的实际工资），要么是为了建立联系和一份可以用来获取重要绩效奖金项目的履历项目。最终你升级出去，创立自己的公司。或者退休（这还是一回事吗？我今年 57 岁了，这不仅仅是学术上的兴趣。）
 
-在2023年，有许多这样的裁员。但也有很多裁员是由于风险投资公司[收购工作室](https://embracer.com/releases/embracer-group-merges-with-the-gearbox-entertainment-company-and-form-a-seventh-operating-group/)，然后[关闭它们](https://www.gamesindustry.biz/lost-boys-interactive-is-latest-embracer-group-studio-to-suffer-layoffs)。*没有明显的原因*。在Embracer的情况下，业主们显然在追逐沙特的投资资金，当[它没有神奇般地出现时](https://www.axios.com/2023/08/14/saudi-arabia-savvy-games-embracer-group)，[1000多人失业了](https://www.gamesindustry.biz/embracer-debt-reduced-to-14-billion-as-restructure-continues)。哎呀，抱歉。
+在 2023 年，有许多这样的裁员。但也有很多裁员是由于风险投资公司[收购工作室](https://embracer.com/releases/embracer-group-merges-with-the-gearbox-entertainment-company-and-form-a-seventh-operating-group/)，然后[关闭它们](https://www.gamesindustry.biz/lost-boys-interactive-is-latest-embracer-group-studio-to-suffer-layoffs)。*没有明显的原因*。在 Embracer 的情况下，业主们显然在追逐沙特的投资资金，当[它没有神奇般地出现时](https://www.axios.com/2023/08/14/saudi-arabia-savvy-games-embracer-group)，[1000 多人失业了](https://www.gamesindustry.biz/embracer-debt-reduced-to-14-billion-as-restructure-continues)。哎呀，抱歉。
 
-九月份，Epic Games解雇了超过800人，几乎占公司总人数的15%。 Epic是[存在的最成功和最有利可图的游戏公司之一。其CEO，蒂姆·斯威尼，价值超过70亿美元。](https://www.usesignhouse.com/blog/epic-games-stats) 《堡垒之夜》就是铸造金钱的机器。多年来，每一个其他的游戏公司都试图复制《堡垒之夜》，但大多数都在尝试中失败了。这并不足以确保工作的安全性，因为，你看，数字必须增长得更快。
+九月份，Epic Games 解雇了超过 800 人，几乎占公司总人数的 15%。 Epic 是[存在的最成功和最有利可图的游戏公司之一。其 CEO，蒂姆·斯威尼，价值超过 70 亿美元。](https://www.usesignhouse.com/blog/epic-games-stats) 《堡垒之夜》就是铸造金钱的机器。多年来，每一个其他的游戏公司都试图复制《堡垒之夜》，但大多数都在尝试中失败了。这并不足以确保工作的安全性，因为，你看，数字必须增长得更快。
 
-三月份，EA在["企业重组"中解雇了750多人](https://www.theverge.com/2023/3/29/23662228/ea-layoffs-workers-employeesrestructuring)。EA是世界上最大的游戏发行商。但数字必须增长得更快。
+三月份，EA 在["企业重组"中解雇了 750 多人](https://www.theverge.com/2023/3/29/23662228/ea-layoffs-workers-employeesrestructuring)。EA 是世界上最大的游戏发行商。但数字必须增长得更快。
 
 这不是正常的工作周期。这是*毁灭*。
 
 有成千上万有经验的游戏开发人员失业了。他们几乎肯定会离开游戏行业，假设他们有能力转移到其他行业（对于比如说一个关卡设计师来说可能有些困难）。
 
-很少有游戏开发职位空缺，却被数千份申请所淹没。人力资源工作者不堪重负，依赖软件进行筛选，但效果非常糟糕，并且面临着不可能的任务，即如何面试2000人来填补3个职位。很可能，这3个职位因为*这个任务太疯狂了*而未能填补。或者是内部填补，或者是由已经在公司的人的朋友填补，因为如果有机会，你会给你认识的失业的人一个生路。*任何人*都会这样做。但这是另一个虚假的机会。
+很少有游戏开发职位空缺，却被数千份申请所淹没。人力资源工作者不堪重负，依赖软件进行筛选，但效果非常糟糕，并且面临着不可能的任务，即如何面试 2000 人来填补 3 个职位。很可能，这 3 个职位因为*这个任务太疯狂了*而未能填补。或者是内部填补，或者是由已经在公司的人的朋友填补，因为如果有机会，你会给你认识的失业的人一个生路。*任何人*都会这样做。但这是另一个虚假的机会。
 
 对于那些仍然有工作的人来说？远程工作已经是一种不再负担得起的奢侈品。工会组织？祝你好运（尽管这说明了它是多么迫切地需要）。生活成本的涨幅？幸运的是你还有工作。钱紧，你知道的。你最近读过新闻吗？
 
@@ -72,7 +72,7 @@ date: 2024-05-27 15:00:53
 
 如果你还没有看过，请观看这个视频。
 
-[https://www.youtube.com/embed/psrXGPh80UM?feature=oembed](https://www.youtube.com/embed/psrXGPh80UM?feature=oembed)
+[`www.youtube.com/embed/psrXGPh80UM?feature=oembed`](https://www.youtube.com/embed/psrXGPh80UM?feature=oembed)
 
 视频
 

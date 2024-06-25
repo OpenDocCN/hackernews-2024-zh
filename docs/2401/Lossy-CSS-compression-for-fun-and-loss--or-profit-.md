@@ -8,7 +8,7 @@
 
 # 有趣且有损的 CSS 压缩（或盈利）
 
-> 来源：[https://blog.danieljanus.pl/2024/01/26/lossy-css-compression/](https://blog.danieljanus.pl/2024/01/26/lossy-css-compression/)
+> 来源：[`blog.danieljanus.pl/2024/01/26/lossy-css-compression/`](https://blog.danieljanus.pl/2024/01/26/lossy-css-compression/)
 
 ## 什么
 

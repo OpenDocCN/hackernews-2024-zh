@@ -8,7 +8,7 @@ category: 未分类
 
 # Oracle 悄悄地将 Solaris 11.4 的支持延长至 2037 年 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/29/oracle_extends_solaris_support/](https://www.theregister.com/2024/01/29/oracle_extends_solaris_support/)
+> 来源：[`www.theregister.com/2024/01/29/oracle_extends_solaris_support/`](https://www.theregister.com/2024/01/29/oracle_extends_solaris_support/)
 
 Oracle 悄悄地将对 Solaris 11.4 的付费支持和升级延长至 2037 年，比先前的截止日期延长了三年，去年也对操作系统的早期版本做了同样的处理。
 

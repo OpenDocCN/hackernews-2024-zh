@@ -6,15 +6,15 @@
 
 -->
 
-# [新日期] 我们将从**2月1日**开始收取专用 IPv4 的费用 - 新鲜农产品 - Fly.io
+# [新日期] 我们将从**2 月 1 日**开始收取专用 IPv4 的费用 - 新鲜农产品 - Fly.io
 
-> 来源：[https://community.fly.io/t/we-are-going-to-start-charging-for-dedicated-ipv4-in-january-1st/15970](https://community.fly.io/t/we-are-going-to-start-charging-for-dedicated-ipv4-in-january-1st/15970)
+> 来源：[`community.fly.io/t/we-are-going-to-start-charging-for-dedicated-ipv4-in-january-1st/15970`](https://community.fly.io/t/we-are-going-to-start-charging-for-dedicated-ipv4-in-january-1st/15970)
 
 如果你是 [Fly.io](http://fly.io/) 的老客户，你会注意到我们首先发布功能，然后再为其添加计费。我们的定价页面已经有一段时间了，我们每个专用 IPv4 每月收费约 2 美元，但我们从未真正实施过！
 
-专用 IPv4 是一种稀缺资源，但幸运的是，去年12月我们有了 [公告：共享 Anycast IPv4](https://community.fly.io/t/announcement-shared-anycast-ipv4/9384) ，这给我们带来了大量时间，直到这成为问题，**共享 IPv4 是免费的**！
+专用 IPv4 是一种稀缺资源，但幸运的是，去年 12 月我们有了 [公告：共享 Anycast IPv4](https://community.fly.io/t/announcement-shared-anycast-ipv4/9384) ，这给我们带来了大量时间，直到这成为问题，**共享 IPv4 是免费的**！
 
-我们承诺在向您收费之前会提前通知您，这就是现在，**我们只会在** **2月1日** **开始计费**！
+我们承诺在向您收费之前会提前通知您，这就是现在，**我们只会在** **2 月 1 日** **开始计费**！
 
 ## 未来应用需要做些什么？
 
@@ -37,7 +37,7 @@ v4     	66.241.125.86	shared	global
 
 **如果你正在使用自定义域名**，请确保为你的共享 IP 发行证书，以确保像这样正常工作：[New Shared IPv4 Connection Reset by peer - #2 by pavel](https://community.fly.io/t/new-shared-ipv4-connection-reset-by-peer/17567/2)
 
-[来源于Jerome的帖子：](https://community.fly.io/t/we-are-going-to-start-charging-for-dedicated-ipv4-in-january-1st/15970/24)我们现在允许同时拥有共享 IPv4 和专用 IPv4。这一变化应该使得**切换到共享 IPv4 无需停机**成为可能。
+[来源于 Jerome 的帖子：](https://community.fly.io/t/we-are-going-to-start-charging-for-dedicated-ipv4-in-january-1st/15970/24)我们现在允许同时拥有共享 IPv4 和专用 IPv4。这一变化应该使得**切换到共享 IPv4 无需停机**成为可能。
 
 产品如下：
 
@@ -47,7 +47,7 @@ v4     	66.241.125.86	shared	global
 
 +   通过共享 IP 确认你的应用程序是否正常工作：`curl -Iv http://<your-hostname> --resolve <your-hostname>:80:<shared ipv4 you got>`（应该会响应一个 301 重定向）
 
-+   等待 DNS 缓存清除... 可能需要5分钟，但这变化很大，这应该是你的 DNS 记录 TTL 和我们的 `<your-app>.fly.dev` 记录之间的最大值（我相信是300）。
++   等待 DNS 缓存清除... 可能需要 5 分钟，但这变化很大，这应该是你的 DNS 记录 TTL 和我们的 `<your-app>.fly.dev` 记录之间的最大值（我相信是 300）。
 
 +   从 Fly 中删除专用 IPv4（如果您手动设置了 A 记录，则可选地从您的 DNS 中删除）
 
@@ -57,7 +57,7 @@ v4     	66.241.125.86	shared	global
 
 ## 我可以预览一下这会收费多少吗？
 
-我们还在您的[发票页面](https://fly.io/dashboard/personal/billing)上发布了一个预览，告诉您到目前为止本月专用 IPv4 使用量。**目前这些不会添加到您的发票**，但到了~~1月1日~~ 2月1日它们将会在3月的发票中添加。这意味着是的，您从2022年1月至~~2023年11月底~~ 2023年1月底都享有免费的专用IPV4使用，我们不会对其收费。
+我们还在您的[发票页面](https://fly.io/dashboard/personal/billing)上发布了一个预览，告诉您到目前为止本月专用 IPv4 使用量。**目前这些不会添加到您的发票**，但到了~~1 月 1 日~~ 2 月 1 日它们将会在 3 月的发票中添加。这意味着是的，您从 2022 年 1 月至~~2023 年 11 月底~~ 2023 年 1 月底都享有免费的专用 IPV4 使用，我们不会对其收费。
 
 * * *
 

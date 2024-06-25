@@ -12,7 +12,7 @@ date: 2024-05-27 14:41:03
 
 -->
 
-# 来源：[https://andrewzuo.com/how-incompetent-middle-management-killed-google-0e3bf56924ac](https://andrewzuo.com/how-incompetent-middle-management-killed-google-0e3bf56924ac)
+# 来源：[`andrewzuo.com/how-incompetent-middle-management-killed-google-0e3bf56924ac`](https://andrewzuo.com/how-incompetent-middle-management-killed-google-0e3bf56924ac)
 
 但他最近确实出现在了一期“Flutter Boring”节目中。
 

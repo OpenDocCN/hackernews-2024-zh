@@ -8,7 +8,7 @@ date: 2024-05-27 14:27:48
 
 # 《人工科学》| 书目网关 | 麻省理工出版社
 
-> 来源：[https://direct.mit.edu/books/book/4551/The-Sciences-of-the-Artificial](https://direct.mit.edu/books/book/4551/The-Sciences-of-the-Artificial)
+> 来源：[`direct.mit.edu/books/book/4551/The-Sciences-of-the-Artificial`](https://direct.mit.edu/books/book/4551/The-Sciences-of-the-Artificial)
 
 本站使用 cookies。继续使用我们的网站，即表示您同意
 

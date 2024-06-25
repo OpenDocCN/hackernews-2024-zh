@@ -6,9 +6,9 @@ date: 2024-05-27 15:08:48
 
 -->
 
-# GitHub - andrewnguonly/Lumos: 一个由本地LLMs驱动的网页浏览的RAG LLM副驾驶员
+# GitHub - andrewnguonly/Lumos: 一个由本地 LLMs 驱动的网页浏览的 RAG LLM 副驾驶员
 
-> 来源：[https://github.com/andrewnguonly/Lumos](https://github.com/andrewnguonly/Lumos)
+> 来源：[`github.com/andrewnguonly/Lumos`](https://github.com/andrewnguonly/Lumos)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

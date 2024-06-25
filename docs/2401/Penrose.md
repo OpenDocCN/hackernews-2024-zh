@@ -8,7 +8,7 @@ date: 2024-05-27 14:49:10
 
 # Penrose
 
-> 来源：[https://penrose.cs.cmu.edu/](https://penrose.cs.cmu.edu/)
+> 来源：[`penrose.cs.cmu.edu/`](https://penrose.cs.cmu.edu/)
 
 # Penrose
 

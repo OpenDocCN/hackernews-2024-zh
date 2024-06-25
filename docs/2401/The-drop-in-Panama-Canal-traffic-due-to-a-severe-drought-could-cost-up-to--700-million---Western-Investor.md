@@ -8,7 +8,7 @@
 
 # 由于严重干旱导致巴拿马运河通行量下降，损失可能高达 7 亿美元——西部投资者
 
-> 来源：[https://www.westerninvestor.com/national-business/a-drought-has-forced-authorities-to-further-slash-traffic-in-panama-canal-disrupting-global-trade-8126368](https://www.westerninvestor.com/national-business/a-drought-has-forced-authorities-to-further-slash-traffic-in-panama-canal-disrupting-global-trade-8126368)
+> 来源：[`www.westerninvestor.com/national-business/a-drought-has-forced-authorities-to-further-slash-traffic-in-panama-canal-disrupting-global-trade-8126368`](https://www.westerninvestor.com/national-business/a-drought-has-forced-authorities-to-further-slash-traffic-in-panama-canal-disrupting-global-trade-8126368)
 
 巴拿马城（美联社）——去年开始的严重干旱迫使巴拿马运河当局将船只通行次数削减了 36%，这是世界上最重要的贸易路线之一。
 
@@ -16,7 +16,7 @@
 
 巴拿马当局周三宣布的这一新减少将给经济带来比之前预期更大的打击。
 
-巴拿马运河管理员Ricaurte Vásquez现在估计，下降的水位可能会导致他们在2024年的损失达到5亿至7亿美元，而之前的估计为2亿美元。
+巴拿马运河管理员 Ricaurte Vásquez 现在估计，下降的水位可能会导致他们在 2024 年的损失达到 5 亿至 7 亿美元，而之前的估计为 2 亿美元。
 
 这是中美洲国家遭遇的最严重干旱之一，引发了这条 50 英里（80 公里）的海上航线的混乱，导致船只交通堵塞，对国际航运的巴拿马运河的可靠性产生了疑虑，并引起了对其对全球贸易影响的担忧。
 
@@ -30,9 +30,9 @@
 
 Vásquez 表示，运河管理局将每日船只通行次数从去年正常时期的 38 次减少到 24 次。他补充说，在上财年第一季度，该通道的货物量比前一年同期减少了 20%，船只减少了 791 艘。
 
-Vásquez承认这是巴拿马的“重大减少”。但他表示，更“有效”的水资源管理和11月份的降雨增加至少保证了水位足够高，以便24艘船每天通行，直到四月底，也就是下一个雨季的开始。
+Vásquez 承认这是巴拿马的“重大减少”。但他表示，更“有效”的水资源管理和 11 月份的降雨增加至少保证了水位足够高，以便 24 艘船每天通行，直到四月底，也就是下一个雨季的开始。
 
-运河管理部门将干旱归因于厄尔尼诺天气现象和气候变化，并警告巴拿马迫切需要寻求新的水源，以供运河运营和人类消费之用。这些填满运河的湖泊也为超过400万人口的国家提供了50%以上的水资源。
+运河管理部门将干旱归因于厄尔尼诺天气现象和气候变化，并警告巴拿马迫切需要寻求新的水源，以供运河运营和人类消费之用。这些填满运河的湖泊也为超过 400 万人口的国家提供了 50%以上的水资源。
 
 “水问题是一个国家性的问题，不仅仅是运河的问题，”瓦斯克斯说道。“我们必须在整个国家范围内解决这个问题。”
 

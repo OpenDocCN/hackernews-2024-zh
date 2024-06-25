@@ -2,17 +2,17 @@
 
 类别：未分类
 
-日期：2024年05月27日14:49:55
+日期：2024 年 05 月 27 日 14:49:55
 
 -->
 
-# Charge Robotics的高级机械工程师 | Y Combinator
+# Charge Robotics 的高级机械工程师 | Y Combinator
 
-> 来源：[https://www.ycombinator.com/companies/charge-robotics/jobs/ml4f9l4-senior-mechanical-engineer](https://www.ycombinator.com/companies/charge-robotics/jobs/ml4f9l4-senior-mechanical-engineer)
+> 来源：[`www.ycombinator.com/companies/charge-robotics/jobs/ml4f9l4-senior-mechanical-engineer`](https://www.ycombinator.com/companies/charge-robotics/jobs/ml4f9l4-senior-mechanical-engineer)
 
-作为Charge Robotics的高级机械工程师，您将负责新型太阳能场组装机器人系统的大部分开发工作。
+作为 Charge Robotics 的高级机械工程师，您将负责新型太阳能场组装机器人系统的大部分开发工作。
 
-我们需要一位经验丰富的机械设计工程师来帮助设计我们的下一代交付系统，该系统可在现场搬运约40英尺、1吨重的太阳能场的部件。
+我们需要一位经验丰富的机械设计工程师来帮助设计我们的下一代交付系统，该系统可在现场搬运约 40 英尺、1 吨重的太阳能场的部件。
 
 你将与非常庞大的工业硬件合作，成为太阳能建筑的内行专家，并直接帮助加速全球向可再生能源的转变。
 
@@ -28,7 +28,7 @@
 
 ## 你
 
-+   有使用行业标准CAD软件的经验（我们使用Onshape）
++   有使用行业标准 CAD 软件的经验（我们使用 Onshape）
 
 +   知道如何制造自己的零件，但也知道何时将图纸发给车间
 
@@ -48,7 +48,7 @@
 
 +   拥有机械工程或相关领域的四年制学位
 
-Charge Robotics是一家获得Y Combinator支持的初创企业，致力于构建大型太阳能场的机器人。新太阳能项目的需求正在蓬勃发展（美国现有太阳能装机容量的五分之一是去年安装的！），但是由于劳动力资源有限，如今的建筑公司无法跟上。
+Charge Robotics 是一家获得 Y Combinator 支持的初创企业，致力于构建大型太阳能场的机器人。新太阳能项目的需求正在蓬勃发展（美国现有太阳能装机容量的五分之一是去年安装的！），但是由于劳动力资源有限，如今的建筑公司无法跟上。
 
 我们认为这太疯狂了，所以我们开始研发机器人，直接解决这一瓶颈问题，并加速世界向可再生能源的转变。
 

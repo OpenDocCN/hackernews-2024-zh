@@ -8,7 +8,7 @@
 
 # Anki - 强大、智能的闪卡应用
 
-> 来源：[https://apps.ankiweb.net/](https://apps.ankiweb.net/)
+> 来源：[`apps.ankiweb.net/`](https://apps.ankiweb.net/)
 
 从左边选择一个平台。
 
@@ -40,7 +40,7 @@ Anki 的源代码可在 GitHub 上获得。在 docs/ 文件夹中有构建的说
 
 *如果你买不起这个应用，你仍然可以使用*
 
-*[AnkiWeb](#)
+*AnkiWeb
 
 。
 

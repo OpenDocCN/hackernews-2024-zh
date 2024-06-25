@@ -2,13 +2,13 @@
 
 类别：未分类。
 
-日期：2024年5月27日，15:13:51。
+日期：2024 年 5 月 27 日，15:13:51。
 
 -->
 
 # 微软 Teams 在全球范围内停机超过八个小时——现在已经好转——The Verge
 
-> 来源：[https://www.theverge.com/2024/1/26/24051966/microsoft-teams-down-outage](https://www.theverge.com/2024/1/26/24051966/microsoft-teams-down-outage)
+> 来源：[`www.theverge.com/2024/1/26/24051966/microsoft-teams-down-outage`](https://www.theverge.com/2024/1/26/24051966/microsoft-teams-down-outage)
 > 
 > 标题：一些用户可能在其 Microsoft Teams 上遇到多个问题。
 > 
@@ -44,8 +44,8 @@
 > 
 > 最终状态：经过长时间的监控、各种优化和应对措施，我们确认我们的 Microsoft Teams 服务和功能已恢复或恢复到最佳状态。
 > 
-> 开始时间：2024年1月26日，UTC时间2:55 PM。
+> 开始时间：2024 年 1 月 26 日，UTC 时间 2:55 PM。
 > 
-> 结束时间：2024年1月27日，UTC时间1:30 AM。
+> 结束时间：2024 年 1 月 27 日，UTC 时间 1:30 AM。
 > 
 > 这是此事件的最终更新。

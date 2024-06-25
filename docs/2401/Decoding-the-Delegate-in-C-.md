@@ -8,7 +8,7 @@ date: 2024-05-27 14:44:59
 
 # 在 C# 中解码委托
 
-> 来源：[https://blog.upperdine.dev/decoding-the-delegate-in-csharp](https://blog.upperdine.dev/decoding-the-delegate-in-csharp)
+> 来源：[`blog.upperdine.dev/decoding-the-delegate-in-csharp`](https://blog.upperdine.dev/decoding-the-delegate-in-csharp)
 
 委托是 C# 的一种语言特性，已经存在了几年，通过利用它们，我们可以使我们的代码库更具组合性和适应性。您可能已经在您工作的代码库中遇到过这些，也可能没有，但是它们在通用代码中更为常见，例如库或框架代码。
 

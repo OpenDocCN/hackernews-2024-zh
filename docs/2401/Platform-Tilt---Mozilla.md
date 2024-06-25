@@ -8,7 +8,7 @@
 
 # 平台倾斜 - Mozilla
 
-> 来源：[https://mozilla.github.io/platform-tilt/](https://mozilla.github.io/platform-tilt/)
+> 来源：[`mozilla.github.io/platform-tilt/`](https://mozilla.github.io/platform-tilt/)
 
 有至少三个突出的 Windows 功能会在 Microsoft Edge 中打开 URL，而不是当前默认的浏览器。当内置操作系统功能打开网页时，应该尊重用户的默认浏览器选择。
 

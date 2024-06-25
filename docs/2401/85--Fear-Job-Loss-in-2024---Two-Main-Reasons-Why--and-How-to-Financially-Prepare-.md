@@ -8,7 +8,7 @@
 
 # 2024 年有 85% 的人担心失业 — 两个主要原因及如何做好财务准备
 
-> 来源：[https://finance.yahoo.com/news/85-fear-job-loss-2024-222143676.html](https://finance.yahoo.com/news/85-fear-job-loss-2024-222143676.html)
+> 来源：[`finance.yahoo.com/news/85-fear-job-loss-2024-222143676.html`](https://finance.yahoo.com/news/85-fear-job-loss-2024-222143676.html)
 
 skynesher / iStock.com
 
@@ -62,12 +62,12 @@ MyPerfectResume 的职业专家凯莉·汉娜表示，调查结果并不完全�
 
 实际上，在这项调查中有一个乐观的注记：67% 的人认为零工经济将在 2024 年继续扩展。
 
-**阅读：[13款最佳的PayPal赚钱游戏](https://www.gobankingrates.com/saving-money/entertainment/paypal-games-that-pay-real-money/?hyperlink_type=manual&utm_term=related_link_3&utm_campaign=1257273&utm_source=yahoo.com&utm_content=5&utm_medium=rss)**
+**阅读：[13 款最佳的 PayPal 赚钱游戏](https://www.gobankingrates.com/saving-money/entertainment/paypal-games-that-pay-real-money/?hyperlink_type=manual&utm_term=related_link_3&utm_campaign=1257273&utm_source=yahoo.com&utm_content=5&utm_medium=rss)**
 
 最后，汉娜补充说，随着工人继续在 2024 年中不确定性中航行，制定一个计划帮助他们应对快速和意外的变化，同时寻找机会是确保顺利度过这一艰难时期的关键步骤。
 
-**来自GOBankingRates的更多信息**
+**来自 GOBankingRates 的更多信息**
 
-**来自GOBankingRates的更多信息**
+**来自 GOBankingRates 的更多信息**
 
-本文最初发表在[GOBankingRates.com](https://www.gobankingrates.com?utm_term=incontent_link_13&utm_campaign=1257273&utm_source=yahoo.com&utm_content=16&utm_medium=rss)：[85%害怕2024年丢掉工作-两个主要原因（以及如何做好财务准备）](https://www.gobankingrates.com/money/jobs/85-percent-fear-job-loss-2024-main-reasons-how-financially-prepare/?utm_term=incontent_link_14&utm_campaign=1257273&utm_source=yahoo.com&utm_content=17&utm_medium=rss)
+本文最初发表在[GOBankingRates.com](https://www.gobankingrates.com?utm_term=incontent_link_13&utm_campaign=1257273&utm_source=yahoo.com&utm_content=16&utm_medium=rss)：[85%害怕 2024 年丢掉工作-两个主要原因（以及如何做好财务准备）](https://www.gobankingrates.com/money/jobs/85-percent-fear-job-loss-2024-main-reasons-how-financially-prepare/?utm_term=incontent_link_14&utm_campaign=1257273&utm_source=yahoo.com&utm_content=17&utm_medium=rss)

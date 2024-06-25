@@ -8,7 +8,7 @@
 
 # 在迁出 Google Cloud 时消除数据传输费用 | Google Cloud 博客
 
-> 来源：[https://cloud.google.com/blog/products/networking/eliminating-data-transfer-fees-when-migrating-off-google-cloud/](https://cloud.google.com/blog/products/networking/eliminating-data-transfer-fees-when-migrating-off-google-cloud/)
+> 来源：[`cloud.google.com/blog/products/networking/eliminating-data-transfer-fees-when-migrating-off-google-cloud/`](https://cloud.google.com/blog/products/networking/eliminating-data-transfer-fees-when-migrating-off-google-cloud/)
 
 在 Google Cloud，我们努力支持一个开放、安全和可互操作的蓬勃发展的云生态系统。当客户的业务需求发展时，云应该足够灵活以适应这些变化。
 

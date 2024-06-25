@@ -8,7 +8,7 @@ date: 2024-05-27 14:35:40
 
 # GitHub - xelxebar/dayaml：Dyalog APL 的 YAML 解析器
 
-> 来源：[https://github.com/xelxebar/dayaml](https://github.com/xelxebar/dayaml)
+> 来源：[`github.com/xelxebar/dayaml`](https://github.com/xelxebar/dayaml)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:25:12
 
 # 错误：404 Not Found - NHK WORLD
 
-> 来源：[https://www3.nhk.or.jp/nhkworld/en/news/20240101_15/](https://www3.nhk.or.jp/nhkworld/en/news/20240101_15/)
+> 来源：[`www3.nhk.or.jp/nhkworld/en/news/20240101_15/`](https://www3.nhk.or.jp/nhkworld/en/news/20240101_15/)
 
 # 错误：404 Not Found
 

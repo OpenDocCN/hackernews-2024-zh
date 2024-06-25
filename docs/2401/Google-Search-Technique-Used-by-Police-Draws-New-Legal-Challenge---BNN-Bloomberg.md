@@ -2,17 +2,17 @@
 
 分类：未分类
 
-日期：2024年05月27日14:33:35
+日期：2024 年 05 月 27 日 14:33:35
 
 -->
 
 # 谷歌搜索技术被警方使用引发新的法律挑战 - BNN 彭博社
 
-> 来源：[https://www.bnnbloomberg.ca/google-search-technique-used-by-police-draws-new-legal-challenge-1.2018433](https://www.bnnbloomberg.ca/google-search-technique-used-by-police-draws-new-legal-challenge-1.2018433)
+> 来源：[`www.bnnbloomberg.ca/google-search-technique-used-by-police-draws-new-legal-challenge-1.2018433`](https://www.bnnbloomberg.ca/google-search-technique-used-by-police-draws-new-legal-challenge-1.2018433)
 
 （彭博社）--公民自由倡导者正在对警方使用谷歌搜索数据协助解决刑事案件提出新的挑战，因为这一做法正在全国范围内受到更多关注。
 
-2016年，一名宾夕法尼亚州的妇女遭到强奸后，警方向 Alphabet 的 Google 提交了一份搜寻令，以获取在攻击发生前一周曾在搜索引擎中输入受害者姓名或地址的用户信息，根据法庭文件显示。Google 回应称，在事件发生前不久，有一名用户搜索了受害者地址两次，提供了该用户的 IP 地址，法庭文件显示。这一突破促使警方开始监视一名监狱官员，最终该官员被逮捕并定罪。
+2016 年，一名宾夕法尼亚州的妇女遭到强奸后，警方向 Alphabet 的 Google 提交了一份搜寻令，以获取在攻击发生前一周曾在搜索引擎中输入受害者姓名或地址的用户信息，根据法庭文件显示。Google 回应称，在事件发生前不久，有一名用户搜索了受害者地址两次，提供了该用户的 IP 地址，法庭文件显示。这一突破促使警方开始监视一名监狱官员，最终该官员被逮捕并定罪。
 
 上周五，电子前沿基金会、全国刑事辩护律师协会及其宾夕法尼亚州分会在一份法庭文件中表示，此案中使用的调查技术，即所谓的关键词搜索搜寻令，范围过于宽泛，威胁到无辜人士的隐私权。
 

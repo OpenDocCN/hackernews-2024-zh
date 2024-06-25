@@ -8,7 +8,7 @@
 
 # 你无法关注我
 
-> 来源：[https://so.nwalsh.com/2024/01/06-mastodon](https://so.nwalsh.com/2024/01/06-mastodon)
+> 来源：[`so.nwalsh.com/2024/01/06-mastodon`](https://so.nwalsh.com/2024/01/06-mastodon)
 
 几天前，我偶然发现了几篇关于将[Mastodon](https://en.wikipedia.org/wiki/Mastodon_(social_network))添加到（主要是）静态网站的博客文章。我觉得那听起来有点“有点酷。”这总是一个不好的迹象！酷。
 
@@ -26,7 +26,7 @@
 
 1.  我假设回复会作为帖子发送回收件箱，尽管我不能通过几分钟的随意网页搜索来证明这一点。
 
-第一个障碍是所有通信都必须是 HTTPS，这对于测试目的来说[不方便](/2023/12/31-https)。然后，为了获得[更好的隔离](/2024/01/06-isolation)，需要进行相当大的努力。
+第一个障碍是所有通信都必须是 HTTPS，这对于测试目的来说不方便。然后，为了获得更好的隔离，需要进行相当大的努力。
 
 一旦我搞定了这个，我就可以在我的笔记本电脑上启动一个[Mastodon 服务器](https://github.com/martinheinz/mastodon-local)了。但它能关注我的测试博客吗？
 

@@ -8,7 +8,7 @@
 
 # 仿真评估 2022 - Juiced.GS
 
-> 来源：[https://juiced.gs/emulators/](https://juiced.gs/emulators/)
+> 来源：[`juiced.gs/emulators/`](https://juiced.gs/emulators/)
 
 （*本文收集了 Ivan Drucker 在* Juiced.GS *的 2020 年 [12 月](https://juiced.gs/store/volume-25-2020/)、[2021 年](https://juiced.gs/store/volume-26-2021/) 和 [2022 年](https://juiced.gs/store/volume-27-2022/) 发布的模拟器评论。有关此处未审查的更新模拟器的完整评论，以及对下面所述模拟器最新版本的更新报告，请参阅 [2023 年 12 月号](https://juiced.gs/store/volume-28-2023/)！*）
 
@@ -40,7 +40,7 @@ Apple II 社区拥有各种优秀的模拟器选择，适用于 Mac、Windows、
 
 **作者：** Gerard Putter
 
-**提供自：** [https://virtualii.com/](https://virtualii.com/)
+**提供自：** [`virtualii.com/`](https://virtualii.com/)
 
 Virtual II 几乎能够满足你对模拟器的所有需求。它具有经过精心打磨的、易于导航的界面，并且忠实地再现了除 IIc Plus 之外的所有 8 位 Apple II 型号。然而，Virtual II 真正突出的地方在于它的虚拟硬件集合以及您可以部署它的灵活性。就像真正的 Apple II 一样，你可以选择要放入哪个插槽的外围设备卡，以及要将这些卡连接到哪些设备上。包括软驱和硬盘接口卡、内存卡、并行打印机卡、串行卡、CP/M 卡、时钟卡、Mockingboard 卡和鼠标卡。其中一些与 macOS 整合：超级串行卡可以通过实际的 macOS 界面发送和接收，其中一个打印机可以输出到 macOS 文本文件。Apple IIc 的仿真是一个较新的功能，缺乏其他型号的虚拟硬件功能，除了软驱和硬盘支持外，几乎没有提供任何功能。在版本 11.1 中，IIc ROM 0 被错误地标记为 Apple IIc Plus。
 
@@ -60,15 +60,15 @@ Virtual II 几乎能够满足你对模拟器的所有需求。它具有经过精
 
 **图像支持：** DSK、PO、HDV、2MG、NIB、WOZ、ZIP、GZ
 
-**状态：** 活跃开发中（v1.30.12.0，于2022年9月27日发布）
+**状态：** 活跃开发中（v1.30.12.0，于 2022 年 9 月 27 日发布）
 
 **作者：** 汤姆·查尔斯沃斯、尼克·韦斯特盖特、迈克尔·波霍雷斯基 等
 
-**可从以下位置获取：** [https://github.com/AppleWin/AppleWin/releases](https://github.com/AppleWin/AppleWin/releases)
+**可从以下位置获取：** [`github.com/AppleWin/AppleWin/releases`](https://github.com/AppleWin/AppleWin/releases)
 
-**macOS 变体：** [https://github.com/sh95014/AppleWin/](https://github.com/sh95014/AppleWin/)
+**macOS 变体：** [`github.com/sh95014/AppleWin/`](https://github.com/sh95014/AppleWin/)
 
-**Linux 变体：** [https://github.com/audetto/AppleWin/](https://github.com/audetto/AppleWin/)
+**Linux 变体：** [`github.com/audetto/AppleWin/`](https://github.com/audetto/AppleWin/)
 
 在微软 Windows 平台上，卓越的 8 位 Apple II 模拟器是 AppleWin，其起源可以追溯到 1994 年。AppleWin 界面简洁直观，几乎与其 Windows 3.1 时代的版本保持不变。它提供了准确的仿真，包括多种模拟显示器样式，以及一系列强大的虚拟硬件设备，预先分配到 Apple II 的典型插槽中。其中包括四个 5.25 英寸软盘驱动器和两个硬盘驱动器；Mockingboard（与大多数模拟器不同的是，具有语音功能）、Phasor 和 SAM 声卡；一个 CP/M 卡；一个 Uthernet I 或 II 网卡；一个 Super Serial 卡（可以通过真实的 Windows 串口或通过 TCP 进行通信）；一个鼠标；SNES MAX 和 4Play 游戏控制器卡，以及一个并行打印机卡。没有实际的打印机仿真；输出被发送到 Windows 文本文件中。不幸的是，窗口大小不能随意缩放。
 
@@ -90,13 +90,13 @@ AppleWin 与必要的 Apple II 磁盘映像工具 CiderPress 集成，可以方�
 
 **作者：** Kent Dickey
 
-**来源：** [https://kegs.sourceforge.net/](https://kegs.sourceforge.net/)
+**来源：** [`kegs.sourceforge.net/`](https://kegs.sourceforge.net/)
 
-**GSport：** [https://david-schmidt.github.io/gsport](https://david-schmidt.github.io/gsport)
+**GSport：** [`david-schmidt.github.io/gsport`](https://david-schmidt.github.io/gsport)
 
-**GSplus：** [https://apple2.gs/plus](https://apple2.gs/plus)
+**GSplus：** [`apple2.gs/plus`](https://apple2.gs/plus)
 
-**Android 变体：** [https://play.google.com/store/apps/details?id=com.froop.app.kegs](https://play.google.com/store/apps/details?id=com.froop.app.kegs)
+**Android 变体：** [`play.google.com/store/apps/details?id=com.froop.app.kegs`](https://play.google.com/store/apps/details?id=com.froop.app.kegs)
 
 KEGS（Kent’s Emulated GS）是一个功能非常丰富的 Apple IIGS 模拟器，起源于 1990 年代，具有略显笨拙（尽管不难）的文本菜单驱动界面。在经过 16 年的停滞后，KEGS 在 2020 年底开始接收出色的增强功能，超越了其分支 GSport 和 GSplus（这两个分支在本文的原始版本中分别进行了审查）。尽管存在一些不足之处，并且可能会在启动时存在一次性挑战，但 KEGS 是一个一流的模拟器，现在是 Mac 和 Linux 用户的最佳 Apple IIGS 模拟选项。（2022 年，Windows 支持正在筹备中；GSport 和 GSplus 仍然是 Windows 用户的有价值的替代品。）
 
@@ -130,11 +130,11 @@ GSport 由 David Schmidt 等人开发，GSplus 由 Dagen Brock 开发，是基�
 
 **作者：**Marc S. Ressl、Tobias Eriksson、Zellyn Hunter、4AM 等
 
-**获取地址：**[https://openemulator.github.io/](https://openemulator.github.io/)
+**获取地址：**[`openemulator.github.io/`](https://openemulator.github.io/)
 
 OpenEmulator 是一个易于使用的模拟器，旨在高度保真地呈现真实 Apple II 的外观，包括能够选择不同的历史显示器类型。模拟的机器状态可以随时保存。它通过虚拟插槽提供灵活性，可以连接虚拟硬件接口卡和配件。所表示的外设包括软盘（带有从真实驱动器采样的机械声音）和硬盘（支持多种图像格式），内存扩展，以及一些不寻常的选项，比如模拟的 Apple Graphics Tablet（与 Dazzle Draw 配合使用效果很好）、SilentType 热敏打印机和精密软盘调整。然而，也存在一些显著的遗漏，如时钟卡、鼠标卡、内存卡、声卡和 CPU 加速。
 
-近年来，OpenEmulator 并没有获得太多新的功能。话虽如此，开源社区成员仍然使 OpenEmulator 保持了相关性，添加了对 WOZ 磁盘映像和 Apple IIe 模拟的支持。也有一些瑕疵，比如一个选项来模拟 Apple III 只会产生一个错误，以及一个神秘的虚拟 CPU 插槽，在模拟器明显运行时显示“未连接”。2022 年，OpenEmulator 更新了bug修复，并且成为了 Apple Silicon 原生。
+近年来，OpenEmulator 并没有获得太多新的功能。话虽如此，开源社区成员仍然使 OpenEmulator 保持了相关性，添加了对 WOZ 磁盘映像和 Apple IIe 模拟的支持。也有一些瑕疵，比如一个选项来模拟 Apple III 只会产生一个错误，以及一个神秘的虚拟 CPU 插槽，在模拟器明显运行时显示“未连接”。2022 年，OpenEmulator 更新了 bug 修复，并且成为了 Apple Silicon 原生。
 
 对于想要一个免费、用户友好的 8 位 Apple II 模拟器并具有相当大的灵活性的 Mac 用户来说，OpenEmulator 是一个非常实用的选择。但如果它不能做你想要的事情，不要指望等待新版本中出现该功能。
 
@@ -150,33 +150,33 @@ OpenEmulator 是一个易于使用的模拟器，旨在高度保真地呈现真�
 
 **作者：**Keonwoo Kim
 
-**获取地址：**[https://github.com/sosaria7/appleinpc/releases](https://github.com/sosaria7/appleinpc/releases)
+**获取地址：**[`github.com/sosaria7/appleinpc/releases`](https://github.com/sosaria7/appleinpc/releases)
 
-AIPC起源于2000年代初，并在2016年以新的更新重新出现之前的很多年里很难找到。对于Windows用户来说，这是一个坚固的模拟器，以简单、实用的界面能够胜任基本的任务。
+AIPC 起源于 2000 年代初，并在 2016 年以新的更新重新出现之前的很多年里很难找到。对于 Windows 用户来说，这是一个坚固的模拟器，以简单、实用的界面能够胜任基本的任务。
 
-模拟的硬件包括鼠标、操纵杆、Mockingboard、Phasor、硬盘和5.25英寸软盘驱动器。卡片可以分配到任意槽位，一个不寻常的功能是可以定制Apple II屏幕颜色。Apple II机器状态可以在会话之间保存。模拟窗口不可缩放，只能以1x、2x和全屏显示。有一个6502调试器可用，但功能非常有限。虽然AIPC没有做什么事情，AppleWin也能做到，但我仍然喜欢它，因为它可能会有用，例如，如果配置一个具有多个软盘驱动器的虚拟Apple II，而AppleWin的固定槽位配置不提供此功能。
+模拟的硬件包括鼠标、操纵杆、Mockingboard、Phasor、硬盘和 5.25 英寸软盘驱动器。卡片可以分配到任意槽位，一个不寻常的功能是可以定制 Apple II 屏幕颜色。Apple II 机器状态可以在会话之间保存。模拟窗口不可缩放，只能以 1x、2x 和全屏显示。有一个 6502 调试器可用，但功能非常有限。虽然 AIPC 没有做什么事情，AppleWin 也能做到，但我仍然喜欢它，因为它可能会有用，例如，如果配置一个具有多个软盘驱动器的虚拟 Apple II，而 AppleWin 的固定槽位配置不提供此功能。
 
 ### **Ample**
 
 **平台：** macOS
 
-**模拟机型：** 所有8位Apple II型号（包括Apple IIc和IIc Plus）；Apple IIGS（ROM 00、01、3）；Apple-1；Apple III；Franklin、Laser和许多其他克隆机和国外市场变体
+**模拟机型：** 所有 8 位 Apple II 型号（包括 Apple IIc 和 IIc Plus）；Apple IIGS（ROM 00、01、3）；Apple-1；Apple III；Franklin、Laser 和许多其他克隆机和国外市场变体
 
 **图像支持：** DSK、PO、NIB、HDV、2MG、WOZ、DC42、EDD、CHD
 
-**状态：** 持续开发中（当前版本：r38/250，发布于2022年11月30日）
+**状态：** 持续开发中（当前版本：r38/250，发布于 2022 年 11 月 30 日）
 
 **作者：** Kelvin Sherlock
 
-**下载地址：** [https://github.com/ksherlock/ample/releases](https://github.com/ksherlock/ample/releases)
+**下载地址：** [`github.com/ksherlock/ample/releases`](https://github.com/ksherlock/ample/releases)
 
-Ample实际上不是一个模拟器，而是Mac用户的宝贵实用工具，它使得功能强大的多机多平台模拟器MAME（[以下评论](https://juiced.gs/emulators/#mame)）在Apple II模拟方面使用起来更加简便。
+Ample 实际上不是一个模拟器，而是 Mac 用户的宝贵实用工具，它使得功能强大的多机多平台模拟器 MAME（[以下评论](https://juiced.gs/emulators/#mame)）在 Apple II 模拟方面使用起来更加简便。
 
-Kelvin Sherlock的Ample解决了MAME启动时的复杂性问题。与其学习命令行语法或在笨拙的MAME图形界面中摸索，Ample为您完成了繁重的工作，提供了简单的控制，帮助您尽量减少麻烦，解锁MAME的功能。这并不意味着Ample将MAME转变成为像典型模拟器一样用户友好的东西，但它已经走了一部分路。
+Kelvin Sherlock 的 Ample 解决了 MAME 启动时的复杂性问题。与其学习命令行语法或在笨拙的 MAME 图形界面中摸索，Ample 为您完成了繁重的工作，提供了简单的控制，帮助您尽量减少麻烦，解锁 MAME 的功能。这并不意味着 Ample 将 MAME 转变成为像典型模拟器一样用户友好的东西，但它已经走了一部分路。
 
-除了提供预构建的、专门针对Apple II的MAME版本，以及为您获取所需的ROM文件外，Ample还提供了一个简单的窗口，让您指定您希望模拟的确切机器，以及您想要放入其槽位的外围卡（超过50个可用的卡片，按全名列出）。您还可以轻松选择其他模糊的MAME选项，例如捕获Mac鼠标，这消除了我在MAME评论中提到的GS/OS中的“双指针”问题。
+除了提供预构建的、专门针对 Apple II 的 MAME 版本，以及为您获取所需的 ROM 文件外，Ample 还提供了一个简单的窗口，让您指定您希望模拟的确切机器，以及您想要放入其槽位的外围卡（超过 50 个可用的卡片，按全名列出）。您还可以轻松选择其他模糊的 MAME 选项，例如捕获 Mac 鼠标，这消除了我在 MAME 评论中提到的 GS/OS 中的“双指针”问题。
 
-Ample将会按照您配置的方式启动MAME，尽管一旦运行，如果你想做一些事情，比如切换磁盘，你仍然需要按下Fn-delete，然后按tab键，以在MAME的棘手的本地界面中导航。Ample还提供了MAME及其Apple II专用模块的文档快捷方式。
+Ample 将会按照您配置的方式启动 MAME，尽管一旦运行，如果你想做一些事情，比如切换磁盘，你仍然需要按下 Fn-delete，然后按 tab 键，以在 MAME 的棘手的本地界面中导航。Ample 还提供了 MAME 及其 Apple II 专用模块的文档快捷方式。
 
 虽然使用专门的 Apple II 仿真器标题仍然不像使用专用 Apple II 仿真器标题那样流畅，但对于任何对使用 MAME 进行 Apple II 仿真感兴趣的 Mac 用户来说，Ample 都值得一试，特别是如果之前因此而受到阻止。
 
@@ -188,11 +188,11 @@ Ample将会按照您配置的方式启动MAME，尽管一旦运行，如果你�
 
 **图像支持：** DSK，PO，NIB，HDV
 
-**状态：** 不明确（当前版本：1.29.2，2019年2月16日发布）
+**状态：** 不明确（当前版本：1.29.2，2019 年 2 月 16 日发布）
 
 **作者：** Sergey Gromov 和 Oleg Odintsov
 
-**可用于：** [https://sourceforge.net/projects/agatemulator/files/agatemulator](https://sourceforge.net/projects/agatemulator/files/agatemulator)
+**可用于：** [`sourceforge.net/projects/agatemulator/files/agatemulator`](https://sourceforge.net/projects/agatemulator/files/agatemulator)
 
 Agat 不像其他 Apple II 仿真器那样广为人知，但它值得关注。以苏联制造的 Apple II 灵感为名（它也模拟了它），Agat 易于使用，具有一些原始功能，并且表现良好，提供了各种可以灵活配置的虚拟硬件。
 
@@ -212,9 +212,9 @@ Agat 似乎不太可能获得重大改进，但对于 Windows 用户来说，它
 
 **作者：** Paleotronic
 
-**状态：** 活跃开发中（构建 201912161141，2019年12月16日发布）
+**状态：** 活跃开发中（构建 201912161141，2019 年 12 月 16 日发布）
 
-**可用于：** [https://paleotronic.com/software/microm8/](https://paleotronic.com/software/microm8/)
+**可用于：** [`paleotronic.com/software/microm8/`](https://paleotronic.com/software/microm8/)
 
 microM8（早期版本称为 Octalyzer）是一个非常好的，但不寻常的 Apple II 模拟器。它与其他模拟器如此不同，以至于很难理解。虽然典型的模拟器通过软件模拟物理硬件，但 microM8 进入了一个真实的 Apple II 看不到的领域，如透视 3D 图形和可倒带的实时游戏。这个模拟器似乎不太关心忠实地复制 Apple II 的历史，而更关心通过虚拟化使 Woz 的宝贝执行酷炫的新技巧。
 
@@ -236,19 +236,19 @@ microM8 是一个高质量的产品，极具创意。如果将 Apple II 模拟�
 
 **图片支持：** DSK、PO、NIB、HDV、2MG、WOZ、DC42、EDD、CHD
 
-**状态：** 持续开发中（0.250，2022年11月30日发布）
+**状态：** 持续开发中（0.250，2022 年 11 月 30 日发布）
 
 **作者：** 各种各样
 
-**下载地址：** [https://mamedev.org/](https://mamedev.org/)
+**下载地址：** [`mamedev.org/`](https://mamedev.org/)
 
-MAME并非专门的Apple II模拟器。相反，它是一款超级模拟器，于1997年首次发布，现在支持成千上万种复古街机游戏和计算机，如果您能提供所需的机器ROM文件。这是历史游戏模拟中的一项重大成就。
+MAME 并非专门的 Apple II 模拟器。相反，它是一款超级模拟器，于 1997 年首次发布，现在支持成千上万种复古街机游戏和计算机，如果您能提供所需的机器 ROM 文件。这是历史游戏模拟中的一项重大成就。
 
-MAME最初模拟街机游戏机，但其范围已扩展到包括个人计算机（通过整合了一个名为MESS的分支项目），其中包括Apple II。MAME的Apple II功能非常强大，但不太好玩，因为它们受到一个与所有其他模拟的街机游戏和计算机共享的不直观的通用界面的限制；直接从命令提示符启动MAME的Apple II模拟可能更容易。此外，没有太多的Apple II特定文档。对于大多数人来说，专用的Apple II模拟器会做得更好。
+MAME 最初模拟街机游戏机，但其范围已扩展到包括个人计算机（通过整合了一个名为 MESS 的分支项目），其中包括 Apple II。MAME 的 Apple II 功能非常强大，但不太好玩，因为它们受到一个与所有其他模拟的街机游戏和计算机共享的不直观的通用界面的限制；直接从命令提示符启动 MAME 的 Apple II 模拟可能更容易。此外，没有太多的 Apple II 特定文档。对于大多数人来说，专用的 Apple II 模拟器会做得更好。
 
-话虽如此，MAME的理念不仅仅是模拟，而是硬件的永存，因此提供了大量的虚拟历史Apple II接口卡和外设，其中一些我甚至不知道存在。它也是我所知道的唯一一款提供Apple III模拟的现代模拟器，而且MAME可以运行在几乎每个个人计算机平台上。如果您对这些功能感兴趣，MAME可能值得一试。此外，MAME的Apple II功能经常得到改进。MAME的Apple IIGS模拟之所以值得注意，是因为它确实存在，并且可以工作，但它也有一些具有挑战性的方面，比如在窗口模式下没有隐藏宿主机鼠标指针，除非使用一个隐晦的命令行选项。
+话虽如此，MAME 的理念不仅仅是模拟，而是硬件的永存，因此提供了大量的虚拟历史 Apple II 接口卡和外设，其中一些我甚至不知道存在。它也是我所知道的唯一一款提供 Apple III 模拟的现代模拟器，而且 MAME 可以运行在几乎每个个人计算机平台上。如果您对这些功能感兴趣，MAME 可能值得一试。此外，MAME 的 Apple II 功能经常得到改进。MAME 的 Apple IIGS 模拟之所以值得注意，是因为它确实存在，并且可以工作，但它也有一些具有挑战性的方面，比如在窗口模式下没有隐藏宿主机鼠标指针，除非使用一个隐晦的命令行选项。
 
-在使用MAME时，一个重要的键盘命令是前删除（在没有Del键的Mac上是Fn-delete），它在启用MAME的键盘控制和将所有键发送到模拟的Apple II之间切换。另外，如果您希望MAME在窗口中运行，而不是全屏，请从命令提示符启动它，并使用“-window”选项。请注意，MAME图形界面中提供的许多设置既不作为机器状态的一部分保存，也不作为配置的一部分保存，因此您最好完全绕过GUI，并使用命令提示符选项和配置文件编辑来精确指定您在虚拟Apple II中需要的内容。我强烈建议阅读MAME的通用文档以及在主分发站点的wiki中找到的其Apple II专用注释。推荐Mac用户使用Ample（[在此上面评论](https://juiced.gs/emulators/#ample)）以减少启动MAME的难度。
+在使用 MAME 时，一个重要的键盘命令是前删除（在没有 Del 键的 Mac 上是 Fn-delete），它在启用 MAME 的键盘控制和将所有键发送到模拟的 Apple II 之间切换。另外，如果您希望 MAME 在窗口中运行，而不是全屏，请从命令提示符启动它，并使用“-window”选项。请注意，MAME 图形界面中提供的许多设置既不作为机器状态的一部分保存，也不作为配置的一部分保存，因此您最好完全绕过 GUI，并使用命令提示符选项和配置文件编辑来精确指定您在虚拟 Apple II 中需要的内容。我强烈建议阅读 MAME 的通用文档以及在主分发站点的 wiki 中找到的其 Apple II 专用注释。推荐 Mac 用户使用 Ample（[在此上面评论](https://juiced.gs/emulators/#ample)）以减少启动 MAME 的难度。
 
 ### **LinApple**
 
@@ -258,11 +258,11 @@ MAME最初模拟街机游戏机，但其范围已扩展到包括个人计算机�
 
 **图像支持：** DSK，PO，NIB，HDV
 
-**状态：** 不清楚（v2b于2015年6月26日发布；存在更新的分支，但没有正式发布）
+**状态：** 不清楚（v2b 于 2015 年 6 月 26 日发布；存在更新的分支，但没有正式发布）
 
 **作者：** 各种各样（创建者：Andrey Tzar）
 
-**可从：** [https://linapple.sourceforge.net/](https://linapple.sourceforge.net/)（2015 年发布），[https://github.com/linappleii/linapple](https://github.com/linappleii/linapple)（当前）
+**可从：** [`linapple.sourceforge.net/`](https://linapple.sourceforge.net/)（2015 年发布），[`github.com/linappleii/linapple`](https://github.com/linappleii/linapple)（当前）
 
 LinApple 类似于 2007 年的 AppleWin，但具有不同的用户界面。与 AppleWin 相比，LinApple 缺少一些功能，并添加了一些新功能。LinApple 的大部分代码都是基于 AppleWin 的，因此它很好地模拟了 Apple II，但在操作上与 AppleWin 相比感觉完全不同。没有图形控件。所有操作都通过功能键完成——幸运的是，提供了一个帮助屏幕——并且通过编辑文本文件进行配置。我通常认为这些是负面的，但对于 Linux 来说并不罕见。同样，LinApple 必须从源代码编译。换句话说，LinApple 需要比其他模拟器更多的技术能力。
 
@@ -290,27 +290,27 @@ LinApple 的一个迷人之处是作者对项目和 Apple II 显而易见的热�
 
 **可从：** https://scullinsteel.com
 
-由Will Scullin开发的Apple ][js（以及Apple //jse和Apple 1js）是一款令人印象深刻的基于Web的开源模拟器，采用TypeScript和HTML5编写。提供了一个软件库，并在典型的插槽中模拟了常见硬件，包括5.25英寸软盘驱动器、硬盘、打印机和鼠标。可以上传本地存储的磁盘映像。并非每个功能都显而易见，而且不幸的是，没有文档。屏幕键盘确保可以发送所有Apple II按键，但在移动电话上，它的键很小，在桌面浏览器上，它的放置位置位于Apple II显示屏下方，降低了屏幕区域。尽管Apple ][js的功能不及本文描述的其他模拟器那么全面，但它成功地执行了基本操作，甚至更多——考虑到Web浏览器的受限环境，这并不是一件小事。
+由 Will Scullin 开发的 Apple ][js（以及 Apple //jse 和 Apple 1js）是一款令人印象深刻的基于 Web 的开源模拟器，采用 TypeScript 和 HTML5 编写。提供了一个软件库，并在典型的插槽中模拟了常见硬件，包括 5.25 英寸软盘驱动器、硬盘、打印机和鼠标。可以上传本地存储的磁盘映像。并非每个功能都显而易见，而且不幸的是，没有文档。屏幕键盘确保可以发送所有 Apple II 按键，但在移动电话上，它的键很小，在桌面浏览器上，它的放置位置位于 Apple II 显示屏下方，降低了屏幕区域。尽管 Apple ][js 的功能不及本文描述的其他模拟器那么全面，但它成功地执行了基本操作，甚至更多——考虑到 Web 浏览器的受限环境，这并不是一件小事。
 
 ### **cyanIIde**
 
-**平台：**Web浏览器
+**平台：**Web 浏览器
 
 **模拟的型号：**Apple IIe（E）
 
 **图像支持：**DSK、PO、NIB、HDV、2MG、WOZ
 
-**状态：**积极开发中（2022年8月6日发布了第二次公告）
+**状态：**积极开发中（2022 年 8 月 6 日发布了第二次公告）
 
 **作者：**Paleotronic
 
-**来源：**[https://paleotronic.com/cyaniide](https://paleotronic.com/cyaniide)
+**来源：**[`paleotronic.com/cyaniide`](https://paleotronic.com/cyaniide)
 
-cyanIIde（读作“氰化物”）是一款由microM8模拟器制造商推出的Web端、无费用、闭源模拟器。它托管在Paleotronic网站上，但主要用于在个人网站上嵌入Apple II程序，尽管关于这样做的文档很少。cyanIIde以在Web浏览器中具有周期精确视频渲染、游戏手柄支持和打印机仿真等特点而著称，还具有独特的Applesoft和汇编语言编辑器。尽管用户界面上的功能不多，但cyanIIde似乎提供了高质量的仿真体验。您只能插入磁盘映像，就这些了。移动设备用户需要一个物理键盘进行输入。cyanIIde可能不是最灵活的用于日常使用的基于Web的模拟器，但如果您想要在您的网站上嵌入一个Apple II，它还是相当酷的。由于使用WebAssembly编写，cyanIIde可能不适用于每个浏览器。
+cyanIIde（读作“氰化物”）是一款由 microM8 模拟器制造商推出的 Web 端、无费用、闭源模拟器。它托管在 Paleotronic 网站上，但主要用于在个人网站上嵌入 Apple II 程序，尽管关于这样做的文档很少。cyanIIde 以在 Web 浏览器中具有周期精确视频渲染、游戏手柄支持和打印机仿真等特点而著称，还具有独特的 Applesoft 和汇编语言编辑器。尽管用户界面上的功能不多，但 cyanIIde 似乎提供了高质量的仿真体验。您只能插入磁盘映像，就这些了。移动设备用户需要一个物理键盘进行输入。cyanIIde 可能不是最灵活的用于日常使用的基于 Web 的模拟器，但如果您想要在您的网站上嵌入一个 Apple II，它还是相当酷的。由于使用 WebAssembly 编写，cyanIIde 可能不适用于每个浏览器。
 
-## **其他Apple II模拟器**
+## **其他 Apple II 模拟器**
 
-尽管它们缺少必要的功能或支持，但还值得一提的是其他一些Apple II模拟器。
+尽管它们缺少必要的功能或支持，但还值得一提的是其他一些 Apple II 模拟器。
 
 ### **ApplePi**
 
@@ -320,11 +320,11 @@ cyanIIde（读作“氰化物”）是一款由microM8模拟器制造商推出�
 
 **图像支持：**DSK、PO、HDV、2MG
 
-**状态：**积极开发中（2022年2月9日发布了v0.2.3）
+**状态：**积极开发中（2022 年 2 月 9 日发布了 v0.2.3）
 
 **作者：**Bruce Ward
 
-**来源：**[https://github.com/FZBunny/applepi](https://github.com/FZBunny/applepi)
+**来源：**[`github.com/FZBunny/applepi`](https://github.com/FZBunny/applepi)
 
 ApplePi 是一个最近为 Linux 用户推出的模拟器，具有软驱和硬盘仿真功能，强大的调试器以及清晰的图形用户界面。它的虚拟外设支持非常有限。虽然设计用于树莓派，但 ApplePi 在任何 Debian 或 Ubuntu 类型的系统上都能很好地工作。（请注意，这个模拟器与 Apple II Pi 项目无关。）不幸的是，ApplePi 不支持 WOZ 或 NIB 格式的磁盘镜像，也不支持 13 扇区磁盘，并且它为所有模拟机器配备了 65C02，即使真实硬件配备了 6502，这可能降低了与一些早期软件的兼容性。尽管存在这些问题，但如果你只需要基础功能，ApplePi 是我在 Linux 上见过的最简单、最吸引人的标题。
 
@@ -340,7 +340,7 @@ ApplePi 是一个最近为 Linux 用户推出的模拟器，具有软驱和硬�
 
 **作者：**汤姆·哈特
 
-**可从以下地址获取：**[https://github.com/TomHarte/CLK/releases](https://github.com/TomHarte/CLK/releases)
+**可从以下地址获取：**[`github.com/TomHarte/CLK/releases`](https://github.com/TomHarte/CLK/releases)
 
 《时钟信号》（Apple II 模块），由汤姆·哈特编写，是 macOS 的一款多机模拟器，于 2018 年首次获得 Apple II 支持。它专注于高性能和极其准确的模拟模拟视频和音频，涵盖了各种古董机器，不仅仅是 Apple II（它对 Apple II 在模糊 CRT 上的再现确实令人印象深刻）。然而，这个模拟器非常需要一个手册或者一个更易于发现命令的界面；它的极简主义“它只是工作”的设计理念让人难以理解，完整的功能集也是未知的 —— 我甚至搞不清楚如何按重置。一些 bug 也是明显的。作为一个带有非常忠实的低保真 CRT 仿真的双软盘 8 位 Apple II 模拟器，《时钟信号》虽然可用，但由于有更灵活的 Apple II 模拟器可用，它并不是我的首选。
 

@@ -8,19 +8,19 @@ date: 2024-05-27 15:16:58
 
 # 试图使 sudo 对 ROWHAMMER 攻击更不易受到攻击。 · sudo-project/sudo@7873f83 · GitHub
 
-> 来源：[https://github.com/sudo-project/sudo/commit/7873f8334c8d31031f8cfa83bd97ac6029309e4f](https://github.com/sudo-project/sudo/commit/7873f8334c8d31031f8cfa83bd97ac6029309e4f)
+> 来源：[`github.com/sudo-project/sudo/commit/7873f8334c8d31031f8cfa83bd97ac6029309e4f`](https://github.com/sudo-project/sudo/commit/7873f8334c8d31031f8cfa83bd97ac6029309e4f)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 
 <main id="js-repo-pjax-container"> <turbo-frame id="repo-content-turbo-frame" target="_top" data-turbo-action="advance" class="">## 提交
 
-[永久链接](/sudo-project/sudo/commit/7873f8334c8d31031f8cfa83bd97ac6029309e4f)
+永久链接
 
 此提交不属于此存储库上的任何分支，可能属于存储库外的一个分支。
 
 试图使 sudo 对 ROWHAMMER 攻击更不易受到攻击。
 
-[浏览文件](/sudo-project/sudo/tree/7873f8334c8d31031f8cfa83bd97ac6029309e4f) <tool-tip id="tooltip-9f617571-a394-4c33-bd26-a9aa66f225b0" for="browse-at-time-link" popover="manual" data-direction="ne" data-type="description" data-view-component="true" class="sr-only position-absolute">在历史记录中的这一点浏览存储库</tool-tip>
+浏览文件 <tool-tip id="tooltip-9f617571-a394-4c33-bd26-a9aa66f225b0" for="browse-at-time-link" popover="manual" data-direction="ne" data-type="description" data-view-component="true" class="sr-only position-absolute">在历史记录中的这一点浏览存储库</tool-tip>
 
 ```
 We now use ROWHAMMER-resistent values for ALLOW, DENY, AUTH_SUCCESS,

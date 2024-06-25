@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:47:32
+日期：2024 年 05 月 27 日 14:47:32
 
 -->
 
 # GitHub - ludios/expand-everything：一个用户脚本，点击“显示更多”链接以展开页面上的所有文本，而不会减慢速度太多。
 
-> 来源：[https://github.com/ludios/expand-everything](https://github.com/ludios/expand-everything)
+> 来源：[`github.com/ludios/expand-everything`](https://github.com/ludios/expand-everything)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

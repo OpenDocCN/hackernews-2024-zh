@@ -8,13 +8,13 @@
 
 # 引用犯罪，In-N-Out 宣布关闭奥克兰餐厅 - CBS 旧金山
 
-> 来源：[https://www.cbsnews.com/sanfrancisco/news/citing-crime-in-n-out-announces-closure-oakland-restaurant/](https://www.cbsnews.com/sanfrancisco/news/citing-crime-in-n-out-announces-closure-oakland-restaurant/)
+> 来源：[`www.cbsnews.com/sanfrancisco/news/citing-crime-in-n-out-announces-closure-oakland-restaurant/`](https://www.cbsnews.com/sanfrancisco/news/citing-crime-in-n-out-announces-closure-oakland-restaurant/)
 
 In-N-Out 周日表示，出于对顾客和员工安全的考虑，将于三月关闭其在奥克兰唯一的餐厅。
 
 该位置位于奥克兰国际机场附近的 8300 Oakport St。In-N-Out 汉堡店紧随去年因犯罪为主要因素而关闭的一长串企业之后。
 
-**更新：**[奥克兰市长将在In-N-Out关闭公告后进一步保护Hegenberger走廊](https://www.cbsnews.com/sanfrancisco/news/oakland-mayor-to-work-on-further-protecting-hegenberger-corridor-after-in-n-out-closure-announcement/)
+**更新：**[奥克兰市长将在 In-N-Out 关闭公告后进一步保护 Hegenberger 走廊](https://www.cbsnews.com/sanfrancisco/news/oakland-mayor-to-work-on-further-protecting-hegenberger-corridor-after-in-n-out-closure-announcement/)
 
 周日晚上餐厅内车辆熙熙攘攘，长长的车队在车道上蠕动，许多顾客在内部用餐，包括忠实的顾客珍·邦迪。
 
@@ -26,13 +26,13 @@ In-N-Out 周日表示，出于对顾客和员工安全的考虑，将于三月�
 
 不到两个月前，当他在用餐室内吃饭时，他的卡车就被破坏了。
 
-"他们试图偷我的车，但我有一个杀死开关。所以他们拿不到我的车，但他们把我的所有东西都拿走了，" Bundy回忆道。
+"他们试图偷我的车，但我有一个杀死开关。所以他们拿不到我的车，但他们把我的所有东西都拿走了，" Bundy 回忆道。
 
 他估计损失大约 500 美元。现在他的伙伴在卡车里等着，而他在里面点餐。他说他对 In-N-Out 关闭奥克兰店并不感到惊讶。
 
 "这真是一个悲伤的时刻，" Bundy 说。
 
-"我肯定感到沮丧。因为如果不是因为出现在此的In-N-Out，明天就会有别的问题，" 奥克兰居民珍妮·戈普纳说。
+"我肯定感到沮丧。因为如果不是因为出现在此的 In-N-Out，明天就会有别的问题，" 奥克兰居民珍妮·戈普纳说。
 
 "这些是人们的工作，有工作很重要，这样我们才能在社区里花钱，" 奥克兰居民达里尔·布朗说。
 
@@ -48,35 +48,35 @@ In-N-Out 周日表示，出于对顾客和员工安全的考虑，将于三月�
 
 "[小偷们]时刻注意四周，然后他们看到警察离开一会儿，这时他们就抓住机会，" Nunez-Valenzuela 说道。
 
-In-N-Out发布了一份声明，部分内容如下：“尽管我们反复采取措施创造更安全的条件，但我们的顾客和员工仍经常成为车辆被砸、财产损坏、盗窃和抢劫的受害者。”
+In-N-Out 发布了一份声明，部分内容如下：“尽管我们反复采取措施创造更安全的条件，但我们的顾客和员工仍经常成为车辆被砸、财产损坏、盗窃和抢劫的受害者。”
 
 完整的声明如下。
 
 ## 奥克兰市议员呼吁市政府和市长提供更多警力资源
 
-"我们处于紧急状态。我们处于紧急状态。难道只有宣布紧急状态才能提供（服务），当我们正在经历这种情况时吗。我的选区一直处于危机之中，" 代表该地区的议员Treva Reid说道。
+"我们处于紧急状态。我们处于紧急状态。难道只有宣布紧急状态才能提供（服务），当我们正在经历这种情况时吗。我的选区一直处于危机之中，" 代表该地区的议员 Treva Reid 说道。
 
-她表示，她一直在呼吁市议会和市长Sheng Thao提供更多警力资源。但她表示自己几乎没有得到任何支持。
+她表示，她一直在呼吁市议会和市长 Sheng Thao 提供更多警力资源。但她表示自己几乎没有得到任何支持。
 
 "奥克兰机场，Hegenberger/98th 地区走廊是通往东湾的入口。我们必须投入更多并在如何支持和加强这一走廊上进行区域性和州际性的合作，" Reid 说道。
 
-[去年年底，同一区域的一家星巴克店关闭了。](https://www.cbsnews.com/sanfrancisco/news/3-chain-businesses-near-oakland-coliseum-shut-down-due-to-rampant-car-break-ins/) Raising Cane's 仅提供外带服务以防止车辆被砸。In-N-Out表示，其最后一天将是3月24日。
+[去年年底，同一区域的一家星巴克店关闭了。](https://www.cbsnews.com/sanfrancisco/news/3-chain-businesses-near-oakland-coliseum-shut-down-due-to-rampant-car-break-ins/) Raising Cane's 仅提供外带服务以防止车辆被砸。In-N-Out 表示，其最后一天将是 3 月 24 日。
 
 "这是有史以来最糟糕的情况," Bundy 说道。
 
-KPIX在周日下午联系了市长Thao的新闻办公室以便置评。到了截稿时间我们还未收到回复。
+KPIX 在周日下午联系了市长 Thao 的新闻办公室以便置评。到了截稿时间我们还未收到回复。
 
-In-N-Out分店关闭只是奥克兰众多企业关闭的最新案例。其中许多企业主都将犯罪列为造成关闭的因素之一。
+In-N-Out 分店关闭只是奥克兰众多企业关闭的最新案例。其中许多企业主都将犯罪列为造成关闭的因素之一。
 
-[奥克兰的热门越南餐厅Le Cheval在去年九月关闭了大门。](https://www.cbsnews.com/sanfrancisco/news/zombie-apocalypse-crime-fears-kill-business-oakland-restaurant/)店主Son Tran告诉CBS新闻湾区，犯罪正在摧毁他的生意。
+[奥克兰的热门越南餐厅 Le Cheval 在去年九月关闭了大门。](https://www.cbsnews.com/sanfrancisco/news/zombie-apocalypse-crime-fears-kill-business-oakland-restaurant/)店主 Son Tran 告诉 CBS 新闻湾区，犯罪正在摧毁他的生意。
 
 除了在餐厅反复发生的入室行窃外，Tran 还将汽车盗窃和暴力犯罪归咎于关闭。他说，一些顾客甚至被持枪抢劫。
 
-"即使就在餐厅前面，他们的车也被砸了。他们非常生气。他们告诉我‘Son，我喜欢你的餐厅。我喜欢你的食物。我喜欢你的家庭，但是我不能再回到奥克兰了。一个$30的餐变成了$500多，" Tran 说道。
+"即使就在餐厅前面，他们的车也被砸了。他们非常生气。他们告诉我‘Son，我喜欢你的餐厅。我喜欢你的食物。我喜欢你的家庭，但是我不能再回到奥克兰了。一个$30 的餐变成了$500 多，" Tran 说道。
 
-去年九月底，200名奥克兰企业主因为市内犯罪问题感到厌倦，[举行了为期一天的罢工，以引起官员对他们所谓的不作为的关注。](https://www.cbsnews.com/sanfrancisco/news/over-200-businesses-close-up-shop-for-strike-over-rampant-oakland-crime/)
+去年九月底，200 名奥克兰企业主因为市内犯罪问题感到厌倦，[举行了为期一天的罢工，以引起官员对他们所谓的不作为的关注。](https://www.cbsnews.com/sanfrancisco/news/over-200-businesses-close-up-shop-for-strike-over-rampant-oakland-crime/)
 
-## 关于奥克兰分店关闭的In-N-Out全面声明
+## 关于奥克兰分店关闭的 In-N-Out 全面声明
 
 *由于持续发生的犯罪问题，我们决定关闭位于加利福尼亚奥克兰的 In-N-Out 汉堡店。尽管我们已经采取了多次措施创造更安全的条件，但我们的顾客和员工仍经常成为汽车砸窗、财产损失、盗窃和持枪抢劫的受害者。我们在奥克兰的最后营业日将是 2024 年 3 月 24 日。*
 

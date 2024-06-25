@@ -8,7 +8,7 @@ date: 2024-05-27 15:03:37
 
 # Oh My Zsh - 一个令人愉悦的、开源的 Zsh 框架
 
-> 来源：[https://ohmyz.sh/](https://ohmyz.sh/)
+> 来源：[`ohmyz.sh/`](https://ohmyz.sh/)
 
 ## Oh My Zsh 是什么？
 

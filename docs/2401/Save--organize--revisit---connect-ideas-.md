@@ -8,7 +8,7 @@
 
 # 保存、组织、重新访问和连接思想。
 
-> 来源：[https://zlinky.com/](https://zlinky.com/)
+> 来源：[`zlinky.com/`](https://zlinky.com/)
 
 # 发现 Zlinky
 

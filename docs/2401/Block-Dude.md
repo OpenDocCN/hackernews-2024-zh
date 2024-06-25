@@ -8,7 +8,7 @@ date: 2024-05-27 15:17:24
 
 # 方块小子
 
-> 来源：[https://azich.org/blockdude/](https://azich.org/blockdude/)
+> 来源：[`azich.org/blockdude/`](https://azich.org/blockdude/)
 
 触摸、向左、向右、向上或向下拖动，然后释放以移动角色。
 

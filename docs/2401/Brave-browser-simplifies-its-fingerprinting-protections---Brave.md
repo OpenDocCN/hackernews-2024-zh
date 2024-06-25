@@ -8,7 +8,7 @@ date: 2024-05-27 15:00:53
 
 # Brave 浏览器简化了其指纹保护功能 | Brave
 
-> 来源：[https://brave.com/privacy-updates/28-sunsetting-strict-fingerprinting-mode/](https://brave.com/privacy-updates/28-sunsetting-strict-fingerprinting-mode/)
+> 来源：[`brave.com/privacy-updates/28-sunsetting-strict-fingerprinting-mode/`](https://brave.com/privacy-updates/28-sunsetting-strict-fingerprinting-mode/)
 
 ## 准备好迎接更好的互联网了吗？
 

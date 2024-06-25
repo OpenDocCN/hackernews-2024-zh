@@ -6,13 +6,13 @@
 
 -->
 
-# [程序员应该了解的50种算法 - 第二版](https://www.oreilly.com/library/view/50-algorithms-every/9781803247762/) [书籍]
+# [程序员应该了解的 50 种算法 - 第二版](https://www.oreilly.com/library/view/50-algorithms-every/9781803247762/) [书籍]
 
-> 来源：[https://www.oreilly.com/library/view/50-algorithms-every/9781803247762/](https://www.oreilly.com/library/view/50-algorithms-every/9781803247762/)
+> 来源：[`www.oreilly.com/library/view/50-algorithms-every/9781803247762/`](https://www.oreilly.com/library/view/50-algorithms-every/9781803247762/)
 
 ## 书籍描述
 
-**深入探讨生成式人工智能和大型语言模型（LLMs），探索现代深度学习技术，包括LSTMs、GRUs、带有新章节的RNNs，本次50%新版改造中包括购买印刷版或Kindle书籍的免费PDF电子书。**
+**深入探讨生成式人工智能和大型语言模型（LLMs），探索现代深度学习技术，包括 LSTMs、GRUs、带有新章节的 RNNs，本次 50%新版改造中包括购买印刷版或 Kindle 书籍的免费 PDF 电子书。**
 
 #### 主要特性
 
@@ -30,7 +30,7 @@
 
 案例研究将向您展示如何最优地应用这些算法，然后您将专注于深度学习算法，并了解不同类型的深度学习模型以及它们的实际用途。
 
-您还将了解现代顺序模型及其变体，用于实现大型语言模型（LLMs）如ChatGPT所使用的算法、方法和体系结构。
+您还将了解现代顺序模型及其变体，用于实现大型语言模型（LLMs）如 ChatGPT 所使用的算法、方法和体系结构。
 
 最后，您将熟悉能够进行并行处理的技术，使您能够将这些算法用于计算密集型任务。
 
@@ -42,7 +42,7 @@
 
 +   熟悉神经网络和深度学习技术
 
-+   探索Python库中存在的现有数据结构和算法
++   探索 Python 库中存在的现有数据结构和算法
 
 +   使用网络分析实现欺诈检测的图算法
 
@@ -50,7 +50,7 @@
 
 +   创建一个推荐引擎，向订阅者推荐相关电影
 
-+   掌握顺序机器学习模型的概念及其在开发尖端LLMs中的基础作用
++   掌握顺序机器学习模型的概念及其在开发尖端 LLMs 中的基础作用
 
 #### 这本书是为谁准备的
 

@@ -8,7 +8,7 @@
 
 # 美国正在创造比历史上任何国家都更多的石油 | CNN 商业
 
-> 来源：[https://www.cnn.com/2023/12/19/business/us-production-oil-reserves-crude/index.html](https://www.cnn.com/2023/12/19/business/us-production-oil-reserves-crude/index.html)
+> 来源：[`www.cnn.com/2023/12/19/business/us-production-oil-reserves-crude/index.html`](https://www.cnn.com/2023/12/19/business/us-production-oil-reserves-crude/index.html)
 
 纽约 CNN  —
 
@@ -32,11 +32,11 @@
 
 所有这些都有助于保持油价相对稳定。在今年早些时候接近 100 美元/桶后，原油价格已经回落至 70 至 75 美元/桶。
 
-BP停止通过红海运输石油之后，本周能源价格出现了上涨，原因是出于安全顾虑（[链接在此](https://www.cnn.com/2023/12/18/politics/commercial-ships-red-sea-gulf-of-aden-houthi-attacks/index.html)）。即便如此，美国石油的交易价格低于每桶74美元，远低于哈马斯于10月7日袭击以色列时的价格。
+BP 停止通过红海运输石油之后，本周能源价格出现了上涨，原因是出于安全顾虑（[链接在此](https://www.cnn.com/2023/12/18/politics/commercial-ships-red-sea-gulf-of-aden-houthi-attacks/index.html)）。即便如此，美国石油的交易价格低于每桶 74 美元，远低于哈马斯于 10 月 7 日袭击以色列时的价格。
 
-今年九月，汽油价格接近每加仑4美元这一心理重要关口。但是加油站的价格已经大幅下降，有助于缓解美国经济的通货膨胀压力。
+今年九月，汽油价格接近每加仑 4 美元这一心理重要关口。但是加油站的价格已经大幅下降，有助于缓解美国经济的通货膨胀压力。
 
-根据AAA的数据，本周二，普通汽油每加仑的全国平均价格为3.08美元，较一年前的3.14美元有所下降。
+根据 AAA 的数据，本周二，普通汽油每加仑的全国平均价格为 3.08 美元，较一年前的 3.14 美元有所下降。
 
 尽管创纪录的产量，拜登因其能源政策而遭到批评。
 
@@ -46,17 +46,17 @@ BP停止通过红海运输石油之后，本周能源价格出现了上涨，原
 
 阿拉斯加共和党参议员丹·沙利文在一次[讲台演讲](https://www.sullivan.senate.gov/newsroom/press-releases/sullivan-bidens-war-on-american-energy-is-a-gift-to-our-adversaries)中警告说，拜登政府对能源的打击是对我们对手的“一份礼物”。
 
-本月初，在[共和党总统初选辩论](https://www.cnn.com/2023/12/07/politics/fact-check-gop-debate-december/index.html)上，佛罗里达州州长罗恩·德桑提斯发誓“开放所有国内能源供生产”以“降低您的油价”。德桑提斯上周在CNN市政厅会议上也发表了类似言论。
+本月初，在[共和党总统初选辩论](https://www.cnn.com/2023/12/07/politics/fact-check-gop-debate-december/index.html)上，佛罗里达州州长罗恩·德桑提斯发誓“开放所有国内能源供生产”以“降低您的油价”。德桑提斯上周在 CNN 市政厅会议上也发表了类似言论。
 
 美国将要生产出比以往任何国家都多的石油，这削弱了拜登对美国能源发动战争的论点。
 
 当然，并不意味着是拜登的政策导致了创纪录的美国石油产量，也不意味着白宫会匆忙为此而认领功劳。
 
-曾担任前总统乔治·W·布什的能源官员的McNally表示，总统对美国石油生产不能实施太多干预，除非采取极端的紧急措施。
+曾担任前总统乔治·W·布什的能源官员的 McNally 表示，总统对美国石油生产不能实施太多干预，除非采取极端的紧急措施。
 
 与石油输出国组织成员国不同，美国的石油产量主要由自由市场决定。
 
-“拜登总统或任何总统都不能在椭圆形办公室中拨动开关来增加生产，”McNally说道。
+“拜登总统或任何总统都不能在椭圆形办公室中拨动开关来增加生产，”McNally 说道。
 
 美国产量的增长是由石油公司更智能、更高效的运营推动的。能源公司已经找到了一些方法，可以在不大幅增加钻探的情况下，从地下挤出更多的石油。
 
@@ -64,10 +64,10 @@ BP停止通过红海运输石油之后，本周能源价格出现了上涨，原
 
 ## ‘被迫而为’
 
-然而，麦克纳利表示，白宫不得不把对化石燃料的立场从2020年和2021年初的以气候为中心转向更为中立的立场。
+然而，麦克纳利表示，白宫不得不把对化石燃料的立场从 2020 年和 2021 年初的以气候为中心转向更为中立的立场。
 
-去年，俄罗斯入侵乌克兰后，天然气价格一度飙升至每加仑5美元以上，引发了石油市场的恐慌。拜登 [敦促美国石油公司增加产量](https://www.cnn.com/2022/05/25/business/gas-prices-biden-inflation-spr/index.html)——完全与气候科学家所呼吁的相反。
+去年，俄罗斯入侵乌克兰后，天然气价格一度飙升至每加仑 5 美元以上，引发了石油市场的恐慌。拜登 [敦促美国石油公司增加产量](https://www.cnn.com/2022/05/25/business/gas-prices-biden-inflation-spr/index.html)——完全与气候科学家所呼吁的相反。
 
-今年三月，拜登政府甚至批准了位于阿拉斯加的ConocoPhillips钻井项目——[Willow油田项目](https://www.cnn.com/2023/03/14/politics/inside-willow-project-approval-biden-haaland-climate/index.html)，这个备受争议的项目数十年来一直处于停滞状态。尽管受到了来自担心环境和健康风险的气候团体的 [严厉批评](https://www.cnn.com/2023/03/13/politics/willow-project-alaska-oil-biden-approval-climate/index.html)，政府依然给予了绿灯。
+今年三月，拜登政府甚至批准了位于阿拉斯加的 ConocoPhillips 钻井项目——[Willow 油田项目](https://www.cnn.com/2023/03/14/politics/inside-willow-project-approval-biden-haaland-climate/index.html)，这个备受争议的项目数十年来一直处于停滞状态。尽管受到了来自担心环境和健康风险的气候团体的 [严厉批评](https://www.cnn.com/2023/03/13/politics/willow-project-alaska-oil-biden-approval-climate/index.html)，政府依然给予了绿灯。
 
 “拜登总统因受到高天然气价格和俄罗斯入侵乌克兰的现实情况而被迫从最初的‘在地下保存’策略转向更务实的政策，”麦克纳利指出。

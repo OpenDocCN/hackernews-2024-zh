@@ -6,9 +6,9 @@ date: 2024-05-27 14:52:56
 
 -->
 
-# Pornhub要求其平台上的每个表演者提供同意证明
+# Pornhub 要求其平台上的每个表演者提供同意证明
 
-> 来源：[https://www.404media.co/pornhub-consent-verification-policy-for-performers/](https://www.404media.co/pornhub-consent-verification-policy-for-performers/)
+> 来源：[`www.404media.co/pornhub-consent-verification-policy-for-performers/`](https://www.404media.co/pornhub-consent-verification-policy-for-performers/)
 
 ##### 订阅
 
@@ -16,9 +16,9 @@ date: 2024-05-27 14:52:56
 
 🖥️
 
-**404 Media是人类为人类制作的。请在上方注册，免费获取此文章的访问权限。**
+**404 Media 是人类为人类制作的。请在上方注册，免费获取此文章的访问权限。**
 
-Pornhub正在推出更严格的表演者验证政策，不久将要求表演者除了提供身份证明外，还需上传与其场景搭档的同意证明。
+Pornhub 正在推出更严格的表演者验证政策，不久将要求表演者除了提供身份证明外，还需上传与其场景搭档的同意证明。
 
 在这项新政策之前，表演者需要保存任何其他出现在其内容中的人的记录，包括身份证和释放协议。自上个月以来，表演者需要在上传新合作者出现在视频中时向平台提交这些身份证进行审核。下周的政策变更将在这些要求中添加同意证明。
 
@@ -26,10 +26,10 @@ Pornhub正在推出更严格的表演者验证政策，不久将要求表演者�
 
 成为付费会员，获取无限的无广告访问权限，以及额外的播客内容等。
 
-[订阅](/membership/)
+订阅
 
 ## 注册，免费获取此帖子的访问权限
 
 免费会员可获取此类帖子的访问权限，以及我们本周故事的电子邮件摘要。
 
-[订阅](/signup/)
+订阅

@@ -6,19 +6,19 @@
 
 -->
 
-# 探索Podman：更安全的Docker替代方案 | 更好的堆栈社区
+# 探索 Podman：更安全的 Docker 替代方案 | 更好的堆栈社区
 
-> 来源：[https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/](https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/)
+> 来源：[`betterstack.com/community/guides/scaling-docker/podman-vs-docker/`](https://betterstack.com/community/guides/scaling-docker/podman-vs-docker/)
 
-容器化已经成为开发人员和系统运维人员在各种系统和平台上高效打包和部署应用程序的重要工具。今天存在许多容器化解决方案，但毫无疑问，Docker已经成为事实上的标准。这在很大程度上归功于其出色的工具、强大的社区以及庞大的预构建映像生态系统，这些映像可以轻松共享和在不同环境中使用。
+容器化已经成为开发人员和系统运维人员在各种系统和平台上高效打包和部署应用程序的重要工具。今天存在许多容器化解决方案，但毫无疑问，Docker 已经成为事实上的标准。这在很大程度上归功于其出色的工具、强大的社区以及庞大的预构建映像生态系统，这些映像可以轻松共享和在不同环境中使用。
 
-Docker在许多年里一直占据着这个位置，它真正改变了应用程序的发布方式。同时，它的广泛采用也激发了许多其他容器化解决方案的发展，这些解决方案提供了更多的功能和能力。其中一种解决方案是[Podman](https://podman.io/)。
+Docker 在许多年里一直占据着这个位置，它真正改变了应用程序的发布方式。同时，它的广泛采用也激发了许多其他容器化解决方案的发展，这些解决方案提供了更多的功能和能力。其中一种解决方案是[Podman](https://podman.io/)。
 
-Podman是一个开源容器引擎，旨在提供一个更安全和轻量的Docker替代方案。它允许用户在不需要守护程序的情况下运行容器，从而更容易在各种系统上管理和部署容器。此外，Podman通过诸如无根容器（即通过非根用户运行容器）、用户命名空间和更谨慎地利用内核功能等功能提供了更好的安全默认设置，所有这些都可以保护主机系统免受潜在的漏洞和安全威胁的影响。
+Podman 是一个开源容器引擎，旨在提供一个更安全和轻量的 Docker 替代方案。它允许用户在不需要守护程序的情况下运行容器，从而更容易在各种系统上管理和部署容器。此外，Podman 通过诸如无根容器（即通过非根用户运行容器）、用户命名空间和更谨慎地利用内核功能等功能提供了更好的安全默认设置，所有这些都可以保护主机系统免受潜在的漏洞和安全威胁的影响。
 
-随着其不断增长的社区和与Docker映像和命令的密切兼容性，Podman在寻找替代容器化解决方案的开发人员和系统管理员中获得了显著的关注。
+随着其不断增长的社区和与 Docker 映像和命令的密切兼容性，Podman 在寻找替代容器化解决方案的开发人员和系统管理员中获得了显著的关注。
 
-在本文中，我们将探讨使用Podman作为容器化工具的一些关键功能和优势。我们还将讨论它与Docker的比较，并看看为什么它已经成为行业中流行的替代选择。
+在本文中，我们将探讨使用 Podman 作为容器化工具的一些关键功能和优势。我们还将讨论它与 Docker 的比较，并看看为什么它已经成为行业中流行的替代选择。
 
 让我们立即开始。
 
@@ -26,15 +26,15 @@ Podman是一个开源容器引擎，旨在提供一个更安全和轻量的Docke
 
 在继续本文之前，请确保您满足以下先决条件：
 
-+   优秀的Linux命令行技能。
++   优秀的 Linux 命令行技能。
 
-+   具有Docker的先前经验。
++   具有 Docker 的先前经验。
 
-+   （可选）需要一个Docker Hub账户来跟随私有注册表设置示例。
++   （可选）需要一个 Docker Hub 账户来跟随私有注册表设置示例。
 
-## Podman与Docker比较
+## Podman 与 Docker 比较
 
-虽然Podman和Docker都允许用户以高效且可伸缩的方式运行、管理和部署容器，但两者之间存在一些关键差异。在本节中，我们将探讨其中几个差异：
+虽然 Podman 和 Docker 都允许用户以高效且可伸缩的方式运行、管理和部署容器，但两者之间存在一些关键差异。在本节中，我们将探讨其中几个差异：
 
 ### 1\. 架构差异
 
@@ -72,7 +72,7 @@ Podman 和 Docker 使用 Linux 内核功能和 seccomp 配置文件来控制进�
 
 一般来说，虽然 Podman 和 Docker 都可以配置为具有强大的安全性，但 Podman 通常需要更少的工作量才能达到安全的配置。
 
-**了解更多**: [Docker 安全性：你应该知道的 14 个最佳实践](/community/guides/scaling-docker/docker-security-best-practices/)
+**了解更多**: Docker 安全性：你应该知道的 14 个最佳实践
 
 * * *
 
@@ -226,7 +226,7 @@ Deleted: 9c7a54a9a43cca047013b82af109fe963fde787f63f9e016fdc3384500c2823d
 
 正如我们之前讨论的，Podman 建议使用完全限定名称来避免歧义，并确保始终从特定注册表引用正确的镜像。
 
-让我们尝试使用[Docker Hub](https://hub.docker.com/_/caddy)的官方 Caddy 镜像运行容器。如果您对[Caddy](/community/guides/web-servers/caddy/)不熟悉，它是一个轻量级的 Web 服务器和反向代理，以易用性和出色的性能而闻名。通过将 Caddy 作为容器运行，您可以快速启动一个用于测试目的的本地 Web 服务器。
+让我们尝试使用[Docker Hub](https://hub.docker.com/_/caddy)的官方 Caddy 镜像运行容器。如果您对 Caddy 不熟悉，它是一个轻量级的 Web 服务器和反向代理，以易用性和出色的性能而闻名。通过将 Caddy 作为容器运行，您可以快速启动一个用于测试目的的本地 Web 服务器。
 
 从 Docker 背景出发，您通常会使用以下命令启动容器：
 
@@ -751,7 +751,7 @@ exit code: 0
 
 此时，Podman Compose 成功退出，并且一切似乎都启动正确。 让我们继续验证这一点。
 
-首先，尝试在浏览器中打开`localhost:8080`。 你应该看到WordPress安装页面：
+首先，尝试在浏览器中打开`localhost:8080`。 你应该看到 WordPress 安装页面：
 
 现在，回到你的终端并键入：
 
@@ -765,7 +765,7 @@ CONTAINER ID  IMAGE                               COMMAND               CREATED 
 
 你也可以继续探索可用镜像的列表：
 
-列表包含了运行MySQL和WordPress所需的所有必要镜像：
+列表包含了运行 MySQL 和 WordPress 所需的所有必要镜像：
 
 ```
 REPOSITORY                   TAG         IMAGE ID      CREATED       SIZE
@@ -783,7 +783,7 @@ NETWORK ID    NAME                     DRIVER
 3f5fa386b31c  podman-tutorial_default  bridge 
 ```
 
-当你首次安装Podman时，默认创建`podman`网络。当没有显式指定其他网络时，它用于启动容器。另一方面，`podman-tutorial_default`网络是由Podman Compose创建的，用于隔离你的`docker-compose.yml`中定义的容器与可能在同一系统上运行的任何其他容器。
+当你首次安装 Podman 时，默认创建`podman`网络。当没有显式指定其他网络时，它用于启动容器。另一方面，`podman-tutorial_default`网络是由 Podman Compose 创建的，用于隔离你的`docker-compose.yml`中定义的容器与可能在同一系统上运行的任何其他容器。
 
 最后，让我们检查可用的卷：
 
@@ -838,16 +838,16 @@ podman volume rm podman-tutorial_db podman-tutorial_wordpress
 podman network rm podman-tutorial_default 
 ```
 
-正如你所看到的，命令与通常使用Docker和Docker Compose时使用的命令相同。唯一显著的区别是，你要输入`podman`和`podman-compose`，而不是`docker`和`docker-compose`。
+正如你所看到的，命令与通常使用 Docker 和 Docker Compose 时使用的命令相同。唯一显著的区别是，你要输入`podman`和`podman-compose`，而不是`docker`和`docker-compose`。
 
 ## 最终思考
 
-Podman是一种功能强大的容器化技术，为运行容器工作负载提供了与Docker相媲美的可行选择。你选择Podman还是Docker完全取决于你的具体需求和偏好。
+Podman 是一种功能强大的容器化技术，为运行容器工作负载提供了与 Docker 相媲美的可行选择。你选择 Podman 还是 Docker 完全取决于你的具体需求和偏好。
 
-Podman可以做的大多数事情都与Docker一样，而且不需要在后台运行守护进程的额外好处。除此之外，Podman还提供了一些Docker没有的功能，比如与Kubernetes清单文件一起工作，以及将单个容器组织成Pod。
+Podman 可以做的大多数事情都与 Docker 一样，而且不需要在后台运行守护进程的额外好处。除此之外，Podman 还提供了一些 Docker 没有的功能，比如与 Kubernetes 清单文件一起工作，以及将单个容器组织成 Pod。
 
-最终的决定由你做出。如果你需要一个更轻量级和安全的容器管理解决方案，Podman可能是一个更好的选择。然而，如果你优先考虑具有广泛社区支持的强大生态系统，那么Docker可能是更好的选择。最终，这两个工具都提供了强大的容器化能力，以满足你的需求。
+最终的决定由你做出。如果你需要一个更轻量级和安全的容器管理解决方案，Podman 可能是一个更好的选择。然而，如果你优先考虑具有广泛社区支持的强大生态系统，那么 Docker 可能是更好的选择。最终，这两个工具都提供了强大的容器化能力，以满足你的需求。
 
-要进一步探索Podman，请考虑访问[官方Podman网站](https://podman.io/)，探索其[文档](https://podman.io/docs)，并加入其不断增长的[社区](https://podman.io/community)。
+要进一步探索 Podman，请考虑访问[官方 Podman 网站](https://podman.io/)，探索其[文档](https://podman.io/docs)，并加入其不断增长的[社区](https://podman.io/community)。
 
 谢谢阅读！

@@ -8,7 +8,7 @@
 
 # GitHub - stackus/goht：一个用于 Go 的 Haml 模板引擎
 
-> 来源：[https://github.com/stackus/hamlet](https://github.com/stackus/hamlet)
+> 来源：[`github.com/stackus/hamlet`](https://github.com/stackus/hamlet)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

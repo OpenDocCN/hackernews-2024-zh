@@ -8,15 +8,15 @@ date: 2024-05-27 14:29:09
 
 # 年轻男性面临高风险赌博成瘾: 专家
 
-> 来源：[https://nypost.com/2024/01/01/lifestyle/young-men-face-high-risk-for-gambling-addiction-as-sports-betting-surges-experts/](https://nypost.com/2024/01/01/lifestyle/young-men-face-high-risk-for-gambling-addiction-as-sports-betting-surges-experts/)
+> 来源：[`nypost.com/2024/01/01/lifestyle/young-men-face-high-risk-for-gambling-addiction-as-sports-betting-surges-experts/`](https://nypost.com/2024/01/01/lifestyle/young-men-face-high-risk-for-gambling-addiction-as-sports-betting-surges-experts/)
 
-最近在36个州推出的合法体育博彩，已经推动了赌博业——但专家表示，这是以年轻男性心理健康为代价的。
+最近在 36 个州推出的合法体育博彩，已经推动了赌博业——但专家表示，这是以年轻男性心理健康为代价的。
 
-特别是，[在线博彩的便利访问](https://nypost.com/2024/01/01/sports/lane-kiffin-blasts-penn-state-after-ole-miss-upset-win/)，在体育书籍中最受欢迎——它通常通过提供信用和首次投注损失宽恕作为诱饵来激励新客户——已经掌握了Z世代的市场。
+特别是，[在线博彩的便利访问](https://nypost.com/2024/01/01/sports/lane-kiffin-blasts-penn-state-after-ole-miss-upset-win/)，在体育书籍中最受欢迎——它通常通过提供信用和首次投注损失宽恕作为诱饵来激励新客户——已经掌握了 Z 世代的市场。
 
-[2023年新泽西州赌博普及报告](https://socialwork.rutgers.edu/sites/default/files/2023-10/Prevalence_Report_2023_Final.pdf)，由罗格斯大学发布，发现18至24岁赌徒中有三分之一的人仅在线下注，而不是在赌场或线下设施内进行。
+[2023 年新泽西州赌博普及报告](https://socialwork.rutgers.edu/sites/default/files/2023-10/Prevalence_Report_2023_Final.pdf)，由罗格斯大学发布，发现 18 至 24 岁赌徒中有三分之一的人仅在线下注，而不是在赌场或线下设施内进行。
 
-这个统计数字比学校之前2017年的报告高出五倍，也比任何其他年龄段都高。
+这个统计数字比学校之前 2017 年的报告高出五倍，也比任何其他年龄段都高。
 
 “你可以在晚餐桌上用手机赌掉你的房子，没有人会知道，直到你整个家庭的毁灭完成，” Lia Nower，罗格斯大学社会工作学院赌博研究中心主任，最近告诉 Newsweek。
 
@@ -24,9 +24,9 @@ date: 2024-05-27 14:29:09
 
 “越多人赌博，他们赌博的活动越多，越年轻开始，他们就越有可能出现不仅仅是赌博本身，还有像抑郁症、焦虑和自杀倾向等心理健康问题，” Nower 补充道。
 
-18至44岁年龄段的年轻男性也“最有可能成为高风险问题赌徒”，报告指出，18至24岁组中有19% 的人处于高风险赌博状态。
+18 至 44 岁年龄段的年轻男性也“最有可能成为高风险问题赌徒”，报告指出，18 至 24 岁组中有 19% 的人处于高风险赌博状态。
 
-根据 [Responsiblegambling.org](https://www.responsiblegambling.org/for-the-public/safer-play/gambling-and-young-adults/)，18至20岁的玩家“更有可能”追赶自己的损失并且超出自己的负担能力。
+根据 [Responsiblegambling.org](https://www.responsiblegambling.org/for-the-public/safer-play/gambling-and-young-adults/)，18 至 20 岁的玩家“更有可能”追赶自己的损失并且超出自己的负担能力。
 
 现在，毁灭性后果可能会立即显现。
 
@@ -44,7 +44,7 @@ date: 2024-05-27 14:29:09
 
 “而且当你赌博时，你的大脑分泌的多巴胺比你做这些其他事情时更多。”
 
-纽约赌博问题委员会的团队负责人帕梅拉·布伦纳-戴维斯表示，25岁以下的人群“易受成瘾影响，尤其是赌博成瘾”，因为他们的大脑尚未完全发育。
+纽约赌博问题委员会的团队负责人帕梅拉·布伦纳-戴维斯表示，25 岁以下的人群“易受成瘾影响，尤其是赌博成瘾”，因为他们的大脑尚未完全发育。
 
 努尔还表达了对于“赌博合法化”的“冲动”将导致更多赌徒出现心理健康问题的担忧。她警告说，危险的赌博成瘾迹象要比酗酒或吸烟障碍的迹象更加微妙地呈现出来。
 

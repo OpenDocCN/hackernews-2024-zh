@@ -8,7 +8,7 @@
 
 # GitHub - tconbeer/harlequin：你的终端上的 SQL IDE。
 
-> 来源：[https://github.com/tconbeer/harlequin](https://github.com/tconbeer/harlequin)
+> 来源：[`github.com/tconbeer/harlequin`](https://github.com/tconbeer/harlequin)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

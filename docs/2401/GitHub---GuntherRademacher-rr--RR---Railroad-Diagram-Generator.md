@@ -8,7 +8,7 @@
 
 # GitHub - GuntherRademacher/rr: RR - 铁路图生成器
 
-> 来源：[https://github.com/GuntherRademacher/rr](https://github.com/GuntherRademacher/rr)
+> 来源：[`github.com/GuntherRademacher/rr`](https://github.com/GuntherRademacher/rr)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

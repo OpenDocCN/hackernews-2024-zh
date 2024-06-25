@@ -8,7 +8,7 @@
 
 # GitHub - zigcc/zig-cookbook：展示完成常见编程任务的良好实践的简单 Zig 程序。
 
-> 来源：[https://github.com/zigcc/zig-cookbook](https://github.com/zigcc/zig-cookbook)
+> 来源：[`github.com/zigcc/zig-cookbook`](https://github.com/zigcc/zig-cookbook)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

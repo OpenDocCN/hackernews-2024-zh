@@ -2,13 +2,13 @@
 
 category: 未分类
 
-date: 2024年05月27日 14:35:21
+date: 2024 年 05 月 27 日 14:35:21
 
 -->
 
 # GitHub - grahame/pharus: deno library creating a liturgical lamp
 
-> 来源：[https://github.com/grahame/pharus](https://github.com/grahame/pharus)
+> 来源：[`github.com/grahame/pharus`](https://github.com/grahame/pharus)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

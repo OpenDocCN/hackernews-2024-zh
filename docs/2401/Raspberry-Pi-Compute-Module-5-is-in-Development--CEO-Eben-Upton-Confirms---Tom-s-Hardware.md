@@ -8,7 +8,7 @@
 
 # 树莓派计算模块 5 正在开发中，首席执行官 Eben Upton 确认 | Tom's Hardware
 
-> 来源：[https://www.tomshardware.com/raspberry-pi/raspberry-pi-compute-module-5-confirmed-by-ceo-eben-upton](https://www.tomshardware.com/raspberry-pi/raspberry-pi-compute-module-5-confirmed-by-ceo-eben-upton)
+> 来源：[`www.tomshardware.com/raspberry-pi/raspberry-pi-compute-module-5-confirmed-by-ceo-eben-upton`](https://www.tomshardware.com/raspberry-pi/raspberry-pi-compute-module-5-confirmed-by-ceo-eben-upton)
 
 Raspberry Pi 的 YouTuber [Jeff Geerling](https://youtu.be/Lky4FSfbc1E) 有机会在 [CES](https://www.tomshardware.com/tag/ces) 上采访 Raspberry Pi CEO Eben Upton。在采访中，我们听到 Upton 确认 Raspberry Pi 5 的生产正在加速进行，无意间我们也首次获得了 Raspberry Pi Compute Module 5 是即将推出的产品的确认。
 
@@ -34,31 +34,31 @@ Geerling 随后谈到了一个[论坛帖子](https://forums.raspberrypi.com/view
 
 滑动水平滚动
 
-树莓派计算模块4规格
+树莓派计算模块 4 规格
 
 | SoC | BCM2711 |
 | --- | --- |
-|   | 1.5GHz四核64位ARM Cortex-A72 CPU。 |
-|   | VideoCore VI图形，支持OpenGL ES 3.x，以及H.265（HEVC）视频的4Kp60硬件解码。 |
-|   | 1080p60硬件解码，以及H.264（AVC）视频的1080p30硬件编码 |
-| 内存 | 1GB、2GB、4GB或8GB LPDDR4-3200 SDRAM |
-| 闪存存储 | 可选的8GB、16GB或32GB eMMC闪存存储 |
-| GPIO | 40个GPIO引脚，最多可支持6 × UART、6 × I2C和5 × SPI |
-| 连接 | 单通道PCI Express 2.0接口。 |
-|   | 带有IEEE 1588支持的千兆以太网PHY。 |
-|   | 2个USB 2.0端口 |
-|   | 双HDMI接口，支持高达4K的分辨率。 |
-|   | 双MIPI DSI显示屏和双MIPI CSI-2摄像头接口。 |
-|   | 可选的2.4GHz和5GHz IEEE 802.11b/g/n/ac无线局域网和蓝牙5.0 |
+|   | 1.5GHz 四核 64 位 ARM Cortex-A72 CPU。 |
+|   | VideoCore VI 图形，支持 OpenGL ES 3.x，以及 H.265（HEVC）视频的 4Kp60 硬件解码。 |
+|   | 1080p60 硬件解码，以及 H.264（AVC）视频的 1080p30 硬件编码 |
+| 内存 | 1GB、2GB、4GB 或 8GB LPDDR4-3200 SDRAM |
+| 闪存存储 | 可选的 8GB、16GB 或 32GB eMMC 闪存存储 |
+| GPIO | 40 个 GPIO 引脚，最多可支持 6 × UART、6 × I2C 和 5 × SPI |
+| 连接 | 单通道 PCI Express 2.0 接口。 |
+|   | 带有 IEEE 1588 支持的千兆以太网 PHY。 |
+|   | 2 个 USB 2.0 端口 |
+|   | 双 HDMI 接口，支持高达 4K 的分辨率。 |
+|   | 双 MIPI DSI 显示屏和双 MIPI CSI-2 摄像头接口。 |
+|   | 可选的 2.4GHz 和 5GHz IEEE 802.11b/g/n/ac 无线局域网和蓝牙 5.0 |
 
-## 计算模块4
+## 计算模块 4
 
 （图片来源：汤姆硬件）
 
-与[树莓派Zero 2 W](https://www.tomshardware.com/reviews/raspberry-pi-zero-2-w-review)一样，计算模块4并没有取得最好的成功机会。在2022年底发布的计算模块4将树莓派4的功能装入了更小的外形尺寸中。对于所有渴望在项目中添加更多功率的人来说，这是个好消息，但它也是在大流行病末期和全球芯片短缺之中发布的。有一段时间，CM4和Zero 2 W几乎是无法获得的。幸运的是，它们现在供应更加充足。
+与[树莓派 Zero 2 W](https://www.tomshardware.com/reviews/raspberry-pi-zero-2-w-review)一样，计算模块 4 并没有取得最好的成功机会。在 2022 年底发布的计算模块 4 将树莓派 4 的功能装入了更小的外形尺寸中。对于所有渴望在项目中添加更多功率的人来说，这是个好消息，但它也是在大流行病末期和全球芯片短缺之中发布的。有一段时间，CM4 和 Zero 2 W 几乎是无法获得的。幸运的是，它们现在供应更加充足。
 
-即将到来的CM5是否意味着CM4已经夭折了？远非如此。根据树莓派的[CM4产品简介](https://datasheets.raspberrypi.com/cm4/cm4-product-brief.pdf)，该板将一直生产到2031年。别担心，树莓派Zero 2 W也将一直生产到2028年1月的[[PDF]](https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf)。
+即将到来的 CM5 是否意味着 CM4 已经夭折了？远非如此。根据树莓派的[CM4 产品简介](https://datasheets.raspberrypi.com/cm4/cm4-product-brief.pdf)，该板将一直生产到 2031 年。别担心，树莓派 Zero 2 W 也将一直生产到 2028 年 1 月的[[PDF]](https://datasheets.raspberrypi.com/rpizero2/raspberry-pi-zero-2-w-product-brief.pdf)。
 
-## 我们何时可以期待树莓派计算模块5？
+## 我们何时可以期待树莓派计算模块 5？
 
-没有固定日期，只有一个论坛上模糊的对话作为消息来源，我们只能推测计算模块5将在一年内与我们见面。但我们可以确认一旦它们可用，汤姆硬件将进行全面评估。
+没有固定日期，只有一个论坛上模糊的对话作为消息来源，我们只能推测计算模块 5 将在一年内与我们见面。但我们可以确认一旦它们可用，汤姆硬件将进行全面评估。

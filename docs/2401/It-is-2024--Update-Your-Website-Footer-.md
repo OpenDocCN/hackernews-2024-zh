@@ -2,17 +2,17 @@
 
 分类：未分类
 
-日期：2024年5月27日14:26:22
+日期：2024 年 5 月 27 日 14:26:22
 
 -->
 
-# 现在是2024年。更新您的网站页脚。
+# 现在是 2024 年。更新您的网站页脚。
 
-> 来源：[https://updateyourfooter.com/](https://updateyourfooter.com/)
+> 来源：[`updateyourfooter.com/`](https://updateyourfooter.com/)
 
-## JavaScript代码片段
+## JavaScript 代码片段
 
-这是纯JavaScript，意味着它将根据用户的时间设置在浏览器端刷新年份。只需复制下面的代码片段，粘贴到您希望在页脚中显示动态文本的位置。
+这是纯 JavaScript，意味着它将根据用户的时间设置在浏览器端刷新年份。只需复制下面的代码片段，粘贴到您希望在页脚中显示动态文本的位置。
 
 ```
 <script type="text/javascript">
@@ -46,9 +46,9 @@
 
 ```
 
-## PHP代码片段
+## PHP 代码片段
 
-这是PHP版本，因此您可以在服务器端执行此操作。使用WordPress吗？在编辑器中找到“footer.php”，并在那里添加这个代码片段（[这里有视频](https://www.youtube.com/results?search_query=edit+wordpress+footer)可帮助您）。下面的代码片段将只显示当前年份：
+这是 PHP 版本，因此您可以在服务器端执行此操作。使用 WordPress 吗？在编辑器中找到“footer.php”，并在那里添加这个代码片段（[这里有视频](https://www.youtube.com/results?search_query=edit+wordpress+footer)可帮助您）。下面的代码片段将只显示当前年份：
 
 ```
 <?php echo date("Y"); ?>

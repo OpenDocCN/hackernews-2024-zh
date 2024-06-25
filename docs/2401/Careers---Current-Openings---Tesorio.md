@@ -8,7 +8,7 @@
 
 # 职业与当前职位空缺 | 泰索里奥
 
-> 来源：[https://www.tesorio.com/careers#job-openings](https://www.tesorio.com/careers#job-openings)
+> 来源：[`www.tesorio.com/careers#job-openings`](https://www.tesorio.com/careers#job-openings)
 
 #### 2023 年泰索里奥巴拿马团队聚会
 

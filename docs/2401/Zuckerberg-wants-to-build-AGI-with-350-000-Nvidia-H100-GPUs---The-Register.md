@@ -8,7 +8,7 @@
 
 # 扎克伯格希望利用 35 万块 Nvidia H100 GPU 构建通用人工智能 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/20/metas_ai_plans/](https://www.theregister.com/2024/01/20/metas_ai_plans/)
+> 来源：[`www.theregister.com/2024/01/20/metas_ai_plans/`](https://www.theregister.com/2024/01/20/metas_ai_plans/)
 
 Facebook 主管马克·扎克伯格正在重新调整 Meta 范围内的努力，以构建通用人工智能，并希望到年底时获得超过 35 万块 Nvidia H100 GPU，以实现这一目标。
 
@@ -26,4 +26,4 @@ Facebook 主管马克·扎克伯格正在重新调整 Meta 范围内的努力，
 
 "人们也将需要新的人工智能设备，随着时间的推移，这将把人工智能和元宇宙联系在一起。我认为我们很多人将会在一天中经常与人工智能进行交流。而且我认为我们中的很多人将会使用眼镜进行交流。眼镜是让人工智能看到你所看到的并听到你所听到的理想形式因素," 他预测道。
 
-去年，Meta与眼镜巨头EssilorLuxottica合作推出了 Ray-Ban [智能眼镜](https://www.theregister.com/2023/09/28/meta_connect/)，每个眼镜都配备了摄像头、扬声器和麦克风。售价为 299 美元，佩戴者可以启动并与人工智能助手聊天，Zuck声称他们的表现“非常出色”。
+去年，Meta 与眼镜巨头 EssilorLuxottica 合作推出了 Ray-Ban [智能眼镜](https://www.theregister.com/2023/09/28/meta_connect/)，每个眼镜都配备了摄像头、扬声器和麦克风。售价为 299 美元，佩戴者可以启动并与人工智能助手聊天，Zuck 声称他们的表现“非常出色”。

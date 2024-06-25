@@ -8,7 +8,7 @@ category: 未分类
 
 # 了解 Mesh 分配器
 
-> 来源：[https://veera.app/mesh_allocator.html](https://veera.app/mesh_allocator.html)
+> 来源：[`veera.app/mesh_allocator.html`](https://veera.app/mesh_allocator.html)
 
 用手动内存管理语言编写的应用程序可能会在内存中有足够的空间时，申请内存失败。这个问题被称为内存[碎片化](https://en.wikipedia.org/wiki/Fragmentation_(computing))，可以通过压缩来解决，将所有已分配的对象移动在一起，以提供一个连续的空闲空间块。
 

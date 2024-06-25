@@ -8,7 +8,7 @@
 
 # 首架载客的波音 737 Max 9 在经过三周的停飞后重新飞行，阿拉斯加航空公司首席运营官坐在门塞旁边 | CNN Business
 
-> 来源：[https://edition.cnn.com/2024/01/26/business/first-boeing-737-max-9-with-passengers-flies-after-grounding/index.html](https://edition.cnn.com/2024/01/26/business/first-boeing-737-max-9-with-passengers-flies-after-grounding/index.html)
+> 来源：[`edition.cnn.com/2024/01/26/business/first-boeing-737-max-9-with-passengers-flies-after-grounding/index.html`](https://edition.cnn.com/2024/01/26/business/first-boeing-737-max-9-with-passengers-flies-after-grounding/index.html)
 
 CNN  —
 

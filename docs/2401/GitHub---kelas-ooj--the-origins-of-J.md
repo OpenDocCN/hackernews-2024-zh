@@ -8,7 +8,7 @@ date: 2024-05-27 14:30:05
 
 # GitHub - kelas/ooj: J 的起源
 
-> 来源：[https://github.com/kelas/ooj](https://github.com/kelas/ooj)
+> 来源：[`github.com/kelas/ooj`](https://github.com/kelas/ooj)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

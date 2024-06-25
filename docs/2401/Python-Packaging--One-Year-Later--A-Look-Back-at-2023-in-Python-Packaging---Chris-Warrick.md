@@ -8,7 +8,7 @@ date: 2024-05-27 14:50:30
 
 # Python 打包，一年后：回顾 2023 年 Python 打包 | Chris Warrick
 
-> 来源：[https://chriswarrick.com/blog/2024/01/15/python-packaging-one-year-later/](https://chriswarrick.com/blog/2024/01/15/python-packaging-one-year-later/)
+> 来源：[`chriswarrick.com/blog/2024/01/15/python-packaging-one-year-later/`](https://chriswarrick.com/blog/2024/01/15/python-packaging-one-year-later/)
 
 一年前，我写了一篇关于 Python 打包状况不佳的文章。领域中有大量的工具，强调编写模糊的标准而不是围绕着一个真正的工具集结，以及复杂的基于 venv 的生态系统而不是类似于 `node_modules` 的解决方案。在过去的一年里发生了什么变化？有什么改进了吗，还是一切仍然如旧，甚至比以前更糟？
 
@@ -22,15 +22,15 @@ date: 2024-05-27 14:50:30
 
 当然，也有一些新工具。我关注到的工具有[Posy](https://github.com/njsmith/posy)和[Rye](https://github.com/mitsuhiko/rye)。Posy 是由纳撒尼尔·J·史密斯（trio 的作者）开发的项目，Rye 则是由阿尔明·罗纳赫尔（Flask 的作者）开发的项目。它们的愿景都是管理 Python 解释器和项目，但不使用自定义的构建后端（而是使用类似孵化器的东西）。Posy 是建立在 PyBI 之上的（PyBI 是由史密斯在草案 [PEP 711](https://peps.python.org/pep-0711/) 中提出的用于分发 Python 解释器二进制文件的格式），Rye 则使用格雷戈里·索尔克（Gregory Szorc）预构建的 Python。Rye 看起来相当完整和可用，而 Posy 现在只是 PyBI 格式的 PoC，只提供一个带有预安装包的 REPL。
 
-Posy和Rye都是用Rust编写的。一方面，管理Python解释器的部分不是用Python编写是有道理的，因为那将需要一个单独的Python，而不是由Posy/Rye管理的，来运行这些工具。但是Rye也有自己的pyproject.toml解析器，用Rust编写，并且它的许多命令大部分或主要是用Rust实现的（有时也会调用一次性的Python脚本；虽然创建虚拟环境、安装包和处理锁文件的主要任务分别交给了`venv`、`pip`和`pip-tools`）。
+Posy 和 Rye 都是用 Rust 编写的。一方面，管理 Python 解释器的部分不是用 Python 编写是有道理的，因为那将需要一个单独的 Python，而不是由 Posy/Rye 管理的，来运行这些工具。但是 Rye 也有自己的 pyproject.toml 解析器，用 Rust 编写，并且它的许多命令大部分或主要是用 Rust 实现的（有时也会调用一次性的 Python 脚本；虽然创建虚拟环境、安装包和处理锁文件的主要任务分别交给了`venv`、`pip`和`pip-tools`）。
 
-谈到Rust和Python，过去一年中还有另一个项目在这方面取得了很大的发展（并集聚了大量的资金）。那个项目是[Ruff](https://github.com/astral-sh/ruff)，它是一个代码规范化工具和代码格式化工具。Ruff可以格式化Python代码，并且是用Rust编写的。这意味着它比现有的用Python编写的工具快10-100倍（根据Ruff自己的基准测试）。快速是好的，我想，但是这对Python意味着什么呢？事实上，包工具（除了快速依赖解决器，可能还包括快速访问Python内部以执行其工作的工具）和代码格式化器（需要深入理解Python语法，并将Python源代码解析为AST，这对于`ast` Python模块来说是很容易的）都用另一种语言编写了？这个趋势是否使Python成为了一种玩具语言（因为它也经常被认为是NumPy和朋友们的“胶水语言”）？此外，为什么贡献给许多Python开发人员重要的工具需要学习Rust呢？
+谈到 Rust 和 Python，过去一年中还有另一个项目在这方面取得了很大的发展（并集聚了大量的资金）。那个项目是[Ruff](https://github.com/astral-sh/ruff)，它是一个代码规范化工具和代码格式化工具。Ruff 可以格式化 Python 代码，并且是用 Rust 编写的。这意味着它比现有的用 Python 编写的工具快 10-100 倍（根据 Ruff 自己的基准测试）。快速是好的，我想，但是这对 Python 意味着什么呢？事实上，包工具（除了快速依赖解决器，可能还包括快速访问 Python 内部以执行其工作的工具）和代码格式化器（需要深入理解 Python 语法，并将 Python 源代码解析为 AST，这对于`ast` Python 模块来说是很容易的）都用另一种语言编写了？这个趋势是否使 Python 成为了一种玩具语言（因为它也经常被认为是 NumPy 和朋友们的“胶水语言”）？此外，为什么贡献给许多 Python 开发人员重要的工具需要学习 Rust 呢？
 
 ## 标准
 
-上次我们讨论了包装标准，重点是[PEP 582](https://peps.python.org/pep-0582/)。它提出了引入`__pypackages__`的想法，这将是一个地方，第三方包可以在本地按项目安装，而不涉及虚拟环境，类似于`node_modules`对于node来说是什么。该PEP最终于2023年3月[被拒绝了](https://discuss.python.org/t/pep-582-python-local-packages-directory/963/430)。PEP并不完美，其中一些选择是有问题的或者不足的（比如不递归搜索父目录中的`__pypackages__`，或者只关注简单的用例）。迄今为止，没有提出类似的新标准（设计更好）。
+上次我们讨论了包装标准，重点是[PEP 582](https://peps.python.org/pep-0582/)。它提出了引入`__pypackages__`的想法，这将是一个地方，第三方包可以在本地按项目安装，而不涉及虚拟环境，类似于`node_modules`对于 node 来说是什么。该 PEP 最终于 2023 年 3 月[被拒绝了](https://discuss.python.org/t/pep-582-python-local-packages-directory/963/430)。PEP 并不完美，其中一些选择是有问题的或者不足的（比如不递归搜索父目录中的`__pypackages__`，或者只关注简单的用例）。迄今为止，没有提出类似的新标准（设计更好）。
 
-另一个有争议的话题是锁文件。包装系统的锁文件对于可重复的依赖安装非常有用。锁文件记录了所有已安装的包（即包含传递依赖项）及其版本。锁文件通常包含已安装包的校验和（如sha512），它们通常支持区分通过不同依赖组（运行时、构建时、可选的、开发等）安装的包。
+另一个有争议的话题是锁文件。包装系统的锁文件对于可重复的依赖安装非常有用。锁文件记录了所有已安装的包（即包含传递依赖项）及其版本。锁文件通常包含已安装包的校验和（如 sha512），它们通常支持区分通过不同依赖组（运行时、构建时、可选的、开发等）安装的包。
 
 实现这一目标的经典方式是 `requirements.txt` 文件。它们是针对 pip 的，只包含包、版本和可能的校验和列表。这些文件可以由 `pip freeze` 生成，也可以使用第三方的 `pip-tools` 的 `pip-compile` 生成。`pip freeze` 非常基础，`pip-compile` 无法处理除了生成多个 `requirements.in` 文件、编译它们并希望没有冲突之外的其他依赖组。
 
@@ -54,13 +54,13 @@ LaTeX 对初学者来说非常令人困惑，有着巨大的学习曲线。你�
 
 你的代码变得更复杂了？别担心，你可以将其拆分成多个`.py`文件，使用`import name_of_other_file_without_py`，它就会正常工作。你需要更多的结构，也许是分组到文件夹中吗？嗯，忘记`python whatever.py`吧，你必须使用`python -m whatever`，并且你必须`cd`到你的代码所在的位置，或者搞定`PYTHONPATH`，或者使用`pip`安装你的东西。这个简单但常见的操作（将东西分组到文件夹中）大大增加了复杂性。
 
-标准库不够用，你需要第三方依赖？你找到了一些教程告诉你要`pip install`，但现在`pip`会告诉你使用`apt`。`apt`可能有效，但它可能给你一个与你正在阅读的教程不匹配的古老版本。或者它可能没有这个软件包。或者网络会告诉你不要从`apt`使用Python软件包。所以现在你需要[了解关于虚拟环境的知识](https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/)（这增加了更多的复杂性，需要记住更多的事情；大多数教程都教如何激活，但通过基本操作如重命名文件夹可能会弄乱venvs，并且你可能会在git中得到一个venv或在venv中得到你的代码）。或者你需要选择众多的一站式工具来管理事务。
+标准库不够用，你需要第三方依赖？你找到了一些教程告诉你要`pip install`，但现在`pip`会告诉你使用`apt`。`apt`可能有效，但它可能给你一个与你正在阅读的教程不匹配的古老版本。或者它可能没有这个软件包。或者网络会告诉你不要从`apt`使用 Python 软件包。所以现在你需要[了解关于虚拟环境的知识](https://chriswarrick.com/blog/2018/09/04/python-virtual-environments/)（这增加了更多的复杂性，需要记住更多的事情；大多数教程都教如何激活，但通过基本操作如重命名文件夹可能会弄乱 venvs，并且你可能会在 git 中得到一个 venv 或在 venv 中得到你的代码）。或者你需要选择众多的一站式工具来管理事务。
 
-在其他生态系统中，IDE通常是必不可少的，即使是对初学者也是如此。IDE将强制你使用项目系统（也许默认情况下不是最好或最常见的系统，但它仍将是一个连贯的项目系统）。Java将强制你使用“1个公共类 = 1个文件”的规则创建多个文件，并且这样做很容易，你甚至不需要一个`import`。
+在其他生态系统中，IDE 通常是必不可少的，即使是对初学者也是如此。IDE 将强制你使用项目系统（也许默认情况下不是最好或最常见的系统，但它仍将是一个连贯的项目系统）。Java 将强制你使用“1 个公共类 = 1 个文件”的规则创建多个文件，并且这样做很容易，你甚至不需要一个`import`。
 
-你想要文件夹吗？在Java或C#中，你只需在IDE中创建一个文件夹，然后在那里创建一个类。新文件可能有一个不同的`package`/`namespace`，但IDE将帮助你向代码库添加正确的`import`/`using`，而且你不会冒用太多目录（包括像`src`这样的东西）或使用太少（不为所有代码创建一个顶级包）的风险，这将需要修正所有导入。在Java或C#中添加文件夹的干扰是最小的。
+你想要文件夹吗？在 Java 或 C#中，你只需在 IDE 中创建一个文件夹，然后在那里创建一个类。新文件可能有一个不同的`package`/`namespace`，但 IDE 将帮助你向代码库添加正确的`import`/`using`，而且你不会冒用太多目录（包括像`src`这样的东西）或使用太少（不为所有代码创建一个顶级包）的风险，这将需要修正所有导入。在 Java 或 C#中添加文件夹的干扰是最小的。
 
-项目系统还会处理第三方软件包，而无需考虑它们被下载到哪里或什么是虚拟环境以及如何从不同的上下文激活它们。点击几下，就完成了。如果你不喜欢IDE呢？在许多生态系统中，生活在CLI中当然是可能的，它们有合理的CLI工具用于常见的管理任务，以及构建和运行项目。
+项目系统还会处理第三方软件包，而无需考虑它们被下载到哪里或什么是虚拟环境以及如何从不同的上下文激活它们。点击几下，就完成了。如果你不喜欢 IDE 呢？在许多生态系统中，生活在 CLI 中当然是可能的，它们有合理的 CLI 工具用于常见的管理任务，以及构建和运行项目。
 
 PEP 723 解决了一个非常特定的问题：单文件程序的依赖管理。对于一次性的事情和混乱的代码，改善生活显然比为大型项目做任何其他改进更重要对于打包社区来说。
 
@@ -70,29 +70,29 @@ PEP 723 解决了一个非常特定的问题：单文件程序的依赖管理。
 
 查看[Python Packaging Discourse](https://discuss.python.org/c/packaging/14)，有一些关于改进事物的讨论。
 
-例如，这个[关于迁移setup.py的讨论](https://discuss.python.org/t/user-experience-with-porting-off-setup-py/37502)是由Gregory Szorc发起的，他有[一长串抱怨](https://gregoryszorc.com/blog/2023/10/30/my-user-experience-porting-off-setup.py/)，指出了包装世界中的沟通问题和文档混乱（他的帖子值得一读，或者至少浏览一下，因为它很长，而且充满了包装失败）。有一个页面推荐使用setuptools，另一个页面有四个选项，Hatchling作为默认选项，还有一个页面推广Pipenv。一年前我们已经看到了这一点，在这方面没有任何变化。一些人尝试找到解决方案，一些人分享了他们的观点……然后论坛的管理员决定保护他的 PyPA 朋友，不让他们阅读用户反馈，并锁定了主题。
+例如，这个[关于迁移 setup.py 的讨论](https://discuss.python.org/t/user-experience-with-porting-off-setup-py/37502)是由 Gregory Szorc 发起的，他有[一长串抱怨](https://gregoryszorc.com/blog/2023/10/30/my-user-experience-porting-off-setup.py/)，指出了包装世界中的沟通问题和文档混乱（他的帖子值得一读，或者至少浏览一下，因为它很长，而且充满了包装失败）。有一个页面推荐使用 setuptools，另一个页面有四个选项，Hatchling 作为默认选项，还有一个页面推广 Pipenv。一年前我们已经看到了这一点，在这方面没有任何变化。一些人尝试找到解决方案，一些人分享了他们的观点……然后论坛的管理员决定保护他的 PyPA 朋友，不让他们阅读用户反馈，并锁定了主题。
 
-还有许多关于愿景的其他讨论，比如关于[10年观点](https://discuss.python.org/t/the-10-year-view-on-python-packaging-whats-yours/31834)或[单一包装工具](https://discuss.python.org/t/wanting-a-singular-packaging-tool-vision/21141)。基于用户调查的策略讨论有[第二部分](https://discuss.python.org/t/python-packaging-strategy-discussion-part-2/23442)（[第一部分](https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420)于2023年1月结束），但比第一部分少了很多帖子，讨论也没有继续（还有[关于如何进行讨论的讨论](https://discuss.python.org/t/structure-of-the-packaging-strategy-discussions/23478)）。计划[创建一个包装委员会](https://discuss.python.org/t/draft-update-to-python-packaging-governance/31608)——设计委员会的最佳实践。
+还有许多关于愿景的其他讨论，比如关于[10 年观点](https://discuss.python.org/t/the-10-year-view-on-python-packaging-whats-yours/31834)或[单一包装工具](https://discuss.python.org/t/wanting-a-singular-packaging-tool-vision/21141)。基于用户调查的策略讨论有[第二部分](https://discuss.python.org/t/python-packaging-strategy-discussion-part-2/23442)（[第一部分](https://discuss.python.org/t/python-packaging-strategy-discussion-part-1/22420)于 2023 年 1 月结束），但比第一部分少了很多帖子，讨论也没有继续（还有[关于如何进行讨论的讨论](https://discuss.python.org/t/structure-of-the-packaging-strategy-discussions/23478)）。计划[创建一个包装委员会](https://discuss.python.org/t/draft-update-to-python-packaging-governance/31608)——设计委员会的最佳实践。
 
-但是所有这些讨论，即使没有被过度热心的版主锁定，也没有产生任何实质性的影响。打包生态系统仍然严重分散和令人困惑。[PyPA文档和教程](https://packaging.python.org/en/latest/tutorials/) 仍然彼此矛盾。与PyPA关联的工具仍然比未关联的竞争对手功能更少（甚至新秀Rye也有某种形式的锁文件，不像Hatch或Flit），并且根据PEP 517构建后端使用统计数据，它们比现代PyPA工具更受欢迎。类似但竞争的工具的作者没有联合起来制作出真正的打包工具。
+但是所有这些讨论，即使没有被过度热心的版主锁定，也没有产生任何实质性的影响。打包生态系统仍然严重分散和令人困惑。[PyPA 文档和教程](https://packaging.python.org/en/latest/tutorials/) 仍然彼此矛盾。与 PyPA 关联的工具仍然比未关联的竞争对手功能更少（甚至新秀 Rye 也有某种形式的锁文件，不像 Hatch 或 Flit），并且根据 PEP 517 构建后端使用统计数据，它们比现代 PyPA 工具更受欢迎。类似但竞争的工具的作者没有联合起来制作出真正的打包工具。
 
 ### …看起来相当黯淡
 
-另一方面，如果您查看大多数打包工具的2023年贡献图表，您可能会担心打包生态系统的状态。
+另一方面，如果您查看大多数打包工具的 2023 年贡献图表，您可能会担心打包生态系统的状态。
 
 +   [Pip](https://github.com/pypa/pip/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c) 的贡献者结构健康，有大量提交。
 
 +   [Pipenv](https://github.com/pypa/pipenv/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c) 和 [setuptools](https://github.com/pypa/setuptools/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c) 有两位主要提交者，但仍然有大量提交。
 
-+   [Hatch](https://github.com/pypa/hatch/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c)，然而，是一个**单人表演**：Ofek Lev（项目创始人）有184次提交，第二名是Dependabot有6次提交，第三名（一个人类贡献者）有5次提交。Hatch和Hatchling的巴士因子为1。
++   [Hatch](https://github.com/pypa/hatch/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c)，然而，是一个**单人表演**：Ofek Lev（项目创始人）有 184 次提交，第二名是 Dependabot 有 6 次提交，第三名（一个人类贡献者）有 5 次提交。Hatch 和 Hatchling 的巴士因子为 1。
 
-非PyPA工具的情况并不好：
+非 PyPA 工具的情况并不好：
 
 +   [Poetry](https://github.com/python-poetry/poetry/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c) 有两位主要贡献者，但至少有四位人类贡献者的提交数量是两位数。
 
-+   [PDM](https://github.com/pdm-project/pdm/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c) 是像Hatch一样的单人表演。
++   [PDM](https://github.com/pdm-project/pdm/graphs/contributors?from=2023-01-01&to=2023-12-31&type=c) 是像 Hatch 一样的单人表演。
 
-+   [Rye](https://github.com/mitsuhiko/rye/graphs/contributors?from=2023-04-23&to=2023-12-31&type=c) 有一位主要贡献者，以及三位提交数量是两位数的贡献者；注意它相当新（于2023年4月下旬开始），并且不如其他工具那样受欢迎。
++   [Rye](https://github.com/mitsuhiko/rye/graphs/contributors?from=2023-04-23&to=2023-12-31&type=c) 有一位主要贡献者，以及三位提交数量是两位数的贡献者；注意它相当新（于 2023 年 4 月下旬开始），并且不如其他工具那样受欢迎。
 
 ## 结论
 

@@ -8,7 +8,7 @@
 
 # Felix Prasanna
 
-> 来源：[https://fprasx.github.io/articles/type-system-arithmetic/](https://fprasx.github.io/articles/type-system-arithmetic/)
+> 来源：[`fprasx.github.io/articles/type-system-arithmetic/`](https://fprasx.github.io/articles/type-system-arithmetic/)
 
 # 在 Rust 的类型系统中进行一年级数学
 
@@ -78,7 +78,7 @@ type One = Succ<Zero>; type Two = Succ<Succ<Zero>>; type Three = Succ<Succ<Succ<
  ^ input is empty, so encode!() expands to Zero = Succ<Succ<Succ<Succ<Zero>>>> 
 ```
 
-现在我们可以使用`encode!(***** ... *****)`构造相当大的数字，尽管编译器由于递归在大约3200个令牌处会溢出其堆栈。
+现在我们可以使用`encode!(***** ... *****)`构造相当大的数字，尽管编译器由于递归在大约 3200 个令牌处会溢出其堆栈。
 
 ### 评估
 
@@ -217,15 +217,15 @@ type RawQuotient<T, U> = <(
  Succ<Zero>, // 1 <( <(Succ<T>, Succ<Succ<U>>) as Sub>::Diff, Succ<Succ<U>> ) as Div>::Quotient, // (x - y) / y ) as Add>::Sum; 
 ```
 
-唯一的问题是，如果`x < y`，那么此表达式是不正确的，并且会返回1。减法会饱和到0，所以我们得到`1 + 0 / y = 1 + 0 = 1`。
+唯一的问题是，如果`x < y`，那么此表达式是不正确的，并且会返回 1。减法会饱和到 0，所以我们得到`1 + 0 / y = 1 + 0 = 1`。
 
-我们只需要将这个`RawQuotient`与`x / y`是0的事实相结合，如果`x < y`。由于我们将此数字作为布尔值，因此我们可以通过用乘法替换条件跳转来进行一个技巧（或者在汇编中进行cmov）。请注意以下表格：
+我们只需要将这个`RawQuotient`与`x / y`是 0 的事实相结合，如果`x < y`。由于我们将此数字作为布尔值，因此我们可以通过用乘法替换条件跳转来进行一个技巧（或者在汇编中进行 cmov）。请注意以下表格：
 
 ```
  Case       Boolean of Gte       RawQuotient       Desired +--------+  +----------------+   +-------------+   +---------+ | x >= y |: |       1        | x |   nonzero   | = | nonzero | +--------+  +----------------+   +-------------+   +---------+ | x < y  |: |       0        | x |     ???     | = |    0    | +--------+  +----------------+   +-------------+   +---------+ 
 ```
 
-我们只需将我们的`RawQuotient`乘以`x >= y`的结果！如果`x >= y`，我们将得到我们的`RawQuotient`。如果`x < y`，我们将乘以0，并且无论如何都会得到0，正如我们所期望的那样。这导致了除法的最终形式：
+我们只需将我们的`RawQuotient`乘以`x >= y`的结果！如果`x >= y`，我们将得到我们的`RawQuotient`。如果`x < y`，我们将乘以 0，并且无论如何都会得到 0，正如我们所期望的那样。这导致了除法的最终形式：
 
 ```
 impl<T, U> Div for (Succ<T>, Succ<Succ<U>>) where
@@ -237,9 +237,9 @@ impl<T, U> Div for (Succ<T>, Succ<Succ<U>>) where
 
 我们有一堆特质边界，因为我们有更多的子表达式需要确保可以计算。但归根结底，所有这些基本上都是将`Succ`链传递到底部的`Zero`。
 
-您还可能注意到我们在`(Succ<T>, Succ<Succ<U>>)上实现了`Div`的递归情况。这意味着分母大于1，因此不会与任何其他实现重叠。
+您还可能注意到我们在`(Succ<T>, Succ<Succ<U>>)上实现了`Div`的递归情况。这意味着分母大于 1，因此不会与任何其他实现重叠。
 
-按照真正的 Rust 风格，这个实现实际上不会允许我们除以0，因为我们从未为`(*, Zero)`实现过`Div`！
+按照真正的 Rust 风格，这个实现实际上不会允许我们除以 0，因为我们从未为`(*, Zero)`实现过`Div`！
 
 有点令人失望的是……就是这样了！我不知道如何表达小绿色测试用例点通过的喜悦，所以您可以通过从[Arithmetic in Rust's Type System](https://github.com/fprasx/arts)获取代码或简称为 arts 来自行运行。
 

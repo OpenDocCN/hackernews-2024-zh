@@ -8,7 +8,7 @@
 
 # 法国初创公司 Mistral 看起来将挑战 AI 领先者谷歌和 OpenAI
 
-> 来源：[https://www.ft.com/content/bc4cd6ff-446d-4a47-9382-bb622460a681](https://www.ft.com/content/bc4cd6ff-446d-4a47-9382-bb622460a681)
+> 来源：[`www.ft.com/content/bc4cd6ff-446d-4a47-9382-bb622460a681`](https://www.ft.com/content/bc4cd6ff-446d-4a47-9382-bb622460a681)
 
 ### 标准数字
 

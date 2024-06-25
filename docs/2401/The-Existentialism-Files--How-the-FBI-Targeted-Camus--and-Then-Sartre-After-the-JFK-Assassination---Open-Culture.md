@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年5月27日 15:16:08
+日期：2024 年 5 月 27 日 15:16:08
 
 -->
 
 # The Existentialism Files: How the FBI Targeted Camus, and Then Sartre After the JFK Assassination | Open Culture
 
-> 来源：[https://www.openculture.com/2013/11/the-existentialism-files-how-the-fbi-targeted-camus-and-sartre.html](https://www.openculture.com/2013/11/the-existentialism-files-how-the-fbi-targeted-camus-and-sartre.html)
+> 来源：[`www.openculture.com/2013/11/the-existentialism-files-how-the-fbi-targeted-camus-and-sartre.html`](https://www.openculture.com/2013/11/the-existentialism-files-how-the-fbi-targeted-camus-and-sartre.html)
 
-如你必定知晓，今天是**约翰·肯尼迪**遇刺案50周年，这肯定会重新引起人们对于各种阴谋论的兴趣，因为人们始终没有得到一个令人满意的关于1963年11月22日Dealey Plaza事件的解释。我以前从未听说过的一个理论来自[安迪·马丁](http://www.mml.cam.ac.uk/french/staff/am260/)，他是剑桥大学法语讲师，也是《*拳击手与守门员：萨特vs卡缪*](http://amzn.to/1bHskdg)》一书的作者。在[《前景杂志》](http://www.prospectmagazine.co.uk/art-books/camus-sartre-fbi-hoover/#.Uo7ii6UkTwK)一文中，马丁写道：
+如你必定知晓，今天是**约翰·肯尼迪**遇刺案 50 周年，这肯定会重新引起人们对于各种阴谋论的兴趣，因为人们始终没有得到一个令人满意的关于 1963 年 11 月 22 日 Dealey Plaza 事件的解释。我以前从未听说过的一个理论来自[安迪·马丁](http://www.mml.cam.ac.uk/french/staff/am260/)，他是剑桥大学法语讲师，也是《*拳击手与守门员：萨特 vs 卡缪*](http://amzn.to/1bHskdg)》一书的作者。在[《前景杂志》](http://www.prospectmagazine.co.uk/art-books/camus-sartre-fbi-hoover/#.Uo7ii6UkTwK)一文中，马丁写道：
 
 当局反对派简·保尔·沙特报告显示，萨特曾是“为古巴委员会”的成员，而李·哈维·奥斯瓦尔德也是其中一员。萨特甚至“断言美国是无头之国”。[…]他究竟是否是第二个射手？
 
-也许可以说，马丁在通过这篇引人入胜的文章开篇时是带着一种玩饰动作。 但马丁对萨特和联邦调查局的不当关系非常认真。在他对联邦调查局关于存在主义的档案进行研究时，他发现“*特工们*”，这些本来对哲学不屑一顾的人，已经不得不开始苦心地使用哲学了。他们变成了（用G·K·切斯特顿的话说）*哲学警察*。
+也许可以说，马丁在通过这篇引人入胜的文章开篇时是带着一种玩饰动作。 但马丁对萨特和联邦调查局的不当关系非常认真。在他对联邦调查局关于存在主义的档案进行研究时，他发现“*特工们*”，这些本来对哲学不屑一顾的人，已经不得不开始苦心地使用哲学了。他们变成了（用 G·K·切斯特顿的话说）*哲学警察*。
 
 自从乔·麦卡锡（Joe McCarthy）时代以来，我们已经习惯了意识形态的猎巫，似乎萨特和加缪成为了在过热的国会听证会和媒体谴责中经常发生的事情的测试案例——皱着眉头，缺乏哲学训练的特工们拼命地试图弄清楚这样一个事实：这种晦涩的学术是否是一个巨大阴谋的一部分，以破坏真理、正义、美国道路等等。 萨特早早地出现在反共产主义的雷达上，然而具有讽刺意味的是，他作为一种植物出现在那里，[在 1945 年被](http://www.nytimes.com/2013/09/09/us/when-sartre-and-camus-met-hoovers-g-men.html?pagewanted=all&_r=1&) 美国战争情报局带来的一组记者中，美国政府希望他们发布一些好的宣传。
 

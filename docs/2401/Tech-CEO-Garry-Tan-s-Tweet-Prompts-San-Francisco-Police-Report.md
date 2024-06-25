@@ -8,7 +8,7 @@
 
 # 加利·谭的推文引发了旧金山警方报告
 
-> 来源：[https://sfstandard.com/2024/01/30/garry-tan-vulgar-tweet-prompts-san-francisco-police-reports/](https://sfstandard.com/2024/01/30/garry-tan-vulgar-tweet-prompts-san-francisco-police-reports/)
+> 来源：[`sfstandard.com/2024/01/30/garry-tan-vulgar-tweet-prompts-san-francisco-police-reports/`](https://sfstandard.com/2024/01/30/garry-tan-vulgar-tweet-prompts-san-francisco-police-reports/)
 
 [Y Combinator CEO 加利·谭](https://sfstandard.com/2023/09/27/garry-tan-y-combinator-declares-war-san-francisco-politics-progressives-elon-musk/)在其中模仿著名的说唱歌词，暗示旧金山的进步派监管人员可能会“慢慢地死去”的粗俗推文，导致两名民选官员对这位[有影响力的科技领袖](https://sfstandard.com/2023/11/13/san-francisco-politics-y-combinator-ceo-garry-tan/)提起了警方报告，而第三位官员表示他打算向警方报案。
 
@@ -16,7 +16,7 @@
 
 星期二晚些时候，佩斯金告诉《标准报》，他也收到了同样的信件。
 
-谭因其侵略性推文而在X上很有名，但是Y Combinator的首席执行官在星期六午夜之后发送了一条帖子，模仿了2Pac的著名的《Hit ’Em Up》。这个深夜的狂怒用谭代替了2Pac对臭名昭著的大人物和Bad Boy Records的脏话引用，换成了监管人员Chan、佩斯金、Safaí、迪恩·普雷斯顿、Shamann Walton、Myrna Melgar和Hillary Ronen的名字。
+谭因其侵略性推文而在 X 上很有名，但是 Y Combinator 的首席执行官在星期六午夜之后发送了一条帖子，模仿了 2Pac 的著名的《Hit ’Em Up》。这个深夜的狂怒用谭代替了 2Pac 对臭名昭著的大人物和 Bad Boy Records 的脏话引用，换成了监管人员 Chan、佩斯金、Safaí、迪恩·普雷斯顿、Shamann Walton、Myrna Melgar 和 Hillary Ronen 的名字。
 
 谭后来删除了这篇帖子，并道歉说，对话语和充满充电的言论在交流中“没有位置，没有借口，也没有理由。”
 
@@ -28,7 +28,7 @@
 
 佩斯金告诉《标准报》，发送给他的消息还在信封上有谭的照片。
 
-陈表示，她之所以要提出自己的警方报告，部分原因是因为谭支持11月份挑战陈的监管人员候选人Marjan Philhour。
+陈表示，她之所以要提出自己的警方报告，部分原因是因为谭支持 11 月份挑战陈的监管人员候选人 Marjan Philhour。
 
 Chan 向《标准报》提供了[一份警方事务报告](https://www.documentcloud.org/documents/24397939-connie-chan-police-incident-report)，该报告不仅指出了 Tan 支持 Philhour 竞选的情况，还提到了监管员在 2023 年对付费 Philhour 竞选团队成员 Forrest Liu 提出的一份警方报告。Chan 指控 Liu 在两次场合对她进行了身体威胁。
 

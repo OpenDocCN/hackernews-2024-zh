@@ -6,29 +6,29 @@
 
 -->
 
-# AI或不是：Eliza
+# AI 或不是：Eliza
 
-> 来源：[https://zserge.com/posts/ai-eliza/](https://zserge.com/posts/ai-eliza/)
+> 来源：[`zserge.com/posts/ai-eliza/`](https://zserge.com/posts/ai-eliza/)
 
-# AI或不是：Eliza
+# AI 或不是：Eliza
 
-在2023年，AI成为媒体关注的焦点，引发了关于它究竟是炒作还是真正进步的讨论。
+在 2023 年，AI 成为媒体关注的焦点，引发了关于它究竟是炒作还是真正进步的讨论。
 
-然而，[非人类智能](https://en.wikipedia.org/wiki/Extraterrestrial_intelligence)的概念并不是最近才出现的迷恋；自古以来，这一直是一个梦想。随着我们对大脑中神经元如何通过电子脉冲进行通信的了解越来越多，用类似的电子电路模拟我们的“智能”似乎是可行的。术语“机器智能”是在20世纪50年代提出的，大约与[Turing测试](https://en.wikipedia.org/wiki/Turing_test)同时引入。
+然而，[非人类智能](https://en.wikipedia.org/wiki/Extraterrestrial_intelligence)的概念并不是最近才出现的迷恋；自古以来，这一直是一个梦想。随着我们对大脑中神经元如何通过电子脉冲进行通信的了解越来越多，用类似的电子电路模拟我们的“智能”似乎是可行的。术语“机器智能”是在 20 世纪 50 年代提出的，大约与[Turing 测试](https://en.wikipedia.org/wiki/Turing_test)同时引入。
 
-这个测试（也称为“模拟游戏”）表明，如果人类无法分辨他们是在与另一个人还是机器人交互，那么AI可以被认为是真正智能的。想象一个询问者在一个房间里，通过文本界面进行聊天，提问并试图弄清楚他们的对话伙伴是人还是机器。如果与计算机对话的人认为它是一个人，尽管它是一台机器，那么这就表明这台机器真正具有人工智能。
+这个测试（也称为“模拟游戏”）表明，如果人类无法分辨他们是在与另一个人还是机器人交互，那么 AI 可以被认为是真正智能的。想象一个询问者在一个房间里，通过文本界面进行聊天，提问并试图弄清楚他们的对话伙伴是人还是机器。如果与计算机对话的人认为它是一个人，尽管它是一台机器，那么这就表明这台机器真正具有人工智能。
 
 ## Eliza
 
-最早成功通过图灵测试的计算机程序之一就是Eliza。由[Joseph Weizenbaum](https://web.stanford.edu/class/cs124/p36-weizenabaum.pdf)于1966年创造，Eliza熟练地模拟了其对话中心理医生的语音模式。有趣的是，Eliza在某些图灵测试变体中仍然[胜过ChatGPT-3.5](https://arstechnica.com/information-technology/2023/12/real-humans-appeared-human-63-of-the-time-in-recent-turing-test-ai-study/)。
+最早成功通过图灵测试的计算机程序之一就是 Eliza。由[Joseph Weizenbaum](https://web.stanford.edu/class/cs124/p36-weizenabaum.pdf)于 1966 年创造，Eliza 熟练地模拟了其对话中心理医生的语音模式。有趣的是，Eliza 在某些图灵测试变体中仍然[胜过 ChatGPT-3.5](https://arstechnica.com/information-technology/2023/12/real-humans-appeared-human-63-of-the-time-in-recent-turing-test-ai-study/)。
 
-Eliza演示了即使是最简单的算法也足以表现出智能的足够性。让我们想象一个程序，当它启动时不断打印“你好，用户！”我们几乎无法认为它是智能的，用户很快就会怀疑它只是一种硬编码的行为。
+Eliza 演示了即使是最简单的算法也足以表现出智能的足够性。让我们想象一个程序，当它启动时不断打印“你好，用户！”我们几乎无法认为它是智能的，用户很快就会怀疑它只是一种硬编码的行为。
 
 现在，想象一个程序从预定义列表中随机打印一个问候语。要揭示其人工性需要更多尝试，但只要询问者开始提问，这样的机器人将在与人类交互相比显得太不足够。
 
-## Eliza的工作原理
+## Eliza 的工作原理
 
-让我们重新创建57年前的Eliza。我会分享一些[Go代码](https://github.com/zserge/aint/tree/main/eliza)，但你也可以轻松地将其适应其他编程语言。
+让我们重新创建 57 年前的 Eliza。我会分享一些[Go 代码](https://github.com/zserge/aint/tree/main/eliza)，但你也可以轻松地将其适应其他编程语言。
 
 我们从一个基本的聊天机器人界面开始：
 
@@ -150,7 +150,7 @@ rules:
 
 这里关键词 “apologise” 被视为 “sorry”。对于关键词 “can”，第一个回复将是 *“你相信我能…”*，而第二次尝试将引导 Eliza 到一个通用回复。
 
-最后，还有一个Eliza用来模拟智能的特性：记忆。一些转换规则会要求Eliza将回复存储在内存堆栈中。后来，当找不到合适的回复时，这些先前的回复会从内存中弹出并重新使用：
+最后，还有一个 Eliza 用来模拟智能的特性：记忆。一些转换规则会要求 Eliza 将回复存储在内存堆栈中。后来，当找不到合适的回复时，这些先前的回复会从内存中弹出并重新使用：
 
 ```
 > How do you do.  Please tell me your problem.
@@ -162,9 +162,9 @@ rules:
 > Please go on. 
 ```
 
-这里关于聊天机器人行为不端的第一个回复被记忆下来，并在Eliza缺少合适的回复时重复使用。
+这里关于聊天机器人行为不端的第一个回复被记忆下来，并在 Eliza 缺少合适的回复时重复使用。
 
-这就是Eliza所做的全部。知识库可以直接用Go代码表示，但您也可以将Eliza的“脚本”存储为JSON或YAML文件，并在启动时解析这些文件：
+这就是 Eliza 所做的全部。知识库可以直接用 Go 代码表示，但您也可以将 Eliza 的“脚本”存储为 JSON 或 YAML 文件，并在启动时解析这些文件：
 
 ```
 type Keyword struct {
@@ -220,7 +220,7 @@ var (
 ) 
 ```
 
-所有Eliza状态都可以存储在两个变量中：一个索引，指向每个规则下一个可用的分解，以及最新存储的回复的内存：
+所有 Eliza 状态都可以存储在两个变量中：一个索引，指向每个规则下一个可用的分解，以及最新存储的回复的内存：
 
 ```
 var (
@@ -229,7 +229,7 @@ var (
 ) 
 ```
 
-完整的Eliza代码不超过三个函数：一个用于预处理/后处理文本的辅助函数，一个模式匹配算法和一个顶层响应函数，用于处理Eliza剩余的逻辑：
+完整的 Eliza 代码不超过三个函数：一个用于预处理/后处理文本的辅助函数，一个模式匹配算法和一个顶层响应函数，用于处理 Eliza 剩余的逻辑：
 
 ```
 func replace(words []string, mapping map[string]string) (res []string) {
@@ -248,7 +248,7 @@ replace(strings.Fields("i think you're a machine"}, pre)
 // -> ["you", "think", "i", "am", "a", "computer"] 
 ```
 
-模式匹配可以用多种方式实现。显而易见的是使用正则表达式，但对于Eliza来说，那太高级了。另一个选择是通过实现[一个35行的微小匹配器](https://benhoyt.com/writings/rob-pike-regex/)来实现，由[Rob Pike](https://en.wikipedia.org/wiki/Rob_Pike)提供。
+模式匹配可以用多种方式实现。显而易见的是使用正则表达式，但对于 Eliza 来说，那太高级了。另一个选择是通过实现[一个 35 行的微小匹配器](https://benhoyt.com/writings/rob-pike-regex/)来实现，由[Rob Pike](https://en.wikipedia.org/wiki/Rob_Pike)提供。
 
 但由于我们的文本已经被分成了标记，我们可以构建一个类似的递归匹配器，该匹配器操作单词而不是字符：
 
@@ -289,7 +289,7 @@ func match(pat, words []string) ([]string, bool) {
 // // func split(s) []string { ... } // // match(split(""), split("")) -> true // match(split("foo"), split("foo")) -> true // match(split("foo"), split("bar")) -> false // match(split("foo"), split("bar")) -> false // match(split("a * b"), split("a b c d e b")) -> true (1)="b c d e" // match(split(* a * b *), split("a b c")) -> true (1)="", (2)="", (3)="c" 
 ```
 
-在将所有知识编码并编写这些实用函数之后，我们现在可以构建Eliza的其余大脑了：
+在将所有知识编码并编写这些实用函数之后，我们现在可以构建 Eliza 的其余大脑了：
 
 ```
 func respond(q string) string {
@@ -344,14 +344,14 @@ func respond(q string) string {
 } 
 ```
 
-完整的源代码可以在[GitHub上](https://github.com/zserge/aint/tree/main/eliza/)找到，你可以在[线上](https://www.masswerk.at/elizabot/)玩弄其中一个Eliza实现，自己进行图灵测试。
+完整的源代码可以在[GitHub 上](https://github.com/zserge/aint/tree/main/eliza/)找到，你可以在[线上](https://www.masswerk.at/elizabot/)玩弄其中一个 Eliza 实现，自己进行图灵测试。
 
 # AI？
 
-显然，Eliza并不是人工智能。但它取得了巨大的成功，并导致许多人将其视为人类。对其用户怀有同情心，并将其语言反映回他们，Eliza似乎非常理解人情。此外，它也不倾向于透露太多关于自己的信息，这使得发现它只是一系列硬编码短语更加困难。沉默确实是金子般的。
+显然，Eliza 并不是人工智能。但它取得了巨大的成功，并导致许多人将其视为人类。对其用户怀有同情心，并将其语言反映回他们，Eliza 似乎非常理解人情。此外，它也不倾向于透露太多关于自己的信息，这使得发现它只是一系列硬编码短语更加困难。沉默确实是金子般的。
 
-下一部分：[马尔可夫链](/posts/ai-markov/)
+下一部分：马尔可夫链
 
-希望您喜欢本文。您可以在[Github](https://github.com/zserge)、[Mastodon](https://mastodon.social/@zserge)、[Twitter](https://twitter.com/zsergo)上关注并贡献，或通过[rss](/rss.xml)订阅。
+希望您喜欢本文。您可以在[Github](https://github.com/zserge)、[Mastodon](https://mastodon.social/@zserge)、[Twitter](https://twitter.com/zsergo)上关注并贡献，或通过 rss 订阅。
 
-*2024年1月1日*
+*2024 年 1 月 1 日*

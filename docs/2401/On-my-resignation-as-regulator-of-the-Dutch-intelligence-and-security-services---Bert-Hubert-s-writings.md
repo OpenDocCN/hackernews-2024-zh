@@ -6,15 +6,15 @@ date: 2024-05-27 15:09:12
 
 -->
 
-# 关于我辞去荷兰情报和安全机构监管者一职的声明 - Bert Hubert的文章
+# 关于我辞去荷兰情报和安全机构监管者一职的声明 - Bert Hubert 的文章
 
-> 来源：[https://berthub.eu/articles/posts/resignation-as-intelligence-regulator/](https://berthub.eu/articles/posts/resignation-as-intelligence-regulator/)
+> 来源：[`berthub.eu/articles/posts/resignation-as-intelligence-regulator/`](https://berthub.eu/articles/posts/resignation-as-intelligence-regulator/)
 
 我看到了一些平庸的自动翻译我的 [荷兰语辞职声明](https://berthub.eu/articles/posts/vertrek-tib/)。为了防止任何混淆，请在此找到英文报道：
 
-直到今天，我是荷兰情报和安全服务的三名委员会成员之一，负责审核授权书。这个委员会叫做“[Toetsingscommissie Inzet Bevoegdheden](https://tib-ivd.nl/)”，简称TIB。
+直到今天，我是荷兰情报和安全服务的三名委员会成员之一，负责审核授权书。这个委员会叫做“[Toetsingscommissie Inzet Bevoegdheden](https://tib-ivd.nl/)”，简称 TIB。
 
-如果荷兰的民用或军事情报和安全机构想要使用其合法的拦截、信号情报或黑客（及其他一些）法定权力，他们必须首先说服自己的法律专家，然后是他们的部门，最后是TIB。然后，TIB会 [研究授权是否合法](https://english.aivd.nl/about-aivd/the-intelligence-and-security-services-act-2017/regulatory-commission)，并且该决定具有约束力。
+如果荷兰的民用或军事情报和安全机构想要使用其合法的拦截、信号情报或黑客（及其他一些）法定权力，他们必须首先说服自己的法律专家，然后是他们的部门，最后是 TIB。然后，TIB 会 [研究授权是否合法](https://english.aivd.nl/about-aivd/the-intelligence-and-security-services-act-2017/regulatory-commission)，并且该决定具有约束力。
 
 > 为了进一步促进国际透明度，TIB [也会用英文发布其年度报告](https://www.tib-ivd.nl/binaries/tib/documenten/jaarverslagen/2022/05/24/annual-report-tib-2021/Annual+Report+TIB+2021.pdf)。
 

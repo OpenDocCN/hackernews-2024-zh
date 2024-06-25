@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - W4G1/multithreading: ⚡ JavaScript 中的多线程功能，可加速繁重的工作负载，设计得像编写普通函数一样。
 
-> 来源：[https://github.com/W4G1/multithreading](https://github.com/W4G1/multithreading)
+> 来源：[`github.com/W4G1/multithreading`](https://github.com/W4G1/multithreading)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

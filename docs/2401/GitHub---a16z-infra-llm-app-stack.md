@@ -8,7 +8,7 @@
 
 # GitHub - a16z-infra/llm-app-stack
 
-> 来源：[https://github.com/a16z-infra/llm-app-stack](https://github.com/a16z-infra/llm-app-stack)
+> 来源：[`github.com/a16z-infra/llm-app-stack`](https://github.com/a16z-infra/llm-app-stack)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

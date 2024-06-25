@@ -8,7 +8,7 @@ date: 2024-05-27 14:34:48
 
 # GitHub - praeclarum/1brc: 1️⃣🐝🏎️ The One Billion Row Challenge - .NET Edition
 
-> 来源：[https://github.com/praeclarum/1brc](https://github.com/praeclarum/1brc)
+> 来源：[`github.com/praeclarum/1brc`](https://github.com/praeclarum/1brc)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

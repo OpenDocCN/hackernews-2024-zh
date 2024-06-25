@@ -8,7 +8,7 @@ date: 2024-05-27 14:24:54
 
 # GitHub - oracle/sd4j: 使用 ONNX Runtime 在 Java 中的稳定扩散管道
 
-> 来源：[https://github.com/oracle-samples/sd4j](https://github.com/oracle-samples/sd4j)
+> 来源：[`github.com/oracle-samples/sd4j`](https://github.com/oracle-samples/sd4j)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

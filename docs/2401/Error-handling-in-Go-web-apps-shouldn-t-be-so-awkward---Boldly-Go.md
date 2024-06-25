@@ -8,7 +8,7 @@ category: 未分类
 
 # Go Web 应用程序中的错误处理不应该如此笨拙 - 大胆前进
 
-> 来源：[https://boldlygo.tech/posts/2024-01-08-error-handling/](https://boldlygo.tech/posts/2024-01-08-error-handling/)
+> 来源：[`boldlygo.tech/posts/2024-01-08-error-handling/`](https://boldlygo.tech/posts/2024-01-08-error-handling/)
 
 *更新于 2024-01-10，以包括[领域特定错误](https://boldlygo.tech/posts/2024-01-08-error-handling/#domain-specific-error-codes)和[限制](https://boldlygo.tech/posts/2024-01-08-error-handling/#other-limitations)部分。*
 
@@ -40,9 +40,9 @@ func (s *Service) GetWidget(w http.ResponseWriter, r *http.Request) {  if err :=
 
 +   错误处理是重复的，不符合习惯。Go 因其 `if err != nil { return err }` 的习惯而（声名）著称。然而，我们甚至不能在这里使用 *那个*，因为[HandlerFunc](https://pkg.go.dev/net/http#HandlerFunc)的签名不返回错误。相反，对于每个错误，我们必须（a）提供错误，并分开（b）返回。
 
-+   我们必须明确处理每种错误情况的HTTP状态。如果你有几十个或几百个处理程序（你很可能有），这很快就会变得重复和容易出错。这里没有DRY。在像这样的单个处理程序中，也许这不是什么大问题。但如果我们对一个错误有一些默认的HTTP状态码会很好——可能是500 / Internal Server Error。
++   我们必须明确处理每种错误情况的 HTTP 状态。如果你有几十个或几百个处理程序（你很可能有），这很快就会变得重复和容易出错。这里没有 DRY。在像这样的单个处理程序中，也许这不是什么大问题。但如果我们对一个错误有一些默认的 HTTP 状态码会很好——可能是 500 / Internal Server Error。
 
-+   这个处理程序需要关注数据库内部。特别是，它检查我们是否收到了[`sql.ErrNoRows`](https://pkg.go.dev/database/sql#pkg-variables)错误。HTTP处理程序应该是完全与数据库无关的，所以这个细节不应该在这里暴露。这是一些丑陋的紧耦合，我们可以摆脱它。
++   这个处理程序需要关注数据库内部。特别是，它检查我们是否收到了[`sql.ErrNoRows`](https://pkg.go.dev/database/sql#pkg-variables)错误。HTTP 处理程序应该是完全与数据库无关的，所以这个细节不应该在这里暴露。这是一些丑陋的紧耦合，我们可以摆脱它。
 
 ## 如果，相反…
 
@@ -50,9 +50,9 @@ func (s *Service) GetWidget(w http.ResponseWriter, r *http.Request) {  if err :=
 
 +   对于每个错误，我们只需`return err`，正确的事情就会发生？错误将被渲染为适当的格式，并发送给用户？
 
-+   渲染错误的魔法也会知道设置适当的HTTP状态码，是吗？无效输入为400，未找到为404，未经授权的访问为401等？
++   渲染错误的魔法也会知道设置适当的 HTTP 状态码，是吗？无效输入为 400，未找到为 404，未经授权的访问为 401 等？
 
-+   数据存储，无论是SQL数据库、MongoDB还是文件系统，都只会告诉我们“这个错误意味着未找到”，而不是处理程序了解实现细节？
++   数据存储，无论是 SQL 数据库、MongoDB 还是文件系统，都只会告诉我们“这个错误意味着未找到”，而不是处理程序了解实现细节？
 
 我即将描述的模式给了我们所有这些东西。不仅如此，它还能启用许多其他相当强大的新兴模式。我将在最后提到其中一些，并可能稍后更详细地写一些关于它们的内容（如果你感兴趣的话，请告诉我）。
 
@@ -64,7 +64,7 @@ func (s *Service) GetWidget(w http.ResponseWriter, r *http.Request) {  if err :=
 type HandlerFunc func(c Context) error 
 ```
 
-但我不认为你需要采用像Echo这样的重型框架才能获得方便的错误处理原语。所以你可以自己做。以下是一个简单的适配器函数模式，你可以使用它：
+但我不认为你需要采用像 Echo 这样的重型框架才能获得方便的错误处理原语。所以你可以自己做。以下是一个简单的适配器函数模式，你可以使用它：
 
 ```
 // customHandler converts an error-returning handler to a standard http.HandlerFunc. func customHandler(f func(http.ResponseWriter, *http.Request) error) http.HandlerFunc {  return func(w http.ResponseWriter, r *http.Request) {  err := f(w, r)  if err != nil {  http.Error(w, err.Error(), http.StatusInternalServerError) // Wait, alwyas 500? More on that later  }  } } 
@@ -96,13 +96,13 @@ import "gitlab.com/flimzy/httpe"   mux.Handle("/widget", httpe.ToHandler(s.GetWi
 
 `httpe`库比您自己的自定义处理程序的主要优势在于，它提供了对中间件适配器的支持，并且可以混合使用标准和启用错误的处理程序，并且在幕后进行错误传播。但这超出了本文的范围。
 
-## 如何处理不同的HTTP状态
+## 如何处理不同的 HTTP 状态
 
-这些改进的第二件事取决于某种指定HTTP状态的方法。我们观察到，虽然这种新的处理程序模式使错误处理*更简单*，但它也打破了它，通过将所有错误视为500 / 内部服务器错误（或者您在`customHandler`函数中设置的任意状态）。让我们现在解决这个问题。
+这些改进的第二件事取决于某种指定 HTTP 状态的方法。我们观察到，虽然这种新的处理程序模式使错误处理*更简单*，但它也打破了它，通过将所有错误视为 500 / 内部服务器错误（或者您在`customHandler`函数中设置的任意状态）。让我们现在解决这个问题。
 
 ### 错误是接口
 
-请回忆，在Go语言中，`error`类型是一个接口类型，定义如下：
+请回忆，在 Go 语言中，`error`类型是一个接口类型，定义如下：
 
 ```
 type error interface {  Error() string } 
@@ -110,7 +110,7 @@ type error interface {  Error() string }
 
 这很强大，因为它意味着我们可以创建自己的自定义错误类型。而且，对于我们的目的来说，我们可以*扩展*错误类型以包含其他方法。
 
-我们想要利用这两种功能来创建一个包含HTTP状态的自定义错误类型，并添加一个公开该状态的方法。这是我们将使用的简单自定义类型：
+我们想要利用这两种功能来创建一个包含 HTTP 状态的自定义错误类型，并添加一个公开该状态的方法。这是我们将使用的简单自定义类型：
 
 ```
 type statusError struct {  error  status int } 
@@ -128,7 +128,7 @@ func (e statusError) Unwrap() error {  return e.error }
 func (e statusError) HTTPStatus() int {  return e.status } 
 ```
 
-现在，您可以随意命名您的方法。我选择了`HTTPStatus`，最初只是使用`Status()`，因为它不够明确，但仍然不够烦人。您可以随意使用任何其他方法（或多个方法）。例如，也许您想要`JSONRPCStatus()`，如果您正在构建JSON-RPC服务。或者如果您正在构建gRPC服务，已经为您定义了一个接口：`GRPCStatus() *status.Status`。
+现在，您可以随意命名您的方法。我选择了`HTTPStatus`，最初只是使用`Status()`，因为它不够明确，但仍然不够烦人。您可以随意使用任何其他方法（或多个方法）。例如，也许您想要`JSONRPCStatus()`，如果您正在构建 JSON-RPC 服务。或者如果您正在构建 gRPC 服务，已经为您定义了一个接口：`GRPCStatus() *status.Status`。
 
 ## 使用我们的自定义错误类型
 
@@ -138,7 +138,7 @@ func (e statusError) HTTPStatus() int {  return e.status }
 func (s *Service) GetWidget(w http.ResponseWriter, r *http.Request) error {  if err := r.ParseForm(); err != nil {  return statusError{error: err, status: http.StatusBadRequest}  }  id, err := strconv.Atoi(r.Form.Get("widget_id"))  if err != nil {  return statusError{error: err, status: http.StatusBadRequest}  }  widget, err := s.db.GetWidget(id)  if err != nil {  return statusError{error: err, status: http.StatusInternalServerError}  }  widgetJSON, err := json.Marshal(widget)  if err != nil {  return statusError{error: err, status: http.StatusInternalServerError}  }  w.Header.Set("Content-Type", "application/json")  w.Write(widgetJSON) } 
 ```
 
-现在我们（大部分）修复了我们的状态码。唯一的例外是数据库调用。我们将所有错误视为状态500，但当我们应该将丢失的小部件视为404时。这里的解决方案是使我们的数据访问层了解这些新的错误类型：
+现在我们（大部分）修复了我们的状态码。唯一的例外是数据库调用。我们将所有错误视为状态 500，但当我们应该将丢失的小部件视为 404 时。这里的解决方案是使我们的数据访问层了解这些新的错误类型：
 
 ```
 func (db *DB) GetWidget(id int) (*Widget, error) {  widget, err := db.Get(/* ... */)  if errors.Is(err, sql.ErrNoRows) {  return nil, statusError{error: err, status: http.StatusNotFound}  }  if err != nil {  return nil, statusError{error: err, status: http.StatusInternalServerError}  }  return widget, nil } 
@@ -150,7 +150,7 @@ func (db *DB) GetWidget(id int) (*Widget, error) {  widget, err := db.Get(/* ...
 // customHandler converts an error-returning handler to a standard http.HandlerFunc. func customHandler(f func(http.ResponseWriter, *http.Request) error) http.HandlerFunc {  return func(w http.ResponseWriter, r *http.Request) {  err := f(w, r)  if err != nil {  var status int  var statusErr interface {  error  HTTPStatus() int  }  if errors.As(err, &statusErr) {  status = statusErr.HTTPStatus()  }  http.Error(w, err.Error(), status)  }  } } 
 ```
 
-好...现在我们又回到了一个完全功能的小部件处理程序。而且我们还将我们的数据库逻辑与我们的HTTP处理程序解耦了。所以这是一个胜利。
+好...现在我们又回到了一个完全功能的小部件处理程序。而且我们还将我们的数据库逻辑与我们的 HTTP 处理程序解耦了。所以这是一个胜利。
 
 ## 进一步改进
 
@@ -170,7 +170,7 @@ func (s *Service) GetWidget(w http.ResponseWriter, r *http.Request) error {  if 
 
 我们可以对这个设置做一个其他大的改进：设置一个默认状态。
 
-实际上，您可能已经注意到我们改进的`customHandler`函数*没有默认状态*。这意味着如果我们传递给它不包含HTTP状态的错误，它将尝试提供具有`0`状态的HTTP响应。可能不是理想的。
+实际上，您可能已经注意到我们改进的`customHandler`函数*没有默认状态*。这意味着如果我们传递给它不包含 HTTP 状态的错误，它将尝试提供具有`0`状态的 HTTP 响应。可能不是理想的。
 
 让我们通过在我们的`apperr`包中添加一个帮助函数来解决这个问题，这个函数也可以从其他地方使用：
 
@@ -184,7 +184,7 @@ package apperr   // HTTPStatus returns the HTTP status included in err. If err i
 // customHandler converts an error-returning handler to a standard http.HandlerFunc. func customHandler(f func(http.ResponseWriter, *http.Request) error) http.HandlerFunc {  return func(w http.ResponseWriter, r *http.Request) {  err := f(w, r)  if err != nil {  http.Error(w, err.Error(), apperr.HTTPStatus(err))  }  } } 
 ```
 
-我们的处理程序也可以通过省略调用`apierr.WithStatus`来改进，当我们想要默认状态为500 / 内部服务器错误时。
+我们的处理程序也可以通过省略调用`apierr.WithStatus`来改进，当我们想要默认状态为 500 / 内部服务器错误时。
 
 ## 进一步改进
 
@@ -264,7 +264,7 @@ internalCode := apperror.Code(err) // The internal error code  httpStatus := app
 
 +   HTTP 状态对你来说不够详细吗？也许你需要区分`widget not found`和`user not found`？你可以创建自己的内部错误状态/代码，用于内部使用，并解析为通用的 HTTP 状态。
 
-+   寻找简化代码的方法。例如，从处理程序示例中，考虑将对 `r.ParseForm` 和 `strconv.Atoi` 的调用移到一个公共函数中，或者使用验证库，如[github.com/go-playground/validator/v10](https://pkg.go.dev/github.com/go-playground/validator/v10)替换 `strconv` 调用——该库会返回带有400状态的错误。然后你的处理程序只需将该错误传递过去。
++   寻找简化代码的方法。例如，从处理程序示例中，考虑将对 `r.ParseForm` 和 `strconv.Atoi` 的调用移到一个公共函数中，或者使用验证库，如[github.com/go-playground/validator/v10](https://pkg.go.dev/github.com/go-playground/validator/v10)替换 `strconv` 调用——该库会返回带有 400 状态的错误。然后你的处理程序只需将该错误传递过去。
 
 你见过或者想到其他的用例吗？[我很乐意听到你的意见](https://boldlygo.tech/contact)。
 

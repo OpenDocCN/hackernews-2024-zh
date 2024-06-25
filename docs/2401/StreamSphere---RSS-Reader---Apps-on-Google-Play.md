@@ -8,7 +8,7 @@
 
 # StreamSphere - RSS 阅读器 - Google Play 应用
 
-> 来源：[https://play.google.com/store/apps/details?id=com.niviva.rssreader.streamsphere&hl=en_US](https://play.google.com/store/apps/details?id=com.niviva.rssreader.streamsphere&hl=en_US)
+> 来源：[`play.google.com/store/apps/details?id=com.niviva.rssreader.streamsphere&hl=en_US`](https://play.google.com/store/apps/details?id=com.niviva.rssreader.streamsphere&hl=en_US)
 
 这款注重隐私且无广告的 RSS 阅读器应用程序可以轻松管理 RSS 订阅源、访问喜爱的文章，并提供可定制的阅读体验。轻松发现信息世界，拥有精选的超过 700 个源。该收藏包括技术、体育、食品、电影、商业、旅行等 32 个热门主题，以及来自全球 26 个不同国家的新闻。与来自美国、英国、澳大利亚、加拿大、德国、法国、印度、日本、巴西等国家的新闻保持联系。此外，您还可以自由添加和个性化您自己的来源，以关注您感兴趣的内容。
 

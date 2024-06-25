@@ -8,7 +8,7 @@
 
 # Flakes 不是真的，也不会伤害到你：一个使用 Nix flakes 的非 flakes 方法的指南 - jade 的 www 站点
 
-> 来源：[https://jade.fyi/blog/flakes-arent-real/](https://jade.fyi/blog/flakes-arent-real/)
+> 来源：[`jade.fyi/blog/flakes-arent-real/`](https://jade.fyi/blog/flakes-arent-real/)
 
 煽动性的标题已经讲过了，让我们开始吧。
 
@@ -132,13 +132,13 @@ stdenv.mkDerivation {
 
 [覆盖（overlay）](https://nixos.org/manual/nixpkgs/stable/#sec-overlays-definition) 是覆盖 nixpkgs 的函数，它在达到 [不动点（fixed point）](https://en.wikipedia.org/wiki/Fixed-point_combinator) 之前进行求值。覆盖接受两个参数，`final` 和 `prev`（有时也称为 `self` 和 `super`），并返回一个属性集，该属性集在 nixpkgs 顶部被浅层替换为 `//`。
 
-叠加层对于在nixpkgs之外分发软件集合是有用的，并且在Flakes世界中仍然是有用的，因为叠加层是简单的函数，可以对任何版本的nixpkgs进行评估，并且如果使用`callPackage`编写，交叉编译也可以工作。人们可能会注意到`overlays`叠加层输出不是特定于架构的，这是因为它们被定义为接受包集并返回修改以进行的函数；这就是它们在这里正常工作的原因。
+叠加层对于在 nixpkgs 之外分发软件集合是有用的，并且在 Flakes 世界中仍然是有用的，因为叠加层是简单的函数，可以对任何版本的 nixpkgs 进行评估，并且如果使用`callPackage`编写，交叉编译也可以工作。人们可能会注意到`overlays`叠加层输出不是特定于架构的，这是因为它们被定义为接受包集并返回修改以进行的函数；这就是它们在这里正常工作的原因。
 
-对于一个固定点的评估意味着它会被评估多次，直到它不再引用`final`参数（或者溢出堆栈）。这个想法出现在许多地方，包括LaTeX的目录、[Typst](https://typst.app)或其他排版程序中：通过生成目录，你可能会影响后续页面的布局并更改它们的页码，但在第一次运行之后，布局可能不会改变，因为唯一的变化是数字，所以*那次*迭代可能会收敛到最终结果。
+对于一个固定点的评估意味着它会被评估多次，直到它不再引用`final`参数（或者溢出堆栈）。这个想法出现在许多地方，包括 LaTeX 的目录、[Typst](https://typst.app)或其他排版程序中：通过生成目录，你可能会影响后续页面的布局并更改它们的页码，但在第一次运行之后，布局可能不会改变，因为唯一的变化是数字，所以*那次*迭代可能会收敛到最终结果。
 
-`final`给出了属性集的*最终*版本，在叠加层被评估至其最大程度时；你的叠加层可能会在评估`final`中的属性时运行多次，甚至会导致无限递归。`prev`给出了当前叠加层或任何进一步叠加层之前的nixpkgs的版本。
+`final`给出了属性集的*最终*版本，在叠加层被评估至其最大程度时；你的叠加层可能会在评估`final`中的属性时运行多次，甚至会导致无限递归。`prev`给出了当前叠加层或任何进一步叠加层之前的 nixpkgs 的版本。
 
-例如，我们可以编写一个叠加层来重写GNU Hello，使其成为一个包装器，引用一个[优秀的复古计算机系列](https://www.youtube.com/watch?v=gQ6mwbTGXGQ)。`overlay.nix`的内容：
+例如，我们可以编写一个叠加层来重写 GNU Hello，使其成为一个包装器，引用一个[优秀的复古计算机系列](https://www.youtube.com/watch?v=gQ6mwbTGXGQ)。`overlay.nix`的内容：
 
 ```
  final: prev: {
@@ -165,11 +165,11 @@ hellorld
 
 如果一个叠加层实际上并没有替换任何东西或包含自引用，那么无限递归通常不是一个问题，就像叠加层分发非常简单的软件的情况一样，我们可以像下一节中所示的那样利用它。
 
-### 叠加层在Flakes世界中的位置
+### 叠加层在 Flakes 世界中的位置
 
-*Flakes不支持交叉编译。*
+*Flakes 不支持交叉编译。*
 
-我在这里使用措辞有点狡猾。Flakes并不会*阻止*你进行交叉编译，但你必须绕过Flakes，按照“老”方法来做。
+我在这里使用措辞有点狡猾。Flakes 并不会*阻止*你进行交叉编译，但你必须绕过 Flakes，按照“老”方法来做。
 
 由于 flakes 的这个设计缺陷，即不支持参数，编写 flake 项目中的包装最兼容的方法是首先将包定义写入一个覆盖层，然后从覆盖层中公开包。需要跨编译的消费者可以使用带有自己的 nixpkgs 副本的覆盖层，而不关心的消费者可以通过 `packages` 使用它。
 
@@ -243,7 +243,7 @@ NixOS 模块，就像覆盖层和 `package.nix` 一样，基本上只是以一�
 
 有几种方法可以从一个 flake 将依赖项注入到 NixOS 模块中，其中一种方法稍微有些丑陋。从 `flake.nix` 中注入值到 NixOS 需要有几个原因，其中最重要的是，要在 NixOS 配置中使用 flakes 管理的依赖项。同样，为了[正确配置 `NIX_PATH` 以便在 flake 配置中解析 `<nixpkgs>`](https://github.com/NixOS/nixpkgs/pull/254405)，从 `flake.nix` 获取实际输入是必要的，以获得适合创建对实际 flake 输入的依赖关系的 nixpkgs 的正确引用。
 
-最简单（也是我认为最合理的）注入flakes中的依赖项的方法是编写一个内联模块，在`flake.nix`中将它们放在其词法闭包中。如果你想要花哨一点，甚至可以制作一个选项来存储注入的依赖项：
+最简单（也是我认为最合理的）注入 flakes 中的依赖项的方法是编写一个内联模块，在`flake.nix`中将它们放在其词法闭包中。如果你想要花哨一点，甚至可以制作一个选项来存储注入的依赖项：
 
 ```
  let depInject = { pkgs, lib, ... }: {
@@ -275,11 +275,11 @@ in {
 } 
 ```
 
-将依赖项注入到NixOS模块中的更丑陋，也许更为人所知的方法是[`specialArgs`](https://nixos.org/manual/nixos/unstable/options#opt-_module.args)。这更丑陋，因为它被转储到每个模块的参数中，这与NixOS中其他数据流工作方式不同，它也无法在实际调用`nixpkgs.lib.nixosSystem`的flake之外工作。后者是更加阴险的部分，也是我强烈推荐使用具有闭包的内联模块而不是`specialArgs`的原因：它们会破坏flake的组合。
+将依赖项注入到 NixOS 模块中的更丑陋，也许更为人所知的方法是[`specialArgs`](https://nixos.org/manual/nixos/unstable/options#opt-_module.args)。这更丑陋，因为它被转储到每个模块的参数中，这与 NixOS 中其他数据流工作方式不同，它也无法在实际调用`nixpkgs.lib.nixosSystem`的 flake 之外工作。后者是更加阴险的部分，也是我强烈推荐使用具有闭包的内联模块而不是`specialArgs`的原因：它们会破坏 flake 的组合。
 
 话虽如此，*要么*使用`specialArgs` *要么*在`flake.nix`中内联模块，而不是在上面的选项中，是注入模块导入的唯一方法。也就是说，如果使用类似`imports = [ config.someOption ]`的选项，它会导致无限递归错误。对于这种情况，我们建议将导入放在`flake.nix`中的内联模块中。
 
-要使用`specialArgs`，需要将属性集传递到`nixpkgs.lib.nixosSystem`，然后这些属性集会进入NixOS模块的参数中。
+要使用`specialArgs`，需要将属性集传递到`nixpkgs.lib.nixosSystem`，然后这些属性集会进入 NixOS 模块的参数中。
 
 ```
  nixosConfigurations.something = nixpkgs.lib.nixosSystem {
@@ -305,9 +305,9 @@ in {
 
 #### 例子
 
-这可以等效地通过上面对pkgs的覆盖调用技巧来完成。
+这可以等效地通过上面对 pkgs 的覆盖调用技巧来完成。
 
-例如，这定义了一个非常实用的NixOS模块，在启动时在控制台上对用户发出咪咪声：
+例如，这定义了一个非常实用的 NixOS 模块，在启动时在控制台上对用户发出咪咪声：
 
 ```
  {
@@ -443,15 +443,15 @@ let cfg = config.services.meow; in {
 » nix build .#nixosConfigurations.test.config.system.build.toplevel 
 ```</details>
 
-# "Flakes是Nix的未来，也是唯一的CLI"
+# "Flakes 是 Nix 的未来，也是唯一的 CLI"
 
-许多文字已经写了关于新CLI及其设计的文章，主要集中在flakes上。然而，这并不是新CLI的唯一模式：在任何有意义的地方，它实际上都完全支持非flakes的使用。
+许多文字已经写了关于新 CLI 及其设计的文章，主要集中在 flakes 上。然而，这并不是新 CLI 的唯一模式：在任何有意义的地方，它实际上都完全支持非 flakes 的使用。
 
-要与旧的CLI获得更精确的等价性，`-L`（`--print-build-logs`）和`--print-out-path`很有用。同样，旧的CLI可以通过传递`--log-format bar-with-logs`来改善其输出到新CLI的输出。我不得不提到[nix-output-monitor](https://github.com/maralorn/nix-output-monitor)作为观察Nix构建的更好方式。
+要与旧的 CLI 获得更精确的等价性，`-L`（`--print-build-logs`）和`--print-out-path`很有用。同样，旧的 CLI 可以通过传递`--log-format bar-with-logs`来改善其输出到新 CLI 的输出。我不得不提到[nix-output-monitor](https://github.com/maralorn/nix-output-monitor)作为观察 Nix 构建的更好方式。
 
 下表显示了等价关系：
 
-| **旧CLI** | **等效** |
+| **旧 CLI** | **等效** |
 | --- | --- |
 
 |
@@ -526,9 +526,9 @@ nix eval --impure --expr 'blah'
 
 |
 
-# "Flakes是管理外部依赖项的方法"
+# "Flakes 是管理外部依赖项的方法"
 
-Flakes是管理外部依赖项的一种方式，但在该角色中它们有许多缺陷。
+Flakes 是管理外部依赖项的一种方式，但在该角色中它们有许多缺陷。
 
 一个缺陷是所有依赖项都需要列在一个文件中，并且没有办法将它们限制在组中。
 

@@ -8,7 +8,7 @@
 
 # 约翰·格雷厄姆-卡明的博客：我的日常驱动器比我想象的还要老！
 
-> 来源：[https://blog.jgc.org/2024/01/my-daily-driver-is-older-than-i-thought.html](https://blog.jgc.org/2024/01/my-daily-driver-is-older-than-i-thought.html)
+> 来源：[`blog.jgc.org/2024/01/my-daily-driver-is-older-than-i-thought.html`](https://blog.jgc.org/2024/01/my-daily-driver-is-older-than-i-thought.html)
 
 我在我的主要笔记本电脑上进行了一些清理工作，意识到我已经有一段时间没有买新电脑了。结果证明它比我想象的要老得多：
 
@@ -16,16 +16,16 @@
 
 [古董](https://support.apple.com/en-us/HT201624)
 
-但我没有任何强烈的理由来升级它。苹果仍然在macOS中支持它（尽管我不能升级到macOS Ventura之外），所有硬件都正常工作，而且我还没有用完磁盘空间（尽管我确实不得不将所有工作转移到外部驱动器上因为它们太大了）。
+但我没有任何强烈的理由来升级它。苹果仍然在 macOS 中支持它（尽管我不能升级到 macOS Ventura 之外），所有硬件都正常工作，而且我还没有用完磁盘空间（尽管我确实不得不将所有工作转移到外部驱动器上因为它们太大了）。
 
 [幕后故事](https://behind-the-screens.tv/)
 
 因为它们太大了）。
 
-但有一件事我很讨厌：该该可恶的触控栏和它那个假的ESC键。我以为我会习惯触控栏，但结果证明我并没有。
+但有一件事我很讨厌：该该可恶的触控栏和它那个假的 ESC 键。我以为我会习惯触控栏，但结果证明我并没有。
 
-这是我拥有的最长时间的笔记本电脑，而且我认为这归结于几个原因。首先，我大部分时间都在这台机器上使用网络浏览器，或者使用终端程序SSH到其他地方。其次，我经常在上面使用的最强大的程序是Final Cut Pro，但我的视频通常都很短，输出也不特别复杂。
+这是我拥有的最长时间的笔记本电脑，而且我认为这归结于几个原因。首先，我大部分时间都在这台机器上使用网络浏览器，或者使用终端程序 SSH 到其他地方。其次，我经常在上面使用的最强大的程序是 Final Cut Pro，但我的视频通常都很短，输出也不特别复杂。
 
 因此，苹果的硬件和软件的组合支持以及我很多的计算需求都被转移到了云端，这意味着这台老旧的机器运行良好。
 
-PS 如果你对一台真正古老的机器感兴趣，可以[阅读关于我对IBM ThinkPad 701c进行的完全修复](https://blog.jgc.org/2023/12/restoration-of-ibm-thinkpad-701c.html)（那款带有蝴蝶键盘的）。
+PS 如果你对一台真正古老的机器感兴趣，可以[阅读关于我对 IBM ThinkPad 701c 进行的完全修复](https://blog.jgc.org/2023/12/restoration-of-ibm-thinkpad-701c.html)（那款带有蝴蝶键盘的）。

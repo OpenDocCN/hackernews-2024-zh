@@ -8,9 +8,9 @@
 
 # 句子长度：为什么 25 个单词是我们的限制 —— Inside GOV.UK
 
-> 来源：[https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/](https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/)
+> 来源：[`insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/`](https://insidegovuk.blog.gov.uk/2014/08/04/sentence-length-why-25-words-is-our-limit/)
 > 
-> 本博客文章中的信息可能已过时。请查看当前的[GOV.UK内容和发布指南](https://www.gov.uk/government-digital-guidance/content-publishing)。
+> 本博客文章中的信息可能已过时。请查看当前的[GOV.UK 内容和发布指南](https://www.gov.uk/government-digital-guidance/content-publishing)。
 
 最近我们在博客中写了关于我们[检查清单](https://insidegovuk.blog.gov.uk/2014/05/29/what-to-check-before-you-publish-a-2i-checklist/)的文章，收到了很多关于句子长度的问题。
 

@@ -8,9 +8,9 @@ date: 2024-05-27 15:01:48
 
 # 文化精神分裂的黎明 - 作者詹姆斯 - jdemeta
 
-> 来源：[https://www.jdemeta.net/p/the-dawn-of-cultural-schizophrenia](https://www.jdemeta.net/p/the-dawn-of-cultural-schizophrenia)
+> 来源：[`www.jdemeta.net/p/the-dawn-of-cultural-schizophrenia`](https://www.jdemeta.net/p/the-dawn-of-cultural-schizophrenia)
 
-早在2006年，约翰·迈克尔·格里尔写了一篇名为*[只知道一个故事](https://thearchdruidreport-archive.200605.xyz/2006/05/knowing-only-one-story.html)*的文章。其关键在于这个陈述：
+早在 2006 年，约翰·迈克尔·格里尔写了一篇名为*[只知道一个故事](https://thearchdruidreport-archive.200605.xyz/2006/05/knowing-only-one-story.html)*的文章。其关键在于这个陈述：
 
 +   *知道很多故事是智慧。*
 
@@ -24,7 +24,7 @@ date: 2024-05-27 15:01:48
 
 那些知道很多故事的人是明智的，因此能够处理宇宙的复杂性以及他们的即时现实。基本上，知道很多故事使一个人能够与宇宙的唯一常数 - 即变化 - 建立关系。
 
-这并不是对格里尔的批评 - 2006年的信息加速与现在相比有了极大的不同 - 但我认为他关于复杂性的层次结构：死亡 > 无知 > 智慧（一个故事 > 没有故事 > 许多故事）有所不及。因为智慧之外还有一些东西，这并不一定是好事。让我通过一句话来扩展格里尔的说法，以阐明我的意思：
+这并不是对格里尔的批评 - 2006 年的信息加速与现在相比有了极大的不同 - 但我认为他关于复杂性的层次结构：死亡 > 无知 > 智慧（一个故事 > 没有故事 > 许多故事）有所不及。因为智慧之外还有一些东西，这并不一定是好事。让我通过一句话来扩展格里尔的说法，以阐明我的意思：
 
 +   *只知道一个故事是死亡。*
 

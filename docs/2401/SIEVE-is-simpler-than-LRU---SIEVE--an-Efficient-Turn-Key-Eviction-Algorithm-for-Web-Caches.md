@@ -8,13 +8,13 @@
 
 # SIEVE 比 LRU 更简单 - SIEVE：Web 缓存的高效即插即用淘汰算法
 
-> 来源：[https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/](https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/)
+> 来源：[`cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/`](https://cachemon.github.io/SIEVE-website/blog/2023/12/17/sieve-is-simpler-than-lru/)
 
 # SIEVE 比 LRU 更简单
 
 缓存是一种存储临时数据以便快速访问以保持在线世界运行平稳的方法。但是有限的空间意味着需要做出关键决策：保留什么，丢弃什么。这就是**淘汰算法**发挥作用的地方。我们的团队最近设计了一种名为**SIEVE**的新的缓存淘汰算法：它非常有效且简单，只有一个队列。
 
-***更新***：*原有的写作风格引起了相当大的关注。我们已经更新了博客文章，使其更加清晰和直接。* 我们还在 [https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots](https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots) 中包含了一个易于重现的结果。
+***更新***：*原有的写作风格引起了相当大的关注。我们已经更新了博客文章，使其更加清晰和直接。* 我们还在 [`observablehq.com/@1a1a11a/sieve-miss-ratio-plots`](https://observablehq.com/@1a1a11a/sieve-miss-ratio-plots) 中包含了一个易于重现的结果。
 
 ## 简单性的重要性
 
@@ -38,7 +38,7 @@ SIEVE 的示意图
 
 SIEVE vs. FIFO-Reinsertion
 
-请参阅本博客文章末尾的 [sieve cache implementation code](#sieve-cache-code) 以获取详细示例。
+请参阅本博客文章末尾的 sieve cache implementation code 以获取详细示例。
 
 ### 性能
 

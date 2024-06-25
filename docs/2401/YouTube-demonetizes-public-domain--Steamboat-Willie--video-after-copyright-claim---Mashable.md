@@ -8,7 +8,7 @@
 
 # YouTube 取消了公共领域《Steamboat Willie》视频的广告投放后版权索赔 | Mashable
 
-> 来源：[https://mashable.com/article/youtube-demontizes-public-domain-steamboat-willie-disney-copyright-claim](https://mashable.com/article/youtube-demontizes-public-domain-steamboat-willie-disney-copyright-claim)
+> 来源：[`mashable.com/article/youtube-demontizes-public-domain-steamboat-willie-disney-copyright-claim`](https://mashable.com/article/youtube-demontizes-public-domain-steamboat-willie-disney-copyright-claim)
 
 ***更新：2024 年 1 月 5 日下午 5:18（美国东部时间）** 周五，迪士尼撤回了对 YouTuber 布鲁克·贝克尔“Steamboat Willie”视频的版权索赔。*
 
@@ -32,10 +32,10 @@
 
 就在本周早些时候《蒸汽船威利》进入了公共领域，宣布了多个不同的创意项目使用这个标志性的老鼠。其中一些创意作品包括一部[恐怖电影](https://variety.com/2024/film/news/steamboat-willie-horror-film-mickey-mouse-public-domain-copyright-1235849861/ "(在新窗口中打开)")和一个[视频游戏](https://mashable.com/article/infestation-88-steamboat-willy-horror-game)。
 
-那么，Baker的视频发生了什么？Mashable已经联系YouTube以获取更多信息，并在我们收到回复时更新这篇文章。然而，由于Disney在Baker上传"Steamboat Willie"视频后迅速提出了版权声明，很可能视频成为了自动化Content ID流程的受害者。
+那么，Baker 的视频发生了什么？Mashable 已经联系 YouTube 以获取更多信息，并在我们收到回复时更新这篇文章。然而，由于 Disney 在 Baker 上传"Steamboat Willie"视频后迅速提出了版权声明，很可能视频成为了自动化 Content ID 流程的受害者。
 
-"YouTube上上传的视频会被与版权所有者提交给YouTube的音频和视觉内容数据库进行扫描。" YouTube在其[Content ID](https://support.google.com/youtube/answer/2797370?hl=zh "(在新窗口中打开)")功能的策略页面上写道，"当Content ID找到匹配项时，它会对匹配的视频应用Content ID声明。"
+"YouTube 上上传的视频会被与版权所有者提交给 YouTube 的音频和视觉内容数据库进行扫描。" YouTube 在其[Content ID](https://support.google.com/youtube/answer/2797370?hl=zh "(在新窗口中打开)")功能的策略页面上写道，"当 Content ID 找到匹配项时，它会对匹配的视频应用 Content ID 声明。"
 
-如果事情是这样的，YouTube和迪士尼似乎没有更新数据库，以移除最近进入公共领域的作品。如果是这样的话，似乎这应该被编程到Content ID系统中作为自动化流程，就像有效的声明一样。
+如果事情是这样的，YouTube 和迪士尼似乎没有更新数据库，以移除最近进入公共领域的作品。如果是这样的话，似乎这应该被编程到 Content ID 系统中作为自动化流程，就像有效的声明一样。
 
-Mashable将为您持续更新Baker视频的状态。
+Mashable 将为您持续更新 Baker 视频的状态。

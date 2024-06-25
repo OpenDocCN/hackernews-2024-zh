@@ -6,9 +6,9 @@ date: 2024-05-27 15:10:19
 
 -->
 
-# GitHub - lucidrains/self-rewarding-lm-pytorch: 自我奖励语言模型中提出的训练框架的实现，来自MetaAI
+# GitHub - lucidrains/self-rewarding-lm-pytorch: 自我奖励语言模型中提出的训练框架的实现，来自 MetaAI
 
-> 来源：[https://github.com/lucidrains/self-rewarding-lm-pytorch](https://github.com/lucidrains/self-rewarding-lm-pytorch)
+> 来源：[`github.com/lucidrains/self-rewarding-lm-pytorch`](https://github.com/lucidrains/self-rewarding-lm-pytorch)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

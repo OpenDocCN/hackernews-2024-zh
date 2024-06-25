@@ -2,27 +2,27 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:57:35
+日期：2024 年 05 月 27 日 14:57:35
 
 -->
 
 # 你不需要记录每一件事 - 由 Freya India
 
-> 来源：[https://www.freyaindia.co.uk/p/you-dont-need-to-document-everything](https://www.freyaindia.co.uk/p/you-dont-need-to-document-everything)
+> 来源：[`www.freyaindia.co.uk/p/you-dont-need-to-document-everything`](https://www.freyaindia.co.uk/p/you-dont-need-to-document-everything)
 
 我确定你现在肯定看过[这个视频](https://twitter.com/Culture_Crit/status/1741902868666286389)，这是在新年前夕的巴黎，每个人都在忙于用手机拍摄倒计时和烟火，以至于忘记了去体验。这太超现实了。
 
 显然，这是十多年来一直在发生的事情——人们记录事件而不是身临其境。但现在不仅仅是事件。现在人们记录*一切*。他们生活中每一个平凡的时刻。他们穿什么。他们吃什么。他们买什么。除了普通的事情，人们现在还感觉有必要记录深刻的个人时刻，从[健康恐慌](https://www.tiktok.com/@lianajadee/video/7231235678976183578)到[精神崩溃](https://www.tiktok.com/@itsnotalexam/video/7225093238460386586)再到第一次看到孩子出生后：
 
-当然，社交媒体的影响者是这种现象的最终例证。对我来说，尤其讨厌的是那些在线记录他们整个感情生活的情侣。我永远无法理解为什么会有那么多评论说*这是情侣的目标*和*我怎么找到这个！*对于我看过的最做作、排练过的、虚伪的时刻。我无法理解为什么会有人为那些在角落里设置摄像机记录自己浪漫时刻的人鼓掌。就像每个人都[赞扬这个丈夫](https://www.tiktok.com/@matt_and_abby/video/7232048159575248170)一样，他如何*拍摄他怀孕的妻子在TikTok上哭泣*。并且对每一个亲密时刻制作内容的情侣感到非常激动——[怀孕揭秘](https://www.tiktok.com/@lianajadee/video/7043810267024657669)，[求婚，](https://www.youtube.com/watch?v=21BL0EdCWAE)*[第一次对女友表白](https://www.youtube.com/watch?v=koJW3-imfwE).* 人生中最有意义的经历——那些一次、两次、永远不会再发生的事情——被像*摄影机是否拍到我的好角度*这样的想法所败坏了。***
+当然，社交媒体的影响者是这种现象的最终例证。对我来说，尤其讨厌的是那些在线记录他们整个感情生活的情侣。我永远无法理解为什么会有那么多评论说*这是情侣的目标*和*我怎么找到这个！*对于我看过的最做作、排练过的、虚伪的时刻。我无法理解为什么会有人为那些在角落里设置摄像机记录自己浪漫时刻的人鼓掌。就像每个人都[赞扬这个丈夫](https://www.tiktok.com/@matt_and_abby/video/7232048159575248170)一样，他如何*拍摄他怀孕的妻子在 TikTok 上哭泣*。并且对每一个亲密时刻制作内容的情侣感到非常激动——[怀孕揭秘](https://www.tiktok.com/@lianajadee/video/7043810267024657669)，[求婚，](https://www.youtube.com/watch?v=21BL0EdCWAE)*[第一次对女友表白](https://www.youtube.com/watch?v=koJW3-imfwE).* 人生中最有意义的经历——那些一次、两次、永远不会再发生的事情——被像*摄影机是否拍到我的好角度*这样的想法所败坏了。***
 
-但更糟糕的是，*绝对糟糕的*，是那些父母，是那些记录他们孩子整个童年的影响力父母们。那些分享并赚钱的父母们，每一个里程碑、每一种情感、每一个阶段、甚至有时候是他们孩子们生活的每一*天*。让陌生人评价和评论他们的孩子（“[你让他们哭了！读了那些恶意评论！](https://www.youtube.com/watch?v=W6vR-eLG6yc&t=919s)*”*）。从他们出生的那一刻起就把 vlog 摄像机塞在他们孩子脸上的父母们（“[我们和新生儿的头48小时现在直播！](https://www.tiktok.com/@matt_and_abby/video/7273583834623380778)”）。[记录](https://www.youtube.com/watch?v=PV0nzpfrnJE)他们*6岁的*性别转变（“[这不是阶段！](https://www.youtube.com/watch?v=y2bPG9DzUZ0&embeds_referring_euri=https%3A%2F%2Fwww.freyaindia.co.uk%2F&feature=emb_title)”）。相信我，没有比这个影响力人物更糟糕的了，她无意中发布了她迫使儿子在镜头前哭泣的视频片段：
+但更糟糕的是，*绝对糟糕的*，是那些父母，是那些记录他们孩子整个童年的影响力父母们。那些分享并赚钱的父母们，每一个里程碑、每一种情感、每一个阶段、甚至有时候是他们孩子们生活的每一*天*。让陌生人评价和评论他们的孩子（“[你让他们哭了！读了那些恶意评论！](https://www.youtube.com/watch?v=W6vR-eLG6yc&t=919s)*”*）。从他们出生的那一刻起就把 vlog 摄像机塞在他们孩子脸上的父母们（“[我们和新生儿的头 48 小时现在直播！](https://www.tiktok.com/@matt_and_abby/video/7273583834623380778)”）。[记录](https://www.youtube.com/watch?v=PV0nzpfrnJE)他们*6 岁的*性别转变（“[这不是阶段！](https://www.youtube.com/watch?v=y2bPG9DzUZ0&embeds_referring_euri=https%3A%2F%2Fwww.freyaindia.co.uk%2F&feature=emb_title)”）。相信我，没有比这个影响力人物更糟糕的了，她无意中发布了她迫使儿子在镜头前哭泣的视频片段：
 
 有影响力的人当然是最极端的例子——但这种冲动现在已经根深蒂固在每个人心中。要发布一切的压力。我认为这是 Gen Z 极大焦虑的主要原因。现在有一种感觉，如果你不分享，某件事情就**没有发生过**。有些年轻人如果不能在社交媒体上发布，他们就不会理解去参加活动、旅行、或者谈一段恋爱的意义。*他们觉得毫无意义。* 他们根本无法想象一种没有观众消费的生活。比如，现在流行的一种信念是，如果你的男朋友不在社交媒体上发布你的照片，[他是在出轨](https://www.tiktok.com/@emilyhamocon/video/7254734866011458859)或者根本不爱你。或者，如果你遇到某人，而他们不在社交媒体上，这是[一个红色警示](https://www.reddit.com/r/Tinder/comments/14k471h/red_flag/)（只有我觉得这是一个主要的绿色旗帜吗？）
 
-我们如此沉迷于并习惯了对一切都进行反射性记录，以至于我们最终原谅了最奇怪的行为。*[他们只是想记住烟火！](https://twitter.com/tiya_tequila/status/1742599912917766560)* 真的吗？人群中的许多人都在拍摄同样的事情；他们可能永远不会回放那段视频，如果他们将其发布在网上，那并不是为了记忆；那是为了获得关注。 *[这和90年代的摄像机一样！](https://twitter.com/Texastargirl/status/1735213227288432945)* 在哪个世界！摄像机没有这种*冲动*，没有这种强迫性不断地更新人们，没有将你的自尊心与点赞和粉丝联系起来。 *如果你不录下来，你会后悔的！* 当然，偶尔捕捉一些瞬间；为自己保留。但我认为，如果这一代人有什么要后悔的，那就是我们浪费在为社交媒体记录、编辑、过滤和营销自己的时间。那是我们永远不会再拿回来的时间。我打赌，我们不会因为我们拍摄了这些瞬间而对我们数以十万计的Instagram故事、Snapchat和Boomerangs感到怀念，而是会因为我们没有完全感受到它们而感到痛苦的遗憾。
+我们如此沉迷于并习惯了对一切都进行反射性记录，以至于我们最终原谅了最奇怪的行为。*[他们只是想记住烟火！](https://twitter.com/tiya_tequila/status/1742599912917766560)* 真的吗？人群中的许多人都在拍摄同样的事情；他们可能永远不会回放那段视频，如果他们将其发布在网上，那并不是为了记忆；那是为了获得关注。 *[这和 90 年代的摄像机一样！](https://twitter.com/Texastargirl/status/1735213227288432945)* 在哪个世界！摄像机没有这种*冲动*，没有这种强迫性不断地更新人们，没有将你的自尊心与点赞和粉丝联系起来。 *如果你不录下来，你会后悔的！* 当然，偶尔捕捉一些瞬间；为自己保留。但我认为，如果这一代人有什么要后悔的，那就是我们浪费在为社交媒体记录、编辑、过滤和营销自己的时间。那是我们永远不会再拿回来的时间。我打赌，我们不会因为我们拍摄了这些瞬间而对我们数以十万计的 Instagram 故事、Snapchat 和 Boomerangs 感到怀念，而是会因为我们没有完全感受到它们而感到痛苦的遗憾。
 
-因为看看那些确实记录了他们整个生活的人！很多时候，这些完美的网络影响者在镜头后面正在崩溃。 [再一次](https://www.dailymail.co.uk/femail/article-5825441/Tammy-Hembrow-announces-shock-split-fianc-Reece-Hawkins.html) 和 [再一次](https://www.vanityfair.com/style/2022/09/no-more-mr-wife-guy)，完美的在线夫妇似乎突然间崩溃了。把每一个清醒时刻都奉献给记录自己身份的影响者根本不知道他们真正是谁。发布他们脸部各个角度和各种光线下照片的女性讨厌自己的样子。把他们完美生活的每个瞬间都捕捉下来的家庭被卷入了[丑闻](https://people.com/ruby-franke-rise-fall-youtube-vlogger-charged-child-abuse-7969073#:~:text=Ruby%20and%20Kevin%20Franke%20Begin%20%278Passengers%27%20Vlog%20in%202015&text=According%20to%20Insider%2C%20the%20Franke,the%20wake%20of%20Franke%27s%20arrest.)和[丑闻](https://www.youtube.com/watch?v=JBhWOgLjmSE)。 *但是*我们仍然上当了：幻觉，表演，*假象*。几乎[70%的Z世代](https://www.theguardian.com/society/2023/jan/01/social-media-triggers-children-to-dislike-their-own-bodies-says-study)表示社交媒体让他们感到紧张、焦虑和沮丧；[超过一半](https://www.parents.com/gen-z-wants-to-be-social-media-influencers-8349212)想成为影响者。这里发生了什么？我们很容易忘记分享一切的情感成本；我们很容易忘记那些这样做的人是在补偿。
+因为看看那些确实记录了他们整个生活的人！很多时候，这些完美的网络影响者在镜头后面正在崩溃。 [再一次](https://www.dailymail.co.uk/femail/article-5825441/Tammy-Hembrow-announces-shock-split-fianc-Reece-Hawkins.html) 和 [再一次](https://www.vanityfair.com/style/2022/09/no-more-mr-wife-guy)，完美的在线夫妇似乎突然间崩溃了。把每一个清醒时刻都奉献给记录自己身份的影响者根本不知道他们真正是谁。发布他们脸部各个角度和各种光线下照片的女性讨厌自己的样子。把他们完美生活的每个瞬间都捕捉下来的家庭被卷入了[丑闻](https://people.com/ruby-franke-rise-fall-youtube-vlogger-charged-child-abuse-7969073#:~:text=Ruby%20and%20Kevin%20Franke%20Begin%20%278Passengers%27%20Vlog%20in%202015&text=According%20to%20Insider%2C%20the%20Franke,the%20wake%20of%20Franke%27s%20arrest.)和[丑闻](https://www.youtube.com/watch?v=JBhWOgLjmSE)。 *但是*我们仍然上当了：幻觉，表演，*假象*。几乎[70%的 Z 世代](https://www.theguardian.com/society/2023/jan/01/social-media-triggers-children-to-dislike-their-own-bodies-says-study)表示社交媒体让他们感到紧张、焦虑和沮丧；[超过一半](https://www.parents.com/gen-z-wants-to-be-social-media-influencers-8349212)想成为影响者。这里发生了什么？我们很容易忘记分享一切的情感成本；我们很容易忘记那些这样做的人是在补偿。
 
 所以，我真的很反感这种假设：在社交媒体上不常发帖的人是不安全或不快乐或在隐藏什么。通常情况恰恰相反。我很确定那些拥有最好关系的人发帖最少。那些真正有信心和自爱的人不需要发数千张自拍照来证明。真正有权力的人不依赖外部验证来证明他们做出的每个感觉或意见或决定。这不就是生活中的一个基本规则吗？那些最喧闹地宣扬自己的成就、关系和道德的人往往对它们最怀疑？如果有一件事我知道的话，那就是如果你正在经历一种真正感人的时刻，如果你真的*身临其境*，你最不想做或想到的事情就是拿出你的手机，将它剪裁并廉价化。最好的爱是安静的。最好的自信是安静的。生活中最有意义的生活也是如此。
 

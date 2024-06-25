@@ -8,7 +8,7 @@
 
 # RGB 渲染的表面上简单性
 
-> 来源：[https://thomasmansencal.substack.com/p/the-apparent-simplicity-of-rgb-rendering](https://thomasmansencal.substack.com/p/the-apparent-simplicity-of-rgb-rendering)
+> 来源：[`thomasmansencal.substack.com/p/the-apparent-simplicity-of-rgb-rendering`](https://thomasmansencal.substack.com/p/the-apparent-simplicity-of-rgb-rendering)
 
 物理渲染（PBR）的主要目标是创建一个模拟，准确复制电磁波谱辐射到观察者的成像过程。这个模拟应该对类似观察者来说与现实无法区分。
 
@@ -62,7 +62,7 @@ RGB 渲染的“表面”简单性、速度和无法计量的输入材料量推�
 
 最终，将会出现更多问题，以下是一些精选的问题，可以深思：
 
-+   在编写纹理时应该使用什么光源？工作颜色空间的光源还是 CIE E光源？
++   在编写纹理时应该使用什么光源？工作颜色空间的光源还是 CIE E 光源？
 
 +   反照率纹理与太阳辐射相关吗？
 

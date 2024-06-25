@@ -8,7 +8,7 @@
 
 # 没有人关心你的 Git 历史
 
-> 来源：[https://spin.atomicobject.com/git-history/](https://spin.atomicobject.com/git-history/)
+> 来源：[`spin.atomicobject.com/git-history/`](https://spin.atomicobject.com/git-history/)
 
 Git 历史、变基、[压缩](https://spin.atomicobject.com/squash-merge/)和提交消息的话题经常浮出水面，引发与 Vim vs. Emacs、制表符 vs. 空格或是披萨上的菠萝一样激烈的辩论。对于一些人来说，Git 历史是软件团队的无名英雄；对于其他人来说，它是一个持久的刺。意见大不相同，拥有意见的人常常怀着坚定的信念持有它们（就是我，嗨，我就是问题）。
 

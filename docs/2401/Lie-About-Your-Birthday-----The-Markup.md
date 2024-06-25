@@ -8,9 +8,9 @@
 
 # 关于撒谎你的生日 🎂 – The Markup
 
-> 来源：[https://themarkup.org/gentle-january/2024/01/29/lie-about-your-birthday](https://themarkup.org/gentle-january/2024/01/29/lie-about-your-birthday)
+> 来源：[`themarkup.org/gentle-january/2024/01/29/lie-about-your-birthday`](https://themarkup.org/gentle-january/2024/01/29/lie-about-your-birthday)
 
-[***温柔的一月系列***](https://themarkup.org/gentle-january/2024/01/02/gentle-january-the-least-intimidating-privacy-tips-from-the-markup)*分享一位来自Markup的工作人员每天实际在自己生活中使用的实用隐私提示。*
+[***温柔的一月系列***](https://themarkup.org/gentle-january/2024/01/02/gentle-january-the-least-intimidating-privacy-tips-from-the-markup)*分享一位来自 Markup 的工作人员每天实际在自己生活中使用的实用隐私提示。*
 
 在生日时收到礼物真的很有趣。
 
@@ -26,7 +26,7 @@
 
 1.  我只会在某些企图利用生日数据让我多买东西的公司那里撒谎。请不要向你的医生、银行或者申请驾照时撒谎。你明白我的意思吧。
 
-1.  如果你想在生日时同时收到这些促销信息，可以选择一个接近你真实生日的假生日。例如，如果我的生日是1989年12月13日，就像泰勒·斯威夫特一样，我可以选择每个月的第一天，即1989年12月1日，作为我的假生日。或者如果我希望一切都在圣诞节左右来临，可以选择12月25日。大多数公司会在整个生日月庆祝生日促销，所以你仍然可以在实际生日当天决定使用他们的促销活动。
+1.  如果你想在生日时同时收到这些促销信息，可以选择一个接近你真实生日的假生日。例如，如果我的生日是 1989 年 12 月 13 日，就像泰勒·斯威夫特一样，我可以选择每个月的第一天，即 1989 年 12 月 1 日，作为我的假生日。或者如果我希望一切都在圣诞节左右来临，可以选择 12 月 25 日。大多数公司会在整个生日月庆祝生日促销，所以你仍然可以在实际生日当天决定使用他们的促销活动。
 
 1.  进入你现有的零售账户，删除你的真实生日，提交一个假的。
 

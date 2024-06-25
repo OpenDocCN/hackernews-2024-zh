@@ -6,13 +6,13 @@
 
 -->
 
-# 联合航空公司在737 Max 9检查中发现插座门上的松动螺栓 - 空中电流
+# 联合航空公司在 737 Max 9 检查中发现插座门上的松动螺栓 - 空中电流
 
-> 来源：[https://theaircurrent.com/feed/dispatches/united-finds-loose-bolts-on-plug-doors-during-737-max-9-inspections/](https://theaircurrent.com/feed/dispatches/united-finds-loose-bolts-on-plug-doors-during-737-max-9-inspections/)
+> 来源：[`theaircurrent.com/feed/dispatches/united-finds-loose-bolts-on-plug-doors-during-737-max-9-inspections/`](https://theaircurrent.com/feed/dispatches/united-finds-loose-bolts-on-plug-doors-during-737-max-9-inspections/)
 
 *空中电流*的航空安全报告是作为公共服务而提供的，无需订阅。请* [订阅](https://theaircurrent.memberful.com/join/?referrer=https%3A%2F%2Ftheaircurrent.com%2F) *以获取我们的所有独家新闻、深度报道和分析。
 
-根据熟悉这些发现的三位消息人士透露，联合航空公司在检查其波音飞机机队后发现了737 Max 9插座门上的松动螺栓和其他零部件。
+根据熟悉这些发现的三位消息人士透露，联合航空公司在检查其波音飞机机队后发现了 737 Max 9 插座门上的松动螺栓和其他零部件。
 
 根据其中一位消息人士告诉*空中电流*，在至少五架飞机上发现了插座门上的不一致螺栓和其他零部件。
 
@@ -22,7 +22,7 @@
 
 五架联合航空公司的飞机上的发现可能会显著扩大停飞的影响，加剧对波音和斯皮里特航空系统的关注。两家公司共同负责飞机结构的装配、安装和质量检查。
 
-星期一晚些时候，阿拉斯加航空公司也证实，在其停飞的飞机上发现了插座门的问题。“当我们的维修技术人员开始为我们的737-9 Max机队进行检查准备时，他们进入了受质疑的区域。我们技术人员的初步报告表明，一些飞机上的松动硬件是可见的，”[该公司写道](https://news.alaskaair.com/alaska-airlines/operations/as-1282/)。
+星期一晚些时候，阿拉斯加航空公司也证实，在其停飞的飞机上发现了插座门的问题。“当我们的维修技术人员开始为我们的 737-9 Max 机队进行检查准备时，他们进入了受质疑的区域。我们技术人员的初步报告表明，一些飞机上的松动硬件是可见的，”[该公司写道](https://news.alaskaair.com/alaska-airlines/operations/as-1282/)。
 
 ***相关：*** [***波音和斯皮里特航空系统的紧张关系***](https://theaircurrent.com/industry-strategy/boeing-spirit-reintegration-ramp-up-special-report/)
 

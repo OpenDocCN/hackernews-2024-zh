@@ -8,7 +8,7 @@ date: 2024-05-27 14:59:08
 
 # 未曾见过的有助于赢得二战的密码破译计算机的图像 - BBC News
 
-> 来源：[https://www.bbc.co.uk/news/technology-67997406](https://www.bbc.co.uk/news/technology-67997406)
+> 来源：[`www.bbc.co.uk/news/technology-67997406`](https://www.bbc.co.uk/news/technology-67997406)
 
 尽管其影响巨大，但参与 Colossus 计划的工程师和密码破译者们都宣誓保守秘密，这台重要机器的存在被保密了将近六十年。
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:38:17
 
 # GitHub - DC-SWAT/DreamShell: 世嘉梦幻卡奇的操作系统
 
-> 来源：[https://github.com/DC-SWAT/DreamShell](https://github.com/DC-SWAT/DreamShell)
+> 来源：[`github.com/DC-SWAT/DreamShell`](https://github.com/DC-SWAT/DreamShell)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:58:50
 
 # 概述 ‹ Telemetron — MIT 媒体实验室
 
-> 来源：[https://www.media.mit.edu/projects/the-telemetron/overview/](https://www.media.mit.edu/projects/the-telemetron/overview/)
+> 来源：[`www.media.mit.edu/projects/the-telemetron/overview/`](https://www.media.mit.edu/projects/the-telemetron/overview/)
 
 如今，人类在太空中所处的环境是为了生存而设计的。人类被小心翼翼地穿梭往返太空，在相对较短的停留期间，他们被提供了最低限度的供应来保持生存并能够进行实验。当我们开始为在太空中的生活而不是短暂的访问（例如前往火星等地的六到八个月的旅行）进行规划时，问题就变成了：太空中的人类文化是什么样子的？
 

@@ -8,7 +8,7 @@
 
 # 维基百科来留下——维基媒体基金会
 
-> 来源：[https://wikimediafoundation.org/news/2024/01/16/wikipedia-is-here-to-stay/](https://wikimediafoundation.org/news/2024/01/16/wikipedia-is-here-to-stay/)
+> 来源：[`wikimediafoundation.org/news/2024/01/16/wikipedia-is-here-to-stay/`](https://wikimediafoundation.org/news/2024/01/16/wikipedia-is-here-to-stay/)
 
 本周，维基百科迎来了它的第二十三个生日。在这段时间里，这个在线百科全书已经成为世界前十大最受欢迎的网站之一，每月访问量超过 150 亿次。尽管互联网在过去二十年中发生了变化，从 Web 1.0 到我们当前的全球网络时代，从智能手机到人工智能的崛起，但维基百科[依然繁荣](https://www.nytimes.com/2023/07/18/magazine/wikipedia-ai-chatgpt.html)。
 
@@ -32,6 +32,6 @@
 
 在这次人工智能繁荣之后，必将有其他事物接踵而至。但维基百科及其志愿者们为全世界免费建设可靠信息资源的努力将继续下去。维基百科永远都在这里。
 
-Wikipedia生日快乐，愿未来更加美好。
+Wikipedia 生日快乐，愿未来更加美好。
 
 *克里斯·阿尔本（Chris Albon）是维基媒体基金会的机器学习主管。你可以在[@chrisalbon](https://twitter.com/chrisalbon)上关注他。*

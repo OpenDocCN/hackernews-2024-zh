@@ -8,7 +8,7 @@
 
 # 去中心化的 Hacker News | Enindu Alahapperuma
 
-> 来源：[https://enindu.com/blog/decentralized-hacker-news](https://enindu.com/blog/decentralized-hacker-news)
+> 来源：[`enindu.com/blog/decentralized-hacker-news`](https://enindu.com/blog/decentralized-hacker-news)
 
 当浏览[Hacker News](https://news.ycombinator.com)时，我随机得到了这个想法！我不只是说 Hacker News，还有 Hacker News、[Mastodon](https://joinmastodon.org)和[Reddit](https://www.reddit.com)的结合。你需要吗？我不知道。也许这个想法只是废话。但是，我也有一个商业计划。所以让我们来谈谈这个想法。
 
@@ -46,21 +46,21 @@
 
 1.  缓存
 
-同样，API可以用任何技术编写。我心中有[Go](https://go.dev)，[Python](https://www.python.org)，[Node.js](https://nodejs.org/en)，[PHP](https://www.php.net)和[Ruby](https://www.ruby-lang.org)。由于这是系统的引擎，API必须能够处理大量数据。因此，与前端不同，技术在这里将至关重要。我们应该使用可维护的、可靠的技术。
+同样，API 可以用任何技术编写。我心中有[Go](https://go.dev)，[Python](https://www.python.org)，[Node.js](https://nodejs.org/en)，[PHP](https://www.php.net)和[Ruby](https://www.ruby-lang.org)。由于这是系统的引擎，API 必须能够处理大量数据。因此，与前端不同，技术在这里将至关重要。我们应该使用可维护的、可靠的技术。
 
-所有用户的数据将存储在数据库中。我们可以使用单独的存储，类似于[S3](https://aws.amazon.com/s3)存储桶，用于存储文件。我没有任何特定的技术用作数据库。我们可以使用[PostgreSQL](https://www.postgresql.org)，[MariaDB](https://mariadb.org)，甚至是像[MongoDB](https://www.mongodb.com)这样的无SQL数据库。这也可以接受建议。
+所有用户的数据将存储在数据库中。我们可以使用单独的存储，类似于[S3](https://aws.amazon.com/s3)存储桶，用于存储文件。我没有任何特定的技术用作数据库。我们可以使用[PostgreSQL](https://www.postgresql.org)，[MariaDB](https://mariadb.org)，甚至是像[MongoDB](https://www.mongodb.com)这样的无 SQL 数据库。这也可以接受建议。
 
 我们需要一个缓存来优化用户体验以及跨实例的联邦。当外部实例向此系统发送请求时，缓存服务器将提供数据。内部数据库不向外部实例开放。也许我们可以使用类似于[Redis](https://redis.io)的东西。我不知道。
 
-API服务器通过类似于REST API的方式连接到快递服务器。同样，上述技术只是一个例子。我们可以使用任何我们喜欢的。
+API 服务器通过类似于 REST API 的方式连接到快递服务器。同样，上述技术只是一个例子。我们可以使用任何我们喜欢的。
 
 ## 快递服务器
 
-我们使用快递服务器在实例之间进行联邦。Mastodon使用[ActivityPub](https://www.w3.org/TR/activitypub)协议来实现这一点。我们也可以使用那个，或者我们可以只是使用一个具有标准结构的REST API。与往常一样，我对任何建议都持开放态度。
+我们使用快递服务器在实例之间进行联邦。Mastodon 使用[ActivityPub](https://www.w3.org/TR/activitypub)协议来实现这一点。我们也可以使用那个，或者我们可以只是使用一个具有标准结构的 REST API。与往常一样，我对任何建议都持开放态度。
 
-快递服务器是双向服务器，意味着它同时发送请求和接收请求。当外部实例从此实例请求数据时，请求是从外部实例的快递服务器发送的。该请求被此实例的快递服务器接收。之后，在内部快递服务器、内部API服务器、缓存和数据库内部进行内部请求。之后，响应将发送到外部快递服务器。只有快递服务器彼此之间进行通信。对于前端不可用的端点，将只对内部快递服务器开放。外部快递服务器不能直接与其他API服务器通信。
+快递服务器是双向服务器，意味着它同时发送请求和接收请求。当外部实例从此实例请求数据时，请求是从外部实例的快递服务器发送的。该请求被此实例的快递服务器接收。之后，在内部快递服务器、内部 API 服务器、缓存和数据库内部进行内部请求。之后，响应将发送到外部快递服务器。只有快递服务器彼此之间进行通信。对于前端不可用的端点，将只对内部快递服务器开放。外部快递服务器不能直接与其他 API 服务器通信。
 
-我们可能需要在内部API服务器和内部快递服务器之间使用某种身份验证系统。由于快递服务器可以从其他快递服务器外部访问，我们可能还需要为快递服务器添加一个身份验证层。快递服务器不应该对除其他快递服务器之外的任何人公开。我仍在考虑我们应该为此实施什么样的身份验证系统。欢迎任何建议。
+我们可能需要在内部 API 服务器和内部快递服务器之间使用某种身份验证系统。由于快递服务器可以从其他快递服务器外部访问，我们可能还需要为快递服务器添加一个身份验证层。快递服务器不应该对除其他快递服务器之外的任何人公开。我仍在考虑我们应该为此实施什么样的身份验证系统。欢迎任何建议。
 
 ## 商业理念
 
@@ -68,17 +68,17 @@ API服务器通过类似于REST API的方式连接到快递服务器。同样，
 
 有几种方法可以让某人使用这个系统：
 
-+   我们可以用这个来写博客。我们已经了解[IndieWeb](https://indieweb.org)，[Webmention](https://www.w3.org/TR/webmention)，以及其他东西。我们可以在这个系统中做Webmention之类的事情。每个实例都将像一个独立的博客一样运作。就像Mastodon一样，但用于博客。
++   我们可以用这个来写博客。我们已经了解[IndieWeb](https://indieweb.org)，[Webmention](https://www.w3.org/TR/webmention)，以及其他东西。我们可以在这个系统中做 Webmention 之类的事情。每个实例都将像一个独立的博客一样运作。就像 Mastodon 一样，但用于博客。
 
 +   我们可以将其用作公司的内部系统。公司必须为每个组件设置实例。每个实例都有一定的员工，但由于分散的性质，所有员工都可以共同工作。
 
-+   Hacker News仅代表一个原因，那就是我们可以使用这个系统为各种类别创建数百个或数千个Hacker News站点。
++   Hacker News 仅代表一个原因，那就是我们可以使用这个系统为各种类别创建数百个或数千个 Hacker News 站点。
 
 我对这个系统有更多的用例。我只是太懒得一一提及它们。顺便说一句，你懂我的意思。但有三件事情一直在我脑海里说话。
 
-1.  我只是在谈论Mastodon吗？嗯，也许。
+1.  我只是在谈论 Mastodon 吗？嗯，也许。
 
-1.  这个系统和Mastodon有什么区别？我不太确定。
+1.  这个系统和 Mastodon 有什么区别？我不太确定。
 
 1.  我们需要这个系统吗？我不知道。
 

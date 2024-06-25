@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 15:16:57
+日期：2024 年 05 月 27 日 15:16:57
 
 -->
 
 # SpatiaLite: SpatiaLite
 
-> 来源：[https://www.gaia-gis.it/fossil/libspatialite/index](https://www.gaia-gis.it/fossil/libspatialite/index)
+> 来源：[`www.gaia-gis.it/fossil/libspatialite/index`](https://www.gaia-gis.it/fossil/libspatialite/index)
 
 SpatiaLite 是一个 **开源** 库，旨在扩展 [SQLite](http://www.sqlite.org/) 核心以支持完整的空间 SQL 能力。
 

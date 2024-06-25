@@ -8,7 +8,7 @@ category: 未分类
 
 # GenAI 可能会使 KYC 失去效用 | TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/08/gen-ai-could-make-kyc-effectively-useless/](https://techcrunch.com/2024/01/08/gen-ai-could-make-kyc-effectively-useless/)
+> 来源：[`techcrunch.com/2024/01/08/gen-ai-could-make-kyc-effectively-useless/`](https://techcrunch.com/2024/01/08/gen-ai-could-make-kyc-effectively-useless/)
 
 KYC，或者“了解您的客户”，是一种旨在帮助金融机构、金融科技初创公司和银行验证客户身份的流程。不少时候，KYC 认证涉及“身份证图像”，或者交叉检查的自拍照片用于确认一个人是否真的是他们自己。Wise、Revolut 以及加密货币平台 Gemini 和 LiteBit 都依赖于身份证图像进行安全入门认证。
 

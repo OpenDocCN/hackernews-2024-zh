@@ -6,17 +6,17 @@
 
 -->
 
-# 技术债务的年度成本：$1.52万亿 | 作者：Itza Reyes | Medium
+# 技术债务的年度成本：$1.52 万亿 | 作者：Itza Reyes | Medium
 
-> 来源：[https://itzareyesmx.medium.com/the-annual-cost-of-technical-debt-1-52-trillion-65afaa1e0005](https://itzareyesmx.medium.com/the-annual-cost-of-technical-debt-1-52-trillion-65afaa1e0005)
+> 来源：[`itzareyesmx.medium.com/the-annual-cost-of-technical-debt-1-52-trillion-65afaa1e0005`](https://itzareyesmx.medium.com/the-annual-cost-of-technical-debt-1-52-trillion-65afaa1e0005)
 
-# 技术债务的年度成本：$1.52万亿
+# 技术债务的年度成本：$1.52 万亿
 
-*Para leer en Español clic* [*aquí*](/1ead73736a46)*.*
+*Para leer en Español clic* *aquí**.*
 
-如果您需要更多理由来优先考虑软件质量，请让我与您分享一下，美国低质量软件的成本已经每年上升至至少$2.41万亿，而软件的累积技术债务已经增长到大约$1.52万亿。
+如果您需要更多理由来优先考虑软件质量，请让我与您分享一下，美国低质量软件的成本已经每年上升至至少$2.41 万亿，而软件的累积技术债务已经增长到大约$1.52 万亿。
 
-这是由[信息与软件质量联盟 (CISQ)](https://www.it-cisq.org/)于2022年进行的一项研究所证明的，并计划于2024年更新。
+这是由[信息与软件质量联盟 (CISQ)](https://www.it-cisq.org/)于 2022 年进行的一项研究所证明的，并计划于 2024 年更新。
 
 虽然该报告着重于低质量软件的成本（CPSQ），提供了关于领域的分析、数据和解决方案，例如网络犯罪和软件供应链，以及开源软件（OSS），本文将专门探讨技术债务的主题。
 
@@ -44,7 +44,7 @@ CPSQ 2022
 
 # 📏 软件测量
 
-处理技术债务的主要挑战之一是缺乏衡量方式。为了帮助克服这个问题，CISQ/OMG主导了自动化技术债务（[ATD](https://www.omg.org/spec/ATDM/)）测量标准的开发，该标准目前正在更新，预计将于2023年推出新版本。
+处理技术债务的主要挑战之一是缺乏衡量方式。为了帮助克服这个问题，CISQ/OMG 主导了自动化技术债务（[ATD](https://www.omg.org/spec/ATDM/)）测量标准的开发，该标准目前正在更新，预计将于 2023 年推出新版本。
 
 ATD 标准估计了解决 ISO/IEC 5055:2021 标准中包含的所有软件弱点实例所需的工作量，这些弱点在软件应用发布时仍然存在于代码中。
 
@@ -80,6 +80,6 @@ ATD 标准估计了解决 ISO/IEC 5055:2021 标准中包含的所有软件弱点
 
 # 🔗 资源
 
-[https://www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2022-report/](https://www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2022-report/)
+[`www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2022-report/`](https://www.it-cisq.org/the-cost-of-poor-quality-software-in-the-us-a-2022-report/)
 
-[https://www.theee.ai/2021/01/06/6838-poor-software-quality-cost-the-usd-2-08-tn-in-2020/](https://www.theee.ai/2021/01/06/6838-poor-software-quality-cost-the-usd-2-08-tn-in-2020/)
+[`www.theee.ai/2021/01/06/6838-poor-software-quality-cost-the-usd-2-08-tn-in-2020/`](https://www.theee.ai/2021/01/06/6838-poor-software-quality-cost-the-usd-2-08-tn-in-2020/)

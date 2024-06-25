@@ -8,7 +8,7 @@ category: 未分类
 
 # 多元微积分 - 函数的偏导数的符号 - 数学堆栈交换
 
-> 来源：[https://math.stackexchange.com/questions/3266639/notation-for-partial-derivative-of-functions-of-functions](https://math.stackexchange.com/questions/3266639/notation-for-partial-derivative-of-functions-of-functions)
+> 来源：[`math.stackexchange.com/questions/3266639/notation-for-partial-derivative-of-functions-of-functions`](https://math.stackexchange.com/questions/3266639/notation-for-partial-derivative-of-functions-of-functions)
 
 这是一个较长的答案，我最终会直接回答你的问题，但首先，有几个需要解决的初步问题。
 
@@ -48,7 +48,7 @@ category: 未分类
 
 * * *
 
-现在，我已经在单变量情况下对符号做了一番苛刻的批评，让我们来看看当我们有两个变量的实值函数时会发生什么…更明确地说，我们有一个函数$f: \Bbb{R}^2 \to \Bbb{R}$。在单变量情况下，我为使用$f'(\cdot)$符号而不是$\dfrac{df}{dx}$或其他符号进行了辩护。在这里，我会做同样的事情。通常，偏导数用下面的符号表示 \begin{equation} \dfrac{\partial f}{\partial x} \quad \text{和} \quad \dfrac{\partial f}{\partial y} \end{equation} 或 \begin{equation} \dfrac{\partial f(x,y)}{\partial x} \quad \text{和} \quad \dfrac{\partial f(x,y)}{\partial y} \end{equation} 或 \begin{equation} \dfrac{\partial f}{\partial x} \bigg|_{(x,y)} \quad \text{和} \quad \dfrac{\partial f}{\partial y}\bigg|_{(x,y)} \end{equation} 或以上符号的某种组合。再次强调，这是非常糟糕的符号，因为，选择字母$x,y$有什么特别之处？为什么不选择希腊字母$\xi,\eta$或甚至希腊字母和英文字母混合的形式，比如$\alpha,b$？那么为什么不像这样：
+现在，我已经在单变量情况下对符号做了一番苛刻的批评，让我们来看看当我们有两个变量的实值函数时会发生什么…更明确地说，我们有一个函数$f: \Bbb{R}² \to \Bbb{R}$。在单变量情况下，我为使用$f'(\cdot)$符号而不是$\dfrac{df}{dx}$或其他符号进行了辩护。在这里，我会做同样的事情。通常，偏导数用下面的符号表示 \begin{equation} \dfrac{\partial f}{\partial x} \quad \text{和} \quad \dfrac{\partial f}{\partial y} \end{equation} 或 \begin{equation} \dfrac{\partial f(x,y)}{\partial x} \quad \text{和} \quad \dfrac{\partial f(x,y)}{\partial y} \end{equation} 或 \begin{equation} \dfrac{\partial f}{\partial x} \bigg|_{(x,y)} \quad \text{和} \quad \dfrac{\partial f}{\partial y}\bigg|_{(x,y)} \end{equation} 或以上符号的某种组合。再次强调，这是非常糟糕的符号，因为，选择字母$x,y$有什么特别之处？为什么不选择希腊字母$\xi,\eta$或甚至希腊字母和英文字母混合的形式，比如$\alpha,b$？那么为什么不像这样：
 
 \begin{equation} \dfrac{\partial f}{\partial \alpha} \quad \text{和} \quad \dfrac{\partial f}{\partial b}? \end{equation}
 
@@ -56,7 +56,7 @@ category: 未分类
 
 更好的表示法应该是 \begin{equation} (\partial_1f)(x,y) \quad \text{和} \quad (\partial_2f)(x,y) \end{equation} 来表示**在特定点$(x,y)$求偏导数$f$的部分导数**。这里的下标$1$和$2$确实有意义，因为它们告诉你你正在变化函数$f$的哪个参数。为了明确起见，$(\partial_1f)(\alpha,y)$的含义是"计算当你变化$f$的第一个参数时的偏导数，然后在点$(\alpha,y)$处求值"。所以就极限而言，它等于 \begin{equation} (\partial_1f)(\alpha,y) = \lim_{h \to 0} \dfrac{f(\alpha+h, y) - f(\alpha,y)}{h} \end{equation}
 
-在这里，$\partial_1f$ 是一个从 $\Bbb{R}^2$ 到 $\Bbb{R}$ 的函数；因此，我们会将其写成 $\partial_1f: \Bbb{R}^2 \to \Bbb{R}$，而 $(\partial_1f)(\alpha, y)$ 则是如果我们计算上面的极限得到的特定实数。
+在这里，$\partial_1f$ 是一个从 $\Bbb{R}²$ 到 $\Bbb{R}$ 的函数；因此，我们会将其写成 $\partial_1f: \Bbb{R}² \to \Bbb{R}$，而 $(\partial_1f)(\alpha, y)$ 则是如果我们计算上面的极限得到的特定实数。
 
 * * *
 
@@ -66,7 +66,7 @@ category: 未分类
 
 > 假设我们有一个函数 $f(x(t),t)$...
 
-我明白你想表达什么，但为了明确起见，我想指出一些事情。你不只是有一个单一的函数。实际上，在这一点上，你有 $3$ 个函数。首先，你有一个函数 $f: \Bbb{R}^2 \to \Bbb{R}$，接下来，你有一个函数 $x: \Bbb{R} \to \Bbb{R}$，最后，**你通过复合定义了一个新的函数**，规则如下：你定义了一个函数 $g: \Bbb{R} \to \Bbb{R}$，如下所示： \begin{equation} g(t) := f(x(t),t) \end{equation}
+我明白你想表达什么，但为了明确起见，我想指出一些事情。你不只是有一个单一的函数。实际上，在这一点上，你有 $3$ 个函数。首先，你有一个函数 $f: \Bbb{R}² \to \Bbb{R}$，接下来，你有一个函数 $x: \Bbb{R} \to \Bbb{R}$，最后，**你通过复合定义了一个新的函数**，规则如下：你定义了一个函数 $g: \Bbb{R} \to \Bbb{R}$，如下所示： \begin{equation} g(t) := f(x(t),t) \end{equation}
 
 因此，你有 $3$ 个函数 $f,x,g$，你应该清楚它们各自的作用。
 
@@ -76,7 +76,7 @@ category: 未分类
 
 你使用的符号非常糟糕，这可能是你感到困惑的原因。正如你在评论中提到的，你不能同时改变 $t$ 并保持 $x(t)$ 不变（除非 $x$ 是一个常数函数）。符号 \begin{equation} \frac{\partial f(x(t),t)}{\partial t} \end{equation} 实际上是无意义的。（我并不是要不尊重，我只是想指出这样的表达没有意义，因为不清楚你的意思）
 
-你上面写的内容有两种可能的解释。在正确的表示法中，它们分别是：\begin{equation} (\partial_2f)(x(t),t) \quad \text{和} \quad g'(t). \end{equation} 在第一种情况中，这意味着你计算 $f$ 关于第二个参数的偏导数，即计算函数 $\partial_2f: \Bbb{R}^2 \to \Bbb{R}$，然后在数字元组 $(x(t),t)$ 上评估该函数。在第二种情况中，你正在计算 $g$ 的导数，即计算函数 $g': \Bbb{R} \to \Bbb{R}$，然后在特定的实数 $t$ 上评估。**一般来说，这两者不相同！** 如果我们明确地写成极限的形式，我们有：\begin{equation} (\partial_2f)(x(t),t) := \lim_{h \to 0} \dfrac{f(x(t),t+h) - f(x(t),t)}{h} \end{equation} 而 \begin{align} g'(t) &:= \lim_{h \to 0} \dfrac{g(t+h) - g(t)}{h} \\ &:= \lim_{h \to 0} \dfrac{f \left(x(t+h), t+h \right) - f(x(t),t)}{h} \end{align}
+你上面写的内容有两种可能的解释。在正确的表示法中，它们分别是：\begin{equation} (\partial_2f)(x(t),t) \quad \text{和} \quad g'(t). \end{equation} 在第一种情况中，这意味着你计算 $f$ 关于第二个参数的偏导数，即计算函数 $\partial_2f: \Bbb{R}² \to \Bbb{R}$，然后在数字元组 $(x(t),t)$ 上评估该函数。在第二种情况中，你正在计算 $g$ 的导数，即计算函数 $g': \Bbb{R} \to \Bbb{R}$，然后在特定的实数 $t$ 上评估。**一般来说，这两者不相同！** 如果我们明确地写成极限的形式，我们有：\begin{equation} (\partial_2f)(x(t),t) := \lim_{h \to 0} \dfrac{f(x(t),t+h) - f(x(t),t)}{h} \end{equation} 而 \begin{align} g'(t) &:= \lim_{h \to 0} \dfrac{g(t+h) - g(t)}{h} \\ &:= \lim_{h \to 0} \dfrac{f \left(x(t+h), t+h \right) - f(x(t),t)}{h} \end{align}
 
 这应该清楚地表明一般情况下两者是不同的。
 
@@ -96,25 +96,25 @@ category: 未分类
 
 请记住，正如我上面提到的，不只是一个函数涉及其中。有 $3$ 个不同的函数。在你的特定示例中，它们是：
 
-+   $f: \Bbb{R}^2 \to \Bbb{R}$，定义为 $f(\xi, \eta) = \xi^2 + \eta$
++   $f: \Bbb{R}² \to \Bbb{R}$，定义为 $f(\xi, \eta) = \xi² + \eta$
 
-+   $x: \Bbb{R} \to \Bbb{R}$，定义为 $x(t) = t^2$
++   $x: \Bbb{R} \to \Bbb{R}$，定义为 $x(t) = t²$
 
-+   $g: \Bbb{R} \to \Bbb{R}$，定义为 $g(t) = f(x(t),t) = f(t^2,t) = (t^2)^2 + t = t^4 + t$
++   $g: \Bbb{R} \to \Bbb{R}$，定义为 $g(t) = f(x(t),t) = f(t²,t) = (t²)² + t = t⁴ + t$
 
-我故意使用 $\xi,\eta$，而不是写成 $f(x,t) = x^2 + t$，因为这样我们将在两个地方使用具有不同含义的 $x$；作为 $f$ 的第一个参数，还有作为一个函数（严格来说，写成 $f(x,t) = x^2 + t$ 是有效的，但我使用 $\xi,\eta$ 只是为了避免潜在的混淆）。
+我故意使用 $\xi,\eta$，而不是写成 $f(x,t) = x² + t$，因为这样我们将在两个地方使用具有不同含义的 $x$；作为 $f$ 的第一个参数，还有作为一个函数（严格来说，写成 $f(x,t) = x² + t$ 是有效的，但我使用 $\xi,\eta$ 只是为了避免潜在的混淆）。
 
-使用精确的符号表示，导数如下： \begin{align} (\partial_1f)(\xi,\eta) &= 2\xi \qquad (\partial_2f)(\xi,\eta) = 1 \\\\ x'(t)&= 2t \\\\ g'(t) &= 4t^3 + 1 \end{align}
+使用精确的符号表示，导数如下： \begin{align} (\partial_1f)(\xi,\eta) &= 2\xi \qquad (\partial_2f)(\xi,\eta) = 1 \\\\ x'(t)&= 2t \\\\ g'(t) &= 4t³ + 1 \end{align}
 
 （再次注意函数是什么，以及它在哪里被评估）。
 
-还要注意： \begin{align} \left[ \left( \partial_1f \right)(x(t),t) \right] \cdot x'(t) + \left( \partial_2f \right)(x(t),t) &= [2x(t)] \cdot 2t + 1 \\ &= [2t^2] \cdot 2t + 1 \\ &= 4t^3 + 1 \\ &= g'(t), \end{align} 所以我们已经明确验证了链式法则在这种情况下的工作。
+还要注意： \begin{align} \left[ \left( \partial_1f \right)(x(t),t) \right] \cdot x'(t) + \left( \partial_2f \right)(x(t),t) &= [2x(t)] \cdot 2t + 1 \\ &= [2t²] \cdot 2t + 1 \\ &= 4t³ + 1 \\ &= g'(t), \end{align} 所以我们已经明确验证了链式法则在这种情况下的工作。
 
 再次，直接回答你的问题，你说：
 
 > 我认为 $\frac{\partial f(x(t),t)}{\partial x(t)}=2x(t)$ 但 $\frac{\partial f(x(t),t)}{\partial t}=4t+1 $ 还是 $1$？
 
-这个表示极度糟糕，将 $x(t)$ 放在分母中会让人错误地认为你在某种程度上对 "函数" $x(t)$ 进行微分，而保持 $t$ 固定... 但是然后你可能会困惑 $t$ 怎么可能是固定的，如果 $x(t)$ 在变化... 或者类似的情况。我的观点是糟糕的表示法会导致误解。所以，在这种情况下，正确的写法应该是：\begin{align} \begin{cases} (\partial_1f)(x(t),t) &= 2 x(t) = 2t^2 \\\\ (\partial_2f)(x(t),t) &= 1 \\\\ g'(t) &= 4t^3 + 1 \qquad \text{(you wrote $4t$ rather than $4t^3$ which is wrong)} \end{cases} \end{align}
+这个表示极度糟糕，将 $x(t)$ 放在分母中会让人错误地认为你在某种程度上对 "函数" $x(t)$ 进行微分，而保持 $t$ 固定... 但是然后你可能会困惑 $t$ 怎么可能是固定的，如果 $x(t)$ 在变化... 或者类似的情况。我的观点是糟糕的表示法会导致误解。所以，在这种情况下，正确的写法应该是：\begin{align} \begin{cases} (\partial_1f)(x(t),t) &= 2 x(t) = 2t² \\\\ (\partial_2f)(x(t),t) &= 1 \\\\ g'(t) &= 4t³ + 1 \qquad \text{(you wrote $4t$ rather than $4t³$ which is wrong)} \end{cases} \end{align}
 
 * * *
 
@@ -140,7 +140,7 @@ $$ \frac{\partial f(x(t),t)}{\partial t}=\frac{df(x(t),t)}{dt}$$
 
 > 但如果这是正确的，在上面的例子中，$\frac{\partial f(x(t),t)}{\partial x(t)}=0$，因为 $f(x(t),t)=f(t)$ 实际上并不依赖于 $x(t)$。
 
-再次强调，如我上面所述，我们有 $(\partial_1f)(x(t),t) = 2x(t) = 2t^2$（当且仅当 $t=0$ 时为 $0$）。
+再次强调，如我上面所述，我们有 $(\partial_1f)(x(t),t) = 2x(t) = 2t²$（当且仅当 $t=0$ 时为 $0$）。
 
 * * *
 

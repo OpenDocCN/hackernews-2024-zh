@@ -8,7 +8,7 @@ date: 2024-05-27 14:51:55
 
 # What happens when a school bans smartphones? A complete transformation | US education | The Guardian
 
-> 来源：[https://www.theguardian.com/lifeandstyle/2024/jan/17/cellphone-smartphone-bans-schools](https://www.theguardian.com/lifeandstyle/2024/jan/17/cellphone-smartphone-bans-schools)
+> 来源：[`www.theguardian.com/lifeandstyle/2024/jan/17/cellphone-smartphone-bans-schools`](https://www.theguardian.com/lifeandstyle/2024/jan/17/cellphone-smartphone-bans-schools)
 
 天气好的时候，巴克斯顿寄宿学校会在户外用餐。学生、教职员工和来宾从厨房拿起食物，在一个俯瞰马萨诸塞州伯克希尔山脉的白色帐篷下一起用餐。
 
@@ -34,7 +34,7 @@ date: 2024-05-27 14:51:55
 
 对许多教师来说，学生的手机使用令人沮丧。“每节课，每个时间段都是如此，”俄勒冈州尼阿卡尼高中的数学教师马克·麦克劳林说。“我工作中最糟糕的部分就是当手机警察。”
 
-全国各地的教育工作者报告说，他们几乎每时每刻都在与手机作斗争。一项针对[弗吉尼亚州的一个学区](https://www.nvdaily.com/nvdaily/warren-county-schools-survey-polls-cellphone-use/article_c0efbbd4-af56-5644-b501-73ff83068f5f.html)的调查发现，约有三分之一的教师在每节课中要求学生收起他们的手机五到十次，14.7%的教师每节课要求学生这样做超过20次。
+全国各地的教育工作者报告说，他们几乎每时每刻都在与手机作斗争。一项针对[弗吉尼亚州的一个学区](https://www.nvdaily.com/nvdaily/warren-county-schools-survey-polls-cellphone-use/article_c0efbbd4-af56-5644-b501-73ff83068f5f.html)的调查发现，约有三分之一的教师在每节课中要求学生收起他们的手机五到十次，14.7%的教师每节课要求学生这样做超过 20 次。
 
 当加拿大一所中学[对教职员工进行调查](http://www.drk.sd23.bc.ca/Publications/Executive%20Summary%20-%20Technology%20Use%20Guidelines%20-%20Apr%2018-19.pdf)时，75%的受访者认为手机对学生的身心健康产生了负面影响。近三分之二的人认为这些设备也对学术表现产生了不利影响。
 
@@ -56,7 +56,7 @@ date: 2024-05-27 14:51:55
 
 学生们在校园里仍然把手机带进宿舍是一个公开的秘密，一些人甚至在尝试挑战规定的限制。“有些人非常大胆，” 也是巴克斯顿高中学生的亚美拉·马克斯说，并且会被抓到。总的来说，在校园里很难发现有人在使用智能手机。
 
-这也包括员工。学校负责人彼得·贝克说，他放弃了iPhone，换成了Light Phone，并在车上安装了一个旧GPS系统，以便需要外出时使用。他对第一年的情况感到非常满意。（贝克在夏季结束时离开了学校）。
+这也包括员工。学校负责人彼得·贝克说，他放弃了 iPhone，换成了 Light Phone，并在车上安装了一个旧 GPS 系统，以便需要外出时使用。他对第一年的情况感到非常满意。（贝克在夏季结束时离开了学校）。
 
 很难说新手机政策对学业表现有什么影响，因为巴克斯顿采用了叙事评估系统。但在文化上，贝克说，这一举措已经发生了转变，通常是在小但累积意义重大的方面。
 
@@ -64,15 +64,15 @@ date: 2024-05-27 14:51:55
 
 学生在巴克斯顿学校跟老师学习摄影。
 
-另一个影响是学生报名参加学校的摄影课程激增，该课程使用胶片相机。报名人数几乎增加了三倍。尽管一个受欢迎的新老师可能是一个因素，但Light Phone也没有相机。
+另一个影响是学生报名参加学校的摄影课程激增，该课程使用胶片相机。报名人数几乎增加了三倍。尽管一个受欢迎的新老师可能是一个因素，但 Light Phone 也没有相机。
 
-[跳过通讯通告](#EmailSignup-skip-link-27)
+跳过通讯通告
 
 在通讯通告之后
 
 “现在拍照要比用手机麻烦得多，”马克斯说，但她已经“爱上了”摄影。但是，当她回家休息时，她又回到了智能手机上。然后，当她回到学校时，她又不得不放弃它。“你会很快适应，这真的很有趣。就像是下意识地。”
 
-不顾学校限制智能手机使用的人并不孤单。截至2020年，美国国家教育统计中心报告称，[超过四分之三的学校](https://nces.ed.gov/programs/digest/d21/tables/dt21_233.50.asp)已经开始限制这些设备的非学术使用。2018年，法国[禁止了学校使用智能手机](https://www.npr.org/2018/11/03/663858905/france-moves-to-ban-smartphones-in-schools)。但是，私立学校采取的“Light Phone”方法是否可以或应该应用于公立学校，以及如何处理手机的问题，这还有待辩论。
+不顾学校限制智能手机使用的人并不孤单。截至 2020 年，美国国家教育统计中心报告称，[超过四分之三的学校](https://nces.ed.gov/programs/digest/d21/tables/dt21_233.50.asp)已经开始限制这些设备的非学术使用。2018 年，法国[禁止了学校使用智能手机](https://www.npr.org/2018/11/03/663858905/france-moves-to-ban-smartphones-in-schools)。但是，私立学校采取的“Light Phone”方法是否可以或应该应用于公立学校，以及如何处理手机的问题，这还有待辩论。
 
 * * *
 
@@ -80,7 +80,7 @@ date: 2024-05-27 14:51:55
 
 “儿童和青少年口袋里有超级计算机……这是一场不断的斗争，”她说，与其他教育工作者一致。但是，她补充说，监管手机过去曾经导致她与学生之间摩擦，并且可能以一种有问题的方式单独对待学生。她喜欢她现在学校的政策，即让每位老师决定如何处理课堂上的手机。
 
-Marks 并不是唯一对完全禁令持怀疑态度的人。伊利诺伊州某学区的一项[员工调查](https://www.danville118.org/cms/lib/IL50000642/Centricity/Domain/325/STAFF%20SURVEY%20RESULTS%20_%20CELL%20PHONES%20OIE%202022.pdf)发现，295名受访者中有70%认为学生应该被允许在学校使用手机。“我们没有通过为他们存放手机一整天来教给他们责任和责任感，”一位匿名评论者写道。
+Marks 并不是唯一对完全禁令持怀疑态度的人。伊利诺伊州某学区的一项[员工调查](https://www.danville118.org/cms/lib/IL50000642/Centricity/Domain/325/STAFF%20SURVEY%20RESULTS%20_%20CELL%20PHONES%20OIE%202022.pdf)发现，295 名受访者中有 70%认为学生应该被允许在学校使用手机。“我们没有通过为他们存放手机一整天来教给他们责任和责任感，”一位匿名评论者写道。
 
 Trombulak 也认为手机是学生潜在的教学时刻。“他们正在与手机斗争，但他们没有发明手机，也没有购买手机，”他说。“如果学校是你应该学会做事情的地方，那么安全使用技术需要成为课程的一部分。”
 

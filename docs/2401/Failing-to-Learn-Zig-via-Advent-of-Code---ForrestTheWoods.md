@@ -8,7 +8,7 @@
 
 # 未能通过《Advent of Code》学会 Zig - ForrestTheWoods
 
-> 来源：[https://www.forrestthewoods.com/blog/failing-to-learn-zig-via-advent-of-code/](https://www.forrestthewoods.com/blog/failing-to-learn-zig-via-advent-of-code/)
+> 来源：[`www.forrestthewoods.com/blog/failing-to-learn-zig-via-advent-of-code/`](https://www.forrestthewoods.com/blog/failing-to-learn-zig-via-advent-of-code/)
 
 这不是我打算写的博客文章。
 
@@ -46,13 +46,13 @@ GitHub：[链接](https://github.com/forrestthewoods/aoc2021/blob/master/zig/src
 
 对`anyerror!void`感到立即困惑。我认为`!`是`Option` / `std::optional`。所以我认为`!`是一个前缀，但它也是一个后缀？非常困惑。（注：我错了。`?T`是`Option<T>`，而`E!T`是`Result<T,E>`）
 
-搞不清楚如何打印一个整数。在ZigLearn中找不到文档或示例。需要搜索`std.debug.print`而不是`std.log.info`来找到示例。很烦人。
+搞不清楚如何打印一个整数。在 ZigLearn 中找不到文档或示例。需要搜索`std.debug.print`而不是`std.log.info`来找到示例。很烦人。
 
-建立速度很慢。当我在与基本语法错误作斗争时，需要大约~3秒钟的最小时间，这真是令人沮丧地慢。我希望有一个快速的`zig check`。
+建立速度很慢。当我在与基本语法错误作斗争时，需要大约~3 秒钟的最小时间，这真是令人沮丧地慢。我希望有一个快速的`zig check`。
 
 编译错误信息一般般。充满了我不关心的无用信息和编译器调用栈。
 
-Zig参考文档非常需要示例。搞不清楚如何使用`std.fmt.parseInt`。
+Zig 参考文档非常需要示例。搞不清楚如何使用`std.fmt.parseInt`。
 
 默认情况下在运行时捕获内存泄漏非常酷！编译器应该能够在编译时轻松检测到未调用`nums.deinit()`。
 
@@ -64,7 +64,7 @@ Zig参考文档非常需要示例。搞不清楚如何使用`std.fmt.parseInt`�
 
 失败的`expect`有一个巨大的调用栈，非常烦人。
 
-搞不清楚如何比较字符串。在ZigLearn或参考文档中找不到任何信息。谷歌搜索“zig string compare”也没用。这真是一个惊人的障碍。
+搞不清楚如何比较字符串。在 ZigLearn 或参考文档中找不到任何信息。谷歌搜索“zig string compare”也没用。这真是一个惊人的障碍。
 
 啊哈。字符串根本不存在，只有`[]const u8`。需要使用`std.mem.eql`。
 
@@ -74,7 +74,7 @@ Zig参考文档非常需要示例。搞不清楚如何使用`std.fmt.parseInt`�
 
 我实际上搞不清楚如何在发布模式下运行。`zig build run`会构建和运行调试版本。最终发现`zig build -Drelease-safe`会构建发布版。网络告诉我需要手动运行。直到写这篇博客文章才发现可以通过`zig build -Drelease-safe run`构建和运行。
 
-`std.mem.tokenize`非常棒。与`foreach`类似的`for`循环结合时，比起原始的C语言具有很棒的功能。
+`std.mem.tokenize`非常棒。与`foreach`类似的`for`循环结合时，比起原始的 C 语言具有很棒的功能。
 
 `TypeInfo`的[文档](https://ziglang.org/documentation/master/std/#std;builtin.TypeInfo)简直一文不值。
 
@@ -192,7 +192,7 @@ Zig Discord 非常活跃，#advent-of-code 频道充满了非常友好、非常�
 
 Zig 的文档质量较差。[标准库参考](https://ziglang.org/documentation/0.9.0/std/)是实验性的，没有什么用。[语言参考](https://ziglang.org/documentation/0.9.0/)相当不错，但它是一份参考资料，而不是指南或教程。
 
-我找到的最好的学习资源是[ZigLearn](https://ziglearn.org/)。这是一个不错的开始。它不是最好的引入概念的工具。例如，它从一堆不熟悉的`test "Do Thing"`函数声明开始，而没有解释该语法的含义或如何运行测试。第二个例子介绍了`try`关键字，但没有定义它。这个至关重要的定义在之后的第7节中出现，位置有些偏僻，很容易被忽略。
+我找到的最好的学习资源是[ZigLearn](https://ziglearn.org/)。这是一个不错的开始。它不是最好的引入概念的工具。例如，它从一堆不熟悉的`test "Do Thing"`函数声明开始，而没有解释该语法的含义或如何运行测试。第二个例子介绍了`try`关键字，但没有定义它。这个至关重要的定义在之后的第七部分中出现，位置有些偏僻，很容易被忽略。
 
 编写文档是**困难**的。我尽量不把 Zig 和 Rust 进行比较。然而，我必须得把 Zig 缺乏文档与绝佳的[Rust 书籍](https://doc.rust-lang.org/stable/book/)和[Rust 标准库文档](https://doc.rust-lang.org/stable/std/)进行比较。
 
@@ -234,22 +234,22 @@ fn lerp(a: Vec3f, b: Vec3f, t: f32) Vec3f {
 
 我认为 Zig 可能有一些深刻的想法。
 
-没有语言分配器函数是深刻的。将分配器传递到每个结构函数中有点繁琐，但也很深刻。在C++中，你有工作马 `std::vector<Foo>`。指定分配器需要指定一个模板类型，这是一个巨大的痛点。在Zig中，你可以轻松地更改分配器类型。`std.heap` 包含 `ArenaAllocator`、`FixedBufferAllocator`、`GeneralPurposeAllocator` 和 `StackFallbackAllocator`。令人愉快。
+没有语言分配器函数是深刻的。将分配器传递到每个结构函数中有点繁琐，但也很深刻。在 C++中，你有工作马 `std::vector<Foo>`。指定分配器需要指定一个模板类型，这是一个巨大的痛点。在 Zig 中，你可以轻松地更改分配器类型。`std.heap` 包含 `ArenaAllocator`、`FixedBufferAllocator`、`GeneralPurposeAllocator` 和 `StackFallbackAllocator`。令人愉快。
 
-Zig似乎有强大的能力整合到现有项目中。它的跨平台交叉编译能力令人羡慕。我认为“在项目的隔离部分使用Zig”可能是深刻的。我不确定。我强烈怀疑将Zig整合到真实项目中比Zig团队建议的要困难。
+Zig 似乎有强大的能力整合到现有项目中。它的跨平台交叉编译能力令人羡慕。我认为“在项目的隔离部分使用 Zig”可能是深刻的。我不确定。我强烈怀疑将 Zig 整合到真实项目中比 Zig 团队建议的要困难。
 
-Zig的comptime通用能力令人着迷和深刻。我还没有完全理解它们。我不完全确定它们与C++模板或Rust泛型的比较如何。Zig的comptime能做到C++模板能做的吗？有什么限制吗？我不确定。
+Zig 的 comptime 通用能力令人着迷和深刻。我还没有完全理解它们。我不完全确定它们与 C++模板或 Rust 泛型的比较如何。Zig 的 comptime 能做到 C++模板能做的吗？有什么限制吗？我不确定。
 
-Zig的[错误处理](https://ziglang.org/documentation/0.9.0/#Errors)是深刻而强大的。但也非常令人困惑。我未能理解可以合并、推断、强制、延迟和追踪的错误集。错误追踪非常酷，我非常希望其他语言也有。我不喜欢诸如 `anyerror!?u32` 这样的语法。
+Zig 的[错误处理](https://ziglang.org/documentation/0.9.0/#Errors)是深刻而强大的。但也非常令人困惑。我未能理解可以合并、推断、强制、延迟和追踪的错误集。错误追踪非常酷，我非常希望其他语言也有。我不喜欢诸如 `anyerror!?u32` 这样的语法。
 
-Zig的[色盲](https://kristoff.it/blog/zig-colorblind-async-await/)异步/协程系统可能尤为深刻。我还没有深入研究到足以形成自己的观点。这可能是相对于C甚至C++的一个巨大特性优势。
+Zig 的[色盲](https://kristoff.it/blog/zig-colorblind-async-await/)异步/协程系统可能尤为深刻。我还没有深入研究到足以形成自己的观点。这可能是相对于 C 甚至 C++的一个巨大特性优势。
 
-Zig没有引起我的兴奋。我发现学习它很困难和令人沮丧。缺乏文档，缺乏教程，糟糕的编译器错误，不直观的类型，混乱的语法，混乱的引用与值，无法通过谷歌搜索，不可组合的迭代器等等。
+Zig 没有引起我的兴奋。我发现学习它很困难和令人沮丧。缺乏文档，缺乏教程，糟糕的编译器错误，不直观的类型，混乱的语法，混乱的引用与值，无法通过谷歌搜索，不可组合的迭代器等等。
 
-然而，Zig有很多我喜欢并期望在现代语言中看到的东西。运行时安全性、切片、延迟、simd、带标签的联合体（需要语法糖）、`foreach` 风格的 `for` 循环、comptime、标准构建系统、包管理器的承诺、基本迭代器等等。
+然而，Zig 有很多我喜欢并期望在现代语言中看到的东西。运行时安全性、切片、延迟、simd、带标签的联合体（需要语法糖）、`foreach` 风格的 `for` 循环、comptime、标准构建系统、包管理器的承诺、基本迭代器等等。
 
-我对Zig的未来感到兴奋。我喜欢它正在探索新的想法，并推动下一代编程语言的发展。我认为在Zig 1.0发布时它可能会非常稳定。看起来那将是几年后的事情。
+我对 Zig 的未来感到兴奋。我喜欢它正在探索新的想法，并推动下一代编程语言的发展。我认为在 Zig 1.0 发布时它可能会非常稳定。看起来那将是几年后的事情。
 
-我曾经试探过Zig的水，感觉有些冷。我还没准备好全力投入。可能我会在2022年的编程之前更多地尝试Zig。下一次我会更清楚我在签约什么。
+我曾经试探过 Zig 的水，感觉有些冷。我还没准备好全力投入。可能我会在 2022 年的编程之前更多地尝试 Zig。下一次我会更清楚我在签约什么。
 
 感谢阅读。

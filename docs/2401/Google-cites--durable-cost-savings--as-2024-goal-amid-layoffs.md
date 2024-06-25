@@ -8,7 +8,7 @@
 
 # 谷歌将“持久性成本节省”列为 2024 年裁员目标
 
-> 来源：[https://nypost.com/2024/01/22/business/google-cites-durable-cost-savings-as-2024-goal-amid-layoffs/](https://nypost.com/2024/01/22/business/google-cites-durable-cost-savings-as-2024-goal-amid-layoffs/)
+> 来源：[`nypost.com/2024/01/22/business/google-cites-durable-cost-savings-as-2024-goal-amid-layoffs/`](https://nypost.com/2024/01/22/business/google-cites-durable-cost-savings-as-2024-goal-amid-layoffs/)
 
 谷歌老板 Sundar Pichai 在 2024 年将“持久性成本节省”列为这家科技巨头的关键目标之一 - [即使公司通过重新裁员再次惊动了一些员工](https://nypost.com/2024/01/19/business/google-employees-blast-profoundly-boring-management-which-lacks-visionary-leader-amid-layoffs/)
 

@@ -8,7 +8,7 @@
 
 # 哈佛大学校长克劳丁·盖因被指控剽窃和校园反犹太主义后辞职 | CNN 商业新闻
 
-> 来源：[https://www.cnn.com/2024/01/02/business/claudine-gay-harvard-president-resigns/index.html](https://www.cnn.com/2024/01/02/business/claudine-gay-harvard-president-resigns/index.html)
+> 来源：[`www.cnn.com/2024/01/02/business/claudine-gay-harvard-president-resigns/index.html`](https://www.cnn.com/2024/01/02/business/claudine-gay-harvard-president-resigns/index.html)
 
 纽约 CNN —
 

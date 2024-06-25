@@ -8,7 +8,7 @@
 
 # 选择文档最详尽的路径 -
 
-> 来源：[https://jarbus.net/blog/take-the-road-most-documented/](https://jarbus.net/blog/take-the-road-most-documented/)
+> 来源：[`jarbus.net/blog/take-the-road-most-documented/`](https://jarbus.net/blog/take-the-road-most-documented/)
 
 如果你遇到的大多数错误的解决方案都在你第一次搜索的地方，那会是多么棒啊？对我来说，[Arch Wiki](https://wiki.archlinux.org/)就是这样：一个庞大的信息和故障排除资源库，帮助我解决了各种配置和安装问题。有些人声称 Arch Linux 对新用户来说太难了，但对我来说，它是我能够一直顺利使用的唯一发行版，这完全归功于详细的文档和已知的解决方法。
 

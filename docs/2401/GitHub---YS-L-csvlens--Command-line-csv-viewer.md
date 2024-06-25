@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:39
 
 # GitHub - YS-L/csvlens: Command line csv viewer
 
-> 来源：[https://github.com/YS-L/csvlens](https://github.com/YS-L/csvlens)
+> 来源：[`github.com/YS-L/csvlens`](https://github.com/YS-L/csvlens)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

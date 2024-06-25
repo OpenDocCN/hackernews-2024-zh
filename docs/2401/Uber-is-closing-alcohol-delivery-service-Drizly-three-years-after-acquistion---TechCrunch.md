@@ -8,7 +8,7 @@
 
 # Uber 在收购 Drizly 三年后关闭了酒类送货服务 Drizly | TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/16/uber-is-closing-alcohol-delivery-service-drizly-three-years-after-acquistion/](https://techcrunch.com/2024/01/16/uber-is-closing-alcohol-delivery-service-drizly-three-years-after-acquistion/)
+> 来源：[`techcrunch.com/2024/01/16/uber-is-closing-alcohol-delivery-service-drizly-three-years-after-acquistion/`](https://techcrunch.com/2024/01/16/uber-is-closing-alcohol-delivery-service-drizly-three-years-after-acquistion/)
 
 Uber 在 [以 11 亿美元收购该服务公司](https://techcrunch.com/2021/02/02/uber-is-buying-alcohol-delivery-service-drizly-for-1-1b/) 后的三年后关闭了酒类送货服务 Drizly。Drizly 在此期间独立运营，并且 Uber 最终决定关闭它，正如首次由 [Axios](https://www.axios.com/2024/01/15/uber-drizly-acquisition-shutters) 报道的那样。
 

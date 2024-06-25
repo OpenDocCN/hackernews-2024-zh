@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 15:14:39
+日期：2024 年 05 月 27 日 15:14:39
 
 -->
 
 # GitHub - morgant/mlvwm：类似 Macintosh 的虚拟窗口管理器（官方仓库）
 
-> 来源：[https://github.com/morgant/mlvwm](https://github.com/morgant/mlvwm)
+> 来源：[`github.com/morgant/mlvwm`](https://github.com/morgant/mlvwm)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

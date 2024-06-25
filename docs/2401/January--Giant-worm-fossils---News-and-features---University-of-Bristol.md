@@ -8,11 +8,11 @@ date: 2024-05-27 14:30:10
 
 # January: 巨型蠕虫化石 | 新闻与特写 | 布里斯托尔大学
 
-> 来源：[https://www.bristol.ac.uk/news/2024/january/giant-worm-fossils-.html](https://www.bristol.ac.uk/news/2024/january/giant-worm-fossils-.html)
+> 来源：[`www.bristol.ac.uk/news/2024/january/giant-worm-fossils-.html`](https://www.bristol.ac.uk/news/2024/january/giant-worm-fossils-.html)
 
-一组新的动物捕食者化石在北格陵兰的早期寒武纪西里斯帕塞特化石地点被发现。这些大型蠕虫可能是早于5.18亿年前在水柱中定居的最早的肉食性动物，揭示了科学家们不知道存在的一群过去的捕食者。
+一组新的动物捕食者化石在北格陵兰的早期寒武纪西里斯帕塞特化石地点被发现。这些大型蠕虫可能是早于 5.18 亿年前在水柱中定居的最早的肉食性动物，揭示了科学家们不知道存在的一群过去的捕食者。
 
-这些新的化石动物被命名为*Timorebestia*，在拉丁语中意为“恐怖之兽”。身体两侧有鳍，头部独特，长长的触角，口腔内有巨大的颚骨结构，长度超过30厘米，这些是早期寒武纪时期最大的游泳动物之一。
+这些新的化石动物被命名为*Timorebestia*，在拉丁语中意为“恐怖之兽”。身体两侧有鳍，头部独特，长长的触角，口腔内有巨大的颚骨结构，长度超过 30 厘米，这些是早期寒武纪时期最大的游泳动物之一。
 
 “我们之前已经知道，在寒武纪时期，原始节肢动物是主要的捕食者，比如那些外观奇特的异常类动物，” 布里斯托尔大学地球科学学院的[雅各布·文瑟博士](https://www.bristol.ac.uk/people/person/Jakob-Vinther-c20784b6-d4a2-4d48-849b-57f899bddaef/)说道，他是该研究的高级作者之一。“然而，*Timorebestia* 是现生箭虫或鞘胃动物的远亲，这些是今天较小的海洋捕食者，以微小的浮游动物为食。
 

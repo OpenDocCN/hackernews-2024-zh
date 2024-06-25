@@ -8,7 +8,7 @@ date: 2024-05-27 14:54:39
 
 # GitHub - collabora/WhisperSpeech：一个通过倒置 Whisper 构建的开源文本转语音系统。
 
-> 来源：[https://github.com/collabora/WhisperSpeech](https://github.com/collabora/WhisperSpeech)
+> 来源：[`github.com/collabora/WhisperSpeech`](https://github.com/collabora/WhisperSpeech)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

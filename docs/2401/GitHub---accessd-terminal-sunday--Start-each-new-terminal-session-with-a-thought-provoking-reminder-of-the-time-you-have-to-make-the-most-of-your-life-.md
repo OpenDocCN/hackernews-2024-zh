@@ -8,7 +8,7 @@ date: 2024-05-27 14:28:22
 
 # GitHub - [accessd/terminal-sunday](https://github.com/accessd/terminal-sunday): 在每次新的终端会话中，用一个发人深省的提醒来开始，提醒你要充分利用生活！
 
-> 来源：[https://github.com/accessd/the-last-sunday](https://github.com/accessd/the-last-sunday)
+> 来源：[`github.com/accessd/the-last-sunday`](https://github.com/accessd/the-last-sunday)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

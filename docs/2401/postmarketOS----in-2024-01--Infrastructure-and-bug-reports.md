@@ -8,11 +8,11 @@
 
 # postmarketOS // 在 2024-01：基础设施和错误报告
 
-> 来源：[https://postmarketos.org/blog/2024/01/08/infrastructure-and-testing/](https://postmarketos.org/blog/2024/01/08/infrastructure-and-testing/)
+> 来源：[`postmarketos.org/blog/2024/01/08/infrastructure-and-testing/`](https://postmarketos.org/blog/2024/01/08/infrastructure-and-testing/)
 
 又是新的一年，当然这意味着我们都在对我们的项目有着宏伟的想法。postmarketOS 也不例外，在追求透明和反思的过程中，我们受到启发，写下了这篇关于计划和最近发生的事情的博客文章。
 
-首先，正如你可能知道的，我们最近[在 OpenCollective 上发布](https://opencollective.com/postmarketos)，哇，反馈真的是惊人的。我们核心团队绝对没有预料到会有这么多慷慨，我们正在努力寻找最佳方法利用这笔钱来改善 postmarketOS 的可持续性和可靠性。OpenCollective 让我们可以轻松管理开支，为人们的工作支付报酬，并接受捐赠。一切都是100%透明的。我们对这给我们带来的自主权非常兴奋。
+首先，正如你可能知道的，我们最近[在 OpenCollective 上发布](https://opencollective.com/postmarketos)，哇，反馈真的是惊人的。我们核心团队绝对没有预料到会有这么多慷慨，我们正在努力寻找最佳方法利用这笔钱来改善 postmarketOS 的可持续性和可靠性。OpenCollective 让我们可以轻松管理开支，为人们的工作支付报酬，并接受捐赠。一切都是 100%透明的。我们对这给我们带来的自主权非常兴奋。
 
 我们最近的基础设施遇到了一些困难。因此，我们决定利用一些捐赠的资金投资于一台更大、更好、更可靠的服务器，并开始迁移服务。到了一月底，主要的瓶颈应该会得到解决（我们正在幕后努力工作），基础设施应该会恢复良好并快速运行。
 

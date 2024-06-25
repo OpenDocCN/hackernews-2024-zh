@@ -8,7 +8,7 @@
 
 # 筛选互联网最糟糕恐怖内容的年轻人
 
-> 来源：[https://www.ft.com/content/ef42e78f-e578-450b-9e43-36fbd1e20d01](https://www.ft.com/content/ef42e78f-e578-450b-9e43-36fbd1e20d01)
+> 来源：[`www.ft.com/content/ef42e78f-e578-450b-9e43-36fbd1e20d01`](https://www.ft.com/content/ef42e78f-e578-450b-9e43-36fbd1e20d01)
 
 ### 标准数字
 

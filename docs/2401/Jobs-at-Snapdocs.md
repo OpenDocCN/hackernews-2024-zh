@@ -8,7 +8,7 @@
 
 # Snapdocs 的工作
 
-> 来源：[https://boards.greenhouse.io/snapdocs/jobs/5053815004](https://boards.greenhouse.io/snapdocs/jobs/5053815004)
+> 来源：[`boards.greenhouse.io/snapdocs/jobs/5053815004`](https://boards.greenhouse.io/snapdocs/jobs/5053815004)
 
 ### 欢迎！
 

@@ -8,7 +8,7 @@
 
 # 13 种豆类汤 - 免费食谱网络
 
-> 来源：[https://freerecipenetwork.com/13-bean-soup/](https://freerecipenetwork.com/13-bean-soup/)
+> 来源：[`freerecipenetwork.com/13-bean-soup/`](https://freerecipenetwork.com/13-bean-soup/)
 
 1 磅干 13 种豆类混合
 

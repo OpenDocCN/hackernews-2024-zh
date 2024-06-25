@@ -8,7 +8,7 @@ date: 2024-05-27 14:27:51
 
 # GitHub - DLYuanGod/TinyGPT-V: TinyGPT-V: Efficient Multimodal Large Language Model via Small Backbones
 
-> 来源：[https://github.com/DLYuanGod/TinyGPT-V](https://github.com/DLYuanGod/TinyGPT-V)
+> 来源：[`github.com/DLYuanGod/TinyGPT-V`](https://github.com/DLYuanGod/TinyGPT-V)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

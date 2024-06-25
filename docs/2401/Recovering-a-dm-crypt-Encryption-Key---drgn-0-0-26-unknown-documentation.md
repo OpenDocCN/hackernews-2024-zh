@@ -8,7 +8,7 @@ date: 2024-05-27 14:44:13
 
 # 恢复 dm-crypt 加密密钥 — drgn 0.0.26+unknown 文档
 
-> 来源：[https://drgn.readthedocs.io/en/latest/case_studies/dm_crypt_key.html](https://drgn.readthedocs.io/en/latest/case_studies/dm_crypt_key.html)
+> 来源：[`drgn.readthedocs.io/en/latest/case_studies/dm_crypt_key.html`](https://drgn.readthedocs.io/en/latest/case_studies/dm_crypt_key.html)
 
 ```
 >>> def aes_xts_ctx(tfm):

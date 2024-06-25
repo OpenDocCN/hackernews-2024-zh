@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日14:50:59
+日期：2024 年 5 月 27 日 14:50:59
 
 -->
 
-# GitHub - SebastianMuskalla/ModelessVim：将vim配置文件转换为无模式编辑器。
+# GitHub - SebastianMuskalla/ModelessVim：将 vim 配置文件转换为无模式编辑器。
 
-> 来源：[https://github.com/SebastianMuskalla/ModelessVim](https://github.com/SebastianMuskalla/ModelessVim)
+> 来源：[`github.com/SebastianMuskalla/ModelessVim`](https://github.com/SebastianMuskalla/ModelessVim)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

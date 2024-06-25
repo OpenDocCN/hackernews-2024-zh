@@ -8,7 +8,7 @@
 
 # 编程语言清单 | Colin McMillen
 
-> 来源：[https://www.mcmillen.dev/language_checklist.html](https://www.mcmillen.dev/language_checklist.html)
+> 来源：[`www.mcmillen.dev/language_checklist.html`](https://www.mcmillen.dev/language_checklist.html)
 
 `编程语言清单
 

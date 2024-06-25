@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:25:39
+日期：2024 年 05 月 27 日 14:25:39
 
 -->
 
 # OpenIndiana - 主页
 
-> 来源：[https://www.openindiana.org/](https://www.openindiana.org/)
+> 来源：[`www.openindiana.org/`](https://www.openindiana.org/)
 
 OpenIndiana Hipster 2022.10 已发布
 

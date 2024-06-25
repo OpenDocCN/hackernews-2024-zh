@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年05月27日14:58:48
+日期：2024 年 05 月 27 日 14:58:48
 
 --> 
 
-# Adrian接下来做了什么-第二部分-太阳微系统|由Adrian Cockcroft|Medium
+# Adrian 接下来做了什么-第二部分-太阳微系统|由 Adrian Cockcroft|Medium
 
-> 来源：[https://adrianco.medium.com/what-adrian-did-next-part-2-sun-microsystems-c1a512c8284](https://adrianco.medium.com/what-adrian-did-next-part-2-sun-microsystems-c1a512c8284)
+> 来源：[`adrianco.medium.com/what-adrian-did-next-part-2-sun-microsystems-c1a512c8284`](https://adrianco.medium.com/what-adrian-did-next-part-2-sun-microsystems-c1a512c8284)
 
-# Adrian接下来做了什么-第二部分-太阳微系统
+# Adrian 接下来做了什么-第二部分-太阳微系统
 
-Adrian Cockcroft、Richard McDougall、Allan Packer 和 Brian Wong。Los Altos CA，20世纪90年代中期 - Adrian 拍摄。
+Adrian Cockcroft、Richard McDougall、Allan Packer 和 Brian Wong。Los Altos CA，20 世纪 90 年代中期 - Adrian 拍摄。
 
-我在剑桥顾问公司工作了六年，构建了一些有趣的系统，管理我们的太阳工作站，学到了很多东西，但那时太阳公司在街对面开了一家销售办事处，我想要比其他人先找出他们接下来要发布什么产品。所以我于1988年加入了太阳公司的销售团队，并成为了系统工程师（现在我们会说解决方案架构师）。这是一个很大的飞跃，我每天都得穿西装上班，并且整天都得和销售代表一起拜访客户。我真的很享受每天与不同客户合作，解决不同的问题，并成为一个极具创新和快速成长的公司的一部分。我还学到了如何直接与客户合作，何时闭嘴，让销售人员主导谈话，以及技术销售工作的一般知识。太阳剑桥的早期日子是特别的，我从我的同事系统工程师Martin Baines那里吸收了很多关于网络和角色的技术方面的知识，我们一起开着酷炫的公司车在整个地区奔波（我有一辆雪铁龙BX 16V）销售一个非常热门的产品。公司和团队随着时间的推移变得越来越大，但最初的销售团队由Paul Martin（福特Sierra Cosworth - 英格兰东部最快的销售人员）、Martin Harris（路虎发现-招募了一个充气骷髅作为额外的销售人员）、David Morley（沃克斯豪尔卡尔顿-总是在Newmarket的赛马上打赌）和Gary Littlefair（宝马320 - 多年来都完成了超过目标的200%，因为我们把英国电信拉到了Sun英国最大的客户）,我们就像是“踢屁股，玩得开心”，就像Scott McNealy喜欢说的那样。我还定期去加利福尼亚的太阳总部参加培训课程，并在那里遇到了一些有趣的人，特别是来自纽约的Reynold Jabbour，他对人和技术都非常有洞察力，为东海岸的系统工程师团队工作，后来去了各种华尔街银行工作，到现在仍是我最亲密的朋友之一。
+我在剑桥顾问公司工作了六年，构建了一些有趣的系统，管理我们的太阳工作站，学到了很多东西，但那时太阳公司在街对面开了一家销售办事处，我想要比其他人先找出他们接下来要发布什么产品。所以我于 1988 年加入了太阳公司的销售团队，并成为了系统工程师（现在我们会说解决方案架构师）。这是一个很大的飞跃，我每天都得穿西装上班，并且整天都得和销售代表一起拜访客户。我真的很享受每天与不同客户合作，解决不同的问题，并成为一个极具创新和快速成长的公司的一部分。我还学到了如何直接与客户合作，何时闭嘴，让销售人员主导谈话，以及技术销售工作的一般知识。太阳剑桥的早期日子是特别的，我从我的同事系统工程师 Martin Baines 那里吸收了很多关于网络和角色的技术方面的知识，我们一起开着酷炫的公司车在整个地区奔波（我有一辆雪铁龙 BX 16V）销售一个非常热门的产品。公司和团队随着时间的推移变得越来越大，但最初的销售团队由 Paul Martin（福特 Sierra Cosworth - 英格兰东部最快的销售人员）、Martin Harris（路虎发现-招募了一个充气骷髅作为额外的销售人员）、David Morley（沃克斯豪尔卡尔顿-总是在 Newmarket 的赛马上打赌）和 Gary Littlefair（宝马 320 - 多年来都完成了超过目标的 200%，因为我们把英国电信拉到了 Sun 英国最大的客户）,我们就像是“踢屁股，玩得开心”，就像 Scott McNealy 喜欢说的那样。我还定期去加利福尼亚的太阳总部参加培训课程，并在那里遇到了一些有趣的人，特别是来自纽约的 Reynold Jabbour，他对人和技术都非常有洞察力，为东海岸的系统工程师团队工作，后来去了各种华尔街银行工作，到现在仍是我最亲密的朋友之一。
 
 我成为了 Sun UK 地区性能和硬件方面的专家，随着 Sun 从桌面工作站公司转变为销售高端多处理器服务器，我帮助客户找到并解决了可伸缩性问题。1991 年，我撰写了一篇广受欢迎的关于性能的白皮书，1993 年（在 Brian Wong 的帮助下），这让我在美国找到了一份工作，与 Brian 一起在技术产品营销部门为 Mike Briggs 工作。又一个重大飞跃，但现在我的工作是在实验室里运行基准测试，并编写白皮书，介绍新产品，因为它们推出。我也学会了市场营销是如何运作的，并开始建立我的演示和培训技能，因为 Sun 派我到世界各地教授研讨会并在活动中演讲。我主要使用 C 进行编码，调整 FORTRAN，当我需要对基准测试结果进行大量数据分析时，我使用了 S-PLUS 统计语言，这是 R 的前身。[我仍然在使用 R…](https://github.com/adrianco/rs-tesla-telemetry)
 
@@ -36,7 +36,7 @@ Paul Reithmuller 是另一位出色的澳大利亚工程师。有一天我们在
 
 1998 年，我在保罗·斯特朗（Paul Strong）在轮换工作时认识了他，我们成为了亲密的朋友，因为我们都喜欢鹰风乐队（Hawkwind）、弗兰克·扎帕（Frank Zappa）和国王深红乐队（King Crimson）的音乐。后来他搬到美国去工作，我们在一起工作和玩了很多年，特别是当我帮助他组建 [渐进摇滚乐队分形（Fractal）](https://vincefont.wordpress.com/2009/04/20/fractals-sequitur-when-mind-and-music-meet-youre-gonna-tap-your-fee/) 时。他是一位出色的鼓手，而我不是一个足够好的贝斯手，但我录制了他们许多的排练和演出，并为一些他们早期的器乐曲命名（大多带有糟糕的双关语）。
 
-在我和布赖恩写的书取得成功之后，我们得到了一部分版税，我们的管理层决定我们应该把写书作为我们的工作，并且我们组建了一个专家团队来编写最佳实践指南，作为太阳蓝图系列书籍出版。我对两本太阳蓝图系列书籍做出了重大贡献，分别是 [*Resource Management*](https://www.amazon.com/Resource-Management-Bluprints-Richard-Dougall/dp/0130258555/)（1999）与 Richard McDougall、Evert Hoogendoorn、Enrique Vargas 和 Jim Bialaski 合著，以及 [*Capacity Planning for Internet Services*](https://www.amazon.com/Capacity-Planning-Internet-Services-Cockcroft/dp/0130894028/)（2001）与 Bill Walker 合著。我们的团队还出版了存储专家 Jeannie Johnstone Kobert 的 [*The Guide to High Availability*](https://www.amazon.com/Guide-High-Availability-Configuring-boot/dp/0130163066/)，Enrique Vargas 的 [Sun Cluster Environment](https://www.amazon.com/Sun-Cluster-Environment-2-2/dp/0130418706/)，Don Devitt 的 [Solaris PC Netlink](https://www.amazon.com/Solaris-PC-Netlink-Performance-Deployment/dp/0130266868/)（我们曾在波士顿附近的他的帆船上度过了一个愉快的团队活动），以及其他几本书。最终，我们在业余时间写的书更具主观见解，我认为更加有用，并且销售情况也比那些更加“正确”且经过许多人审查的官方书籍要好。我还提出了 [Cockcroft 的写书定律](/how-to-finish-writing-a-book-by-adrian-cockcroft-originally-posted-15th-march-2006-5b5fc629993b)，即书籍在写作过程中会变得越来越大，比你写作速度更快，所以你需要修剪它们以完成它们。
+在我和布赖恩写的书取得成功之后，我们得到了一部分版税，我们的管理层决定我们应该把写书作为我们的工作，并且我们组建了一个专家团队来编写最佳实践指南，作为太阳蓝图系列书籍出版。我对两本太阳蓝图系列书籍做出了重大贡献，分别是 [*Resource Management*](https://www.amazon.com/Resource-Management-Bluprints-Richard-Dougall/dp/0130258555/)（1999）与 Richard McDougall、Evert Hoogendoorn、Enrique Vargas 和 Jim Bialaski 合著，以及 [*Capacity Planning for Internet Services*](https://www.amazon.com/Capacity-Planning-Internet-Services-Cockcroft/dp/0130894028/)（2001）与 Bill Walker 合著。我们的团队还出版了存储专家 Jeannie Johnstone Kobert 的 [*The Guide to High Availability*](https://www.amazon.com/Guide-High-Availability-Configuring-boot/dp/0130163066/)，Enrique Vargas 的 [Sun Cluster Environment](https://www.amazon.com/Sun-Cluster-Environment-2-2/dp/0130418706/)，Don Devitt 的 [Solaris PC Netlink](https://www.amazon.com/Solaris-PC-Netlink-Performance-Deployment/dp/0130266868/)（我们曾在波士顿附近的他的帆船上度过了一个愉快的团队活动），以及其他几本书。最终，我们在业余时间写的书更具主观见解，我认为更加有用，并且销售情况也比那些更加“正确”且经过许多人审查的官方书籍要好。我还提出了 Cockcroft 的写书定律，即书籍在写作过程中会变得越来越大，比你写作速度更快，所以你需要修剪它们以完成它们。
 
 最终，在成为 Sun 公司容量规划和性能领域的专家之后，我和 Brian Wong 一起成为了 [杰出工程师](https://medium.com/@adrianco/whats-a-distinguished-engineer-6b3e4d320ce6)，并于 1999 年加入了中央性能工程团队。我带领着一个小团队，在如今成为 Facebook 总部的门洛帕克校园与 Elizabeth Purcell、法国的 Roch Bourbonnais 以及弗吉尼亚州的 Bob Sneed 合作过，我们进行了一个我们的数据中心设计师 Rob Snevely (他著有一本包含 Elizabeth Purcell 撰写的章节的 [Blueprint 书籍](https://www.amazon.com/Enterprise-Data-Center-Design-Methodology/dp/0130473936/)）称之为“万花筒项目”的工程，我们在这个项目中会安装和运行大型服务器配置的性能测试，这些配置比工程团队通常运行的测试或基准环境更接近客户端且更复杂。我们发现了许多无法正确配合的事情，提交了很多 Bug，并解决了许多客户问题。我们将这称为“融化防范”，并且不得不努力让人们意识到近乎失灾也是值得追踪的。
 
@@ -44,11 +44,11 @@ Paul Reithmuller 是另一位出色的澳大利亚工程师。有一天我们在
 
 我参与的一个有趣的附加项目是，Sun 公司为 2002 年 Salt Lake City 冬季奥运会提供了后端服务器系统，我加入了这个项目作为容量规划顾问，以确保活动进行时一切都不会出错。我使用了多年来作为 Rich Pettit 的 SE Toolkit 的一部分构建的一些自定义监控工具，其中包括一个名为 virtual-adrian 的工具，它实现了我想到的所有想法。一切都进行得很顺利，我看到了一些比赛，有时感觉非常寒冷。我还在 2004 年雅典奥运会前的准备工作中提供了帮助。
 
-我在Sun的最后一个角色是作为由Shahin Khan领导的高性能技术计算团队的首席架构师，我们很开心，他是我遇到过的最好的经理之一，让我在很多不同的方向上发展。在某个时候，我们的产品负责人离开了，我接替了这个角色，所以我花了一两年的时间学习如何成为我们的高性能计算和高端图形产品线的产品经理。我还与一位非常有经验的业务发展经理Susanna Kass一起工作，与许多内部和外部合作伙伴建立关系，并深入了解了BD的运作方式。该团队与Sun的标准主管Carl Cargill合作，因为Sun和Oracle创建了一个新的标准组织，即企业网格联盟。我担任Sun的主要代表，并在我们与IBM主导的全球网格论坛的竞争关系上工作。在我离开Sun之前，我让Paul Strong参与了EGA，这两个竞争团体最终合并，网格和Web服务演变成了云计算。当AWS推出云计算时，我们正在思考最终成为云计算的趋势，但Sun没有正确的商业模式直接面向开发人员销售信用卡上的容量，这就是AWS如何绕过我们在Sun看到的企业CIO的抵制的。这份工作在很多不同的方面对我进行了拉伸，我们过得很愉快，但那时Sun正在缩减规模，其中一次裁员包括我们整个团队。
+我在 Sun 的最后一个角色是作为由 Shahin Khan 领导的高性能技术计算团队的首席架构师，我们很开心，他是我遇到过的最好的经理之一，让我在很多不同的方向上发展。在某个时候，我们的产品负责人离开了，我接替了这个角色，所以我花了一两年的时间学习如何成为我们的高性能计算和高端图形产品线的产品经理。我还与一位非常有经验的业务发展经理 Susanna Kass 一起工作，与许多内部和外部合作伙伴建立关系，并深入了解了 BD 的运作方式。该团队与 Sun 的标准主管 Carl Cargill 合作，因为 Sun 和 Oracle 创建了一个新的标准组织，即企业网格联盟。我担任 Sun 的主要代表，并在我们与 IBM 主导的全球网格论坛的竞争关系上工作。在我离开 Sun 之前，我让 Paul Strong 参与了 EGA，这两个竞争团体最终合并，网格和 Web 服务演变成了云计算。当 AWS 推出云计算时，我们正在思考最终成为云计算的趋势，但 Sun 没有正确的商业模式直接面向开发人员销售信用卡上的容量，这就是 AWS 如何绕过我们在 Sun 看到的企业 CIO 的抵制的。这份工作在很多不同的方面对我进行了拉伸，我们过得很愉快，但那时 Sun 正在缩减规模，其中一次裁员包括我们整个团队。
 
-我们刚刚在上海的一次活动上推出了我们的主要HPC产品，使用了一排Intel Linux基础的计算节点，使用SPARC Solaris服务器进行配置和提供存储，配备Infiniband或以太网连接，Sun Grid Engine等。当我在那里时，我们听说即将有裁员，但每个人都认为我们的团队仍然是必需的。在回程路上，我去了檀香山参加了全球网格论坛的会议，代表EGA，遇到了Vikas Deolaliker，他说似乎没有人能找到足够的人手来拯救HPC团队。我记得和Savas Parastatidis和Jim Webber（现任Neo4j的CTO）坐在酒吧里告诉他们发生了什么事情，然后在那个晚上与eBay的COO Maynard Webb开始了一封邮件线索，假装eBay应该开始一个新的业务线，即按需拍卖计算能力，但实际上是在找工作...
+我们刚刚在上海的一次活动上推出了我们的主要 HPC 产品，使用了一排 Intel Linux 基础的计算节点，使用 SPARC Solaris 服务器进行配置和提供存储，配备 Infiniband 或以太网连接，Sun Grid Engine 等。当我在那里时，我们听说即将有裁员，但每个人都认为我们的团队仍然是必需的。在回程路上，我去了檀香山参加了全球网格论坛的会议，代表 EGA，遇到了 Vikas Deolaliker，他说似乎没有人能找到足够的人手来拯救 HPC 团队。我记得和 Savas Parastatidis 和 Jim Webber（现任 Neo4j 的 CTO）坐在酒吧里告诉他们发生了什么事情，然后在那个晚上与 eBay 的 COO Maynard Webb 开始了一封邮件线索，假装 eBay 应该开始一个新的业务线，即按需拍卖计算能力，但实际上是在找工作...
 
-所以在2004年中期，我被裁员了，寻求改变，并决定不再向大公司销售计算机，而是在eBay探索面向消费者的技术。我曾在1999年帮助eBay从容量相关的故障中恢复过来，并建立了他们的容量规划流程。那时我也曾拒绝过一份工作机会，但这次他们把我作为杰出工程师加入到他们的运维架构团队中。
+所以在 2004 年中期，我被裁员了，寻求改变，并决定不再向大公司销售计算机，而是在 eBay 探索面向消费者的技术。我曾在 1999 年帮助 eBay 从容量相关的故障中恢复过来，并建立了他们的容量规划流程。那时我也曾拒绝过一份工作机会，但这次他们把我作为杰出工程师加入到他们的运维架构团队中。
 
 Vikas 离开后共同创立了 Sonoa 系统，后来成为 Apigee，现在是 Google Cloud 的一部分。Shahin Khan 曾一段时间负责 Azul 系统的营销工作，并且仍然活跃在 HPC 社区。Susanna Kass 现在致力于数据中心的可再生能源工作，我们最近又重新联系上了。
 

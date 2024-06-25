@@ -8,7 +8,7 @@ date: 2024-05-27 14:32:29
 
 # GitHub - vignshwarar/AI-Employe: 以 GPT-4 Vision 教授人类方式创建浏览器自动化。
 
-> 来源：[https://github.com/vignshwarar/AI-Employe](https://github.com/vignshwarar/AI-Employe)
+> 来源：[`github.com/vignshwarar/AI-Employe`](https://github.com/vignshwarar/AI-Employe)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

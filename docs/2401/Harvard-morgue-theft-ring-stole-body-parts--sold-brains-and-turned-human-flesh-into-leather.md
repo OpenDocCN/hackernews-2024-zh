@@ -8,13 +8,13 @@ date: 2024-05-27 14:56:53
 
 # 哈佛解剖室盗窃团伙窃取了人体器官，出售了大脑，并将人体肉变成了皮革
 
-> 来源：[https://www.nbcnews.com/news/us-news/4-charged-stealing-selling-human-body-parts-harvard-medical-school-mor-rcna89357](https://www.nbcnews.com/news/us-news/4-charged-stealing-selling-human-body-parts-harvard-medical-school-mor-rcna89357)
+> 来源：[`www.nbcnews.com/news/us-news/4-charged-stealing-selling-human-body-parts-harvard-medical-school-mor-rcna89357`](https://www.nbcnews.com/news/us-news/4-charged-stealing-selling-human-body-parts-harvard-medical-school-mor-rcna89357)
 
 周三官员表示，[一个可怕的盗窃团伙从波士顿的哈佛医学院解剖室](https://www.nbcboston.com/news/local/4-charged-in-harvard-morgue-body-part-theft-scheme/3068131/)盗取了人类遗骸，并将人体器官出售给全国各地的买家。
 
-宾夕法尼亚州斯克兰顿的[大陪审团起诉书](https://www.pahomepage.com/news/crime-courts/six-charged-with-trafficking-stolen-human-remains/)针对了现年55岁的解剖室经理塞德里克·洛奇和他的妻子丹尼斯·洛奇（63岁），他们住在新罕布什尔州的戈夫斯敦。
+宾夕法尼亚州斯克兰顿的[大陪审团起诉书](https://www.pahomepage.com/news/crime-courts/six-charged-with-trafficking-stolen-human-remains/)针对了现年 55 岁的解剖室经理塞德里克·洛奇和他的妻子丹尼斯·洛奇（63 岁），他们住在新罕布什尔州的戈夫斯敦。
 
-还起诉了马萨诸塞州塞勒姆的卡特琳娜·麦克林（44岁）和宾夕法尼亚州西草坪的乔舒亚·泰勒（46岁）。官员称，麦克林拥有并经营着一家名为Kat's Creepy Creations的商店。
+还起诉了马萨诸塞州塞勒姆的卡特琳娜·麦克林（44 岁）和宾夕法尼亚州西草坪的乔舒亚·泰勒（46 岁）。官员称，麦克林拥有并经营着一家名为 Kat's Creepy Creations 的商店。
 
 他们都被控串谋和跨州运输盗窃货物。
 
@@ -24,13 +24,13 @@ date: 2024-05-27 14:56:53
 
 法庭文件显示，他和妻子将通过网站和手机与买家“就偷来的人体遗骸的销售”联系起来。
 
-这份15页的起诉书并没有详细说明购买这些人体器官的目的，但提到麦克林向宾夕法尼亚的一个男子运送了人体皮肤“并雇佣了他的服务来晒黑皮肤以制作皮革”。
+这份 15 页的起诉书并没有详细说明购买这些人体器官的目的，但提到麦克林向宾夕法尼亚的一个男子运送了人体皮肤“并雇佣了他的服务来晒黑皮肤以制作皮革”。
 
 根据起诉书，麦克林（Maclean）要求塞德里克·洛奇（Cedric Lodge）提供更多组织送到“我给胸部的那个家伙那里晒黑”。
 
-从2018年9月3日到2021年7月12日，泰勒向丹尼斯·洛奇运营的一个PayPal账户发送了39笔电子支付，总额为37,355.56美元，用于购买塞德里克·洛奇从哈佛盗窃的人体遗骸，起诉书称。
+从 2018 年 9 月 3 日到 2021 年 7 月 12 日，泰勒向丹尼斯·洛奇运营的一个 PayPal 账户发送了 39 笔电子支付，总额为 37,355.56 美元，用于购买塞德里克·洛奇从哈佛盗窃的人体遗骸，起诉书称。
 
-泰勒于2019年5月19日的一笔支付备有备忘录“头部编号7”，2020年11月20日的交易是为“braiiiiiins”。
+泰勒于 2019 年 5 月 19 日的一笔支付备有备忘录“头部编号 7”，2020 年 11 月 20 日的交易是为“braiiiiiins”。
 
 泰勒（Taylor）的律师拒绝在周三下午讨论此案。周三下午无法立即联系到洛奇一家和麦克林的律师发表评论。
 

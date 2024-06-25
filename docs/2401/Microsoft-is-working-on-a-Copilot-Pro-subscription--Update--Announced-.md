@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年05月27日 14:48:05
+日期：2024 年 05 月 27 日 14:48:05
 
 -->
 
 # 微软正在开发 Copilot Pro 订阅服务（更新：已宣布）
 
-> 来源：[https://www.androidauthority.com/microsoft-copilot-pro-edge-3403043/](https://www.androidauthority.com/microsoft-copilot-pro-edge-3403043/)
+> 来源：[`www.androidauthority.com/microsoft-copilot-pro-edge-3403043/`](https://www.androidauthority.com/microsoft-copilot-pro-edge-3403043/)
 
 TL;DR
 
@@ -18,9 +18,9 @@ TL;DR
 
 +   微软在此帖子首次发布几个小时后宣布了这个高级计划。
 
-**更新：2024年1月16日（美国东部时间凌晨12:30）：** 这没花多少时间。微软已正式宣布 Copilot Pro，月费为 20 美元。您可以通过我们的 [宣布文章](https://www.androidauthority.com/microsoft-copilot-pro-3402945/) 获取更多详情。
+**更新：2024 年 1 月 16 日（美国东部时间凌晨 12:30）：** 这没花多少时间。微软已正式宣布 Copilot Pro，月费为 20 美元。您可以通过我们的 [宣布文章](https://www.androidauthority.com/microsoft-copilot-pro-3402945/) 获取更多详情。
 
-**原文发布日期：2024年1月15日（美国东部时间上午7:02）：** 微软一直在移动设备上提供其 [Copilot](https://www.androidauthority.com/chatgpt-vs-bing-chat-3292126/) AI 服务（原名 Bing Chat）。该服务长期以来一直免费使用，允许您与聊天机器人对话，生成 AI 图像等。现在，最新的 Edge 浏览器更新提示 Android 版中可能会有所谓的 Copilot Pro 选项。
+**原文发布日期：2024 年 1 月 15 日（美国东部时间上午 7:02）：** 微软一直在移动设备上提供其 [Copilot](https://www.androidauthority.com/chatgpt-vs-bing-chat-3292126/) AI 服务（原名 Bing Chat）。该服务长期以来一直免费使用，允许您与聊天机器人对话，生成 AI 图像等。现在，最新的 Edge 浏览器更新提示 Android 版中可能会有所谓的 Copilot Pro 选项。
 
 一个 **APK 拆解** 可以帮助预测基于进行中代码的未来服务可能到来的功能。但是，这种预测的功能可能不会在公开发布中实现。
 

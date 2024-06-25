@@ -8,7 +8,7 @@
 
 # What Is My Screen Resolution - 检查您的显示分辨率
 
-> 来源：[https://www.whatismyscreenresolution.org/](https://www.whatismyscreenresolution.org/)
+> 来源：[`www.whatismyscreenresolution.org/`](https://www.whatismyscreenresolution.org/)
 
 [WhatIsMyScreenResolution.org](https://www.whatismyscreenresolution.org/) 是一个在线工具，可用于检查任何显示设备的屏幕分辨率，包括 Android、Windows 桌面、iPad、平板电脑、iPhone、MacBook 等。
 

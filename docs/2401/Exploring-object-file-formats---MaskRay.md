@@ -8,7 +8,7 @@
 
 # 探索对象文件格式 | MaskRay
 
-> 来源：[https://maskray.me/blog/2024-01-14-exploring-object-file-formats](https://maskray.me/blog/2024-01-14-exploring-object-file-formats)
+> 来源：[`maskray.me/blog/2024-01-14-exploring-object-file-formats`](https://maskray.me/blog/2024-01-14-exploring-object-file-formats)
 
 我与 LLVM 项目的旅程始于对 lld 和二进制工具的深入研究。无数个小时都花在了解对象文件格式的复杂性和塑造 LLVM 相关组件上。尽管我的兴趣已经扩展，但对象文件格式仍然是我个人着迷的领域，经常让我卷入 LLVM 内潜在变化的讨论中。
 
@@ -60,7 +60,7 @@ a.out 支持三个固定的可加载节 TEXT、DATA 和 BSS，这太过限制性
 
 +   早期系统中不是 32 位对齐的符号和段结构导致了性能问题。
 
-+   不支持[弱符号](/blog/2021-04-25-weak-symbol)。PE 实现了一种不灵活的弱定义机制，称为“弱外部”。
++   不支持弱符号。PE 实现了一种不灵活的弱定义机制，称为“弱外部”。
 
 ### Mach-O
 
@@ -70,7 +70,7 @@ Mach-O 上的动态共享库支持晚于其他目标文件格式。在 1995 年�
 
 主要缺点：
 
-+   没有 [COMDAT](/blog/2021-07-25-comdat-and-section-group) 支持。
++   没有 COMDAT 支持。
 
 +   重定位类型的稀缺性。
 
@@ -82,7 +82,7 @@ Mach-O 上的动态共享库支持晚于其他目标文件格式。在 1995 年�
 
 COFF 的挫败感和固有限制，再加上自我施加的字节顺序困境，AT&T 推出了一种开创性的格式：可执行和链接格式（ELF）。ELF 重新审视了先前目标文件格式中的固定内容和硬编码概念，删除了不必要的元素，并使控制结构更加灵活。
 
-这个重大转变被 System V Release 4 所采纳，标志着目标文件格式设计的新时代。在1990年代，许多 Unix 和类 Unix 操作系统，包括 Solaris、IRIX、HP-UX、Linux 和 FreeBSD，都转向了 ELF。
+这个重大转变被 System V Release 4 所采纳，标志着目标文件格式设计的新时代。在 1990 年代，许多 Unix 和类 Unix 操作系统，包括 Solaris、IRIX、HP-UX、Linux 和 FreeBSD，都转向了 ELF。
 
 ## 符号
 
@@ -218,9 +218,9 @@ a.out 使用 `nlist` 来表示符号表条目。在 PDP-11 的原始格式中，
 
 为了支持更长的名称，扩展在符号表之后添加了一个字符串表，并允许将 `n_name` 解释为一个索引 (`n_strx`) 到字符串表中。然后，这个成员通过将短名称（8 字节或更少）内联到结构中来节省空间。一些变体，如 binutils 的 64 位 a.out 格式，专门使用索引并移除了 `n_name`。
 
-`n_type`分解为三个子字段，描述了符号是否已定义或未定义、外部或本地以及符号类型。FreeBSD手册页中列出的值也用于PDP-11。
+`n_type`分解为三个子字段，描述了符号是否已定义或未定义、外部或本地以及符号类型。FreeBSD 手册页中列出的值也用于 PDP-11。
 
-对于已定义的符号，`n_type`描述了它是相对于TEXT、DATA还是BSS。
+对于已定义的符号，`n_type`描述了它是相对于 TEXT、DATA 还是 BSS。
 
 ### 符号（COFF）
 
@@ -266,29 +266,29 @@ a.out 使用 `nlist` 来表示符号表条目。在 PDP-11 的原始格式中，
 
 |
 
-COFF采用了a.out的方法来节省符号名称的空间。这在大多数符号较短时可能是合理的。然而，随着今天常常较长的符号名称，这种内联技术使得代码复杂化并增加了控制结构大小（从4到8字节）。
+COFF 采用了 a.out 的方法来节省符号名称的空间。这在大多数符号较短时可能是合理的。然而，随着今天常常较长的符号名称，这种内联技术使得代码复杂化并增加了控制结构大小（从 4 到 8 字节）。
 
-节号是一个16位有符号整数，支持最多32,767个节。正值表示节索引，而特殊值包括：
+节号是一个 16 位有符号整数，支持最多 32,767 个节。正值表示节索引，而特殊值包括：
 
-+   `N_UNDEF`（0）：未定义的符号（与a.out的`n_type`表示不同）。
++   `N_UNDEF`（0）：未定义的符号（与 a.out 的`n_type`表示不同）。
 
 +   `N_ABS`（-1）：符号具有绝对值。
 
 +   `N_DEBUG`（-2）：特殊的调试符号（值无意义）。
 
-COFF的`n_type`和`n_sclass`编码了C语言的类型和存储类信息。PE为这些类型和存储类分配了更长的名称，例如，`IMAGE_SYM_TYPE_CHAR/IMAGE_SYM_TYPE_SHORT`，`IMAGE_SYM_CLASS_AUTOMATIC/IMAGE_SYM_CLASS_EXTERNAL`。虽然大部分数值保持一致，但存在一些细微差异：
+COFF 的`n_type`和`n_sclass`编码了 C 语言的类型和存储类信息。PE 为这些类型和存储类分配了更长的名称，例如，`IMAGE_SYM_TYPE_CHAR/IMAGE_SYM_TYPE_SHORT`，`IMAGE_SYM_CLASS_AUTOMATIC/IMAGE_SYM_CLASS_EXTERNAL`。虽然大部分数值保持一致，但存在一些细微差异：
 
-+   PE的`IMAGE_SYM_TYPE_VOID`（1）与System V Release 3的`#define T_ARG 1 /* function argument (only used by compiler) */`不同。
++   PE 的`IMAGE_SYM_TYPE_VOID`（1）与 System V Release 3 的`#define T_ARG 1 /* function argument (only used by compiler) */`不同。
 
-+   PE的`IMAGE_SYM_CLASS_WEAK_EXTERNAL`（105）与System V Release 3的`#define C_ALIAS 105 /* duplicate tag */`不同。
++   PE 的`IMAGE_SYM_CLASS_WEAK_EXTERNAL`（105）与 System V Release 3 的`#define C_ALIAS 105 /* duplicate tag */`不同。
 
-具有`C_EXT`（`IMAGE_SYM_CLASS_EXTERNAL`）的符号是全局的，并添加到链接器的全局符号表中，类似于ELF的`STB_GLOBAL`符号绑定。
+具有`C_EXT`（`IMAGE_SYM_CLASS_EXTERNAL`）的符号是全局的，并添加到链接器的全局符号表中，类似于 ELF 的`STB_GLOBAL`符号绑定。
 
-System V提供了一个符号调试器（sdb），它利用`n_type`和`n_sclass`。如果我们承认调试信息格式已经过时，`n_type`和`n_class`就成为ELF的`st_info`的冗余对应物。
+System V 提供了一个符号调试器（sdb），它利用`n_type`和`n_sclass`。如果我们承认调试信息格式已经过时，`n_type`和`n_class`就成为 ELF 的`st_info`的冗余对应物。
 
-`n_numaux`与辅助符号记录相关，允许额外的信息，但引入了不规则的符号表条目。虽然看似有益，但它们的用例有限，通常可以使用单独的节进行编码。在PE中，辅助符号记录可以表示弱定义，但不支持弱引用。它们还可以为节符号提供额外的信息。
+`n_numaux`与辅助符号记录相关，允许额外的信息，但引入了不规则的符号表条目。虽然看似有益，但它们的用例有限，通常可以使用单独的节进行编码。在 PE 中，辅助符号记录可以表示弱定义，但不支持弱引用。它们还可以为节符号提供额外的信息。
 
-ECOFF定义了本地符号入口（SYMR）和外部符号入口（EXTR）。
+ECOFF 定义了本地符号入口（SYMR）和外部符号入口（EXTR）。
 
 |
 
@@ -382,9 +382,9 @@ typedef struct {
 
 |
 
-Mach-O的`nlist`和`nlist_64`与a.out的差别不大，只是将`n_other`更改为`n_sect`以表示节索引。8位的n_sect字段限制了可表示的节数为255，不包括带外数据（稍后讨论）。如果我们将`n_sect`扩展为32位，结构大小将增加到24字节，与`Elf64_Sym`相同。
+Mach-O 的`nlist`和`nlist_64`与 a.out 的差别不大，只是将`n_other`更改为`n_sect`以表示节索引。8 位的 n_sect 字段限制了可表示的节数为 255，不包括带外数据（稍后讨论）。如果我们将`n_sect`扩展为 32 位，结构大小将增加到 24 字节，与`Elf64_Sym`相同。
 
-像a.out一样，`n_type`的`N_EXT`位表示外部符号。`N_PEXT`位表示私有外部符号。
+像 a.out 一样，`n_type`的`N_EXT`位表示外部符号。`N_PEXT`位表示私有外部符号。
 
 `n_desc`中的关键位是`N_WEAK_DEF`、`N_WEAK_REF`和`N_ALT_ENTRY`。
 
@@ -610,11 +610,11 @@ struct section {
 
 当 `long` 为 4 字节时，所呈现的结构的大小为 40 字节。如果我们将 `s_paddr, s_vaddr, s_size, s_scnptr, s_relptr, s_lnnoptr` 扩展为 8 字节，则结构将为 64 字节。
 
-节名称支持最多8个字节。更长的名称将需要类似于符号控制结构的扩展。
+节名称支持最多 8 个字节。更长的名称将需要类似于符号控制结构的扩展。
 
-编码`s_paddr`和`s_vaddr`都是浪费的。ELF将物理地址编码到段中，因此从其节结构中删除了该成员。
+编码`s_paddr`和`s_vaddr`都是浪费的。ELF 将物理地址编码到段中，因此从其节结构中删除了该成员。
 
-COFF将重定位的位置和大小嵌入到节结构中。这实际上相当不错。16位的`s_nreloc`可能看起来受限制，但对于可重定位文件是足够的。实际上，可重定位链接可以使单个节的重定位数量超过65536。
+COFF 将重定位的位置和大小嵌入到节结构中。这实际上相当不错。16 位的`s_nreloc`可能看起来受限制，但对于可重定位文件是足够的。实际上，可重定位链接可以使单个节的重定位数量超过 65536。
 
 `s_lnnoptr`和`s_nlnno`指向行号条目，将地址与源文件行号相关联。嵌入式的本质是不灵活的。
 
@@ -649,7 +649,7 @@ COFF将重定位的位置和大小嵌入到节结构中。这实际上相当不�
 
 |
 
-这种简单的格式已经过时了。在DWARF中，行号信息中的特殊操作码可以更节省空间地编码信息，并提供更多信息，比如列号。
+这种简单的格式已经过时了。在 DWARF 中，行号信息中的特殊操作码可以更节省空间地编码信息，并提供更多信息，比如列号。
 
 ### 节（Mach-O）
 
@@ -695,21 +695,21 @@ COFF将重定位的位置和大小嵌入到节结构中。这实际上相当不�
 
 |
 
-Mach-O是如何得到如此巨大的节结构的？让我们找出原因...
+Mach-O 是如何得到如此巨大的节结构的？让我们找出原因...
 
-Mach-O二进制文件被划分为段，每个段包含一个或多个节。节结构编码了节名称和段名称，两者都可以长达16个字节。这种表示允许读取节名称而无需字符串表，但对于描述性名称来说限制较大。节语义是从名称派生的（不像ELF）。
+Mach-O 二进制文件被划分为段，每个段包含一个或多个节。节结构编码了节名称和段名称，两者都可以长达 16 个字节。这种表示允许读取节名称而无需字符串表，但对于描述性名称来说限制较大。节语义是从名称派生的（不像 ELF）。
 
 段名冗余地编码在节结构中。我们可以从节名和标志中派生段，例如，`S_ATTR_SOME_INSTRUCTIONS => __TEXT`，`S_ZEROFILL => ZeroFill __DATA`。
 
-有一个严重的限制：由于`nlist::n_sect`是`uint8_t`，最多只能有255个部分。这显然太过严格了。幸运的是，一个创新的特性`.subsections_via_symbols`克服了这个限制。该特性使用一个整体部分，并使用“原子”将其划分为片段（子部分）。这比ELF的`-ffunction-sections -fdata-sections -fno-unique-section-names`更加节省空间。但是，这里有汇编器的限制、重定位处理的复杂性以及可能导致无法确保两个非局部符号不被重新排序的潜在损失。
+有一个严重的限制：由于`nlist::n_sect`是`uint8_t`，最多只能有 255 个部分。这显然太过严格了。幸运的是，一个创新的特性`.subsections_via_symbols`克服了这个限制。该特性使用一个整体部分，并使用“原子”将其划分为片段（子部分）。这比 ELF 的`-ffunction-sections -fdata-sections -fno-unique-section-names`更加节省空间。但是，这里有汇编器的限制、重定位处理的复杂性以及可能导致无法确保两个非局部符号不被重新排序的潜在损失。
 
-像COFF一样，Mach-O将重定位的位置和大小嵌入到节结构中。
+像 COFF 一样，Mach-O 将重定位的位置和大小嵌入到节结构中。
 
-`reserved1`和`reserved2`与ELF的连接信息类似。
+`reserved1`和`reserved2`与 ELF 的连接信息类似。
 
-`__TEXT,__stub`（类似于ELF的`.plt`）、`__TEXT,__got`（类似于ELF的`.got`）、`__TEXT,__la_symbol_ptr`（类似于ELF的`.got.plt`）和`__DATA,__thread_ptrs`将`reserved1`设置为间接符号表的索引（偏移量由`LC_DYSYMTAB`命令中的`indirectsymoff`指定）。
+`__TEXT,__stub`（类似于 ELF 的`.plt`）、`__TEXT,__got`（类似于 ELF 的`.got`）、`__TEXT,__la_symbol_ptr`（类似于 ELF 的`.got.plt`）和`__DATA,__thread_ptrs`将`reserved1`设置为间接符号表的索引（偏移量由`LC_DYSYMTAB`命令中的`indirectsymoff`指定）。
 
-对于`__TEXT,__stub`，`reserved2`是一个条目的大小，例如，对于x86-64是6（`jmpq *__la_symbol_ptr(%rip)`）。这类似于ELF x86-64的[`DT_X86_64_PLTSZ`](/blog/2023-02-19-linker-notes-on-x86#mark-plt)。对于其他节，`reserved2`为零。
+对于`__TEXT,__stub`，`reserved2`是一个条目的大小，例如，对于 x86-64 是 6（`jmpq *__la_symbol_ptr(%rip)`）。这类似于 ELF x86-64 的`DT_X86_64_PLTSZ`。对于其他节，`reserved2`为零。
 
 ## 重定位
 
@@ -785,7 +785,7 @@ Mach-O二进制文件被划分为段，每个段包含一个或多个节。节�
 
 ELFCLASS64，其具有 64 位成员，与 ELFCLASS32 的 32 位成员相比，大小翻倍。由于重定位通常占据对象文件的重要部分，因此这种大小差异可能会引起用户关注。然而，在实践中，即使在 64 位上下文中，24 位符号索引通常也足够。因此，如果 64 位架构的重定位类型要求小于 256，则 ELFCLASS32 可以是一个可行且更节省空间的选项。
 
-在 2024 年 3 月，我提出了 [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf) 作为另一种重定位格式。
+在 2024 年 3 月，我提出了 CREL 作为另一种重定位格式。
 
 ### 重定位（a.out）
 
@@ -922,7 +922,7 @@ Mach-O 的重定位结构与 a.out 的紧密相似，并适应了`r_symbolnum`�
 
 如前所述，为位域（`r_pcrel`、`r_length` 和 `r_scattered`）分配位数严重限制了重定位类型的数量。
 
-与重定位类型限制相关的是，在数据段中的`.long foo - .`需要一对重定位，`SUBTRACTOR` 和`/UNSIGNED`。我在[将 LLVM XRay 移植到 Apple 系统](/blog/2023-06-18-port-llvm-xray-to-apple-systems)上有一些注释。
+与重定位类型限制相关的是，在数据段中的`.long foo - .`需要一对重定位，`SUBTRACTOR` 和`/UNSIGNED`。我在将 LLVM XRay 移植到 Apple 系统上有一些注释。
 
 Mach-O 使用一些节在`__LINKEDIT`段中向 dyld 传递信息。
 

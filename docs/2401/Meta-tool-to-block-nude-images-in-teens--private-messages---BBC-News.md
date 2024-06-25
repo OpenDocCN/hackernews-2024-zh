@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 15:11:48
+日期：2024 年 05 月 27 日 15:11:48
 
 -->
 
 # Meta 的工具将阻止青少年的私密消息中的裸露图像 - BBC News
 
-> 来源：[https://www.bbc.co.uk/news/technology-68093343](https://www.bbc.co.uk/news/technology-68093343)
+> 来源：[`www.bbc.co.uk/news/technology-68093343`](https://www.bbc.co.uk/news/technology-68093343)
 
 **Meta** [表示将在今年晚些时候推出一个新的安全工具，以阻止儿童接收并阻止他们发送裸露图像，包括在加密聊天中。](https://about.fb.com/news/2024/01/introducing-stricter-message-settings-for-teens-on-instagram-and-facebook/)
 

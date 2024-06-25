@@ -8,9 +8,9 @@
 
 # 刺客信条的发行商育碧因关闭粉丝最爱的游戏而面临诉讼
 
-> 来源：[https://www.gamingbible.com/news/platform/assassins-creed-ubisoft-facing-lawsuit-from-fan-568060-20240122](https://www.gamingbible.com/news/platform/assassins-creed-ubisoft-facing-lawsuit-from-fan-568060-20240122)
+> 来源：[`www.gamingbible.com/news/platform/assassins-creed-ubisoft-facing-lawsuit-from-fan-568060-20240122`](https://www.gamingbible.com/news/platform/assassins-creed-ubisoft-facing-lawsuit-from-fan-568060-20240122)
 
-发布时间：2024年1月22日GMT10:18
+发布时间：2024 年 1 月 22 日 GMT10:18
 
 # 刺客信条的发行商育碧因关闭粉丝最爱的游戏而面临诉讼
 
@@ -18,7 +18,7 @@
 
 我们相信育碧现在一定在战战兢兢，因为一位严重不满的粉丝正在对其提起诉讼。
 
-问题出在于[育碧](https://www.gamingbible.com/ubisoft)取消并关闭了一款粉丝最爱的游戏。我们在2023年12月报导了这个[悲伤的消息](https://www.gamingbible.com/news/platform/steam/ubisoft-removes-popular-game-from-steam-forever-812652-20231215#:~:text=Unfortunately%2C%20we%20bring%20sad%20news,the%20end%20of%20March%202024.)，尽管粉丝们有几周的时间来接受这个消息，但似乎并不是所有人都会接受它。
+问题出在于[育碧](https://www.gamingbible.com/ubisoft)取消并关闭了一款粉丝最爱的游戏。我们在 2023 年 12 月报导了这个[悲伤的消息](https://www.gamingbible.com/news/platform/steam/ubisoft-removes-popular-game-from-steam-forever-812652-20231215#:~:text=Unfortunately%2C%20we%20bring%20sad%20news,the%20end%20of%20March%202024.)，尽管粉丝们有几周的时间来接受这个消息，但似乎并不是所有人都会接受它。
 
 **快来看看 *The Crew Motorfest* 的预告片吧！**
 
@@ -34,4 +34,4 @@ YouTuber 罗斯·斯科特，又名诅咒农场，已经表明他打算针对出
 
 特色图像来源：育碧，华纳兄弟影业
 
-主题：[育碧](/ubisoft), [刺客信条](/assassins-creed), [Steam](/steam), [现实生活](/real-life), [PlayStation](/playstation), [Xbox](/xbox)
+主题：育碧, 刺客信条, Steam, 现实生活, PlayStation, Xbox

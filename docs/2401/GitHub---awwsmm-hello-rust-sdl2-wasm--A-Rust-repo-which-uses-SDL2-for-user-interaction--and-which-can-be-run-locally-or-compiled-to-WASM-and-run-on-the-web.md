@@ -8,7 +8,7 @@ date: 2024-05-27 14:47:55
 
 # GitHub - awwsmm/hello-rust-sdl2-wasm: 使用 SDL2 进行用户交互的 Rust 仓库，可以在本地运行，也可以编译为 WASM 在网络上运行
 
-> 来源：[https://github.com/awwsmm/hello-rust-sdl2-wasm](https://github.com/awwsmm/hello-rust-sdl2-wasm)
+> 来源：[`github.com/awwsmm/hello-rust-sdl2-wasm`](https://github.com/awwsmm/hello-rust-sdl2-wasm)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

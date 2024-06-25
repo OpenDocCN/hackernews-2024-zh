@@ -8,7 +8,7 @@ date: 2024-05-27 14:46:29
 
 # 介绍我的知识湖泊
 
-> 来源：[https://tabokie.github.io/non-fiction/2024/01/13/log-kb.html](https://tabokie.github.io/non-fiction/2024/01/13/log-kb.html)
+> 来源：[`tabokie.github.io/non-fiction/2024/01/13/log-kb.html`](https://tabokie.github.io/non-fiction/2024/01/13/log-kb.html)
 
 # 介绍我的知识湖泊
 
@@ -52,7 +52,7 @@ date: 2024-05-27 14:46:29
 
 1.212 `list` 中 `entry` 的顺序可能很重要，也可能不重要。这意味着，你可以将 `list` 视为 [`Array`](https://en.wikipedia.org/wiki/Array_(data_structure))，也可以将其视为 [`Set`](https://en.wikipedia.org/wiki/Set_(mathematics))。
 
-1.213 我在[这里](/collection.html)有一些 `list`，如果你想看的话。
+1.213 我在这里有一些 `list`，如果你想看的话。
 
 1.22 `structure` 以层次化的方式引用 `log` 中的多个 `entry`。
 
@@ -62,7 +62,7 @@ date: 2024-05-27 14:46:29
 
 1.23 `list`和`structure`不需要详尽收集它们试图收集的内容。与`log`不同，`list`和`structure`的创建和维护是异步进行的。
 
-1.24 使用自动化创建`list`是惯用法。例如，使用搜索和去重脚本创建所有未完成的TODO项目的`list`。
+1.24 使用自动化创建`list`是惯用法。例如，使用搜索和去重脚本创建所有未完成的 TODO 项目的`list`。
 
 1.3 是的，就像一个数据湖。`list`和`structure`是对存储在`log`中的非结构化数据的物化视图。
 

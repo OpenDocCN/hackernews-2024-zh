@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:43
 
 # 保持 Twitter 滚动位置
 
-> 来源：[https://chrome.google.com/webstore/detail/keep-twitter-scroll-posit/ohikllclmilbneljmbnkikjciogdhgfo](https://chrome.google.com/webstore/detail/keep-twitter-scroll-posit/ohikllclmilbneljmbnkikjciogdhgfo)
+> 来源：[`chrome.google.com/webstore/detail/keep-twitter-scroll-posit/ohikllclmilbneljmbnkikjciogdhgfo`](https://chrome.google.com/webstore/detail/keep-twitter-scroll-posit/ohikllclmilbneljmbnkikjciogdhgfo)
 
 Twitter 恼人地在浏览回复线程时总是会丢失您的滚动位置。这个扩展程序修复了这个问题。
 

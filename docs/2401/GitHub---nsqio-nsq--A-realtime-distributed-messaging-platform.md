@@ -8,7 +8,7 @@ date: 2024-05-27 14:37:46
 
 # GitHub - nsqio/nsq：一个实时分布式消息平台
 
-> 来源：[https://github.com/nsqio/nsq](https://github.com/nsqio/nsq)
+> 来源：[`github.com/nsqio/nsq`](https://github.com/nsqio/nsq)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

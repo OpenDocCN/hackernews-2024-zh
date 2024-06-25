@@ -8,7 +8,7 @@
 
 # 宣布 Saber 虚拟机 - Ryan Brewer
 
-> 来源：[https://ryanbrewer.dev/posts/announcing-svm.html](https://ryanbrewer.dev/posts/announcing-svm.html)
+> 来源：[`ryanbrewer.dev/posts/announcing-svm.html`](https://ryanbrewer.dev/posts/announcing-svm.html)
 
 # 宣布 Saber 虚拟机
 

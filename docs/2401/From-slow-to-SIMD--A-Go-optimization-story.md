@@ -8,7 +8,7 @@ date: 2024-05-27 15:02:49
 
 # 从慢到 SIMD：一个 Go 优化故事
 
-> 来源：[https://sourcegraph.com/blog/slow-to-simd](https://sourcegraph.com/blog/slow-to-simd)
+> 来源：[`sourcegraph.com/blog/slow-to-simd`](https://sourcegraph.com/blog/slow-to-simd)
 
 所以，有这个函数。它被频繁调用。更重要的是，所有这些调用都在关键用户交互的关键路径上。让我们谈谈如何让它变快。
 
@@ -154,7 +154,7 @@ func DotBCE(a, b []float32) float32 {
 
 ## [](#quantization)量化
 
-我们目前已将单核搜索吞吐量提高了约50%，但现在我们遇到了一个新的瓶颈：内存使用。我们的向量是 1536 维。每个向量有 4 字节的元素，这意味着每个向量占用 6KiB，我们大约每 GiB 代码生成一百万个向量。这很快就会累积起来。我们有一些客户给我们带来了一些庞大的单库，我们希望减少我们的内存使用量，以便更便宜地支持这些情况。
+我们目前已将单核搜索吞吐量提高了约 50%，但现在我们遇到了一个新的瓶颈：内存使用。我们的向量是 1536 维。每个向量有 4 字节的元素，这意味着每个向量占用 6KiB，我们大约每 GiB 代码生成一百万个向量。这很快就会累积起来。我们有一些客户给我们带来了一些庞大的单库，我们希望减少我们的内存使用量，以便更便宜地支持这些情况。
 
 一种可能的缓解措施是将向量移动到磁盘上，但在搜索时从磁盘加载可能会增加[显著的延迟](https://colin-scott.github.io/personal_website/research/interactive_latency.html)，特别是在慢速磁盘上。相反，我们选择了用 `int8` 量化来压缩我们的向量。
 
@@ -206,13 +206,13 @@ func DotInt8BCE(a, b []int8) int32 {
 
 到目前为止，速度的改善很好，但对于我们最大的客户来说还不够。所以我们开始尝试更加戏剧性的方法。
 
-我总是喜欢借口去玩SIMD。而这个问题似乎是用那个锤子打的完美的钉子。
+我总是喜欢借口去玩 SIMD。而这个问题似乎是用那个锤子打的完美的钉子。
 
-对于不熟悉的人来说，SIMD 代表"单指令多数据"。就像它的名字一样，它让您可以用单个指令对一堆数据执行操作。举个例子，要逐个元素地将两个`int32`向量相加，我们可以使用`ADD`指令逐个将它们相加，或者我们可以使用`VPADDD`指令一次性添加64对元素，具有[相同](https://uops.info/html-instr/ADD_01_R32_R32.html)的[延迟](https://uops.info/html-instr/VPADDD_YMM_YMM_M256.html)(取决于架构)。
+对于不熟悉的人来说，SIMD 代表"单指令多数据"。就像它的名字一样，它让您可以用单个指令对一堆数据执行操作。举个例子，要逐个元素地将两个`int32`向量相加，我们可以使用`ADD`指令逐个将它们相加，或者我们可以使用`VPADDD`指令一次性添加 64 对元素，具有[相同](https://uops.info/html-instr/ADD_01_R32_R32.html)的[延迟](https://uops.info/html-instr/VPADDD_YMM_YMM_M256.html)(取决于架构)。
 
-但是我们有一个问题。Go 不像[C](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)或[Rust](https://doc.rust-lang.org/beta/core/simd/index.html)那样暴露SIMD内联函数。我们有两个选择：用C编写并使用Cgo，或者为Go的汇编器手动编写。我尽量避免使用Cgo，因为有[许多并非原创的原因](https://dave.cheney.net/2016/01/18/cgo-is-not-go)，但其中一个原因是Cgo会对性能造成影响，而这段代码的性能至关重要。此外，玩一些汇编听起来很有趣，所以我会这么做。
+但是我们有一个问题。Go 不像[C](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)或[Rust](https://doc.rust-lang.org/beta/core/simd/index.html)那样暴露 SIMD 内联函数。我们有两个选择：用 C 编写并使用 Cgo，或者为 Go 的汇编器手动编写。我尽量避免使用 Cgo，因为有[许多并非原创的原因](https://dave.cheney.net/2016/01/18/cgo-is-not-go)，但其中一个原因是 Cgo 会对性能造成影响，而这段代码的性能至关重要。此外，玩一些汇编听起来很有趣，所以我会这么做。
 
-我希望这个例程具有相当的可移植性，因此我将限制自己仅使用 AVX2 指令，这些指令在大多数当前的`x86_64`服务器CPU上都受支持。我们可以使用[运行时特性检测](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@3ac2170c6523dd074835919a1804f197cf86e451/-/blob/internal/embeddings/dot_amd64.go?L17-21)在纯 Go 中退回到一个较慢的选项。
+我希望这个例程具有相当的可移植性，因此我将限制自己仅使用 AVX2 指令，这些指令在大多数当前的`x86_64`服务器 CPU 上都受支持。我们可以使用[运行时特性检测](https://sourcegraph.com/github.com/sourcegraph/sourcegraph@3ac2170c6523dd074835919a1804f197cf86e451/-/blob/internal/embeddings/dot_amd64.go?L17-21)在纯 Go 中退回到一个较慢的选项。
 
 <details><summary>`DotAVX2`的完整代码</summary>
 
@@ -292,7 +292,7 @@ blockloop:
 
 7.0M vec/s
 
-哇，这比我们之前的最佳结果提高了530％！SIMD 胜利 🚀
+哇，这比我们之前的最佳结果提高了 530％！SIMD 胜利 🚀
 
 现在，不是一切都是阳光和彩虹的。在 Go 中手写汇编很奇怪。它使用一个 [自定义汇编器](https://go.dev/doc/asm)，这意味着它的汇编语言看起来与您通常在线找到的汇编片段有一点点不同，足以让人感到困惑。它有一些奇怪的怪癖，比如 [改变指令操作数的顺序](https://www.quasilyte.dev/blog/post/go-asm-complementary-reference/#operands-order) 或 [使用不同的指令名称](https://www.quasilyte.dev/blog/post/go-asm-complementary-reference/#mnemonics)。在 go 汇编器中，有些指令甚至 *没有* 名称，只能通过它们的 [二进制编码](https://go.dev/doc/asm#unsupported_opcodes) 使用。厚颜无耻的推广：我发现 [sourcegraph.com](https://sourcegraph.com/search) 对于查找 Go 汇编示例非常有用。
 

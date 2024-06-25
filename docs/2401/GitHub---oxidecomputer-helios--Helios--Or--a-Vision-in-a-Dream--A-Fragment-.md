@@ -8,7 +8,7 @@
 
 # GitHub - oxidecomputer/helios: Helios: Or, a Vision in a Dream. A Fragment.
 
-> 来源：[https://github.com/oxidecomputer/helios](https://github.com/oxidecomputer/helios)
+> 来源：[`github.com/oxidecomputer/helios`](https://github.com/oxidecomputer/helios)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

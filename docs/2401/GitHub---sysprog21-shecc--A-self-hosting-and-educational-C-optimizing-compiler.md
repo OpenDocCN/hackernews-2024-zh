@@ -8,7 +8,7 @@ date: 2024-05-27 14:34:13
 
 # GitHub - sysprog21/shecc：一个自托管和教育性的 C 优化编译器
 
-> 来源：[https://github.com/sysprog21/shecc](https://github.com/sysprog21/shecc)
+> 来源：[`github.com/sysprog21/shecc`](https://github.com/sysprog21/shecc)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

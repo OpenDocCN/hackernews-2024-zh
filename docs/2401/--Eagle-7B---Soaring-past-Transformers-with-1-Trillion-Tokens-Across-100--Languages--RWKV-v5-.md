@@ -2,51 +2,51 @@
 
 类别：未分类
 
-日期：2024年05月27日15:19:48
+日期：2024 年 05 月 27 日 15:19:48
 
 -->
 
-# 🦅 Eagle 7B：跨越100多种语言使用1万亿标记的变压器（RWKV-v5）。
+# 🦅 Eagle 7B：跨越 100 多种语言使用 1 万亿标记的变压器（RWKV-v5）。
 
-> 来源：[https://blog.rwkv.com/p/eagle-7b-soaring-past-transformers](https://blog.rwkv.com/p/eagle-7b-soaring-past-transformers)
+> 来源：[`blog.rwkv.com/p/eagle-7b-soaring-past-transformers`](https://blog.rwkv.com/p/eagle-7b-soaring-past-transformers)
 
 一只鹰，飞过一个看起来像变压器的机器人。
 
-Eagle 7B是一个7.52B参数模型，它：
+Eagle 7B 是一个 7.52B 参数模型，它：
 
-我们发布了RWKV-v5 Eagle 7B，[在Linux基金会下以Apache 2.0许可证授权](https://blog.rwkv.com/p/rwkv-joins-the-linux-foundation-as)，可以个人或商业用途无限制地使用
+我们发布了 RWKV-v5 Eagle 7B，[在 Linux 基金会下以 Apache 2.0 许可证授权](https://blog.rwkv.com/p/rwkv-joins-the-linux-foundation-as)，可以个人或商业用途无限制地使用
 
 我们对以下基准测试进行了多语言性能测试：[xLAMBDA](https://github.com/EleutherAI/lm-evaluation-harness?tab=readme-ov-file#advanced-usage-tips)，[xStoryCloze](https://huggingface.co/datasets/Muennighoff/xstory_cloze)，[xWinograd](https://huggingface.co/datasets/Muennighoff/xwinograd)，[xCopa](https://huggingface.co/datasets/xcopa)
 
-在总共23种语言中
+在总共 23 种语言中
 
-这些基准大部分涵盖了常识推理，使用各自的语言。并且显示了RWKV v4到v5架构的多语言性能的巨大整体跃升。以及v2世界数据集。
+这些基准大部分涵盖了常识推理，使用各自的语言。并且显示了 RWKV v4 到 v5 架构的多语言性能的巨大整体跃升。以及 v2 世界数据集。
 
-还应该注意到，由于上述涵盖了大约前23种语言，所以缺乏多语言基准测试。
+还应该注意到，由于上述涵盖了大约前 23 种语言，所以缺乏多语言基准测试。
 
-这使得直接评估剩余的75多种语言的模型语言性能变得困难，超过了总计100多种受过培训的语言。这是我们希望在未来的模型中改进的一个缺点。
+这使得直接评估剩余的 75 多种语言的模型语言性能变得困难，超过了总计 100 多种受过培训的语言。这是我们希望在未来的模型中改进的一个缺点。
 
-英语表现是在12个独立的基准测试中进行的，涵盖常识推理和世界知识。
+英语表现是在 12 个独立的基准测试中进行的，涵盖常识推理和世界知识。
 
-我们再次看到从RWKV v4到v5架构的巨大整体跃升。以及v2世界数据集。
+我们再次看到从 RWKV v4 到 v5 架构的巨大整体跃升。以及 v2 世界数据集。
 
-在v4之前输给了MPT-7b，即1T token层中的顶级模型。
+在 v4 之前输给了 MPT-7b，即 1T token 层中的顶级模型。
 
-v5开始在基准测试中争夺，某些情况下甚至在某些基准测试中（LAMBADA，StoryCloze16，WinoGrande，HeadQA_en，Sciq）超过Falcon，甚至羊驼2。
+v5 开始在基准测试中争夺，某些情况下甚至在某些基准测试中（LAMBADA，StoryCloze16，WinoGrande，HeadQA_en，Sciq）超过 Falcon，甚至羊驼 2。
 
-另外，v5的性能开始与预期的变压器性能水平保持一致，考虑到其给定的近似标记训练计数。
+另外，v5 的性能开始与预期的变压器性能水平保持一致，考虑到其给定的近似标记训练计数。
 
-随着狂风-7B保持其领先地位，据说其训练了2到7万亿个标记。
+随着狂风-7B 保持其领先地位，据说其训练了 2 到 7 万亿个标记。
 
-我们期望随着我们额外训练1T token，缩小差距，越过羊驼2线，并希望达到狂风线。
+我们期望随着我们额外训练 1T token，缩小差距，越过羊驼 2 线，并希望达到狂风线。
 
 或者，作为一个基础模型，它轻微调整了（真的很小的指令集混合），我们渴望看到各种社区和指令调整的变体如何。
 
 * * *
 
-一个显着的观察是，我们的检查点在接近3000亿标记点附近，显示出与pythia-6.9b相似的性能。
+一个显着的观察是，我们的检查点在接近 3000 亿标记点附近，显示出与 pythia-6.9b 相似的性能。
 
-这与我们以前在RWKV-v4架构上进行的堆实验一致，即线性变压器像RWKV一样按照相同的标记计数进行性能级别的类似规模。
+这与我们以前在 RWKV-v4 架构上进行的堆实验一致，即线性变压器像 RWKV 一样按照相同的标记计数进行性能级别的类似规模。
 
 如果是这样，它是否重复了问题。如果确切的架构，对于模型评估性能，数据是否比较重要？
 

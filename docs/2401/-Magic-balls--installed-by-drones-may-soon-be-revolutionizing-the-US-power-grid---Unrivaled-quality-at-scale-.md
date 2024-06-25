@@ -8,7 +8,7 @@
 
 # 无人机安装的“魔法球”可能很快将彻底改变美国的电网：“规模上无可比拟的质量”
 
-> 来源：[https://www.thecooldown.com/green-tech/magic-balls-power-lines-heimdall/](https://www.thecooldown.com/green-tech/magic-balls-power-lines-heimdall/)
+> 来源：[`www.thecooldown.com/green-tech/magic-balls-power-lines-heimdall/`](https://www.thecooldown.com/green-tech/magic-balls-power-lines-heimdall/)
 
 美国的高压输电线路很快将由挪威的“[魔法球](https://heimdallpower.com/us/arva-customer-story-magic-ball/)”监控。
 
@@ -16,7 +16,7 @@
 
 更好的是，传感器的早期用户报告称，他们[节省了金钱](https://www.thecooldown.com/tag/money-saving/ "Money Saving")，因为传输线在他们的网络中得到了更好的利用。
 
-“今年夏天……我们能够断开两条平行线路中的一条，并‘过载’另一条，因为我们完全控制了温度，”挪威Arva公司网络发展部经理特隆德·阿尔·比尤尔夫在一份Heimdall新闻稿中[说](https://heimdallpower.com/us/arva-customer-story-magic-ball/)。
+“今年夏天……我们能够断开两条平行线路中的一条，并‘过载’另一条，因为我们完全控制了温度，”挪威 Arva 公司网络发展部经理特隆德·阿尔·比尤尔夫在一份 Heimdall 新闻稿中[说](https://heimdallpower.com/us/arva-customer-story-magic-ball/)。
 
 这些球体测量线路温度、电流和其他关键指标。此外，Heimdall 还与瑞士的[Meteomatics](https://www.meteomatics.com/en/technology/)公司合作。联合分析旨在帮助电网运营商最大化线路容量，可能允许更多[可再生能源](https://electrek.co/2023/12/07/heimdall-power-meteomatics-grid-capacity-30-percent/)传输到电网中，所有信息均来自 [Electrek](https://electrek.co/2023/12/07/heimdall-power-meteomatics-grid-capacity-30-percent/)。
 
@@ -28,9 +28,9 @@
 
 在美国有很多要监控的线路——约有 16 万英里的高压线和数百万英里的低压线，[根据](https://www.epa.gov/green-power-markets/us-electricity-grid-markets#:~:text=According%20to%20the%20U.S.%20Energy,the%20country%20(EIA%2C%202016)) 环境保护署的说法。
 
-球形传感器，称为神经元，看起来大小与Heimdall [视频剪辑](https://youtu.be/56LSpvZQ9l0)上的足球差不多。这些 "魔球" 由无人机在不到两分钟内安装完成。
+球形传感器，称为神经元，看起来大小与 Heimdall [视频剪辑](https://youtu.be/56LSpvZQ9l0)上的足球差不多。这些 "魔球" 由无人机在不到两分钟内安装完成。
 
-[https://www.youtube.com/embed/56LSpvZQ9l0?si=kRwKD3Nwrv8Oqm_F](https://www.youtube.com/embed/56LSpvZQ9l0?si=kRwKD3Nwrv8Oqm_F)
+[`www.youtube.com/embed/56LSpvZQ9l0?si=kRwKD3Nwrv8Oqm_F`](https://www.youtube.com/embed/56LSpvZQ9l0?si=kRwKD3Nwrv8Oqm_F)
 
 视频
 

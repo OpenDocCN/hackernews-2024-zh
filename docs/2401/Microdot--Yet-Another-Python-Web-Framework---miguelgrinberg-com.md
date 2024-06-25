@@ -2,57 +2,57 @@
 
 分类：未分类
 
-日期：2024年5月27日14:24:04
+日期：2024 年 5 月 27 日 14:24:04
 
 -->
 
-# Microdot：另一个Python Web框架 - miguelgrinberg.com
+# Microdot：另一个 Python Web 框架 - miguelgrinberg.com
 
-> 来源：[https://blog.miguelgrinberg.com/post/microdot-yet-another-python-web-framework](https://blog.miguelgrinberg.com/post/microdot-yet-another-python-web-framework)
+> 来源：[`blog.miguelgrinberg.com/post/microdot-yet-another-python-web-framework`](https://blog.miguelgrinberg.com/post/microdot-yet-another-python-web-framework)
 
-我刚意识到我从未在这个博客上写过关于[Microdot](https://github.com/miguelgrinberg/microdot)，我的自己的Python Web框架。我几天前发布了Microdot 2.0，所以我想现在是一个很好的时机来做一个迟到的公告，并告诉你为什么这个世界需要另一个Python Web框架。
+我刚意识到我从未在这个博客上写过关于[Microdot](https://github.com/miguelgrinberg/microdot)，我的自己的 Python Web 框架。我几天前发布了 Microdot 2.0，所以我想现在是一个很好的时机来做一个迟到的公告，并告诉你为什么这个世界需要另一个 Python Web 框架。
 
-但在我告诉你关于Microdot的原因和历史之前，让我分享一些它的特点：
+但在我告诉你关于 Microdot 的原因和历史之前，让我分享一些它的特点：
 
-+   类似于Flask的语法，但没有神奇/晦涩的部分（没有应用程序/请求上下文）
++   类似于 Flask 的语法，但没有神奇/晦涩的部分（没有应用程序/请求上下文）
 
-+   大到足以与MicroPython一起工作，同时也与CPython兼容
++   大到足以与 MicroPython 一起工作，同时也与 CPython 兼容
 
-+   与asyncio完全兼容
++   与 asyncio 完全兼容
 
-+   支持Websocket
++   支持 Websocket
 
 +   支持服务器发送事件（SSE）
 
-+   使用Jinja（CPython）和uTemplate（MicroPython）进行模板支持
++   使用 Jinja（CPython）和 uTemplate（MicroPython）进行模板支持
 
 +   支持跨域请求共享（CORS）
 
-+   用户会话存储在加密签名的Cookie中
++   用户会话存储在加密签名的 Cookie 中
 
-+   在MicroPython上使用自己的最小Web服务器，并与CPython上的任何ASGI或WSGI Web服务器集成
++   在 MicroPython 上使用自己的最小 Web 服务器，并与 CPython 上的任何 ASGI 或 WSGI Web 服务器集成
 
 +   包含测试客户端用于单元测试
 
-感兴趣吗？继续阅读了解更多关于Microdot的信息。
+感兴趣吗？继续阅读了解更多关于 Microdot 的信息。
 
-## 为什么Microdot
+## 为什么 Microdot
 
-回到2019年，我正在基于ESP8266微控制器的硬件项目上工作。对于这个项目的软件部分，我使用了[MicroPython](https://micropython.org/)，这是Python语言的一种替代实现，专为小型设备设计。
+回到 2019 年，我正在基于 ESP8266 微控制器的硬件项目上工作。对于这个项目的软件部分，我使用了[MicroPython](https://micropython.org/)，这是 Python 语言的一种替代实现，专为小型设备设计。
 
-我想在设备上托管一个小型基于Web的界面，但令我惊讶的是，我找不到任何可用的Web框架。诸如Flask或Bottle之类的东西在MicroPython下不起作用，因为它们对它来说太大了。我能找到的唯一一个MicroPython Web框架叫做“picoweb”，它需要一个非官方的MicroPython语言分支，对我来说是个硬伤。
+我想在设备上托管一个小型基于 Web 的界面，但令我惊讶的是，我找不到任何可用的 Web 框架。诸如 Flask 或 Bottle 之类的东西在 MicroPython 下不起作用，因为它们对它来说太大了。我能找到的唯一一个 MicroPython Web 框架叫做“picoweb”，它需要一个非官方的 MicroPython 语言分支，对我来说是个硬伤。
 
-Microdot的诞生源于需要一个尽可能接近Flask的Web框架，但设计用于官方和积极维护的MicroPython版本。
+Microdot 的诞生源于需要一个尽可能接近 Flask 的 Web 框架，但设计用于官方和积极维护的 MicroPython 版本。
 
-我最终创建了Microdot，并用它完成了我的项目。我还将源代码放在GitHub上，因为对我来说很明显MicroPython生态系统在Web框架方面存在空白。虽然它受到了硬件倾向开发者越来越多的关注，但在Python社区的很多人眼中，它几乎在过去的5年里一直处于低调状态。以下是Microdot历史上的主要事件时间表：
+我最终创建了 Microdot，并用它完成了我的项目。我还将源代码放在 GitHub 上，因为对我来说很明显 MicroPython 生态系统在 Web 框架方面存在空白。虽然它受到了硬件倾向开发者越来越多的关注，但在 Python 社区的很多人眼中，它几乎在过去的 5 年里一直处于低调状态。以下是 Microdot 历史上的主要事件时间表：
 
 | 日期 | 事件 |
 | --- | --- |
-| 2019年4月 | Microdot 0.1，首次公开发布 |
-| 2022年8月 | Microdot 1.0，具有同步基础实现和异步扩展 |
-| 2023年12月 | Microdot 2.0，重设计为100％异步 |
+| 2019 年 4 月 | Microdot 0.1，首次公开发布 |
+| 2022 年 8 月 | Microdot 1.0，具有同步基础实现和异步扩展 |
+| 2023 年 12 月 | Microdot 2.0，重设计为 100％异步 |
 
-## Microdot代码是什么样子？
+## Microdot 代码是什么样子？
 
 Microdot 实际上与 Flask 非常相似。你可以将 Web 路由写成装饰函数：
 
@@ -155,6 +155,6 @@ async def events(request, sse):
 
 对于一个 MicroPython 项目，我认为 Microdot 是一个很好的框架选择，尽管现在有一些在 2019 年并不存在的其他框架。
 
-如果你正在使用CPython，你当然可以随意转换，但我建议如果你对当前的Web框架感到满意，最好还是保持不变。如果你想更好地利用服务器资源，换一个好的理由是很难做出预测，但根据项目的不同，你可能会在相同的硬件上装载一个或两个额外的Web服务器工作进程，只需从一个更大的框架切换到Microdot后节省RAM。但正如我所说的，除非对你来说大小非常重要，否则我不会去经历迁移的痛苦。
+如果你正在使用 CPython，你当然可以随意转换，但我建议如果你对当前的 Web 框架感到满意，最好还是保持不变。如果你想更好地利用服务器资源，换一个好的理由是很难做出预测，但根据项目的不同，你可能会在相同的硬件上装载一个或两个额外的 Web 服务器工作进程，只需从一个更大的框架切换到 Microdot 后节省 RAM。但正如我所说的，除非对你来说大小非常重要，否则我不会去经历迁移的痛苦。
 
-我想要问的是，在你开始一个新项目时，请记住Microdot。如果你最终使用了它，我想知道它对你有什么作用，所以请联系我！
+我想要问的是，在你开始一个新项目时，请记住 Microdot。如果你最终使用了它，我想知道它对你有什么作用，所以请联系我！

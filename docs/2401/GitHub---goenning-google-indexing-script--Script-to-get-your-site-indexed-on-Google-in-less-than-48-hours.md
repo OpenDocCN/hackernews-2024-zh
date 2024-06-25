@@ -6,9 +6,9 @@ date: 2024-05-27 15:05:31
 
 -->
 
-# GitHub - goenning/google-indexing-script: 能让您的网站在不到48小时内被 Google 索引的脚本
+# GitHub - goenning/google-indexing-script: 能让您的网站在不到 48 小时内被 Google 索引的脚本
 
-> 来源：[https://github.com/goenning/google-indexing-script](https://github.com/goenning/google-indexing-script)
+> 来源：[`github.com/goenning/google-indexing-script`](https://github.com/goenning/google-indexing-script)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

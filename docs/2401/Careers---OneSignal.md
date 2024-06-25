@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:48
 
 # 职业生涯 - OneSignal
 
-> 来源：[https://onesignal.com/careers](https://onesignal.com/careers)
+> 来源：[`onesignal.com/careers`](https://onesignal.com/careers)
 
 #### 玩得开心
 

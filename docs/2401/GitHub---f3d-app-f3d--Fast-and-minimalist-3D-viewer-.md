@@ -6,9 +6,9 @@ date: 2024-05-27 15:02:29
 
 -->
 
-# GitHub - f3d-app/f3d: 快速且极简的3D查看器。
+# GitHub - f3d-app/f3d: 快速且极简的 3D 查看器。
 
-> 来源：[https://github.com/f3d-app/f3d](https://github.com/f3d-app/f3d)
+> 来源：[`github.com/f3d-app/f3d`](https://github.com/f3d-app/f3d)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

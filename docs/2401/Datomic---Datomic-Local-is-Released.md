@@ -8,9 +8,9 @@
 
 # Datomic - Datomic Local 已发布
 
-> 来源：[https://blog.datomic.com/2023/08/datomic-local-is-released.html](https://blog.datomic.com/2023/08/datomic-local-is-released.html)
+> 来源：[`blog.datomic.com/2023/08/datomic-local-is-released.html`](https://blog.datomic.com/2023/08/datomic-local-is-released.html)
 
-*2023年8月16日*
+*2023 年 8 月 16 日*
 
 Datomic 团队很高兴地宣布[Datomic Local](https://docs.datomic.com/cloud/datomic-local.html)的发布，它在[Apache 许可证 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)下提供。Datomic Local 是一个既可嵌入又可重新分发的库。它是 Datomic 的轻量级版本，旨在轻松嵌入应用程序中并免费重新分发。Datomic Local 支持客户端 API，使其成为小型单进程应用程序和基于 Datomic 客户端 API 的系统测试的优秀选择。
 

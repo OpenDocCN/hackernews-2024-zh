@@ -8,7 +8,7 @@
 
 # 赫兹正在出售 20,000 辆电动汽车，并用汽油车替换它们 | TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/11/hertz-sell-evs-tesla-fleet-gm-polestar-gas/](https://techcrunch.com/2024/01/11/hertz-sell-evs-tesla-fleet-gm-polestar-gas/)
+> 来源：[`techcrunch.com/2024/01/11/hertz-sell-evs-tesla-fleet-gm-polestar-gas/`](https://techcrunch.com/2024/01/11/hertz-sell-evs-tesla-fleet-gm-polestar-gas/)
 
 赫兹正在抛售三分之一的电动汽车车队，这些车主要是特斯拉，而将用部分出售所得的钱购买汽油车。该公司将出售电动汽车的需求降低和维修成本高于预期作为决定的原因。
 

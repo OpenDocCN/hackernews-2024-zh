@@ -8,7 +8,7 @@
 
 # 为什么自定义 GPT 比插件更好，对于创作者和用户！
 
-> 来源：[https://moveit.substack.com/p/why-custom-gpts-are-better-than-plugins](https://moveit.substack.com/p/why-custom-gpts-are-better-than-plugins)
+> 来源：[`moveit.substack.com/p/why-custom-gpts-are-better-than-plugins`](https://moveit.substack.com/p/why-custom-gpts-are-better-than-plugins)
 
 在 2023 年 11 月 6 日，[OpenAI 宣布了自定义 GPT](https://openai.com/blog/introducing-gpts)。从那时起，已经创建了超过 300 万个 GPT，其中超过 20 万个已公开可用。
 
@@ -36,16 +36,16 @@
 
 Tada！没有代码，没有数据库，没有服务器……
 
-截至今天早上，OpenAI支持在另一个GPT的对话中提及GPT。这使您可以向一个GPT询问Switch的前十款游戏，然后提及[Forms, Checklists & Workflows GPT](https://chat.openai.com/g/g-yRy2XuCMc-forms-checklists-workflows)来创建一个清单，让您勾选您玩过或打败的游戏。
+截至今天早上，OpenAI 支持在另一个 GPT 的对话中提及 GPT。这使您可以向一个 GPT 询问 Switch 的前十款游戏，然后提及[Forms, Checklists & Workflows GPT](https://chat.openai.com/g/g-yRy2XuCMc-forms-checklists-workflows)来创建一个清单，让您勾选您玩过或打败的游戏。
 
-忽略GPT与插件之间所有这些优势，往往很容易忘记创建任一者的主要好处是什么：
+忽略 GPT 与插件之间所有这些优势，往往很容易忘记创建任一者的主要好处是什么：
 
 +   用很少的工作量创造出真正有影响力的东西。
 
-+   不是编写新代码，而是利用您现有的产品API和规范。
++   不是编写新代码，而是利用您现有的产品 API 和规范。
 
-+   根据你的需求（无、API密钥、OAuth 2.0），使用不同的认证模型定义操作。
++   根据你的需求（无、API 密钥、OAuth 2.0），使用不同的认证模型定义操作。
 
-+   **利用ChatGPT作为你曾经拥有过的最佳用户获取渠道。**
++   **利用 ChatGPT 作为你曾经拥有过的最佳用户获取渠道。**
 
 你对那个列表中的最后一点感到好奇吗？点击下面的按钮吧！ 😇

@@ -8,7 +8,7 @@
 
 # 电动汽车在二手市场遭受“不可持续”的折旧
 
-> 来源：[https://www.telegraph.co.uk/business/2024/01/18/used-electric-cars-lose-half-value-after-three-years/](https://www.telegraph.co.uk/business/2024/01/18/used-electric-cars-lose-half-value-after-three-years/)
+> 来源：[`www.telegraph.co.uk/business/2024/01/18/used-electric-cars-lose-half-value-after-three-years/`](https://www.telegraph.co.uk/business/2024/01/18/used-electric-cars-lose-half-value-after-three-years/)
 
 它预测到一波[中国品牌的涌入](https://www.telegraph.co.uk/business/2024/01/14/chinese-electric-car-invasion-shipping-crunch/)将进一步拉低电动汽车的成本。
 

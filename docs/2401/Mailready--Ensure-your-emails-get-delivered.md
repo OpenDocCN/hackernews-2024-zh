@@ -8,7 +8,7 @@ category: 未分类
 
 # Mailready：确保您的邮件被投递
 
-> 来源：[https://mailready.info](https://mailready.info)
+> 来源：[`mailready.info`](https://mailready.info)
 
 SaaS 的客户参与和自动化：[Engage](https://engage.so/?utm_source=mailready&utm_medium=products&utm_campaign=powered)[](https://engage.so/?utm_source=mailready&utm_medium=products&utm_campaign=powered)
 
@@ -28,4 +28,4 @@ SaaS 的客户参与和自动化：[Engage](https://engage.so/?utm_source=mailre
 
 您会被标记为垃圾邮件？🌚而且这可能是最好的情况。您的电子邮件可能无法投递。
 
-[主页](/) / [身份验证](/authentication) / [一键退订](/unsubscribe) / [无垃圾邮件](/no-spam)
+主页 / 身份验证 / 一键退订 / 无垃圾邮件

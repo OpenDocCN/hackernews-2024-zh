@@ -8,7 +8,7 @@
 
 # Babashka
 
-> 来源：[https://babashka.org/](https://babashka.org/)
+> 来源：[`babashka.org/`](https://babashka.org/)
 
 ### 瞬间启动
 

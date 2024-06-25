@@ -8,7 +8,7 @@ date: 2024-05-27 14:40:12
 
 # GitHub - ambulancja/mariposa: 一个具有时光旅行功能的玩具编程语言
 
-> 来源：[https://github.com/ambulancja/mariposa](https://github.com/ambulancja/mariposa)
+> 来源：[`github.com/ambulancja/mariposa`](https://github.com/ambulancja/mariposa)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

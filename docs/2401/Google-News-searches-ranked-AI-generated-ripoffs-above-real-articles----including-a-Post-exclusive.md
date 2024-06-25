@@ -8,7 +8,7 @@
 
 # 谷歌新闻搜索将 AI 生成的抄袭作品排在真实文章之上——包括一篇《华盛顿邮报》独家报道
 
-> 来源：[https://nypost.com/2024/01/22/business/google-news-searches-ranked-ai-generated-ripoffs-above-real-articles-including-a-post-exclusive/](https://nypost.com/2024/01/22/business/google-news-searches-ranked-ai-generated-ripoffs-above-real-articles-including-a-post-exclusive/)
+> 来源：[`nypost.com/2024/01/22/business/google-news-searches-ranked-ai-generated-ripoffs-above-real-articles-including-a-post-exclusive/`](https://nypost.com/2024/01/22/business/google-news-searches-ranked-ai-generated-ripoffs-above-real-articles-including-a-post-exclusive/)
 
 谷歌新闻搜索结果中出现了大量盗用合法媒体的 AI 生成文章，而《华盛顿邮报》已经确认至少有一篇这样的盗版文章抄袭了其自己发布的作品。
 

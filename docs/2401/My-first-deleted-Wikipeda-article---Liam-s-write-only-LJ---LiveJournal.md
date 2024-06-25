@@ -8,7 +8,7 @@
 
 # 我的第一篇被删除的维基百科文章 - 利亚姆的只写博客 —— LiveJournal
 
-> 来源：[https://lproven.livejournal.com/189791.html](https://lproven.livejournal.com/189791.html)
+> 来源：[`lproven.livejournal.com/189791.html`](https://lproven.livejournal.com/189791.html)
 
 到目前为止，这是我唯一一篇完全从维基百科中删除的文章。我从中挽救了一份副本
 
@@ -16,17 +16,17 @@
 
 ，因为它现在已经从网站的历史中消失了，我把它放在这里，直到我决定做其他什么。
 
-**非PC兼容的x86计算机**
+**非 PC 兼容的 x86 计算机**
 
-在Microsoft操作系统主导商业计算的大部分时间里，人们认为所有基于Intel x86系列CPU的计算机都是IBM PC兼容的。这并不是事实，也从来没有。  
+在 Microsoft 操作系统主导商业计算的大部分时间里，人们认为所有基于 Intel x86 系列 CPU 的计算机都是 IBM PC 兼容的。这并不是事实，也从来没有。  
 
-**MS-DOS系统**
+**MS-DOS 系统**
 
-从PC市场的早期开始，就存在其他不兼容IBM PC的MS-DOS系统，比如天狼星维克多计算机和一些早期型号的杏花电脑。它们采用8088或8086处理器，并运行其自己的MS-DOS版本，但内存布局、显示控制器和其他硬件与IBM的组件不同，并位于内存的不同区域。这些公司预计通过生产技术上更先进的设计，这些设计可以运行流行的MS-DOS操作系统，他们将能够利用庞大的MS-DOS应用软件库。
+从 PC 市场的早期开始，就存在其他不兼容 IBM PC 的 MS-DOS 系统，比如天狼星维克多计算机和一些早期型号的杏花电脑。它们采用 8088 或 8086 处理器，并运行其自己的 MS-DOS 版本，但内存布局、显示控制器和其他硬件与 IBM 的组件不同，并位于内存的不同区域。这些公司预计通过生产技术上更先进的设计，这些设计可以运行流行的 MS-DOS 操作系统，他们将能够利用庞大的 MS-DOS 应用软件库。
 
-除了其低硬件规格之外，IBM PC可能被认为是最大的“设计缺陷”是现今所称的上部内存区域 - 即I/O区域位于内存地图的顶部（从640 KiB到1 MiB）。将I/O区域定位在内存地图的底部而不是顶部使得扩展这些机器的内存成为可能，而且确实很简单。更多的RAM只是出现在内存地图的顶部，直到8086处理器的1 MiB可寻址限制。因此，像维克多这样的机器通常可以占用800-900 KiB的RAM，比PC的640 KiB限制要多得多。与IBM PC设计相比的其他改进包括高密度1.2 MiB软盘驱动器作为标准配置，集成声卡和单色图形（与IBM PC的Hercules图形卡相当）。
+除了其低硬件规格之外，IBM PC 可能被认为是最大的“设计缺陷”是现今所称的上部内存区域 - 即 I/O 区域位于内存地图的顶部（从 640 KiB 到 1 MiB）。将 I/O 区域定位在内存地图的底部而不是顶部使得扩展这些机器的内存成为可能，而且确实很简单。更多的 RAM 只是出现在内存地图的顶部，直到 8086 处理器的 1 MiB 可寻址限制。因此，像维克多这样的机器通常可以占用 800-900 KiB 的 RAM，比 PC 的 640 KiB 限制要多得多。与 IBM PC 设计相比的其他改进包括高密度 1.2 MiB 软盘驱动器作为标准配置，集成声卡和单色图形（与 IBM PC 的 Hercules 图形卡相当）。
 
-然而，尽管这在理论上足以保证商业成功，但实际上这并不是一个商业上的成功，因为在早期版本中，MS-DOS非常基础，并且只为应用程序开发人员提供了微薄的功能。因此，大多数软件作者没有使用DOS的API来控制硬件，而是直接向外围设备的控制寄存器等写入PC硬件。这意味着大多数PC应用程序无法在其他非PC兼容的x86机器上运行。
+然而，尽管这在理论上足以保证商业成功，但实际上这并不是一个商业上的成功，因为在早期版本中，MS-DOS 非常基础，并且只为应用程序开发人员提供了微薄的功能。因此，大多数软件作者没有使用 DOS 的 API 来控制硬件，而是直接向外围设备的控制寄存器等写入 PC 硬件。这意味着大多数 PC 应用程序无法在其他非 PC 兼容的 x86 机器上运行。
 
 随着 Windows 及特别是 Windows NT 的出现，这变得不再重要，因为它为 Windows 应用程序提供了广泛的 API，并阻止开发人员访问硬件寄存器。然而，第一个成功的 Windows 版本是 1990 年的 Windows 3.0，对于专有的 DOS 机器来说太晚了，尽管一些最后一批非个人电脑兼容的 Apricot 系统支持它们自己的特殊版本的 Windows 2.0，因此可能运行了许多 Windows 2.0 应用程序。
 
@@ -66,26 +66,26 @@ PC 兼容机及其庞大的软件库的崛起，包括一系列替代操作系�
 
 许多因素决定一台机器是否是个人电脑兼容机。这些因素包括但不限于 IBM-PC 兼容 BIOS、一组兼容的 I/O 端口、包含视频 ROM 和 RAM 的上限内存区域等；一般来说，系统的内存映射的详细排列，包括其固件、中断、I/O 端口等因素，以及一个 x86 微处理器。
 
-这些因素不包括其扩展总线。一些机器可能没有这样的总线，一些机器可能拥有完全不兼容的总线，比如IBM个人系统/2机器。另一方面，存在PC标准插槽并不意味着一台机器是PC兼容的。许多非PC架构的机器具有或曾使用ISA插槽，包括Commodore Amiga、Sinclair QL兼容的Q40和Q60机器以及Peters Plus Sprinter；PCI已被用于PowerPC苹果麦金塔机器和Sun工作站，AGP则用于较新的麦金塔机器。
+这些因素不包括其扩展总线。一些机器可能没有这样的总线，一些机器可能拥有完全不兼容的总线，比如 IBM 个人系统/2 机器。另一方面，存在 PC 标准插槽并不意味着一台机器是 PC 兼容的。许多非 PC 架构的机器具有或曾使用 ISA 插槽，包括 Commodore Amiga、Sinclair QL 兼容的 Q40 和 Q60 机器以及 Peters Plus Sprinter；PCI 已被用于 PowerPC 苹果麦金塔机器和 Sun 工作站，AGP 则用于较新的麦金塔机器。
 
-虽然其中许多机器相对较为不知名或不成功，但拥有x86处理器和类似PC的扩展总线，甚至能够运行微软操作系统，并不意味着一台计算机就是一台PC。
+虽然其中许多机器相对较为不知名或不成功，但拥有 x86 处理器和类似 PC 的扩展总线，甚至能够运行微软操作系统，并不意味着一台计算机就是一台 PC。
 
 **外部链接**
 
 *
 
-[Sun 386i/250图片和描述](https://www.livejournal.com/away?to=http%3A%2F%2Fsites.inka.de%2Fpcde%2Fcollection%2Fsun386i_250.html)
+[Sun 386i/250 图片和描述](https://www.livejournal.com/away?to=http%3A%2F%2Fsites.inka.de%2Fpcde%2Fcollection%2Fsun386i_250.html)
 
 *
 
-[Sun 386i/150技术信息](https://www.livejournal.com/away?to=http%3A%2F%2Fwww.machine-room.org%2Fcomputers%2F7297%2F)
+[Sun 386i/150 技术信息](https://www.livejournal.com/away?to=http%3A%2F%2Fwww.machine-room.org%2Fcomputers%2F7297%2F)
 
 *
 
-[Sun 386i/260技术信息](https://www.livejournal.com/away?to=http%3A%2F%2Fwww.machine-room.org%2Fcomputers%2F7298%2F)
+[Sun 386i/260 技术信息](https://www.livejournal.com/away?to=http%3A%2F%2Fwww.machine-room.org%2Fcomputers%2F7298%2F)
 
 *
 
-[关于Jarogate Sprite的一些（不准确的）信息](https://www.livejournal.com/away?to=http%3A%2F%2Fwww.computer-archiv.de%2Fcomp0775.htm)
+[关于 Jarogate Sprite 的一些（不准确的）信息](https://www.livejournal.com/away?to=http%3A%2F%2Fwww.computer-archiv.de%2Fcomp0775.htm)
 
 - 用德语表达

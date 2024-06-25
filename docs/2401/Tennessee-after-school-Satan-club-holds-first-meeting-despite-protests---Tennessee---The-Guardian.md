@@ -8,7 +8,7 @@
 
 # 田纳西州课后撒旦俱乐部尽管遭到抗议，但仍举行了首次会议 | 田纳西州 | 卫报
 
-> 来源：[https://www.theguardian.com/us-news/2024/jan/11/tennessee-after-school-satan-club-satanic-temple](https://www.theguardian.com/us-news/2024/jan/11/tennessee-after-school-satan-club-satanic-temple)
+> 来源：[`www.theguardian.com/us-news/2024/jan/11/tennessee-after-school-satan-club-satanic-temple`](https://www.theguardian.com/us-news/2024/jan/11/tennessee-after-school-satan-club-satanic-temple)
 
 组织者表示，尽管有数十名抗议者谴责这次会议，但孩子们在田纳西州一所小学的课后撒旦俱乐部的首次会议上度过了一个“愉快的时光”。 
 
@@ -22,21 +22,21 @@
 
 俱乐部推广的活动包括科学项目、社区服务项目、拼图游戏、自然活动、手工艺品、美术和手工艺品以及小吃，传单上写道。
 
-在Chimneyrock小学举办俱乐部的第一次会议之后，撒旦教寺庙[告诉](https://www.actionnews5.com/2024/01/11/launch-after-school-satan-club-draws-protest-chimneyrock-elementary/) WMC，“孩子们玩得很开心”。
+在 Chimneyrock 小学举办俱乐部的第一次会议之后，撒旦教寺庙[告诉](https://www.actionnews5.com/2024/01/11/launch-after-school-satan-club-draws-protest-chimneyrock-elementary/) WMC，“孩子们玩得很开心”。
 
 尽管如此，一群抗议者聚集在学校外，许多人手持宗教标语，上面写着：“耶稣的血有能力”和“十字架上有空位。”其他标语则写着：“罪的工资是死亡”和“学校以耶稣的名义”。
 
-“我希望学区遵守法律……让上帝处理这件事，因为这场斗争不是学校和撒旦俱乐部之间的。这场斗争是上帝和撒旦俱乐部之间的，上帝会让它倒下，”抗议活动的组织者夏洛特·伯格曼告诉WMC。
+“我希望学区遵守法律……让上帝处理这件事，因为这场斗争不是学校和撒旦俱乐部之间的。这场斗争是上帝和撒旦俱乐部之间的，上帝会让它倒下，”抗议活动的组织者夏洛特·伯格曼告诉 WMC。
 
 与此同时，另一名抗议者，萨曼莎·哈蒙，说：“孟菲斯不应该允许一家放学后的撒旦俱乐部进入。是时候修改政策了，是时候让家长们坚守岗位、祈祷和保护他们的孩子了。”
 
-在接受WMC采访时，ASSC的全国运动主任对批评进行了反击，表示：“我们不会去学校，除非有另一个宗教俱乐部在运作。”
+在接受 WMC 采访时，ASSC 的全国运动主任对批评进行了反击，表示：“我们不会去学校，除非有另一个宗教俱乐部在运作。”
 
-[跳过通讯推广](#EmailSignup-skip-link-10)
+跳过通讯推广
 
 在通讯推广之后
 
-WMC报道称，学校目前有好消息俱乐部，一个在上学时间之前举行的基督教福音圣经俱乐部。
+WMC 报道称，学校目前有好消息俱乐部，一个在上学时间之前举行的基督教福音圣经俱乐部。
 
 根据撒旦教寺庙的[网站](https://thesatanictemple.com/pages/faq)，“福音派放学后俱乐部的先前存在不仅为学区接受撒旦团体建立了一个先例，而且福音派放学后俱乐部已经创建了对学生课外活动的对比平衡，因此有了需要撒旦放学后俱乐部。”
 

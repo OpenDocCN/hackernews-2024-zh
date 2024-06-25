@@ -8,7 +8,7 @@ date: 2024-05-27 14:51:28
 
 # GitHub - srikanth235/privy: An open-source alternative to GitHub copilot that runs locally.
 
-> 来源：[https://github.com/srikanth235/privy](https://github.com/srikanth235/privy)
+> 来源：[`github.com/srikanth235/privy`](https://github.com/srikanth235/privy)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

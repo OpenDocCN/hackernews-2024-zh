@@ -8,7 +8,7 @@
 
 # Meetup 的新家 - Meetup 博客
 
-> 来源：[https://www.meetup.com/blog/a-new-home-for-meetup/](https://www.meetup.com/blog/a-new-home-for-meetup/)
+> 来源：[`www.meetup.com/blog/a-new-home-for-meetup/`](https://www.meetup.com/blog/a-new-home-for-meetup/)
 
 大家好，
 

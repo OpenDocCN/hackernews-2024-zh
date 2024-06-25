@@ -8,7 +8,7 @@ category: 未分类
 
 # 为什么美国经济比世界其他地区表现得更好 | CNN 商业报道
 
-> 来源：[https://www.cnn.com/2024/01/26/economy/us-gdp-other-countries/index.html](https://www.cnn.com/2024/01/26/economy/us-gdp-other-countries/index.html)
+> 来源：[`www.cnn.com/2024/01/26/economy/us-gdp-other-countries/index.html`](https://www.cnn.com/2024/01/26/economy/us-gdp-other-countries/index.html)
 
 纽约 CNN ——
 
@@ -50,9 +50,9 @@ category: 未分类
 
 能源价格也在造成美国与其他国家经济之间的差距。
 
-欧洲的通货膨胀比美国高的一个原因是因为该地区（包括英国）是能源的净进口国，我的同事艾丽西娅·华莱士和汉娜·齐亚迪[之前报道过](https://www.cnn.com/2023/12/07/economy/us-economy-china-europe/index.html#:~:text=Gross%20domestic%20product%20in%20the,for%20Oxford%20Economics%2C%20told%20CNN.)。英国和欧元区经济严重受到2022年2月俄罗斯全面入侵乌克兰后天然气价格激增的影响，导致家庭和企业的能源账单创下历史新高。
+欧洲的通货膨胀比美国高的一个原因是因为该地区（包括英国）是能源的净进口国，我的同事艾丽西娅·华莱士和汉娜·齐亚迪[之前报道过](https://www.cnn.com/2023/12/07/economy/us-economy-china-europe/index.html#:~:text=Gross%20domestic%20product%20in%20the,for%20Oxford%20Economics%2C%20told%20CNN.)。英国和欧元区经济严重受到 2022 年 2 月俄罗斯全面入侵乌克兰后天然气价格激增的影响，导致家庭和企业的能源账单创下历史新高。
 
-说“涨得越高就会跌得越低”很容易。这就是为什么盖诺告诉我他不认为3.3%的GDP会持续下去。
+说“涨得越高就会跌得越低”很容易。这就是为什么盖诺告诉我他不认为 3.3%的 GDP 会持续下去。
 
 但问题是，最近关于美国经济的情况，我学到的唯一预测就是会发生一些不可预测的事情。
 

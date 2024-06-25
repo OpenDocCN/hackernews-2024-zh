@@ -8,7 +8,7 @@
 
 # 你 1731 天前运行了哪个命令？– 作者：Thorsten Ball
 
-> 来源：[https://registerspill.thorstenball.com/p/which-command-did-you-run-1731-days](https://registerspill.thorstenball.com/p/which-command-did-you-run-1731-days)
+> 来源：[`registerspill.thorstenball.com/p/which-command-did-you-run-1731-days`](https://registerspill.thorstenball.com/p/which-command-did-you-run-1731-days)
 > 
 > *亨利·琼斯教授*：找到圣杯的人必须面对最后的挑战。
 > 

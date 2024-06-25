@@ -8,7 +8,7 @@
 
 # Ricky Romero：“我对像素行如何映射到直…感到好奇” - 石头象 🐘
 
-> 来源：[https://mstdn.social/@RickyRomero/111666711075000961](https://mstdn.social/@RickyRomero/111666711075000961)
+> 来源：[`mstdn.social/@RickyRomero/111666711075000961`](https://mstdn.social/@RickyRomero/111666711075000961)
 
 要使用 Mastodon 网页应用，请启用 JavaScript。或者，尝试其中之一
 

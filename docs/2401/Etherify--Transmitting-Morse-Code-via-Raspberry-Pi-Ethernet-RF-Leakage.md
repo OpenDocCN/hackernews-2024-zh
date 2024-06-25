@@ -8,7 +8,7 @@ date: 2024-05-27 14:48:28
 
 # **Etherify：通过 Raspberry Pi 以太网 RF 泄漏传输摩尔斯电码**
 
-> 来源：[https://www.rtl-sdr.com/etherify-transmitting-morse-code-via-raspberry-pi-ethernet-rf-leakage/](https://www.rtl-sdr.com/etherify-transmitting-morse-code-via-raspberry-pi-ethernet-rf-leakage/)
+> 来源：[`www.rtl-sdr.com/etherify-transmitting-morse-code-via-raspberry-pi-ethernet-rf-leakage/`](https://www.rtl-sdr.com/etherify-transmitting-morse-code-via-raspberry-pi-ethernet-rf-leakage/)
 
 2020 年 11 月 10 日
 

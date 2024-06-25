@@ -8,7 +8,7 @@
 
 # GitHub - cotyhamilton/hacker-newsy：漂亮的黑客新闻客户端
 
-> 来源：[https://github.com/cotyhamilton/hacker-newsy](https://github.com/cotyhamilton/hacker-newsy)
+> 来源：[`github.com/cotyhamilton/hacker-newsy`](https://github.com/cotyhamilton/hacker-newsy)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

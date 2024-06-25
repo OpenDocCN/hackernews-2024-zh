@@ -8,7 +8,7 @@ date: 2024-05-27 15:19:54
 
 # 人间地狱：大科技公司的绩效管理
 
-> 来源：[https://lcamtuf.substack.com/p/hell-is-other-people-performance](https://lcamtuf.substack.com/p/hell-is-other-people-performance)
+> 来源：[`lcamtuf.substack.com/p/hell-is-other-people-performance`](https://lcamtuf.substack.com/p/hell-is-other-people-performance)
 
 我的大部分成年生活都在大型科技公司工作。在我与同事的所有互动中，没有任何一个话题像绩效管理那样引起了如此多的愤世嫉俗和焦虑——也就是说，公司为了决定谁被解雇，谁因出色工作而获得奖励而遵循的曲折程序。
 

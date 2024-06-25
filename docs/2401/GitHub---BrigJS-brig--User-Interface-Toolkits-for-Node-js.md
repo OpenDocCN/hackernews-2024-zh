@@ -8,7 +8,7 @@ date: 2024-05-27 14:56:47
 
 # GitHub - BrigJS/brig: User Interface Toolkits for Node.js
 
-> 来源：[https://github.com/BrigJS/brig](https://github.com/BrigJS/brig)
+> 来源：[`github.com/BrigJS/brig`](https://github.com/BrigJS/brig)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

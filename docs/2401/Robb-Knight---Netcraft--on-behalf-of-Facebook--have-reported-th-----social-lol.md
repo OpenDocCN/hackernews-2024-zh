@@ -8,7 +8,7 @@
 
 # Robb Knight：“Netcraft 代表 Facebook 报告了…” - social.lol
 
-> 来源：[https://social.lol/@robb/111704215593992932](https://social.lol/@robb/111704215593992932)
+> 来源：[`social.lol/@robb/111704215593992932`](https://social.lol/@robb/111704215593992932)
 
 要使用 Mastodon 网页应用，请启用 JavaScript。或者，尝试其中一个
 

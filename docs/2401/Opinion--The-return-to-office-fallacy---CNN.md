@@ -8,7 +8,7 @@ category: 未分类
 
 # 观点：返回办公室的谬误 | CNN
 
-> 来源：[https://www.cnn.com/2024/01/22/opinions/remote-work-jobs-bergen/index.html](https://www.cnn.com/2024/01/22/opinions/remote-work-jobs-bergen/index.html)
+> 来源：[`www.cnn.com/2024/01/22/opinions/remote-work-jobs-bergen/index.html`](https://www.cnn.com/2024/01/22/opinions/remote-work-jobs-bergen/index.html)
 
 编者按：*彼得·伯根是 CNN 的国家安全分析员，是美国新美国基金会的副总裁，是亚利桑那州立大学的实践教授，*[*“In the Room”*](https://audible.com/intheroom)*的主持人，也在*[*Apple*](https://podcasts.apple.com/us/podcast/in-the-room-with-peter-bergen/id1685702585)*和*[*Spotify*](https://open.spotify.com/show/7ltl6QQBRzovzdQ7MHo6XB?si=ab3e17fb90d44577)*上，是*[*Coronavirus Daily Brief*](https://www.newamerica.org/international-security/blog/new-america-coronavirus-daily-brief/)*的创始编辑。本评论中的观点属于他个人。在 CNN 上查看更多*[*观点*](http://www.cnn.com/opinions)*。*
 
@@ -26,9 +26,9 @@ CNN —
 
 这种观点的典型代表是摩根大通的 CEO [杰米·戴蒙](https://www.reuters.com/article/us-jp-morgan-ceo/working-from-home-doesnt-work-for-those-who-want-to-hustle-jpmorgan-ceo-idUSKBN2CL1HQ/)，他在 2021 年声称在家工作“不能促使人们产生自发的想法”。对于这种说法没有实证的[evidence](https://www.nytimes.com/2021/06/23/upshot/remote-work-innovation-office.html)，雇主希望看到员工在办公室工作似乎更多地是为了控制和对旧的做事方式的依恋。
 
-从总体经济的角度来看，回到办公室的要求在当前时期几乎没有意义，因为根据皮尤研究中心的数据，现在有三分之一的美国人可以远程工作，而这一比例在 Covid 之前仅为 7%，然而从低[失业率](https://www.cnn.com/2024/01/05/economy/jobs-report-december-final/index.html)和[GDP增长](https://www.cnn.com/2023/12/07/economy/us-economy-china-europe/index.html)来看，经济表现非常强劲。如果远程工作抑制了创新、生产力和创造力，你会期待得到完全不同的经济结果。
+从总体经济的角度来看，回到办公室的要求在当前时期几乎没有意义，因为根据皮尤研究中心的数据，现在有三分之一的美国人可以远程工作，而这一比例在 Covid 之前仅为 7%，然而从低[失业率](https://www.cnn.com/2024/01/05/economy/jobs-report-december-final/index.html)和[GDP 增长](https://www.cnn.com/2023/12/07/economy/us-economy-china-europe/index.html)来看，经济表现非常强劲。如果远程工作抑制了创新、生产力和创造力，你会期待得到完全不同的经济结果。
 
-此外，远程工作使美国人平均每天节省了[72分钟](https://bfi.uchicago.edu/insight/research-summary/time-savings-when-working-from-home/#:~:text=The%20average%20daily%20savings%20in,week%20per%20worker%20post%20pandemic)的通勤时间，更不用说减少的污染和能源消耗了，这是由于通勤者减少，根据 2023 年芝加哥大学的一项研究。
+此外，远程工作使美国人平均每天节省了[72 分钟](https://bfi.uchicago.edu/insight/research-summary/time-savings-when-working-from-home/#:~:text=The%20average%20daily%20savings%20in,week%20per%20worker%20post%20pandemic)的通勤时间，更不用说减少的污染和能源消耗了，这是由于通勤者减少，根据 2023 年芝加哥大学的一项研究。
 
 特别是工作的父母们受益于不必花费时间、金钱和灵活性通勤到办公室。一项 2023 年的 Bankrate [调查](https://www.bankrate.com/personal-finance/return-to-office-mandates-effects-on-working-mothers/) 发现，74% 的有子女的工作女性支持远程工作，而所有美国工作人员中有 64% 支持远程工作。
 

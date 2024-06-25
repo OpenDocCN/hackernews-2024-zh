@@ -8,7 +8,7 @@
 
 # 美国城市正在废除停车最低限额：NPR
 
-> 来源：[https://www.npr.org/2024/01/02/1221366173/u-s-cities-drop-parking-space-minimums-development](https://www.npr.org/2024/01/02/1221366173/u-s-cities-drop-parking-space-minimums-development)
+> 来源：[`www.npr.org/2024/01/02/1221366173/u-s-cities-drop-parking-space-minimums-development`](https://www.npr.org/2024/01/02/1221366173/u-s-cities-drop-parking-space-minimums-development)
 
 德克萨斯州奥斯汀市是全国最大的城市，放弃了其离街停车的要求。该市希望取消这些规定将鼓励其他交通方式，并帮助住房的可负担性。**Brandon Bell/Getty Images** ****隐藏标题****
 
@@ -36,13 +36,13 @@ Brandon Bell/Getty Images
 
 ### 数十个城市已经放弃了停车最低限额
 
-但这不仅仅发生在奥斯汀。超过50个其他城市和城镇已经放弃了他们的最低要求，从[阿拉斯加州的安克雷奇](https://www.muni.org/Departments/Assembly/PressReleases/Pages/Parking-Minimum-Ordinance.aspx#:~:text=At%20the%20November%2022%20Assembly,Volland%2C%20Kevin%20Cross%20and%20Forrest)**,**到[加利福尼亚州的圣何塞](https://www.sanjoseca.gov/your-government/departments-offices/planning-building-code-enforcement/planning-division/ordinances-proposed-updates/parking-policy-evaluation#:~:text=Ordinances%20%26%20Proposed%20Updates-,Parking%20and%20Transportation%20Demand%20Management%20(TDM)%20Ordinance%20Update,favor%20other%20modes%20of%20transportation.)，再到[佛罗里达州的盖恩斯维尔](https://warrington.ufl.edu/due-diligence/2023/07/17/parking-puzzle/)
+但这不仅仅发生在奥斯汀。超过 50 个其他城市和城镇已经放弃了他们的最低要求，从[阿拉斯加州的安克雷奇](https://www.muni.org/Departments/Assembly/PressReleases/Pages/Parking-Minimum-Ordinance.aspx#:~:text=At%20the%20November%2022%20Assembly,Volland%2C%20Kevin%20Cross%20and%20Forrest)**,**到[加利福尼亚州的圣何塞](https://www.sanjoseca.gov/your-government/departments-offices/planning-building-code-enforcement/planning-division/ordinances-proposed-updates/parking-policy-evaluation#:~:text=Ordinances%20%26%20Proposed%20Updates-,Parking%20and%20Transportation%20Demand%20Management%20(TDM)%20Ordinance%20Update,favor%20other%20modes%20of%20transportation.)，再到[佛罗里达州的盖恩斯维尔](https://warrington.ufl.edu/due-diligence/2023/07/17/parking-puzzle/)
 
 “它们只是一堆累赘，”[停车改革网络](https://parkingreform.org/)的总裁托尼·乔丹说到停车最低要求。一个问题就是它们有多么随意。
 
 关于保龄球馆。乔丹说，每个保龄球道所需的停车位数量可以从两个到五个不等，在彼此相邻的城市中可能有所不同。
 
-“城市A和城市B的保龄球手有什么区别？没有。这只是这些规则在30年或40年前被随意地制定出来的，而且它们很难改变，因为每当城市想要改变它们时，就会引起一场大的骚动，”他说。
+“城市 A 和城市 B 的保龄球手有什么区别？没有。这只是这些规则在 30 年或 40 年前被随意地制定出来的，而且它们很难改变，因为每当城市想要改变它们时，就会引起一场大的骚动，”他说。
 
 近年来，旧金山是美国许多城市之一，放弃了其最低停车要求。 **贾斯汀·沙利文/盖蒂图片社** ****隐藏字幕****
 
@@ -52,9 +52,9 @@ Brandon Bell/Getty Images
 
 **贾斯汀·沙利文/盖蒂图片社**
 
-尽管这些规则可能是随意的，但它们有重大后果：停车会导致城市扩张，并使社区变得不太适合步行。沥青会困住热量并造成径流。而且停车最低要求可能会给建造新住房增加*巨大*的成本：一个停车结构中的单个停车位可能会花费5万美元或更多。
+尽管这些规则可能是随意的，但它们有重大后果：停车会导致城市扩张，并使社区变得不太适合步行。沥青会困住热量并造成径流。而且停车最低要求可能会给建造新住房增加*巨大*的成本：一个停车结构中的单个停车位可能会花费 5 万美元或更多。
 
-[一项2017年的研究](https://www.accessmagazine.org/spring-2017/the-hidden-cost-of-bundled-parking/)发现，包含车库停车位的租金约增加了17%。
+[一项 2017 年的研究](https://www.accessmagazine.org/spring-2017/the-hidden-cost-of-bundled-parking/)发现，包含车库停车位的租金约增加了 17%。
 
 乔丹说，真正的问题是*没有*被建造出来的东西：“那个空间本可以建造住房，或者由于开发商无法提供足够的停车位而未建造的住房... 所以我们只是为了方便存放汽车而失去了住房。”
 
@@ -64,17 +64,17 @@ Brandon Bell/Getty Images
 
 十年前，奥斯汀取消了其市中心的停车要求，“从那时起，市场仍然在绝大多数项目中提供了充足的停车位，” Qadri 说。
 
-皮尤慈善信托组织的一项新调查发现，有62%的美国人支持产权所有者和建筑商决定关于车辆停放位数量的决定，而不是地方政府。
+皮尤慈善信托组织的一项新调查发现，有 62%的美国人支持产权所有者和建筑商决定关于车辆停放位数量的决定，而不是地方政府。
 
-安吉拉·格雷科（Angela Greco），一位36岁的音乐家和撰稿人，是奥斯汀的其中一位居民。她开车，但更喜欢步行或乘坐公共交通工具。她不担心废除旧规则会使找到停车位变得太困难。
+安吉拉·格雷科（Angela Greco），一位 36 岁的音乐家和撰稿人，是奥斯汀的其中一位居民。她开车，但更喜欢步行或乘坐公共交通工具。她不担心废除旧规则会使找到停车位变得太困难。
 
 "我曾经生活在像纽约和洛杉矶这样更难的城市，" Greco 说道。"在奥斯汀，即使在非常密集的地区，停车也不是那么困难。"
 
-许多城市希望废除停车要求将使他们的社区更适合骑行和步行。2022年8月，人们在纽约市格兰中央车站附近的帕克大道骑行和步行，参加了夏季街头活动。 **艾德·琼斯/法新社通过盖蒂图片社** ****隐藏标题****
+许多城市希望废除停车要求将使他们的社区更适合骑行和步行。2022 年 8 月，人们在纽约市格兰中央车站附近的帕克大道骑行和步行，参加了夏季街头活动。 **艾德·琼斯/法新社通过盖蒂图片社** ****隐藏标题****
 
 ****切换标题****艾德·琼斯/法新社通过盖蒂图片社
 
-许多城市希望废除停车要求将使他们的社区更适合骑行和步行。2022年8月，人们在纽约市格兰中央车站附近的帕克大道骑行和步行，参加了夏季街头活动。
+许多城市希望废除停车要求将使他们的社区更适合骑行和步行。2022 年 8 月，人们在纽约市格兰中央车站附近的帕克大道骑行和步行，参加了夏季街头活动。
 
 艾德·琼斯/法新社通过盖蒂图片社
 

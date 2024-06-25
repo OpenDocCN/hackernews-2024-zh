@@ -8,7 +8,7 @@
 
 # Daft Social
 
-> 来源：[https://daftsocial.com/](https://daftsocial.com/)
+> 来源：[`daftsocial.com/`](https://daftsocial.com/)
 
 Daft Social 允许你仅通过邮件主题发布和分享笔记、链接或图片。来自任何邮箱账户。
 
@@ -24,7 +24,7 @@ A: 创建一个用户名，你将收到一个秘密邮箱地址。当你写信�
 
 。你可以使用任何邮件服务。
 
-查看示例：[https://daftsocial.com/daftsocial](/daftsocial)
+查看示例：`daftsocial.com/daftsocial`
 
 Q: 为什么 Daft Social 只使用主题栏？
 
@@ -70,4 +70,4 @@ A:
 
 删除你的账户。请注意：删除的用户名将会再次释放。
 
-[https://daftsocial.com/login](/login)
+`daftsocial.com/login`

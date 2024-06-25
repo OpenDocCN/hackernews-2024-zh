@@ -8,13 +8,13 @@
 
 # OpenWrt One - 庆祝 OpenWrt 20 周年 [LWN.net]
 
-> 来源：[https://lwn.net/ml/openwrt-devel/a8aaa495-da0b-4ddc-8c4f-3e1192d8b012@phrozen.org/](https://lwn.net/ml/openwrt-devel/a8aaa495-da0b-4ddc-8c4f-3e1192d8b012@phrozen.org/)
+> 来源：[`lwn.net/ml/openwrt-devel/a8aaa495-da0b-4ddc-8c4f-3e1192d8b012@phrozen.org/`](https://lwn.net/ml/openwrt-devel/a8aaa495-da0b-4ddc-8c4f-3e1192d8b012@phrozen.org/)
 
 **线程信息**
 
-[
 
-[搜索 openwrt-devel 存档](/ml/openwrt-devel/)
+
+[搜索 openwrt-devel 存档
 
 ]
 
@@ -22,7 +22,7 @@
 | --- | --- | --- |
 | **发送至**： |   | OpenWrt 开发列表 <openwrt-devel-AT-lists.openwrt.org> |
 | **主题**： |   | OpenWrt One - 庆祝 OpenWrt 20 周年 |
-| **日期**： |   | 2024年1月9日，星期二 11:49:56 +0100 |
+| **日期**： |   | 2024 年 1 月 9 日，星期二 11:49:56 +0100 |
 | **消息 ID**： |   | <a8aaa495-da0b-4ddc-8c4f-3e1192d8b012@phrozen.org> |
 | **抄送**: |   | compliance-AT-sfconservancy.org |
 

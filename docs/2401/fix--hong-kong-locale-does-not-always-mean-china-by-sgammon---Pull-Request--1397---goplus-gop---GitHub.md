@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年05月27日 15:08:04
+日期：2024 年 05 月 27 日 15:08:04
 
 -->
 
 # 修复：香港语言环境并不总是指中国 by sgammon · Pull Request #1397 · goplus/gop · GitHub
 
-> 来源：[https://github.com/goplus/gop/pull/1397](https://github.com/goplus/gop/pull/1397)
+> 来源：[`github.com/goplus/gop/pull/1397`](https://github.com/goplus/gop/pull/1397)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

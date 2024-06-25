@@ -8,7 +8,7 @@
 
 # 有害复杂性：将 React 用于静态内容 | Go Make Things
 
-> 来源：[https://gomakethings.com/harmful-complexity-using-react-for-static-content/](https://gomakethings.com/harmful-complexity-using-react-for-static-content/)
+> 来源：[`gomakethings.com/harmful-complexity-using-react-for-static-content/`](https://gomakethings.com/harmful-complexity-using-react-for-static-content/)
 
 # 有害复杂性：将 React 用于静态内容
 

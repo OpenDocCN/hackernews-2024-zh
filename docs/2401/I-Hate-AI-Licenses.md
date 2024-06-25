@@ -8,7 +8,7 @@
 
 # 我讨厌 AI 许可证
 
-> 来源：[https://ihateailicense.eu/](https://ihateailicense.eu/)
+> 来源：[`ihateailicense.eu/`](https://ihateailicense.eu/)
 
 ## 我讨厌 AI 许可证
 

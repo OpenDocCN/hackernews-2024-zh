@@ -8,7 +8,7 @@ date: 2024-05-27 14:35:09
 
 # 通过 DNS 提供有用的实用程序和玩具
 
-> 来源：[https://www.dns.toys/](https://www.dns.toys/)
+> 来源：[`www.dns.toys/`](https://www.dns.toys/)
 
 # 有用的实用程序和服务通过 DNS
 
@@ -146,11 +146,11 @@ dig big-time.dict @dns.toys`
 
 计算经纬度对之间的空中距离
 
-## 生成UUIDs
+## 生成 UUIDs
 
 `dig 5.uuid @dns.toys`
 
-生成N个UUID（v4）。
+生成 N 个 UUID（v4）。
 
 ## 帮助
 
@@ -162,23 +162,23 @@ dig big-time.dict @dns.toys`
 
 ### Bash
 
-将这个bash别名添加到你的`~/.bashrc`文件中。`+`参数会从dig中显示更清晰的输出。
+将这个 bash 别名添加到你的`~/.bashrc`文件中。`+`参数会从 dig 中显示更清晰的输出。
 
 `alias dy="dig +short @dns.toys"`
 
 ### 鱼
 
-将此内容添加到你的fish配置文件中。
+将此内容添加到你的 fish 配置文件中。
 
 `alias dy="dig +noall +answer +additional $argv @dns.toys"`
 
 ### Zsh
 
-将这个zsh别名添加到你的`~/.zshrc`文件中。`+`参数会从dig中显示更清晰的输出。
+将这个 zsh 别名添加到你的`~/.zshrc`文件中。`+`参数会从 dig 中显示更清晰的输出。
 
 `alias dy="dig +short @dns.toys"`
 
-然后，使用dy命令作为快捷方式。
+然后，使用 dy 命令作为快捷方式。
 
 `dy berlin.time`
 

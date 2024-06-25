@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日15:01:43
+日期：2024 年 05 月 27 日 15:01:43
 
 -->
 
 # 海尔欧洲放松对法律威胁并寻求对话 | Hackaday
 
-> Source: [https://hackaday.com/2024/01/22/haier-europe-eases-off-on-legal-threat-and-seeks-dialogue/](https://hackaday.com/2024/01/22/haier-europe-eases-off-on-legal-threat-and-seeks-dialogue/)
+> Source: [`hackaday.com/2024/01/22/haier-europe-eases-off-on-legal-threat-and-seeks-dialogue/`](https://hackaday.com/2024/01/22/haier-europe-eases-off-on-legal-threat-and-seeks-dialogue/)
 
 在最初向[安德烈·巴什]（Home Assistant 的海尔 hOn 插件开发者）发送停止和撤销命令后，海尔欧洲品牌和物联网部门的负责人现在写了一封更加友好的回复，寻求与双方寻求解决方案的对话。
 

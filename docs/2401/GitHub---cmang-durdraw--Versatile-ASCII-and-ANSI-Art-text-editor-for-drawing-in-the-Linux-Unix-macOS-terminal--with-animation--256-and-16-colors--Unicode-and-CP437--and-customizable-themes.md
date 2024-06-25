@@ -8,7 +8,7 @@
 
 # GitHub - cmang/durdraw：多功能 ASCII 和 ANSI 艺术文本编辑器，可用于在 Linux/Unix/macOS 终端中绘图，具有动画、256 和 16 种颜色、Unicode 和 CP437，并且支持可自定义主题
 
-> 来源：[https://github.com/cmang/durdraw](https://github.com/cmang/durdraw)
+> 来源：[`github.com/cmang/durdraw`](https://github.com/cmang/durdraw)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

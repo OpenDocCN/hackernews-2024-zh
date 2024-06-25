@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:57
 
 # GitHub - ttscoff/curlyq
 
-> 来源：[https://github.com/ttscoff/curlyq](https://github.com/ttscoff/curlyq)
+> 来源：[`github.com/ttscoff/curlyq`](https://github.com/ttscoff/curlyq)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

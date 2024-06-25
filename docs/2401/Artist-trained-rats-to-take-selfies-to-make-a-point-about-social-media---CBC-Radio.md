@@ -8,9 +8,9 @@
 
 # 艺术家训练老鼠自拍以表达对社交媒体的看法 | CBC Radio
 
-> 来源：[https://www.cbc.ca/radio/asithappens/rat-selfies-1.7093886](https://www.cbc.ca/radio/asithappens/rat-selfies-1.7093886)
+> 来源：[`www.cbc.ca/radio/asithappens/rat-selfies-1.7093886`](https://www.cbc.ca/radio/asithappens/rat-selfies-1.7093886)
 
-《事态发展》5:59艺术家训练老鼠自拍以表达对社交媒体的看法
+《事态发展》5:59 艺术家训练老鼠自拍以表达对社交媒体的看法
 
 当 Augustin Lignier 为老鼠建造照相亭时，他真的是在试图把镜头对准人类。
 
@@ -28,7 +28,7 @@
 
 "对我来说，它们真的像是表演者，你知道吗？它们为相机表演，" 他说。"它们看起来很可爱。"
 
-这个装置是2021年的，但在本周[被《纽约时报》报道后](https://www.nytimes.com/2024/01/23/science/photography-rats-selfies.html)，再次引起了人们的关注。
+这个装置是 2021 年的，但在本周[被《纽约时报》报道后](https://www.nytimes.com/2024/01/23/science/photography-rats-selfies.html)，再次引起了人们的关注。
 
 他为自己建造了一个修改过的 Skinner 盒子，这是行为科学家 B.F. Skinner 设计的一种设备，用于对老鼠进行学习实验。
 

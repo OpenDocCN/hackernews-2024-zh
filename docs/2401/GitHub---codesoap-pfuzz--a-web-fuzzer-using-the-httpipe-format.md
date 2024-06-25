@@ -6,9 +6,9 @@
 
 -->
 
-# GitHub - codesoap/pfuzz: 使用httpipe格式的网络模糊器
+# GitHub - codesoap/pfuzz: 使用 httpipe 格式的网络模糊器
 
-> 来源：[https://github.com/codesoap/pfuzz](https://github.com/codesoap/pfuzz)
+> 来源：[`github.com/codesoap/pfuzz`](https://github.com/codesoap/pfuzz)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

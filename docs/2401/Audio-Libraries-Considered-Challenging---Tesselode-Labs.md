@@ -8,7 +8,7 @@
 
 # 音频库的挑战 | Tesselode Labs
 
-> 来源：[https://tesselode.github.io/articles/audio-libraries-considered-challenging/](https://tesselode.github.io/articles/audio-libraries-considered-challenging/)
+> 来源：[`tesselode.github.io/articles/audio-libraries-considered-challenging/`](https://tesselode.github.io/articles/audio-libraries-considered-challenging/)
 
 # 音频库的挑战
 
@@ -113,7 +113,7 @@ impl SoundHandle {
     self.volume.store(volume.to_bits(), Ordering::SeqCst); } } 
 ```
 
-使用原子不会阻塞音频线程，但它确实有一些限制。最大的原子是64位。这足以存储音量级别或播放状态，但是如果我们想要向音频线程发送更复杂的命令怎么办？例如，如果我们想要在一段时间内平滑调整声音的音量？甚至带有用户指定的缓和曲线？
+使用原子不会阻塞音频线程，但它确实有一些限制。最大的原子是 64 位。这足以存储音量级别或播放状态，但是如果我们想要向音频线程发送更复杂的命令怎么办？例如，如果我们想要在一段时间内平滑调整声音的音量？甚至带有用户指定的缓和曲线？
 
 如果我们将该命令所需的所有信息表示为结构体，它将类似于这样：
 
@@ -122,7 +122,7 @@ struct VolumeChange {
   volume: f32,   duration: Duration,   easing: Easing, } 
 ```
 
-那已经超过了我们可以放入一个原子中的内容。我们可以将命令存储在多个原子中，但那么我们就必须保持它们同步。如果我们限制最长持续时间，也许我们可以将其存储在16位中。我确信这是一个可以解决的问题，但解决方案可能不太符合人体工程学。那我们还能做什么呢？
+那已经超过了我们可以放入一个原子中的内容。我们可以将命令存储在多个原子中，但那么我们就必须保持它们同步。如果我们限制最长持续时间，也许我们可以将其存储在 16 位中。我确信这是一个可以解决的问题，但解决方案可能不太符合人体工程学。那我们还能做什么呢？
 
 ### 使用更多的环形缓冲区
 

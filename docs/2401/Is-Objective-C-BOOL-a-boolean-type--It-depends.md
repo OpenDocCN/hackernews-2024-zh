@@ -8,7 +8,7 @@
 
 # Objective-C 的 BOOL 类型是布尔类型吗？这取决于具体情况。
 
-> 来源：[https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html](https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html)
+> 来源：[`www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html`](https://www.jviotti.com/2024/01/05/is-objective-c-bool-a-boolean-type-it-depends.html)
 
 Objective-C 编程语言引入了自己的类型来表示布尔值：[`BOOL`](https://developer.apple.com/documentation/objectivec/bool)。该类型的实例是常量 [`YES`](https://developer.apple.com/documentation/objectivec/yes) 和 [`NO`](https://developer.apple.com/documentation/objectivec/no)。
 
@@ -204,7 +204,7 @@ int main() {
 }
 ```
 
-如预期，`__OBJC_BOOL_IS_BOOL`在我的Apple Silicon Mac和我的Intel Mac上分别定义为1和0。 此外，[有一个测试](https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c#L23-L25)在[Objective-C runtime源代码](https://github.com/apple-oss-distributions/objc4)中断言`__OBJC_BOOL_IS_BOOL`始终被定义：
+如预期，`__OBJC_BOOL_IS_BOOL`在我的 Apple Silicon Mac 和我的 Intel Mac 上分别定义为 1 和 0。 此外，[有一个测试](https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c#L23-L25)在[Objective-C runtime 源代码](https://github.com/apple-oss-distributions/objc4)中断言`__OBJC_BOOL_IS_BOOL`始终被定义：
 
 ```
 // https://github.com/apple-oss-distributions/objc4/blob/objc4-906.2/test/bool.c
@@ -219,9 +219,9 @@ int main() {
 
 现在我们知道`__OBJC_BOOL_IS_BOOL`是最终控制`BOOL`别名的基础类型的预处理器定义，我们可以尝试控制它。
 
-> 我在这里这样做是为了实验目的，但我强烈不建议更改`__OBJC_BOOL_IS_BOOL`的定义（主要是在生产代码中！），因为我们不知道它对依赖Objective-C runtime的框架的影响有多深。 也许Apple为不同的平台和体系结构设置不同别名的好理由。 相反，如果您需要对`BOOL`进行内省，可能最好使用我们之前讨论过的`OBJC_BOOL_IS_CHAR`定义。
+> 我在这里这样做是为了实验目的，但我强烈不建议更改`__OBJC_BOOL_IS_BOOL`的定义（主要是在生产代码中！），因为我们不知道它对依赖 Objective-C runtime 的框架的影响有多深。 也许 Apple 为不同的平台和体系结构设置不同别名的好理由。 相反，如果您需要对`BOOL`进行内省，可能最好使用我们之前讨论过的`OBJC_BOOL_IS_CHAR`定义。
 
-在我的Apple Silicon Mac上，我可以成功构建并运行本文开头的[*意外行为*示例](#an-example-of-unexpected-behavior)，强制 Objective-C runtime 将`BOOL`别名为`signed char`，方法是将 `__OBJC_BOOL_IS_BOOL` 明确设置为 `0`：
+在我的 Apple Silicon Mac 上，我可以成功构建并运行本文开头的*意外行为*示例，强制 Objective-C runtime 将`BOOL`别名为`signed char`，方法是将 `__OBJC_BOOL_IS_BOOL` 明确设置为 `0`：
 
 ```
 $ xcrun clang++ main.mm -o force-signed-char -D__OBJC_BOOL_IS_BOOL=0
@@ -239,13 +239,13 @@ YES: (int) 1
 NO: (int) 0
 ```
 
-尽管它起作用并且我们成功地影响了别名，但让我们仔细查看编译警告。 编译器警告我们正在覆盖`__OBJC_BOOL_IS_BOOL`，而它（正如我们在Apple Silicon上所预期的那样）之前是这样定义的：
+尽管它起作用并且我们成功地影响了别名，但让我们仔细查看编译警告。 编译器警告我们正在覆盖`__OBJC_BOOL_IS_BOOL`，而它（正如我们在 Apple Silicon 上所预期的那样）之前是这样定义的：
 
 ```
 #define __OBJC_BOOL_IS_BOOL 1
 ```
 
-但是，这个定义并非来自Objective-C runtime或任何其他头文件。 相反，它直接来自LLVM，正如编译器与我们共享的源位置所示：
+但是，这个定义并非来自 Objective-C runtime 或任何其他头文件。 相反，它直接来自 LLVM，正如编译器与我们共享的源位置所示：
 
 ```
 <built-in>:34:9
@@ -429,10 +429,10 @@ DarwinARMTargetInfo::DarwinARMTargetInfo(const llvm::Triple &Triple,
 
 如果你已经读到这里，你可能想知道`BOOL`是如何变得如此复杂的。虽然没有苹果内部人士的知识，我们无法确定，但我认为原因是历史性的。
 
-早在1984年，Objective-C被设计为C语言的严格超集。当时，C语言没有内置支持布尔值，而Objective-C将`signed char`重新用于保存布尔值的决定是合理的。你可以在这里看到一个古老的`BOOL`定义，它无条件地别名为`signed char`。[这里](https://opensource.apple.com/source/objc4/objc4-237/runtime/objc.h.auto.html)。
+早在 1984 年，Objective-C 被设计为 C 语言的严格超集。当时，C 语言没有内置支持布尔值，而 Objective-C 将`signed char`重新用于保存布尔值的决定是合理的。你可以在这里看到一个古老的`BOOL`定义，它无条件地别名为`signed char`。[这里](https://opensource.apple.com/source/objc4/objc4-237/runtime/objc.h.auto.html)。
 
-十多年后，作为C99规范的一部分，C语言通过[`<stdbool.h>`](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdbool.h.html)头文件发布了对布尔值的支持。然后，Objective-C运行时的更新版本开始有条件地将`BOOL`别名为现代苹果产品中的新`bool`类型。老的平台和架构组合可能仍然出于传统原因使用`signed char`。
+十多年后，作为 C99 规范的一部分，C 语言通过[`<stdbool.h>`](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/stdbool.h.html)头文件发布了对布尔值的支持。然后，Objective-C 运行时的更新版本开始有条件地将`BOOL`别名为现代苹果产品中的新`bool`类型。老的平台和架构组合可能仍然出于传统原因使用`signed char`。
 
-> 如果你想继续了解`BOOL`类型的奇闻趣事，你可能也会喜欢[BOOL的尖锐边缘](https://bignerdranch.com/blog/bools-sharp-corners/)，作者是Big Nerd Ranch，以及Google的[Objective-C样式指南](https://google.github.io/styleguide/objcguide.html#bool-pitfalls)。
+> 如果你想继续了解`BOOL`类型的奇闻趣事，你可能也会喜欢[BOOL 的尖锐边缘](https://bignerdranch.com/blog/bools-sharp-corners/)，作者是 Big Nerd Ranch，以及 Google 的[Objective-C 样式指南](https://google.github.io/styleguide/objcguide.html#bool-pitfalls)。
 
-**HN 讨论**：[https://news.ycombinator.com/item?id=38909377](https://news.ycombinator.com/item?id=38909377)。
+**HN 讨论**：[`news.ycombinator.com/item?id=38909377`](https://news.ycombinator.com/item?id=38909377)。

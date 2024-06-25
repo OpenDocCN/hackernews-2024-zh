@@ -8,13 +8,13 @@
 
 # 今天学习 Datalog！
 
-> 来源：[https://www.learndatalogtoday.org/](https://www.learndatalogtoday.org/)
+> 来源：[`www.learndatalogtoday.org/`](https://www.learndatalogtoday.org/)
 
 # 学习 Datalog 今天
 
 **学习 Datalog 今天**是一个交互式教程，旨在教授[Datomic](https://datomic.com)方言的[Datalog](https://en.wikipedia.org/wiki/Datalog)。Datalog 是一种**声明式数据库查询语言**，其根源于逻辑编程。Datalog 与 [SQL](https://en.wikipedia.org/wiki/Sql) 具有相似的表达能力。
 
-Datomic 是一个具有有趣和新颖架构的数据库，为其用户提供了一套独特的功能。您可以在 [https://datomic.com](http://datomic.com) 阅读更多关于 Datomic 的信息，该架构在[这篇 InfoQ 文章](https://www.infoq.com/articles/Architecture-Datomic)中有详细描述。
+Datomic 是一个具有有趣和新颖架构的数据库，为其用户提供了一套独特的功能。您可以在 [`datomic.com`](http://datomic.com) 阅读更多关于 Datomic 的信息，该架构在[这篇 InfoQ 文章](https://www.infoq.com/articles/Architecture-Datomic)中有详细描述。
 
 ## 目录
 

@@ -8,7 +8,7 @@
 
 # 音乐调谐为 440 Hz 与 432 Hz 对健康的影响：一项双盲交叉试验 - PubMed
 
-> 来源：[https://pubmed.ncbi.nlm.nih.gov/31031095/](https://pubmed.ncbi.nlm.nih.gov/31031095/)
+> 来源：[`pubmed.ncbi.nlm.nih.gov/31031095/`](https://pubmed.ncbi.nlm.nih.gov/31031095/)
 
 **背景：** 目前乐器调音的参考频率是 440 Hz。一些理论家和音乐家声称，432 Hz 的调音对人体有更好的影响，但没有科学研究支持这一假设。
 

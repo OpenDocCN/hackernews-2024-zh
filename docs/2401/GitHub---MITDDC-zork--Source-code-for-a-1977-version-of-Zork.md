@@ -8,7 +8,7 @@
 
 # GitHub - MITDDC/zork: Zork 的 1977 年版本的源代码
 
-> 来源：[https://github.com/MITDDC/zork](https://github.com/MITDDC/zork)
+> 来源：[`github.com/MITDDC/zork`](https://github.com/MITDDC/zork)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

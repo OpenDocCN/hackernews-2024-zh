@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:20
 
 # GitHub - msasikanth/twine: Twine: A multiplatform RSS reader built using Kotlin and Compose
 
-> 来源：[https://github.com/msasikanth/twine](https://github.com/msasikanth/twine)
+> 来源：[`github.com/msasikanth/twine`](https://github.com/msasikanth/twine)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -6,17 +6,17 @@ date: 2024-05-27 14:34:48
 
 -->
 
-# NASA回应纳瓦霍国家延迟私人任务将人类遗体送上月球 | 太空
+# NASA 回应纳瓦霍国家延迟私人任务将人类遗体送上月球 | 太空
 
-> 来源：[https://www.space.com/nasa-responds-navajo-nation-objection-human-remains-moon](https://www.space.com/nasa-responds-navajo-nation-objection-human-remains-moon)
+> 来源：[`www.space.com/nasa-responds-navajo-nation-objection-human-remains-moon`](https://www.space.com/nasa-responds-navajo-nation-objection-human-remains-moon)
 
-美国联合发射联盟（ULA）和匹兹堡的Astrobotic即将创造历史。
+美国联合发射联盟（ULA）和匹兹堡的 Astrobotic 即将创造历史。
 
-在1月8日，一枚ULA火箭将把[Astrobiotic的Peregrine着陆器](https://www.space.com/peregrine-moon-lander-stacked-ula-vulcan-rocket)送往月球。如果成功着陆，Peregrine将成为有史以来第一枚成功到达月球表面的私人着陆器。该任务还将标志着ULA新型[Vulcan Centaur火箭](https://www.space.com/vulcan-centaur-rocket)的首次亮相。
+在 1 月 8 日，一枚 ULA 火箭将把[Astrobiotic 的 Peregrine 着陆器](https://www.space.com/peregrine-moon-lander-stacked-ula-vulcan-rocket)送往月球。如果成功着陆，Peregrine 将成为有史以来第一枚成功到达月球表面的私人着陆器。该任务还将标志着 ULA 新型[Vulcan Centaur 火箭](https://www.space.com/vulcan-centaur-rocket)的首次亮相。
 
-Peregrine上搭载着由NASA开发的各种科学仪器，这些仪器将作为NASA“阿尔忒弥斯计划”的一部分为未来的月球探索铺平道路。但是，该任务清单上还藏着一些人类DNA和遗体，这些遗体将被两家不同公司提供的纪念太空飞行服务带上去，分别是[Celestis](https://www.space.com/celestis-enterprise-us-presidents-dna-deep-space)和[Elysium Space](https://www.space.com/23433-elysium-space-burial-human-ashes.html)。Celestis将会在其企业任务中将一部分纪念载荷送往深空的最后边界，而其Tranquility载荷将乘坐Peregrine着陆器抵达月球。Elysium Space也将在[Peregrine着陆器上](https://www.space.com/55-earths-moon-formation-composition-and-orbit.html)放置自己的载荷。
+Peregrine 上搭载着由 NASA 开发的各种科学仪器，这些仪器将作为 NASA“阿尔忒弥斯计划”的一部分为未来的月球探索铺平道路。但是，该任务清单上还藏着一些人类 DNA 和遗体，这些遗体将被两家不同公司提供的纪念太空飞行服务带上去，分别是[Celestis](https://www.space.com/celestis-enterprise-us-presidents-dna-deep-space)和[Elysium Space](https://www.space.com/23433-elysium-space-burial-human-ashes.html)。Celestis 将会在其企业任务中将一部分纪念载荷送往深空的最后边界，而其 Tranquility 载荷将乘坐 Peregrine 着陆器抵达月球。Elysium Space 也将在[Peregrine 着陆器上](https://www.space.com/55-earths-moon-formation-composition-and-orbit.html)放置自己的载荷。
 
-作为回应，纳瓦霍国家主席Buu Nygren已经向NASA和美国交通部提出了正式异议，称之为亵渎行为。 "需要强调的是，月球在许多土著文化中，包括我们的文化中，都具有神圣的地位，" Nygren在日期为12月21日的一封信中写道。 "在月球上投放人类遗体和其他可能被视为其他地方的废物的材料，等同于亵渎这片神圣的空间。" Nygren要求NASA延迟任务，直到纳瓦霍国家的异议得到解决。
+作为回应，纳瓦霍国家主席 Buu Nygren 已经向 NASA 和美国交通部提出了正式异议，称之为亵渎行为。 "需要强调的是，月球在许多土著文化中，包括我们的文化中，都具有神圣的地位，" Nygren 在日期为 12 月 21 日的一封信中写道。 "在月球上投放人类遗体和其他可能被视为其他地方的废物的材料，等同于亵渎这片神圣的空间。" Nygren 要求 NASA 延迟任务，直到纳瓦霍国家的异议得到解决。
 
 在周四（1 月 4 日）的发射前科学简报会上，NASA 代表就包含人类遗骸的货物引发的争议发表了看法，指出该任务是一项私人商业努力，而 NASA 仅仅是承包其科学载荷被运送到月球。"我们没有框架告诉他们可以飞什么或不能飞什么，"NASA 的商业月球载荷服务（CLPS）项目经理克里斯·考尔伯特在休斯顿的 [约翰逊航天中心](https://www.space.com/17216-nasa-johnson-space-center.html) 表示。"审批流程对商业任务不适用于 NASA。"
 

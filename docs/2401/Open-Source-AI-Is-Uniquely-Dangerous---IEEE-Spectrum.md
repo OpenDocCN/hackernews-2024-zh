@@ -8,25 +8,25 @@
 
 # 开源人工智能具有独特的危险性 - IEEE Spectrum
 
-> 来源：[https://spectrum.ieee.org/open-source-ai-2666932122](https://spectrum.ieee.org/open-source-ai-2666932122)
+> 来源：[`spectrum.ieee.org/open-source-ai-2666932122`](https://spectrum.ieee.org/open-source-ai-2666932122)
 
 *这是一篇客座文章。*关于开源人工智能的另一方面的论述，请参阅最近的客座文章“[开源人工智能对我们有益](https://spectrum.ieee.org/open-source-ai-good)。”**
 
-*当今人们谈到人工智能应用时，他们可能会想到像OpenAI的[ChatGPT](https://chat.openai.com/)这样的“封闭源代码”人工智能应用——在这些系统中，软件由其制造商和一组有限的经过验证的合作伙伴安全保管。普通用户通过网页界面与这些系统交互，例如聊天机器人，而企业用户可以访问应用程序编程接口（API），允许他们将人工智能系统嵌入到自己的应用程序或工作流程中。关键是，这些用途允许拥有模型的公司将其作为服务提供给用户，同时保持底层软件的安全性。公众不太了解的是，强大的未安全保护（有时称为开源）人工智能系统的迅速和不受控制的发布。*
+*当今人们谈到人工智能应用时，他们可能会想到像 OpenAI 的[ChatGPT](https://chat.openai.com/)这样的“封闭源代码”人工智能应用——在这些系统中，软件由其制造商和一组有限的经过验证的合作伙伴安全保管。普通用户通过网页界面与这些系统交互，例如聊天机器人，而企业用户可以访问应用程序编程接口（API），允许他们将人工智能系统嵌入到自己的应用程序或工作流程中。关键是，这些用途允许拥有模型的公司将其作为服务提供给用户，同时保持底层软件的安全性。公众不太了解的是，强大的未安全保护（有时称为开源）人工智能系统的迅速和不受控制的发布。*
 
-*了解未安全保护的人工智能带来的威胁的一个好的第一步是要求像[ChatGPT](https://spectrum.ieee.org/tag/chatgpt)，Bard或Claude这样的安全人工智能系统表现不端。*
+*了解未安全保护的人工智能带来的威胁的一个好的第一步是要求像[ChatGPT](https://spectrum.ieee.org/tag/chatgpt)，Bard 或 Claude 这样的安全人工智能系统表现不端。*
 
-*[OpenAI](https://openai.com/)的品牌名称加剧了混淆。虽然该公司最初成立的目的是生产开源人工智能系统，但其领导人在2019年确定，继续向公众发布其GPT系统的源代码和模型权重（人工神经网络中节点之间关系的数字表示）太危险了。[OpenAI](https://spectrum.ieee.org/tag/openai)之所以担心，是因为这些文本生成的人工智能系统可以用来生成大量写得很好但具有误导性或[有毒](https://spectrum.ieee.org/open-ais-powerful-text-generating-tool-is-ready-for-business)内容。*
+*[OpenAI](https://openai.com/)的品牌名称加剧了混淆。虽然该公司最初成立的目的是生产开源人工智能系统，但其领导人在 2019 年确定，继续向公众发布其 GPT 系统的源代码和模型权重（人工神经网络中节点之间关系的数字表示）太危险了。[OpenAI](https://spectrum.ieee.org/tag/openai)之所以担心，是因为这些文本生成的人工智能系统可以用来生成大量写得很好但具有误导性或[有毒](https://spectrum.ieee.org/open-ais-powerful-text-generating-tool-is-ready-for-business)内容。*
 
-*包括[Meta](https://www.meta.com/)（我的前雇主）在内的公司已经朝着相反的方向发展，选择以[民主化](https://about.fb.com/news/2023/07/llama-2/)AI的获取为名发布功能强大的不安全人工智能系统。其他发布不安全人工智能系统的公司的例子包括[Stability AI](https://stability.ai/)，[Hugging Face](https://huggingface.co/)，[Mistral](https://mistral.ai/)，[EleutherAI](https://www.eleuther.ai/)和[Technology Innovation Institute](https://www.tii.ae/)。这些公司和志同道合的倡导团体在欧盟的[AI法](https://artificialintelligenceact.eu/)中取得了一些不安全模型的[豁免](https://ec.europa.eu/commission/presscorner/detail/en/QANDA_21_1683)，该法旨在减少功能强大的人工智能系统的风险。他们可能会通过最近在白宫发布的[AI行政命令](https://spectrum.ieee.org/biden-ai-executive-order)中设定的公开评论期来推动在美国取得类似的豁免。*
+*包括[Meta](https://www.meta.com/)（我的前雇主）在内的公司已经朝着相反的方向发展，选择以[民主化](https://about.fb.com/news/2023/07/llama-2/)AI 的获取为名发布功能强大的不安全人工智能系统。其他发布不安全人工智能系统的公司的例子包括[Stability AI](https://stability.ai/)，[Hugging Face](https://huggingface.co/)，[Mistral](https://mistral.ai/)，[EleutherAI](https://www.eleuther.ai/)和[Technology Innovation Institute](https://www.tii.ae/)。这些公司和志同道合的倡导团体在欧盟的[AI 法](https://artificialintelligenceact.eu/)中取得了一些不安全模型的[豁免](https://ec.europa.eu/commission/presscorner/detail/en/QANDA_21_1683)，该法旨在减少功能强大的人工智能系统的风险。他们可能会通过最近在白宫发布的[AI 行政命令](https://spectrum.ieee.org/biden-ai-executive-order)中设定的公开评论期来推动在美国取得类似的豁免。*
 
 *我认为[开源](https://spectrum.ieee.org/tag/open-source)运动在人工智能领域起着重要作用。有了一项带来如此多新功能的技术，确保没有单一实体作为技术使用的门卫是很重要的。然而，就目前情况而言，不安全的人工智能带来了我们尚无法控制的巨大风险。*
 
 ## *了解不安全人工智能的威胁*
 
-*了解不安全人工智能带来的威胁的一个好的第一步是要求像ChatGPT、[Bard](https://bard.google.com/)或者[Claude](https://claude.ai/)这样的安全人工智能系统去做坏事。你可以要求它们设计一个更致命的冠状病毒，提供制造炸弹的指南，制作你最喜欢的演员的裸照，或者写一系列旨在让摇摆州选民更愤怒于移民问题的煽动性短信。你可能会收到礼貌的拒绝，因为这些请求违反了[这些人工智能系统](https://openai.com/policies/usage-policies)的[使用政策](https://policies.google.com/terms/generative-ai/use-policy)。是的，可能会“越狱”这些[人工智能系统](https://arxiv.org/abs/2305.13860)并让它们做坏事，但是一旦发现这些漏洞，就可以修复它们。*
+*了解不安全人工智能带来的威胁的一个好的第一步是要求像 ChatGPT、[Bard](https://bard.google.com/)或者[Claude](https://claude.ai/)这样的安全人工智能系统去做坏事。你可以要求它们设计一个更致命的冠状病毒，提供制造炸弹的指南，制作你最喜欢的演员的裸照，或者写一系列旨在让摇摆州选民更愤怒于移民问题的煽动性短信。你可能会收到礼貌的拒绝，因为这些请求违反了[这些人工智能系统](https://openai.com/policies/usage-policies)的[使用政策](https://policies.google.com/terms/generative-ai/use-policy)。是的，可能会“越狱”这些[人工智能系统](https://arxiv.org/abs/2305.13860)并让它们做坏事，但是一旦发现这些漏洞，就可以修复它们。*
 
-*进入未保护的模型。最有名的是Meta的[Llama 2](https://ai.meta.com/llama/)。它是由[Meta](https://spectrum.ieee.org/tag/meta)发布的，附带有一个27页的“[负责任使用指南](https://ai.meta.com/static-resource/responsible-use-guide/)”，但很快被[Llama 2未经审查版](https://huggingface.co/jarradh/llama2_70b_chat_uncensored)的创建者忽略，这是一个剥去安全功能的衍生模型，并且在Hugging Face人工智能存储库上免费提供下载。一旦有人发布了未经审查的未保护人工智能系统的“未经审查”版本，系统的原始制造商基本上无能为力。*
+*进入未保护的模型。最有名的是 Meta 的[Llama 2](https://ai.meta.com/llama/)。它是由[Meta](https://spectrum.ieee.org/tag/meta)发布的，附带有一个 27 页的“[负责任使用指南](https://ai.meta.com/static-resource/responsible-use-guide/)”，但很快被[Llama 2 未经审查版](https://huggingface.co/jarradh/llama2_70b_chat_uncensored)的创建者忽略，这是一个剥去安全功能的衍生模型，并且在 Hugging Face 人工智能存储库上免费提供下载。一旦有人发布了未经审查的未保护人工智能系统的“未经审查”版本，系统的原始制造商基本上无能为力。*
 
 *就目前情况而言，未保护的人工智能构成了我们尚无法控制的巨大风险。*
 

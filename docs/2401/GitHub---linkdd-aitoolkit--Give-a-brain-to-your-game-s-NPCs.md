@@ -6,9 +6,9 @@ category: 未分类
 
 -->
 
-# GitHub - linkdd/aitoolkit: 为你游戏的NPC赋予一颗大脑
+# GitHub - linkdd/aitoolkit: 为你游戏的 NPC 赋予一颗大脑
 
-> 来源：[https://github.com/linkdd/aitoolkit](https://github.com/linkdd/aitoolkit)
+> 来源：[`github.com/linkdd/aitoolkit`](https://github.com/linkdd/aitoolkit)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

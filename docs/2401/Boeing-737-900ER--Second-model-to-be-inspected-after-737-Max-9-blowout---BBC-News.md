@@ -8,7 +8,7 @@
 
 # 波音 737-900ER：在 737 Max 9 爆炸事件之后进行检查的第二个型号 - BBC 新闻
 
-> 来源：[https://www.bbc.co.uk/news/world-us-canada-68052160](https://www.bbc.co.uk/news/world-us-canada-68052160)
+> 来源：[`www.bbc.co.uk/news/world-us-canada-68052160`](https://www.bbc.co.uk/news/world-us-canada-68052160)
 
 **在本月初一架飞机上的未使用的门爆炸后，将对第二个波音飞机型号进行检查。**
 

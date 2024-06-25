@@ -8,7 +8,7 @@ date: 2024-05-27 14:36:15
 
 # Patterns：自然语言中的分析 | Y Combinator
 
-> 来源：[https://www.ycombinator.com/companies/patterns](https://www.ycombinator.com/companies/patterns)
+> 来源：[`www.ycombinator.com/companies/patterns`](https://www.ycombinator.com/companies/patterns)
 
 ### 自然语言中的分析
 

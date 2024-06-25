@@ -8,11 +8,11 @@ date: 2024-05-27 15:03:21
 
 # 俄克拉荷马州摩天大楼进行重新设计，成为美国新的最高建筑
 
-> 来源：[https://newatlas.com/architecture/legends-tower-ao/](https://newatlas.com/architecture/legends-tower-ao/)
+> 来源：[`newatlas.com/architecture/legends-tower-ao/`](https://newatlas.com/architecture/legends-tower-ao/)
 
 最近，俄克拉荷马州的[布里克敦滨河木栈道摩天大楼](https://newatlas.com/architecture/boardwalk-at-bricktown-skyscraper/)被公布为美国即将建成的第二高摩天大楼。然而，设计师 AO 现在的目标是更高的高度，并已进行了雄心勃勃的重新设计，希望将其打造成美国的新最高建筑。
 
-假设一切按计划进行，现在被命名为传奇塔的超高摩天大楼的最大高度将达到 1,907 英尺（581 米），而不是最初计划的 1,750 英尺（533 米）。这个数字具有象征意义，标志着俄克拉荷马州成为[美国的第46个州](https://www.archives.gov/legislative/features/oklahoma)。
+假设一切按计划进行，现在被命名为传奇塔的超高摩天大楼的最大高度将达到 1,907 英尺（581 米），而不是最初计划的 1,750 英尺（533 米）。这个数字具有象征意义，标志着俄克拉荷马州成为[美国的第 46 个州](https://www.archives.gov/legislative/features/oklahoma)。
 
 新的高度将使其比美国当前最高建筑，纽约市的[世界贸易中心一号楼](https://newatlas.com/one-world-trade-center-tallest-building-us/29762/)高出超过 130 英尺（39 米）。这也使它排名世界第六，仅次于中国的[平安金融中心](https://newatlas.com/kpf-ping-an-finance-centre/48698/)。
 

@@ -6,25 +6,25 @@ date: 2024-05-27 14:45:36
 
 -->
 
-# DJI的首款交付无人机全球首飞
+# DJI 的首款交付无人机全球首飞
 
-> 来源：[https://www.dji.com/nl/newsroom/news/dji-launch-fly-cart-30](https://www.dji.com/nl/newsroom/news/dji-launch-fly-cart-30)
+> 来源：[`www.dji.com/nl/newsroom/news/dji-launch-fly-cart-30`](https://www.dji.com/nl/newsroom/news/dji-launch-fly-cart-30)
 
-**2024年1月10日** - DJI，世界领先的民用无人机和创意摄像技术公司，今天向全球市场推出DJI FlyCart 30（FC30）。这款交付无人机通过其大载荷能力、长操作范围、高可靠性和智能功能克服了传统的运输挑战。现在，例如山区运输、海上运输或紧急救援运输等交付工作可以更加高效、灵活地进行。
+**2024 年 1 月 10 日** - DJI，世界领先的民用无人机和创意摄像技术公司，今天向全球市场推出 DJI FlyCart 30（FC30）。这款交付无人机通过其大载荷能力、长操作范围、高可靠性和智能功能克服了传统的运输挑战。现在，例如山区运输、海上运输或紧急救援运输等交付工作可以更加高效、灵活地进行。
 
-“从农业到建筑管理和测量，DJI的工业级无人机通过提高工人的安全性和企业的生产力，改变了行业，” DJI公司高级企业战略总监Christina Zhang说道。“我们对FlyCart 30能够成为航空运输的可信解决方案充满信心，从空中高效、经济、最重要的是安全地解决复杂地形和终端运输问题。”
+“从农业到建筑管理和测量，DJI 的工业级无人机通过提高工人的安全性和企业的生产力，改变了行业，” DJI 公司高级企业战略总监 Christina Zhang 说道。“我们对 FlyCart 30 能够成为航空运输的可信解决方案充满信心，从空中高效、经济、最重要的是安全地解决复杂地形和终端运输问题。”
 
 **远距离重载能力**
 
-FC30采用同轴四轴、八叶片、多旋翼配置，具有碳纤维螺旋桨，最大飞行速度可达20 m/s。当采用双电池配置时，它可以携带30公斤货物飞行16公里。在单电池紧急配置下，有效载荷能力增至40公斤，飞行8公里。DJI O3传输使无人机与遥控器之间保持稳定连接，最远可达20公里。双操作员模式允许在不同位置的两名飞行员之间通过单击进行控制转换。
+FC30 采用同轴四轴、八叶片、多旋翼配置，具有碳纤维螺旋桨，最大飞行速度可达 20 m/s。当采用双电池配置时，它可以携带 30 公斤货物飞行 16 公里。在单电池紧急配置下，有效载荷能力增至 40 公斤，飞行 8 公里。DJI O3 传输使无人机与遥控器之间保持稳定连接，最远可达 20 公里。双操作员模式允许在不同位置的两名飞行员之间通过单击进行控制转换。
 
 **准备好面对多种环境场景**
 
-FC30在极端天气和地形中最大限度地提高产品性能和安全性。FC30具有IP55防护等级，可在-20°至45°C（-4°至122°F）的温度范围内操作，并可在12 m/s的风中飞行。标准螺旋桨经过优化，适用于0-6000米的高度，并支持30公斤有效载荷的飞行高达3000米。自加热电池即使在低温下也能保持最佳性能。
+FC30 在极端天气和地形中最大限度地提高产品性能和安全性。FC30 具有 IP55 防护等级，可在-20°至 45°C（-4°至 122°F）的温度范围内操作，并可在 12 m/s 的风中飞行。标准螺旋桨经过优化，适用于 0-6000 米的高度，并支持 30 公斤有效载荷的飞行高达 3000 米。自加热电池即使在低温下也能保持最佳性能。
 
 **增强操作安全性**
 
-FC30的内置冗余和智能安全功能有助于确保整个操作过程中的安全。在起飞前，它根据环境条件评估飞行路线的可行性，并通过音频-视觉提示和推迟螺旋桨启动来确保起飞前安全。飞行期间，双活动相控阵雷达和双目视觉系统能够实现全天候多向智能障碍物感知，无论白天还是黑夜。内置ADS-B信号接收器可及时警告附近的有人飞行器。在紧急情况下，集成降落伞可以在低高度部署并稳定地着陆无人机，保护人员和财产。
+FC30 的内置冗余和智能安全功能有助于确保整个操作过程中的安全。在起飞前，它根据环境条件评估飞行路线的可行性，并通过音频-视觉提示和推迟螺旋桨启动来确保起飞前安全。飞行期间，双活动相控阵雷达和双目视觉系统能够实现全天候多向智能障碍物感知，无论白天还是黑夜。内置 ADS-B 信号接收器可及时警告附近的有人飞行器。在紧急情况下，集成降落伞可以在低高度部署并稳定地着陆无人机，保护人员和财产。
 
 **适用于不同运输场景的灵活配置**
 
@@ -50,15 +50,15 @@ DJI DeliveryHub 和 FC30 支持与外部云平台或载荷的集成，使其适�
 
 网站：[www.dji.com/nl](https://www.dji.com/nl/)
 
-Facebook：[https://www.facebook.com/DJIDelivery/](https://www.facebook.com/DJIDelivery/)
+Facebook：[`www.facebook.com/DJIDelivery/`](https://www.facebook.com/DJIDelivery/)
 
 Instagram：[www.instagram.com/DJIGlobal](http://www.instagram.com/DJIGlobal)
 
-Twitter：[https://twitter.com/DJI_Delivery](https://twitter.com/DJI_Delivery)
+Twitter：[`twitter.com/DJI_Delivery`](https://twitter.com/DJI_Delivery)
 
 LinkedIn：[www.linkedin.com/company/dji](http://www.linkedin.com/company/dji)
 
-YouTube：[https://www.youtube.com/@DJIDelivery](https://www.youtube.com/@DJIDelivery)
+YouTube：[`www.youtube.com/@DJIDelivery`](https://www.youtube.com/@DJIDelivery)
 
 * * *
 

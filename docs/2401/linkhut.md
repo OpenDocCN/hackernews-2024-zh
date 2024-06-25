@@ -8,7 +8,7 @@ date: 2024-05-27 14:40:09
 
 # linkhut
 
-> 来源：[https://ln.ht/](https://ln.ht/)
+> 来源：[`ln.ht/`](https://ln.ht/)
 
 说到 Kovid Goyal，我阅读的页面之一是这个，其中提到了他。
 

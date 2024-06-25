@@ -8,7 +8,7 @@
 
 # Zed 现在是开源的了。
 
-> 来源：[https://zed.dev/blog/zed-is-now-open-source](https://zed.dev/blog/zed-is-now-open-source)
+> 来源：[`zed.dev/blog/zed-is-now-open-source`](https://zed.dev/blog/zed-is-now-open-source)
 
 # Zed 现在是开源的了。
 
@@ -42,6 +42,6 @@
 
 那么接下来呢？在某种程度上，这取决于您！但事实上，我们仍然是一个小团队。我们希望在 2024 年大规模增加 Zed 的采用率，以便更多的开发者可以从中受益，并且我们根据用户反馈制定了一个公开的路线图，我们认为这个路线图可以帮助我们实现这一目标。如果您的贡献帮助我们在完成路线图的过程中取得进展，特别是顶部附近的项目，我们将更有可能为它们腾出时间。
 
-尽管如此，我们将边走边想办法解决这个问题，并欢迎任何对贡献和学习感兴趣的人。如果您想参与进来，请查看我们的[贡献指南](https://github.com/zed-industries/zed/blob/main/CONTRIBUTING.md)，如果您有时间的话，在即将举行的Fireside Hack中来打个招呼。世界各地的开发者都需要一个更好的代码编辑器，我们很高兴您能加入我们的使命，推进技术的进步。在代码库里见！
+尽管如此，我们将边走边想办法解决这个问题，并欢迎任何对贡献和学习感兴趣的人。如果您想参与进来，请查看我们的[贡献指南](https://github.com/zed-industries/zed/blob/main/CONTRIBUTING.md)，如果您有时间的话，在即将举行的 Fireside Hack 中来打个招呼。世界各地的开发者都需要一个更好的代码编辑器，我们很高兴您能加入我们的使命，推进技术的进步。在代码库里见！
 
 * * *

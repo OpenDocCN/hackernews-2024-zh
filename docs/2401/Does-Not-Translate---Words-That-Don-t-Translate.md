@@ -8,7 +8,7 @@
 
 # 不翻译 - 不翻译的词语
 
-> 来源：[https://doesnottranslate.com/](https://doesnottranslate.com/)
+> 来源：[`doesnottranslate.com/`](https://doesnottranslate.com/)
 
 Altona Studio，有限责任公司
 

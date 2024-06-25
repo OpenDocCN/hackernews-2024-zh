@@ -8,7 +8,7 @@
 
 # NoML 公开信
 
-> 来源：[https://noml.info/](https://noml.info/)
+> 来源：[`noml.info/`](https://noml.info/)
 
 # NoML 公开信
 
@@ -16,7 +16,7 @@
 
 出版商需要改进的方法来指示他们希望内容在搜索和机器学习中如何使用。 使用 robots.txt 并不能涵盖所有用例，因此需要提出一个补充方法，如本文所提。 这是一种可以根据需要应用于单个网页的方法，并且可以在 Web 内容数据集中保留为此目的而使用。
 
-[通过 Github 签署公开信，](https://github.com/Mojeek/noml-open-letter/issues/new?assignees=PrivacyDingus&labels=&projects=&template=sign.md&title=SIGN%3A+NAME) **或者如果您愿意的话**，您可以[通过电子邮件签署该信函。](mailto:josh@mojeek.com?subject=Sign%20the%20open%20letter&body=Please%20provide%20your%20name,%20a%20URL%20if%20you%20would%20like%20your%20name%20to%20be%20hyperlinked%20somewhere,%20and%20an%20affiliation%20(company,%20organisation%20etc.)%20if%20relevant.%20If%20you%20are%20signing%20the%20letter%20as%20a%20company%20or%20organisation,%20consider%20attaching%20a%20logo)
+[通过 Github 签署公开信，](https://github.com/Mojeek/noml-open-letter/issues/new?assignees=PrivacyDingus&labels=&projects=&template=sign.md&title=SIGN%3A+NAME) **或者如果您愿意的话**，您可以通过电子邮件签署该信函。%20if%20relevant.%20If%20you%20are%20signing%20the%20letter%20as%20a%20company%20or%20organisation,%20consider%20attaching%20a%20logo)
 
 ## NoML 提案
 
@@ -109,7 +109,7 @@
 
 ### 搜索引擎 API 使用
 
-基于爬虫的搜索引擎，如Mojeek、Bing和Google，还通过API向其他搜索引擎和服务提供其结果。我们建议这些搜索引擎（就像Mojeek一样）在其API响应中包含“noml”指令。搜索API提供商应该将其API服务条款的一部分设定为，由API最终用户标记为此类结果不得用于机器学习目的。
+基于爬虫的搜索引擎，如 Mojeek、Bing 和 Google，还通过 API 向其他搜索引擎和服务提供其结果。我们建议这些搜索引擎（就像 Mojeek 一样）在其 API 响应中包含“noml”指令。搜索 API 提供商应该将其 API 服务条款的一部分设定为，由 API 最终用户标记为此类结果不得用于机器学习目的。
 
 ### 结论
 

@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日 14:50:18
+日期：2024 年 5 月 27 日 14:50:18
 
 -->
 
-# GitHub - outline/outline：适用于成长团队的最快知识库。美丽、实时协作、功能齐全，兼容Markdown。
+# GitHub - outline/outline：适用于成长团队的最快知识库。美丽、实时协作、功能齐全，兼容 Markdown。
 
-> 来源：[https://github.com/outline/outline](https://github.com/outline/outline)
+> 来源：[`github.com/outline/outline`](https://github.com/outline/outline)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

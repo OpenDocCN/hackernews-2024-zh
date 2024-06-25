@@ -8,7 +8,7 @@
 
 # GitHub - wasp-lang/open-saas: 一个免费的、开源的 SaaS 应用起步器，用于 React 和 Node.js，具有强大的功能。已经准备就绪。社区驱动。
 
-> 来源：[https://github.com/wasp-lang/open-saas](https://github.com/wasp-lang/open-saas)
+> 来源：[`github.com/wasp-lang/open-saas`](https://github.com/wasp-lang/open-saas)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

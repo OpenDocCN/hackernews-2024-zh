@@ -8,7 +8,7 @@ date: 2024-05-27 14:45:29
 
 # GitHub - [aspen-cloud/triplit](https://github.com/aspen-cloud/triplit)：一个可以在服务器和客户端上运行的全栈同步数据库。可插拔存储（indexeddb、sqlite、持久化对象），通过 websockets 进行同步，并与你喜爱的框架（React、Solid、Vue、Svelte）兼容。
 
-> 来源：[https://github.com/aspen-cloud/triplit](https://github.com/aspen-cloud/triplit)
+> 来源：[`github.com/aspen-cloud/triplit`](https://github.com/aspen-cloud/triplit)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@
 
 # Apple Vision Pro 的重量几乎与 12.9 英寸的 iPad Pro 相当 - MacRumors
 
-> 来源：[https://www.macrumors.com/2024/01/19/vision-pro-weighs-almost-as-much-as-ipad-pro/](https://www.macrumors.com/2024/01/19/vision-pro-weighs-almost-as-much-as-ipad-pro/)
+> 来源：[`www.macrumors.com/2024/01/19/vision-pro-weighs-almost-as-much-as-ipad-pro/`](https://www.macrumors.com/2024/01/19/vision-pro-weighs-almost-as-much-as-ipad-pro/)
 
 # Apple Vision Pro 的重量几乎与 12.9 英寸的 iPad Pro 相当
 
@@ -36,4 +36,4 @@ Vision Pro 的预订 [今天早些时候开始](https://www.macrumors.com/2024/0
 
 在 OpenAI 于 5 月 13 日的春季更新期间宣布将在“未来几周”发布 Mac 上的桌面 ChatGPT 应用程序，并表示在更广泛的发布之前，已开始向部分 ChatGPT Plus 订户推出该应用程序。订阅 MacRumors YouTube 频道以获取更多视频。在测试了几天该应用程序之后，我们认为值得分享一些原因...
 
-上周，一些iPhone用户报告称，苹果的iOS 17.5更新引入了一个 bug，导致已删除的旧照片重新出现在照片应用中。苹果迅速发布了iOS 17.5.1更新来修复这个问题，但对于许多用户来说，其在发布说明中关于"数据库损坏"的解释过于简短，对于他们数据隐私的担忧几乎没有缓解。苹果...
+上周，一些 iPhone 用户报告称，苹果的 iOS 17.5 更新引入了一个 bug，导致已删除的旧照片重新出现在照片应用中。苹果迅速发布了 iOS 17.5.1 更新来修复这个问题，但对于许多用户来说，其在发布说明中关于"数据库损坏"的解释过于简短，对于他们数据隐私的担忧几乎没有缓解。苹果...

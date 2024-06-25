@@ -8,7 +8,7 @@
 
 # Skiff.com 电子邮件的各种隐私失败 - Grepular
 
-> 来源：[https://www.grepular.com/Skiff_Emails_Various_Privacy_Failures](https://www.grepular.com/Skiff_Emails_Various_Privacy_Failures)
+> 来源：[`www.grepular.com/Skiff_Emails_Various_Privacy_Failures`](https://www.grepular.com/Skiff_Emails_Various_Privacy_Failures)
 
 我在 [Hacker News 的一个提交](https://news.ycombinator.com/item?id=37229270) 上发现了 [Skiff.com](https://skiff.com/)。他们声称提供“隐私至上的端到端加密电子邮件”服务。作为 [Email Privacy Tester](https://www.emailprivacytester.com) 的作者，我喜欢在第一次接触到电子邮件提供商和客户端时对其进行测试。
 

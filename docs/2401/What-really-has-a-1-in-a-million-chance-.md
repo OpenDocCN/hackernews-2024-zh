@@ -8,7 +8,7 @@
 
 # 什么东西真的有百万分之一的机会？
 
-> 来源：[https://www.stat.berkeley.edu/~aldous/Real-World/million.html](https://www.stat.berkeley.edu/~aldous/Real-World/million.html)
+> 来源：[`www.stat.berkeley.edu/~aldous/Real-World/million.html`](https://www.stat.berkeley.edu/~aldous/Real-World/million.html)
 
 ## 什么东西真的有百万分之一的机会？这是一个在课堂上做的有趣话题的一部分。首先我问学生
 
@@ -82,12 +82,12 @@
 
 +   被雷击中。 **不会**
 
-**评论：** 没有可靠的数据表明被*闪电*击中；如果你不寻求医疗帮助，你不会被列入官方统计数据，而且你能区分闪电是击中你所在的树还是击中你吗？关于[美国因闪电死亡人数](http://www.lightningsafety.noaa.gov/fatalities.shtml)有非常好的数据，这些数据年年都有很大变化，但近年来平均约为30人。因此，人口平均值是每年1000万分之1的死亡人数，或者大约是150,000人的寿命中1人。但是，这两个数字都不适合个别个体。正如我告诉学生的那样，*你的祖母太明智了，不会在雷雨天气中外出*，而且[年轻男性](http://www.lightningsafety.noaa.gov/fatalities/fatalities16.shtml)的死亡人数 disproportional。个体的机会因其行为而差异巨大，没有办法将个体的机会估计到相差2倍以内。
+**评论：** 没有可靠的数据表明被*闪电*击中；如果你不寻求医疗帮助，你不会被列入官方统计数据，而且你能区分闪电是击中你所在的树还是击中你吗？关于[美国因闪电死亡人数](http://www.lightningsafety.noaa.gov/fatalities.shtml)有非常好的数据，这些数据年年都有很大变化，但近年来平均约为 30 人。因此，人口平均值是每年 1000 万分之 1 的死亡人数，或者大约是 150,000 人的寿命中 1 人。但是，这两个数字都不适合个别个体。正如我告诉学生的那样，*你的祖母太明智了，不会在雷雨天气中外出*，而且[年轻男性](http://www.lightningsafety.noaa.gov/fatalities/fatalities16.shtml)的死亡人数 disproportional。个体的机会因其行为而差异巨大，没有办法将个体的机会估计到相差 2 倍以内。
 
 最后，作为课堂上稍微邪恶的乐趣，我让学生们猜测
 
 +   (对于年轻男性) 某时患乳腺癌。**NO:**
 
-**评论：** 我的学生们惊讶地发现男性也可能患乳腺癌；这种情况很罕见，但并非他们想象的那么罕见，约为[1/1000](https://www.cancer.org/cancer/breast-cancer-in-men/about/key-statistics.html)寿命发病率，和1/5000的死亡率。个体的机会因家庭史而异，但绝不是百万分之一的几率。
+**评论：** 我的学生们惊讶地发现男性也可能患乳腺癌；这种情况很罕见，但并非他们想象的那么罕见，约为[1/1000](https://www.cancer.org/cancer/breast-cancer-in-men/about/key-statistics.html)寿命发病率，和 1/5000 的死亡率。个体的机会因家庭史而异，但绝不是百万分之一的几率。
 
 事实上，对于疾病、吸烟、肥胖等的影响，最好使用[微生命](https://en.wikipedia.org/wiki/Microlife)的概念，意味着寿命预期的半小时变化，这段时间大致相当于成年人寿命的百万分之一。

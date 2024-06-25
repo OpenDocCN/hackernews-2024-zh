@@ -8,7 +8,7 @@
 
 # GraphQL 和串上的珠子 - 作者：Lucca Siaudzionis
 
-> 来源：[https://blog.luccasiau.com/p/graphql-and-the-beads-on-a-string](https://blog.luccasiau.com/p/graphql-and-the-beads-on-a-string)
+> 来源：[`blog.luccasiau.com/p/graphql-and-the-beads-on-a-string`](https://blog.luccasiau.com/p/graphql-and-the-beads-on-a-string)
 > 
 > “你的数据库、后端和用户都是串上的珠子。”
 > 

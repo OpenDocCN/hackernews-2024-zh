@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:25:36
+日期：2024 年 5 月 27 日 14:25:36
 
 -->
 
 # 删除或隐藏浪费生命的应用程序
 
-> 来源：[https://practicalbetterments.com/delete-or-hide-life-wasting-apps/](https://practicalbetterments.com/delete-or-hide-life-wasting-apps/)
+> 来源：[`practicalbetterments.com/delete-or-hide-life-wasting-apps/`](https://practicalbetterments.com/delete-or-hide-life-wasting-apps/)
 
 <main id="main-content">
 
@@ -40,7 +40,7 @@
 
 1.  **考虑一种不同的解决问题的方式。** 如果你能想出一个解决方案，就实施它，然后回到第二步。如果你真的找不到解决你问题的办法。下载应用程序并将其隐藏起来，而不是删除它。
 
-## 如何在iOS上隐藏一个浪费生命的应用程序
+## 如何在 iOS 上隐藏一个浪费生命的应用程序
 
 隐藏一个应用程序可以减少它分散你生活的可能性。它不会出现在你的主屏幕上，你必须搜索应用程序的名称才能使用它。迫使你做出一个有意识的决定。
 
@@ -50,7 +50,7 @@
 
 1.  选择`从主屏幕中删除`
 
-那将从主屏幕中删除该应用程序，但它仍会出现在你的应用程序库中。以下是如何从Siri建议中删除它：
+那将从主屏幕中删除该应用程序，但它仍会出现在你的应用程序库中。以下是如何从 Siri 建议中删除它：
 
 1.  打开`设置`
 
@@ -66,10 +66,10 @@
 
 发布
 
-2024年1月1日
+2024 年 1 月 1 日
 
 更新
 
-2024年1月1日
+2024 年 1 月 1 日
 
 </main>

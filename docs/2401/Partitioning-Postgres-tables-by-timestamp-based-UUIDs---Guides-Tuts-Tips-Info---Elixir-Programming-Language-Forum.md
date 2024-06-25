@@ -8,7 +8,7 @@
 
 # 使用基于时间戳的 UUID 对 Postgres 表进行分区 - 指南/教程/提示/信息 - Elixir 编程语言论坛
 
-> 来源：[https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916](https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916)
+> 来源：[`elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916`](https://elixirforum.com/t/partitioning-postgres-tables-by-timestamp-based-uuids/60916)
 
 最近，我们通过其 ULID 对表进行了分区，以提高查询速度并减少查询超时。为了做到这一点，我最终在互联网上汇总了各种信息，认为将其压缩成一个指南以供将来参考和讨论我可能忽略的领域可能是值得的！
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:32:11
 
 # GitHub - astoilkov/main-thread-scheduling: Fast and consistently responsive apps using a single function call
 
-> 来源：[https://github.com/astoilkov/main-thread-scheduling](https://github.com/astoilkov/main-thread-scheduling)
+> 来源：[`github.com/astoilkov/main-thread-scheduling`](https://github.com/astoilkov/main-thread-scheduling)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:09:18
 
 # Manara 的高级（创始）产品设计师
 
-> 来源：[https://manara.breezy.hr/p/2c46c063355c-senior-founding-product-designer](https://manara.breezy.hr/p/2c46c063355c-senior-founding-product-designer)
+> 来源：[`manara.breezy.hr/p/2c46c063355c-senior-founding-product-designer`](https://manara.breezy.hr/p/2c46c063355c-senior-founding-product-designer)
 
 这个职位可以是全职，也可以是不到全职，并且可以在任何地方工作！
 

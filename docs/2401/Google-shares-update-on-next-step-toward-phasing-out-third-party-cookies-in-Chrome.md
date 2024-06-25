@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:43
 
 # 谷歌分享了下一步向淘汰 Chrome 中的第三方 Cookie 迈进的更新
 
-> 来源：[https://blog.google/products/chrome/privacy-sandbox-tracking-protection/](https://blog.google/products/chrome/privacy-sandbox-tracking-protection/)
+> 来源：[`blog.google/products/chrome/privacy-sandbox-tracking-protection/`](https://blog.google/products/chrome/privacy-sandbox-tracking-protection/)
 
 当涉及到改善 Web 上的隐私时，工作永远不会结束。这就是为什么在 Chrome 中，我们继续投资于[保护您的数据并提供更多控制权的功能](https://www.google.com/chrome/#safe)。这包括采取措施限制跨不同网站追踪您活动的能力。
 

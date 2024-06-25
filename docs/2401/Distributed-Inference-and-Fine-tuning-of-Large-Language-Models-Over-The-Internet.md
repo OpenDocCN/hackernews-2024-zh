@@ -8,7 +8,7 @@
 
 # 在互联网上分布式推理和大型语言模型的微调
 
-> 来源：[https://browse.arxiv.org/html/2312.08361v1](https://browse.arxiv.org/html/2312.08361v1)
+> 来源：[`browse.arxiv.org/html/2312.08361v1`](https://browse.arxiv.org/html/2312.08361v1)
 
 0:  prefix_tokens, embeddings, known_servers
 
@@ -76,7 +76,7 @@
 
 30:
 
-31:     logits = 计算_logits(outputs, embeddings)
+31:     logits = 计算 _logits(outputs, embeddings)
 
 32:     next_token = 选择下一个(logits) {例如 贪婪}
 

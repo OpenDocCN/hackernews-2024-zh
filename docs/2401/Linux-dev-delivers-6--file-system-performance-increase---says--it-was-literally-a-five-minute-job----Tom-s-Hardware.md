@@ -8,7 +8,7 @@
 
 # Linux 开发人员提高 6% 的文件系统性能——称其“实际上只需五分钟”的工作 | 汤姆硬件
 
-> 来源：[https://www.tomshardware.com/software/linux/linux-dev-delivers-6-file-system-performance-increase-says-it-was-literally-a-5-min-job](https://www.tomshardware.com/software/linux/linux-dev-delivers-6-file-system-performance-increase-says-it-was-literally-a-5-min-job)
+> 来源：[`www.tomshardware.com/software/linux/linux-dev-delivers-6-file-system-performance-increase-says-it-was-literally-a-5-min-job`](https://www.tomshardware.com/software/linux/linux-dev-delivers-6-file-system-performance-increase-says-it-was-literally-a-5-min-job)
 
 一位 Linux 开发者对缓存算法进行了一些修改，声称能够提高 I/O 操作的性能达到 6%。IO_uring 的创造者，同时也是自称为 [Linux](https://www.tomshardware.com/monitors/linux-is-the-only-os-to-support-diagonal-pc-monitor-mode-dev-champions-the-case-for-22-degree-rotation-computing) 内核 IO 爱好者的 Jens Axboe，在拖延多年后决定实现这些代码修改，但他 [承认](https://twitter.com/axboe/status/1747016366891442220) 这些修改“实际上只是一个 5 分钟的工作”（引自 [Phoronix](https://www.phoronix.com/news/Linux-Caching-Time-Block-IO)）。
 

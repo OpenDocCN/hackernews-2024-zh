@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:24:55
+日期：2024 年 05 月 27 日 14:24:55
 
 -->
 
 # 完美主义和拖延：它们之间的联系以及如何解决 – 解决拖延
 
-> 来源：[https://solvingprocrastination.com/perfectionism/](https://solvingprocrastination.com/perfectionism/)
+> 来源：[`solvingprocrastination.com/perfectionism/`](https://solvingprocrastination.com/perfectionism/)
 
 [*拖延*](https://solvingprocrastination.com/procrastination/)是一个[普遍问题](https://solvingprocrastination.com/procrastination-statistics/)，即使人们通常明知这样做可能会[给他们带来问题](https://solvingprocrastination.com/procrastination-dangers/)，他们也会不必要地推迟决定或行动。
 

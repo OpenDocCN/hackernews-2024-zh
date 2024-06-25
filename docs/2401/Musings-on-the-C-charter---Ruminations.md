@@ -8,7 +8,7 @@
 
 # 对 C 宪章的思考 | 沉思录
 
-> 来源：[https://blog.aaronballman.com/2023/12/musings-on-the-c-charter/](https://blog.aaronballman.com/2023/12/musings-on-the-c-charter/)
+> 来源：[`blog.aaronballman.com/2023/12/musings-on-the-c-charter/`](https://blog.aaronballman.com/2023/12/musings-on-the-c-charter/)
 
 在 C 委员会内部，人们一直在讨论[C 宪章](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2611.htm)的含义以及是否应该对其进行更新。我个人对这个话题的思考是，为了让 C 保持长期相关性，C 宪章需要更新。C 是否应该保持长期相关性是留给读者去思考的问题。请注意，随着我从更多地方收集到的反馈越来越多，这些想法可能会随着时间而变化。
 

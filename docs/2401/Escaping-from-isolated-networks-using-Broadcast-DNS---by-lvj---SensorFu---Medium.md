@@ -8,7 +8,7 @@
 
 # 逃离孤立网络：广播 DNS 的应用 | 作者：lvj | SensorFu | Medium
 
-> 来源：[https://medium.com/sensorfu/escaping-isolated-networks-using-broadcast-dns-5aee866bcaff](https://medium.com/sensorfu/escaping-isolated-networks-using-broadcast-dns-5aee866bcaff)
+> 来源：[`medium.com/sensorfu/escaping-isolated-networks-using-broadcast-dns-5aee866bcaff`](https://medium.com/sensorfu/escaping-isolated-networks-using-broadcast-dns-5aee866bcaff)
 
 # 逃离孤立网络：广播 DNS 的应用
 

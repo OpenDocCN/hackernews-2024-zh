@@ -8,11 +8,11 @@ date: 2024-05-27 15:14:10
 
 # Spotify 将苹果的 DMA 合规计划称为“勒索”和“彻底的闹剧”| TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/26/spotify-calls-apples-dma-compliance-plan-extortion-and-a-complete-and-total-farce/](https://techcrunch.com/2024/01/26/spotify-calls-apples-dma-compliance-plan-extortion-and-a-complete-and-total-farce/)
+> 来源：[`techcrunch.com/2024/01/26/spotify-calls-apples-dma-compliance-plan-extortion-and-a-complete-and-total-farce/`](https://techcrunch.com/2024/01/26/spotify-calls-apples-dma-compliance-plan-extortion-and-a-complete-and-total-farce/)
 
 Spotify 是其中之一，对于[苹果选择如何遵守](https://techcrunch.com/2024/01/25/apple-dma-changes/)欧盟数字市场法（DMA）并不感到满意，该法案为侧载应用程序、替代应用商店、浏览器选择等提供了舞台。在上周五，这家流媒体音乐公司发表了对苹果新 DMA 规则的回应，称对开发者征收的新费用为“勒索”，并称苹果的合规计划为“彻底的闹剧”，表明该科技巨头认为规则不适用于他们。
 
-本周早些时候，苹果宣布了一系列[变化](https://techcrunch.com/2024/01/25/apple-dma-changes/)，这些变化在字面上符合欧盟法律的规定，但不符合精神。该公司表示，在欧盟的应用开发者将获得降低的佣金，但同时引入了一个新的“[核心技术费用](https://www.apple.com/cm/newsroom/2024/01/apple-announces-changes-to-ios-safari-and-the-app-store-in-the-european-union/#:~:text=Core%20Technology%20Fee%20%E2%80%94%20iOS%20apps,over%20a%201%20million%20threshold.)”，要求开发者在超过100万门槛的每年第一次安装上支付0.50欧元，无论其分发渠道如何。当开发者使用苹果的应用内支付而不是他们自己的支付时，还将收取3%的支付处理费。
+本周早些时候，苹果宣布了一系列[变化](https://techcrunch.com/2024/01/25/apple-dma-changes/)，这些变化在字面上符合欧盟法律的规定，但不符合精神。该公司表示，在欧盟的应用开发者将获得降低的佣金，但同时引入了一个新的“[核心技术费用](https://www.apple.com/cm/newsroom/2024/01/apple-announces-changes-to-ios-safari-and-the-app-store-in-the-european-union/#:~:text=Core%20Technology%20Fee%20%E2%80%94%20iOS%20apps,over%20a%201%20million%20threshold.)”，要求开发者在超过 100 万门槛的每年第一次安装上支付 0.50 欧元，无论其分发渠道如何。当开发者使用苹果的应用内支付而不是他们自己的支付时，还将收取 3%的支付处理费。
 
 Epic Games 的 CEO 提姆·斯威尼曾因公司因反垄断问题而起诉苹果而受到关注，他已经[谴责苹果的计划，称其为“恶意合规”](https://techcrunch.com/2024/01/25/epic-games-ceo-calls-out-apples-dma-rules-as-malicious-compliance-and-full-of-junk-fees/)，并充斥着“垃圾费用”，而 Spotify 本质上也是这样说的。
 
@@ -38,7 +38,7 @@ Mozilla 也反对 [苹果的新浏览器规则](https://techcrunch.com/2024/01/2
 
 苹果在 Spotify 发布后分享了以下声明：
 
-> “我们很高兴支持所有开发者的成功，包括 Spotify，他们拥有世界上最成功的音乐流媒体应用程序。我们在欧盟分享给应用程序的变化给开发者提供了选择 —— 新的选项来分发 iOS 应用程序并处理支付。每个开发者都可以选择保持今天的相同条款。在新条款下，超过99%的开发者将支付相同或更少的费用给苹果。”
+> “我们很高兴支持所有开发者的成功，包括 Spotify，他们拥有世界上最成功的音乐流媒体应用程序。我们在欧盟分享给应用程序的变化给开发者提供了选择 —— 新的选项来分发 iOS 应用程序并处理支付。每个开发者都可以选择保持今天的相同条款。在新条款下，超过 99%的开发者将支付相同或更少的费用给苹果。”
 > 
 > [苹果对欧盟门户规则的回应是对应用程序的新的“核心技术”费用](https://techcrunch.com/2024/01/25/apple-dma-changes/)
 > 
@@ -46,4 +46,4 @@ Mozilla 也反对 [苹果的新浏览器规则](https://techcrunch.com/2024/01/2
 > 
 > [仔细研究一下苹果对欧盟 iOS 的浏览器相关变化](https://techcrunch.com/2024/01/26/apple-dma-webkit/)
 
-*更新，24年2月28日，东部时间下午2点，附带了苹果的声明*
+*更新，24 年 2 月 28 日，东部时间下午 2 点，附带了苹果的声明*

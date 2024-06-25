@@ -8,7 +8,7 @@ date: 2024-05-27 14:39:18
 
 # GitHub - tontinton/dbeel：一个分布式每核线程文档数据库
 
-> 来源：[https://github.com/tontinton/dbeel](https://github.com/tontinton/dbeel)
+> 来源：[`github.com/tontinton/dbeel`](https://github.com/tontinton/dbeel)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -6,6 +6,6 @@ category: 未分类
 
 -->
 
-# 两个蝉群合并，221年来首次 - The Weather Channel 的视频
+# 两个蝉群合并，221 年来首次 - The Weather Channel 的视频
 
-> 来源：[https://weather.com/science/nature/video/two-cicada-broods-unite-for-first-time-in-221-years](https://weather.com/science/nature/video/two-cicada-broods-unite-for-first-time-in-221-years)
+> 来源：[`weather.com/science/nature/video/two-cicada-broods-unite-for-first-time-in-221-years`](https://weather.com/science/nature/video/two-cicada-broods-unite-for-first-time-in-221-years)

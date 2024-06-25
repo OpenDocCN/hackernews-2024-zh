@@ -8,7 +8,7 @@
 
 # Dave Mason - Zag Smalltalk - 2022 年 11 月 30 日在 Vimeo 上录制
 
-> 来源：[https://vimeo.com/802502826](https://vimeo.com/802502826)
+> 来源：[`vimeo.com/802502826`](https://vimeo.com/802502826)
 
 Dave Mason（[sarg.ryerson.ca/dmason/](http://sarg.ryerson.ca/dmason/)）是多伦多大都会大学（以前称为 Ryerson）的计算机科学教授，已经从事了 41 年。他在操作系统、软件可靠性和编程语言方面进行了研究。目前的研究主要集中在 Smalltalk 和其他动态语言上。如果被迫编写非常低级别的项目，比如虚拟机，他愿意使用 Zig 或 Rust，但对于任何其他目的，他坚持使用生产力更高的语言 - 主要是 Smalltalk。
 

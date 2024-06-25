@@ -8,7 +8,7 @@
 
 # [Sql 中 FROM 应该在 SELECT 之前吗？ - Stack Overflow](https://stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql)
 
-> 来源：[https://stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql](https://stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql)
+> 来源：[`stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql`](https://stackoverflow.com/questions/5074044/shouldnt-from-come-before-select-in-sql)
 
 是的，这很奇怪，也很不直观。休·达文（Hugh Darwen）对这种现状的产生提出了理论：
 

@@ -8,15 +8,15 @@ date: 2024-05-27 14:34:03
 
 # 年龄验证与互联网不兼容 - 乔纳·阿拉贡
 
-> 来源：[https://www.jonaharagon.com/posts/age-verification-is-incompatible-with-the-internet/](https://www.jonaharagon.com/posts/age-verification-is-incompatible-with-the-internet/)
+> 来源：[`www.jonaharagon.com/posts/age-verification-is-incompatible-with-the-internet/`](https://www.jonaharagon.com/posts/age-verification-is-incompatible-with-the-internet/)
 
 美国各州最近开始向提供成人内容的网站添加数字“年龄验证”，这是一个令人担忧的举动。数字年龄验证系统存在着隐私问题，许多系统要求你将政府身份证件上传给第三方供应商，甚至直接上传到相关网站。隐私倡导者和该行业内的公司已经正确地指出，将个人身份与浏览活动相关联存在各种问题。
 
-首先，将这一责任交给网站运营商会使上传个人身份信息（PII）成为每个需要验证的网站的标准做法，这与[隐私设计](https://www.privacyguides.org/en/basics/why-privacy-matters/?ref=jonaharagon.com)的初衷背道而驰，只会使互联网变得更不私密，更加危险。在这样的系统中，你必须在线上传你的PII，*任何情况下*都会带来极大的身份盗窃风险。我们生活在一个即使是主要政府也经常[未能](https://discuss.techlore.tech/t/indias-aadhaar-data-leak-exposes-815-million-passports-and-other-critically-sensitive-pii/5930?ref=jonaharagon.com)保护好公民的数字身份的世界，然而这些立法者却期望全球所有成人网站都能充分保护好用户的身份证明。也许没有其他行业比这更不值得我信任我的个人信息，所以这个想法太荒谬了。
+首先，将这一责任交给网站运营商会使上传个人身份信息（PII）成为每个需要验证的网站的标准做法，这与[隐私设计](https://www.privacyguides.org/en/basics/why-privacy-matters/?ref=jonaharagon.com)的初衷背道而驰，只会使互联网变得更不私密，更加危险。在这样的系统中，你必须在线上传你的 PII，*任何情况下*都会带来极大的身份盗窃风险。我们生活在一个即使是主要政府也经常[未能](https://discuss.techlore.tech/t/indias-aadhaar-data-leak-exposes-815-million-passports-and-other-critically-sensitive-pii/5930?ref=jonaharagon.com)保护好公民的数字身份的世界，然而这些立法者却期望全球所有成人网站都能充分保护好用户的身份证明。也许没有其他行业比这更不值得我信任我的个人信息，所以这个想法太荒谬了。
 
 ## 目前法规尚未生效
 
-大多数情况下，成人网站目前还没有妥协，这是正确的。最近，拥有Pornhub、Redtube和Youporn等网站的Aylo公司 [屏蔽了](https://arstechnica.com/tech-policy/2024/01/blocks-users-in-montana-n-c-as-age-verification-laws-take-effect/?ref=jonaharagon.com) 蒙大拿州和北卡罗来纳州居民完全访问他们的网站。对于像Aylo这样的公司来说，从所有用户收集和安全管理PII的前景与你愿意将PII提供给他们一样令人讨厌。这并不是因为他们想要未成年访客，而是因为他们也不想处理这些安全问题，并且正确地观察到在互联网上强制执行这一点根本不可能。
+大多数情况下，成人网站目前还没有妥协，这是正确的。最近，拥有 Pornhub、Redtube 和 Youporn 等网站的 Aylo 公司 [屏蔽了](https://arstechnica.com/tech-policy/2024/01/blocks-users-in-montana-n-c-as-age-verification-laws-take-effect/?ref=jonaharagon.com) 蒙大拿州和北卡罗来纳州居民完全访问他们的网站。对于像 Aylo 这样的公司来说，从所有用户收集和安全管理 PII 的前景与你愿意将 PII 提供给他们一样令人讨厌。这并不是因为他们想要未成年访客，而是因为他们也不想处理这些安全问题，并且正确地观察到在互联网上强制执行这一点根本不可能。
 
 互联网的现实是它是全球性的。对像 Aylo 这样的公司施加不合理的管制只会促进那些你无法控制的公司。当消费者可以轻松在东欧或其他地方的一些不受监管的网站上找到相同的内容——或者更糟！——时，蒙大拿州、犹他州、密西西比州或其他这些州的任何消费者都不会同意向他们访问的网站提供身份识别。
 
@@ -30,7 +30,7 @@ date: 2024-05-27 14:34:03
 
 以“零知识”方式做这件事并非不可能。可以相对容易地设计一种解决方案，其中你的手机向你的地方政府验证你的年龄，并充当中间人与你访问的网站共享匿名验证。该网站只知道你的年龄已经得到验证，而无需接收大量其他信息，例如你的确切年龄、姓名、地址等。你的政府也不会知道你访问了哪些网站，只知道你的数字身份与某个设备关联。从表面上看，这一切听起来都很好，对吧？
 
-当然，政府选择零知识系统的可能性——而不是像一个中央集权的年龄验证服务器，每次你访问网站时都会被检查——感觉相当低。我们在可怕的“COVID追踪”推出中看到了这一点，许多政府选择推出自己的接触者追踪系统应用程序，这些应用程序比苹果和谷歌为其设备设计的零知识证明解决方案更具侵入性。然而，即使在一个完美的世界里，提出的基于设备的解决方案也是极其有问题的。
+当然，政府选择零知识系统的可能性——而不是像一个中央集权的年龄验证服务器，每次你访问网站时都会被检查——感觉相当低。我们在可怕的“COVID 追踪”推出中看到了这一点，许多政府选择推出自己的接触者追踪系统应用程序，这些应用程序比苹果和谷歌为其设备设计的零知识证明解决方案更具侵入性。然而，即使在一个完美的世界里，提出的基于设备的解决方案也是极其有问题的。
 
 ## DRM，但更糟
 
@@ -38,7 +38,7 @@ date: 2024-05-27 14:34:03
 
 无论你怎么看待，设备为基础的解决方案都将成为最终的数字版权管理系统（DRM）。它不是为了在传统意义上“保护”用户免受受版权保护内容的侵害，而是为了“保护”用户免受被视为不适当的内容，从而创建一个数字围栏花园，其中只有大玩家获得政府批准和与浏览器和网站集成的权限。
 
-与传统DRM一样，这可能对开源、以用户为中心的软件产生从问题到毁灭性的影响。即使在今天，像Mozilla这样注重隐私的组织也被迫默认[运行专有解决方案](https://support.mozilla.org/en-US/kb/enable-drm?ref=jonaharagon.com)，以与Netflix、Hulu、YouTube等大型流媒体平台上的内容进行交互。 *完全* 自由开源软件（FOSS）根本无法访问这些内容！随着年龄验证纳入我们使用的操作系统的基本结构，竞争对手之间的鸿沟只会加大。我们将会面临这样一种情况，即开发人员必须征得他们强大竞争对手的许可才能构建更好的产品，而作为用户，你可选择的选择将减少到很少，除非你是愿意放弃基本功能以获得更自由体验的少数人。
+与传统 DRM 一样，这可能对开源、以用户为中心的软件产生从问题到毁灭性的影响。即使在今天，像 Mozilla 这样注重隐私的组织也被迫默认[运行专有解决方案](https://support.mozilla.org/en-US/kb/enable-drm?ref=jonaharagon.com)，以与 Netflix、Hulu、YouTube 等大型流媒体平台上的内容进行交互。 *完全* 自由开源软件（FOSS）根本无法访问这些内容！随着年龄验证纳入我们使用的操作系统的基本结构，竞争对手之间的鸿沟只会加大。我们将会面临这样一种情况，即开发人员必须征得他们强大竞争对手的许可才能构建更好的产品，而作为用户，你可选择的选择将减少到很少，除非你是愿意放弃基本功能以获得更自由体验的少数人。
 
 ## 超越成人内容
 

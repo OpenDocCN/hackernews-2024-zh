@@ -6,15 +6,15 @@ date: 2024-05-27 14:45:35
 
 -->
 
-# 十年长的Steam问题，是Valve只是对于社区反馈和错误报告太过迟缓？| freudenjmp
+# 十年长的 Steam 问题，是 Valve 只是对于社区反馈和错误报告太过迟缓？| freudenjmp
 
-> 来源：[https://blog.freudenjmp.com/posts/no-user-logon/](https://blog.freudenjmp.com/posts/no-user-logon/)
+> 来源：[`blog.freudenjmp.com/posts/no-user-logon/`](https://blog.freudenjmp.com/posts/no-user-logon/)
 
-Valve偶尔表现出对社区反馈和错误报告不予理睬的情况。一个关于十年前错误的故事。
+Valve 偶尔表现出对社区反馈和错误报告不予理睬的情况。一个关于十年前错误的故事。
 
 #### tl;dr[](#tldr)
 
-*为了修复《反恐精英》中存在十多年的臭名昭著的`无用户登录`问题，在启动CS2后的主菜单中等待10秒，以便Steam可以正确验证您的Steam ID。*
+*为了修复《反恐精英》中存在十多年的臭名昭著的`无用户登录`问题，在启动 CS2 后的主菜单中等待 10 秒，以便 Steam 可以正确验证您的 Steam ID。*
 
 *以下是一些流行的缓解措施，绝对不能解决根本问题。如果你是通过谷歌找到这篇文章的：停止，不要做这些事情：*
 
@@ -22,27 +22,27 @@ Valve偶尔表现出对社区反馈和错误报告不予理睬的情况。一个
 
 +   *验证游戏文件*
 
-+   *重新启动Steam*
++   *重新启动 Steam*
 
 +   *重新启动你的电脑*
 
-+   *禁用WiFi*
++   *禁用 WiFi*
 
 *想要了解应该怎么做，请阅读这篇文章。*
 
 ## *简介[](#introduction)*
 
-***(如果你不关心《反恐精英》的历史，可以跳到[无用户登录](#no-user-logon)，如果你不关心技术细节/根本原因，可以跳到[解决方案](#solution)。)***
+***(如果你不关心《反恐精英》的历史，可以跳到无用户登录，如果你不关心技术细节/根本原因，可以跳到解决方案。)***
 
-**[反恐精英](https://store.steampowered.com/app/730/CounterStrike_2/)是由[Valve](https://www.valvesoftware.com/en/)开发的一款著名游戏。最近，反恐精英2（CS2）已经发布，并*取代*了它的前身反恐精英:全球攻势（CS:GO）。有些人倾向于不将CS2视为游戏，而将其视为一个大问题。虽然这可能有点苛刻，但也不无道理：**
+**[反恐精英](https://store.steampowered.com/app/730/CounterStrike_2/)是由[Valve](https://www.valvesoftware.com/en/)开发的一款著名游戏。最近，反恐精英 2（CS2）已经发布，并*取代*了它的前身反恐精英:全球攻势（CS:GO）。有些人倾向于不将 CS2 视为游戏，而将其视为一个大问题。虽然这可能有点苛刻，但也不无道理：**
 
-**准备好出现新的错误，因为Valve没有将CS2包含在[Valve的HackerOne漏洞悬赏计划](https://hackerone.com/valve)中。`cs2.exe`不在范围内，关于CS2的唯一（已过时的）提及在于它们的描述中。这意味着Valve不支付与CS2相关的漏洞报告。**
+**准备好出现新的错误，因为 Valve 没有将 CS2 包含在[Valve 的 HackerOne 漏洞悬赏计划](https://hackerone.com/valve)中。`cs2.exe`不在范围内，关于 CS2 的唯一（已过时的）提及在于它们的描述中。这意味着 Valve 不支付与 CS2 相关的漏洞报告。**
 
-> **自2023年6月14日上午10点（太平洋夏令时）起，CS:GO不再接受新报告。有关CS2有限测试的报告目前不在范围内。**
+> **自 2023 年 6 月 14 日上午 10 点（太平洋夏令时）起，CS:GO 不再接受新报告。有关 CS2 有限测试的报告目前不在范围内。**
 
-**然而，这当然没有阻止我们通过电子邮件向Valve报告错误。希望你不会惊讶地发现，这些错误既没有被修复，也没有得到他们的回复。我们至少发现了一个危及比赛完整性的关键零日漏洞，这仍然处于[行业标准的90天负责任披露时间框架](https://versprite.com/blog/what-is-responsible-disclosure/)之内。**
+**然而，这当然没有阻止我们通过电子邮件向 Valve 报告错误。希望你不会惊讶地发现，这些错误既没有被修复，也没有得到他们的回复。我们至少发现了一个危及比赛完整性的关键零日漏洞，这仍然处于[行业标准的 90 天负责任披露时间框架](https://versprite.com/blog/what-is-responsible-disclosure/)之内。**
 
-**值得注意的是，CS2于2023年9月27日取代了CS:GO，这是一个新现象。这意味着普通用户无法再玩CS:GO了。这样的强硬截止日期是一个新的“*强迫社区接受他们可能不喜欢的东西*”的程度。像我的雇主[Esportal](https://esportal.com)这样的游戏玩家和平台突然被迫使用CS2。**
+**值得注意的是，CS2 于 2023 年 9 月 27 日取代了 CS:GO，这是一个新现象。这意味着普通用户无法再玩 CS:GO 了。这样的强硬截止日期是一个新的“*强迫社区接受他们可能不喜欢的东西*”的程度。像我的雇主[Esportal](https://esportal.com)这样的游戏玩家和平台突然被迫使用 CS2。**
 
 **并不是说我从未解决过 CS:S 或 CS:GO 中的错误或需要自己修复它们。在某种程度上这是可以接受的，并且是预期的，因为没有软件是无错误的。但 CS2 中的错误数量在消极方面树立了新标准。尤其是那些只与社区服务器有关的 bug，Valve 对此更是漠不关心。**
 
@@ -85,7 +85,7 @@ Valve偶尔表现出对社区反馈和错误报告不予理睬的情况。一个
 
     +   最后一次出现：2023-09-26 21:38:01（CS:GO 被 CS2 取代的前一天）***
 
-***在 CS2 中，我们非常高兴，因为问题似乎已经消失了。我们没有看到任何来自用户的报告，也没有在日志中看到任何事件。我们一直很开心，直到2024年1月的第一周，我们观察到与所有报告相比与此问题相关的用户报告增加：***
+***在 CS2 中，我们非常高兴，因为问题似乎已经消失了。我们没有看到任何来自用户的报告，也没有在日志中看到任何事件。我们一直很开心，直到 2024 年 1 月的第一周，我们观察到与所有报告相比与此问题相关的用户报告增加：***
 
 ```
 ***`xychart-beta
@@ -121,9 +121,9 @@ Valve偶尔表现出对社区反馈和错误报告不予理睬的情况。一个
 
 ***我的同事连接起点在 Slack 中写道：***
 
-> ***中欧时间下午1点至5点是华盛顿时间上午4点至8点，也许他们正在进行某种常规工作***
+> ***中欧时间下午 1 点至 5 点是华盛顿时间上午 4 点至 8 点，也许他们正在进行某种常规工作***
 > 
-> — Jane Doe，2024年1月8日，上色***
+> — Jane Doe，2024 年 1 月 8 日，上色***
 
 ***以前报告的问题在一天中均匀分布。现在它们集中在一个特定的时间范围内。***
 
@@ -131,15 +131,15 @@ Valve偶尔表现出对社区反馈和错误报告不予理睬的情况。一个
 
 ***虽然我在想“我已经检查了这个 bug 一百次，但没有得到有意义的结果”，但由于问题的重要性和工单的数量，我们现在有了动力彻底解决它。***
 
-## ***[症状](#the-symptoms)***
+## ***症状***
 
-***观察到的`无用户登录`错误发生在玩家连接到游戏后的2-3分钟。有趣的是，这个时间跨度相当恒定。***
+***观察到的`无用户登录`错误发生在玩家连接到游戏后的 2-3 分钟。有趣的是，这个时间跨度相当恒定。***
 
 ***幸运的是，一位同事在当时并不知道他们掌握了多么重要的信息：***
 
 > ***我在 CS2 中直到游戏进行了一段时间才看到我的皮肤。***
 
-***的确，[Esportal之外的玩家报告说丢失了皮肤](https://www.reddit.com/r/GlobalOffensive/comments/190s7am/gaben_stole_our_usps/)。***
+***的确，[Esportal 之外的玩家报告说丢失了皮肤](https://www.reddit.com/r/GlobalOffensive/comments/190s7am/gaben_stole_our_usps/)。***
 
 ****我的同事在没有知情的情况下将一个想法植入我的脑海中。****
 
@@ -177,7 +177,7 @@ Valve偶尔表现出对社区反馈和错误报告不予理睬的情况。一个
 
 > ***`No user logon`和没有皮肤之间的联系的假设现在得到了确认。***
 
-## ***[NETWORK_DISCONNECT_STEAM_LOGON](#network_disconnect_steam_logon)***
+## ***NETWORK_DISCONNECT_STEAM_LOGON***
 
 ***现在显而易见的是，这个问题与 Steam 验证有关。但是到底是什么 Bug？回到我选择的比赛的日志，我现在看着报告了`No user logon`问题的用户 `Bob`：***
 
@@ -253,9 +253,9 @@ $ grep -a "STEAMAUTH:" engine2.so
 
 |`***
 
-***比赛的最后部分很有趣：`STEAMAUTH: 客户端%s收到失败代码%d`。由于我确认了这个字符串在`libengine2.so`中，我打开了一个[逆向工程](https://zh.wikipedia.org/wiki/逆向工程)工具，再次搜索了相同的字符串，并找到了引用该字符串的函数。这帮助我理解了字符串的上下文以及它的用途。***
+***比赛的最后部分很有趣：`STEAMAUTH: 客户端%s 收到失败代码%d`。由于我确认了这个字符串在`libengine2.so`中，我打开了一个[逆向工程](https://zh.wikipedia.org/wiki/逆向工程)工具，再次搜索了相同的字符串，并找到了引用该字符串的函数。这帮助我理解了字符串的上下文以及它的用途。***
 
-***在查看《反恐精英》时的一个小技巧是[CS:GO源代码泄漏](https://www.ign.com/articles/valve-counter-strike-source-code-leak-no-danger)。相同的字符串出现在[sv_steamauth.cpp文件的792行](https://github.com/perilouswithadollarsign/cstrike15_src/blob/f82112a2388b841d72cb62ca48ab1846dfcc11c8/engine/sv_steamauth.cpp#L792)中。利用[反编译器](https://zh.wikipedia.org/wiki/反编译器)我能够获得反映 CS2 中函数正在执行的伪 C 代码。结合源代码泄漏和逆向工程工具的信息，我能够理解字符串的上下文和用途。在两个版本的《反恐精英》中，函数看起来几乎相同，但并非百分之百相同。下面是 CS2 的可读代码：***
+***在查看《反恐精英》时的一个小技巧是[CS:GO 源代码泄漏](https://www.ign.com/articles/valve-counter-strike-source-code-leak-no-danger)。相同的字符串出现在[sv_steamauth.cpp 文件的 792 行](https://github.com/perilouswithadollarsign/cstrike15_src/blob/f82112a2388b841d72cb62ca48ab1846dfcc11c8/engine/sv_steamauth.cpp#L792)中。利用[反编译器](https://zh.wikipedia.org/wiki/反编译器)我能够获得反映 CS2 中函数正在执行的伪 C 代码。结合源代码泄漏和逆向工程工具的信息，我能够理解字符串的上下文和用途。在两个版本的《反恐精英》中，函数看起来几乎相同，但并非百分之百相同。下面是 CS2 的可读代码：***
 
 ***`|
 
@@ -357,7 +357,7 @@ void CSteam3Server::OnValidateAuthTicketResponseHelper(CSteam3Server* pThis, CBa
 
 +   ***`k_EAuthSessionResponseAuthTicketInvalid` (映射为 `8`)***
 
-## ***Steam3验证:[](#steam3-validation)***
+## ***Steam3 验证:[](#steam3-validation)***
 
 ***那么... `CSteamServer3`是什么？我不太确定，但我可以从查看泄露的《反恐精英：全球攻势》源代码中学到的东西推断出来。为了让你不必跟随我穿越 C++ 类和函数的丛林，这里是我发现的图表和文字说明：***
 
@@ -382,7 +382,7 @@ void CSteam3Server::OnValidateAuthTicketResponseHelper(CSteam3Server* pThis, CBa
   end`*** 
 ```
 
-***Steam3服务器很可能负责验证用户。它与您用于玩游戏的 Steam 客户端不同。它也与负责匹配和其他事务的 Steam 服务器不同。它是一个独立的东西。想象一下：它确保您所声称的身份是您的，并且您拥有您想要玩的游戏。***
+***Steam3 服务器很可能负责验证用户。它与您用于玩游戏的 Steam 客户端不同。它也与负责匹配和其他事务的 Steam 服务器不同。它是一个独立的东西。想象一下：它确保您所声称的身份是您的，并且您拥有您想要玩的游戏。***
 
 ***当连接到游戏服务器时，你的游戏（`CS2.exe`）会告诉游戏服务器你的 Steam ID 是什么。由于你可能是个坏人，你可以修改游戏并告诉游戏服务器你的 Steam ID 是 `STEAM_0:0:0`。那将是第一个创建的 Steam 帐户的 Steam ID。在这一点上，游戏服务器无法知道你的信息是否正确。这就是 Steam3 服务器发挥作用的地方。游戏服务器询问 Steam3 服务器 Steam ID 是否有效以及你是否拥有该游戏。***
 
@@ -429,17 +429,17 @@ void CSteam3Server::OnValidateAuthTicketResponseHelper(CSteam3Server* pThis, CBa
 
 ***Steam3 服务器可能回答“不”的原因包括：***
 
-1.  ***Steam3损坏并回答错误的事情：不太可能，即使 Valve 也可以信任他们做对***
+1.  ***Steam3 损坏并回答错误的事情：不太可能，即使 Valve 也可以信任他们做对***
 
 1.  ***Steam3 服务器正在维护中：不太可能，因为其他用户可以连接***
 
 1.  ***Steam ID 无效：不太可能，通常我们的玩家是值得信任的***
 
-1.  ***Steam ID是有效的，但`CS2.exe`的实例不可信：很可能***
+1.  ***Steam ID 是有效的，但`CS2.exe`的实例不可信：很可能***
 
 1.  ***Steam3 服务器不知道这个`CS2.exe`实例的 Steam ID：很可能***
 
-***啊哈！最后两点是问题的可能候选者。但是为什么一些用户在不可信的`CS2.exe`实例上遇到问题，而其他用户则没有问题呢？为什么用户`Bob`能在9分钟后验证他们的Steam ID呢？***
+***啊哈！最后两点是问题的可能候选者。但是为什么一些用户在不可信的`CS2.exe`实例上遇到问题，而其他用户则没有问题呢？为什么用户`Bob`能在 9 分钟后验证他们的 Steam ID 呢？***
 
 ## ***NETWORK_DISCONNECT_LOOPSHUTDOWN[](#network_disconnect_loopshutdown)***
 
@@ -469,7 +469,7 @@ void CSteam3Server::OnValidateAuthTicketResponseHelper(CSteam3Server* pThis, CBa
 
 |`***
 
-***似乎游戏服务器断开了用户连接，原因是`NETWORK_DISCONNECT_LOOPSHUTDOWN`。然后游戏自行重新连接。这是游戏的一个功能，它在5秒后自动重试连接，因此在游戏服务器日志中可以看到多次连接尝试。***
+***似乎游戏服务器断开了用户连接，原因是`NETWORK_DISCONNECT_LOOPSHUTDOWN`。然后游戏自行重新连接。这是游戏的一个功能，它在 5 秒后自动重试连接，因此在游戏服务器日志中可以看到多次连接尝试。***
 
 ***再说一遍：为什么一些用户会因为`NETWORK_DISCONNECT_LOOPSHUTDOWN`而断开连接，而其他用户却没有？***
 

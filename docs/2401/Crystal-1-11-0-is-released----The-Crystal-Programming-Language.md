@@ -8,7 +8,7 @@
 
 # Crystal 1.11.0 发布了！- Crystal 编程语言
 
-> 来源：[https://crystal-lang.org/2024/01/08/1.11.0-released/](https://crystal-lang.org/2024/01/08/1.11.0-released/)
+> 来源：[`crystal-lang.org/2024/01/08/1.11.0-released/`](https://crystal-lang.org/2024/01/08/1.11.0-released/)
 
 我们宣布一个新的 Crystal 发布，其中包含几个新功能和错误修复。
 
@@ -75,7 +75,7 @@ instance_alignof(Foo) # => 8
 
 ### `Link`注解中的`dll`参数
 
-[`Link`](https://crystal-lang.org/api/1.11.0/Link.html)注解有一个新参数`dll`，用于在Windows上指定动态链接库 ([#14131](https://github.com/crystal-lang/crystal/pull/14131)).
+[`Link`](https://crystal-lang.org/api/1.11.0/Link.html)注解有一个新参数`dll`，用于在 Windows 上指定动态链接库 ([#14131](https://github.com/crystal-lang/crystal/pull/14131)).
 
 ```
 @[Link(dll: "foo.dll")]
@@ -117,7 +117,7 @@ foo # => 5
 
 [`BigFloat#**`](https://crystal-lang.org/api/1.11.0/BigFloat.html#%2A%2A%28other%3ABigInt%29%3ABigFloat-instance-method) 现在适用于所有`Int::Primitive`参数，并支持`BitInt`参数的完整指数范围 ([#13971](https://github.com/crystal-lang/crystal/pull/13971), [#13881](https://github.com/crystal-lang/crystal/pull/13881))
 
-`printf`中的浮点到字符串转换使用了Ryu算法 ([#8441](https://github.com/crystal-lang/crystal/issues/8441)).
+`printf`中的浮点到字符串转换使用了 Ryu 算法 ([#8441](https://github.com/crystal-lang/crystal/issues/8441)).
 
 新方法 [`Float::Primitive.to_hexfloat`](https://crystal-lang.org/api/1.11.0/Float64.html#to_hexfloat:String-instance-method)、[`.parse_hexfloat`](https://crystal-lang.org/api/1.11.0/Float64.html#parse_hexfloat(str:String):self-class-method) 和 [`.parse_hexfloat?`](https://crystal-lang.org/api/1.11.0/Float64.html#parse_hexfloat(str:String):self-class-method) 允许在十六进制浮点格式之间进行转换 ([#14027](https://github.com/crystal-lang/crystal/pull/14027))。
 
@@ -177,13 +177,13 @@ foo # => 5
 
 ### 实验性内容：`ReferenceStorage`和`.pre_initialize`
 
-我们已经开始努力使在Crystal中使用自定义分配机制变得更加容易，并将分配与初始化解耦。主要工具是[`Reference.pre_initialize`](https://crystal-lang.org/api/1.11.0/Reference.html#pre_initialize(address:Pointer)-class-method)，它在实际调用`#initialize`之前执行基本的对象初始化。
+我们已经开始努力使在 Crystal 中使用自定义分配机制变得更加容易，并将分配与初始化解耦。主要工具是[`Reference.pre_initialize`](https://crystal-lang.org/api/1.11.0/Reference.html#pre_initialize(address:Pointer)-class-method)，它在实际调用`#initialize`之前执行基本的对象初始化。
 
-[`Reference.unsafe_construct`](https://crystal-lang.org/api/1.11.0/Reference.html#unsafe_construct%28address%3APointer%2C%2Aargs%2C%2A%2Aopts%29%3Aself-class-method)是在其上的一个更高级别的API。[`ReferenceStorage`](https://crystal-lang.org/api/1.11.0/ReferenceStorage.html)代表了引用分配的静态缓冲区。
+[`Reference.unsafe_construct`](https://crystal-lang.org/api/1.11.0/Reference.html#unsafe_construct%28address%3APointer%2C%2Aargs%2C%2A%2Aopts%29%3Aself-class-method)是在其上的一个更高级别的 API。[`ReferenceStorage`](https://crystal-lang.org/api/1.11.0/ReferenceStorage.html)代表了引用分配的静态缓冲区。
 
-这些API是实验性的，可能会发生变化。我们期待在未来的版本中有更多相关功能。参与有关自定义引用分配的讨论，请访问[#13481](https://github.com/crystal-lang/crystal/issues/13481)。
+这些 API 是实验性的，可能会发生变化。我们期待在未来的版本中有更多相关功能。参与有关自定义引用分配的讨论，请访问[#13481](https://github.com/crystal-lang/crystal/issues/13481)。
 
-> *注意：*`ReferenceStorage`由于与旧版本标准库的兼容性问题，在1.11.1中再次移除（[#14207](https://github.com/crystal-lang/crystal/pull/14207)）。它将以改进的实现方式回归。
+> *注意：*`ReferenceStorage`由于与旧版本标准库的兼容性问题，在 1.11.1 中再次移除（[#14207](https://github.com/crystal-lang/crystal/pull/14207)）。它将以改进的实现方式回归。
 
 *感谢[@HertzDevil](https://github.com/HertzDevil)*
 
@@ -193,14 +193,14 @@ foo # => 5
 
 +   `LLVM.start_multithreaded`和`.stop_multithreaded`。它们没有影响（[#13949](https://github.com/crystal-lang/crystal/pull/13949)）
 
-+   `LLVMExtSetCurrentDebugLocation`来自`llvm_ext.cc`，适用于LLVM 9+（[#13965](https://github.com/crystal-lang/crystal/pull/13965)）
++   `LLVMExtSetCurrentDebugLocation`来自`llvm_ext.cc`，适用于 LLVM 9+（[#13965](https://github.com/crystal-lang/crystal/pull/13965)）
 
 +   `Char::Reader#@end`（[#13920](https://github.com/crystal-lang/crystal/pull/13920)）
 
 感谢
 
-我们之所以能够做到这一切，要感谢[84codes](https://www.84codes.com/)和其他每一个[赞助商](/sponsors)的持续支持。为了保持和提高开发速度，捐赠和赞助至关重要。可通过[OpenCollective](https://opencollective.com/crystal-lang)进行捐赠。
+我们之所以能够做到这一切，要感谢[84codes](https://www.84codes.com/)和其他每一个赞助商的持续支持。为了保持和提高开发速度，捐赠和赞助至关重要。可通过[OpenCollective](https://opencollective.com/crystal-lang)进行捐赠。
 
-如果您想成为直接赞助商或找到其他支持Crystal的方式，请联系[crystal@manas.tech](mailto:crystal@manas.tech)。我们在此先行致谢！
+如果您想成为直接赞助商或找到其他支持 Crystal 的方式，请联系 crystal@manas.tech。我们在此先行致谢！
 
-[贡献](/sponsors#contribute)
+贡献

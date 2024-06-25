@@ -8,7 +8,7 @@ date: 2024-05-27 15:10:24
 
 # A Boeing passenger jet nose wheel fell off before takeoff
 
-> 来源：[https://www.nbcnews.com/news/us-news/boeing-passenger-jet-nose-wheel-fell-off-takeoff-rcna135410](https://www.nbcnews.com/news/us-news/boeing-passenger-jet-nose-wheel-fell-off-takeoff-rcna135410)
+> 来源：[`www.nbcnews.com/news/us-news/boeing-passenger-jet-nose-wheel-fell-off-takeoff-rcna135410`](https://www.nbcnews.com/news/us-news/boeing-passenger-jet-nose-wheel-fell-off-takeoff-rcna135410)
 
 The nose wheel of a Boeing 757 jet fell off and rolled away while the plane was waiting on the runway for takeoff clearance, with almost 200 people on board.
 

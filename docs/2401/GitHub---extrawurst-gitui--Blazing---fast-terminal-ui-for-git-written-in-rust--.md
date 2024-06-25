@@ -8,7 +8,7 @@
 
 # GitHub - extrawurst/gitui：用 Rust 🦀 编写的 git 的闪电 💥 快速终端用户界面
 
-> 来源：[https://github.com/extrawurst/gitui](https://github.com/extrawurst/gitui)
+> 来源：[`github.com/extrawurst/gitui`](https://github.com/extrawurst/gitui)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:11:27
 
 # GitHub - JoeyMckenzie/openbrewerydb-php-client: 🍺 An Open Brewery DB API client for PHP.
 
-> 来源：[https://github.com/JoeyMckenzie/openbrewerydb-php-api](https://github.com/JoeyMckenzie/openbrewerydb-php-api)
+> 来源：[`github.com/JoeyMckenzie/openbrewerydb-php-api`](https://github.com/JoeyMckenzie/openbrewerydb-php-api)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

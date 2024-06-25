@@ -8,9 +8,9 @@
 
 # [逃脱监禁卡，2 - 异见革命](https://marginalrevolution.com/marginalrevolution/2024/01/get-out-of-jail-cards-2.html)
 
-> 来源：[https://marginalrevolution.com/marginalrevolution/2024/01/get-out-of-jail-cards-2.html](https://marginalrevolution.com/marginalrevolution/2024/01/get-out-of-jail-cards-2.html)
+> 来源：[`marginalrevolution.com/marginalrevolution/2024/01/get-out-of-jail-cards-2.html`](https://marginalrevolution.com/marginalrevolution/2024/01/get-out-of-jail-cards-2.html)
 
-“礼貌卡”是由纽约市警察工会（以及可能其他地方）发放给朋友和家人的卡，他们可以使用这些卡在被警察拉住时获得便利的处理。我在[2018年首次写到这些卡](https://marginalrevolution.com/marginalrevolution/2018/01/get-jail-free-cards.html)时感到震惊。我以为这种情况只在独裁的小国和摇摇欲坠的国家普遍存在。这些卡甚至分为金、银和铜三个级别！
+“礼貌卡”是由纽约市警察工会（以及可能其他地方）发放给朋友和家人的卡，他们可以使用这些卡在被警察拉住时获得便利的处理。我在[2018 年首次写到这些卡](https://marginalrevolution.com/marginalrevolution/2018/01/get-jail-free-cards.html)时感到震惊。我以为这种情况只在独裁的小国和摇摇欲坠的国家普遍存在。这些卡甚至分为金、银和铜三个级别！
 
 一名在 Quora 上的退役警察解释了[特权是如何执行的](https://www.quora.com/Do-law-enforcement-officers-have-a-code-or-a-culture-where-they-overlook-the-transgressions-of-other-cops-or-retired-cops-How-does-it-work-and-how-far-does-it-go)：
 

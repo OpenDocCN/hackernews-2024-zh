@@ -8,7 +8,7 @@
 
 # Fathom 的全栈工程师（远程）| Y Combinator
 
-> 来源：[https://www.ycombinator.com/companies/fathom/jobs/OVTRjXb-full-stack-engineer-remote](https://www.ycombinator.com/companies/fathom/jobs/OVTRjXb-full-stack-engineer-remote)
+> 来源：[`www.ycombinator.com/companies/fathom/jobs/OVTRjXb-full-stack-engineer-remote`](https://www.ycombinator.com/companies/fathom/jobs/OVTRjXb-full-stack-engineer-remote)
 
 你是一位经验丰富的软件工程师，喜欢在一个用户绝对喜爱的快速增长的产品上工作吗？如果是的话，你来对地方了。
 

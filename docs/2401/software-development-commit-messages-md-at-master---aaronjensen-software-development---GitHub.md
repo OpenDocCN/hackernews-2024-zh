@@ -8,9 +8,9 @@
 
 # software-development/commit-messages.md at master · aaronjensen/software-development · GitHub
 
-> 来源：[https://github.com/aaronjensen/software-development/blob/master/commit-messages.md](https://github.com/aaronjensen/software-development/blob/master/commit-messages.md)
+> 来源：[`github.com/aaronjensen/software-development/blob/master/commit-messages.md`](https://github.com/aaronjensen/software-development/blob/master/commit-messages.md)
 
-[← 文章](/aaronjensen/software-development/blob/master/README.md#articles)
+← 文章
 
 # 以主题为先的提交消息
 
@@ -22,7 +22,7 @@
 
 我建议先阅读这篇文章，它描述了这个目标：
 
-[目标：连续性](/aaronjensen/software-development/blob/master/continuity.md)
+目标：连续性
 
 抽出一点时间，快速扫描而不是阅读以下列表：
 
@@ -88,7 +88,7 @@ Updating substitute with new entity is tested
 
 你看到了关于 Store 的消息吗？
 
-第一个列表是来自[Rails](https://github.com/rails/rails)的提交消息样本。第二个是来自[Eventide 中的 `entity-store` 项目](https://github.com/eventide-project/entity-store)。除非你已经在 Eventide 社区的轨道上，否则第一个提交消息样式可能是你所习惯的。很可能是你的团队所使用的，因为这是通常推荐的提交消息样式，被认为是一种["最佳实践"](/aaronjensen/software-development/blob/master/best-practices.md)。
+第一个列表是来自[Rails](https://github.com/rails/rails)的提交消息样本。第二个是来自[Eventide 中的 `entity-store` 项目](https://github.com/eventide-project/entity-store)。除非你已经在 Eventide 社区的轨道上，否则第一个提交消息样式可能是你所习惯的。很可能是你的团队所使用的，因为这是通常推荐的提交消息样式，被认为是一种"最佳实践"。
 
 第二种样式可能感觉陌生，可能不太舒服。它是被动语态和陈述语气，而不是更常见的主动语态和祈使语气。那么为什么 Eventide 项目和许多使用 Eventide 的团队选择使用这种以主题为先的提交消息样式呢？因为它更易于扫描。它经过了人类认知的优化。人们在查看列表时通常不会阅读，除非他们绝对需要。我们会扫描。当我们扫描时，我们希望首先看到最重要的事情。此外，以主题为先的提交消息样式使提交与变更相关，而不是与做出变更的人相关。它不是关于个人。它关乎代码。
 

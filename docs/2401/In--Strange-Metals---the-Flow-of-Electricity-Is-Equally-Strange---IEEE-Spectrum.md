@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年5月27日14:31:00
+日期：2024 年 5 月 27 日 14:31:00
 
 -->
 
 # In “Strange Metals,” the Flow of Electricity Is Equally Strange - IEEE Spectrum
 
-> 来源：[https://spectrum.ieee.org/strange-metal](https://spectrum.ieee.org/strange-metal)
+> 来源：[`spectrum.ieee.org/strange-metal`](https://spectrum.ieee.org/strange-metal)
 
 在正常金属中，电流以带电粒子的形式流动。现在科学家们可能已经找到了所谓的奇怪金属中电流可能流动为神秘流体的首次直接证据。在发表在*Science*上的[论文](https://www.science.org/doi/10.1126/science.abq6100)中，研究人员建议这种电子流体可能具有非常低的粘度，潜在地导致不寻常的应用。
 

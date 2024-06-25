@@ -8,7 +8,7 @@
 
 # 页面未找到 · GitHub Pages
 
-> 来源：[https://karpathy.github.io/2024/01/21/selfdriving-agi/](https://karpathy.github.io/2024/01/21/selfdriving-agi/)
+> 来源：[`karpathy.github.io/2024/01/21/selfdriving-agi/`](https://karpathy.github.io/2024/01/21/selfdriving-agi/)
 
 # 404
 
@@ -22,4 +22,4 @@
 
 [阅读完整文档](https://help.github.com/pages/) 以获取有关使用 **GitHub Pages** 的更多信息。
 
-[![](img/6691b6771aee6d71f28885ba1e6cb58e.png) ](/) [![](img/a718d401a153f4ec3816bbbebdadb6c4.png)](/) 
+![ ](img/) ![](img/) 

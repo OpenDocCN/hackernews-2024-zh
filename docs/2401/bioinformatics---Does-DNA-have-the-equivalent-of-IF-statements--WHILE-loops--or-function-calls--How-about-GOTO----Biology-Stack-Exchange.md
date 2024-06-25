@@ -8,7 +8,7 @@
 
 # 生物信息学 - DNA 是否具有 IF 语句、WHILE 循环或函数调用的等价物？GOTO 呢？ - 生物学堆栈交换
 
-> 来源：[https://biology.stackexchange.com/questions/30116/does-dna-have-the-equivalent-of-if-statements-while-loops-or-function-calls-h](https://biology.stackexchange.com/questions/30116/does-dna-have-the-equivalent-of-if-statements-while-loops-or-function-calls-h)
+> 来源：[`biology.stackexchange.com/questions/30116/does-dna-have-the-equivalent-of-if-statements-while-loops-or-function-calls-h`](https://biology.stackexchange.com/questions/30116/does-dna-have-the-equivalent-of-if-statements-while-loops-or-function-calls-h)
 
 补充前面的回答，但**转录干扰**（见例如[Shearwin et al., 2005](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2941638/)）可以看作是一种 IF 语句（或 WHILE）的形式，因为：
 

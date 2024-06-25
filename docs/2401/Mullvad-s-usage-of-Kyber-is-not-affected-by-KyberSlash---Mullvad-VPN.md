@@ -8,7 +8,7 @@ date: 2024-05-27 14:31:39
 
 # Mullvad 对凯伯的使用不受 KyberSlash 的影响 | Mullvad VPN
 
-> 来源：[https://mullvad.net/en/blog/mullvads-usage-of-kyber-is-not-affected-by-kyberslash](https://mullvad.net/en/blog/mullvads-usage-of-kyber-is-not-affected-by-kyberslash)
+> 来源：[`mullvad.net/en/blog/mullvads-usage-of-kyber-is-not-affected-by-kyberslash`](https://mullvad.net/en/blog/mullvads-usage-of-kyber-is-not-affected-by-kyberslash)
 
 凯伯的某些实现的漏洞，即量子抗性密钥封装机制，[最近被披露](https://groups.google.com/a/list.nist.gov/g/pqc-forum/c/ldX0ThYJuBo/m/uIOqRF5BAwAJ)。Mullvad 的量子抗性隧道不受此漏洞或任何类似漏洞的影响。
 

@@ -8,13 +8,13 @@ date: 2024-05-27 14:46:56
 
 # 终极 Docker 速查表 - DevOps 循环
 
-> 来源：[https://devopscycle.com/blog/the-ultimate-docker-cheat-sheet/](https://devopscycle.com/blog/the-ultimate-docker-cheat-sheet/)
+> 来源：[`devopscycle.com/blog/the-ultimate-docker-cheat-sheet/`](https://devopscycle.com/blog/the-ultimate-docker-cheat-sheet/)
 
 获取你的 Docker 速查表，可以选择[PDF](http://devopscycle.com/wp-content/uploads/sites/4/2023/12/the-ultimate-docker-cheat-sheet-1.pdf) 或者一个 [图片](http://devopscycle.com/wp-content/uploads/sites/4/2023/11/the-ultimate-docker-cheat-sheet-4.png) 。为了跟随本文，确保你的开发机器已经[安装了 Docker](https://docs.docker.com/get-docker/)。在这篇博客文章中，我们将编写自己的 Dockerfile，学习如何创建镜像，最终将它们作为容器运行。完整的源代码可以在[GitHub](https://github.com/aichbauer/the-ultimate-docker-cheat-sheet)上找到。
 
 请[下载](http://devopscycle.com/wp-content/uploads/sites/4/2023/11/the-ultimate-docker-cheat-sheet-1.pdf)你的 Docker 速查表，以便跟随本文。欢迎与你的同事和朋友分享。
 
-成为我们新[社区](https://discord.gg/7xpRbG2gY9)的第一批成员，并了解最新的 DevOps 主题（首批到达的前 42 人免费提供饼干！）。通过注册我们的[通讯](#newsletter)，不要错过任何新资源。直接在你的收件箱里获得我们的最新资源和见解！
+成为我们新[社区](https://discord.gg/7xpRbG2gY9)的第一批成员，并了解最新的 DevOps 主题（首批到达的前 42 人免费提供饼干！）。通过注册我们的通讯，不要错过任何新资源。直接在你的收件箱里获得我们的最新资源和见解！
 
 所有这些都是相互依赖的。你需要一个 Dockerfile 来创建一个镜像，你需要一个镜像来创建一个容器。
 
@@ -143,7 +143,7 @@ $ docker run --detached examplename/examplerepository-client:0.1.0Code language:
 
 您将看到命令退出，然后可以再次使用终端。
 
-Docker只会显示正在运行的容器。
+Docker 只会显示正在运行的容器。
 
 ```
 # list all running containers
@@ -181,14 +181,14 @@ $ docker run --rm examplename/examplerepository-server:0.1.0
 $ docker run --rm examplename/examplerepository-client:0.1.0Code language: Bash (bash)
 ```
 
-有时信号无法正确传递到容器。想象一下，您已经因为无法使用CTRL+C停止容器而杀死了终端。但是，如果您尝试重新启动容器，它会告诉您端口已被分配。这意味着您的旧容器仍在运行。要终止容器，请运行以下命令：
+有时信号无法正确传递到容器。想象一下，您已经因为无法使用 CTRL+C 停止容器而杀死了终端。但是，如果您尝试重新启动容器，它会告诉您端口已被分配。这意味着您的旧容器仍在运行。要终止容器，请运行以下命令：
 
 ```
 # kill a container
 $ docker kill <conatiner-id>Code language: Bash (bash)
 ```
 
-通常，Docker容器公开一个或多个端口。您可以通过这些端口访问运行在容器内部的应用程序。要访问这些端口，您需要在容器创建期间发布这些端口。从主机系统访问容器的另一种方式是在其中执行命令。这通常用于调试或单次使用容器应用程序。
+通常，Docker 容器公开一个或多个端口。您可以通过这些端口访问运行在容器内部的应用程序。要访问这些端口，您需要在容器创建期间发布这些端口。从主机系统访问容器的另一种方式是在其中执行命令。这通常用于调试或单次使用容器应用程序。
 
 要将端口暴露给主机系统，您需要添加`--publish`（简写语法：`-p`）标志。
 
@@ -202,7 +202,7 @@ $ docker run --publish 80:80 examplename/examplerepository-server:0.1.0
 # you should see the message Hello WorldCode language: Bash (bash)
 ```
 
-在上面的第一个示例中，我们将容器的端口3000绑定到主机系统的端口3000上。主机系统可以是您的开发机器或服务器。格式如下：`--publish <hostport>:<containerport>`。
+在上面的第一个示例中，我们将容器的端口 3000 绑定到主机系统的端口 3000 上。主机系统可以是您的开发机器或服务器。格式如下：`--publish <hostport>:<containerport>`。
 
 有时，您希望访问容器。这对于调试很有好处。
 
@@ -211,9 +211,9 @@ $ docker run --publish 80:80 examplename/examplerepository-server:0.1.0
 $ docker exec --interactive --tty <container-id> <shell-command>Code language: Bash (bash)
 ```
 
-`--interactive --tty`（简写语法`-it`）指示Docker分配伪TTY连接。这样，容器的stdin（标准输入）在容器中创建一个交互式shell。
+`--interactive --tty`（简写语法`-it`）指示 Docker 分配伪 TTY 连接。这样，容器的 stdin（标准输入）在容器中创建一个交互式 shell。
 
-您可以执行任何容器内可能的命令。如果您运行的是Debian容器，您将能够列出目录：
+您可以执行任何容器内可能的命令。如果您运行的是 Debian 容器，您将能够列出目录：
 
 ```
 # list the directory inside the container
@@ -231,7 +231,7 @@ $ docker exec --interactive --tty <container-id> sh
 $ exitCode language: Bash (bash)
 ```
 
-容器内存储的数据默认情况下不会持久化。当你停止并移除一个容器时，该容器中的所有数据都会丢失。在我们的应用程序中，如果你点击网站上的按钮（[http://localhost:80](http://localhost/)），我们会将“New message”写入容器内的一个 JSON 文件中。现在如果我们停止并移除容器，所有这些消息也会被删除。
+容器内存储的数据默认情况下不会持久化。当你停止并移除一个容器时，该容器中的所有数据都会丢失。在我们的应用程序中，如果你点击网站上的按钮（[`localhost:80`](http://localhost/)），我们会将“New message”写入容器内的一个 JSON 文件中。现在如果我们停止并移除容器，所有这些消息也会被删除。
 
 如果你想要在容器启动之间保持数据持久化，你需要使用卷（volumes）。有两种不同类型的卷：命名卷和挂载卷。命名卷完全由 Docker 处理，挂载卷由你管理。对于挂载卷，你需要指定主机系统上存储这些数据的位置。我们在运行命令中使用`--volume`（缩写`-v`）。
 
@@ -268,7 +268,7 @@ $ docker volume ls
 
 在本文中，我们学习了 Dockerfile、镜像和容器之间的区别。现在你可以编写你的 Dockerfile 来创建镜像。此外，你还学会了如何启动容器并从主机系统访问它们。另外，你还学会了如何在容器启动之间持久化数据。
 
-如果你需要帮助容器化，[随时联系我们](https://calendly.com/devopsberatung/meet)，或加入我们的新社区进行进一步问题和讨论（前42位到场者可获得免费饼干）！
+如果你需要帮助容器化，[随时联系我们](https://calendly.com/devopsberatung/meet)，或加入我们的新社区进行进一步问题和讨论（前 42 位到场者可获得免费饼干）！
 
 你喜欢这篇文章吗？与你的同事和朋友分享吧。
 

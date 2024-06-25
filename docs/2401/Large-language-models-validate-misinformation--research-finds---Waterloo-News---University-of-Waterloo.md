@@ -8,7 +8,7 @@
 
 # 大型语言模型验证错误信息，研究发现 | 滑铁卢新闻 | 滑铁卢大学
 
-> 来源：[https://uwaterloo.ca/news/media/large-language-models-validate-misinformation-research-finds](https://uwaterloo.ca/news/media/large-language-models-validate-misinformation-research-finds)
+> 来源：[`uwaterloo.ca/news/media/large-language-models-validate-misinformation-research-finds`](https://uwaterloo.ca/news/media/large-language-models-validate-misinformation-research-finds)
 
 最新研究表明，大型语言模型会重复阴谋论、有害刻板印象和其他形式的错误信息。
 

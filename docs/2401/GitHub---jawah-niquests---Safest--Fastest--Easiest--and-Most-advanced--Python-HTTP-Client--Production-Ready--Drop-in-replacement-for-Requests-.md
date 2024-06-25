@@ -2,13 +2,13 @@
 
 类别: 未分类
 
-日期: 2024年05月27日 14:36:53
+日期: 2024 年 05 月 27 日 14:36:53
 
 -->
 
 # GitHub - jawah/niquests: “最安全，最快，最简单，最先进”的 Python HTTP 客户端。适用于生产环境！是 Requests 的可嵌入替代品。
 
-> 来源：[https://github.com/jawah/niquests](https://github.com/jawah/niquests)
+> 来源：[`github.com/jawah/niquests`](https://github.com/jawah/niquests)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

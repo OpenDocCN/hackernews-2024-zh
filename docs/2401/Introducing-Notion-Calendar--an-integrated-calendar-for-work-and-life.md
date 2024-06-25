@@ -8,7 +8,7 @@
 
 # 介绍 Notion 日历：一种集成工作和生活的日历
 
-> 来源：[https://www.notion.so/blog/introducing-notion-calendar](https://www.notion.so/blog/introducing-notion-calendar)
+> 来源：[`www.notion.so/blog/introducing-notion-calendar`](https://www.notion.so/blog/introducing-notion-calendar)
 
 *[Cron](https://cron.com/) *现在是 Notion 日历。这是一种更好的管理、组织和优先考虑您工作和生活中时间的方式。**
 
@@ -30,7 +30,7 @@
 
 ## 设计促进专注
 
-查看即将举行的会议时间可能看起来无害，但这种上下文切换可能对生产力有害（恢复专注需要多达[23分钟](https://ics.uci.edu/~gmark/chi08-mark.pdf)）。
+查看即将举行的会议时间可能看起来无害，但这种上下文切换可能对生产力有害（恢复专注需要多达[23 分钟](https://ics.uci.edu/~gmark/chi08-mark.pdf)）。
 
 相反，通过 Notion 日历，您可以从计算机的菜单栏查看您的一天日程并加入虚拟会议。如果您正在为即将到来的产品发布编写计划，您甚至不必离开该页面即可查看即将到来的会议或直到那些会议结束前还有多少时间。
 

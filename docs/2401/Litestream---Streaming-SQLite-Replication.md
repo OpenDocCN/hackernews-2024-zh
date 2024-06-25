@@ -8,7 +8,7 @@ date: 2024-05-27 14:27:21
 
 # Litestream - 流式 SQLite 复制
 
-> 来源：[https://litestream.io/](https://litestream.io/)
+> 来源：[`litestream.io/`](https://litestream.io/)
 
 ## 无忧备份
 

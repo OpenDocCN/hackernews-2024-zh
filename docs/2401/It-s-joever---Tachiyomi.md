@@ -8,9 +8,9 @@
 
 # 这是 joever | Tachiyomi
 
-> 来源：[https://tachiyomi.org/news/2024-01-13-goodbye](https://tachiyomi.org/news/2024-01-13-goodbye)
+> 来源：[`tachiyomi.org/news/2024-01-13-goodbye`](https://tachiyomi.org/news/2024-01-13-goodbye)
 
-# 这是joever[​](#it-s-joever)
+# 这是 joever​
 
 tl;dr
 
@@ -62,4 +62,4 @@ P.P.S. 我觉得 Reddit 上的某人现在欠另一个人 $100。
 
 * * *
 
-最近的这些帖子也被存档在 Pastebin 上：[https://pastebin.com/ScYsKtia](https://pastebin.com/ScYsKtia)
+最近的这些帖子也被存档在 Pastebin 上：[`pastebin.com/ScYsKtia`](https://pastebin.com/ScYsKtia)

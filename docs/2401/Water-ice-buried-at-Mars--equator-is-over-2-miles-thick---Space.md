@@ -6,48 +6,48 @@ date: 2024-05-27 14:55:50
 
 -->
 
-# 火星赤道下的水冰超过2英里厚 | 太空
+# 火星赤道下的水冰超过 2 英里厚 | 太空
 
-> 来源：[https://www.space.com/mars-water-ice-equator-frozen-ocean](https://www.space.com/mars-water-ice-equator-frozen-ocean)
+> 来源：[`www.space.com/mars-water-ice-equator-frozen-ocean`](https://www.space.com/mars-water-ice-equator-frozen-ocean)
 
-欧洲航天局（ESA）的探测器在火星赤道下方发现了足以覆盖[火星](https://www.space.com/47-mars-the-red-planet-fourth-planet-from-the-sun.html)的海洋的水，厚度在4.9至8.9英尺（1.5至2.7米）之间，以灰尘冰的形式埋藏在行星表面以下。
+欧洲航天局（ESA）的探测器在火星赤道下方发现了足以覆盖[火星](https://www.space.com/47-mars-the-red-planet-fourth-planet-from-the-sun.html)的海洋的水，厚度在 4.9 至 8.9 英尺（1.5 至 2.7 米）之间，以灰尘冰的形式埋藏在行星表面以下。
 
-这一发现是由ESA的[火星探测器](https://www.space.com/18206-mars-express.html)任务所做出的，这是一艘经验丰富的航天器，已经在[火星](https://www.space.com/47-mars-the-red-planet-fourth-planet-from-the-sun.html)周围进行科学操作已有20年了。尽管这并不是第一次在红色星球赤道附近发现冰的证据，但这一新发现迄今为止是在那里检测到的水冰数量最多的，并且似乎与先前在火星上发现的冰冻水相匹配。
+这一发现是由 ESA 的[火星探测器](https://www.space.com/18206-mars-express.html)任务所做出的，这是一艘经验丰富的航天器，已经在[火星](https://www.space.com/47-mars-the-red-planet-fourth-planet-from-the-sun.html)周围进行科学操作已有 20 年了。尽管这并不是第一次在红色星球赤道附近发现冰的证据，但这一新发现迄今为止是在那里检测到的水冰数量最多的，并且似乎与先前在火星上发现的冰冻水相匹配。
 
 "令人兴奋的是，史密森尼学会美国首席研究员托马斯·沃特斯在欧洲航天局声明中表示，雷达信号与我们预期从分层冰层中看到的相匹配，并且与我们从火星极冰帽中看到的信号相似，我们知道那里富含冰。"
 
-这些沉积物厚厚地延伸在地下3.7公里（2.3英里），并覆盖着几百米厚的硬化灰烬和干燥尘土的硬壳。冰并不是纯净的冰块，而是被大量灰尘污染。尽管它位于赤道附近，这样的位置更容易让未来的载人任务进入，但埋藏得如此之深意味着访问水冰将会很困难。
+这些沉积物厚厚地延伸在地下 3.7 公里（2.3 英里），并覆盖着几百米厚的硬化灰烬和干燥尘土的硬壳。冰并不是纯净的冰块，而是被大量灰尘污染。尽管它位于赤道附近，这样的位置更容易让未来的载人任务进入，但埋藏得如此之深意味着访问水冰将会很困难。
 
 **相关内容：** [火星探测器暗示红色星球上古微生物生命，水和火山活动的证据](https://www.space.com/mars-express-orbiter-water-red-planet-volcano-life)
 
-大约15年前，火星探测器探测到了地质形成物称为[Medusae Fossae Formation](https://www.space.com/mars-wind-dust-image-esa-mars-express-photo)（MFF）下的沉积物，但科学家们不确定这些沉积物的组成。火星的地理分为北部高地和南部低地，而长达5,000公里的MMF位于两者之间的边界附近。
+大约 15 年前，火星探测器探测到了地质形成物称为[Medusae Fossae Formation](https://www.space.com/mars-wind-dust-image-esa-mars-express-photo)（MFF）下的沉积物，但科学家们不确定这些沉积物的组成。火星的地理分为北部高地和南部低地，而长达 5,000 公里的 MMF 位于两者之间的边界附近。
 
-人们怀疑MMF本身是在过去30亿年内由熔岩流形成的，并在长久以前火星活跃火山时期被火山灰覆盖。如今，MMF被[大量的尘土](https://www.space.com/mars-wind-dust-image-esa-mars-express-photo)覆盖，高达数公里高 —— 实际上它是整个行星上最丰富的尘土来源，为可能在季节性基础上吞没火星的巨大[尘暴](https://www.space.com/mars-dust-storms-science-mysteries)提供燃料。这些沉积物只是尘土吗，或许填满了一个深谷？
+人们怀疑 MMF 本身是在过去 30 亿年内由熔岩流形成的，并在长久以前火星活跃火山时期被火山灰覆盖。如今，MMF 被[大量的尘土](https://www.space.com/mars-wind-dust-image-esa-mars-express-photo)覆盖，高达数公里高 —— 实际上它是整个行星上最丰富的尘土来源，为可能在季节性基础上吞没火星的巨大[尘暴](https://www.space.com/mars-dust-storms-science-mysteries)提供燃料。这些沉积物只是尘土吗，或许填满了一个深谷？
 
 突发太空新闻，火箭发射的最新动态，观星活动等等！
 
-这个透视视图显示了欧墨涅德斯背脊，是火星美杜莎丘形成的一部分（MFF）。美杜莎丘形成由一系列数百公里长、数公里高的经风雕刻的沉积物组成。发现于火星高地和低地的分界处，这些沉积物可能是火星上最大的单一尘埃来源，也是行星上最广泛的沉积物之一。（图片来源：加州理工学院/JPL火星全球CTX马赛克/史密森尼学会）
+这个透视视图显示了欧墨涅德斯背脊，是火星美杜莎丘形成的一部分（MFF）。美杜莎丘形成由一系列数百公里长、数公里高的经风雕刻的沉积物组成。发现于火星高地和低地的分界处，这些沉积物可能是火星上最大的单一尘埃来源，也是行星上最广泛的沉积物之一。（图片来源：加州理工学院/JPL 火星全球 CTX 马赛克/史密森尼学会）
 
 火星快速探测雷达（MARSIS）的新观测结果现在已经揭示了答案——它不是尘埃。
 
-"考虑到它的深度，如果火星快速探测雷达只是一个巨大的尘埃堆，我们预计它会因自身重量而被压实，"意大利国家天文物理研究所的Andrea Cicchetti在新闻稿中说道。"这将产生比我们用火星快速探测雷达实际看到的更加密集的东西。"
+"考虑到它的深度，如果火星快速探测雷达只是一个巨大的尘埃堆，我们预计它会因自身重量而被压实，"意大利国家天文物理研究所的 Andrea Cicchetti 在新闻稿中说道。"这将产生比我们用火星快速探测雷达实际看到的更加密集的东西。"
 
-相反，这些沉积物密度低，对MARSIS的雷达相当透明，这正是人们期望水冰在数据中出现的方式。
+相反，这些沉积物密度低，对 MARSIS 的雷达相当透明，这正是人们期望水冰在数据中出现的方式。
 
-在这张图像中，火星表面的白线（顶部）显示了MARSIS扫描的一段土地。下面的图表显示了土地的形状和地下结构，干沉积物层（可能是尘埃或火山灰）显示为棕色，而疑似富含冰的沉积物层则显示为蓝色。图表显示，冰层高达数千米，宽度数百公里。（图片来源：CReSIS/KU/史密森尼学会）
+在这张图像中，火星表面的白线（顶部）显示了 MARSIS 扫描的一段土地。下面的图表显示了土地的形状和地下结构，干沉积物层（可能是尘埃或火山灰）显示为棕色，而疑似富含冰的沉积物层则显示为蓝色。图表显示，冰层高达数千米，宽度数百公里。（图片来源：CReSIS/KU/史密森尼学会）
 
-更为重要的是，水冰是如何被埋在赤道的问题。之前在火星上发现了大量的地下冰，例如NASA的凤凰号任务在2008年在降落器的极地着陆点下方挖掘了尘土表面下的冰。与此同时，在其任务早期，火星快速探测器探测到了丰富的水冰延伸到了中纬度地区，而NASA的[火星奥德赛](https://www.space.com/18270-mars-odyssey.html)甚至在2009年发现了MMF中存在水的线索。
+更为重要的是，水冰是如何被埋在赤道的问题。之前在火星上发现了大量的地下冰，例如 NASA 的凤凰号任务在 2008 年在降落器的极地着陆点下方挖掘了尘土表面下的冰。与此同时，在其任务早期，火星快速探测器探测到了丰富的水冰延伸到了中纬度地区，而 NASA 的[火星奥德赛](https://www.space.com/18270-mars-odyssey.html)甚至在 2009 年发现了 MMF 中存在水的线索。
 
-欧洲航天局的[痕迹气体轨道飞行器](https://www.space.com/34664-exomars-facts.html#section-trace-gas-orbiter-and-schiaparelli)最近在火星表面下方的混乱区域，也就是我们称之为火星大峡谷的一部分，探测到了水冰的氢。此外，在赤道以南7.3度的东部[夜行者迷宫](https://www.space.com/mars-express-red-planet-valley-video)发现了古冰川的残留物，被称为[遗留冰川](https://www.space.com/mars-modern-glacier-buried-water)。
+欧洲航天局的[痕迹气体轨道飞行器](https://www.space.com/34664-exomars-facts.html#section-trace-gas-orbiter-and-schiaparelli)最近在火星表面下方的混乱区域，也就是我们称之为火星大峡谷的一部分，探测到了水冰的氢。此外，在赤道以南 7.3 度的东部[夜行者迷宫](https://www.space.com/mars-express-red-planet-valley-video)发现了古冰川的残留物，被称为[遗留冰川](https://www.space.com/mars-modern-glacier-buried-water)。
 
 低纬度和赤道地区的地下水冰存在暗示着火星的气候在遥远的过去是非常不同的。
 
-“这项最新分析挑战了我们对MFF的理解，并提出了许多问题，但也给出了一些答案，”ESA火星快车和微量气体轨道飞行器项目科学家Colin Wilson在声明中说道。“这些冰堆形成了多长时间，当时的火星是什么样子？”
+“这项最新分析挑战了我们对 MFF 的理解，并提出了许多问题，但也给出了一些答案，”ESA 火星快车和微量气体轨道飞行器项目科学家 Colin Wilson 在声明中说道。“这些冰堆形成了多长时间，当时的火星是什么样子？”
 
-这些冰的存在可能是火星漫游轴的结果。在红色星球的历史上，该行星极点的轴倾角被理解为变化相当混乱。目前，火星的极点倾斜角为25度（而地球的倾斜角为23度），但在过去，这个角度可能从10度浅倾斜到60度极端倾斜不等。
+这些冰的存在可能是火星漫游轴的结果。在红色星球的历史上，该行星极点的轴倾角被理解为变化相当混乱。目前，火星的极点倾斜角为 25 度（而地球的倾斜角为 23 度），但在过去，这个角度可能从 10 度浅倾斜到 60 度极端倾斜不等。
 
 在高倾斜度期间，当极点指向比赤道更接近太阳时，大量水冰可能会在赤道表面形成。然后，这些冰可能会被灰尘和火山灰覆盖，至今仍然保持覆盖状态。
 
-不断变化的倾斜度也可以解释[中国祝融号探测器在火星上发现的40万年前的特征](https://www.space.com/mars-climate-shift-china-mars-rover-zhurong)，以及在本不应存在液态水的地方形成的[沟壑的存在](https://www.space.com/mars-water-gullies-climate-change)。
+不断变化的倾斜度也可以解释[中国祝融号探测器在火星上发现的 40 万年前的特征](https://www.space.com/mars-climate-shift-china-mars-rover-zhurong)，以及在本不应存在液态水的地方形成的[沟壑的存在](https://www.space.com/mars-water-gullies-climate-change)。
 
 这一新发现的描述见于发表在《地球物理研究快报》上的一篇论文中。

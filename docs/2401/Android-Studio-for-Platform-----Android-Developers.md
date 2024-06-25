@@ -8,7 +8,7 @@ date: 2024-05-27 15:13:50
 
 # 安卓 Studio for Platform  |  Android Developers
 
-> 来源：[https://developer.android.com/studio/platform](https://developer.android.com/studio/platform)
+> 来源：[`developer.android.com/studio/platform`](https://developer.android.com/studio/platform)
 
 在下载前，您必须同意以下条款和条件。
 
@@ -18,7 +18,7 @@ date: 2024-05-27 15:13:50
 
 ### 1\. 介绍
 
-1.1 安卓软件开发工具包（在许可协议中称为“SDK”，特指安卓系统文件、打包的 API 和 Google API 的附加组件）受许可协议条款的约束授予您许可。许可协议构成您和 Google 之间关于您使用 SDK 的法律约束合同。1.2 “安卓”指的是为设备提供的安卓软件堆栈，可在以下网址找到：[https://source.android.com/](https://source.android.com/)，定期更新。1.3 “兼容实现”指的是任何符合以下条件的安卓设备：（i）符合安卓兼容性定义文件，可在安卓兼容性网站（[https://source.android.com/compatibility](https://source.android.com/compatibility)）找到，并可能定期更新；以及（ii）成功通过安卓兼容性测试套件（CTS）。1.4 “Google”指的是在美国特拉华州法律下组织成立、在美国法律下运营，主要营业地点位于美国加利福尼亚州芒廷维尤的 Google LLC。
+1.1 安卓软件开发工具包（在许可协议中称为“SDK”，特指安卓系统文件、打包的 API 和 Google API 的附加组件）受许可协议条款的约束授予您许可。许可协议构成您和 Google 之间关于您使用 SDK 的法律约束合同。1.2 “安卓”指的是为设备提供的安卓软件堆栈，可在以下网址找到：[`source.android.com/`](https://source.android.com/)，定期更新。1.3 “兼容实现”指的是任何符合以下条件的安卓设备：（i）符合安卓兼容性定义文件，可在安卓兼容性网站（[`source.android.com/compatibility`](https://source.android.com/compatibility)）找到，并可能定期更新；以及（ii）成功通过安卓兼容性测试套件（CTS）。1.4 “Google”指的是在美国特拉华州法律下组织成立、在美国法律下运营，主要营业地点位于美国加利福尼亚州芒廷维尤的 Google LLC。
 
 ### 2\. 接受此许可协议
 
@@ -38,7 +38,7 @@ date: 2024-05-27 15:13:50
 
 ### 6. 隐私和信息
 
-6.1 为了不断创新和改进 SDK，谷歌可能会从软件中收集某些使用统计信息，包括但不限于唯一标识符、关联的 IP 地址、软件版本号以及有关正在使用哪些工具和/或 SDK 中的服务以及它们的使用方式的信息。在收集任何此类信息之前，SDK 将通知您并征得您的同意。如果您不同意，将不会收集信息。6.2 收集的数据将以汇总的形式进行审查，以改进 SDK，并且根据谷歌的隐私政策进行维护，隐私政策位于以下 URL: [https://policies.google.com/privacy](https://policies.google.com/privacy)。6.3 匿名化和汇总的数据集可能与谷歌合作伙伴共享，以改进 SDK。
+6.1 为了不断创新和改进 SDK，谷歌可能会从软件中收集某些使用统计信息，包括但不限于唯一标识符、关联的 IP 地址、软件版本号以及有关正在使用哪些工具和/或 SDK 中的服务以及它们的使用方式的信息。在收集任何此类信息之前，SDK 将通知您并征得您的同意。如果您不同意，将不会收集信息。6.2 收集的数据将以汇总的形式进行审查，以改进 SDK，并且根据谷歌的隐私政策进行维护，隐私政策位于以下 URL: [`policies.google.com/privacy`](https://policies.google.com/privacy)。6.3 匿名化和汇总的数据集可能与谷歌合作伙伴共享，以改进 SDK。
 
 ### 7\. 第三方应用程序
 
@@ -48,11 +48,11 @@ date: 2024-05-27 15:13:50
 
 8.1 谷歌数据 API 8.1.1 如果您使用任何 API 从谷歌检索数据，则您承认数据可能受到谷歌或提供数据的那些方（或代表他们的其他人或公司）拥有的知识产权的保护。您对任何此类 API 的使用可能受到额外的服务条款约束。除非相关的服务条款允许，否则您不得修改、租赁、出租、出借、出售、分发或基于这些数据创建衍生作品（整体或部分）。8.1.2 如果您使用任何 API 从谷歌检索用户的数据，则您承认并同意您应仅在用户明确同意且仅在用户授予您权限的情况下检索数据，以及仅限于用户明确授权的有限目的。如果您使用 Android Recognition Service API，请参阅以下 URL：
 
-[https://developer.android.com/reference/android/speech/RecognitionService](https://developer.android.com/reference/android/speech/RecognitionService)
+[`developer.android.com/reference/android/speech/RecognitionService`](https://developer.android.com/reference/android/speech/RecognitionService)
 
 ，如不时更新，您承认 API 的使用受到谷歌作为数据处理器的产品的数据处理补充条款的约束，该补充条款位于以下 URL：
 
-[https://privacy.google.com/businesses/gdprprocessorterms/](https://privacy.google.com/businesses/gdprprocessorterms/)
+[`privacy.google.com/businesses/gdprprocessorterms/`](https://privacy.google.com/businesses/gdprprocessorterms/)
 
 通过不时更新。点击接受，即表示您同意谷歌作为数据处理器的产品的数据处理补充条款。
 
@@ -80,4 +80,4 @@ date: 2024-05-27 15:13:50
 
 14.1 许可协议构成您与谷歌之间的整个法律协议，管辖您对 SDK 的使用（不包括谷歌可能根据另行书面协议向您提供的任何服务），并完全取代您与谷歌之间就 SDK 相关的任何先前协议。 14.2 您同意，如果谷歌未行使或执行许可协议中包含的任何法律权利或救济（或谷歌依据任何适用法律享有的权利），这不会被视为谷歌对其权利的正式放弃，而且这些权利或救济仍将对谷歌有效。 14.3 如果任何具有裁决此事权的法院裁定许可协议的任何条款无效，则该条款将从许可协议中移除，但不影响许可协议的其余部分。许可协议的其余条款仍将有效并可执行。 14.4 您承认并同意，谷歌为其母公司的公司集团中的每个成员将是许可协议的第三方受益人，并且这些其他公司将有权直接执行并依赖许可协议中赋予它们利益（或有利于它们的权利）的任何条款。除此之外，没有其他个人或公司将成为许可协议的第三方受益人。 14.5 出口限制。 SDK 受美国出口法律和法规约束。您必须遵守适用于 SDK 的所有国内和国际出口法律和法规。这些法律包括对目的地、最终用户和最终用途的限制。 14.6 许可协议授予的权利不得由您或谷歌事先书面批准的情况下转让或转让。未经另一方事先书面批准，您和谷歌均不得委托其在许可协议下的责任或义务。 14.7 许可协议及您根据许可协议与谷歌的关系应受加利福尼亚州法律管辖，不考虑其冲突法规。您和谷歌同意提交位于加利福尼亚州圣克拉拉县的法院解决许可协议引起的任何法律事项。尽管如此，您同意谷歌仍可以在任何司法管辖区申请禁令救济（或等效的紧急法律救济）。
 
-*2021年7月27日*
+*2021 年 7 月 27 日*

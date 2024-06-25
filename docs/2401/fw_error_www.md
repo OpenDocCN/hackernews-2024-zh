@@ -8,7 +8,7 @@
 
 # fw_error_www
 
-> 来源：[https://blogs.oracle.com/mysql/post/introducing-javascript-support-in-mysql](https://blogs.oracle.com/mysql/post/introducing-javascript-support-in-mysql)
+> 来源：[`blogs.oracle.com/mysql/post/introducing-javascript-support-in-mysql`](https://blogs.oracle.com/mysql/post/introducing-javascript-support-in-mysql)
 
 该网站 https://blogs.oracle.com/mysql/post/introducing-javascript-support-in-mysql 遇到技术困难。我们已经注意到这个问题，并正在尽快努力纠正。
 

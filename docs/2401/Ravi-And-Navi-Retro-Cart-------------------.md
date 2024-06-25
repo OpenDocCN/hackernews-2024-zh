@@ -8,7 +8,7 @@
 
 # Ravi 和 Navi 复古卡 / レトロカセット「拉维和娜维」
 
-> 来源：[https://apps.hidetyo.com/raviandnavi_detail.html](https://apps.hidetyo.com/raviandnavi_detail.html)
+> 来源：[`apps.hidetyo.com/raviandnavi_detail.html`](https://apps.hidetyo.com/raviandnavi_detail.html)
 
 「拉维和娜维」
 

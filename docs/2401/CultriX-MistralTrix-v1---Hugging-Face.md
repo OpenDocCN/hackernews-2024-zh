@@ -8,7 +8,7 @@
 
 # CultriX/MistralTrix-v1 · Hugging Face
 
-> 来源：[https://huggingface.co/CultriX/MistralTrix-v1](https://huggingface.co/CultriX/MistralTrix-v1)
+> 来源：[`huggingface.co/CultriX/MistralTrix-v1`](https://huggingface.co/CultriX/MistralTrix-v1)
 
 # [](#edit)编辑：
 
@@ -22,11 +22,11 @@ T: 🟦 模型：CultriX/MistralTrix-v1 📑 平均值：73.39 ARC：72.27 Hella
 
 目前在 LLM 排行榜上排名第一的 7B LLM，哇！我根本没想到会有这样的结果，而且在 LLM 或者计算机科学方面我完全不是专业的，只是一个喜欢研究和摆弄的家伙。
 
-对于那些想知道我是如何做到这一点的人，答案就是我简单地尝试了自己在这篇精彩文章中概述的技术：[https://towardsdatascience.com/fine-tune-a-mistral-7b-model-with-direct-preference-optimization-708042745aac](https://towardsdatascience.com/fine-tune-a-mistral-7b-model-with-direct-preference-optimization-708042745aac) 因此，基本上所有的功劳都归功于那个写这篇文章的家伙。他提供了我用来训练这个模型的确切 Colab 笔记本，以及一个非常好的 GitHub 页面，我希望他不介意我分享：[https://github.com/mlabonne/llm-course/](https://github.com/mlabonne/llm-course/) 所以非常感谢他分享他的知识，在这个过程中教了我一两件事情！
+对于那些想知道我是如何做到这一点的人，答案就是我简单地尝试了自己在这篇精彩文章中概述的技术：[`towardsdatascience.com/fine-tune-a-mistral-7b-model-with-direct-preference-optimization-708042745aac`](https://towardsdatascience.com/fine-tune-a-mistral-7b-model-with-direct-preference-optimization-708042745aac) 因此，基本上所有的功劳都归功于那个写这篇文章的家伙。他提供了我用来训练这个模型的确切 Colab 笔记本，以及一个非常好的 GitHub 页面，我希望他不介意我分享：[`github.com/mlabonne/llm-course/`](https://github.com/mlabonne/llm-course/) 所以非常感谢他分享他的知识，在这个过程中教了我一两件事情！
 
 # [](#gguf)GGUF
 
-我尝试了自己量化模型，再次强调，我对此几乎一无所知，但当我测试它们时，它们似乎运行良好：[https://huggingface.co/CultriX/MistralTrix-v1-GGUF](https://huggingface.co/CultriX/MistralTrix-v1-GGUF)
+我尝试了自己量化模型，再次强调，我对此几乎一无所知，但当我测试它们时，它们似乎运行良好：[`huggingface.co/CultriX/MistralTrix-v1-GGUF`](https://huggingface.co/CultriX/MistralTrix-v1-GGUF)
 
 不过，我要再说一次：“我对这一切完全是个新手，所以如果这些结果不好别感到惊讶。”
 

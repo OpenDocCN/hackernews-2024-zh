@@ -8,7 +8,7 @@ date: 2024-05-27 15:13:07
 
 # 印度法院将裁定谁发明了黄油鸡 | 印度 | 卫报
 
-> 来源：[https://www.theguardian.com/world/2024/jan/25/indias-courts-to-rule-on-who-invented-butter-chicken](https://www.theguardian.com/world/2024/jan/25/indias-courts-to-rule-on-who-invented-butter-chicken)
+> 来源：[`www.theguardian.com/world/2024/jan/25/indias-courts-to-rule-on-who-invented-butter-chicken`](https://www.theguardian.com/world/2024/jan/25/indias-courts-to-rule-on-who-invented-butter-chicken)
 
 它是印度最受喜爱的菜肴之一，可以在厨房的灶台上冒着泡，也可以在全国各地的餐馆里银盘上呈现。
 

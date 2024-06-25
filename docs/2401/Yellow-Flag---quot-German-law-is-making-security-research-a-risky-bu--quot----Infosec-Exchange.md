@@ -8,10 +8,10 @@
 
 # 黄旗: "德国法律正在使安全研究变得有风险…" - 信息安全交流
 
-> 来源：[https://infosec.exchange/@WPalant/111776937550399546](https://infosec.exchange/@WPalant/111776937550399546)
+> 来源：[`infosec.exchange/@WPalant/111776937550399546`](https://infosec.exchange/@WPalant/111776937550399546)
 
-要使用Mastodon的Web应用程序，请启用JavaScript。 或者，尝试其中一个
+要使用 Mastodon 的 Web 应用程序，请启用 JavaScript。 或者，尝试其中一个
 
 [本地应用程序](https://joinmastodon.org/apps)
 
-适用于您平台的Mastodon。
+适用于您平台的 Mastodon。

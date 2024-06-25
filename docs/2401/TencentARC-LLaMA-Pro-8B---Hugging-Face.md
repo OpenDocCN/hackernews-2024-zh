@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:03
 
 # TencentARC/LLaMA-Pro-8B · Hugging Face
 
-> 来源：[https://huggingface.co/TencentARC/LLaMA-Pro-8B](https://huggingface.co/TencentARC/LLaMA-Pro-8B)
+> 来源：[`huggingface.co/TencentARC/LLaMA-Pro-8B`](https://huggingface.co/TencentARC/LLaMA-Pro-8B)
 
 # [](#llama-pro-8b-model-card)LLaMA-Pro-8B 模型卡
 

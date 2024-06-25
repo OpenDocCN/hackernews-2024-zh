@@ -8,9 +8,9 @@
 
 # NPS 数据 API（应用程序编程接口） - 数字（美国国家公园管理局）
 
-> 来源：[https://www.nps.gov/subjects/digital/nps-data-api.htm](https://www.nps.gov/subjects/digital/nps-data-api.htm)
+> 来源：[`www.nps.gov/subjects/digital/nps-data-api.htm`](https://www.nps.gov/subjects/digital/nps-data-api.htm)
 
-[NPS 数据 API](/subjects/developer/index.htm) 对所有希望在其项目中使用 NPS 数据的开发人员都是开放和可访问的。
+NPS 数据 API 对所有希望在其项目中使用 NPS 数据的开发人员都是开放和可访问的。
 
 ## 什么是 API？
 
@@ -20,7 +20,7 @@
 
 ## 有哪些数据可用？
 
-[NPS API 文档](/subjects/developer/api-documentation.htm) 包含有关可用数据类型的详细信息，包括：
+NPS API 文档 包含有关可用数据类型的详细信息，包括：
 
 +   **警报** - 通告，传达关于可能有危险、潜在危险或变化条件的信息，可能会影响到对国家公园的访问
 
@@ -40,8 +40,8 @@
 
 ## 开发人员如何使用 API？
 
-开发人员可以注册 API 密钥，了解 API 请求格式，并在 [NPS 数据 API 网站](/subjects/developer/index.htm) 上查阅 API 资源。
+开发人员可以注册 API 密钥，了解 API 请求格式，并在 NPS 数据 API 网站 上查阅 API 资源。
 
 ## API 的未来是什么？
 
-查看 [NPS API 路线图](/subjects/developer/api-roadmap.htm) 以了解正在开发和考虑下一步添加的内容。
+查看 NPS API 路线图 以了解正在开发和考虑下一步添加的内容。

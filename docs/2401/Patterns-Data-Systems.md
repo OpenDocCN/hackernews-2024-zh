@@ -8,7 +8,7 @@ date: 2024-05-27 15:01:20
 
 # Patterns 数据系统
 
-> 来源：[https://patterns.app/](https://patterns.app/)
+> 来源：[`patterns.app/`](https://patterns.app/)
 
 # 自助式分析
 

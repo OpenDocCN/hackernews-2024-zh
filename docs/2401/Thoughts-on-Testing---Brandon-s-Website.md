@@ -8,9 +8,9 @@
 
 # 测试思考 | Brandon's Website
 
-> 来源：[https://www.brandons.me/blog/thoughts-on-testing](https://www.brandons.me/blog/thoughts-on-testing)
+> 来源：[`www.brandons.me/blog/thoughts-on-testing`](https://www.brandons.me/blog/thoughts-on-testing)
 
-# 测试思考 2024年1月4日
+# 测试思考 2024 年 1 月 4 日
 
 1548 Brandon Smith
 
@@ -28,7 +28,7 @@
 
 当代码需要花费时间维护时（需求变化、依赖项变化等）
 
-需要在CI中运行的代码时间
+需要在 CI 中运行的代码时间
 
 而且糟糕的测试可能会给人一种虚假的安全感
 
@@ -64,7 +64,7 @@ test("greeting is correct", () => {
 }) 
 ```
 
-现在，假设产品经理有一天来找我们说，"我们有一个新设计，我们现在想让它说`"欢迎Brandon，欢迎来到我们的网站！"`"
+现在，假设产品经理有一天来找我们说，"我们有一个新设计，我们现在想让它说`"欢迎 Brandon，欢迎来到我们的网站！"`"
 
 ```
 function greet(name) {

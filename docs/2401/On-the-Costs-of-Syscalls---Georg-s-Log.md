@@ -8,13 +8,13 @@
 
 # 对系统调用成本的探究 | George's Log
 
-> 来源：[https://gms.tf/on-the-costs-of-syscalls.html](https://gms.tf/on-the-costs-of-syscalls.html)
+> 来源：[`gms.tf/on-the-costs-of-syscalls.html`](https://gms.tf/on-the-costs-of-syscalls.html)
 
-众所周知，[系统调用](https://zh.wikipedia.org/wiki/系统调用)是昂贵的。而软件对抗[CPU漏洞](https://zh.wikipedia.org/wiki/崩溃_(计算机安全))（如熔断）甚至使它们变得更加昂贵。但它们真的有多昂贵？为了开始回答这个问题，我写了一个小的[微基准](https://github.com/gsauthof/osjitter/blob/master/bench_syscalls.cc)来衡量系统调用的最小成本。这意味着不管是否发生上下文切换，甚至在内核工作微不足道时，也就是从[用户模式切换到内核模式](https://zh.wikipedia.org/wiki/上下文切换#用户模式和内核模式切换)和切换回去的成本。
+众所周知，[系统调用](https://zh.wikipedia.org/wiki/系统调用)是昂贵的。而软件对抗[CPU 漏洞](https://zh.wikipedia.org/wiki/崩溃 _(计算机安全))（如熔断）甚至使它们变得更加昂贵。但它们真的有多昂贵？为了开始回答这个问题，我写了一个小的[微基准](https://github.com/gsauthof/osjitter/blob/master/bench_syscalls.cc)来衡量系统调用的最小成本。这意味着不管是否发生上下文切换，甚至在内核工作微不足道时，也就是从[用户模式切换到内核模式](https://zh.wikipedia.org/wiki/上下文切换#用户模式和内核模式切换)和切换回去的成本。
 
 ## 方法
 
-用户内核模式切换[微基准](https://zh.wikipedia.org/wiki/基准测试_(计算机))使用了Google的[基准库](https://github.com/google/benchmark)进行测量，并且可在[git存储库](https://github.com/gsauthof/osjitter/blob/master/bench_syscalls.cc)中获得。该存储库还包含一些辅助脚本，例如一个[playbook](https://github.com/gsauthof/osjitter/blob/master/helper/bench_playbook.py)，用于将其分发到一组主机并在其上执行。基准库重复每个案例，直到结果被认为是稳定的，playbook允许重复执行测试用例。在以下各节中，报告了100次重复的中位数值（实际时间以纳秒为单位）。
+用户内核模式切换[微基准](https://zh.wikipedia.org/wiki/基准测试 _(计算机))使用了 Google 的[基准库](https://github.com/google/benchmark)进行测量，并且可在[git 存储库](https://github.com/gsauthof/osjitter/blob/master/bench_syscalls.cc)中获得。该存储库还包含一些辅助脚本，例如一个[playbook](https://github.com/gsauthof/osjitter/blob/master/helper/bench_playbook.py)，用于将其分发到一组主机并在其上执行。基准库重复每个案例，直到结果被认为是稳定的，playbook 允许重复执行测试用例。在以下各节中，报告了 100 次重复的中位数值（实际时间以纳秒为单位）。
 
 对于基准测试，调用了一堆预期非常便宜的系统调用，比如获取用户 ID（UID）、程序 ID（PID）、关闭无效文件描述符、调用不存在的系统调用等。因此，一个测量应该真的只包括两次模式切换。作为对照，一些情况下不调用系统调用，而是执行其他廉价的操作。
 
@@ -59,23 +59,23 @@
 
 ### Getpid
 
-`getpid()`系统调用在RHEL 7上出奇地快。事实证明，RHEL 7使用了[较旧的glibc版本来缓存进程的ID](https://manpath.be/f34/2/getpid#L43)！这可能是一个有趣的优化，因为，这有什么意义呢？我是说，你多频繁地在程序中调用`getpid()`呢？在某个时候（大约Fedora 26左右），这个[特性被移除了](https://bugzilla.redhat.com/show_bug.cgi?id=1469670)，因为显然它引起了更多的[麻烦](https://yarchive.net/comp/linux/getpid_caching.html)而不值得。也许并不奇怪的是，那个[移除](https://bugzilla.redhat.com/show_bug.cgi?id=1469670)甚至[破坏了某人的工作流程](https://xkcd.com/1172/)。
+`getpid()`系统调用在 RHEL 7 上出奇地快。事实证明，RHEL 7 使用了[较旧的 glibc 版本来缓存进程的 ID](https://manpath.be/f34/2/getpid#L43)！这可能是一个有趣的优化，因为，这有什么意义呢？我是说，你多频繁地在程序中调用`getpid()`呢？在某个时候（大约 Fedora 26 左右），这个[特性被移除了](https://bugzilla.redhat.com/show_bug.cgi?id=1469670)，因为显然它引起了更多的[麻烦](https://yarchive.net/comp/linux/getpid_caching.html)而不值得。也许并不奇怪的是，那个[移除](https://bugzilla.redhat.com/show_bug.cgi?id=1469670)甚至[破坏了某人的工作流程](https://xkcd.com/1172/)。
 
 ### 真实系统调用
 
-因此，查看真实的系统调用，用户态与内核态之间的切换成本大约在几百纳秒左右，对于所有主机来说都是如此。某些主机上较高的成本可以通过启用CPU缺陷修复（它们默认启用）和/或较旧/低端硬件来解释。另请参阅主机部分以获取一些详细信息。
+因此，查看真实的系统调用，用户态与内核态之间的切换成本大约在几百纳秒左右，对于所有主机来说都是如此。某些主机上较高的成本可以通过启用 CPU 缺陷修复（它们默认启用）和/或较旧/低端硬件来解释。另请参阅主机部分以获取一些详细信息。
 
-最快的主机是`xg6256`，它成功地在少于100纳秒内切换模式。它配备了一颗性能优异的快速CPU（至强金牌 6256），已禁用频率缩放，并以恒定的4.1 GHz频率运行在其基础频率之上（即在基础和睿频频率之间的频率）。
+最快的主机是`xg6256`，它成功地在少于 100 纳秒内切换模式。它配备了一颗性能优异的快速 CPU（至强金牌 6256），已禁用频率缩放，并以恒定的 4.1 GHz 频率运行在其基础频率之上（即在基础和睿频频率之间的频率）。
 
 ### 调度让步
 
-`sched_yield()`系统调用可以被视为一个最小的工作系统调用，例如当没有东西可让出时。此外，基准进程正在标准调度策略下运行，并且在Linux下[`sched_yield()`被描述为](https://manpath.be/f34/2/sched_yield#L43)：
+`sched_yield()`系统调用可以被视为一个最小的工作系统调用，例如当没有东西可让出时。此外，基准进程正在标准调度策略下运行，并且在 Linux 下[`sched_yield()`被描述为](https://manpath.be/f34/2/sched_yield#L43)：
 
 > `sched_yield()`旨在
 
 未指定可能意味着系统调用在进程的调度策略等于`SCHED_OTHER`后就退出了。
 
-在大多数主机上，`sched_yield`比一个真正的最小系统调用（如`getuid()`）昂贵大约150纳秒左右，这表明了一些额外的开销，但不一定是一个上下文切换。
+在大多数主机上，`sched_yield`比一个真正的最小系统调用（如`getuid()`）昂贵大约 150 纳秒左右，这表明了一些额外的开销，但不一定是一个上下文切换。
 
 ### 纳秒睡眠
 
@@ -89,11 +89,11 @@
 | nanosleep0_slack1 | 4355 | 2836 | 7076 | 3247 | 2736 | 2483 | 2835 | 3908 | 3401 | 2762 | 2870 | 2446 | 1974 | 2248 | 3837 |
 | nanosleep1_slack1 | 4348 | 2840 | 7102 | 3252 | 2736 | 2486 | 2834 | 3908 | 3410 | 2767 | 2871 | 2446 | 1975 | 2246 | 3836 |
 
-调用`nanosleep()`以睡眠0 ns或1 ns似乎也是一个非常廉价的系统调用，甚至是一个空操作。
+调用`nanosleep()`以睡眠 0 ns 或 1 ns 似乎也是一个非常廉价的系统调用，甚至是一个空操作。
 
-但是，在第一种情况下，所有主机都需要50 µs。巧合的是，50 µs也是Linux上通常安排的进程的[默认定时器松弛值](https://manpath.be/f34/2/prctl#L1052)。[定时器松弛机制](https://lwn.net/Articles/588086/)将定时器到期时间延长到松弛值，以便组合多个定时器，因为这样可以减少唤醒次数，从而节省能量。由于`nanosleep()`创建一个定时器，因此也受到这种机制的影响。
+但是，在第一种情况下，所有主机都需要 50 µs。巧合的是，50 µs 也是 Linux 上通常安排的进程的[默认定时器松弛值](https://manpath.be/f34/2/prctl#L1052)。[定时器松弛机制](https://lwn.net/Articles/588086/)将定时器到期时间延长到松弛值，以便组合多个定时器，因为这样可以减少唤醒次数，从而节省能量。由于`nanosleep()`创建一个定时器，因此也受到这种机制的影响。
 
-因此，其他nanosleep案例[设置了最小的定时器松弛值](https://github.com/gsauthof/osjitter/blob/f1a4ca9cbf7516efc61c3bab2fe06ffe83cfb43c/bench_syscalls.cc#L117)为1 ns，从而减少了运行时间，符合预期。但是，它仍然比其他系统调用要昂贵得多。当然，定时器到期具有有限的精度。但是，对于0 ns或1 ns，确实不需要到期定时器。事实证明，无条件调用`nanosleep()`会产生（自愿）[上下文切换](https://en.wikipedia.org/wiki/Context_switch)。即使在隔离的核心上，调度程序也会愉快地切换到交换内核线程。因此，最后两个nanonsleep案例实际上测量了上下文切换的成本，这比简单的模式切换要昂贵。
+因此，其他 nanosleep 案例[设置了最小的定时器松弛值](https://github.com/gsauthof/osjitter/blob/f1a4ca9cbf7516efc61c3bab2fe06ffe83cfb43c/bench_syscalls.cc#L117)为 1 ns，从而减少了运行时间，符合预期。但是，它仍然比其他系统调用要昂贵得多。当然，定时器到期具有有限的精度。但是，对于 0 ns 或 1 ns，确实不需要到期定时器。事实证明，无条件调用`nanosleep()`会产生（自愿）[上下文切换](https://en.wikipedia.org/wiki/Context_switch)。即使在隔离的核心上，调度程序也会愉快地切换到交换内核线程。因此，最后两个 nanonsleep 案例实际上测量了上下文切换的成本，这比简单的模式切换要昂贵。
 
 上下文切换的成本与[其他人测量的情况](https://eli.thegreenplace.net/2018/measuring-context-switching-and-memory-overheads-for-linux-threads/#how-expensive-are-context-switches)相匹配（模除二）。
 
@@ -123,17 +123,17 @@
 
 +   内核是发行版打包的内核
 
-+   大多数RHEL主机使用的是RHEL 7.9
++   大多数 RHEL 主机使用的是 RHEL 7.9
 
-+   通过`mitigations=off`内核参数或类似参数禁用了CPU缓解措施
++   通过`mitigations=off`内核参数或类似参数禁用了 CPU 缓解措施
 
-+   轮询意味着通过内核参数和调整的PM QoS设置禁用CPU频率调节和节能
++   轮询意味着通过内核参数和调整的 PM QoS 设置禁用 CPU 频率调节和节能
 
-+   因此，主机的CPU以固定频率运行；在可能的情况下，此频率略高于基本频率，例如，在Xeon Gold 6256 CPU上设置为4.1 GHz
++   因此，主机的 CPU 以固定频率运行；在可能的情况下，此频率略高于基本频率，例如，在 Xeon Gold 6256 CPU 上设置为 4.1 GHz
 
-+   Atom CPU不支持超线程，并且所有Xeon主机上的超线程都已禁用
++   Atom CPU 不支持超线程，并且所有 Xeon 主机上的超线程都已禁用
 
-+   所有主机都已启用SELinux和/或审计（在Fedora/RHEL中这些功能默认启用），这在某种程度上增加了一些系统调用的开销
++   所有主机都已启用 SELinux 和/或审计（在 Fedora/RHEL 中这些功能默认启用），这在某种程度上增加了一些系统调用的开销
 
 ## 术语
 
@@ -143,6 +143,6 @@
 
 1.  [上下文切换](https://en.wikipedia.org/wiki/Context_switch)
 
-这些术语的定义在不同的文献和不同的操作系统中可能会有所不同。另外，在其他情境中（不是在开玩笑！）可能会将不同的模式描述为不同的上下文。然而，在链接的维基百科文章中给出的定义是被广泛应用并适用于Linux。
+这些术语的定义在不同的文献和不同的操作系统中可能会有所不同。另外，在其他情境中（不是在开玩笑！）可能会将不同的模式描述为不同的上下文。然而，在链接的维基百科文章中给出的定义是被广泛应用并适用于 Linux。
 
 基本上，模式转换表示用户模式和内核模式（或用户空间和内核空间）之间的切换，而上下文切换表示不同任务之间的切换，这是由内核协助的。上下文切换需要比模式切换更多的工作，因此更昂贵。

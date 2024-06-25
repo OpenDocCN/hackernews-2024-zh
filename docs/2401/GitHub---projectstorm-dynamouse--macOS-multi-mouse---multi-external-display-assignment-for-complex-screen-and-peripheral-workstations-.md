@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日15时24分17秒
+日期：2024 年 5 月 27 日 15 时 24 分 17 秒
 
 -->
 
 # GitHub - projectstorm/dynamouse：macOS 复杂屏幕和外设工作站的多鼠标和多外部显示器分配。
 
-> 来源：[https://github.com/projectstorm/dynamouse](https://github.com/projectstorm/dynamouse)
+> 来源：[`github.com/projectstorm/dynamouse`](https://github.com/projectstorm/dynamouse)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

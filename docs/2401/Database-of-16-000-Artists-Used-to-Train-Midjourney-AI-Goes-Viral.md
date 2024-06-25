@@ -8,7 +8,7 @@
 
 # 用于训练 Midjourney AI 的 16,000 位艺术家的数据库走红了
 
-> 来源：[https://www.artnews.com/art-news/news/midjourney-ai-artists-database-1234691955/](https://www.artnews.com/art-news/news/midjourney-ai-artists-database-1234691955/)
+> 来源：[`www.artnews.com/art-news/news/midjourney-ai-artists-database-1234691955/`](https://www.artnews.com/art-news/news/midjourney-ai-artists-database-1234691955/)
 
 对许多人来说，新的一年包括做得更好和养成更好习惯的决心。对于[Midjourney](https://www.artnews.com/t/midjourney/)来说，2024 年的开始意味着不得不处理一个流传的艺术家名单，这些艺术家的作品被该公司用于训练其生成式人工智能程序。
 

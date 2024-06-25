@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年5月27日 14:25:18
+日期：2024 年 5 月 27 日 14:25:18
 
 -->
 
-# GitHub - AzuraCast/AzuraCast: 一个自托管的网络电台管理套件，包括完整电台软件堆栈的即插即用安装工具以及一个现代、易于使用的Web应用程序，用于管理您的电台。
+# GitHub - AzuraCast/AzuraCast: 一个自托管的网络电台管理套件，包括完整电台软件堆栈的即插即用安装工具以及一个现代、易于使用的 Web 应用程序，用于管理您的电台。
 
-> 来源：[https://github.com/AzuraCast/AzuraCast](https://github.com/AzuraCast/AzuraCast)
+> 来源：[`github.com/AzuraCast/AzuraCast`](https://github.com/AzuraCast/AzuraCast)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

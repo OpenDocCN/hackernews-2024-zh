@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:30:54
+日期：2024 年 5 月 27 日 14:30:54
 
 -->
 
-# GitHub - gfodor/p2pcf：低成本，低投入的P2P WebRTC服务器信令，使用Cloudflare Workers
+# GitHub - gfodor/p2pcf：低成本，低投入的 P2P WebRTC 服务器信令，使用 Cloudflare Workers
 
-> 来源：[https://github.com/gfodor/p2pcf](https://github.com/gfodor/p2pcf)
+> 来源：[`github.com/gfodor/p2pcf`](https://github.com/gfodor/p2pcf)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

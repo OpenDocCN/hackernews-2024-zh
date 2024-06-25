@@ -8,7 +8,7 @@
 
 # web0 宣言
 
-> 来源：[https://web0.small-web.org/](https://web0.small-web.org/)
+> 来源：[`web0.small-web.org/`](https://web0.small-web.org/)
 
 # web0 宣言
 

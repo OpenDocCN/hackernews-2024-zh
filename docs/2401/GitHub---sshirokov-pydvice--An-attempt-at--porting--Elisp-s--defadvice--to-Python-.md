@@ -8,7 +8,7 @@
 
 # GitHub - sshirokov/pydvice：尝试将 Elisp 的（defadvice）移植到 Python。
 
-> 来源：[https://github.com/sshirokov/pydvice](https://github.com/sshirokov/pydvice)
+> 来源：[`github.com/sshirokov/pydvice`](https://github.com/sshirokov/pydvice)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

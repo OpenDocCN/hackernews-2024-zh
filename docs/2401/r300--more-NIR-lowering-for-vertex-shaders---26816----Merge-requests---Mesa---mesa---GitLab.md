@@ -8,7 +8,7 @@
 
 # r300：对顶点着色器进行更多 NIR 降级（!26816）· 合并请求 · Mesa / mesa · GitLab
 
-> 来源：[https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26816](https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26816)
+> 来源：[`gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26816`](https://gitlab.freedesktop.org/mesa/mesa/-/merge_requests/26816)
 
 这个 MR 将大部分剩余的后端降级移到了 NIR 中。具体来说，ftrunc、fcsel（适用时）和 flrp。已删除了后端降级路径。这是更多后端清理的先决条件，例如我已经准备好了一个 MR 来消除顶点着色器的后端 DCE。
 

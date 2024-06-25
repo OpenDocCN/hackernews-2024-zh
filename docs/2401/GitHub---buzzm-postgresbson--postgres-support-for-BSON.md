@@ -8,7 +8,7 @@
 
 # GitHub - buzzm/postgresbson: PostgreSQL 对 BSON 的支持
 
-> 来源：[https://github.com/buzzm/postgresbson](https://github.com/buzzm/postgresbson)
+> 来源：[`github.com/buzzm/postgresbson`](https://github.com/buzzm/postgresbson)
 
 `<include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>`
 

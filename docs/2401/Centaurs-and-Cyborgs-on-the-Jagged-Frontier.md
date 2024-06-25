@@ -8,7 +8,7 @@
 
 # 在崎岖的边界上的半人马与赛博格
 
-> 来源：[https://www.oneusefulthing.org/p/centaurs-and-cyborgs-on-the-jagged](https://www.oneusefulthing.org/p/centaurs-and-cyborgs-on-the-jagged)
+> 来源：[`www.oneusefulthing.org/p/centaurs-and-cyborgs-on-the-jagged`](https://www.oneusefulthing.org/p/centaurs-and-cyborgs-on-the-jagged)
 
 很多人一直在问 AI 对未来工作是否真的很重要。我们有一份新的论文强烈表明答案是肯定的。
 
@@ -18,11 +18,11 @@
 
 顾问们使用 AI **完成了平均 12.2% 更多的任务**，**完成任务的速度提高了 25.1%**，而且产出的**质量提高了 40%**，比那些不使用 AI 的人要好。这些影响非常大。现在，让我们加入一些细微的差别。
 
-首先，重要的是要知道，这项工作是多学科的，涉及多种类型的实验和数百次采访，由一个优秀的团队完成，其中包括哈佛社会科学家[Fabrizio Dell’Acqua](https://www.fabriziodellacqua.com/)、[Edward McFowland III](https://www.hbs.edu/faculty/Pages/profile.aspx?facId=772797)，以及[Karim Lakhani](https://www.hbs.edu/faculty/Pages/profile.aspx?facId=240491)；来自华威商学院的[Hila Lifshitz-Assaf](https://www.hilalifshitz.com/)和麻省理工学院的[Katherine Kellogg](https://mitsloan.mit.edu/faculty/directory/kate-kellogg)（以及我自己）。[Saran Rajendran](https://bcghendersoninstitute.com/contributors/saran-rajendran/)、[Lisa Krayer](https://bcghendersoninstitute.com/contributors/lisa-krayer/)和[François Candelon](https://www.bcg.com/about/people/experts/francois-candelon)在BCG方面负责运行实验，利用了其咨询力量的整整7%（758名顾问）。他们都进行了大量非常认真的工作，远远超出了这篇文章的范围。因此，请务必[查看论文以确保获取所有细节](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321) - 特别是如果你对数字或方法有疑问的话。我需要简化很多内容才能将58页的发现总结到一篇文章中，任何错误都是我的，而不是我的共同作者的责任。另外，尽管我们提前注册了这些实验，但这仍然是一篇新的工作论文，因此可能存在错误或疏漏，并且该论文尚未经过同行评审。考虑到这些因素，让我们进入细节...
+首先，重要的是要知道，这项工作是多学科的，涉及多种类型的实验和数百次采访，由一个优秀的团队完成，其中包括哈佛社会科学家[Fabrizio Dell’Acqua](https://www.fabriziodellacqua.com/)、[Edward McFowland III](https://www.hbs.edu/faculty/Pages/profile.aspx?facId=772797)，以及[Karim Lakhani](https://www.hbs.edu/faculty/Pages/profile.aspx?facId=240491)；来自华威商学院的[Hila Lifshitz-Assaf](https://www.hilalifshitz.com/)和麻省理工学院的[Katherine Kellogg](https://mitsloan.mit.edu/faculty/directory/kate-kellogg)（以及我自己）。[Saran Rajendran](https://bcghendersoninstitute.com/contributors/saran-rajendran/)、[Lisa Krayer](https://bcghendersoninstitute.com/contributors/lisa-krayer/)和[François Candelon](https://www.bcg.com/about/people/experts/francois-candelon)在 BCG 方面负责运行实验，利用了其咨询力量的整整 7%（758 名顾问）。他们都进行了大量非常认真的工作，远远超出了这篇文章的范围。因此，请务必[查看论文以确保获取所有细节](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4573321) - 特别是如果你对数字或方法有疑问的话。我需要简化很多内容才能将 58 页的发现总结到一篇文章中，任何错误都是我的，而不是我的共同作者的责任。另外，尽管我们提前注册了这些实验，但这仍然是一篇新的工作论文，因此可能存在错误或疏漏，并且该论文尚未经过同行评审。考虑到这些因素，让我们进入细节...
 
-AI   人工智能（AI）的奇异性让人感到困惑。实际上，没有人完全了解像GPT-4这样最先进的大型语言模型的全部能力范围。也没有人真正知道如何最佳地利用它们，或者它们失败的条件。没有指导手册。在某些任务上，人工智能具有极强的能力，而在其他任务上，它可能完全失败或者表现得微妙。除非你经常使用人工智能，否则你不会知道哪个任务属于哪一类。
+AI   人工智能（AI）的奇异性让人感到困惑。实际上，没有人完全了解像 GPT-4 这样最先进的大型语言模型的全部能力范围。也没有人真正知道如何最佳地利用它们，或者它们失败的条件。没有指导手册。在某些任务上，人工智能具有极强的能力，而在其他任务上，它可能完全失败或者表现得微妙。除非你经常使用人工智能，否则你不会知道哪个任务属于哪一类。
 
-结果就是我们所称的“人工智能的不规则边界”。想象一下一座堡垒的城墙，一些塔楼和城墙向外突出进入郊外，而其他的则向城堡中心折回。那道墙就是人工智能的能力范围，离中心越远，任务越困难。城墙内的一切都可以由人工智能完成，城墙外的一切对人工智能来说都很难。问题在于这道墙是看不见的，因此一些逻辑上似乎距离中心相同，因此同样困难的任务——比如写一首十四行诗和一首恰好50个词的诗——实际上位于城墙的不同侧面。人工智能在写十四行诗方面表现出色，但由于它将世界概念化为令牌而不是单词，它经常产生超过或少于50个词的诗。同样，一些意想不到的任务（[比如创意生成](https://www
+结果就是我们所称的“人工智能的不规则边界”。想象一下一座堡垒的城墙，一些塔楼和城墙向外突出进入郊外，而其他的则向城堡中心折回。那道墙就是人工智能的能力范围，离中心越远，任务越困难。城墙内的一切都可以由人工智能完成，城墙外的一切对人工智能来说都很难。问题在于这道墙是看不见的，因此一些逻辑上似乎距离中心相同，因此同样困难的任务——比如写一首十四行诗和一首恰好 50 个词的诗——实际上位于城墙的不同侧面。人工智能在写十四行诗方面表现出色，但由于它将世界概念化为令牌而不是单词，它经常产生超过或少于 50 个词的诗。同样，一些意想不到的任务（[比如创意生成](https://www
 
 我请求 ChatGPT with Code Interpreter 为您可视化这个问题：
 
@@ -34,7 +34,7 @@ AI   人工智能（AI）的奇异性让人感到困惑。实际上，没有人�
 
 我们还发现了另一个有趣的现象，这种效应在其他人工智能研究中越来越明显：它起到了技能均衡的作用。我们在实验开始时对顾问进行评估时，表现最差的顾问在使用人工智能后，其绩效提升了 43%。而排名靠前的顾问也有所提升，但提升幅度较小。通过观察这些结果，我认为还没有足够多的人考虑到当一项技术将所有工作人员提升到最高绩效层次时会意味着什么。这可能类似于以前矿工的挖掘技能是否出色会有所影响……直到蒸汽铲的发明，现在挖掘能力的差异已经不再重要。人工智能还没有达到这种变革水平，但技能均衡将会产生重大影响。
 
-但故事还有更多内容。BCG设计了另一个任务，这个任务经过精心挑选，以确保人工智能无法得出正确答案。这并不容易。正如我们在论文中所说：“由于人工智能的表现出乎意料地出色，很难设计一个在这个实验中超出人工智能尖端领域的任务，在这个任务中，人类高人力资本工作的人能够一直胜过人工智能。”但我们找到了一项利用人工智能盲点的任务，确保它会给出一个错误但令人信服的答案，而人类能够解决这个问题。的确，人类顾问在没有人工智能帮助的情况下84%的时间内都能正确解决问题，但当顾问使用人工智能时，他们的表现更差——只有60-70%的时间能够做对。发生了什么？
+但故事还有更多内容。BCG 设计了另一个任务，这个任务经过精心挑选，以确保人工智能无法得出正确答案。这并不容易。正如我们在论文中所说：“由于人工智能的表现出乎意料地出色，很难设计一个在这个实验中超出人工智能尖端领域的任务，在这个任务中，人类高人力资本工作的人能够一直胜过人工智能。”但我们找到了一项利用人工智能盲点的任务，确保它会给出一个错误但令人信服的答案，而人类能够解决这个问题。的确，人类顾问在没有人工智能帮助的情况下 84%的时间内都能正确解决问题，但当顾问使用人工智能时，他们的表现更差——只有 60-70%的时间能够做对。发生了什么？
 
 [在与我们合作的论文不同的一篇论文中，](https://static1.squarespace.com/static/604b23e38c22a96e9c78879e/t/62d5d9448d061f7327e8a7e7/1658181956291/Falling+Asleep+at+the+Wheel+-+Fabrizio+DellAcqua.pdf)法布里齐奥·德尔阿夸展示了为什么过度依赖人工智能可能会适得其反。在一项实验中，他发现使用高质量人工智能的招聘人员变得懒惰、粗心，并且在自己的判断上变得不太熟练。他们错过了一些优秀的申请者，并且比使用低质量人工智能或根本不使用人工智能的招聘人员做出了更糟糕的决定。当人工智能非常优秀时，人类就没有理由努力工作和注意力。他们让人工智能接管，而不是将其用作工具。他称之为“在方向盘上打盹”，这可能会损害人类的学习、技能发展和生产力。
 

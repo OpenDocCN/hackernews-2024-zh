@@ -2,23 +2,23 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:51:00
+日期：2024 年 05 月 27 日 14:51:00
 
 -->
 
-# 在MacOS中模拟类似Ubuntu的VM | 作者：Yashodhan Mohan Bhatnagar | Medium
+# 在 MacOS 中模拟类似 Ubuntu 的 VM | 作者：Yashodhan Mohan Bhatnagar | Medium
 
-> 来源：[https://yashodhanmohan.medium.com/simulate-an-ubuntu-like-vm-inside-macos-2a20332e02e8](https://yashodhanmohan.medium.com/simulate-an-ubuntu-like-vm-inside-macos-2a20332e02e8)
+> 来源：[`yashodhanmohan.medium.com/simulate-an-ubuntu-like-vm-inside-macos-2a20332e02e8`](https://yashodhanmohan.medium.com/simulate-an-ubuntu-like-vm-inside-macos-2a20332e02e8)
 
-# 在MacOS中模拟类似Ubuntu的VM
+# 在 MacOS 中模拟类似 Ubuntu 的 VM
 
-有时，当您正在处理像Ubuntu、RHEL等Unix系统的远程系统时。您想开发脚本，检查一些软件包是否存在，原型命令片段，或者可能测试一些兼容性。
+有时，当您正在处理像 Ubuntu、RHEL 等 Unix 系统的远程系统时。您想开发脚本，检查一些软件包是否存在，原型命令片段，或者可能测试一些兼容性。
 
-每当我需要这样做时，我都必须启动一个来自AWS免费套餐的t2虚拟机进行测试，然后关闭它。这总是看起来很麻烦，特别是因为我需要互联网来模拟简单的命令。这不像Ubuntu这样的系统离MacOS已经很远了。但有时会有非常微妙的差异和棘手的错误，绝对需要您使用原始操作系统。有时简单的命令像**date**会有不同的标志行为。
+每当我需要这样做时，我都必须启动一个来自 AWS 免费套餐的 t2 虚拟机进行测试，然后关闭它。这总是看起来很麻烦，特别是因为我需要互联网来模拟简单的命令。这不像 Ubuntu 这样的系统离 MacOS 已经很远了。但有时会有非常微妙的差异和棘手的错误，绝对需要您使用原始操作系统。有时简单的命令像**date**会有不同的标志行为。
 
-最近，我开始使用Ubuntu的Docker容器来替代t2 VM。对于任何测试，我都会启动容器，设置依赖包，测试命令、脚本等，然后让它运行。有时它会被终止，有些日子我不知不觉地清理了所有的容器，有一两次我不得不删除Docker运行时本身（出于无关的原因）。如果我能像对待个人VM一样对待这个Docker容器，它可以保持一定程度的状态，那将是非常好的。我不想每次都安装基本包，像wget、curl等，对我来说，在Dockerfile中正式化每个小改变实际上是一个维护噩梦。如果我在操作系统文件系统中创建了一个符号链接，我不想将其编码到Dockerfile中。
+最近，我开始使用 Ubuntu 的 Docker 容器来替代 t2 VM。对于任何测试，我都会启动容器，设置依赖包，测试命令、脚本等，然后让它运行。有时它会被终止，有些日子我不知不觉地清理了所有的容器，有一两次我不得不删除 Docker 运行时本身（出于无关的原因）。如果我能像对待个人 VM 一样对待这个 Docker 容器，它可以保持一定程度的状态，那将是非常好的。我不想每次都安装基本包，像 wget、curl 等，对我来说，在 Dockerfile 中正式化每个小改变实际上是一个维护噩梦。如果我在操作系统文件系统中创建了一个符号链接，我不想将其编码到 Dockerfile 中。
 
-为此，我设置了一批可以模拟VM、维护状态并让我将容器视为VM的脚本。这就是“Friday”的故事。
+为此，我设置了一批可以模拟 VM、维护状态并让我将容器视为 VM 的脚本。这就是“Friday”的故事。
 
 # 状态
 
@@ -30,11 +30,11 @@
 
 处理系统状态时，我使用了**“docker export”**和**“docker import”**的组合来定期和按需备份容器的状态。
 
-为了处理卷状态，我简单地将MacOS文件系统中的一个目录挂载到容器中的“**/root**”。它还有一个额外的副作用，就是将文件从我的Mac传输到“Ubuntu VM”就像从一个目录复制到另一个目录那样简单。最简单的SFTP。
+为了处理卷状态，我简单地将 MacOS 文件系统中的一个目录挂载到容器中的“**/root**”。它还有一个额外的副作用，就是将文件从我的 Mac 传输到“Ubuntu VM”就像从一个目录复制到另一个目录那样简单。最简单的 SFTP。
 
 # 星期五
 
-Friday由4个简单的脚本组成：
+Friday 由 4 个简单的脚本组成：
 
 1.  ***start-friday.sh***
 

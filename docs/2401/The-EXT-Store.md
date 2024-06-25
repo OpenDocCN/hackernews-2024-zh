@@ -8,7 +8,7 @@
 
 # EXT Store
 
-> 来源：[https://ext.store](https://ext.store)
+> 来源：[`ext.store`](https://ext.store)
 
 视频带声音更好 🔊
 

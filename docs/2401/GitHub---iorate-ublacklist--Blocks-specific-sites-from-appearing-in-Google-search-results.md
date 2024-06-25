@@ -6,9 +6,9 @@
 
 -->
 
-# GitHub - iorate/ublacklist：阻止特定网站出现在Google搜索结果中
+# GitHub - iorate/ublacklist：阻止特定网站出现在 Google 搜索结果中
 
-> 来源：[https://github.com/iorate/ublacklist](https://github.com/iorate/ublacklist)
+> 来源：[`github.com/iorate/ublacklist`](https://github.com/iorate/ublacklist)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

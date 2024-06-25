@@ -8,11 +8,11 @@ date: 2024-05-27 14:42:58
 
 # 关于非技术性电子游戏作弊缓解措施
 
-> 来源：[https://dustri.org/b/on-non-technical-video-games-cheat-mitigations.html](https://dustri.org/b/on-non-technical-video-games-cheat-mitigations.html)
+> 来源：[`dustri.org/b/on-non-technical-video-games-cheat-mitigations.html`](https://dustri.org/b/on-non-technical-video-games-cheat-mitigations.html)
 
 作弊行为如同电子游戏一样古老，而且将一直存在。今天反作弊市场有一些知名的参与者：[BattlEye](https://en.wikipedia.org/wiki/BattlEye)、[Valve's VAC](https://en.wikipedia.org/wiki/Valve_Anti-Cheat)、[PunkBuster](https://en.wikipedia.org/wiki/PunkBuster)、[Epic's EAC](https://easy.ac/en-us/)、[Blizzard's Warden](https://wowpedia.fandom.com/wiki/Warden_(software))、[Riot's Vanguard](https://support-valorant.riotgames.com/hc/en-us/articles/360046160933-What-is-Vanguard-)、[Activision's Ricochet](https://callofduty.com/en/warzone/ricochet)……还有一些内部的。
 
-为了在这场竞争中保持竞争力，双方都在采取越来越具侵入性的技术隐私侵犯措施：流式传输虚拟化的 shellcode、硬件指纹和锁定、[栈行走](https://secret.club/2020/01/05/battleye-stack-walking.html)、类似启动组件的内核驱动程序、[TPM](https://en.wikipedia.org/wiki/Trusted_Platform_Module)/安全启动/[HVCI](https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/device-guard-and-credential-guard)/[IOMMU](https://en.wikipedia.org/wiki/Input%E2%80%93output_memory_management_unit)/[VBS](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-vbs)/……[花招](https://support-valorant.riotgames.com/hc/en-us/articles/22291331362067-Vanguard-Restrictions)、检测/使用[虚拟机管理程序](https://secret.club/2020/04/13/how-anti-cheats-detect-system-emulation.html)、[可疑材料的外泄](https://secret.club/2020/03/31/battleye-developer-tracking.html)、外部[DMA](https://en.wikipedia.org/wiki/Direct_memory_access)硬件，或其他[更奇异的事情](./paper-notes-reversing-anti-cheats-detection-generation-cycle-with-configurable-hallucinations.html)。
+为了在这场竞争中保持竞争力，双方都在采取越来越具侵入性的技术隐私侵犯措施：流式传输虚拟化的 shellcode、硬件指纹和锁定、[栈行走](https://secret.club/2020/01/05/battleye-stack-walking.html)、类似启动组件的内核驱动程序、[TPM](https://en.wikipedia.org/wiki/Trusted_Platform_Module)/安全启动/[HVCI](https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/device-guard-and-credential-guard)/[IOMMU](https://en.wikipedia.org/wiki/Input%E2%80%93output_memory_management_unit)/[VBS](https://learn.microsoft.com/en-us/windows-hardware/design/device-experiences/oem-vbs)/……[花招](https://support-valorant.riotgames.com/hc/en-us/articles/22291331362067-Vanguard-Restrictions)、检测/使用[虚拟机管理程序](https://secret.club/2020/04/13/how-anti-cheats-detect-system-emulation.html)、[可疑材料的外泄](https://secret.club/2020/03/31/battleye-developer-tracking.html)、外部[DMA](https://en.wikipedia.org/wiki/Direct_memory_access)硬件，或其他更奇异的事情。
 
 然而，反作弊仍然被常规性地规避，尽管方式不太公开，但私人和封闭社区的作弊依然繁荣，因为这本质上是一场失败的游戏。由于游戏和反作弊都是软件，它们当然充满了[滑稽](https://vice.com/en/article/d7y5wj/street-fighter-v-rootkit)缺陷，导致了[愚蠢](https://unknowncheats.me/forum/anti-cheat-bypass/614682-eac-dll-loading-method-eac-forcer.html)[规避](https://unknowncheats.me/forum/anti-cheat-bypass/503052-easy-anti-cheat-kernel-packet-fucker.html)。
 
@@ -20,7 +20,7 @@ date: 2024-05-27 14:42:58
 
 对于本文，我们将作弊和滥用/毒性视为一个术语*滥用*下的单一问题。现在，由于滥用不仅仅是一个技术问题，而且是一个社会问题，它不能仅通过技术解决方案来解决，因此让我们看看游戏开发者正在想出哪些非技术缓解措施来遏制这个问题。
 
-最明显的缓解措施是让作弊变得昂贵，从金钱上来看。为一款游戏支付60欧元是一项巨大的投资，尤其是如果每次被封禁都要重新购买。当然，这并不适用于免费游戏，但可以通过拥有一个化妆品生态系统来模拟，无论是付费购买还是通过努力获得。玩视频游戏时的另一个昂贵的事情是硬件，而封禁可以与硬件绑定。
+最明显的缓解措施是让作弊变得昂贵，从金钱上来看。为一款游戏支付 60 欧元是一项巨大的投资，尤其是如果每次被封禁都要重新购买。当然，这并不适用于免费游戏，但可以通过拥有一个化妆品生态系统来模拟，无论是付费购买还是通过努力获得。玩视频游戏时的另一个昂贵的事情是硬件，而封禁可以与硬件绑定。
 
 ## 全球措施
 
@@ -32,7 +32,7 @@ date: 2024-05-27 14:42:58
 
 1.  它增加了报告问题以修复它们的动力：现在玩家发现漏洞/利用可以获得一些现金作为发现的奖励。
 
-1.  随着更多的滥用向量被消灭，奖励价格将上升，也许报告漏洞比将其出售给作弊提供者更有利可图。这并不罕见，谷歌的[内核CTF比赛](https://google.github.io/security-research/kernelctf/rules.html)支付的比Zerodium高两倍。
+1.  随着更多的滥用向量被消灭，奖励价格将上升，也许报告漏洞比将其出售给作弊提供者更有利可图。这并不罕见，谷歌的[内核 CTF 比赛](https://google.github.io/security-research/kernelctf/rules.html)支付的比 Zerodium 高两倍。
 
 1.  如果漏洞赏金计划得到正确管理，报告问题将获得一定金额的概率会高于在未知时间内使用漏洞作弊直到被修复。
 
@@ -50,7 +50,7 @@ date: 2024-05-27 14:42:58
 
 非技术措施的目标不是为了使滥用变得不可能，而是为了让其不值得。此外，对[边缘之主](https://zh.wikipedia.org/wiki/%E8%BE%B9%E7%BC%98%E4%B9%8B%E4%B8%BB)采取即时永久封禁似乎有点过分，因此采取大量措施对付滥用者是有道理的：有人可能希望允许人们纠正他们的行为，将他们孤立以冷静下来等等。这可能包括文本警告、暂时封禁、从当前游戏中踢出、聊天/语音静音、失去参与排名比赛的资格、减少获得的经验点数，等等。
 
-玩家因各种原因滥用行为，但我认为大多数人之所以这样做是因为好玩。因此，破坏他们的乐趣是遏制这种行为的好方法。一个简单的方法是让他们一起玩，通过按声誉分组玩家，或者在服务器上明确禁用技术反作弊措施。但还有更具创意的措施，比如[禁用他们的降落伞](https://www.callofduty.com/en/blog/2023/11/call-of-duty-ricochet-anti-cheat-modern-warfare-III-progress-report)，将他们的伤害输出降低到荒谬的水平，夺走他们的武器，[让其他合法玩家对他们不可见](https://www.callofduty.com/blog/2023/06/call-of-duty-ricochet-anti-cheat-season-04-update)，随机删除他们的输入，[幻觉](./paper-notes-reversing-anti-cheats-detection-generation-cycle-with-configurable-hallucinations.html)，... 虽然这比简单地将他们分组需要更多的工程时间，但它有几个高价值的回报：
+玩家因各种原因滥用行为，但我认为大多数人之所以这样做是因为好玩。因此，破坏他们的乐趣是遏制这种行为的好方法。一个简单的方法是让他们一起玩，通过按声誉分组玩家，或者在服务器上明确禁用技术反作弊措施。但还有更具创意的措施，比如[禁用他们的降落伞](https://www.callofduty.com/en/blog/2023/11/call-of-duty-ricochet-anti-cheat-modern-warfare-III-progress-report)，将他们的伤害输出降低到荒谬的水平，夺走他们的武器，[让其他合法玩家对他们不可见](https://www.callofduty.com/blog/2023/06/call-of-duty-ricochet-anti-cheat-season-04-update)，随机删除他们的输入，幻觉，... 虽然这比简单地将他们分组需要更多的工程时间，但它有几个高价值的回报：
 
 +   允许游戏开发者花更多时间收集有关作弊行为在技术层面上是如何运作的数据，
 
@@ -76,7 +76,7 @@ date: 2024-05-27 14:42:58
 
 +   这款游戏是免费游玩的，但附带*大量*的[装饰品](https://valorantstrike.com/valorant-store/)。
 
-+   作弊者会被永久封禁，但是从中受益的人也可能会被禁止6个月。
++   作弊者会被永久封禁，但是从中受益的人也可能会被禁止 6 个月。
 
 +   玩家加入游戏并[懒得获得经验点数](https://playvalorant.com/en-gb/news/dev/valorant-behavior-detection-and-penalty-updates/)，除了拖累他们的队友什么都不做，将会[受到惩罚](https://playvalorant.com/en-us/news/dev/valorant-systems-health-series-afk/)。
 

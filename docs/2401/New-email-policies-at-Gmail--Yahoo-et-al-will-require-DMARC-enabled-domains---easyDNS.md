@@ -6,37 +6,37 @@
 
 -->
 
-# Gmail、Yahoo等的新邮件政策将要求启用DMARC的域 | easyDNS
+# Gmail、Yahoo 等的新邮件政策将要求启用 DMARC 的域 | easyDNS
 
-> 来源：[https://easydns.com/blog/2024/01/19/new-email-policies-at-gmail-yahoo-et-al-will-require-dmarc-enabled-domains/](https://easydns.com/blog/2024/01/19/new-email-policies-at-gmail-yahoo-et-al-will-require-dmarc-enabled-domains/)
+> 来源：[`easydns.com/blog/2024/01/19/new-email-policies-at-gmail-yahoo-et-al-will-require-dmarc-enabled-domains/`](https://easydns.com/blog/2024/01/19/new-email-policies-at-gmail-yahoo-et-al-will-require-dmarc-enabled-domains/)
 
-截至2月1日，Gmail和Yahoo将开始执行**DMARC**（域基础消息认证、报告和合规性）的要求。 DMARC是IETF协议，如[RFC7489](https://www.rfc-editor.org/rfc/rfc7489)中所述。
+截至 2 月 1 日，Gmail 和 Yahoo 将开始执行**DMARC**（域基础消息认证、报告和合规性）的要求。 DMARC 是 IETF 协议，如[RFC7489](https://www.rfc-editor.org/rfc/rfc7489)中所述。
 
-最初将影响大发件人，指的是每天在Gmail系统内发送超过5K封邮件的域（然而事情将会变得越来越困难，在没有SPF、DKIM和DMARC的情况下，你的邮件将难以被送达）。
+最初将影响大发件人，指的是每天在 Gmail 系统内发送超过 5K 封邮件的域（然而事情将会变得越来越困难，在没有 SPF、DKIM 和 DMARC 的情况下，你的邮件将难以被送达）。
 
-它与**SPF**和**DKIM**一起向接收邮件服务器传达它们应该如何处理未通过SPF和DKIM验证的消息。
+它与**SPF**和**DKIM**一起向接收邮件服务器传达它们应该如何处理未通过 SPF 和 DKIM 验证的消息。
 
-你应该已经在所有的发件人域上实施了SPF —— 而且在easyMail上默认启用了DKIM。如果你在自己的邮件服务器上运行，你的邮件管理员应该已经实施了它。
+你应该已经在所有的发件人域上实施了 SPF —— 而且在 easyMail 上默认启用了 DKIM。如果你在自己的邮件服务器上运行，你的邮件管理员应该已经实施了它。
 
-## SPF和DKIM的快速回顾：
+## SPF 和 DKIM 的快速回顾：
 
-**SPF（[Sender Policy Framework](https://spfwizard.com/)）：**指示哪些邮件服务器可以合法地发件来自你的域名，以便更好地识别钓鱼邮件、伪造邮件和垃圾邮件。*（此外要注意，如果你的本地安装中有启用了**[发件人重写方案（SRS）](https://easydns.com/features/srs-enabled-email-forwarding)**的电子邮件转发器，则你还需要在你的SRS域上启用DMARC。）*
+**SPF（[Sender Policy Framework](https://spfwizard.com/)）：**指示哪些邮件服务器可以合法地发件来自你的域名，以便更好地识别钓鱼邮件、伪造邮件和垃圾邮件。*（此外要注意，如果你的本地安装中有启用了**[发件人重写方案（SRS）](https://easydns.com/features/srs-enabled-email-forwarding)**的电子邮件转发器，则你还需要在你的 SRS 域上启用 DMARC。）*
 
 **DKIM（[DomainKeys Identified Mail](https://easydns.com/features/dkim-domainkeys/)）：**对邮件进行加密签名，使中间站无法在你不知情的情况下修改邮件内容。
 
-## DMARC为其中添加了什么
+## DMARC 为其中添加了什么
 
-在SPF（-all、+all、~all）的最终“all”参数中表示对SPF失败的建议操作，但由接收服务器决定如何处理。有些忽略设置，有些发送到垃圾邮件，有些将失败的**-all**弹回，其他人则忽略它。
+在 SPF（-all、+all、~all）的最终“all”参数中表示对 SPF 失败的建议操作，但由接收服务器决定如何处理。有些忽略设置，有些发送到垃圾邮件，有些将失败的**-all**弹回，其他人则忽略它。
 
-有了DMARC，你向接收方传达了两件事：
+有了 DMARC，你向接收方传达了两件事：
 
-1.  对于未通过SPF或DKIM验证的消息应该怎么办
+1.  对于未通过 SPF 或 DKIM 验证的消息应该怎么办
 
 1.  需要向谁报告失败
 
-第二点很重要。在DMARC记录中（它们都只是DNS TXT记录，就像SPF和DKIM一样），你可以添加一个地址，指定DMARC报告应发送回哪个电子邮件。
+第二点很重要。在 DMARC 记录中（它们都只是 DNS TXT 记录，就像 SPF 和 DKIM 一样），你可以添加一个地址，指定 DMARC 报告应发送回哪个电子邮件。
 
-## DMARC报告流向邮件管理员
+## DMARC 报告流向邮件管理员
 
 使用这些报告，您可以监控您的电子邮件来源 - 也许有一个博客服务器、一个 CRM 或一个您忘记包含到您的 SPF 中的列表服务 - 并且一直以来这些消息都在大多被路由到垃圾邮件文件夹，因为它们未能通过 SPF 检查。启用 DMARC 后，您将在报告中找到这些信息 - 并且能够相应地调整您的 SPF 记录。
 

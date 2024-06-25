@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:20
 
 # GitHub - guidoism/tex-oberon: Make Project Oberon Pretty Again
 
-> 来源：[https://github.com/guidoism/tex-oberon](https://github.com/guidoism/tex-oberon)
+> 来源：[`github.com/guidoism/tex-oberon`](https://github.com/guidoism/tex-oberon)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

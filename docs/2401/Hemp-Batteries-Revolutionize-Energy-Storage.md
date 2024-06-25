@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:36
 
 # 大麻电池彻底改变了能源储存
 
-> 来源：[https://formulaswiss.com/blogs/industry-news/the-future-of-batteries-hemp](https://formulaswiss.com/blogs/industry-news/the-future-of-batteries-hemp)
+> 来源：[`formulaswiss.com/blogs/industry-news/the-future-of-batteries-hemp`](https://formulaswiss.com/blogs/industry-news/the-future-of-batteries-hemp)
 
 大麻的多功能性似乎没有界限。自从在美国合法种植以来，大麻已被用于生产更可持续的服装、建筑材料和药物。现在，看来大麻也可能彻底改变电池世界。研究人员发现，大麻电池的寿命可能比基于锂的电池长八倍，并且在成本上超过了石墨烯。
 
@@ -20,7 +20,7 @@ date: 2024-05-27 14:33:36
 
 ## 大麻电池：价格实惠、可持续
 
-这种创新技术的发明者，化学工程师大卫·密特林（David Mitlin）向[BBC](https://www.bbc.com/news/science-environment-28770876)介绍了他的团队的突破：“人们问我：为什么选择大麻？我说，为什么不呢？我们以千分之一的价格制造类似于石墨烯的材料——而且我们是用废料做的。”密特林于2014年首次在[ACS Nano杂志](http://pubs.acs.org/doi/abs/10.1021/nn400731g)上发表了有关大麻电池的描述。
+这种创新技术的发明者，化学工程师大卫·密特林（David Mitlin）向[BBC](https://www.bbc.com/news/science-environment-28770876)介绍了他的团队的突破：“人们问我：为什么选择大麻？我说，为什么不呢？我们以千分之一的价格制造类似于石墨烯的材料——而且我们是用废料做的。”密特林于 2014 年首次在[ACS Nano 杂志](http://pubs.acs.org/doi/abs/10.1021/nn400731g)上发表了有关大麻电池的描述。
 
 最近，一位[YouTuber](https://www.youtube.com/watch?v=UN32y8McS4s)进行了一次演示，比较了大麻电池与锂离子电池的性能，结果令人震惊：大麻电池的性能是锂离子电池的八倍。特斯拉的新百万英里电池，采用磷酸铁锂制造，设计寿命是传统锂离子电池的两倍。然而，即使是这种先进的电池也无法与大麻电池的功率和可再生性相抗衡。
 

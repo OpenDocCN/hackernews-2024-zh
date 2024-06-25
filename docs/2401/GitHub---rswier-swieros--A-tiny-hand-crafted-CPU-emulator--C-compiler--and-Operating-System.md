@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:23
 
 # GitHub - rswier/swieros: 一个精心制作的微型 CPU 模拟器、C 编译器和操作系统
 
-> 来源：[https://github.com/rswier/swieros](https://github.com/rswier/swieros)
+> 来源：[`github.com/rswier/swieros`](https://github.com/rswier/swieros)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

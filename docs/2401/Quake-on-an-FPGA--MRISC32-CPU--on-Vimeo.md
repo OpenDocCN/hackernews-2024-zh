@@ -8,7 +8,7 @@
 
 # 在 Vimeo 上使用 FPGA（MRISC32 CPU）运行 Quake
 
-> 来源：[https://vimeo.com/901506667](https://vimeo.com/901506667)
+> 来源：[`vimeo.com/901506667`](https://vimeo.com/901506667)
 
 启动 MC1 MRISC32 计算机并运行 Quake 1。
 

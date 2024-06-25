@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:33:48
+日期：2024 年 05 月 27 日 14:33:48
 
 -->
 
 # 被阻止
 
-> 来源：[https://old.reddit.com/r/aviation/comments/18znz5p/as_1282_kpdx_to_kont_diverted_for_rapid/](https://old.reddit.com/r/aviation/comments/18znz5p/as_1282_kpdx_to_kont_diverted_for_rapid/)
+> 来源：[`old.reddit.com/r/aviation/comments/18znz5p/as_1282_kpdx_to_kont_diverted_for_rapid/`](https://old.reddit.com/r/aviation/comments/18znz5p/as_1282_kpdx_to_kont_diverted_for_rapid/)
 
 # 哇塞，伙计！
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:14
 
 # GitHub - kando-menu/kando: 🥧 跨平台饼菜单。
 
-> 来源：[https://github.com/kando-menu/kando](https://github.com/kando-menu/kando)
+> 来源：[`github.com/kando-menu/kando`](https://github.com/kando-menu/kando)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

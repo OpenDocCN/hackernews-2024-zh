@@ -8,7 +8,7 @@ date: 2024-05-27 14:29:33
 
 # GitHub - cursusdb/cursusdb: CursusDB 是一个具有实时能力的开源分布式内存持久化文档数据库系统。
 
-> 来源：[https://github.com/cursusdb/cursusdb](https://github.com/cursusdb/cursusdb)
+> 来源：[`github.com/cursusdb/cursusdb`](https://github.com/cursusdb/cursusdb)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

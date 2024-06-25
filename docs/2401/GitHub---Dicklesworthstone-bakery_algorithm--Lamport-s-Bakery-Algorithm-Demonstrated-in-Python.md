@@ -8,7 +8,7 @@ date: 2024-05-27 14:58:01
 
 # GitHub - Dicklesworthstone/bakery_algorithm: Lamport's Bakery Algorithm Demonstrated in Python
 
-> 来源：[https://github.com/Dicklesworthstone/bakery_algorithm](https://github.com/Dicklesworthstone/bakery_algorithm)
+> 来源：[`github.com/Dicklesworthstone/bakery_algorithm`](https://github.com/Dicklesworthstone/bakery_algorithm)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

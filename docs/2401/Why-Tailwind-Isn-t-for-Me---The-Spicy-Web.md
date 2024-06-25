@@ -6,27 +6,27 @@ date: 2024-05-27 15:12:43
 
 -->
 
-# 为什么Tailwind不适合我 | The Spicy Web
+# 为什么 Tailwind 不适合我 | The Spicy Web
 
-> 来源：[https://www.spicyweb.dev/why-tailwind-isnt-for-me/](https://www.spicyweb.dev/why-tailwind-isnt-for-me/)
+> 来源：[`www.spicyweb.dev/why-tailwind-isnt-for-me/`](https://www.spicyweb.dev/why-tailwind-isnt-for-me/)
 > 
-> *热点新闻！*全新课程 **[CSS Nouveau](/css-nouveau)** 现已上线！这是 **THE SPICY WEB** 课程系列的第一版发布。**[去看看并今天注册！](/css-nouveau)**
+> *热点新闻！*全新课程 **CSS Nouveau** 现已上线！这是 **THE SPICY WEB** 课程系列的第一版发布。**去看看并今天注册！**
 
-**2022年8月更新**：仍在致力于设计系统课程（😅），但与此同时，我已经撰写了[实用类的三大法则](/the-three-laws-of-utility-classes/)，并宣布了[Vanilla Breeze](https://www.vanillabreeze.dev)，这是一个新的开源工具，将把Tailwind的“class soup”转换为干净、可移植的纯HTML + CSS！进展中…
+**2022 年 8 月更新**：仍在致力于设计系统课程（😅），但与此同时，我已经撰写了实用类的三大法则，并宣布了[Vanilla Breeze](https://www.vanillabreeze.dev)，这是一个新的开源工具，将把 Tailwind 的“class soup”转换为干净、可移植的纯 HTML + CSS！进展中…
 
-**2022年3月更新**：嗯，JIT现在是管理Tailwind输出生成的默认方式，所以很酷。不幸的是，Tailwind的视野只在[其怪异程度令人惊叹的方向上](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values)增长了。我对TW的怀疑一直存在，事实上，我已经开始编写一个课程，*专门设计*教人们如何*远离*Tailwind，并使用当今“纯粹”CSS的最佳实践。**敬请关注。** 😁 - JW
+**2022 年 3 月更新**：嗯，JIT 现在是管理 Tailwind 输出生成的默认方式，所以很酷。不幸的是，Tailwind 的视野只在[其怪异程度令人惊叹的方向上](https://tailwindcss.com/docs/adding-custom-styles#using-arbitrary-values)增长了。我对 TW 的怀疑一直存在，事实上，我已经开始编写一个课程，*专门设计*教人们如何*远离*Tailwind，并使用当今“纯粹”CSS 的最佳实践。**敬请关注。** 😁 - JW
 
-**2021年3月更新**：[Tailwind的试验性新 JIT（Just-In-Time）编译器](https://twitter.com/tailwindcss/status/1374675986965528576?s=21)有望缓解此处概述的一些担忧，并提供一些有趣的新优势。我还没有尝试过，但一旦我尝试过，我会形成额外的想法，并从这里链接到它们。- JW
+**2021 年 3 月更新**：[Tailwind 的试验性新 JIT（Just-In-Time）编译器](https://twitter.com/tailwindcss/status/1374675986965528576?s=21)有望缓解此处概述的一些担忧，并提供一些有趣的新优势。我还没有尝试过，但一旦我尝试过，我会形成额外的想法，并从这里链接到它们。- JW
 
 * * *
 
-最近我在网络上为[Tailwind CSS](https://tailwindcss.com)陷入了不止一场激烈的争论。我为此感到不骄傲。我不喜欢与任何人对立。我认为构建Tailwind的人都是有才华的人。但从纯技术角度来看，我简直不喜欢Tailwind。**它不是为我而建的**。
+最近我在网络上为[Tailwind CSS](https://tailwindcss.com)陷入了不止一场激烈的争论。我为此感到不骄傲。我不喜欢与任何人对立。我认为构建 Tailwind 的人都是有才华的人。但从纯技术角度来看，我简直不喜欢 Tailwind。**它不是为我而建的**。
 
 从某种意义上说，这没关系。世界上有*很多*我永远不会使用的网络技术。这并不意味着它们不好。有很多酷炫的技术栈供选择。
 
-但我一直遇到的问题是这种日益普遍的观点：Tailwind *是未来*（兄弟）。这是*应该做的事情*。换句话说，它有观点，并且它激发了一群狂热的信徒。同样，在某种程度上，这没问题。比如，Rails就很有观点，我喜欢用Rails。
+但我一直遇到的问题是这种日益普遍的观点：Tailwind *是未来*（兄弟）。这是*应该做的事情*。换句话说，它有观点，并且它激发了一群狂热的信徒。同样，在某种程度上，这没问题。比如，Rails 就很有观点，我喜欢用 Rails。
 
-但是Tailwind确实提出了一个挑战。我将直接引用创始人亚当·瓦森在Tailwind网站上突出显示的内容：
+但是 Tailwind 确实提出了一个挑战。我将直接引用创始人亚当·瓦森在 Tailwind 网站上突出显示的内容：
 
 > “最佳实践”实际上并不奏效。
 > 
@@ -60,7 +60,7 @@ date: 2024-05-27 15:12:43
 
 现在我已经听到很多人在电脑屏幕前尖叫着告诉我“伙计，如果你想保持你的 HTML 干净，就使用 `@apply`！问题解决了！”嗯，这是一个潜在的解决方案，事实上，这就是我们在上述项目中所做的。我们的大部分 HTML 都是围绕组件作用域的类名（概念上与 BEM 相当接近），因此我们广泛使用 `@apply`。但这就引出了我的下一个担忧。
 
-### 原因 2：`@apply` 从根本上是不兼容和不标准的（并且在很大程度上是不必要的）。[#](#reason-2-apply-is-fundamentally-incompatible-and-non-standard-and-largely-unnecessary)
+### 原因 2：`@apply` 从根本上是不兼容和不标准的（并且在很大程度上是不必要的）。#
 
 这就是很多 Tailwind 粉丝遇到困难并一遍又一遍地与我争论的地方，所以我会尽可能清晰和明显地解释这一点。
 
@@ -78,7 +78,7 @@ date: 2024-05-27 15:12:43
 
 至于为什么`@apply`在整体计划中基本上是不必要的，这就引出了我的第三点。
 
-### 第三个原因：Tailwind 关注设计系统和标记的重点大部分可以被 CSS 自定义属性（即变量）取代—这是一个标准。[#](#reason-3-tailwinds-focus-on-design-systems-and-tokens-could-mostly-be-replaced-by-css-custom-properties-aka-variableswhich-is-a-standard)
+### 第三个原因：Tailwind 关注设计系统和标记的重点大部分可以被 CSS 自定义属性（即变量）取代—这是一个标准。#
 
 初始时，人们喜欢 Tailwind 是因为它开箱即用，具有漂亮的设计系统和许多可以调整的标记（颜色、字体大小、间距等）。很容易快速获得好看的结果。
 
@@ -92,7 +92,7 @@ date: 2024-05-27 15:12:43
 
 谈到现代 Web 浏览器中的本地功能...
 
-### 第四个原因：Tailwind 忘记了 Web 组件的存在。[#](#reason-4-tailwind-forgets-that-web-components-exist)
+### 第四个原因：Tailwind 忘记了 Web 组件的存在。#
 
 这可能是针对 Tailwind 的最大批评。它似乎是在一个 Web 组件不存在的世界中构思和推广的。Tailwind CSS 在 Shadow DOM 中完全无法使用。一些有远见的开发人员提出了解决方案，通过构建过程将一些 Tailwind 样式注入到组件中，但这绝对是一种妥协。
 
@@ -100,7 +100,7 @@ date: 2024-05-27 15:12:43
 
 在这方面，Tailwind 对你的帮助不比 Bootstrap 或 Foundation 或任何其他几年/几十年前编写的 CSS 框架更多。（甚至是我心爱的 Bulma！ 😢）
 
-### 第五个原因：最后，Tailwind 鼓励使用 div/span 标记汤。[#](#reason-5-finally-tailwind-encourages-divspan-tag-soup)
+### 第五个原因：最后，Tailwind 鼓励使用 div/span 标记汤。#
 
 我几乎把这个包含在前一个观点中，但它确实需要单独的讨论。我现在已经相信，到处在你的标记中使用 `<div>` 和 `<span>` 标签是一种反模式。我们生活在一个现代浏览器完全支持和启用自定义元素（又称 `<whatever-you-can-dream-of>`）的世界。当你可以编写 `<ui-card></ui-card>` 时，没有什么理由你被迫写 `<div class="card"></div>`。事实上，你完全可以在元素中使用自定义属性来编写 *极具表现力的标记*，与过去相比，这种标记看起来非常 futurist！
 
@@ -142,7 +142,7 @@ date: 2024-05-27 15:12:43
 
 这就引出了一个问题：Tailwind 究竟能让我们如何“构建现代网站”？从纯技术层面上讲，我真的不认为它比 Bootstrap 好多少。而 Bootstrap 至少提供了一个免费的开源组件库。如果你使用 Tailwind，[他们会让你付费](https://tailwindui.com)。
 
-### 结论：如果你喜欢 Tailwind，就使用它吧！但不要试图说服我它是未来。[#](#结论如果你喜欢tailwind就使用它但不要试图说服我它是未来)
+### 结论：如果你喜欢 Tailwind，就使用它吧！但不要试图说服我它是未来。#
 
 听着，我们可以就任何技术的相对优点或问题来回讨论。选择 Tailwind 明显有一些好处，最值得注意的是你可以通过简单地用实用程序类添加一堆 div 标签，快速从空白页面转变为花哨的设计。
 

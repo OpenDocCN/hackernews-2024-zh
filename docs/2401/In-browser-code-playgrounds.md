@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:32
 
 # 在浏览器中的代码游乐场
 
-> 来源：[https://antonz.org/in-browser-code-playgrounds/](https://antonz.org/in-browser-code-playgrounds/)
+> 来源：[`antonz.org/in-browser-code-playgrounds/`](https://antonz.org/in-browser-code-playgrounds/)
 
 # 在浏览器中的代码游乐场
 
@@ -174,4 +174,4 @@ WASI 动力的沙盒允许代码片段完全在浏览器中运行，不涉及服
 
 [游乐场](https://github.com/nalgeon/codapi-js/blob/main/docs/browser-only.md) • [片段小部件](https://github.com/nalgeon/codapi-js) • [关于 Codapi](https://codapi.org/)
 
-*[* **订阅***](/subscribe/) *以保持对新文章的跟踪。**
+** **订阅*** *以保持对新文章的跟踪。**

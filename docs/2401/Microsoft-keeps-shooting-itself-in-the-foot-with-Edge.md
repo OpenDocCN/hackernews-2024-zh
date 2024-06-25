@@ -8,7 +8,7 @@ date: 2024-05-27 14:26:57
 
 # 微软不断用 Edge 射自己的脚
 
-> 来源：[https://www.xda-developers.com/microsoft-shooting-itself-foot-edge/](https://www.xda-developers.com/microsoft-shooting-itself-foot-edge/)
+> 来源：[`www.xda-developers.com/microsoft-shooting-itself-foot-edge/`](https://www.xda-developers.com/microsoft-shooting-itself-foot-edge/)
 
 ### 主要观点
 

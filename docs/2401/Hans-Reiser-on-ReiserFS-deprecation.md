@@ -8,7 +8,7 @@ date: 2024-05-27 14:56:21
 
 # Hans Reiser 对 ReiserFS 废弃的看法
 
-> 来源：[https://lore.kernel.org/lkml/b98b29cf-27d9-49e0-b10b-1848399badfd@kittens.ph/T/#u](https://lore.kernel.org/lkml/b98b29cf-27d9-49e0-b10b-1848399badfd@kittens.ph/T/#u)
+> 来源：[`lore.kernel.org/lkml/b98b29cf-27d9-49e0-b10b-1848399badfd@kittens.ph/T/#u`](https://lore.kernel.org/lkml/b98b29cf-27d9-49e0-b10b-1848399badfd@kittens.ph/T/#u)
 
 ```
 * **Hans Reiser on ReiserFS deprecation**

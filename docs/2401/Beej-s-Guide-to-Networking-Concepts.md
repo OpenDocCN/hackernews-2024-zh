@@ -8,13 +8,13 @@ category: 未分类
 
 # Beej's Guide to Networking Concepts
 
-> 来源：[https://beej.us/guide/bgnet0/](https://beej.us/guide/bgnet0/)
+> 来源：[`beej.us/guide/bgnet0/`](https://beej.us/guide/bgnet0/)
 
 # Beej's Guide to Networking Concepts
 
 这几乎不算一本书。这些都是我为课堂上准备的东西，以前放在 Canvas 上，然后拼凑在一起成为一册。我会逐步改进它，但目前它只是被丢在这里。请原谅我。
 
-请记住***这是一个 alpha 质量的文档***。如果您有修改意见，我很乐意听取，但请理解，甚至*我*可能尚未阅读过指南的那一部分。有明显的错误！此外，当涉及某些内容时，我可能不知道自己在说什么！因此请[给我发电子邮件](mailto:beej@beej.us)！
+请记住***这是一个 alpha 质量的文档***。如果您有修改意见，我很乐意听取，但请理解，甚至*我*可能尚未阅读过指南的那一部分。有明显的错误！此外，当涉及某些内容时，我可能不知道自己在说什么！因此请给我发电子邮件！
 
 （[点击这里查看其他指南！](http://beej.us/guide/)）
 
@@ -24,21 +24,21 @@ category: 未分类
 
 **PDF:**
 
-+   [US Letter 单面打印，语法高亮](pdf/bgnet0_usl_c_1.pdf)
++   US Letter 单面打印，语法高亮
 
-+   [US Letter 双面打印，语法高亮](pdf/bgnet0_usl_c_2.pdf)
++   US Letter 双面打印，语法高亮
 
-+   [A4 单面打印，语法高亮](pdf/bgnet0_a4_c_1.pdf)
++   A4 单面打印，语法高亮
 
-+   [A4 双面打印，语法高亮](pdf/bgnet0_a4_c_2.pdf)
++   A4 双面打印，语法高亮
 
-+   [US Letter 单面打印，黑白](pdf/bgnet0_usl_bw_1.pdf)
++   US Letter 单面打印，黑白
 
-+   [US Letter 双面打印，黑白](pdf/bgnet0_usl_bw_2.pdf)
++   US Letter 双面打印，黑白
 
-+   [A4 单面打印，黑白](pdf/bgnet0_a4_bw_1.pdf)
++   A4 单面打印，黑白
 
-+   [A4 双面打印，黑白](pdf/bgnet0_a4_bw_2.pdf)
++   A4 双面打印，黑白
 
 **示例：**
 
@@ -50,4 +50,4 @@ category: 未分类
 
 联系 Beej：
 
-`[beej@beej.us](mailto:beej@beej.us)`
+`beej@beej.us`

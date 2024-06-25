@@ -6,9 +6,9 @@
 
 -->
 
-# 开放间隔重复/fsrs4anki Wiki · GitHub的FSRS ABC
+# 开放间隔重复/fsrs4anki Wiki · GitHub 的 FSRS ABC
 
-> 来源：[https://github.com/open-spaced-repetition/fsrs4anki/wiki/ABC-of-FSRS](https://github.com/open-spaced-repetition/fsrs4anki/wiki/ABC-of-FSRS)
+> 来源：[`github.com/open-spaced-repetition/fsrs4anki/wiki/ABC-of-FSRS`](https://github.com/open-spaced-repetition/fsrs4anki/wiki/ABC-of-FSRS)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

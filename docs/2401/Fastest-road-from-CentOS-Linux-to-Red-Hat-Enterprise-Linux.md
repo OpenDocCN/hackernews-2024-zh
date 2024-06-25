@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:31:49
+日期：2024 年 5 月 27 日 14:31:49
 
 -->
 
 # 从 CentOS Linux 到 Red Hat Enterprise Linux 的最快路径
 
-> 来源：[https://www.redhat.com/en/blog/fastest-road-centos-linux-red-hat-enterprise-linux](https://www.redhat.com/en/blog/fastest-road-centos-linux-red-hat-enterprise-linux)
+> 来源：[`www.redhat.com/en/blog/fastest-road-centos-linux-red-hat-enterprise-linux`](https://www.redhat.com/en/blog/fastest-road-centos-linux-red-hat-enterprise-linux)
 
-**2024年6月30日**。在你阅读其他任何内容之前，请牢记这个日期。
+**2024 年 6 月 30 日**。在你阅读其他任何内容之前，请牢记这个日期。
 
-2024年6月30日将会是 CentOS Linux 的生命周期结束 (EOL) 日，而 Red Hat Enterprise Linux 7 (RHEL 7) 将会达到维护结束 (EOM)。好消息是，这些事件不会需要进行完整的基础架构改造。有可用的工具可以从你当前的配置转移到一个能够获得数年支持的位置。
+2024 年 6 月 30 日将会是 CentOS Linux 的生命周期结束 (EOL) 日，而 Red Hat Enterprise Linux 7 (RHEL 7) 将会达到维护结束 (EOM)。好消息是，这些事件不会需要进行完整的基础架构改造。有可用的工具可以从你当前的配置转移到一个能够获得数年支持的位置。
 
-尽管2024年6月听起来还遥远，但不要拖延。它将比你想象的更快到来。现在开始规划。尽快开始移动。给自己足够的时间，别忘了我们在红帽公司不仅是你的软件供应商。我们是你的合作伙伴，愿意帮助你完成这些过渡。
+尽管 2024 年 6 月听起来还遥远，但不要拖延。它将比你想象的更快到来。现在开始规划。尽快开始移动。给自己足够的时间，别忘了我们在红帽公司不仅是你的软件供应商。我们是你的合作伙伴，愿意帮助你完成这些过渡。
 
 如果你和我一样，在面对一个长期、密集的项目时，需要一些时间盯着空白屏幕，处理眼前的任务。让我看看能否帮助推动你采取行动。
 
@@ -32,7 +32,7 @@
 
 **突击测验**：CentOS Linux 7.9 何时到达生命周期结束（EOL）？
 
-如果你说的是2024年6月30日，那么我可以写下这篇博客感到自豪了！
+如果你说的是 2024 年 6 月 30 日，那么我可以写下这篇博客感到自豪了！
 
 红帽公司已经创建了一种使用支持的流程在原地迁移到受支持的操作系统的方式。
 
@@ -40,7 +40,7 @@
 
 现在，我们正在看 CentOS Linux 的最后几天。您有数百（甚至数千）台运行 CentOS Linux 7 各种次要版本的服务器。让我们看看转换过程是什么样子：
 
-[https://www.youtube.com/embed/xX7P4BzOcNg](https://www.youtube.com/embed/xX7P4BzOcNg)
+[`www.youtube.com/embed/xX7P4BzOcNg`](https://www.youtube.com/embed/xX7P4BzOcNg)
 
 视频
 
@@ -50,11 +50,11 @@
 
 1.  运行转换！
 
-1.  验证您的应用程序并将您的系统注册到[红帽见解](/en/technologies/management/insights)。
+1.  验证您的应用程序并将您的系统注册到红帽见解。
 
 1.  准备好了吗——我们还没结束。
 
-如果您想动手尝试，我们的网站上有一个[Convert2RHEL 实验室](/en/interactive-labs/migrate-red-hat-enterprise-linux-centos-linux)供您自行尝试！
+如果您想动手尝试，我们的网站上有一个 Convert2RHEL 实验室供您自行尝试！
 
 ## 原地升级
 
@@ -64,7 +64,7 @@
 
 与 CentOS Linux 类似，RHEL 7 的寿命已经不多了。如果这是一条感兴趣的路径，红帽确实提供了扩展生命周期支持（ELS）订阅。然而，这些权利是附加费用的。对于今天的思考练习，我们正在研究如何使您的系统保持新鲜（即受支持），而无需额外的费用或以后需要更换。
 
-[https://www.youtube.com/embed/VVVwg9IyqwQ](https://www.youtube.com/embed/VVVwg9IyqwQ)
+[`www.youtube.com/embed/VVVwg9IyqwQ`](https://www.youtube.com/embed/VVVwg9IyqwQ)
 
 视频
 
@@ -80,7 +80,7 @@
 
 就是这样！坐下来深呼吸吧。即使在 2024 年 6 月之后，RHEL 8 仍将有五年的维护支持。
 
-如果您想自己尝试原地升级，我们的网站上有一个[自主实验室](/en/interactive-labs/perform-in-place-upgrade-with-leapp)供您参考。
+如果您想自己尝试原地升级，我们的网站上有一个自主实验室供您参考。
 
 ## 结束
 
@@ -88,12 +88,12 @@
 
 在你的手机上设置一个倒计时。在你的桌面上设置一个提醒。拿一张便签贴在你的镜子上。无论你需要做什么。日期正在迅速临近，作为一名曾经的系统管理员，我不希望看到你在最后一刻匆忙寻找支持系统的方法。
 
-2024年6月30日……
+2024 年 6 月 30 日……
 
-我的经验总是在一个新的硬件平台上建立一个新的服务器，使用新的操作系统。在我想象中唯一存在的完美世界里，我可能会考虑最后一次全面替换，直接升级到RHEL 9，然后跟上RHEL 10及以后的就地升级。
+我的经验总是在一个新的硬件平台上建立一个新的服务器，使用新的操作系统。在我想象中唯一存在的完美世界里，我可能会考虑最后一次全面替换，直接升级到 RHEL 9，然后跟上 RHEL 10 及以后的就地升级。
 
 不幸的是，技术、应用程序、行业和组织并不总是遵循这样的节奏。复杂的依赖关系、流程和资源可用性限制了我们保持“最新最棒”的能力。
 
-[如果你发现自己处于这种位置，请跟随本博客中的链接，观看我们的视频，并联系我们的[支持](https://access.redhat.com/)和[服务](/en/services/consulting)组织。红帽公司是你的合作伙伴。](https://access.redhat.com/)
+[如果你发现自己处于这种位置，请跟随本博客中的链接，观看我们的视频，并联系我们的[支持](https://access.redhat.com/)和服务组织。红帽公司是你的合作伙伴。](https://access.redhat.com/)
 
 ## 进一步阅读

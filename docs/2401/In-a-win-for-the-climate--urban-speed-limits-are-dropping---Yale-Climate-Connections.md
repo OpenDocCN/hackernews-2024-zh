@@ -8,9 +8,9 @@
 
 # 在为气候赢得一场胜利的同时，城市限速正在下降» 耶鲁气候连接
 
-> 来源：[https://yaleclimateconnections.org/2023/12/in-a-win-for-the-climate-urban-speed-limits-are-dropping/](https://yaleclimateconnections.org/2023/12/in-a-win-for-the-climate-urban-speed-limits-are-dropping/)
+> 来源：[`yaleclimateconnections.org/2023/12/in-a-win-for-the-climate-urban-speed-limits-are-dropping/`](https://yaleclimateconnections.org/2023/12/in-a-win-for-the-climate-urban-speed-limits-are-dropping/)
 
-自2015年以来，西雅图已经降低了其道路网络的大部分路段的限速，将居民街道限制在每小时20英里，大多数较大的城市走廊限制在每小时25英里。这些变化生效后，研究显示交通事故减少了约20%，而发生的事故导致的受伤情况也明显减少了。
+自 2015 年以来，西雅图已经降低了其道路网络的大部分路段的限速，将居民街道限制在每小时 20 英里，大多数较大的城市走廊限制在每小时 25 英里。这些变化生效后，研究显示交通事故减少了约 20%，而发生的事故导致的受伤情况也明显减少了。
 
 美国各地的城市都在效仿西雅图的做法，从丹佛和明尼阿波利斯到华盛顿特区和霍博肯，限速都在下降。尽管这些变化的动机是减少交通事故造成的死亡和伤害，但人们越来越意识到它们也有益于气候。
 
@@ -20,7 +20,7 @@
 
 交通是美国排放量最大的来源，并且乘用车是该行业的主要罪犯。电动汽车可以帮助减少这些排放，但它们并不是解决问题的灵丹妙药——许多专家认为达到气候目标还需要减少汽车使用。因此，政府帮助人们通过步行、骑自行车和乘坐公共交通来满足他们的需求至关重要（这通常需要步行到一个公共交通站点）。
 
-但要实现这一目标，就需要使步行或骑自行车的人在街道上更安全，因为对道路安全的担忧是阻碍步行和骑自行车的常见障碍。不幸的是，这些担忧是有根据的。根据世界卫生组织的数据，全球每年有超过100万人死于交通事故。超过一半的死亡和伤害来自脆弱群体，如行人、骑自行车者和摩托车手。
+但要实现这一目标，就需要使步行或骑自行车的人在街道上更安全，因为对道路安全的担忧是阻碍步行和骑自行车的常见障碍。不幸的是，这些担忧是有根据的。根据世界卫生组织的数据，全球每年有超过 100 万人死于交通事故。超过一半的死亡和伤害来自脆弱群体，如行人、骑自行车者和摩托车手。
 
 在美国，[行人](https://www.ghsa.org/resources/news-releases/GHSA-Pedestrian-Spotlight23#:~:text=Pedestrian%20deaths%20have%20surged%2018,.%2C%20of%20research%20firm%20Westat.) 和 [骑行者](https://www.iihs.org/topics/fatality-statistics/detail/bicyclists#:~:text=Posted%20May%202023.-,Trends,their%20lowest%20point%20in%202010) 的死亡人数近年来呈上升趋势，背后是更广泛的道路系统失灵，每年[夺走数万人的生命](https://www.nhtsa.gov/press-releases/traffic-crash-death-estimates-2022)。
 
@@ -40,11 +40,11 @@ Engel 表示，美国城市降低速度限制的运动代表了与过去刻意�
 
 (图片来源：[国家城市交通官员协会](https://nacto.org/))
 
-超越这一方法的努力受到国际先例的启发。[零死亡愿景](https://www.roadsafetysweden.com/about-the-conference/vision-zero---no-fatalities-or-serious-injuries-through-road-accidents/)是瑞典议会于1997年首次采纳的一项战略，其影响尤为深远。而传统的道路安全方法强调个人的责任来防止事故，零死亡愿景则专注于创造一个系统，在这个系统中，人为错误——完全消除不可能——更不可能造成严重伤害。一些[用于实现这一目标的措施](https://visionzeronetwork.org/wp-content/uploads/2018/11/Vision_Zero_Core_Elements.pdf)包括降低速度限制、重新设计街道（例如添加环岛）以及绘制事故地点地图，以便更强有力地干预热点区域。
+超越这一方法的努力受到国际先例的启发。[零死亡愿景](https://www.roadsafetysweden.com/about-the-conference/vision-zero---no-fatalities-or-serious-injuries-through-road-accidents/)是瑞典议会于 1997 年首次采纳的一项战略，其影响尤为深远。而传统的道路安全方法强调个人的责任来防止事故，零死亡愿景则专注于创造一个系统，在这个系统中，人为错误——完全消除不可能——更不可能造成严重伤害。一些[用于实现这一目标的措施](https://visionzeronetwork.org/wp-content/uploads/2018/11/Vision_Zero_Core_Elements.pdf)包括降低速度限制、重新设计街道（例如添加环岛）以及绘制事故地点地图，以便更强有力地干预热点区域。
 
-影响全球交通速度辩论的另一个力量是总部位于英国的志愿组织[20’s Plenty for Us](https://www.20splenty.org/)。该组织于2007年由罗德·金（Rod King）创立，他是一位热衷于骑自行车的人，在访问德国自行车友好城市希尔登时体验了每小时20英里的限速带来的好处。该运动的口号的变体已被交通机构和倡导者采纳，例如“20就够了”已出现在[华盛顿特区的公交车上](https://twitter.com/DDOTDC/status/1456638944897126401)，在[盐湖城的庭院标牌](https://sweetstreetsslc.org/20-is-plenty)上。
+影响全球交通速度辩论的另一个力量是总部位于英国的志愿组织[20’s Plenty for Us](https://www.20splenty.org/)。该组织于 2007 年由罗德·金（Rod King）创立，他是一位热衷于骑自行车的人，在访问德国自行车友好城市希尔登时体验了每小时 20 英里的限速带来的好处。该运动的口号的变体已被交通机构和倡导者采纳，例如“20 就够了”已出现在[华盛顿特区的公交车上](https://twitter.com/DDOTDC/status/1456638944897126401)，在[盐湖城的庭院标牌](https://sweetstreetsslc.org/20-is-plenty)上。
 
-欧洲和美国的决策者对“零死亡愿景”和“20英里足矣”理念持开放态度。据金（King）称，在英国，2800万人——几乎总人口的42%——现在居住在每小时20英里的社区。[伦敦](https://tfl.gov.uk/corporate/safety-and-security/road-safety/safe-speeds)降低了其速度限制，布鲁塞尔、巴黎和[其他欧洲首都](https://etsc.eu/amsterdam-follows-paris-brussels-and-madrid-with-default-30-km-h-limits/)也降低了限速。在国家层面，[西班牙](https://etsc.eu/spain-switches-most-urban-roads-to-30-km-h-amid-calls-for-action-in-several-eu-member-states/)和[威尔士](https://www.gov.wales/introducing-20mph-speed-limits-frequently-asked-questions)分别在许多道路上设定了30公里每小时（约19英里每小时）和20英里每小时的默认限速。
+欧洲和美国的决策者对“零死亡愿景”和“20 英里足矣”理念持开放态度。据金（King）称，在英国，2800 万人——几乎总人口的 42%——现在居住在每小时 20 英里的社区。[伦敦](https://tfl.gov.uk/corporate/safety-and-security/road-safety/safe-speeds)降低了其速度限制，布鲁塞尔、巴黎和[其他欧洲首都](https://etsc.eu/amsterdam-follows-paris-brussels-and-madrid-with-default-30-km-h-limits/)也降低了限速。在国家层面，[西班牙](https://etsc.eu/spain-switches-most-urban-roads-to-30-km-h-amid-calls-for-action-in-several-eu-member-states/)和[威尔士](https://www.gov.wales/introducing-20mph-speed-limits-frequently-asked-questions)分别在许多道路上设定了 30 公里每小时（约 19 英里每小时）和 20 英里每小时的默认限速。
 
 **设计安全的交通系统**
 
@@ -64,12 +64,12 @@ Engel 表示，美国城市降低速度限制的运动代表了与过去刻意�
 
 “西雅图还有一些街道确实设计得像高速公路，感觉你应该像在高速公路上开车一样。这就是我们看到大多数重大车祸和死亡事件发生的地方，”她说。
 
-尽管单靠降低速度限制并不能阻止所有的死亡事件，也不能一夜之间改变每个驾驶员的行为，但它在“长远的游戏”中扮演着至关重要的角色，正如Cantor所说。"现在，当西雅图交通部门(SDOT)在每条街道上进行任何一个小项目时，他们都会为比以前更低的速度限制进行设计。因此，随着时间的推移，这对很多街道产生了很大的影响。"
+尽管单靠降低速度限制并不能阻止所有的死亡事件，也不能一夜之间改变每个驾驶员的行为，但它在“长远的游戏”中扮演着至关重要的角色，正如 Cantor 所说。"现在，当西雅图交通部门(SDOT)在每条街道上进行任何一个小项目时，他们都会为比以前更低的速度限制进行设计。因此，随着时间的推移，这对很多街道产生了很大的影响。"
 
-西雅图社区绿道仍在[推动城市采取更多措施](https://seattlegreenways.org/our-priorities/current-priorities/vision-zero/)来保护自行车骑行者、行人和公共交通乘客，但Cantor表示，即使对于愤世嫉俗的交通活动家来说，交通部门自从采纳了“零视觉”以来的进展令人印象深刻。她说，在市内骑自行车的经历“与2016年完全不同”，“现在好多了，感觉更安全了。”她还指出，公共交通系统也变得更加健壮，行人通行权也得到了改善。
+西雅图社区绿道仍在[推动城市采取更多措施](https://seattlegreenways.org/our-priorities/current-priorities/vision-zero/)来保护自行车骑行者、行人和公共交通乘客，但 Cantor 表示，即使对于愤世嫉俗的交通活动家来说，交通部门自从采纳了“零视觉”以来的进展令人印象深刻。她说，在市内骑自行车的经历“与 2016 年完全不同”，“现在好多了，感觉更安全了。”她还指出，公共交通系统也变得更加健壮，行人通行权也得到了改善。
 
-这些变化使西雅图的人们更容易在没有汽车的情况下出行。"在过去的十年里，我们的人口增长了约20%，与此同时，我们的[街道]网络上的交通量基本保持不变，我们的公共交通乘客量增长了约30%," Venu Nemani说道。"我们基本上每天都在为西雅图市民提供更多出行选择，通过使用非汽车模式来出行。"
+这些变化使西雅图的人们更容易在没有汽车的情况下出行。"在过去的十年里，我们的人口增长了约 20%，与此同时，我们的[街道]网络上的交通量基本保持不变，我们的公共交通乘客量增长了约 30%," Venu Nemani 说道。"我们基本上每天都在为西雅图市民提供更多出行选择，通过使用非汽车模式来出行。"
 
-根据20英里每小时速度限制的20多个20英里/小时的变化对于广泛变革的初步阶段是一个常见的好处。这使得降低速度限制成为想要改善道路安全和减少排放的城市的关键第一步。
+根据 20 英里每小时速度限制的 20 多个 20 英里/小时的变化对于广泛变革的初步阶段是一个常见的好处。这使得降低速度限制成为想要改善道路安全和减少排放的城市的关键第一步。
 
-“车辆的速度影响您的[道路]过街。它影响您必须采取的措施来保护自行车骑行者。它影响您必须采取的措施来保护其他汽车驾驶员，” King说道。“因此，降低速度-降低道路网络中的动能-您会发现您有更多的选择。”
+“车辆的速度影响您的[道路]过街。它影响您必须采取的措施来保护自行车骑行者。它影响您必须采取的措施来保护其他汽车驾驶员，” King 说道。“因此，降低速度-降低道路网络中的动能-您会发现您有更多的选择。”

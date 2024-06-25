@@ -8,7 +8,7 @@ date: 2024-05-27 14:34:16
 
 # GitHub - awslabs/amazon-kinesis-video-streams-webrtc-sdk-c: 亚马逊 Kinesis 视频流 Webrtc SDK 用于开发人员安装和定制设备之间的实时通信，并启用视频、音频安全流式传输到 Kinesis 视频流。
 
-> 来源：[https://github.com/awslabs/amazon-kinesis-video-streams-webrtc-sdk-c](https://github.com/awslabs/amazon-kinesis-video-streams-webrtc-sdk-c)
+> 来源：[`github.com/awslabs/amazon-kinesis-video-streams-webrtc-sdk-c`](https://github.com/awslabs/amazon-kinesis-video-streams-webrtc-sdk-c)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

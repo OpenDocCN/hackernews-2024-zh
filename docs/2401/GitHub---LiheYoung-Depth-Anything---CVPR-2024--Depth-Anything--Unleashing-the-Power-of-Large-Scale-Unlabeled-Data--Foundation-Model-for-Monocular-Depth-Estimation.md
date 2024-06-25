@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年05月27日15时01分03秒
+日期：2024 年 05 月 27 日 15 时 01 分 03 秒
 
 -->
 
 # GitHub - LiheYoung/Depth-Anything: [CVPR 2024] Depth Anything: Unleashing the Power of Large-Scale Unlabeled Data. Foundation Model for Monocular Depth Estimation
 
-> 来源：[https://github.com/LiheYoung/Depth-Anything](https://github.com/LiheYoung/Depth-Anything)
+> 来源：[`github.com/LiheYoung/Depth-Anything`](https://github.com/LiheYoung/Depth-Anything)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

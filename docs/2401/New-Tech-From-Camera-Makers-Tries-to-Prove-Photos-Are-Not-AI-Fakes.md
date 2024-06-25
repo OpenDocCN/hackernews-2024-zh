@@ -8,7 +8,7 @@
 
 # 相机制造商的新技术试图证明照片不是 AI 伪造的
 
-> 来源：[https://www.lifewire.com/camera-makers-authentication-prevent-deepfakes-8422784](https://www.lifewire.com/camera-makers-authentication-prevent-deepfakes-8422784)
+> 来源：[`www.lifewire.com/camera-makers-authentication-prevent-deepfakes-8422784`](https://www.lifewire.com/camera-makers-authentication-prevent-deepfakes-8422784)
 
 +   尼康、索尼和佳能都在相机中添加防篡改的数字水印技术。
 
@@ -60,6 +60,6 @@ AI 换脸用于深度伪造。Tero Vesalainen / Getty Images
 
 获取每天最新的科技新闻
 
-[订阅](#)
+订阅
 
 告诉我们原因！

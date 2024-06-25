@@ -8,7 +8,7 @@
 
 # Lumiere
 
-> 来源：[https://lumiere-video.github.io/](https://lumiere-video.github.io/)
+> 来源：[`lumiere-video.github.io/`](https://lumiere-video.github.io/)
 
 # 作者
 

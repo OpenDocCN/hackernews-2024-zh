@@ -8,7 +8,7 @@ date: 2024-05-27 14:25:25
 
 # GitHub - JSLegendDev/Pokemon-p5js: 用 JavaScript + p5.js 库制作的口袋妖怪游戏
 
-> 来源：[https://github.com/JSLegendDev/Pokemon-p5js](https://github.com/JSLegendDev/Pokemon-p5js)
+> 来源：[`github.com/JSLegendDev/Pokemon-p5js`](https://github.com/JSLegendDev/Pokemon-p5js)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

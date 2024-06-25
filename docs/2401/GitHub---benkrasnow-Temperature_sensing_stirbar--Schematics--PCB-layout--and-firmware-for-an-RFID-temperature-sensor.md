@@ -8,7 +8,7 @@ date: 2024-05-27 14:45:14
 
 # GitHub - benkrasnow/Temperature_sensing_stirbar: RFID 温度传感器的原理图、PCB 布局和固件
 
-> 来源：[https://github.com/benkrasnow/Temperature_sensing_stirbar](https://github.com/benkrasnow/Temperature_sensing_stirbar)
+> 来源：[`github.com/benkrasnow/Temperature_sensing_stirbar`](https://github.com/benkrasnow/Temperature_sensing_stirbar)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

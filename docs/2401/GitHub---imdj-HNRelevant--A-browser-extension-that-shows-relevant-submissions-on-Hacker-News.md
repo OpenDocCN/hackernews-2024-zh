@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 15:17:36
+日期：2024 年 05 月 27 日 15:17:36
 
 -->
 
 # GitHub - imdj/HNRelevant: 一个在 Hacker News 上显示相关提交的浏览器扩展程序
 
-> 来源：[https://github.com/imdj/HNRelevant](https://github.com/imdj/HNRelevant)
+> 来源：[`github.com/imdj/HNRelevant`](https://github.com/imdj/HNRelevant)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

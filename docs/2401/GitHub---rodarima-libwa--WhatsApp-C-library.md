@@ -8,7 +8,7 @@ date: 2024-05-27 14:28:10
 
 # GitHub - rodarima/libwa: WhatsApp C library
 
-> 来源：[https://github.com/rodarima/libwa](https://github.com/rodarima/libwa)
+> 来源：[`github.com/rodarima/libwa`](https://github.com/rodarima/libwa)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

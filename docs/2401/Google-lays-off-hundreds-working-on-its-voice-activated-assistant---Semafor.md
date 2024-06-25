@@ -8,7 +8,7 @@
 
 # 谷歌解雇数百名从事其语音激活助手工作的员工 | Semafor
 
-> 来源：[https://www.semafor.com/article/01/10/2024/google-lays-off-hundreds-working-on-its-voice-activated-assistant](https://www.semafor.com/article/01/10/2024/google-lays-off-hundreds-working-on-its-voice-activated-assistant)
+> 来源：[`www.semafor.com/article/01/10/2024/google-lays-off-hundreds-working-on-its-voice-activated-assistant`](https://www.semafor.com/article/01/10/2024/google-lays-off-hundreds-working-on-its-voice-activated-assistant)
 
 谷歌正在解雇数百名从事其语音激活谷歌助手软件的员工，并在其知识和信息产品团队中削减相似数量的职位，谷歌一位发言人周三向 Semafor 确认。
 

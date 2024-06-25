@@ -8,7 +8,7 @@ date: 2024-05-27 15:13:13
 
 # Doctor Droid 的 AI/ML 工程师 | Y Combinator
 
-> 来源：[https://www.ycombinator.com/companies/doctor-droid/jobs/YhEZ6dZ-nlp-engineer](https://www.ycombinator.com/companies/doctor-droid/jobs/YhEZ6dZ-nlp-engineer)
+> 来源：[`www.ycombinator.com/companies/doctor-droid/jobs/YhEZ6dZ-nlp-engineer`](https://www.ycombinator.com/companies/doctor-droid/jobs/YhEZ6dZ-nlp-engineer)
 
 ### 我们做什么
 

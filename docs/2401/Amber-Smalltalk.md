@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日 14:30:37
+日期：2024 年 5 月 27 日 14:30:37
 
 -->
 
 # Amber Smalltalk
 
-> 来源：[https://amber-lang.net/](https://amber-lang.net/)
+> 来源：[`amber-lang.net/`](https://amber-lang.net/)
 
 ## 一个专为网络而制作的新语言和实时环境。
 

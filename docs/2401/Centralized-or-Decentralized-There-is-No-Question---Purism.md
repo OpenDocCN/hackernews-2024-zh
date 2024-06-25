@@ -8,7 +8,7 @@
 
 # 集中式还是去中心化 根本就没有问题 —— Purism
 
-> 来源：[https://puri.sm/posts/centralized-or-decentralized-there-is-no-question/](https://puri.sm/posts/centralized-or-decentralized-there-is-no-question/)
+> 来源：[`puri.sm/posts/centralized-or-decentralized-there-is-no-question/`](https://puri.sm/posts/centralized-or-decentralized-there-is-no-question/)
 
 创始人兼首席执行官
 

@@ -8,7 +8,7 @@
 
 # GitHub - every-day-things/citadel: 不再有挫折的管理你的电子书库。兼容 Calibre。
 
-> 来源：[https://github.com/every-day-things/citadel](https://github.com/every-day-things/citadel)
+> 来源：[`github.com/every-day-things/citadel`](https://github.com/every-day-things/citadel)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

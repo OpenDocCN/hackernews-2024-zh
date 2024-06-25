@@ -8,7 +8,7 @@
 
 # TIL：Go 的 CompareAndSwap 并不总是 Compare-and-swap。
 
-> 来源：[https://lu.sagebl.eu/notes/go-cas/](https://lu.sagebl.eu/notes/go-cas/)
+> 来源：[`lu.sagebl.eu/notes/go-cas/`](https://lu.sagebl.eu/notes/go-cas/)
 
 # TIL：Go 的 CompareAndSwap 并不总是 Compare-and-swap。
 
@@ -102,7 +102,7 @@ ok:
 
 ## RISC-V 64（RV64A）
 
-RV64A的`LRD`和`SCD`指令与之前看到的Arm64的`LDAXR`和`STLXR`是等效的。手动编写的逻辑也类似。
+RV64A 的`LRD`和`SCD`指令与之前看到的 Arm64 的`LDAXR`和`STLXR`是等效的。手动编写的逻辑也类似。
 
 ```
 TEXT ·Cas64(SB), NOSPLIT, $0-25
@@ -122,14 +122,14 @@ cas_fail:
   RET 
 ```
 
-代码来自[Go源代码](https://cs.opensource.google/go/go/+/refs/tags/go1.21.5:src/runtime/internal/atomic/atomic_riscv64.s;l=59-73)。
+代码来自[Go 源代码](https://cs.opensource.google/go/go/+/refs/tags/go1.21.5:src/runtime/internal/atomic/atomic_riscv64.s;l=59-73)。
 
-看起来RISC-V比Arm64更纯粹；它不提供现成的CAS指令。CAS必须用LL/SC模式手动完成。在RISC-V指令手册中我发现了一个有趣的原因：
+看起来 RISC-V 比 Arm64 更纯粹；它不提供现成的 CAS 指令。CAS 必须用 LL/SC 模式手动完成。在 RISC-V 指令手册中我发现了一个有趣的原因：
 
-<q>比较和交换（CAS）和LR/SC都可以用于构建无锁数据结构。经过广泛讨论，我们选择了LR/SC，原因有几点：1）CAS存在ABA问题，LR/SC可以避免这个问题，因为它监视对地址的所有访问，而不仅仅检查数据值的变化；2）CAS还需要一个新的整数指令格式来支持三个源操作数（地址、比较值、交换值），以及一个不同的内存系统消息格式，这会使微架构复杂化</q>
+<q>比较和交换（CAS）和 LR/SC 都可以用于构建无锁数据结构。经过广泛讨论，我们选择了 LR/SC，原因有几点：1）CAS 存在 ABA 问题，LR/SC 可以避免这个问题，因为它监视对地址的所有访问，而不仅仅检查数据值的变化；2）CAS 还需要一个新的整数指令格式来支持三个源操作数（地址、比较值、交换值），以及一个不同的内存系统消息格式，这会使微架构复杂化</q>
 
 ## 附加说明
 
-我查看了Go的实现，因为那是我使用的。毫不奇怪，其他实现采用了相同的方法：在计算机中**不存在CAS**时使用LL/SC，对于Arm64，根据LSE的可用性使用一种模式或另一种模式。之前链接的文章如下所示：
+我查看了 Go 的实现，因为那是我使用的。毫不奇怪，其他实现采用了相同的方法：在计算机中**不存在 CAS**时使用 LL/SC，对于 Arm64，根据 LSE 的可用性使用一种模式或另一种模式。之前链接的文章如下所示：
 
-<q>GCC自动使用两种变体（lse和non-lse）进行动态检查的代码。运行时根据情况做出决定，并相应地执行所选的变体。</q>
+<q>GCC 自动使用两种变体（lse 和 non-lse）进行动态检查的代码。运行时根据情况做出决定，并相应地执行所选的变体。</q>

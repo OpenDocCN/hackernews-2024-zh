@@ -8,15 +8,15 @@ date: 2024-05-27 15:09:56
 
 # 奥西安，“北方荷马”，以及世界上最大文学骗局的真相 | 独立报 | 独立报
 
-> 来源：[https://www.independent.co.uk/arts-entertainment/books/news/ossian-literary-hoax-james-macpherson-fingal-mathematics-social-network-study-a7371806.html](https://www.independent.co.uk/arts-entertainment/books/news/ossian-literary-hoax-james-macpherson-fingal-mathematics-social-network-study-a7371806.html)
+> 来源：[`www.independent.co.uk/arts-entertainment/books/news/ossian-literary-hoax-james-macpherson-fingal-mathematics-social-network-study-a7371806.html`](https://www.independent.co.uk/arts-entertainment/books/news/ossian-literary-hoax-james-macpherson-fingal-mathematics-social-network-study-a7371806.html)
 
 ### 要免费获得实时的突发新闻提醒，请注册我们的突发新闻电子邮件。
 
 ### 注册我们的免费突发新闻电子邮件
 
-这被描述为有史以来最大的文学骗局，涉及了从拿破仑到托马斯·杰斐逊的世界领袖，并激发了华兹华斯、柯勒律治和拜伦等人创作18世纪末浪漫主义运动的兴起。
+这被描述为有史以来最大的文学骗局，涉及了从拿破仑到托马斯·杰斐逊的世界领袖，并激发了华兹华斯、柯勒律治和拜伦等人创作 18 世纪末浪漫主义运动的兴起。
 
-数十年来，上流社会对于盲目的3世纪苏格兰诗人奥西安的史诗诗歌以及在18世纪中叶由他的“翻译者”詹姆斯·麦克弗森“发现”的伟大勇士芬加尔的故事，一直都很着迷。
+数十年来，上流社会对于盲目的 3 世纪苏格兰诗人奥西安的史诗诗歌以及在 18 世纪中叶由他的“翻译者”詹姆斯·麦克弗森“发现”的伟大勇士芬加尔的故事，一直都很着迷。
 
 但很快就出现了疑问。麦克弗森，同样是一位诗人，是否已经改编了爱尔兰的民间传说，创作了苏格兰的传说，以此来获得英国精英们对古希腊和古罗马的痴迷而被认真对待？文学巨匠塞缪尔·约翰逊显然是这么认为的，他谴责了“伪造”和其中的“江湖骗子”。
 
@@ -32,19 +32,19 @@ date: 2024-05-27 15:09:56
 
 ## 科学新闻图片
 
-显示全部20
+显示全部 20
 
 研究人员根据期刊[*Advances in Complex Systems*](http://www.worldscientific.com/worldscinet/acs)中的一篇论文，为每个角色创建了基于他们在故事中所认识的其他角色的“社交网络”。
 
 他们随后在图表上绘制了一个字符拥有大量熟人的概率与个人社交网络中的人数之间的关系。
 
-当奥西安与两个爱尔兰故事——*Acallam na Senorach*和Lady Gregory的文本进行比较时，图表上的线几乎完全相同。
+当奥西安与两个爱尔兰故事——*Acallam na Senorach*和 Lady Gregory 的文本进行比较时，图表上的线几乎完全相同。
 
 这意味着虽然一些名字可能已经改变，但许多角色的社交网络是相同的——这不太可能是偶然发生的事情。
 
-## 文学作品中15个最佳开场白
+## 文学作品中 15 个最佳开场白
 
-显示全部15
+显示全部 15
 
 当与荷马的*奥德赛*和*伊利亚特*相比时，选择了它们作为由麦克弗森及其支持者提出的链接的控制，结果有明显的差异。
 
@@ -72,7 +72,7 @@ date: 2024-05-27 15:09:56
 
 但尽管有怀疑者，奥辛的惊人国际知名度帮助引发了一场复兴，将高地变成了浪漫的度假胜地，也促使皇室成员穿上被禁止的格子呢。
 
-它曾被描述为“[18世纪的哈利波特](http://www.scotsman.com/lifestyle/culture/books/highland-hero-of-poetry-hailed-250-years-on-1-3732179)”，但这不是一本儿童书，它吸引了一些世界上最伟大的名字的注意。
+它曾被描述为“[18 世纪的哈利波特](http://www.scotsman.com/lifestyle/culture/books/highland-hero-of-poetry-hailed-250-years-on-1-3732179)”，但这不是一本儿童书，它吸引了一些世界上最伟大的名字的注意。
 
 根据[杰斐逊的文学常识书](https://books.google.co.uk/books?id=2wwABAAAQBAJ&pg=PA172&redir_esc=y#v=onepage&q&f=false)，即使是第二任美国总统也想学盖尔语，这样他就能用它的原始语言读这部作品。
 

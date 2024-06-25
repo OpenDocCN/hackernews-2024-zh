@@ -8,7 +8,7 @@ date: 2024-05-27 15:04:28
 
 # GitHub - flame/blis: BLAS-like Library Instantiation Software Framework
 
-> 来源：[https://github.com/flame/blis](https://github.com/flame/blis)
+> 来源：[`github.com/flame/blis`](https://github.com/flame/blis)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

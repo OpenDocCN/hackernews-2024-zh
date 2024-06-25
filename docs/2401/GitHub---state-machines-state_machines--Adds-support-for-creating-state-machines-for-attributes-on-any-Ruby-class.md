@@ -8,7 +8,7 @@
 
 # GitHub - state-machines/state_machines: 为任何 Ruby 类属性创建状态机的支持
 
-> 来源：[https://github.com/state-machines/state_machines](https://github.com/state-machines/state_machines)
+> 来源：[`github.com/state-machines/state_machines`](https://github.com/state-machines/state_machines)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

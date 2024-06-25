@@ -8,7 +8,7 @@ date: 2024-05-27 14:54:25
 
 # GitHub - aabiji/muse: 一个命令行背景音乐播放器。
 
-> 来源：[https://github.com/aabiji/muse](https://github.com/aabiji/muse)
+> 来源：[`github.com/aabiji/muse`](https://github.com/aabiji/muse)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:39:18
 
 # 软删除可能并不值得
 
-> 来源：[https://brandur.org/soft-deletion](https://brandur.org/soft-deletion)
+> 来源：[`brandur.org/soft-deletion`](https://brandur.org/soft-deletion)
 
 任何看过几个不同的生产数据库环境的人都可能熟悉“软删除”模式——表格不直接通过 `DELETE` 语句删除数据，而是增加了额外的 `deleted_at` 时间戳，并通过更新语句执行删除：
 

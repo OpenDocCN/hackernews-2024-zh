@@ -6,17 +6,17 @@
 
 -->
 
-# Python类型存在期望问题 | 作者：Sławomir Górawski | Stackademic
+# Python 类型存在期望问题 | 作者：Sławomir Górawski | Stackademic
 
-> 来源：[https://medium.com/@sgorawski/python-types-have-an-expectations-problem-ea71a8645ce8](https://medium.com/@sgorawski/python-types-have-an-expectations-problem-ea71a8645ce8)
+> 来源：[`medium.com/@sgorawski/python-types-have-an-expectations-problem-ea71a8645ce8`](https://medium.com/@sgorawski/python-types-have-an-expectations-problem-ea71a8645ce8)
 
-# Python类型存在期望问题
+# Python 类型存在期望问题
 
 照片由[Hitesh Choudhary](https://unsplash.com/@hiteshchoudhary?utm_source=medium&utm_medium=referral)提供在[Unsplash](https://unsplash.com/?utm_source=medium&utm_medium=referral)
 
 # 背景
 
-在过去的约10年左右，许多流行的脚本语言都增加了可选的静态类型：JavaScript（通过TypeScript），PHP，Python，甚至Ruby据我所知都有类似的东西。
+在过去的约 10 年左右，许多流行的脚本语言都增加了可选的静态类型：JavaScript（通过 TypeScript），PHP，Python，甚至 Ruby 据我所知都有类似的东西。
 
 它已经在每种语言的社区中相当普及，甚至被认为是应用程序的最佳实践，绝对是库的最佳实践。
 
@@ -31,13 +31,13 @@ def check_permission(user, perm, obj):
 
 但是，如果我们想在某处使用它，立即会有一些问题浮现：
 
-1.  `user`是应用程序的User模型的实例吗？（我猜的。）
+1.  `user`是应用程序的 User 模型的实例吗？（我猜的。）
 
 1.  `perm`是某种权限模型的实例还是只是一些表示，比如字符串？这有点难，可能取决于所使用的框架的约定和具体的项目。
 
-1.  `obj`是任何模型的实例，还是可能是模型的*类型*？如果检查的权限更广泛：我应该传递null还是在某处有不同的函数？
+1.  `obj`是任何模型的实例，还是可能是模型的*类型*？如果检查的权限更广泛：我应该传递 null 还是在某处有不同的函数？
 
-1.  如果用户具有/不具有权限，函数是否返回true/false？或者如果检查为负面，它是否不返回任何内容并抛出异常？
+1.  如果用户具有/不具有权限，函数是否返回 true/false？或者如果检查为负面，它是否不返回任何内容并抛出异常？
 
 将其与类型版本进行比较：
 
@@ -46,9 +46,9 @@ def check_permission(user: User, perm: str, obj: BaseModel | None) -> bool:
     ...
 ```
 
-它有点长，但它回答了我们所有的问题。（我们并不 *完全* 确定代码会做什么，但我们可以合理猜测。）此外，它可以捕获错误并帮助IDE进行自动完成。
+它有点长，但它回答了我们所有的问题。（我们并不 *完全* 确定代码会做什么，但我们可以合理猜测。）此外，它可以捕获错误并帮助 IDE 进行自动完成。
 
-那么，如果类型注释如此有用，为什么我会说在Python中它们存在“期望问题”呢？
+那么，如果类型注释如此有用，为什么我会说在 Python 中它们存在“期望问题”呢？
 
 好吧，让我们比较一下其他语言是如何做的。
 
@@ -56,7 +56,7 @@ def check_permission(user: User, perm: str, obj: BaseModel | None) -> bool:
 
 ## JavaScript
 
-JavaScript本身没有任何类型，你必须使用TypeScript。这是一个非常受欢迎的选择，所以开始起来不应该很难。
+JavaScript 本身没有任何类型，你必须使用 TypeScript。这是一个非常受欢迎的选择，所以开始起来不应该很难。
 
 在源代码中我们可以有类似这样的东西：
 
@@ -68,7 +68,7 @@ function checkPermission(user: User, perm: string, obj?: BaseModel) {
 checkPermission(1, 2, 3);
 ```
 
-现在，TypeScript不会像这样在浏览器（或Node.js）中运行，我们必须编译它：
+现在，TypeScript 不会像这样在浏览器（或 Node.js）中运行，我们必须编译它：
 
 ```
 $ node_modules/.bin/tsc example.ts
@@ -79,7 +79,7 @@ error TS2345: Argument of type 'number' is not assignable to parameter of type '
 
 ## PHP
 
-现在，让我们在PHP中做类似的事情：
+现在，让我们在 PHP 中做类似的事情：
 
 ```
 <?php
@@ -90,7 +90,7 @@ function checkPermission(User $user, string $perm, ?BaseModel $obj) {
 checkPermission(1, 2, 3);
 ```
 
-在PHP中没有编译步骤。但是，如果我们运行这段代码，它将在运行时崩溃：
+在 PHP 中没有编译步骤。但是，如果我们运行这段代码，它将在运行时崩溃：
 
 ```
 $ php -f example.php
@@ -101,7 +101,7 @@ Uncaught TypeError: checkPermission(): Argument #1 ($user) must be of type User,
 
 ## Python
 
-进入Python：
+进入 Python：
 
 ```
 def check_permission(user: User, perm: str, obj: BaseModel | None):

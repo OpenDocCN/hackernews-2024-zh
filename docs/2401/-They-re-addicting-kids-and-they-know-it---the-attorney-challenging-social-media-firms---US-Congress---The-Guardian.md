@@ -8,7 +8,7 @@ date: 2024-05-27 15:12:56
 
 # ‘They’re addicting kids and they know it’: the attorney challenging social media firms | US Congress | The Guardian
 
-> 来源：[https://www.theguardian.com/us-news/2024/jan/25/kids-addicted-social-media-congress-meta-tiktok-snap](https://www.theguardian.com/us-news/2024/jan/25/kids-addicted-social-media-congress-meta-tiktok-snap)
+> 来源：[`www.theguardian.com/us-news/2024/jan/25/kids-addicted-social-media-congress-meta-tiktok-snap`](https://www.theguardian.com/us-news/2024/jan/25/kids-addicted-social-media-congress-meta-tiktok-snap)
 
 下周，一些最大的社交媒体公司的高管将被传唤到[美国国会](https://www.theguardian.com/us-news/us-congress)，就其“未能保护”使用其平台的儿童问题作出回答。
 
@@ -16,13 +16,13 @@ date: 2024-05-27 15:12:56
 
 签到门选择器（SignInGateSelector）是一个受欢迎的功能，推迟到“visible”时加载。 props 属性包括{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;us-news&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;us-news/us-congress&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国国会&quot;},{&quot;id&quot;:&quot;media/social-media&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;社交媒体&quot;},{&quot;id&quot;:&quot;society/children&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;儿童&quot;},{&quot;id&quot;:&quot;law/law-us&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;法律（美国）&quot;},{&quot;id&quot;:&quot;us-news/us-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国新闻&quot;},{&quot;id&quot;:&quot;media/digital-media&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;数字媒体&quot;},{&quot;id&quot;:&quot;campaign/email/us-morning-newsletter&quot;,&quot;type&quot;:&quot;Campaign&quot;,&quot;title&quot;:&quot;First Thing（新闻通讯注册）&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/interview&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;采访&quot;},{&quot;id&quot;:&quot;profile/kari-paul&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;Kari Paul&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-tech&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国技术&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;us-news/2024/jan/25/kids-addicted-social-media-congress-meta-tiktok-snap&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot
 
-出席的将是[社交媒体受害者法律中心](https://socialmediavictims.org/matthew-bergman/)的创始律师马修·P·伯格曼——一家专门代表据称受到社交媒体伤害的儿童家庭的法律公司。该公司已对包括Meta、Snap、TikTok和Discord在内的平台提起诉讼。
+出席的将是[社交媒体受害者法律中心](https://socialmediavictims.org/matthew-bergman/)的创始律师马修·P·伯格曼——一家专门代表据称受到社交媒体伤害的儿童家庭的法律公司。该公司已对包括 Meta、Snap、TikTok 和 Discord 在内的平台提起诉讼。
 
-伯格曼自1991年开始执业法律，之前在石棉诉讼中有着丰富的职业生涯，之后转向关注社交媒体。受到Facebook告密者[弗朗西斯·豪根](https://www.theguardian.com/technology/2021/oct/24/frances-haugen-i-never-wanted-to-be-a-whistleblower-but-lives-were-in-danger)证词的启发，伯格曼表示他注意到社交媒体与石棉之间有许多相似之处。他说，这两者最初被认为是有益的产品，后来却被揭露为对人类健康有害的，涉及的企业明知即将发生的危害却肆无忌惮地试图掩盖。
+伯格曼自 1991 年开始执业法律，之前在石棉诉讼中有着丰富的职业生涯，之后转向关注社交媒体。受到 Facebook 告密者[弗朗西斯·豪根](https://www.theguardian.com/technology/2021/oct/24/frances-haugen-i-never-wanted-to-be-a-whistleblower-but-lives-were-in-danger)证词的启发，伯格曼表示他注意到社交媒体与石棉之间有许多相似之处。他说，这两者最初被认为是有益的产品，后来却被揭露为对人类健康有害的，涉及的企业明知即将发生的危害却肆无忌惮地试图掩盖。
 
 “这些事情的汇合使我觉得这真的是再次出现了石棉问题，”伯格曼说道。“我看到这是一个能够用我法律生涯做一些不同事情的机会——更积极主动的事情。”
 
-长期以来，针对社交媒体公司涉嫌危害的诉讼由于1996年《通信公平法》第230条的存在而很难在法庭上得到处理，这是美国的一部联邦法律，保护在线平台免受其用户非法行为的责任。考虑到这一点，伯格曼采取了一种不同的策略，模仿他在石棉诉讼中的做法。他的公司并不反对平台上的内容，而是依靠产品责任法律，并主张这些产品从设计上就具有害性。
+长期以来，针对社交媒体公司涉嫌危害的诉讼由于 1996 年《通信公平法》第 230 条的存在而很难在法庭上得到处理，这是美国的一部联邦法律，保护在线平台免受其用户非法行为的责任。考虑到这一点，伯格曼采取了一种不同的策略，模仿他在石棉诉讼中的做法。他的公司并不反对平台上的内容，而是依靠产品责任法律，并主张这些产品从设计上就具有害性。
 
 “我们还没有取得胜利——我们只是开始参与这场游戏，”伯格曼说。“很明显，这将是一场漫长而艰苦的斗争。”
 
@@ -30,7 +30,7 @@ date: 2024-05-27 15:12:56
 
 **您可以先谈谈社交媒体受害者法律中心是如何成立的吗？**
 
-我于2021年秋季创立了社交媒体受害者法律中心。我曾经花费职业生涯为受伤害者恢复资金，包括在20多年间为石棉受害者恢复了超过10亿美元。但我到了人生的阶段，想要做一些不仅仅是赔偿受害者的事情，而是阻止人们成为受害者。
+我于 2021 年秋季创立了社交媒体受害者法律中心。我曾经花费职业生涯为受伤害者恢复资金，包括在 20 多年间为石棉受害者恢复了超过 10 亿美元。但我到了人生的阶段，想要做一些不仅仅是赔偿受害者的事情，而是阻止人们成为受害者。
 
 这与**弗朗西斯·豪根**在参议院商务委员会作证同时发生，她第一次明确表明了我们许多人怀疑的事情：社交媒体公司故意设计产品让孩子上瘾，以及美国和全球范围内的青少年心理健康危机的[外科医师总统的咨询](https://www.hhs.gov/about/news/2023/05/23/surgeon-general-issues-new-advisory-about-effects-social-media-use-has-youth-mental-health.html)。
 
@@ -50,7 +50,7 @@ date: 2024-05-27 15:12:56
 
 我认为这些差异使得社交媒体比石棉更具道德上的谴责性 – 这是一个很难说的事情，因为我花了一辈子代表因石棉公司的不端行为而丧生的人们。但我总是说社交媒体行业的行为让石棉公司及其首席执行官看起来像一群童子军。
 
-[跳过通讯推广](#EmailSignup-skip-link-20)
+跳过通讯推广
 
 通讯推广之后
 
@@ -58,7 +58,7 @@ date: 2024-05-27 15:12:56
 
 嗯，他们使孩子上瘾，他们知道这一点。他们知道多巴胺反应随着时间的推移会减弱，因为年轻的大脑习惯于特定的刺激，所以算法被设计成提供越来越多的不和谐、令人不安和令人愤怒的材料，以保持那种参与度水平。
 
-另一个是它们是有意设计的，以利用青少年对社会认可和社会地位的需求，通过像Snap streaks这样的游戏化功能，或者你有多少朋友，或者你有多经常直接参与。我们现在明白，14岁的青少年对社交媒体上的“赞”产生的多巴胺反应与较年长者对可卡因的反应相似。因此，这不仅仅是生理过程，也是社会学过程。
+另一个是它们是有意设计的，以利用青少年对社会认可和社会地位的需求，通过像 Snap streaks 这样的游戏化功能，或者你有多少朋友，或者你有多经常直接参与。我们现在明白，14 岁的青少年对社交媒体上的“赞”产生的多巴胺反应与较年长者对可卡因的反应相似。因此，这不仅仅是生理过程，也是社会学过程。
 
 您能够大致谈谈您与社交媒体公司的法律策略，以及它们与过去试图与这些公司对抗的人们有何不同吗？
 

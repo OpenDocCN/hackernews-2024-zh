@@ -8,7 +8,7 @@ date: 2024-05-27 14:37:01
 
 # GitHub - moturus/motor-os: 一个简单、快速、安全的云操作系统。
 
-> 来源：[https://github.com/moturus/motor-os](https://github.com/moturus/motor-os)
+> 来源：[`github.com/moturus/motor-os`](https://github.com/moturus/motor-os)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:02:37
 
 # 为什么我喜欢 Tailwind CSS
 
-> 来源：[https://ben.page/tailwind](https://ben.page/tailwind)
+> 来源：[`ben.page/tailwind`](https://ben.page/tailwind)
 
 我是[Tailwind CSS](https://tailwindcss.com)的铁杆粉丝。
 
@@ -48,7 +48,7 @@ Tailwind 的 `sm:`/`md:`/等前缀使得响应式设计变得非常容易，它�
 
 ## Tailwind 排版
 
-Tailwind的[排版插件](https://tailwindcss.com/docs/typography-plugin) *非常好*。我以前总是试图在博客文章的样式上摸索，直到看起来好看，然后不可避免地我总是漏掉了一些东西（比如我会添加引用，但看起来很糟糕），所以我不得不再添加更多的样式。
+Tailwind 的[排版插件](https://tailwindcss.com/docs/typography-plugin) *非常好*。我以前总是试图在博客文章的样式上摸索，直到看起来好看，然后不可避免地我总是漏掉了一些东西（比如我会添加引用，但看起来很糟糕），所以我不得不再添加更多的样式。
 
 排版问题一劳永逸地解决了，现在花时间为博客的内容编写 CSS 似乎有点愚蠢，当我只需使用这个插件，必要时稍作调整即可。
 

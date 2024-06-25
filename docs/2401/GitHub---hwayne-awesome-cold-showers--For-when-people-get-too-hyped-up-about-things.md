@@ -8,7 +8,7 @@
 
 # GitHub - hwayne/awesome-cold-showers: 当人们对事情过于兴奋时
 
-> 来源：[https://github.com/hwayne/awesome-cold-showers](https://github.com/hwayne/awesome-cold-showers)
+> 来源：[`github.com/hwayne/awesome-cold-showers`](https://github.com/hwayne/awesome-cold-showers)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

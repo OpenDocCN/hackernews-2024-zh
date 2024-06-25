@@ -8,7 +8,7 @@
 
 # 解密用于时间序列的 Parquet 文件格式 - SenX
 
-> 来源：[https://blog.senx.io/demystifying-the-use-of-the-parquet-file-format-for-time-series/](https://blog.senx.io/demystifying-the-use-of-the-parquet-file-format-for-time-series/)
+> 来源：[`blog.senx.io/demystifying-the-use-of-the-parquet-file-format-for-time-series/`](https://blog.senx.io/demystifying-the-use-of-the-parquet-file-format-for-time-series/)
 
 作为 [Warp 10](https://warp10.io/) 的开发者，最先进的时间序列平台，我们经常与存储时间序列数据已经相当长时间的人联系。他们所采用的技术的多样性会让你感到惊讶。在这些技术中，我们经常遇到通常被选择*因为它是列式格式，因此对于时间序列数据而言性能良好*的[Parquet](https://parquet.apache.org)文件格式。当我们进一步询问以更好地了解采用的架构，这些文件的使用方式以及它们允许的存储和访问性能时，答案通常显示 Parquet 格式的工作方式并不是很好理解。本文旨在让您更好地了解 Parquet 格式的内部结构以及其适用于时间序列数据的性能。
 
@@ -28,7 +28,7 @@
 
 但是，如果列式格式非常适用于*类似表格*的数据，那么对于嵌套数据结构来说就不适用，因为这些数据结构通常会最终汇聚在单个列中，因此如果只需要此类结构的特定字段，则会消除列式格式的好处。
 
-这就是 Dremel 论文解决的问题，并通过一种巧妙的机制来描述字段如何嵌套和重复进行了解决。我们让您深入阅读原始 Dremel 论文第 4 部分，以了解记录如何在列中分割的内在机制。
+这就是 Dremel 论文解决的问题，并通过一种巧妙的机制来描述字段如何嵌套和重复进行了解决。我们让您深入阅读原始 Dremel 论文第四部分，以了解记录如何在列中分割的内在机制。
 
 ### 实现
 
@@ -93,4 +93,4 @@ Parquet 格式是一种智能的*列式*格式，具有存储复杂嵌套或重�
 
 这种称为*History File Stores*的方法也非常适合分发数据集。例如，来自[AISHub](https://www.aishub.net/)的[船舶自动识别系统数据](https://blog.senx.io/ais-data-made-easy/)的完整年度数据集可以容纳在小于 100Gb 的单个文件中，其中包括船舶运动的[时空索引](https://blog.senx.io/spatio-temporal-indexing-in-warp-10/)，这个单个文件可以由 Warp 10 实例提供，并且应用程序可以以极快的性能与该数据交互。
 
-History File Store 格式目前通过我们的*技术预览*计划提供，请不要犹豫，如果您感兴趣，请[联系我们](mailto:contact@senx.io)。
+History File Store 格式目前通过我们的*技术预览*计划提供，请不要犹豫，如果您感兴趣，请联系我们。

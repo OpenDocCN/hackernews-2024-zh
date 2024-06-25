@@ -8,7 +8,7 @@
 
 # 彩色函数其实挺好的
 
-> 来源：[https://www.danmailloux.com/blog/colored-functions-are-good-actually](https://www.danmailloux.com/blog/colored-functions-are-good-actually)
+> 来源：[`www.danmailloux.com/blog/colored-functions-are-good-actually`](https://www.danmailloux.com/blog/colored-functions-are-good-actually)
 
 # 彩色函数其实挺好的
 

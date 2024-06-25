@@ -8,7 +8,7 @@ date: 2024-05-27 14:55:41
 
 # SQLite 还是 PostgreSQL？这很复杂！| Twilio
 
-> 来源：[https://www.twilio.com/blog/sqlite-postgresql-complicated](https://www.twilio.com/blog/sqlite-postgresql-complicated)
+> 来源：[`www.twilio.com/blog/sqlite-postgresql-complicated`](https://www.twilio.com/blog/sqlite-postgresql-complicated)
 
 `run_test()` 函数启动一个或多个线程，根据 `num_threads` 参数。所有线程都配置为并行运行 `test()` 函数。这模拟了来自多个并发客户端的负载，每个客户端都按照自己的随机顺序遍历 URL 列表，以创建一些不可预测性。
 

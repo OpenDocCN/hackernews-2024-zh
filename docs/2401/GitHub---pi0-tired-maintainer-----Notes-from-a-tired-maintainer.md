@@ -8,7 +8,7 @@ date: 2024-05-27 15:03:04
 
 # GitHub - pi0/tired-maintainer: 🗒️ 来自一个疲惫维护者的笔记
 
-> 来源：[https://github.com/pi0/tired-maintainer](https://github.com/pi0/tired-maintainer)
+> 来源：[`github.com/pi0/tired-maintainer`](https://github.com/pi0/tired-maintainer)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

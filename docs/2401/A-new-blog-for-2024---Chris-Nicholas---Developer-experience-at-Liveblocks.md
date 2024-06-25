@@ -8,13 +8,13 @@
 
 # 2024 年的新博客 | 克里斯·尼古拉斯 | Liveblocks 的开发者体验
 
-> 来源：[https://chrisnicholas.dev/blog/a-new-blog-for-2024](https://chrisnicholas.dev/blog/a-new-blog-for-2024)
+> 来源：[`chrisnicholas.dev/blog/a-new-blog-for-2024`](https://chrisnicholas.dev/blog/a-new-blog-for-2024)
 
 我已经很长时间没有发布博客文章了，整整两年。部分原因是之前的博客花费了太多精力来创建帖子。我需要更好的 DX。几个晚上前，在阅读了[Pedro Duarte](https://ped.ro/writing/website-refresh-2023)、[Rauno Freiberg](https://rauno.me/craft/vercel)和[Lee Robinson](https://leerob.io/blog/2023)的文章后，我感到很有启发，我决定重新开始。
 
 所以这就是我的目标——我想要一个具有极佳 DX 的博客，尽可能地让创建帖子变得简单。我还想要*极简*，这样我就可以在移动端和桌面端使用单一设计。不要拖拖拉拉；我希望这个博客在 5 天内建立并发布！最后，我想尝试一些新的库和技术。好的，让我们开始吧。
 
-在工作中，我大部分时间都在[写作和编程](/work)，所以尝试设计是一个很好的改变。这里有一些细节。
+在工作中，我大部分时间都在写作和编程，所以尝试设计是一个很好的改变。这里有一些细节。
 
 对于头部，我的目标是创建一个动画背景，结合了*极光*、*光束*和*彩虹*。我对结果非常满意，而且这实际上是纯 CSS——尝试在下面更改`hue-rotate`以模拟动画。
 
@@ -82,7 +82,7 @@ function Component() {
 
 Catalyst 仍处于 alpha 阶段，所以请注意，可能会出现重大变更！
 
-当我们谈论Tailwind时，我使用了一个名为[TWC](https://react-twc.vercel.app/)的新库来节省构建可重用组件的时间。它接管了你已经写了无数次的样板代码（转发引用、添加`clsx`等），并将其变成了一行代码。
+当我们谈论 Tailwind 时，我使用了一个名为[TWC](https://react-twc.vercel.app/)的新库来节省构建可重用组件的时间。它接管了你已经写了无数次的样板代码（转发引用、添加`clsx`等），并将其变成了一行代码。
 
 ```
 const Card = twc.div`rounded-lg border bg-slate-100 text-white shadow-sm`;
@@ -94,7 +94,7 @@ const Card = twc.div`rounded-lg border bg-slate-100 text-white shadow-sm`;
 
 #### 布局文件
 
-你有没有注意到，在切换页面时标题动画会继续运行？这是因为它放在了一个Next.js[布局文件](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#layout-pattern)中，这意味着在路由更改时不会刷新。
+你有没有注意到，在切换页面时标题动画会继续运行？这是因为它放在了一个 Next.js[布局文件](https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#layout-pattern)中，这意味着在路由更改时不会刷新。
 
 在更改页面时的标题动画。
 
@@ -112,9 +112,9 @@ export default function Layout({ children }) {
 }
 ```
 
-#### OG图片生成
+#### OG 图片生成
 
-我以前博客的一个主要痛点是手动创建每个社交媒体图片。如今，你可以在Next.js中[动态生成OpenGraph图片](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image)，而且很容易上手。
+我以前博客的一个主要痛点是手动创建每个社交媒体图片。如今，你可以在 Next.js 中[动态生成 OpenGraph 图片](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/opengraph-image)，而且很容易上手。
 
 ```
 // /blog/[slug]/opengraph-image.tsx
@@ -135,7 +135,7 @@ export default async function Image({ params }) {
 }
 ```
 
-我的博客使用`.mdx`文件，并在其中穿插了自定义React组件。我听说[Contentlayer](https://contentlayer.dev/)有很多好评，所以我试了试——使用起来非常轻松，而且真的加快了我的开发速度。更改模式非常容易，类型安全的设置也很棒。
+我的博客使用`.mdx`文件，并在其中穿插了自定义 React 组件。我听说[Contentlayer](https://contentlayer.dev/)有很多好评，所以我试了试——使用起来非常轻松，而且真的加快了我的开发速度。更改模式非常容易，类型安全的设置也很棒。
 
 #### 工作原理
 
@@ -182,7 +182,7 @@ export default function Page() {
 }
 ```
 
-我已经归档了以前博客的所有帖子，*ctnicholas.dev*，因为将它们转移到新站点需要太长时间，尽管它们仍然[可以阅读](/blog)。
+我已经归档了以前博客的所有帖子，*ctnicholas.dev*，因为将它们转移到新站点需要太长时间，尽管它们仍然可以阅读。
 
 我的博客还在不断完善中，还有很多我想要添加的功能，例如：
 

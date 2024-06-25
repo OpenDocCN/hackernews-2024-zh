@@ -8,7 +8,7 @@ date: 2024-05-27 14:55:15
 
 # Shots - 创建惊艳的模型
 
-> 来源：[https://shots.so/](https://shots.so/)
+> 来源：[`shots.so/`](https://shots.so/)
 
 ## 任何你需要的模型
 

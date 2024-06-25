@@ -8,7 +8,7 @@ date: 2024-05-27 14:29:47
 
 # “幽灵职位”正在增加 - Marketplace
 
-> 来源：[https://www.marketplace.org/2024/01/03/those-jobs-youre-applying-to-they-might-not-be-real/](https://www.marketplace.org/2024/01/03/those-jobs-youre-applying-to-they-might-not-be-real/)
+> 来源：[`www.marketplace.org/2024/01/03/those-jobs-youre-applying-to-they-might-not-be-real/`](https://www.marketplace.org/2024/01/03/those-jobs-youre-applying-to-they-might-not-be-real/)
 
 几乎每个人都知道找工作的感觉：你重新修改简历，发送大量的申请 - 然后等待。
 

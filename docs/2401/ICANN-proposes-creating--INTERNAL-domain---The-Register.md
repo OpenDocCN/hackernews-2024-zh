@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:14
 
 # ICANN 提议创建 .INTERNAL 域名 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/29/icann_internal_tld/](https://www.theregister.com/2024/01/29/icann_internal_tld/)
+> 来源：[`www.theregister.com/2024/01/29/icann_internal_tld/`](https://www.theregister.com/2024/01/29/icann_internal_tld/)
 
 互联网名称与数字地址分配机构（ICANN）建议创建一个新的顶级域名（TLD），并永远不允许将其委派给全球域名系统（DNS）根目录。
 
@@ -32,6 +32,6 @@ ICANN 的董事会仍需批准创建 .INTERNAL。但如果你想领先一步，�
 
 没有什么能阻止你做同样的事情。
 
-但正如ICANN提出的[建议](https://itp.cdn.icann.org/en/files/security-and-stability-advisory-committee-ssac-reports/sac-113-en.pdf)所指出的：“选择使用本文提出的私有命名空间的运营商应该了解到，这种决定可能带来相应的成本，并且通过选择使用自己公开注册的域名的子域名，这些成本很可能会被避免。”
+但正如 ICANN 提出的[建议](https://itp.cdn.icann.org/en/files/security-and-stability-advisory-committee-ssac-reports/sac-113-en.pdf)所指出的：“选择使用本文提出的私有命名空间的运营商应该了解到，这种决定可能带来相应的成本，并且通过选择使用自己公开注册的域名的子域名，这些成本很可能会被避免。”
 
 为什么*The Register*喜欢标准流程。®

@@ -8,7 +8,7 @@ date: 2024-05-27 14:40:19
 
 # GitHub - cloudflare/pp-browser-extension: Privacy Pass 协议客户端，提供不可链接的加密令牌
 
-> 来源：[https://github.com/cloudflare/pp-browser-extension](https://github.com/cloudflare/pp-browser-extension)
+> 来源：[`github.com/cloudflare/pp-browser-extension`](https://github.com/cloudflare/pp-browser-extension)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:49:31
 
 # [GitHub - timfraedrich/OutRun](https://github.com/timfraedrich/OutRun)：OutRun 是一个开源的、注重隐私的、户外健身跟踪器。
 
-> 来源：[https://github.com/timfraedrich/OutRun](https://github.com/timfraedrich/OutRun)
+> 来源：[`github.com/timfraedrich/OutRun`](https://github.com/timfraedrich/OutRun)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

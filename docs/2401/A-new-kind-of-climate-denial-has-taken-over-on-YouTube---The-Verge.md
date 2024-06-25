@@ -8,7 +8,7 @@ date: 2024-05-27 14:54:04
 
 # 《新的气候否认》在 YouTube 上已经盛行 - The Verge
 
-> 来源：[https://www.theverge.com/2024/1/16/24040015/youtube-google-climate-change-new-denial-advertising-report](https://www.theverge.com/2024/1/16/24040015/youtube-google-climate-change-new-denial-advertising-report)
+> 来源：[`www.theverge.com/2024/1/16/24040015/youtube-google-climate-change-new-denial-advertising-report`](https://www.theverge.com/2024/1/16/24040015/youtube-google-climate-change-new-denial-advertising-report)
 
 根据今天发布的一份[报告](https://counterhate.com/research/new-climate-denial/)，气候变化在 YouTube 上的误导性信息已经演变成了一个误导性的新叙事。由于不断加剧的灾难使得很难否认气候变化正在发生，传播错误信息的创作者转向了针对清洁能源的内容。
 

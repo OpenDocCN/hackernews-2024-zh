@@ -8,7 +8,7 @@ date: 2024-05-27 14:26:28
 
 # 在低端 MS-DOS 机器上播放视频 | Scali's OpenBlog™
 
-> 来源：[https://scalibq.wordpress.com/2024/01/01/video-playback-on-low-end-ms-dos-machines/](https://scalibq.wordpress.com/2024/01/01/video-playback-on-low-end-ms-dos-machines/)
+> 来源：[`scalibq.wordpress.com/2024/01/01/video-playback-on-low-end-ms-dos-machines/`](https://scalibq.wordpress.com/2024/01/01/video-playback-on-low-end-ms-dos-machines/)
 
 在 MS-DOS 上播放视频…在过去，这在类似 [GRASP/GLPro](https://en.wikipedia.org/wiki/Graphics_Animation_System_for_Professionals) 和 [FLIC](https://en.wikipedia.org/wiki/FLIC_(file_format)) 格式的东西中有所体现。但在真正的低端机器上，比如 8088 和 CGA 上却不是。直到 2004 年发布了演示版本 8088 Corruption。然后在 2014 年发布了它的继任者 8088 Domination，[我之前已经讨论过了](https://scalibq.wordpress.com/2014/08/13/8088-domination-by-trixterhornet/)。
 
@@ -26,7 +26,7 @@ date: 2024-05-27 14:26:28
 
 [XDC 编码器和解码器的代码](https://x86dc.wordpress.com/) 在 [Github 上可用](https://github.com/MobyGamer/XDC)，所以我只是创建了自己的分支：
 
-[https://github.com/Scalibq/XDC](https://github.com/Scalibq/XDC)
+[`github.com/Scalibq/XDC`](https://github.com/Scalibq/XDC)
 
 ## 首先是 PC 扬声器
 
@@ -52,7 +52,7 @@ PCjr 使用的是一个实际的 [Texas Instruments SN76496](https://en.wikipedi
 
 但等等，Tandy 上的样本播放可以正常工作，不是吗？罗布·哈伯德在他为 Tandy 游戏制作的一些出色音乐中使用了样本通道，对吗？是的：
 
-[https://www.youtube.com/embed/I8_z_CI37JE?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent](https://www.youtube.com/embed/I8_z_CI37JE?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent)
+[`www.youtube.com/embed/I8_z_CI37JE?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent`](https://www.youtube.com/embed/I8_z_CI37JE?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent)
 
 视频
 
@@ -82,6 +82,6 @@ Sound Baster？那已经支持了，不是吗？是的，2.0 版本支持了。�
 
 无论如何，随意尝试并享受乐趣。[查看下一篇帖子](https://scalibq.wordpress.com/2024/01/02/some-results-from-the-modified-xdc-movie-player-for-8088-cga/)，了解我的一些成果，以及一个修改版的 8088 Domination 可供玩耍。
 
-[https://www.youtube.com/embed/HAmL9UXRWNM?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent](https://www.youtube.com/embed/HAmL9UXRWNM?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent)
+[`www.youtube.com/embed/HAmL9UXRWNM?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent`](https://www.youtube.com/embed/HAmL9UXRWNM?version=3&rel=1&showsearch=0&showinfo=1&iv_load_policy=1&fs=1&hl=en&autohide=2&wmode=transparent)
 
 视频

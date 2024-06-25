@@ -8,7 +8,7 @@ date: 2024-05-27 14:38:49
 
 # 数学填字游戏：在线数字填字拼图
 
-> 来源：[https://scientific.place/math-crossword/](https://scientific.place/math-crossword/)
+> 来源：[`scientific.place/math-crossword/`](https://scientific.place/math-crossword/)
 
 一款简单的益智游戏，测试并提高你的基本数学技能。将数字拖放到正确的位置，以进入下一个级别。适合学生、儿童和成人。
 

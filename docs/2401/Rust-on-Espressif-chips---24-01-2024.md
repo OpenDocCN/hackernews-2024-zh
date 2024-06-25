@@ -8,7 +8,7 @@ date: 2024-05-27 15:08:27
 
 # Rust 在 Espressif 芯片上的应用 - 2024 年 01 月 24 日
 
-> 来源：[https://mabez.dev/blog/posts/esp-rust-24-01-2024/](https://mabez.dev/blog/posts/esp-rust-24-01-2024/)
+> 来源：[`mabez.dev/blog/posts/esp-rust-24-01-2024/`](https://mabez.dev/blog/posts/esp-rust-24-01-2024/)
 
 这是 esp-rs 努力的下一个季度更新，详细说明了 2023 年第四季度的进展。
 

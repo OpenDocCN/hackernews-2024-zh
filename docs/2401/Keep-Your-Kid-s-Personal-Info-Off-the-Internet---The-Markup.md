@@ -8,7 +8,7 @@
 
 # 将你的孩子的个人信息保留在互联网之外 – The Markup
 
-> 来源：[https://themarkup.org/gentle-january/2024/01/22/keep-your-kids-personal-info-off-the-internet](https://themarkup.org/gentle-january/2024/01/22/keep-your-kids-personal-info-off-the-internet)
+> 来源：[`themarkup.org/gentle-january/2024/01/22/keep-your-kids-personal-info-off-the-internet`](https://themarkup.org/gentle-january/2024/01/22/keep-your-kids-personal-info-off-the-internet)
 
 如今，孩子在能行走之前就开始留下数字足迹——贪婪的科技公司甚至在孩子出生之前就收集数据了。因此，当我的第一个孩子出生时，我和妻子决定尽量不让我们的孩子的名字、面孔和个人细节出现在互联网上。
 

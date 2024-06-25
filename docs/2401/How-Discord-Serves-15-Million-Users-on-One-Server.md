@@ -2,57 +2,57 @@
 
 类别：未分类
 
-时间：2024年5月27日 14:37:48
+时间：2024 年 5 月 27 日 14:37:48
 
 -->
 
-# Discord如何在一个服务器上为1500万用户提供服务
+# Discord 如何在一个服务器上为 1500 万用户提供服务
 
-> 来源：[https://blog.bytebytego.com/p/how-discord-serves-15-million-users](https://blog.bytebytego.com/p/how-discord-serves-15-million-users)
+> 来源：[`blog.bytebytego.com/p/how-discord-serves-15-million-users`](https://blog.bytebytego.com/p/how-discord-serves-15-million-users)
 
-GenAI如何影响软件开发？
+GenAI 如何影响软件开发？
 
-加入LinearB和ThoughtWorks的全球AI软件交付负责人，探讨显示AI影响的指标，解析在软件开发中利用AI的最佳实践，并测量您自己的GenAI计划的投资回报率。
+加入 LinearB 和 ThoughtWorks 的全球 AI 软件交付负责人，探讨显示 AI 影响的指标，解析在软件开发中利用 AI 的最佳实践，并测量您自己的 GenAI 计划的投资回报率。
 
 [这个研讨会](https://bit.ly/LinearB_010924) 包括：
 
-**📊来自LinearB的新GenAI影响报告的数据见解**
+**📊来自 LinearB 的新 GenAI 影响报告的数据见解**
 
 **🗣️案例研究** 揭示了其他人是如何做到的
 
 **🔎影响度量：**采用情况、效益和风险指标
 
-✅**现场演示：** 如何今天就衡量您的GenAI计划的影响
+✅**现场演示：** 如何今天就衡量您的 GenAI 计划的影响
 
-加入1月25日或30日的讨论。
+加入 1 月 25 日或 30 日的讨论。
 
 [立即注册](https://bit.ly/LinearB_010924)
 
 * * *
 
-在2022年初夏，Discord运营团队注意到他们的仪表板上活动异常频繁。他们认为这是机器人攻击，但实际上是来自MidJourney的合法流量 - 这是一个新兴的、迅速增长的社区，用于根据文本提示生成AI图像。
+在 2022 年初夏，Discord 运营团队注意到他们的仪表板上活动异常频繁。他们认为这是机器人攻击，但实际上是来自 MidJourney 的合法流量 - 这是一个新兴的、迅速增长的社区，用于根据文本提示生成 AI 图像。
 
-要使用MidJourney，您需要一个Discord账户。大多数MidJourney用户加入一个主要的Discord服务器。这个服务器增长得如此之快，以至于很快就达到了Discord以前的约100万用户的限制。
+要使用 MidJourney，您需要一个 Discord 账户。大多数 MidJourney 用户加入一个主要的 Discord 服务器。这个服务器增长得如此之快，以至于很快就达到了 Discord 以前的约 100 万用户的限制。
 
-如果他们不迅速采取行动，Discord就会面临失去这个重要新社区的风险。
+如果他们不迅速采取行动，Discord 就会面临失去这个重要新社区的风险。
 
-这是Discord团队如何创造性地解决这个挑战的故事。他们找到了方法，大幅扩展了他们的基础设施能够处理的内容 - 让繁荣的MidJourney社区在Discord上保持活跃。
+这是 Discord 团队如何创造性地解决这个挑战的故事。他们找到了方法，大幅扩展了他们的基础设施能够处理的内容 - 让繁荣的 MidJourney 社区在 Discord 上保持活跃。
 
-Discord是一个受数亿人使用的流行聊天应用程序，用于连接。最初是为玩家设计的，现在各种类型的社区都在使用它 - 从徒步俱乐部到学习小组再到大型游戏社区。
+Discord 是一个受数亿人使用的流行聊天应用程序，用于连接。最初是为玩家设计的，现在各种类型的社区都在使用它 - 从徒步俱乐部到学习小组再到大型游戏社区。
 
-在Discord中，“服务器”托管一个社区。它有聊天频道，讨论由服务器所有者选择的主题。
+在 Discord 中，“服务器”托管一个社区。它有聊天频道，讨论由服务器所有者选择的主题。
 
-在内部，Discord将这些服务器称为“公会” - 所以我们将在后文中使用这个术语。
+在内部，Discord 将这些服务器称为“公会” - 所以我们将在后文中使用这个术语。
 
-最大的Discord公会（图片来源：[Discord](https://discord.com/servers)）
+最大的 Discord 公会（图片来源：[Discord](https://discord.com/servers)）
 
-在MidJourney之前，最大的公会有大约100万成员 - 像Roblox和Fortnite这样的大型游戏社区。
+在 MidJourney 之前，最大的公会有大约 100 万成员 - 像 Roblox 和 Fortnite 这样的大型游戏社区。
 
-Discord的工程团队认为100万成员非常接近一个公会可以处理的最大数量。让我们探讨一下原因 - 但首先，让我们简要了解一下支撑Discord的技术。
+Discord 的工程团队认为 100 万成员非常接近一个公会可以处理的最大数量。让我们探讨一下原因 - 但首先，让我们简要了解一下支撑 Discord 的技术。
 
-Discord的实时消息后端是用Elixir构建的。Elixir运行在BEAM虚拟机上。BEAM是为Erlang创建的 - 一种针对需要牢固可靠性和正常运行时间的大型实时系统进行优化的语言。
+Discord 的实时消息后端是用 Elixir 构建的。Elixir 运行在 BEAM 虚拟机上。BEAM 是为 Erlang 创建的 - 一种针对需要牢固可靠性和正常运行时间的大型实时系统进行优化的语言。
 
-BEAM提供的一个关键功能是极轻量级的并行进程。这使得单个服务器能够有效地同时运行成千上万个进程。
+BEAM 提供的一个关键功能是极轻量级的并行进程。这使得单个服务器能够有效地同时运行成千上万个进程。
 
 Elixir 将友好、受 Ruby 启发的语法带入了 BEAM 的经过大量测试的基础。它们的结合使得编写大规模可扩展、容错系统变得更加容易。
 
@@ -82,9 +82,9 @@ Elixir 将友好、受 Ruby 启发的语法带入了 BEAM 的经过大量测试�
 
 1.  [Netflix：当你按下播放按钮时会发生什么？](https://blog.bytebytego.com/p/netflix-what-happens-when-you-press)
 
-1.  [另外6个微服务面试问题](https://blog.bytebytego.com/p/6-more-microservices-interview-questions)
+1.  [另外 6 个微服务面试问题](https://blog.bytebytego.com/p/6-more-microservices-interview-questions)
 
-1.  [7个微服务面试问题](https://blog.bytebytego.com/p/7-microservices-interview-questions)
+1.  [7 个微服务面试问题](https://blog.bytebytego.com/p/7-microservices-interview-questions)
 
 1.  [为什么互联网既稳健又脆弱](https://blog.bytebytego.com/p/why-the-internet-is-both-robust-and)
 
@@ -146,17 +146,17 @@ Elixir 将友好、受 Ruby 启发的语法带入了 BEAM 的经过大量测试�
 
 调整虚拟二进制堆大小解决了这个问题。现在可以启用卸载，显着提高吞吐量。
 
-通过系统优化，MaxJourney团队实现了看似不可能的事情 - 将公会容量扩展了15倍，以保持MidJourney在Discord上蓬勃发展。
+通过系统优化，MaxJourney 团队实现了看似不可能的事情 - 将公会容量扩展了 15 倍，以保持 MidJourney 在 Discord 上蓬勃发展。
 
-[1] [Maxjourney：在单个服务器上推动Discord超过一百万在线用户的限制](https://discord.com/blog/maxjourney-pushing-discords-limits-with-a-million-plus-online-users-in-a-single-server)
+[1] [Maxjourney：在单个服务器上推动 Discord 超过一百万在线用户的限制](https://discord.com/blog/maxjourney-pushing-discords-limits-with-a-million-plus-online-users-in-a-single-server)
 
-[使用Rust将Elixir扩展到1100万并发用户](https://discord.com/blog/using-rust-to-scale-elixir-for-11-million-concurrent-users)
+[使用 Rust 将 Elixir 扩展到 1100 万并发用户](https://discord.com/blog/using-rust-to-scale-elixir-for-11-million-concurrent-users)
 
-[2] [如何将Discord的Elixir扩展到500万并发用户](https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users)
+[2] [如何将 Discord 的 Elixir 扩展到 500 万并发用户](https://discord.com/blog/how-discord-scaled-elixir-to-5-000-000-concurrent-users)
 
-[3] [Discord开发者门户 — 文档 — 公会](https://discord.com/developers/docs/resources/guild)
+[3] [Discord 开发者门户 — 文档 — 公会](https://discord.com/developers/docs/resources/guild)
 
-[4] [GitHub - discord/manifold：Erlang/Elixir之间的快速批量消息传递。](https://github.com/discord/manifold)
+[4] [GitHub - discord/manifold：Erlang/Elixir 之间的快速批量消息传递。](https://github.com/discord/manifold)
 
 [5] [BEAM（艾伦虚拟机器） - 维基百科](https://en.wikipedia.org/wiki/BEAM_(Erlang_virtual_machine))
 

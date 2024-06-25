@@ -8,7 +8,7 @@
 
 # 可用 MQTT 实现中的 DoS 攻击 - 安全与信任
 
-> 来源：[https://st.fbk.eu/complementary/IOTSECFOR2021.html](https://st.fbk.eu/complementary/IOTSECFOR2021.html)
+> 来源：[`st.fbk.eu/complementary/IOTSECFOR2021.html`](https://st.fbk.eu/complementary/IOTSECFOR2021.html)
 
 # 补充材料
 
@@ -68,25 +68,25 @@
 
 限制消息速率的设置：
 
-+   *max_inflight_messages*，默认值为20，设置正在传输中的最大出站QoS 1/2消息数量。
++   *max_inflight_messages*，默认值为 20，设置正在传输中的最大出站 QoS 1/2 消息数量。
 
 限制活跃连接的设置：
 
 +   *max_connections*，默认情况下未限制但受主机操作系统限制，限制了已连接客户端的总数。
 
-+   *persistent_client_expiration*，作为OASIS规范中的非标准项，默认设置为不过期，将允许在持久客户端在一定时间内不重新连接时到期其会话。
++   *persistent_client_expiration*，作为 OASIS 规范中的非标准项，默认设置为不过期，将允许在持久客户端在一定时间内不重新连接时到期其会话。
 
 与消息队列相关的设置：
 
-+   *max_queued_messages*，从版本2.0开始为1000（在最新的Mosquitto 1.6.x中为100），设置了除了正在传输中的消息之外队列中要保留的QoS 1/2消息的最大数量（每个客户端）。
++   *max_queued_messages*，从版本 2.0 开始为 1000（在最新的 Mosquitto 1.6.x 中为 100），设置了除了正在传输中的消息之外队列中要保留的 QoS 1/2 消息的最大数量（每个客户端）。
 
-+   *max_queued_bytes*，也是无限的，而是设置了要发送的排队QoS 1/2消息的阈值。
++   *max_queued_bytes*，也是无限的，而是设置了要发送的排队 QoS 1/2 消息的阈值。
 
-+   *queue_qos0_messages*，作为OASIS规范中的非标准项，默认情况下已禁用，允许将支持QoS 1和2的QoS 0消息排入队列。
++   *queue_qos0_messages*，作为 OASIS 规范中的非标准项，默认情况下已禁用，允许将支持 QoS 1 和 2 的 QoS 0 消息排入队列。
 
-+   *upgrade_outgoing_qos*，默认情况下禁用，将允许在订阅客户端使用更高QoS值时提升已发布消息的QoS。
++   *upgrade_outgoing_qos*，默认情况下禁用，将允许在订阅客户端使用更高 QoS 值时提升已发布消息的 QoS。
 
-影响经纪人磁盘I/O的设置：
+影响经纪人磁盘 I/O 的设置：
 
 +   *persistence*，如果启用，则允许将内存数据库存储到磁盘上（连接、订阅和消息数据）；重新启动经纪人时，它将使用所有信息初始化。值*autosave_interval* 指定了经纪人在保存内存数据库之前等待的时间段（以秒为单位）。类似地，*autosave_on_changes* 允许在消息（接收和排队）数量和订阅更改数量超过阈值时保存。错误配置数据库的存储或设置低阈值可能会影响经纪人的性能。
 
@@ -98,9 +98,9 @@
 
 防止慢速拒绝服务（Slow-DoS）攻击的设置：
 
-+   *max_keepalive* 允许在MQTT5客户端的情况下覆盖客户端提供的保持活动值；从而防止了慢速拒绝服务（slow-dos）攻击的发生。
++   *max_keepalive* 允许在 MQTT5 客户端的情况下覆盖客户端提供的保持活动值；从而防止了慢速拒绝服务（slow-dos）攻击的发生。
 
-可以限制或支持DoS攻击的其他设置：
+可以限制或支持 DoS 攻击的其他设置：
 
 +   *check_retain_source*，默认启用，控制保留消息在重新发布之前的访问权限来源。这可以防止恶意客户端发布消息，其访问权限已被撤销；以及，例如，将大型保留消息重新发布给不断尝试接收并因消息大小而崩溃的客户端。
 
@@ -110,53 +110,53 @@
 
 限制消息大小的设置：
 
-+   *max_message_size* 作为Mosquitto的*message_size_limit*。
++   *max_message_size* 作为 Mosquitto 的*message_size_limit*。
 
-+   *tcp.buffer_sizes* 允许设置内核的*发送*和*接收*缓冲区，以及基于TCP的连接的用户级缓冲区。
++   *tcp.buffer_sizes* 允许设置内核的*发送*和*接收*缓冲区，以及基于 TCP 的连接的用户级缓冲区。
 
 限制消息速率的设置：
 
-+   *max_inflight_messages* 如同Mosquitto。
++   *max_inflight_messages* 如同 Mosquitto。
 
 +   *max_message_rate*，默认情况下不受限制，指定每个会话每秒的最大传入发布速率。
 
 限制活动连接的设置：
 
-+   *max_connections*，与Mosquitto相同，但默认值为10,000。
++   *max_connections*，与 Mosquitto 相同，但默认值为 10,000。
 
-+   *persistent_client_expiration* 如同Mosquitto。
++   *persistent_client_expiration* 如同 Mosquitto。
 
-+   *allow_multiple_sessions*，默认情况下禁用，默认情况下不符合OASIS规范且将被废弃，允许使用相同客户端ID连接多个客户端。这将允许攻击者在盗用凭据的情况下连接和（误）使用服务而不触发任何警报。
++   *allow_multiple_sessions*，默认情况下禁用，默认情况下不符合 OASIS 规范且将被废弃，允许使用相同客户端 ID 连接多个客户端。这将允许攻击者在盗用凭据的情况下连接和（误）使用服务而不触发任何警报。
 
 与消息队列相关的设置：
 
-+   *max_online_messages* 和 *max_offline_messages*（默认均为1,000）设置为连接或突然断开连接的客户端队列的最大数量。
++   *max_online_messages* 和 *max_offline_messages*（默认均为 1,000）设置为连接或突然断开连接的客户端队列的最大数量。
 
-+   *upgrade_outgoing_qos* 如同Mosquitto。
++   *upgrade_outgoing_qos* 如同 Mosquitto。
 
-影响经纪人磁盘I/O的设定：
+影响经纪人磁盘 I/O 的设定：
 
-+   *log.console*和*log.console.level*等效于Mosquitto的*log_dest*和*log_type*。然而前者设置为存储条目在文件中。
++   *log.console*和*log.console.level*等效于 Mosquitto 的*log_dest*和*log_type*。然而前者设置为存储条目在文件中。
 
 影响经纪人内存使用的设定：
 
-+   *nr_of_acceptors*，默认值为10，设置等待新连接的并发进程数。该设置负责测试中所有CPU核心的使用。
++   *nr_of_acceptors*，默认值为 10，设置等待新连接的并发进程数。该设置负责测试中所有 CPU 核心的使用。
 
-+   Erlang特定的设置，例如*async_threads*（设置Erlang VM中的异步线程数），修改运行经纪人的Erlang运行时系统的行为。
++   Erlang 特定的设置，例如*async_threads*（设置 Erlang VM 中的异步线程数），修改运行经纪人的 Erlang 运行时系统的行为。
 
-+   *maximum_memory.percent*，默认配置文件为70，设置内存数据库分配的最大百分比（用于存储持久会话的连接、订阅和消息数据）。然而在我们的测试中，如果经纪人在并发发布者的重负载下，则该阈值可能被暂时超过（最多达到85%）。
++   *maximum_memory.percent*，默认配置文件为 70，设置内存数据库分配的最大百分比（用于存储持久会话的连接、订阅和消息数据）。然而在我们的测试中，如果经纪人在并发发布者的重负载下，则该阈值可能被暂时超过（最多达到 85%）。
 
-可限制或支持DoS攻击的其他设置：
+可限制或支持 DoS 攻击的其他设置：
 
-+   *retry_interval*，默认为20秒，设置未确认QoS 1/2消息的重试间隔。这可能会影响经纪人的性能（如果阈值太低），或可能是资源受限的客户端（例如，如果经纪人每分钟尝试重发一条重消息，而客户端设置为以相同的时间连接）。
++   *retry_interval*，默认为 20 秒，设置未确认 QoS 1/2 消息的重试间隔。这可能会影响经纪人的性能（如果阈值太低），或可能是资源受限的客户端（例如，如果经纪人每分钟尝试重发一条重消息，而客户端设置为以相同的时间连接）。
 
 +   *max_last_will_delay* 允许指定最后遗嘱消息的最大延迟。
 
-对于*suppress_lwt_on_session_takeover*和*receive_max_client*参数，进一步的调查可能与连接的DoS攻击有关，但不在文档中描述。
+对于*suppress_lwt_on_session_takeover*和*receive_max_client*参数，进一步的调查可能与连接的 DoS 攻击有关，但不在文档中描述。
 
-#### EMQ X设置
+#### EMQ X 设置
 
-考虑到用于根据 MQTT 协议和 Erlang 运行时环境自定义代理的参数数量，以下我们提供了 EMQ X 特有功能的高级描述。请参阅[此处](/assets/areas/complementary/IOTSECFOR2021/Broker_Parameters_(M)=misconfigurable.xlsx)以获取详尽的列表。
+考虑到用于根据 MQTT 协议和 Erlang 运行时环境自定义代理的参数数量，以下我们提供了 EMQ X 特有功能的高级描述。请参阅此处=misconfigurable.xlsx)以获取详尽的列表。
 
 +   保留消息配置（默认启用）允许指定目标、到期时间（如果指示，则由 PUBLISH 数据包中的到期时间替换）以及消息或负载大小的限制。
 

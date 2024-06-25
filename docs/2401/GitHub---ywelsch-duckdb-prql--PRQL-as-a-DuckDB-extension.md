@@ -8,7 +8,7 @@ date: 2024-05-27 15:09:23
 
 # GitHub - ywelsch/duckdb-prql: PRQL as a DuckDB extension
 
-> 来源：[https://github.com/ywelsch/duckdb-prql](https://github.com/ywelsch/duckdb-prql)
+> 来源：[`github.com/ywelsch/duckdb-prql`](https://github.com/ywelsch/duckdb-prql)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

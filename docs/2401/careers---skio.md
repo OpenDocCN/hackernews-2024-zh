@@ -8,7 +8,7 @@
 
 # 职业 | Skio
 
-> 来源：[https://skio.com/careers/](https://skio.com/careers/)
+> 来源：[`skio.com/careers/`](https://skio.com/careers/)
 
 ### 商户成功联络员
 

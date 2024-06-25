@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 15:16:24
+日期：2024 年 05 月 27 日 15:16:24
 
 -->
 
 # 不要剃那只牦牛！| 赛斯的博客
 
-> 来源：[https://seths.blog/2005/03/dont_shave_that/](https://seths.blog/2005/03/dont_shave_that/)
+> 来源：[`seths.blog/2005/03/dont_shave_that/`](https://seths.blog/2005/03/dont_shave_that/)
 
 我今年学到的最好的一个术语。
 
@@ -40,4 +40,4 @@
 
 注意：明显是在 2010 年由麻省理工学院媒体实验室转化为一个计算机术语，[剃牦牛](http://www.catb.org/~esr/jargon/html/Y/yak-shaving.html "剃牦牛") 是由我的朋友乔伊·伊图提到的。（链接：[乔伊·伊图的网络：剃牦牛](http://joi.ito.com/archives/2005/03/05/yak_shaving.html#trackbacks "乔伊·伊图的网络：剃牦牛")）
 
-2005年3月5日
+2005 年 3 月 5 日

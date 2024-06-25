@@ -8,11 +8,11 @@
 
 # 食品 - 如何吃一个大汉堡？ - 生活技巧堆栈交换
 
-> 来源：[https://lifehacks.stackexchange.com/questions/22729/how-to-eat-a-big-burger](https://lifehacks.stackexchange.com/questions/22729/how-to-eat-a-big-burger)
+> 来源：[`lifehacks.stackexchange.com/questions/22729/how-to-eat-a-big-burger`](https://lifehacks.stackexchange.com/questions/22729/how-to-eat-a-big-burger)
 
 **如何吃一个大汉堡？**
 
-在Cache Creek，BC时，我总会去[Hungry Herbies](https://www.zomato.com/cache-creek-bc/hungry-herbies-cache-creek/menu)吃他们巨大的***怪兽汉堡***。
+在 Cache Creek，BC 时，我总会去[Hungry Herbies](https://www.zomato.com/cache-creek-bc/hungry-herbies-cache-creek/menu)吃他们巨大的***怪兽汉堡***。
 
 无论你决定以哪种方式吃你的汉堡，你最终都会失去一些礼仪。尽管如此，在吃汉堡时我发现以下方法很有帮助，只有弗林特斯通能真正享受到。
 

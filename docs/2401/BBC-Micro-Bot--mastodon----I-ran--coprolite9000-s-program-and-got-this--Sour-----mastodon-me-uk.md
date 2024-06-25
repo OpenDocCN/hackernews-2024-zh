@@ -8,7 +8,7 @@
 
 # 要使用 Mastodon Web 应用程序，请启用 JavaScript。或者，尝试之一
 
-> 来源：[https://mastodon.me.uk/@bbcmicrobot/111762132859648345](https://mastodon.me.uk/@bbcmicrobot/111762132859648345)
+> 来源：[`mastodon.me.uk/@bbcmicrobot/111762132859648345`](https://mastodon.me.uk/@bbcmicrobot/111762132859648345)
 
 本地应用程序
 

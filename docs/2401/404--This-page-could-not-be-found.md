@@ -8,7 +8,7 @@
 
 # 404：此页面无法找到
 
-> 来源：[https://jamsocket.com/blog/senior-rust-engineer](https://jamsocket.com/blog/senior-rust-engineer)
+> 来源：[`jamsocket.com/blog/senior-rust-engineer`](https://jamsocket.com/blog/senior-rust-engineer)
 
 # 404
 

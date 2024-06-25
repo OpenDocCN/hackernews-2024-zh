@@ -8,7 +8,7 @@
 
 # 发布 Nvim 0.9.5 · neovim/neovim · GitHub
 
-> 来源：[https://github.com/neovim/neovim/releases/tag/v0.9.5](https://github.com/neovim/neovim/releases/tag/v0.9.5)
+> 来源：[`github.com/neovim/neovim/releases/tag/v0.9.5`](https://github.com/neovim/neovim/releases/tag/v0.9.5)
 
 ```
 NVIM v0.9.5

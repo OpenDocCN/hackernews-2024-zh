@@ -8,7 +8,7 @@ date: 2024-05-27 14:56:07
 
 # 构建 USB SNES 控制器
 
-> 来源：[https://blog.chybby.com/posts/building-a-usb-snes-controller](https://blog.chybby.com/posts/building-a-usb-snes-controller)
+> 来源：[`blog.chybby.com/posts/building-a-usb-snes-controller`](https://blog.chybby.com/posts/building-a-usb-snes-controller)
 
 `#include  <HID-Project.h>
 

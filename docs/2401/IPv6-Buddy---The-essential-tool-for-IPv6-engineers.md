@@ -6,9 +6,9 @@ date: 2024-05-27 15:17:39
 
 -->
 
-# IPv6 Buddy – IPv6工程师的基本工具
+# IPv6 Buddy – IPv6 工程师的基本工具
 
-> 来源：[https://ipv6buddy.com/](https://ipv6buddy.com/)
+> 来源：[`ipv6buddy.com/`](https://ipv6buddy.com/)
 
 Tab key to switch fields with ease
 

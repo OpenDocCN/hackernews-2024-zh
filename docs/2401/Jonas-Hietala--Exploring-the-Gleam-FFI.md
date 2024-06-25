@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:44
 
 # Jonas Hietala: 探索 Gleam FFI
 
-> 来源：[https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/](https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/)
+> 来源：[`www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/`](https://www.jonashietala.se/blog/2024/01/11/exploring_the_gleam_ffi/)
 
 我的大脑是一个好奇的东西。我现在正在出差，本来应该抽出时间完成一些我想要并且需要完成的重要待办事项。但是我没有专注于它们，而是开始玩弄一个年轻而有趣的编程语言——[Gleam](https://gleam.run/ "Gleam is a friendly language for building type-safe systems that scale!")。
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:03:29
 
 # RAWRLAB 游戏 - 宣布免费为 Nintendo Switch™ 移植 Godot™ 引擎
 
-> 来源：[https://www.rawrlab.com/godot_nintendo_switch_free_port.html](https://www.rawrlab.com/godot_nintendo_switch_free_port.html)
+> 来源：[`www.rawrlab.com/godot_nintendo_switch_free_port.html`](https://www.rawrlab.com/godot_nintendo_switch_free_port.html)
 
 **· RAWRLAB Games 创建了这个端口吗？**
 
@@ -54,7 +54,7 @@ date: 2024-05-27 15:03:29
 
 **· 我怎样才能捐赠/贡献给这个端口？**
 
-您可以在这里捐赠：[https://fund.godotengine.org/](https://fund.godotengine.org/)
+您可以在这里捐赠：[`fund.godotengine.org/`](https://fund.godotengine.org/)
 
 **· 不，说真的，我怎样才能报答你和其他贡献者？**
 

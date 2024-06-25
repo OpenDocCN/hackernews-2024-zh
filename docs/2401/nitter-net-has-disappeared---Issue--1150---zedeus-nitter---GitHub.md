@@ -8,7 +8,7 @@
 
 # nitter.net 已经消失 · Issue #1150 · zedeus/nitter · GitHub
 
-> 来源：[https://github.com/zedeus/nitter/issues/1150](https://github.com/zedeus/nitter/issues/1150)
+> 来源：[`github.com/zedeus/nitter/issues/1150`](https://github.com/zedeus/nitter/issues/1150)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

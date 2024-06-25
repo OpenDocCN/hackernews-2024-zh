@@ -8,11 +8,11 @@ date: 2024-05-27 14:54:28
 
 # Automatic Class Sorting with Prettier - Tailwind CSS
 
-> 来源：[https://tailwindcss.com/blog/automatic-class-sorting-with-prettier](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier)
+> 来源：[`tailwindcss.com/blog/automatic-class-sorting-with-prettier`](https://tailwindcss.com/blog/automatic-class-sorting-with-prettier)
 
-人们已经讨论了至少四年关于在[Tailwind项目中对实用类进行排序的最佳方式](https://github.com/tailwindlabs/discuss/issues/97)。今天，我们很高兴地宣布，通过我们的官方[Prettier Tailwind CSS插件](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)的发布，您终于可以不再担心这个问题了。
+人们已经讨论了至少四年关于在[Tailwind 项目中对实用类进行排序的最佳方式](https://github.com/tailwindlabs/discuss/issues/97)。今天，我们很高兴地宣布，通过我们的官方[Prettier Tailwind CSS 插件](https://github.com/tailwindlabs/prettier-plugin-tailwindcss)的发布，您终于可以不再担心这个问题了。
 
-此插件扫描您的模板，查找包含Tailwind CSS类的类属性，然后自动按照我们的[推荐类顺序](/blog/automatic-class-sorting-with-prettier#how-classes-are-sorted)对这些类进行排序。
+此插件扫描您的模板，查找包含 Tailwind CSS 类的类属性，然后自动按照我们的推荐类顺序对这些类进行排序。
 
 ```
  <button class="text-white px-4 sm:px-8 py-2 sm:py-3 bg-sky-700 hover:bg-sky-800">...</button>
@@ -20,15 +20,15 @@ date: 2024-05-27 14:54:28
 <button class="bg-sky-700 px-4 py-2 text-white hover:bg-sky-800 sm:px-8 sm:py-3">...</button>
 ```
 
-它与自定义Tailwind配置无缝配合，并且因为它只是一个[Prettier](https://prettier.io/)插件，所以它可以在Prettier可用的任何地方工作——包括每个流行的编辑器和IDE，当然也包括命令行。
+它与自定义 Tailwind 配置无缝配合，并且因为它只是一个[Prettier](https://prettier.io/)插件，所以它可以在 Prettier 可用的任何地方工作——包括每个流行的编辑器和 IDE，当然也包括命令行。
 
-要开始使用，请将`prettier-plugin-tailwindcss`安装为dev依赖项：
+要开始使用，请将`prettier-plugin-tailwindcss`安装为 dev 依赖项：
 
 ```
 npm install -D prettier prettier-plugin-tailwindcss
 ```
 
-然后将插件添加到您的[Prettier配置文件](https://prettier.io/docs/en/configuration)中：
+然后将插件添加到您的[Prettier 配置文件](https://prettier.io/docs/en/configuration)中：
 
 ```
 {
@@ -36,11 +36,11 @@ npm install -D prettier prettier-plugin-tailwindcss
 }
 ```
 
-您还可以通过使用Prettier CLI的`--plugin`标志或使用Prettier API的`plugins`选项来[加载插件](https://prettier.io/docs/en/plugins.html#using-plugins)。
+您还可以通过使用 Prettier CLI 的`--plugin`标志或使用 Prettier API 的`plugins`选项来[加载插件](https://prettier.io/docs/en/plugins.html#using-plugins)。
 
 * * *
 
-本插件的核心功能是按照Tailwind在您的CSS中的顺序组织您的类。
+本插件的核心功能是按照 Tailwind 在您的 CSS 中的顺序组织您的类。
 
 这意味着基础层中的任何类将首先进行排序，然后是组件层中的类，最后是实用程序层中的类。
 
@@ -50,7 +50,7 @@ npm install -D prettier prettier-plugin-tailwindcss
 </div>
 ```
 
-实用程序本身也按照我们在CSS中对它们进行排序的顺序进行排序，这意味着任何覆盖其他类的类始终出现在类列表的后面：
+实用程序本身也按照我们在 CSS 中对它们进行排序的顺序进行排序，这意味着任何覆盖其他类的类始终出现在类列表的后面：
 
 ```
 <div  class="pt-2 p-4">  <div  class="p-4 pt-2">  </div> 
@@ -74,7 +74,7 @@ npm install -D prettier prettier-plugin-tailwindcss
 <div  class="lg:grid-cols-4 grid sm:grid-cols-3 grid-cols-2">  <div  class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">  </div> 
 ```
 
-任何不来自Tailwind插件的自定义类（比如用于定位第三方库的类）始终排序到最前面，因此很容易看出元素是否正在使用它们：
+任何不来自 Tailwind 插件的自定义类（比如用于定位第三方库的类）始终排序到最前面，因此很容易看出元素是否正在使用它们：
 
 ```
 <div  class="p-3 shadow-xl select2-dropdown">  <div  class="select2-dropdown p-3 shadow-xl">  </div> 
@@ -82,7 +82,7 @@ npm install -D prettier prettier-plugin-tailwindcss
 
 * * *
 
-我们认为[Prettier的处理方式是正确的](https://prettier.io/docs/en/option-philosophy.html)，因为它具有明确的观点并且在定制性方面提供的内容很少——在一天结束时，对类进行排序的最大好处就是它少了一件事可以与团队争论。
+我们认为[Prettier 的处理方式是正确的](https://prettier.io/docs/en/option-philosophy.html)，因为它具有明确的观点并且在定制性方面提供的内容很少——在一天结束时，对类进行排序的最大好处就是它少了一件事可以与团队争论。
 
 我们非常努力地设计了一种易于理解并能尽快传达最重要信息的排序方式。
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:41:47
 
 # Duolingo Fires Translators in Favor of AI
 
-> 来源：[https://futurism.com/the-byte/duolingo-fires-translators-ai](https://futurism.com/the-byte/duolingo-fires-translators-ai)
+> 来源：[`futurism.com/the-byte/duolingo-fires-translators-ai`](https://futurism.com/the-byte/duolingo-fires-translators-ai)
 
 ## Duo... no...
 
@@ -38,4 +38,4 @@ Duolingo 的一位发言人确认了 2023 年 12 月的人员削减事件 [至](
 
 “我喜欢并重视语言交流和学习的人文因素，我认为语言中有一些细微差别是人工智能目前无法完全复制的。”一位同情的网友在十二月份的 Reddit 帖子中评论道。他们补充说：“我忍不住还是有点难过。”
 
-**关于人工智能和翻译的更多信息：**[*ICE正在使用失效的翻译人工智能，无法理解被拘留者*](https://futurism.com/the-byte/immigration-ai-services)
+**关于人工智能和翻译的更多信息：**[*ICE 正在使用失效的翻译人工智能，无法理解被拘留者*](https://futurism.com/the-byte/immigration-ai-services)

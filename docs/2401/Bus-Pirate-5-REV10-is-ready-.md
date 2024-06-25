@@ -8,7 +8,7 @@
 
 # Bus Pirate 5 REV10 已准备就绪！
 
-> 来源：[https://buspirate.com/bus-pirate-5-rev-10-now-available/](https://buspirate.com/bus-pirate-5-rev-10-now-available/)
+> 来源：[`buspirate.com/bus-pirate-5-rev-10-now-available/`](https://buspirate.com/bus-pirate-5-rev-10-now-available/)
 
 Bus Pirate 5 REV10
 
@@ -36,13 +36,13 @@ Bus Pirate 5 用一个“正品”质量保证的“[刮一刮闻一闻”贴纸
 
 从 SD 卡到 NAND 闪存的最后一刻变更留下了一个在外壳上的巨大空洞。现在改变工具制造设备已经太迟，所以我们用 SLA 3D 打印了一个微小的塞子来填充未使用的插槽。
 
-有   有时你想连接电线就走，所以我们制作了一个**Bus Pirate [KF141快速连接适配器](https://firmware.buspirate.com/overview/quick-connect?ref=buspirate.com)**。明亮的橙色引线标记与KF141的控制杆相匹配。
+有   有时你想连接电线就走，所以我们制作了一个**Bus Pirate [KF141 快速连接适配器](https://firmware.buspirate.com/overview/quick-connect?ref=buspirate.com)**。明亮的橙色引线标记与 KF141 的控制杆相匹配。
 
-RPi Pico很棒，但微小不对齐的引脚标签不好。我们在发送KF141时要求Uncle在[20p排针上丝印了Pico引脚布局](https://dirtypcbs.com/store/designer/details/ian/6637/raspberry-pi-pico-header-with-silkscreen-labels?ref=buspirate.com)。我们从10家制造商中挑选了最好的排针，并采用了一个两部分的丝印工艺，效果非常清晰。
+RPi Pico 很棒，但微小不对齐的引脚标签不好。我们在发送 KF141 时要求 Uncle 在[20p 排针上丝印了 Pico 引脚布局](https://dirtypcbs.com/store/designer/details/ian/6637/raspberry-pi-pico-header-with-silkscreen-labels?ref=buspirate.com)。我们从 10 家制造商中挑选了最好的排针，并采用了一个两部分的丝印工艺，效果非常清晰。
 
-定制盒子有很大的最低订单量并且占用大量空间。Bus Pirate 5装在一个高度可回收的棕色盒子里，然后用定制的便当盒外卖标签包裹起来。这种印刷方式便宜，外观漂亮，最低订单量非常低。
+定制盒子有很大的最低订单量并且占用大量空间。Bus Pirate 5 装在一个高度可回收的棕色盒子里，然后用定制的便当盒外卖标签包裹起来。这种印刷方式便宜，外观漂亮，最低订单量非常低。
 
-感谢您在过去几个月里的陪伴。现在，我将继续完善固件并增加功能。有几个JTAG相关的事情正在筹备中，中间人攻击，[@MoonbaseOtago](https://twitter.com/MoonbaseOtago?ref=buspirate.com)的示波器等等。
+感谢您在过去几个月里的陪伴。现在，我将继续完善固件并增加功能。有几个 JTAG 相关的事情正在筹备中，中间人攻击，[@MoonbaseOtago](https://twitter.com/MoonbaseOtago?ref=buspirate.com)的示波器等等。
 
 ## 资源
 

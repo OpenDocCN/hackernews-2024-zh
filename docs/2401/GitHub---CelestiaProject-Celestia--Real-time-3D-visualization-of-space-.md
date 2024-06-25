@@ -6,9 +6,9 @@ date: 2024-05-27 14:44:25
 
 -->
 
-# GitHub - CelestiaProject/Celestia: 真实时间的空间3D可视化。
+# GitHub - CelestiaProject/Celestia: 真实时间的空间 3D 可视化。
 
-> 来源：[https://github.com/CelestiaProject/Celestia](https://github.com/CelestiaProject/Celestia)
+> 来源：[`github.com/CelestiaProject/Celestia`](https://github.com/CelestiaProject/Celestia)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

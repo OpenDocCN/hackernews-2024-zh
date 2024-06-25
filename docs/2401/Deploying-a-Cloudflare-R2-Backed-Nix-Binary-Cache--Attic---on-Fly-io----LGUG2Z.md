@@ -8,7 +8,7 @@
 
 # 在 Fly.io 上部署基于 Cloudflare R2 的 Nix 二进制缓存（Attic！）:: LGUG2Z
 
-> 来源：[https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/](https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/)
+> 来源：[`lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/`](https://lgug2z.com/articles/deploying-a-cloudflare-r2-backed-nix-binary-cache-attic-on-fly-io/)
 
 我曾试过在我位于德国的 Hetzner 专用服务器上运行 [Attic Nix 二进制缓存](https://github.com/zhaofengli/attic) 几次，但是与西雅图的 Xfinity 的连接问题和延迟总是让我感到沮丧。
 
@@ -18,13 +18,13 @@
 
 我不确定这条评论是否仍然有效，但是嘿，如果 Zhaofeng 正在或曾经在 [fly.io](https://fly.io/) 上运行他的二进制缓存，那我们也没理由不能，对吧？
 
-## 存储[⌗](#storage)
+## 存储⌗
 
 虽然 Attic 支持本地存储，但我想我会使用 Cloudflare 的 R2 作为存储后端，既是尝试 [免费套餐](https://developers.cloudflare.com/r2/pricing/)（10GB）的借口，也因为如果我决定将服务器从 fly.io 迁移，这将很容易搬迁。
 
 创建新的 R2 存储桶并在 [Cloudflare 控制台](https://dash.cloudflare.com) 上获取针对存储桶的读写 API 令牌非常简单。
 
-## [服务器配置](#server-configuration)
+## 服务器配置
 
 一旦我们有了凭据，我们就可以根据 [示例配置](https://github.com/zhaofengli/attic/blob/e6bedf1869f382cfc51b69848d6e09d51585ead6/server/src/config-template.toml) 为 Attic 服务器组装一个配置文件。
 
@@ -38,7 +38,7 @@ listen = "[::]:8080" token-hs256-secret-base64 = "<generate this with openssl ra
 
 **不确定如何处理 NixOS 配置存储库中的机密？我有一篇关于[在 NixOS 中处理机密](https://lgug2z.com/articles/handling-secrets-in-nixos-an-overview/)的大文章！**
 
-## Dockerfile[⌗](#dockerfile)
+## Dockerfile⌗
 
 幸运的是，我们可以扩展的自动发布的 Docker 镜像可供我们使用。这里没什么要做的，除了引入我们的配置文件，当我们启动 `atticd` 时引用它，并确保它以 `monolithic` 模式运行。
 
@@ -46,7 +46,7 @@ listen = "[::]:8080" token-hs256-secret-base64 = "<generate this with openssl ra
 FROM ghcr.io/zhaofengli/attic:latest COPY ./server.toml /attic/server.toml EXPOSE 8080 CMD ["-f", "/attic/server.toml", "--mode", "monolithic"] 
 ```
 
-## Fly 配置[⌗](#fly-config)
+## Fly 配置⌗
 
 部署拼图的最后一块是为我们的 `atticd` 实例组装一个 `fly.toml` 文件。
 
@@ -64,7 +64,7 @@ app = "<pick your own fly app name>" primary_region = "sea"   [mounts]  source =
 
 就这样了，该是 `fly deploy` 的时候了！（我使用 `--ha=false`，因为我不想创建多台机器）
 
-## 生成一个阁楼令牌[⌗](#generating-an-attic-token)
+## 生成一个阁楼令牌⌗
 
 我们需要在新部署的 fly.io 机器上执行一个命令来生成一个“godmode”令牌供我们使用。让我们从获取机器 ID 开始。
 
@@ -80,7 +80,7 @@ fly machine exec <your machine id> 'atticadm make-token --sub "<your preferred u
 
 我们需要将这个令牌保存在一个安全的地方，最好是加密的。我将我的加密令牌存储在我的 NixOS 配置 monorepo 中，使用 `sops-nix` 进行加密，并在授予解密权限的机器上解密并挂载到 `/run/secrets/attic/token`。
 
-## 登录到阁楼[⌗](#logging-into-attic)
+## 登录到阁楼⌗
 
 这部分非常简单！我们可以在配置中随心所欲地命名服务器；这里使用“fly”即可。最后两个参数是为我们的 fly.io 应用生成的 URL 和我们的访问令牌。
 
@@ -88,7 +88,7 @@ fly machine exec <your machine id> 'atticadm make-token --sub "<your preferred u
 # if pkgs.attic is installed in environment.systemPackages attic login fly https://<your fly app name>.fly.dev $(cat /run/secrets/attic/token)   # if pkgs.attic is not installed, we can always run it directly from the flake nix run github:zhaofengli/attic#default login fly https://<your fly app name>.fly.dev $(cat /run/secrets/attic/token) 
 ```
 
-## 推送到我们的阁楼缓存[⌗](#pushing-to-our-attic-cache)
+## 推送到我们的阁楼缓存⌗
 
 现在，我们在 fly.io 上运行着 `atticd` 缓存服务器，并且我们的计算机已经使用允许我们推送的令牌进行了身份验证，让我们设置一个缓存并推送我们的整个(!) 系统配置。
 
@@ -98,7 +98,7 @@ fly machine exec <your machine id> 'atticadm make-token --sub "<your preferred u
 # if pkgs.attic is installed in environment.systemPackages attic cache create system -j 3 attic push system /run/current-system -j 3   # if pkgs.attic is not installed, we can always run it directly from the flake nix run github:zhaofengli/attic#default cache create system -j 3 nix run github:zhaofengli/attic#default push system /run/current-system -j 3 
 ```
 
-## 配置 NixOS 使用我们的阁楼二进制缓存[⌗](#configuring-nixos-to-use-our-attic-binary-cache)
+## 配置 NixOS 使用我们的阁楼二进制缓存⌗
 
 在配置 NixOS 使用我们的新二进制缓存之前，有两件事情我们需要做。
 
@@ -119,13 +119,13 @@ password <your attic token>
 
 现在，当我们的 NixOS 机器重新构建时：
 
-+   首先将检查官方的 NixOS 缓存（优先级为40）
++   首先将检查官方的 NixOS 缓存（优先级为 40）
 
-+   接下来，将检查 `nix-community` 的公共缓存（优先级为41）
++   接下来，将检查 `nix-community` 的公共缓存（优先级为 41）
 
-+   接下来，将检查 `numtide` 的公共缓存（优先级为42）
++   接下来，将检查 `numtide` 的公共缓存（优先级为 42）
 
-+   最后，我们的私有缓存（优先级为43）将被检查
++   最后，我们的私有缓存（优先级为 43）将被检查
 
 +   如果根本没有缓存命中，包将从源代码构建
 

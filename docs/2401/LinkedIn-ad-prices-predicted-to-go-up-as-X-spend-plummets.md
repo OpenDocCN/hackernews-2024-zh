@@ -8,7 +8,7 @@ date: 2024-05-27 14:25:57
 
 # 预测 LinkedIn 广告价格上涨，而 X 消费急剧下降
 
-> 来源：[https://www.marketing-beat.co.uk/2024/01/02/linkedin-ups-ad-prices-x-demise/](https://www.marketing-beat.co.uk/2024/01/02/linkedin-ups-ad-prices-x-demise/)
+> 来源：[`www.marketing-beat.co.uk/2024/01/02/linkedin-ups-ad-prices-x-demise/`](https://www.marketing-beat.co.uk/2024/01/02/linkedin-ups-ad-prices-x-demise/)
 
 为了提供最佳体验，我们使用诸如 cookie 之类的技术来存储和/或访问设备信息。同意使用这些技术将允许我们处理诸如浏览行为或本网站上的唯一标识符等数据。不同意或撤回同意可能会对某些功能和功能产生不利影响。
 

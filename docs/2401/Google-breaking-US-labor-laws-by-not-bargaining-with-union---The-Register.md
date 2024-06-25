@@ -6,35 +6,35 @@ date: 2024-05-27 14:32:33
 
 -->
 
-# Google违反美国劳动法，未与工会谈判 • The Register
+# Google 违反美国劳动法，未与工会谈判 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/04/google_illegally_refusing_to_bargain/](https://www.theregister.com/2024/01/04/google_illegally_refusing_to_bargain/)
+> 来源：[`www.theregister.com/2024/01/04/google_illegally_refusing_to_bargain/`](https://www.theregister.com/2024/01/04/google_illegally_refusing_to_bargain/)
 
-更新：美国国家劳工关系局已经决定，Google的承包商仍然是其员工，因此Google拒绝与他们选择的工会谈判违反了美国劳动法。
+更新：美国国家劳工关系局已经决定，Google 的承包商仍然是其员工，因此 Google 拒绝与他们选择的工会谈判违反了美国劳动法。
 
-一个由三名NLRB法官组成的小组在[一起案件](https://www.nlrb.gov/case/16-CA-326027)中得出了这个结论，该案件涉及Google和通过人力资源公司Cognizant雇佣的一组与Google的YouTube团队合作的合同员工。
+一个由三名 NLRB 法官组成的小组在[一起案件](https://www.nlrb.gov/case/16-CA-326027)中得出了这个结论，该案件涉及 Google 和通过人力资源公司 Cognizant 雇佣的一组与 Google 的 YouTube 团队合作的合同员工。
 
-YouTube团队的Cognizant承包商去年四月投票加入Alphabet Workers Union-Communication Workers of America（AWU-CWA）。不久之后，AWU指责Google和Cognizant拒绝代表YouTube合同工人与其进行谈判。
+YouTube 团队的 Cognizant 承包商去年四月投票加入 Alphabet Workers Union-Communication Workers of America（AWU-CWA）。不久之后，AWU 指责 Google 和 Cognizant 拒绝代表 YouTube 合同工人与其进行谈判。
 
-据NLRB小组称，Google公开承认拒绝与工会谈判，因为它与Cognizant"质疑工会的认证的有效性"，根据这两者的立场"认为Cognizant和Google*不*是共同雇主"。
+据 NLRB 小组称，Google 公开承认拒绝与工会谈判，因为它与 Cognizant"质疑工会的认证的有效性"，根据这两者的立场"认为 Cognizant 和 Google*不*是共同雇主"。
 
-然而，NLRB得出的结论是，"Cognizant和Google在[YouTube团队]的就业的基本条款和条件上具有共同决定权，并且在所有重要时期都是联合雇主"。
+然而，NLRB 得出的结论是，"Cognizant 和 Google 在[YouTube 团队]的就业的基本条款和条件上具有共同决定权，并且在所有重要时期都是联合雇主"。
 
-"通过失败和拒绝……承认并与工会进行谈判，[Google和Cognizant]已经参与了侵害商业内部的不公平劳动行为，" 三名法官小组决定。
+"通过失败和拒绝……承认并与工会进行谈判，[Google 和 Cognizant]已经参与了侵害商业内部的不公平劳动行为，" 三名法官小组决定。
 
-Google坚持认为，这些Cognizant员工可能在Google工作，但不是在Google工作。
+Google 坚持认为，这些 Cognizant 员工可能在 Google 工作，但不是在 Google 工作。
 
-"正如我们之前所说的，我们不反对这些Cognizant员工选择组建工会，" Google发言人Courtenay Mencini告诉*The Register*。"我们只是认为，Cognizant作为他们的雇主，参与集体谈判是合适的。"
+"正如我们之前所说的，我们不反对这些 Cognizant 员工选择组建工会，" Google 发言人 Courtenay Mencini 告诉*The Register*。"我们只是认为，Cognizant 作为他们的雇主，参与集体谈判是合适的。"
 
-"我们正在向联邦法院上诉NLRB的共同雇主决定，因为Google不控制这些Cognizant工人的就业条款或条件，" Mencini补充道。
+"我们正在向联邦法院上诉 NLRB 的共同雇主决定，因为 Google 不控制这些 Cognizant 工人的就业条款或条件，" Mencini 补充道。
 
-如果Google拒绝遵守NLRB的命令，该委员会暂时没有太多惩罚其的方法。根据法官的说法，请求了一项"赔偿性补救措施"，但委员会将该问题留待未来考虑，因为要惩罚Google的行为将需要审查先前的案例法，并"制定计算此类补救措施的方法论框架"。
+如果 Google 拒绝遵守 NLRB 的命令，该委员会暂时没有太多惩罚其的方法。根据法官的说法，请求了一项"赔偿性补救措施"，但委员会将该问题留待未来考虑，因为要惩罚 Google 的行为将需要审查先前的案例法，并"制定计算此类补救措施的方法论框架"。
 
 换句话说，我们会在必要时找出解决方法。
 
 ### 你还需要被告知多少次？
 
-如果整个情况听起来很相似，那是因为它几乎是去年Google发现自己处于的另一种情况的逐字重复。
+如果整个情况听起来很相似，那是因为它几乎是去年 Google 发现自己处于的另一种情况的逐字重复。
 
 在这种情况下，一群通过埃森哲聘用并致力于培训巴德的谷歌合同员工据称在试图组成工会后被解雇，但剩余的团队成员在去年 11 月经历了并赢得了加入 AWU-CWA 的投票。当我们在国家劳工关系委员会判定谷歌和埃森哲是共同雇主时，尽管谷歌对此表示异议，但 Mencini 在我们谈话后准备了一个几乎相同的剧本。
 

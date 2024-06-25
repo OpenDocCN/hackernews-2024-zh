@@ -8,7 +8,7 @@
 
 # 下载 Windows 虚拟机 - Windows 应用程序开发 | 微软开发人员
 
-> 来源：[https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/](https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/)
+> 来源：[`developer.microsoft.com/en-us/windows/downloads/virtual-machines/`](https://developer.microsoft.com/en-us/windows/downloads/virtual-machines/)
 
 # 获取 Windows 11 开发环境
 
@@ -18,7 +18,7 @@
 
 我们目前为四种不同的虚拟化软件选项打包我们的虚拟机：[VMWare](https://www.vmware.com/products/desktop-virtualization.html)、[Hyper-V（Gen2）](https://learn.microsoft.com/virtualization/hyper-v-on-windows/about/)、[VirtualBox](https://www.virtualbox.org/)，和 [Parallels](https://www.parallels.com/)。 这些虚拟机包含一个 [Windows 评估版本](https://www.microsoft.com/evalcenter) ，在发布日期到期后会失效。如果评估期到期，桌面背景将变黑，您将看到一个持久的桌面通知，指示系统不是正版，并且计算机将每小时关闭一次。
 
-到期日期：2024年7月15日
+到期日期：2024 年 7 月 15 日
 
 ### 评估虚拟机包括：
 
@@ -61,20 +61,20 @@
 
 #### 是否有可能获得虚拟机的 ARM 版本？
 
-很遗憾，目前我们没有ARM版本可用。我们理解这可能是令人失望的消息，但我们没有短期计划去创建这些。然而，我们一直乐于接受用户的反馈和建议，并将在计划未来的更新时予以考虑。
+很遗憾，目前我们没有 ARM 版本可用。我们理解这可能是令人失望的消息，但我们没有短期计划去创建这些。然而，我们一直乐于接受用户的反馈和建议，并将在计划未来的更新时予以考虑。
 
-#### 我在Virtualbox上使用这些VM时看到了一些奇怪的渲染问题。已知问题？
+#### 我在 Virtualbox 上使用这些 VM 时看到了一些奇怪的渲染问题。已知问题？
 
-是的，我们注意到在使用VirtualBox运行这些开发者映像时存在一些渲染怪异的问题。开始菜单可能看起来也与预期不同。我们目前正在调查这种行为。与此同时，我们感谢您的耐心和理解。
+是的，我们注意到在使用 VirtualBox 运行这些开发者映像时存在一些渲染怪异的问题。开始菜单可能看起来也与预期不同。我们目前正在调查这种行为。与此同时，我们感谢您的耐心和理解。
 
-#### 我已经下载并在评估时间窗口内启动了VM，但该VM声称评估许可证已经过期。求助？
+#### 我已经下载并在评估时间窗口内启动了 VM，但该 VM 声称评估许可证已经过期。求助？
 
-假设该映像在评估时间窗口内运行，Windows应该最终会自行修复。要立即修复，请运行[Windows激活故障排除程序](https://support.microsoft.com/en-us/windows/using-the-windows-activation-troubleshooter-d717cdff-cf19-9770-7198-40119c2a696c)。
+假设该映像在评估时间窗口内运行，Windows 应该最终会自行修复。要立即修复，请运行[Windows 激活故障排除程序](https://support.microsoft.com/en-us/windows/using-the-windows-activation-troubleshooter-d717cdff-cf19-9770-7198-40119c2a696c)。
 
 是的，您可以在这里获取评估映像：
 
-[https://www.microsoft.com/evalcenter/evaluate-windows-10-enterprise](https://www.microsoft.com/evalcenter/evaluate-windows-10-enterprise)
+[`www.microsoft.com/evalcenter/evaluate-windows-10-enterprise`](https://www.microsoft.com/evalcenter/evaluate-windows-10-enterprise)
 
-[https://www.microsoft.com/evalcenter/evaluate-windows-11-enterprise](https://www.microsoft.com/evalcenter/evaluate-windows-11-enterprise)
+[`www.microsoft.com/evalcenter/evaluate-windows-11-enterprise`](https://www.microsoft.com/evalcenter/evaluate-windows-11-enterprise)
 
-您的反馈可以帮助我们打造出色的产品。请将您的反馈发送至[WinDevVMFeedback@microsoft.com](mailto:WinDevVMFeedback@microsoft.com)
+您的反馈可以帮助我们打造出色的产品。请将您的反馈发送至 WinDevVMFeedback@microsoft.com

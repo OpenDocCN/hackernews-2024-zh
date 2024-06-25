@@ -8,7 +8,7 @@
 
 # GitHub - amitbl/blocktube: YouTube™ 内容拦截器
 
-> 来源：[https://github.com/amitbl/blocktube](https://github.com/amitbl/blocktube)
+> 来源：[`github.com/amitbl/blocktube`](https://github.com/amitbl/blocktube)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

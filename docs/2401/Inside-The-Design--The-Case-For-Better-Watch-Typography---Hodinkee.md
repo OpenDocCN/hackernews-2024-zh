@@ -8,7 +8,7 @@ date: 2024-05-27 14:39:21
 
 # 设计内幕：为更好的手表字体设计辩护 - Hodinkee
 
-> 来源：[https://www.hodinkee.com/articles/the-case-for-better-watch-typography](https://www.hodinkee.com/articles/the-case-for-better-watch-typography)
+> 来源：[`www.hodinkee.com/articles/the-case-for-better-watch-typography`](https://www.hodinkee.com/articles/the-case-for-better-watch-typography)
 
 在手表制造商的字体设计中，更常见的是采用现有的字体。A. Lange & Söhne 将字体设计作为其手表的标志之一。对于这家德国尊贵的手表制造商 1994 年的重新推出，其设计师们 [修改了 Engravers](https://andlarry.com/journal/watch-the-type)，这是一款由 Robert Wiebking 设计的 19 世纪晚期的字体，修改后几乎成了全新的。同样，极简主义的德国品牌 NOMOS 在其大部分手表上采用半手工制作的方法。公司的产品设计师迈克尔·保罗（Michael Paul）表示：“每个型号之间总会有一些小的设计细节不同，因此，从货架上随便拿一个字体是与我们的设计理念不一致的。”
 

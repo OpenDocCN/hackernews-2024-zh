@@ -8,7 +8,7 @@
 
 # GitHub - spotify/sparkey: 简单的常量键/值存储库，用于读取频繁的系统和偶尔的大批量插入。
 
-> 来源：[https://github.com/spotify/sparkey](https://github.com/spotify/sparkey)
+> 来源：[`github.com/spotify/sparkey`](https://github.com/spotify/sparkey)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年5月27日14:42:43
+日期：2024 年 5 月 27 日 14:42:43
 
 -->
 
 # GitHub - revng/revng：revng 项目的核心存储库
 
-> 来源：[https://github.com/revng/revng](https://github.com/revng/revng)
+> 来源：[`github.com/revng/revng`](https://github.com/revng/revng)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

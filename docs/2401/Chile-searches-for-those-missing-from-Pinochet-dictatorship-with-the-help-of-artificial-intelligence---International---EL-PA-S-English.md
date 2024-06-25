@@ -8,13 +8,13 @@
 
 # 智利利用人工智能寻找皮诺切特独裁时期失踪者 | 国际 | 西班牙国家报英文版
 
-> 来源：[https://english.elpais.com/international/2024-01-18/chile-searches-for-those-missing-from-pinochet-dictatorship-with-the-help-of-artificial-intelligence.html](https://english.elpais.com/international/2024-01-18/chile-searches-for-those-missing-from-pinochet-dictatorship-with-the-help-of-artificial-intelligence.html)
+> 来源：[`english.elpais.com/international/2024-01-18/chile-searches-for-those-missing-from-pinochet-dictatorship-with-the-help-of-artificial-intelligence.html`](https://english.elpais.com/international/2024-01-18/chile-searches-for-those-missing-from-pinochet-dictatorship-with-the-help-of-artificial-intelligence.html)
 
-1月15日星期一，在圣地亚哥“未来国会”（Congress of the Future）的开幕式上，总统加布里埃尔·博里克（Gabriel Boric）表示，人工智能，作为该会议第13届版本的主题，“将在寻找我们失踪被拘留者的过程中发挥重要作用。”他指的是[寻找1000多名个体的搜索计划](https://english.elpais.com/international/2023-08-31/fifty-years-after-pinochet-coup-chile-to-search-for-over-1000-victims-of-enforced-disappearance.html)，这些个体是阿古斯托·皮诺切特（Augusto Pinochet）独裁统治时期（1973-1990）的受害者，该计划由他的政府于2023年8月30日提出，在那一天的9月11日纪念活动前夕，[揭示了萨尔瓦多·阿连德（Salvador Allende）政府被政变推翻50周年](https://english.elpais.com/international/2023-09-04/50th-anniversary-of-military-coup-reveals-deep-cracks-in-electric-chile.html)的事件。
+1 月 15 日星期一，在圣地亚哥“未来国会”（Congress of the Future）的开幕式上，总统加布里埃尔·博里克（Gabriel Boric）表示，人工智能，作为该会议第 13 届版本的主题，“将在寻找我们失踪被拘留者的过程中发挥重要作用。”他指的是[寻找 1000 多名个体的搜索计划](https://english.elpais.com/international/2023-08-31/fifty-years-after-pinochet-coup-chile-to-search-for-over-1000-victims-of-enforced-disappearance.html)，这些个体是阿古斯托·皮诺切特（Augusto Pinochet）独裁统治时期（1973-1990）的受害者，该计划由他的政府于 2023 年 8 月 30 日提出，在那一天的 9 月 11 日纪念活动前夕，[揭示了萨尔瓦多·阿连德（Salvador Allende）政府被政变推翻 50 周年](https://english.elpais.com/international/2023-09-04/50th-anniversary-of-military-coup-reveals-deep-cracks-in-electric-chile.html)的事件。
 
-该计划由司法部长路易斯·科德罗（Luis Cordero）主导，旨在成为永久性国家政策的倡议。根据司法数据，在智利独裁统治结束后，有1,469名被强迫失踪的受害者，其中1,092人是失踪的被拘留者，而377人被处决，也失踪了。到目前为止，只有307人被确认身份。
+该计划由司法部长路易斯·科德罗（Luis Cordero）主导，旨在成为永久性国家政策的倡议。根据司法数据，在智利独裁统治结束后，有 1,469 名被强迫失踪的受害者，其中 1,092 人是失踪的被拘留者，而 377 人被处决，也失踪了。到目前为止，只有 307 人被确认身份。
 
-为了着手进行这项已经由法院发起的新搜索，科德罗告诉《西班牙国家报》（EL PAÍS）他正在与两个主要来源合作。一方面是司法调查，其中包括数以百万计的文件页。另一方面，是分散在各个国家机构中的案件行政记录。这些包括1997年创建的人权计划，该计划隶属于司法部，以及军事检察院以前的调查（这些调查曾经关闭了案件）和1991年由前总统帕特里西奥·艾尔温（1990-1994年任期）推动的[《国家真相与和解委员会报告》](https://www.memoriachilena.gob.cl/602/w3-article-94640.html)，其中首次对受害者进行了描述。
+为了着手进行这项已经由法院发起的新搜索，科德罗告诉《西班牙国家报》（EL PAÍS）他正在与两个主要来源合作。一方面是司法调查，其中包括数以百万计的文件页。另一方面，是分散在各个国家机构中的案件行政记录。这些包括 1997 年创建的人权计划，该计划隶属于司法部，以及军事检察院以前的调查（这些调查曾经关闭了案件）和 1991 年由前总统帕特里西奥·艾尔温（1990-1994 年任期）推动的[《国家真相与和解委员会报告》](https://www.memoriachilena.gob.cl/602/w3-article-94640.html)，其中首次对受害者进行了描述。
 
 ### 打字文件
 
@@ -30,11 +30,11 @@
 
 ### 470 万页文档，还在不断增加。
 
-目前，Unsholster处于项目前阶段，在开始编程之前，迪亚兹-阿劳霍向《EL PAÍS》解释道。“但我们已经涉及到了大部分我们需要处理的文件类型，”他说。传入的文件是逐张扫描的，存放在文件夹中，以PDF格式保存，因此不符合允许进行数据搜索的逻辑，因为它们被记录为图像。因此，第一步就是开始应用OCR（光学字符识别）技术，以便将它们转换为数据。
+目前，Unsholster 处于项目前阶段，在开始编程之前，迪亚兹-阿劳霍向《EL PAÍS》解释道。“但我们已经涉及到了大部分我们需要处理的文件类型，”他说。传入的文件是逐张扫描的，存放在文件夹中，以 PDF 格式保存，因此不符合允许进行数据搜索的逻辑，因为它们被记录为图像。因此，第一步就是开始应用 OCR（光学字符识别）技术，以便将它们转换为数据。
 
-他们已经拥有信息——尚未包括司法部的成千上万的文件——总共有46,768个PDF文件，总计超过470万页。“如果一个人要朗读每一页，并且不理解或相关联的事实，他们可能会花费每天8小时阅读27年，”土木工程师解释道。
+他们已经拥有信息——尚未包括司法部的成千上万的文件——总共有 46,768 个 PDF 文件，总计超过 470 万页。“如果一个人要朗读每一页，并且不理解或相关联的事实，他们可能会花费每天 8 小时阅读 27 年，”土木工程师解释道。
 
-迪亚兹-阿劳霍说，一旦这些文件移动到页面上，“就会创建一个大的分类树，允许您对具有图像、手稿、打字页面或类似Word的文件的页面进行分类。然后，您开始在每个页面上应用最佳的OCR”，因为关键在于“将什么材料带给每一个页面。”
+迪亚兹-阿劳霍说，一旦这些文件移动到页面上，“就会创建一个大的分类树，允许您对具有图像、手稿、打字页面或类似 Word 的文件的页面进行分类。然后，您开始在每个页面上应用最佳的 OCR”，因为关键在于“将什么材料带给每一个页面。”
 
 他解释说，另一个阶段是创建不同类型的字典和实体，“可以通过使用进行学习”。例如，人物的绰号、地点、街道（许多街道在独裁统治时期以后更名了）、写作方式和日期。
 
@@ -44,12 +44,12 @@
 
 他继续说：“该平台的另一个关键点是原始数据和转换后的数据得到保留。但您可以继续在此基础上创建其他数据。没有时间机器，它会冻结使用新平台在将来生成更多算法和更多信息的能力。”
 
-### Contreras和Krassnoff
+### Contreras 和 Krassnoff
 
-技术首次应用于Unsholster的人权项目的近47,000份文件后的五个月，由于对身份证明文件进行的初始OCR的实施，已经可以找到至少四名曾是皮诺切特秘密警察、令人畏惧的国家情报总局（DINA）的军官的成千上万次提及。
+技术首次应用于 Unsholster 的人权项目的近 47,000 份文件后的五个月，由于对身份证明文件进行的初始 OCR 的实施，已经可以找到至少四名曾是皮诺切特秘密警察、令人畏惧的国家情报总局（DINA）的军官的成千上万次提及。
 
-Manuel Contreras，其总监在2015年去世时因数百项罪行被判处526年监禁，出现了2,800次；Pedro Espinoza和Miguel Krassnoff，两人都在Punta Peuco监狱服刑，分别出现了2,079和2,954次。而Marcelo Moren Brito，曾是前社会主义总统米歇尔·巴切莱特的母亲Ángela Jeria的折磨者，出现了2,284次。
+Manuel Contreras，其总监在 2015 年去世时因数百项罪行被判处 526 年监禁，出现了 2,800 次；Pedro Espinoza 和 Miguel Krassnoff，两人都在 Punta Peuco 监狱服刑，分别出现了 2,079 和 2,954 次。而 Marcelo Moren Brito，曾是前社会主义总统米歇尔·巴切莱特的母亲Ángela Jeria 的折磨者，出现了 2,284 次。
 
 目前它们只是提及。但从现在开始，迪亚斯·阿劳霍表示，可以将姓名、事实、日期和地点联系和关联起来。
 
-*注册* [*我们的每周通讯*](https://plus.elpais.com/newsletters/lnp/1/333/?lang=en) *，获取更多来自EL PAÍS美国版的英语新闻报道*
+*注册* [*我们的每周通讯*](https://plus.elpais.com/newsletters/lnp/1/333/?lang=en) *，获取更多来自 EL PAÍS 美国版的英语新闻报道*

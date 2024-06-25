@@ -2,25 +2,25 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:54:03
+日期：2024 年 05 月 27 日 14:54:03
 
 -->
 
 # 加沙的地下世界：哈马斯的整个政治军事战略都建立在它的地下隧道上 - 现代战争研究所
 
-> 来源：[https://mwi.westpoint.edu/gazas-underground-hamass-entire-politico-military-strategy-rests-on-its-tunnels/](https://mwi.westpoint.edu/gazas-underground-hamass-entire-politico-military-strategy-rests-on-its-tunnels/)
+> 来源：[`mwi.westpoint.edu/gazas-underground-hamass-entire-politico-military-strategy-rests-on-its-tunnels/`](https://mwi.westpoint.edu/gazas-underground-hamass-entire-politico-military-strategy-rests-on-its-tunnels/)
 
 在战争中使用隧道并不是一件新事。利用地下的自然或人工空间寻求优势与战争本身一样古老——从圣经中使用隧道赢得大规模战斗的故事到地下空间成为乌克兰现战争中城市战斗的关键因素，如[马里乌波尔](https://mwi.westpoint.edu/defending-mariupol/)和[巴赫穆特](https://mwi.westpoint.edu/the-battle-of-bakhmut/)，现代国家包括美国、中国和朝鲜在深埋的军事掩体和隧道复合体上投入了数十亿资金。但以色列在加沙所面对的情况是战争中的独特首次——即隧道与时间这两支梁柱之一构成了作战方的政治军事战略。
 
 在以色列-哈马斯战争之前，哈马斯隧道网络的存在及其多年来的增长都是众所周知的。这个网络被称为加沙的“[地铁](https://www.npr.org/2021/06/04/1003387937/civilians-paid-a-steep-price-for-destroyed-tunnels-in-israeli-hamas-conflict)”或“[下加沙](https://www.theguardian.com/world/2014/aug/02/tunnels-hamas-israel-struggle-gaza-war)”。“以色列国防军（IDF）和学者[在战争爆发之前估计](https://www.npr.org/2021/06/04/1003387937/civilians-paid-a-steep-price-for-destroyed-tunnels-in-israeli-hamas-conflict)”，这些隧道长达三百英里，从地表以下[十五英尺到两百英尺以上](https://mwi.westpoint.edu/underground-nightmare-hamas-tunnels-and-the-wicked-problem-facing-the-idf/)。这些估计是错误的。
 
-在进行了三个月的近距离战斗并发现超过 [1,500条隧道和地下通道](https://www.reuters.com/graphics/ISRAEL-PALESTINIANS/GAZA-TUNNELS/gkvldmzorvb/) 后，以色列国防军已经学到足够多的东西需要对估算进行修订。以色列军队发现了长达两英里半的大规模入侵隧道，地下制造工厂，带有涂漆墙壁、瓷砖地板、吊扇和空调的豪华隧道以及一个复杂、分层的迷宫结构，覆盖了加沙的所有地区。 [新的估算](https://www.nytimes.com/2024/01/16/us/politics/israel-gaza-tunnels.html) 表明这个网络可能包括350到450英里的隧道，有接近5,700个独立的通道通向地狱。
+在进行了三个月的近距离战斗并发现超过 [1,500 条隧道和地下通道](https://www.reuters.com/graphics/ISRAEL-PALESTINIANS/GAZA-TUNNELS/gkvldmzorvb/) 后，以色列国防军已经学到足够多的东西需要对估算进行修订。以色列军队发现了长达两英里半的大规模入侵隧道，地下制造工厂，带有涂漆墙壁、瓷砖地板、吊扇和空调的豪华隧道以及一个复杂、分层的迷宫结构，覆盖了加沙的所有地区。 [新的估算](https://www.nytimes.com/2024/01/16/us/politics/israel-gaza-tunnels.html) 表明这个网络可能包括 350 到 450 英里的隧道，有接近 5,700 个独立的通道通向地狱。
 
-新的估算也表明，这个地下网络的建设可能耗费哈马斯 [十亿美元](https://www.foxnews.com/world/hamas-fooled-gullible-donors-fund-billion-dollar-terror-tunnel-system)。这个组织在15年的时间里不仅用于建造隧道通道，还有防爆门，车间，睡眠区，厕所，厨房，以及所有通风、电力和电话线路来支持类似地下城的设施。在这个地下建设过程中使用了多达6,000吨的混凝土和1,800吨金属。
+新的估算也表明，这个地下网络的建设可能耗费哈马斯 [十亿美元](https://www.foxnews.com/world/hamas-fooled-gullible-donors-fund-billion-dollar-terror-tunnel-system)。这个组织在 15 年的时间里不仅用于建造隧道通道，还有防爆门，车间，睡眠区，厕所，厨房，以及所有通风、电力和电话线路来支持类似地下城的设施。在这个地下建设过程中使用了多达 6,000 吨的混凝土和 1,800 吨金属。
 
-一旦完全发现，哈马斯的地下网络的规模可能是现代军队所面临的任何事情都从未遇到的。最后一个涉及大量隧道复合体的冲突是越南战争。美军和其他部队面对了长达40英里的 [隧道复合体](https://www.usace.army.mil/About/History/Historical-Vignettes/Military-Construction-Combat/062-Viet-Cong-Tunnels/)，而在离西贡最近的地方—茹芝-还有130英里的通道。
+一旦完全发现，哈马斯的地下网络的规模可能是现代军队所面临的任何事情都从未遇到的。最后一个涉及大量隧道复合体的冲突是越南战争。美军和其他部队面对了长达 40 英里的 [隧道复合体](https://www.usace.army.mil/About/History/Historical-Vignettes/Military-Construction-Combat/062-Viet-Cong-Tunnels/)，而在离西贡最近的地方—茹芝-还有 130 英里的通道。
 
-世界上还有更大的军事隧道复合体。有人认为中国拥有3,000英里的隧道和防核设施，被称为“[地下长城](https://www.washingtonpost.com/world/national-security/georgetown-students-shed-light-on-chinas-tunnel-system-for-nuclear-weapons/2011/11/16/gIQA6AmKAO_story.html)”。有一些估算显示，朝鲜拥有 [五千多个隧道](https://www.npr.org/2018/01/09/576542410/as-north-korea-tensions-rise-u-s-army-trains-soldiers-to-fight-in-tunnels) 以及包括 [多个地下飞机基地](https://nationalinterest.org/blog/buzz/north-koreas-underground-bunkers-and-bases-are-nightmare-america-112586) 在内的基础设施，其中包括山中的跑道、雷达站和潜艇港口。
+世界上还有更大的军事隧道复合体。有人认为中国拥有 3,000 英里的隧道和防核设施，被称为“[地下长城](https://www.washingtonpost.com/world/national-security/georgetown-students-shed-light-on-chinas-tunnel-system-for-nuclear-weapons/2011/11/16/gIQA6AmKAO_story.html)”。有一些估算显示，朝鲜拥有 [五千多个隧道](https://www.npr.org/2018/01/09/576542410/as-north-korea-tensions-rise-u-s-army-trains-soldiers-to-fight-in-tunnels) 以及包括 [多个地下飞机基地](https://nationalinterest.org/blog/buzz/north-koreas-underground-bunkers-and-bases-are-nightmare-america-112586) 在内的基础设施，其中包括山中的跑道、雷达站和潜艇港口。
 
 但比加沙隧道的规模更重要的是，以色列和哈马斯战争是第一场以庞大地下网络作为其整体政治军事战略核心的战争。
 

@@ -6,20 +6,20 @@ date: 2024-05-27 14:43:18
 
 -->
 
-# OpenSSH宣布DSA算法移除时间表 [LWN.net]
+# OpenSSH 宣布 DSA 算法移除时间表 [LWN.net]
 
-> 来源：[https://lwn.net/Articles/958048/](https://lwn.net/Articles/958048/)
+> 来源：[`lwn.net/Articles/958048/`](https://lwn.net/Articles/958048/)
 
-对于仍在使用SSH的DSA密钥的用户们：该项目已宣布计划在2025年初删除对该算法的支持。
+对于仍在使用 SSH 的 DSA 密钥的用户们：该项目已宣布计划在 2025 年初删除对该算法的支持。
 
-> 目前唯一剩下的使用DSA的情况应该是非常老旧的设备。因此，我们不再认为在OpenSSH中维护DSA的成本是合理的。此外，我们希望OpenSSH最终移除这种不安全的算法能够加速其他SSH实现中对其的废弃，并使密码库的维护者也能将其移除。
+> 目前唯一剩下的使用 DSA 的情况应该是非常老旧的设备。因此，我们不再认为在 OpenSSH 中维护 DSA 的成本是合理的。此外，我们希望 OpenSSH 最终移除这种不安全的算法能够加速其他 SSH 实现中对其的废弃，并使密码库的维护者也能将其移除。
 
 * * *
 
 | **From**: |   | Damien Miller <djm-AT-mindrot.org> |
 | --- | --- | --- |
 | **To**: |   | openssh-unix-dev-AT-mindrot.org |
-| **Subject**: |   | 公告：OpenSSH移除DSA支持时间表 |
+| **Subject**: |   | 公告：OpenSSH 移除 DSA 支持时间表 |
 | **Date**: |   | Thu, 11 Jan 2024 15:40:37 +1100 |
 | **Message-ID**: |   | <c857fb2e-a1a8-cfaf-92ab-ea603cb125c1@mindrot.org> |
 

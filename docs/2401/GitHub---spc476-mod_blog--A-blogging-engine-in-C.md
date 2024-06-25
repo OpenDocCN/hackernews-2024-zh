@@ -8,7 +8,7 @@ date: 2024-05-27 15:10:39
 
 # GitHub - spc476/mod_blog: 一个用 C 编写的博客引擎
 
-> 来源：[https://github.com/spc476/mod_blog](https://github.com/spc476/mod_blog)
+> 来源：[`github.com/spc476/mod_blog`](https://github.com/spc476/mod_blog)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

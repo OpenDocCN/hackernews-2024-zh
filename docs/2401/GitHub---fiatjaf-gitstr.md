@@ -8,7 +8,7 @@ date: 2024-05-27 15:20:28
 
 # GitHub - fiatjaf/gitstr
 
-> 来源：[https://github.com/fiatjaf/gitstr](https://github.com/fiatjaf/gitstr)
+> 来源：[`github.com/fiatjaf/gitstr`](https://github.com/fiatjaf/gitstr)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

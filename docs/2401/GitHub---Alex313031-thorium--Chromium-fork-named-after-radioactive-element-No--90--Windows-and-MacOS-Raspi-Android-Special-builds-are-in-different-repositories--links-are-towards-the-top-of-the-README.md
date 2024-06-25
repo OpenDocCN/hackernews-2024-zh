@@ -8,7 +8,7 @@ date: 2024-05-27 14:28:26
 
 # GitHub - Alex313031/thorium: Chromium fork named after radioactive element No. 90\. Windows and MacOS/Raspi/Android/Special builds are in different repositories, links are towards the top of the README.md.
 
-> 来源：[https://github.com/Alex313031/thorium](https://github.com/Alex313031/thorium)
+> 来源：[`github.com/Alex313031/thorium`](https://github.com/Alex313031/thorium)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

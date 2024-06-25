@@ -8,7 +8,7 @@ date: 2024-05-27 14:58:06
 
 # GitHub - KRTirtho/spotube: 🎧 Open source Spotify client that doesn't require Premium nor uses Electron! Available for both desktop & mobile!
 
-> 来源：[https://github.com/KRTirtho/spotube](https://github.com/KRTirtho/spotube)
+> 来源：[`github.com/KRTirtho/spotube`](https://github.com/KRTirtho/spotube)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

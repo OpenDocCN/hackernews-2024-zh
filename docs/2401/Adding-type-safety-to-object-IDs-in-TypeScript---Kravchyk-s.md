@@ -8,7 +8,7 @@ date: 2024-05-27 15:20:28
 
 # 给 TypeScript 中的对象 ID 添加类型安全 - Kravchyk 的
 
-> 来源：[https://www.kravchyk.com/adding-type-safety-to-object-ids-typescript/](https://www.kravchyk.com/adding-type-safety-to-object-ids-typescript/)
+> 来源：[`www.kravchyk.com/adding-type-safety-to-object-ids-typescript/`](https://www.kravchyk.com/adding-type-safety-to-object-ids-typescript/)
 
 我正在为函数的选项对象创建类型，其中的一个选项属性将接受项的 ID（基于字符串的 UUID）或特殊值，例如 `'currentNode'`。
 
@@ -91,6 +91,6 @@ updateUser(id);` Code language: JavaScript (javascript)
 
 [试一试](https://www.typescriptlang.org/play?#code/C4TwDgpgBAqgzhATgSQCZQLxQAYFcGID6AJAN5zCICWAdgOYC+2A3AFCiRQDiiA9rmDSYcdPgJLlKtRi1asAZrhoBjYFV40oA1AENgEeEgAUVVAC5YBNAEoLAN16mopVlCgB6d6wZzPUZAC2OnS00HC8ARAA7gAWSNC0UMBxUMq8qNAg-FAxOnbQOppOdjrUOgBGADbQyXpQVHBQOtxigqisGcqVpdBpNBT15i38bWys2noGBCao1swe7lAAooh8iBYAgoh0uJE0wFC88kng0ADk2KIjEhTU9Exn9Y00vAc6cHBUdDQV1Um8UDApR0kX0iEOxw45zwBBuUnu2DOQA)
 
-我已经使用了一年了，实现类型安全的ID已经几次防止我混淆实体类型。
+我已经使用了一年了，实现类型安全的 ID 已经几次防止我混淆实体类型。
 
-这样做的好处不仅仅体现在编译时，而且在运行时也同样如此。你可以通过检查其ID前缀来检测对象的类型，而且非常方便的是，每当对象在日志中出现时，你只需看一眼ID就立刻知道它是什么。
+这样做的好处不仅仅体现在编译时，而且在运行时也同样如此。你可以通过检查其 ID 前缀来检测对象的类型，而且非常方便的是，每当对象在日志中出现时，你只需看一眼 ID 就立刻知道它是什么。

@@ -8,7 +8,7 @@
 
 # 日本：月球着陆器 Slim 重新启动并恢复任务 - BBC 新闻
 
-> 来源：[https://www.bbc.co.uk/news/world-asia-68125589](https://www.bbc.co.uk/news/world-asia-68125589)
+> 来源：[`www.bbc.co.uk/news/world-asia-68125589`](https://www.bbc.co.uk/news/world-asia-68125589)
 
 Slim 着陆在一个赤道撞击坑边缘，名为 Shioli，距其目标着陆点仅 55m（180 英尺）。Jaxa 将其描述为“史无前例的精准着陆”。
 

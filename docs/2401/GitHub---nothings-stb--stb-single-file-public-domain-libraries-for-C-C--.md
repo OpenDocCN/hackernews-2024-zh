@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:35:16
+日期：2024 年 05 月 27 日 14:35:16
 
 -->
 
-# GitHub - nothings/stb: C/C++的stb单文件公共领域库
+# GitHub - nothings/stb: C/C++的 stb 单文件公共领域库
 
-> 来源：[https://github.com/nothings/stb](https://github.com/nothings/stb)
+> 来源：[`github.com/nothings/stb`](https://github.com/nothings/stb)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

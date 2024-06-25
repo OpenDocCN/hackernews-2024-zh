@@ -8,11 +8,11 @@ date: 2024-05-27 14:59:36
 
 # 为什么你不应该在工作中交朋友 | 心理学今日加拿大
 
-> 来源：[https://www.psychologytoday.com/ca/blog/the-psychology-of-creativity/202306/why-you-should-not-make-friends-at-work](https://www.psychologytoday.com/ca/blog/the-psychology-of-creativity/202306/why-you-should-not-make-friends-at-work)
+> 来源：[`www.psychologytoday.com/ca/blog/the-psychology-of-creativity/202306/why-you-should-not-make-friends-at-work`](https://www.psychologytoday.com/ca/blog/the-psychology-of-creativity/202306/why-you-should-not-make-friends-at-work)
 
-常识可能让我们相信，在工作中交朋友是件好事。[[1]](https://www.gallup.com/workplace/236213/why-need-best-friends-work.aspx) 也许并不是。最近的研究表明，与同事的关系现在是工作满意度中最不重要的因素之一。[[](#_ftn1)[2](#_ftn2)[]](https://www.capterra.com/resources/friends-at-work-research/) 除此之外，与同事交朋友通常会让我们远离真正重要的事情——建立一个能够带来价值的同事网络，远离可能很重要的日常剧情，并最终清晰地划分真正的朋友和同事之间的界限。
+常识可能让我们相信，在工作中交朋友是件好事。[[1]](https://www.gallup.com/workplace/236213/why-need-best-friends-work.aspx) 也许并不是。最近的研究表明，与同事的关系现在是工作满意度中最不重要的因素之一。[2[]](https://www.capterra.com/resources/friends-at-work-research/) 除此之外，与同事交朋友通常会让我们远离真正重要的事情——建立一个能够带来价值的同事网络，远离可能很重要的日常剧情，并最终清晰地划分真正的朋友和同事之间的界限。
 
-我在[职业生涯](https://www.psychologytoday.com/ca/basics/career "Psychology Today looks at career")中雇佣了超过1000人——这是我的出版商在将我的书装订印刷前让我统计的数字。在所有这些雇佣中，我看到人们因为在工作中交朋友而犯下无数错误选择，只是一次又一次地失望，因为这些友谊并没有像他们想象的那样发展。
+我在[职业生涯](https://www.psychologytoday.com/ca/basics/career "Psychology Today looks at career")中雇佣了超过 1000 人——这是我的出版商在将我的书装订印刷前让我统计的数字。在所有这些雇佣中，我看到人们因为在工作中交朋友而犯下无数错误选择，只是一次又一次地失望，因为这些友谊并没有像他们想象的那样发展。
 
 以下是三个创造性的事情，你可以做的，来避免陷入在工作中交朋友的陷阱：
 

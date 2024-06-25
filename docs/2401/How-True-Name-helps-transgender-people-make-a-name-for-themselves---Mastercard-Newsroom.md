@@ -8,7 +8,7 @@
 
 # 如何帮助跨性别者立下自己的名声 | Mastercard 新闻中心
 
-> 来源：[https://www.mastercard.com/news/perspectives/2022/true-name-feature-for-transgender-community/](https://www.mastercard.com/news/perspectives/2022/true-name-feature-for-transgender-community/)
+> 来源：[`www.mastercard.com/news/perspectives/2022/true-name-feature-for-transgender-community/`](https://www.mastercard.com/news/perspectives/2022/true-name-feature-for-transgender-community/)
 
 “当你只是想买点东西的时候，”他说，“你不希望不得不向完全陌生的人解释你的整个性别认同或人生选择或你在过渡过程中的状况。”
 

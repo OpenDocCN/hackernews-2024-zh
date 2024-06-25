@@ -8,7 +8,7 @@
 
 # GitHub - zhanghai/MaterialFiles: Material Design file manager for Android
 
-> 来源：[https://github.com/zhanghai/MaterialFiles](https://github.com/zhanghai/MaterialFiles)
+> 来源：[`github.com/zhanghai/MaterialFiles`](https://github.com/zhanghai/MaterialFiles)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

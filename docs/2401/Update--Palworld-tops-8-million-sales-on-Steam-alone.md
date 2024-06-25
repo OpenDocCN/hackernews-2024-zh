@@ -8,7 +8,7 @@ date: 2024-05-27 15:05:58
 
 # 更新：《Palworld》单单在 Steam 上的销量已经突破了 800 万份
 
-> 来源：[https://www.gamedeveloper.com/business/palworld-tops-5m-sales-after-shifting-86-000-copies-per-hour-over-the-weekend](https://www.gamedeveloper.com/business/palworld-tops-5m-sales-after-shifting-86-000-copies-per-hour-over-the-weekend)
+> 来源：[`www.gamedeveloper.com/business/palworld-tops-5m-sales-after-shifting-86-000-copies-per-hour-over-the-weekend`](https://www.gamedeveloper.com/business/palworld-tops-5m-sales-after-shifting-86-000-copies-per-hour-over-the-weekend)
 
 更新（01/25/24）：《Palworld》仍然处于上升阶段，在不到六天的时间里，仅在 Steam 上就已经售出了超过 800 万份。
 

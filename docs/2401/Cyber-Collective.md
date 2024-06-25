@@ -8,7 +8,7 @@
 
 # Cyber Collective
 
-> 来源：[https://www.cybercollective.org/blog/how-to-delete-your-data-from-data-brokers](https://www.cybercollective.org/blog/how-to-delete-your-data-from-data-brokers)
+> 来源：[`www.cybercollective.org/blog/how-to-delete-your-data-from-data-brokers`](https://www.cybercollective.org/blog/how-to-delete-your-data-from-data-brokers)
 
 你可能并不怎么关注数据经纪人，但这些幕后公司每天都在收集、交易和从我们的个人信息中获利。像 Acxiom、Experian 和 Equifax 这样的数据经纪人从公共记录、在线活动、商店忠诚计划等方面收集我们的数据。这些数据被打包成档案，并出售给其他企业用于定向广告、信用检查、背景筛查，以及谁知道还有什么其他用途。
 
@@ -68,7 +68,7 @@ GDPR 于 2018 年生效，对收集和处理欧盟公民个人数据施加了严
 
 +   建立数据泄露通知和跨境数据传输的保护措施。
 
-利用这些重要法律可以增强你从经纪人手中掌握数据的能力。了解你的权利，不要犹豫使用CCPA或GDPR来促使遵从。
+利用这些重要法律可以增强你从经纪人手中掌握数据的能力。了解你的权利，不要犹豫使用 CCPA 或 GDPR 来促使遵从。
 
 ### 使用删除服务
 

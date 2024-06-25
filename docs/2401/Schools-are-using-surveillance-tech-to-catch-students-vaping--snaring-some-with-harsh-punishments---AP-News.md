@@ -2,21 +2,21 @@
 
 类别：未分类
 
-日期：2024年5月27日15:15:31
+日期：2024 年 5 月 27 日 15:15:31
 
 -->
 
 # 学校正在利用监控技术抓住吸烟的学生，用严厉的惩罚对付一些人|美联社新闻
 
-> 来源：[https://apnews.com/article/vaping-surveillance-technology-schools-982128348c683b9d54c7a307c5b1fdc6](https://apnews.com/article/vaping-surveillance-technology-schools-982128348c683b9d54c7a307c5b1fdc6)
+> 来源：[`apnews.com/article/vaping-surveillance-technology-schools-982128348c683b9d54c7a307c5b1fdc6`](https://apnews.com/article/vaping-surveillance-technology-schools-982128348c683b9d54c7a307c5b1fdc6)
 
 当艾利亚·伊格莱西亚斯在德克萨斯州的一所高中被抓吸烟时，她没有意识到会失去这么多。
 
-突然间，她的高中生活的其他方面受到了威胁：学生会主席的身份、她作为辩论队队长的角色以及毕业典礼上的演讲。甚至她的大学奖学金也岌岌可危。她被送到了该地区的另类学校待了30天，并被告知她可能面临刑事指控。
+突然间，她的高中生活的其他方面受到了威胁：学生会主席的身份、她作为辩论队队长的角色以及毕业典礼上的演讲。甚至她的大学奖学金也岌岌可危。她被送到了该地区的另类学校待了 30 天，并被告知她可能面临刑事指控。
 
 像全国数千名其他学生一样，她被学校安装的监控设备抓住了，这些设备通常在未通知学生的情况下进行监视以打击[电子烟](https://apnews.com/article/smoking-vaping-surgeon-general-db81e873c256e38433734e86d6a50f7e)。
 
-全国各地的学校已经投入数百万美元购买监控技术，包括用于帮助学校度过疫情和帮助学生学业恢复的联邦COVID-19[紧急援助资金](https://apnews.com/article/school-construction-covid-stimulus-money-29ffa0a888d3a62d7cd0e72a63c18c59)。市场营销材料指出，每台传感器的成本超过1000美元，可以通过检查空气质量来帮助抵抗病毒。
+全国各地的学校已经投入数百万美元购买监控技术，包括用于帮助学校度过疫情和帮助学生学业恢复的联邦 COVID-19[紧急援助资金](https://apnews.com/article/school-construction-covid-stimulus-money-29ffa0a888d3a62d7cd0e72a63c18c59)。市场营销材料指出，每台传感器的成本超过 1000 美元，可以通过检查空气质量来帮助抵抗病毒。
 
 ## ___
 
@@ -24,7 +24,7 @@
 
 ## ___
 
-电子烟已经淹没了中学和高中。这些设备可以释放出含有比烟草香烟更高浓度尼古丁的蒸汽。尽管通过将法定年龄提高到21岁和禁止青少年偏爱的味道产品来限制销售给青少年的努力，数百万未成年人依然[吸烟](https://apnews.com/article/teen-vaping-smoking-cdc-survey-d1f44bd3d8df6960215a14454f5e2e6e)。
+电子烟已经淹没了中学和高中。这些设备可以释放出含有比烟草香烟更高浓度尼古丁的蒸汽。尽管通过将法定年龄提高到 21 岁和禁止青少年偏爱的味道产品来限制销售给青少年的努力，数百万未成年人依然[吸烟](https://apnews.com/article/teen-vaping-smoking-cdc-survey-d1f44bd3d8df6960215a14454f5e2e6e)。
 
 一些地区将传感器与监控摄像头配对使用。当被吸烟传感器激活时，这些摄像头可以捕捉到每个离开浴室的学生。
 
@@ -68,23 +68,23 @@ Cadiz 说，学校现在也可以使用 [近 4.4 亿美元](https://apnews.com/a
 
 在社交媒体上，全国各地的学生描述了如何愚弄传感器的方法。一些人报告说他们用塑料薄膜覆盖它们。其他人说他们把烟吹到衣服里。
 
-在德克萨斯州的科佩尔独立学区，传感器是预防策略的一部分，包括教育视频和一个举报电话。学生可以报告同学吸烟获得50美元，“他们互相举报，”该区的学生和教职员服务主管Jennifer Villines说。
+在德克萨斯州的科佩尔独立学区，传感器是预防策略的一部分，包括教育视频和一个举报电话。学生可以报告同学吸烟获得 50 美元，“他们互相举报，”该区的学生和教职员服务主管 Jennifer Villines 说。
 
 她说，学生可能被送到另一所学校或在校内停课，但不会因吸烟而被开除。
 
-“我们希望我们的孩子在这里。如果他们不在这里，他们就不能学习，”Villines说。“我们也认为，在某些情况下，这些行为是应对机制，我们希望把他们留在我们的环境中，让他们学会自我调节。”
+“我们希望我们的孩子在这里。如果他们不在这里，他们就不能学习，”Villines 说。“我们也认为，在某些情况下，这些行为是应对机制，我们希望把他们留在我们的环境中，让他们学会自我调节。”
 
-Iglesias面临的后果包括辞去学生会主席和辩论队长的职务，并离开了国家荣誉学会。在她度过一个月的替代学校里，学生们进行常规课程，但不上课，也不能保证获得正常课程中包含的材料。
+Iglesias 面临的后果包括辞去学生会主席和辩论队长的职务，并离开了国家荣誉学会。在她度过一个月的替代学校里，学生们进行常规课程，但不上课，也不能保证获得正常课程中包含的材料。
 
-Iglesias仍然能够参加毕业舞会、毕业典礼，并留在大多数俱乐部。她还保留了她的大学奖学金，现在就读于泰勒初级学院。
+Iglesias 仍然能够参加毕业舞会、毕业典礼，并留在大多数俱乐部。她还保留了她的大学奖学金，现在就读于泰勒初级学院。
 
 对于她来说，对吸烟的惩罚已经太过分了。
 
-“制定这些政策和实施这些措施的人坐在一个房间里，不走校园，也不看到这些政策的结果，他们制定这些政策的后果，确保它是有效的，因为它不是，”Iglesias说。“我永远不会再做这样的事情了，因为我面临的后果太可怕了。”
+“制定这些政策和实施这些措施的人坐在一个房间里，不走校园，也不看到这些政策的结果，他们制定这些政策的后果，确保它是有效的，因为它不是，”Iglesias 说。“我永远不会再做这样的事情了，因为我面临的后果太可怕了。”
 
 ## ___
 
-除了斯坦福大学的Munis和密苏里大学的McCarthy之外，以下学生记者也为本报告做出了贡献：来自密苏里大学的Yasmeen Saadi、Mikaela Schlueter、Asplen Gengenbacher和Alexis Simmerman；来自斯坦福大学的Parker Daly、Elise Darragh-Ford、Emily Handsel、Henry Hill-Gorman、Victoria Ren、Shaurya Sinha、Carolyn Stein和Jessica Yu。
+除了斯坦福大学的 Munis 和密苏里大学的 McCarthy 之外，以下学生记者也为本报告做出了贡献：来自密苏里大学的 Yasmeen Saadi、Mikaela Schlueter、Asplen Gengenbacher 和 Alexis Simmerman；来自斯坦福大学的 Parker Daly、Elise Darragh-Ford、Emily Handsel、Henry Hill-Gorman、Victoria Ren、Shaurya Sinha、Carolyn Stein 和 Jessica Yu。
 
 ## ___
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:31:23
 
 # 火狐的衰落：Mozilla 曾经流行的网页浏览器滑向无关紧要 | ZDNET
 
-> 来源：[https://www.zdnet.com/home-and-office/networking/the-fall-of-firefox-mozillas-once-popular-web-browser-slides-into-irrelevance/](https://www.zdnet.com/home-and-office/networking/the-fall-of-firefox-mozillas-once-popular-web-browser-slides-into-irrelevance/)
+> 来源：[`www.zdnet.com/home-and-office/networking/the-fall-of-firefox-mozillas-once-popular-web-browser-slides-into-irrelevance/`](https://www.zdnet.com/home-and-office/networking/the-fall-of-firefox-mozillas-once-popular-web-browser-slides-into-irrelevance/)
 
 slpu9945/Getty Images
 
@@ -28,19 +28,19 @@ slpu9945/Getty Images
 
 不过，美国联邦政府的 [数字分析计划 (DAP)](https://www.digitalgov.gov/services/dap/) 为我们提供了美国政府网站访问量的[过去 90 天的实时统计](https://analytics.usa.gov/)。这并不能告诉我们有关全球网页浏览器使用情况的太多信息，但这是我们今天了解美国网页浏览器用户的最佳信息。
 
-根据过去90天的 DAP 访问量达到 52.7 亿次，最受欢迎的网络浏览器正如你所预期的那样：[Google Chrome](https://www.zdnet.com/home-and-office/networking/chrome-is-obviously-the-top-browser-but-you-wont-believe-whats-2/) 占据 47.9%。Firefox 只有 2.2% 的市场份额，正渐渐失去影响力。
+根据过去 90 天的 DAP 访问量达到 52.7 亿次，最受欢迎的网络浏览器正如你所预期的那样：[Google Chrome](https://www.zdnet.com/home-and-office/networking/chrome-is-obviously-the-top-browser-but-you-wont-believe-whats-2/) 占据 47.9%。Firefox 只有 2.2% 的市场份额，正渐渐失去影响力。
 
 **另外：[Firefox vs Opera：哪个网络浏览器更适合你？](https://www.zdnet.com/home-and-office/work-life/firefox-vs-opera-which-web-browser-is-best-for-you/)**
 
 由于 iPhone 在美国的普及率较高，Safari 占据了 36.2% 的份额，Edge 占据了 8.3% 的份额，都比 Firefox 更受欢迎。至少 IE 在 2022 年完全从榜单上消失了。
 
-Firefox 的衰落并不是什么新鲜事。2022年，Firefox 从 2021年的 2.7% 下降到了 2.6%。2015年，当我第一次开始使用 DAP 的数据时，[Firefox 占据了 11% 的市场份额](https://www.zdnet.com/article/the-most-u-s-popular-web-browsers/)。到了 2016年，[Firefox 下降到了 8.2%](https://www.zdnet.com/article/whats-really-the-most-popular-web-browser/)。到了 2018年，它略微反弹到了 9%。
+Firefox 的衰落并不是什么新鲜事。2022 年，Firefox 从 2021 年的 2.7% 下降到了 2.6%。2015 年，当我第一次开始使用 DAP 的数据时，[Firefox 占据了 11% 的市场份额](https://www.zdnet.com/article/the-most-u-s-popular-web-browsers/)。到了 2016 年，[Firefox 下降到了 8.2%](https://www.zdnet.com/article/whats-really-the-most-popular-web-browser/)。到了 2018 年，它略微反弹到了 9%。
 
 实际上，Chrome 的数字比表面上看到的要大。它的开源基础 Chromium 也是 [Microsoft Edge 的基础](https://www.zdnet.com/home-and-office/networking/edge-goes-chromium-and-open-source-wins-the-browser-wars/)。除了 Mozilla Firefox，所有其他 [重要的网络浏览器，比如 Opera、Vivaldi 和 Brave，都是基于 Chromium 运行的](https://www.zdnet.com/pictures/all-the-chromium-based-browsers/)。顺便说一句，这些其他浏览器几乎没有市场份额。总体来说，它们仅占 DAP 数据的 0.8%。
 
 **另外：[担心在线隐私和安全吗？这款浏览器比 Firefox 更能保护你](https://www.zdnet.com/article/worried-about-online-privacy-and-security-this-browser-protects-you-more-than-firefox/)**
 
-那么发生了什么？首先是 Chrome 的崛起。正如云安全公司 Nira 的 CEO Hiten Shah 所观察到的那样，[Google 从根本上重新发明了浏览器](https://nira.com/chrome-history/)。2008年，Google 开始为基于云的开放网络创建全新的操作系统，拥有自己的扩展和应用程序。
+那么发生了什么？首先是 Chrome 的崛起。正如云安全公司 Nira 的 CEO Hiten Shah 所观察到的那样，[Google 从根本上重新发明了浏览器](https://nira.com/chrome-history/)。2008 年，Google 开始为基于云的开放网络创建全新的操作系统，拥有自己的扩展和应用程序。
 
 为了实现这一目标，[Google “挖走了”来自 Firefox 的顶级网络浏览器开发人员，比如 Ian Hickson、Darin Fisher、Pam Greene 和 Brian Ryner](https://www.niallkennedy.com/blog/2008/09/google-chrome.html)。Microsoft 和 Mozilla Foundation 都措手不及，没有赶上。
 

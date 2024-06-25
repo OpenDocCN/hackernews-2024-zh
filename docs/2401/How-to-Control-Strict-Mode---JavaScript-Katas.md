@@ -8,7 +8,7 @@ category: 未分类
 
 # 如何控制严格模式 | JavaScript Katas
 
-> 来源：[https://jskatas.org/blog/2023/10/16-control-strict-mode/](https://jskatas.org/blog/2023/10/16-control-strict-mode/)
+> 来源：[`jskatas.org/blog/2023/10/16-control-strict-mode/`](https://jskatas.org/blog/2023/10/16-control-strict-mode/)
 
 我惊讶地发现，工作线程默认情况下以非严格模式运行。这种情况应该很少见，因为使用 ES 模块（ESMs）、类或`"use strict"`时，引擎会强制使用严格模式。一开始我不知道这一点。我一直在为这个网站使用的卡塔进行工作，这个网站使用[javascript-katas 仓库](https://codeberg.org/wolframkriesing/javascript-katas)，它使用 ESMs 和`type=module`，这是我的默认设置。这使得整个 nodejs 项目，任何`npm ...`命令都会使用严格模式。逃离严格模式并不容易，但以非严格模式运行代码的一种方法是使用工作线程。
 
@@ -16,7 +16,7 @@ category: 未分类
 
 ## 严格模式 – 何时以及为什么？
 
-严格模式是在[ES5（2009年）](https://262.ecma-international.org/5.1/#sec-4.2.2)中引入的。规范中说严格模式被添加了
+严格模式是在[ES5（2009 年）](https://262.ecma-international.org/5.1/#sec-4.2.2)中引入的。规范中说严格模式被添加了
 
 > 为了保证安全性，避免[...]认为是容易出错的功能，获得增强的错误检查
 

@@ -8,7 +8,7 @@
 
 # JavaScript 真的是在 10 天内完成的吗？ • Buttondown
 
-> 来源：[https://buttondown.email/hillelwayne/archive/did-brendan-eich-really-make-javascript-in-10-days/](https://buttondown.email/hillelwayne/archive/did-brendan-eich-really-make-javascript-in-10-days/)
+> 来源：[`buttondown.email/hillelwayne/archive/did-brendan-eich-really-make-javascript-in-10-days/`](https://buttondown.email/hillelwayne/archive/did-brendan-eich-really-make-javascript-in-10-days/)
 
 <日期>2023 年 9 月 28 日</日期>
 
@@ -38,4 +38,4 @@ JavaScript 现代的大部分缺陷可以说 *并不是* 由于开发时间短�
 
 这份通讯创下了“每字研究时间最长”的新纪录。
 
-*如果您在网上阅读本文，可以在此处订阅[/hillelwayne](/hillelwayne)。更新频率为每周一次。我的主要网站在[这里](https://www.hillelwayne.com)。*
+*如果您在网上阅读本文，可以在此处订阅/hillelwayne。更新频率为每周一次。我的主要网站在[这里](https://www.hillelwayne.com)。*

@@ -8,11 +8,11 @@
 
 # 框架化帧：通过操纵传输队列绕过 Wi-Fi 加密 | USENIX
 
-> 来源：[https://www.usenix.org/conference/usenixsecurity23/presentation/schepers](https://www.usenix.org/conference/usenixsecurity23/presentation/schepers)
+> 来源：[`www.usenix.org/conference/usenixsecurity23/presentation/schepers`](https://www.usenix.org/conference/usenixsecurity23/presentation/schepers)
 
 ## 开放获取媒体
 
-USENIX 致力于公开获取我们活动中呈现的研究内容。论文和会议记录一旦活动开始，将对所有人免费开放。活动后发布的任何视频、音频和/或幻灯片也对所有人免费开放。[支持 USENIX](/annual-fund) 和我们对开放获取的承诺。
+USENIX 致力于公开获取我们活动中呈现的研究内容。论文和会议记录一旦活动开始，将对所有人免费开放。活动后发布的任何视频、音频和/或幻灯片也对所有人免费开放。支持 USENIX 和我们对开放获取的承诺。
 
 BibTeX
 

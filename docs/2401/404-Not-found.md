@@ -8,7 +8,7 @@ date: 2024-05-27 14:31:45
 
 # 404 页面未找到
 
-> 来源：[https://www.frontiersin.org/articles/10.3389/fpsyg.2024.1309142/abstract](https://www.frontiersin.org/articles/10.3389/fpsyg.2024.1309142/abstract)
+> 来源：[`www.frontiersin.org/articles/10.3389/fpsyg.2024.1309142/abstract`](https://www.frontiersin.org/articles/10.3389/fpsyg.2024.1309142/abstract)
 
 <main class="ErrorPage" data-v-4559a7d5="">
 

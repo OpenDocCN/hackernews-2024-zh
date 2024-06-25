@@ -8,13 +8,13 @@
 
 # 30 年来的第一台新的 vax？ :-)
 
-> 来源：[https://mail-index.netbsd.org/port-vax/2021/07/03/msg003899.html](https://mail-index.netbsd.org/port-vax/2021/07/03/msg003899.html)
+> 来源：[`mail-index.netbsd.org/port-vax/2021/07/03/msg003899.html`](https://mail-index.netbsd.org/port-vax/2021/07/03/msg003899.html)
 
 Port-vax 存档
 
 * * *
 
-[[上一日期](/port-vax/2021/05/03/msg003898.html)][[下一日期](/port-vax/2021/07/03/msg003900.html)][[上一线程](/port-vax/2021/04/17/msg003867.html)][[下一线程](/port-vax/2021/07/03/msg003906.html)][[日期索引](../../../2021/07/date1.html#003899)][[线程索引](../../../2021/07/thread1.html#003899)][[旧索引](../oindex.html)]
+[上一日期][下一日期][上一线程][下一线程][日期索引][线程索引][旧索引]
 
 # 30 年来的第一台新的 vax？ :-)
 
@@ -78,4 +78,4 @@ No memory management yet though, but that should be quite straight-forward.
 
 * * *
 
-**[主页](/index.html) | [主索引](../../../index.html) | [线程索引](../../../tindex.html) | [旧索引](../../../oindex.html)**
+**主页 | 主索引 | 线程索引 | 旧索引**

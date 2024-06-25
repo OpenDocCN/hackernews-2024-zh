@@ -8,7 +8,7 @@
 
 # ActivityPub 支持 | GitLab
 
-> 来源：[https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/](https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/)
+> 来源：[`docs.gitlab.com/ee/architecture/blueprints/activity_pub/`](https://docs.gitlab.com/ee/architecture/blueprints/activity_pub/)
 
 此页面包含与即将推出的产品、功能和功能相关的信息。重要的是要注意，所提供的信息仅供参考。请不要依赖此信息进行购买或规划。任何产品、功能或功能的开发、发布和时间可能会受到更改或延迟，并保留由 GitLab Inc. 完全自行决定的权利。
 
@@ -22,7 +22,7 @@
 
 在开始实施跨实例合并请求之前，我们希望从较小的步骤开始，帮助我们建立关于 ActivityPub 的领域知识，并创建支持更高级功能的基础架构。因此，我们建议首先实施社交功能，允许 Fediverse 上的人们订阅 GitLab 上的活动，例如在其社交网络中选择通知他们的最爱项目在 GitLab 上发布新版本时。作为一个额外的好处，这是一个使 GitLab 更具社交性并增加其受众的机会。
 
-如果你已经了解了 ActivityPub 和 Fediverse，可以直接跳转到[动机](#motivation)。
+如果你已经了解了 ActivityPub 和 Fediverse，可以直接跳转到动机。
 
 在推动[网络去中心化](https://en.wikipedia.org/wiki/Decentralized_web)的过程中，有几个项目尝试了不同的协议，背后的理念也不尽相同。一些例子：
 
@@ -64,11 +64,11 @@ Mastodon 和 Lemmy 的核心理念被称为联合宇宙（Fediverse）。与完�
 
 +   读取 outbox 允许读取行动者的反馈。
 
-此外，Mastodon和Lemmy实现了一个`GET /`端点（带有提及的Accept标头）。该端点会响应有关参与者的一般信息，比如收件箱和发件箱的名称和URL。虽然不受标准要求，但它使发现变得更容易。
+此外，Mastodon 和 Lemmy 实现了一个`GET /`端点（带有提及的 Accept 标头）。该端点会响应有关参与者的一般信息，比如收件箱和发件箱的名称和 URL。虽然不受标准要求，但它使发现变得更容易。
 
-虽然人是参与者的主要用例，但参与者不一定对应一个人。任何东西都可以成为参与者：一个话题，一个子版块，一个群组，一个事件。对于GitLab而言，任何具有活动（就像GitLab所说的“活动”那样）都可以成为ActivityPub参与者。这包括项目、群组和发布等项目。在这些更抽象的示例中，可以将参与者视为可操作的反馈。
+虽然人是参与者的主要用例，但参与者不一定对应一个人。任何东西都可以成为参与者：一个话题，一个子版块，一个群组，一个事件。对于 GitLab 而言，任何具有活动（就像 GitLab 所说的“活动”那样）都可以成为 ActivityPub 参与者。这包括项目、群组和发布等项目。在这些更抽象的示例中，可以将参与者视为可操作的反馈。
 
-ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这些留给实现者去解决：
+ActivityPub 本身并不能涵盖实现 Fediverse 所需的一切。特别是，这些留给实现者去解决：
 
 +   找到一种方法来处理垃圾邮件。垃圾邮件通过授权或阻止（“取消联邦”）其他实例来处理。
 
@@ -78,45 +78,45 @@ ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这
 
 ## 动机
 
-社交媒体协议对GitLab有什么用处呢？人们希望有一个单一的全球GitLab网络，可以在各种项目之间进行交互，而不必在每个主机上注册。
+社交媒体协议对 GitLab 有什么用处呢？人们希望有一个单一的全球 GitLab 网络，可以在各种项目之间进行交互，而不必在每个主机上注册。
 
 已经有几次围绕这个问题的非常受欢迎的讨论：
 
 理想的工作流程应该是：
 
-1.  Alice注册到她最喜欢的GitLab实例，像是`gitlab.example.org`。
+1.  Alice 注册到她最喜欢的 GitLab 实例，像是`gitlab.example.org`。
 
-1.  她在给定主题上寻找一个项目，并看到Bob的项目，尽管Bob在`gitlab.com`上。
+1.  她在给定主题上寻找一个项目，并看到 Bob 的项目，尽管 Bob 在`gitlab.com`上。
 
-1.  Alice选择**Fork**，`gitlab.com/Bob/project.git`被分叉到`gitlab.example.org/Alice/project.git`。
+1.  Alice 选择**Fork**，`gitlab.com/Bob/project.git`被分叉到`gitlab.example.org/Alice/project.git`。
 
-1.  她进行编辑，并发起一个合并请求，该合并请求出现在Bob的`gitlab.com`项目中。
+1.  她进行编辑，并发起一个合并请求，该合并请求出现在 Bob 的`gitlab.com`项目中。
 
-1.  Alice和Bob在各自的GitLab实例中讨论合并请求。
+1.  Alice 和 Bob 在各自的 GitLab 实例中讨论合并请求。
 
-1.  Bob可以发送额外的提交，这些提交会被Alice的实例接收。
+1.  Bob 可以发送额外的提交，这些提交会被 Alice 的实例接收。
 
-1.  当Bob接受合并请求时，他的实例会从Alice的实例中获取代码。
+1.  当 Bob 接受合并请求时，他的实例会从 Alice 的实例中获取代码。
 
-在这个过程中，ActivityPub会在以下方面帮助：
+在这个过程中，ActivityPub 会在以下方面帮助：
 
-+   让Bob知道发生了分叉。
++   让 Bob 知道发生了分叉。
 
-+   向Bob发送合并请求。
++   向 Bob 发送合并请求。
 
-+   使Alice和Bob讨论合并请求。
++   使 Alice 和 Bob 讨论合并请求。
 
-+   让Alice知道代码已合并。
++   让 Alice 知道代码已合并。
 
 在这些情况下它*不*起作用，需要特定的实现：
 
 +   实现全网搜索。
 
-+   实现跨实例分支。（由于Git不需要，因此不是必需的。）
++   实现跨实例分支。（由于 Git 不需要，因此不是必需的。）
 
-为什么在这里使用ActivityPub而不是以自定义方式实现跨实例合并请求呢？有两个原因：
+为什么在这里使用 ActivityPub 而不是以自定义方式实现跨实例合并请求呢？有两个原因：
 
-1.  **在标准的基础上构建有助于超越GitLab**。尽管上面介绍的工作流程只提到了GitLab，但在W3C标准的基础上构建意味着其他熔炉可以跟随GitLab，构建一个庞大的代码共享联邦。
+1.  **在标准的基础上构建有助于超越 GitLab**。尽管上面介绍的工作流程只提到了 GitLab，但在 W3C 标准的基础上构建意味着其他熔炉可以跟随 GitLab，构建一个庞大的代码共享联邦。
 
 1.  **让 GitLab 更具社交性**。为了准备上述工作流程的架构，可以采取较小的步骤，允许人们从他们的 Fediverse 社交网络订阅活动动态。任何有 RSS 订阅的内容都可以成为 ActivityPub 订阅源。Mastodon 上的人可以关注他们在 GitLab 上喜欢的开发者、项目或主题，并在他们的 Mastodon 动态中看到相关新闻，希望能提高与 GitLab 的互动。
 
@@ -174,9 +174,9 @@ ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这
 
 首先，熟悉一下我们将要使用的三个标准的规范是个好主意：
 
-+   [ActivityPub](https://www.w3.org/TR/activitypub/)定义了实现联合的HTTP请求。
++   [ActivityPub](https://www.w3.org/TR/activitypub/)定义了实现联合的 HTTP 请求。
 
-+   [ActivityStreams](https://www.w3.org/TR/activitystreams-core/)定义了协议用户交换的JSON消息的格式。
++   [ActivityStreams](https://www.w3.org/TR/activitystreams-core/)定义了协议用户交换的 JSON 消息的格式。
 
 +   [活动词汇表](https://www.w3.org/TR/activitystreams-vocabulary/)定义了默认情况下被识别的各种消息。
 
@@ -188,9 +188,9 @@ ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这
 
 ### 社交跟随部分
 
-此部分正在为GitLab[添加新的ActivityPub角色](../../../development/activitypub/actors/index.html)奠定基础。
+此部分正在为 GitLab 添加新的 ActivityPub 角色奠定基础。
 
-我们要实现5个角色：
+我们要实现 5 个角色：
 
 +   `releases` actor，当给定项目发布新版本时通知
 
@@ -206,7 +206,7 @@ ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这
 
 #### 端点
 
-每个角色需要3个端点：
+每个角色需要 3 个端点：
 
 +   包含基本信息的配置文件端点，例如名称、描述，还包括指向收件箱和发件箱的链接
 
@@ -214,17 +214,17 @@ ActivityPub本身并不能涵盖实现Fediverse所需的一切。特别是，这
 
 +   收件箱端点，用于发布跟随和取消跟随请求（我们现在不会使用的其他一些东西）。
 
-提供这些端点的控制器位于`app/controllers/activity_pub/`。决定使用此命名空间是为了避免将ActivityPub的JSON响应与用于前端的响应混淆，而且因为我们可能需要进一步的命名空间，因为我们格式化活动的方式可能对于一个Fediverse应用程序、另一个应用程序以及我们以后的跨实例功能可能不同。此外，这个命名空间使我们能够轻松地切换我们在所有端点上所需的内容，比如确保不能访问任何私有项目。
+提供这些端点的控制器位于`app/controllers/activity_pub/`。决定使用此命名空间是为了避免将 ActivityPub 的 JSON 响应与用于前端的响应混淆，而且因为我们可能需要进一步的命名空间，因为我们格式化活动的方式可能对于一个 Fediverse 应用程序、另一个应用程序以及我们以后的跨实例功能可能不同。此外，这个命名空间使我们能够轻松地切换我们在所有端点上所需的内容，比如确保不能访问任何私有项目。
 
 #### 序列化器
 
-`app/serializers/activity_pub/`中的序列化器是我们实现的核心部分，它们提供了ActivityStreams对象。抽象类`ActivityPub::ActivityStreamsSerializer`承担了验证开发者提供的数据、设置公共字段和提供分页的繁重工作。
+`app/serializers/activity_pub/`中的序列化器是我们实现的核心部分，它们提供了 ActivityStreams 对象。抽象类`ActivityPub::ActivityStreamsSerializer`承担了验证开发者提供的数据、设置公共字段和提供分页的繁重工作。
 
 那个分页部分是通过`Gitlab::Serializer::Pagination`完成的，它使用偏移分页。[我们需要允许它进行键集分页](https://gitlab.com/gitlab-org/gitlab/-/issues/424148)。
 
 #### 订阅
 
-通过将[FOLLOW活动](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow)发布到角色收件箱来订阅资源。当收到跟随活动时，[我们应该返回生成接受或拒绝活动](https://www.w3.org/TR/activitypub/#follow-activity-inbox)，发送到订阅者的收件箱。
+通过将[FOLLOW 活动](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-follow)发布到角色收件箱来订阅资源。当收到跟随活动时，[我们应该返回生成接受或拒绝活动](https://www.w3.org/TR/activitypub/#follow-activity-inbox)，发送到订阅者的收件箱。
 
 实施的一般工作流程如下：
 
@@ -308,4 +308,4 @@ Mastodon [要求使用 HTTP 签名](https://docs.joinmastodon.org/spec/security/
 
 ### 跨实例问题和合并请求部分
 
-在设计这部分之前，我们将等待社交关注部分完成，以便在使用ActivityPub时有实际经验。
+在设计这部分之前，我们将等待社交关注部分完成，以便在使用 ActivityPub 时有实际经验。

@@ -8,7 +8,7 @@ date: 2024-05-27 14:27:48
 
 # GitHub - adam-mcdaniel/sage: 一种智慧超越其字节的编程语言！🌱🌿🪴
 
-> 来源：[https://github.com/adam-mcdaniel/sage](https://github.com/adam-mcdaniel/sage)
+> 来源：[`github.com/adam-mcdaniel/sage`](https://github.com/adam-mcdaniel/sage)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

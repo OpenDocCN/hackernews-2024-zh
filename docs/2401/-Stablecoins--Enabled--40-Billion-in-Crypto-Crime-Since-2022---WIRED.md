@@ -8,7 +8,7 @@ date: 2024-05-27 14:53:39
 
 # 《稳定币》自 2022 年以来为 400 亿美元的加密犯罪提供支持 | WIRED
 
-> 来源：[https://www.wired.com/story/stablecoin-sanctions-violations-crypto-crime/](https://www.wired.com/story/stablecoin-sanctions-violations-crypto-crime/)
+> 来源：[`www.wired.com/story/stablecoin-sanctions-violations-crypto-crime/`](https://www.wired.com/story/stablecoin-sanctions-violations-crypto-crime/)
 
 当 WIRED 联系到 Tether Holdings——发行与之同名的稳定币的公司——在本文发表后，它在一份声明中回应道，“Tether 积极与全球执法机构合作，以识别和防止”其加密货币的非法使用，并补充道，其“对最高合规标准的承诺在我们消除各种形式的犯罪活动方面是显而易见的。”
 
@@ -24,4 +24,4 @@ Chainalysis 的 Fierman 表示，Tether 冻结犯罪资金的努力正在产生�
 
 “我赞赏这一举措。我完全支持这一点，”韦斯特称赞了 Tether 冻结犯罪资产的努力。“但当我们谈论数十亿美元的资产转移时，我只是觉得这只是一个谜题的一部分。还有很多谜题需要解决。而且坏人们已经远远领先于我们。”
 
-*更新于东部时间上午9:45，2024年1月18日，以正确标识检察官艾琳·韦斯特的职称，并在东部时间下午2:45与 Tether Holdings 的声明一起更新。*
+*更新于东部时间上午 9:45，2024 年 1 月 18 日，以正确标识检察官艾琳·韦斯特的职称，并在东部时间下午 2:45 与 Tether Holdings 的声明一起更新。*

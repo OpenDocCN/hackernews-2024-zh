@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - billziss-gh/imap: 整数映射数据结构
 
-> 来源：[https://github.com/billziss-gh/imap](https://github.com/billziss-gh/imap)
+> 来源：[`github.com/billziss-gh/imap`](https://github.com/billziss-gh/imap)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

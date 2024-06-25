@@ -8,7 +8,7 @@
 
 # 发布 fish 3.7.0（发布于 2024 年 1 月 1 日） · fish-shell/fish-shell · GitHub
 
-> 来源：[https://github.com/fish-shell/fish-shell/releases/tag/3.7.0](https://github.com/fish-shell/fish-shell/releases/tag/3.7.0)
+> 来源：[`github.com/fish-shell/fish-shell/releases/tag/3.7.0`](https://github.com/fish-shell/fish-shell/releases/tag/3.7.0)
 
 这个版本的 fish 相比 fish 3.6.4 有许多改进，详见下文。尽管 fish 内部的移植工作继续使用 Rust 编程语言进行，但该工作未包含在此版本中。fish 3.7.0 和 3.7 系列中的任何未来版本仍然是 C++ 程序。
 
@@ -82,7 +82,7 @@
 
 +   `open`现在可以再次用于启动终端程序，因为已修复了`xdg-open`的错误，并删除了一个解决方法（[#10045](https://github.com/fish-shell/fish-shell/issues/10045)）。
 
-+   `repaint-mode`绑定现在只会在需要重新绘制时移动光标。这修复了vi模式中的`Alt`组合绑定（[#7910](https://github.com/fish-shell/fish-shell/issues/7910)）。
++   `repaint-mode`绑定现在只会在需要重新绘制时移动光标。这修复了 vi 模式中的`Alt`组合绑定（[#7910](https://github.com/fish-shell/fish-shell/issues/7910)）。
 
 +   默认情况下，使用新的`clear-screen`绑定函数清除屏幕和重新绘制现有提示，用于`Ctrl` + `l`。
 
@@ -94,7 +94,7 @@
 
 +   `Alt` + `l`绑定，用于列出光标下标记的目录，正确展开波浪号（`~`）到主目录（[#9954](https://github.com/fish-shell/fish-shell/issues/9954)）。
 
-+   现在，如果`PAGER`环境变量未设置，或者没有可用的分页器，则使用外部分页器的各种fish实用程序将尝试一些常见的分页器进行尝试，或者将输出写入屏幕而不使用分页器（[#10074](https://github.com/fish-shell/fish-shell/issues/10074)）。
++   现在，如果`PAGER`环境变量未设置，或者没有可用的分页器，则使用外部分页器的各种 fish 实用程序将尝试一些常见的分页器进行尝试，或者将输出写入屏幕而不使用分页器（[#10074](https://github.com/fish-shell/fish-shell/issues/10074)）。
 
 +   特定命令的标签补全现在可以提供以句点开头的结果。例如，现在可以为具有前导句点的文件进行`git add`的标签补全。默认的文件补全会隐藏这些文件，除非令牌本身具有前导句点（[#3707](https://github.com/fish-shell/fish-shell/issues/3707)）。
 
@@ -102,9 +102,9 @@
 
 +   默认主题现在仅使用命名颜色，因此它将跟踪终端的调色板（[#9913](https://github.com/fish-shell/fish-shell/issues/9913)）。
 
-+   Dracula主题现在已经与上游同步（[#9807](https://github.com/fish-shell/fish-shell/issues/9807)）； 使用`fish_config`重新应用它以获取这些更改。
++   Dracula 主题现在已经与上游同步（[#9807](https://github.com/fish-shell/fish-shell/issues/9807)）； 使用`fish_config`重新应用它以获取这些更改。
 
-+   `fish_vcs_prompt`现在也支持fossil（[#9497](https://github.com/fish-shell/fish-shell/issues/9497)）。
++   `fish_vcs_prompt`现在也支持 fossil（[#9497](https://github.com/fish-shell/fish-shell/issues/9497)）。
 
 +   使用`prompt_pwd`函数显示工作目录的提示正确显示以破折号开头的目录（[#10169](https://github.com/fish-shell/fish-shell/issues/10169)）。
 

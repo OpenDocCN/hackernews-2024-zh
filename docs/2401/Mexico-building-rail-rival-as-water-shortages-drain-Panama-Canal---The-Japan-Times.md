@@ -8,12 +8,12 @@ date: 2024-05-27 14:46:13
 
 # 墨西哥正在修建铁路对抗因水资源短缺而受损的巴拿马运河 - 《日本时报》
 
-> 来源：[https://www.japantimes.co.jp/business/2023/11/16/mexico-rail-rival-panama-canal/](https://www.japantimes.co.jp/business/2023/11/16/mexico-rail-rival-panama-canal/)
+> 来源：[`www.japantimes.co.jp/business/2023/11/16/mexico-rail-rival-panama-canal/`](https://www.japantimes.co.jp/business/2023/11/16/mexico-rail-rival-panama-canal/)
 
 墨西哥，萨利纳克鲁斯 -
 
 在墨西哥太平洋和大西洋之间的最狭窄处，政府正在修建一条铁路，与巴拿马运河相抗衡，承诺带来经济的丰盛，但也伴随着对环境和社会造成的担忧。
 
-在16世纪，西班牙征服者埃尔南·科尔特斯曾梦想过实现人和货物的这种横跨，但大多数计划都未能实现，在1914年巴拿马运河通航后，之前的一项基本连接几乎被放弃。
+在 16 世纪，西班牙征服者埃尔南·科尔特斯曾梦想过实现人和货物的这种横跨，但大多数计划都未能实现，在 1914 年巴拿马运河通航后，之前的一项基本连接几乎被放弃。
 
-然后，在2020年，由安德烈斯·曼努埃尔·洛佩斯·奥夫拉多尔总统领导下，启动了一项新的海陆联运项目。
+然后，在 2020 年，由安德烈斯·曼努埃尔·洛佩斯·奥夫拉多尔总统领导下，启动了一项新的海陆联运项目。

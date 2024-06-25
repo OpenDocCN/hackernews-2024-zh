@@ -8,7 +8,7 @@
 
 # GitHub - makew0rld/merkdir: 从您的目录创建 Merkle 树。
 
-> 来源：[https://github.com/makew0rld/merkdir](https://github.com/makew0rld/merkdir)
+> 来源：[`github.com/makew0rld/merkdir`](https://github.com/makew0rld/merkdir)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

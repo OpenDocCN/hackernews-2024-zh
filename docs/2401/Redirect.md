@@ -8,7 +8,7 @@
 
 # 重定向
 
-> 来源：[https://www.stripes.com/branches/navy/2024-01-26/navy-lowers-education-requirements-recruitment-struggles-12806279.html](https://www.stripes.com/branches/navy/2024-01-26/navy-lowers-education-requirements-recruitment-struggles-12806279.html)
+> 来源：[`www.stripes.com/branches/navy/2024-01-26/navy-lowers-education-requirements-recruitment-struggles-12806279.html`](https://www.stripes.com/branches/navy/2024-01-26/navy-lowers-education-requirements-recruitment-struggles-12806279.html)
 
 #### 让我们帮助您找到您想要的内容。
 

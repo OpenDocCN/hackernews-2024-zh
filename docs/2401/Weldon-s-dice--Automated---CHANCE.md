@@ -8,7 +8,7 @@
 
 # Weldon 的骰子，Automated | CHANCE
 
-> 来源：[https://link.springer.com/article/10.1007/s00144-009-0036-8](https://link.springer.com/article/10.1007/s00144-009-0036-8)
+> 来源：[`link.springer.com/article/10.1007/s00144-009-0036-8`](https://link.springer.com/article/10.1007/s00144-009-0036-8)
 
 ### 分享本文
 

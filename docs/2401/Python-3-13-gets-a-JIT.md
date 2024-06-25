@@ -8,7 +8,7 @@
 
 # Python 3.13 支持 JIT
 
-> 来源：[https://tonybaloney.github.io/posts/python-gets-a-jit.html](https://tonybaloney.github.io/posts/python-gets-a-jit.html)
+> 来源：[`tonybaloney.github.io/posts/python-gets-a-jit.html`](https://tonybaloney.github.io/posts/python-gets-a-jit.html)
 
 大家新年快乐！在 2023 年 12 月底（确切地说是圣诞节），CPython 核心开发者[Brandt Bucher](https://github.com/brandtbucher)向 Python 3.13 分支提交了一个[小小的拉取请求](https://github.com/python/cpython/pull/113465)，添加了一个 JIT 编译器。
 
@@ -150,7 +150,7 @@ print(exec(compiled_function))
 
 将每个字节码的指令写出来并修补值的技术与“完整”JIT 编译器相比有优缺点。完整的 JIT 编译器通常会将高级字节码如 `LOAD_FAST` 编译成 IL（中间语言）中的较低级别指令。因为每个 CPU 架构都有不同的指令和特性，编写一个直接将高级代码转换为机器代码并支持 32 位和 64 位 CPU 的编译器将是非常复杂的，还有苹果的 ARM 架构以及所有其他的 ARM 变种。相反，大多数 JIT 首先编译为类似于通用机器码的 IL。这些指令是诸如“PUSH 64 位整数”，“POP 64 位浮点数”，“将堆栈上的值相乘”的东西。然后 JIT 可以在运行时将 IL 编译成机器码，通过发出特定于 CPU 的指令并将它们存储在内存中以供以后执行（类似于我们在示例中所做的）。
 
-一旦你拥有 IL，你就可以对代码进行各种有趣的优化，比如[常量传播](https://zh.wikipedia.org/wiki/%E5%B8%B8%E9%87%8F%E5%B9%B3%E6%8E%A8)和循环提升。你可以在[Pyjion的在线编译器 UI](https://live.trypyjion.com)中看到一个例子。
+一旦你拥有 IL，你就可以对代码进行各种有趣的优化，比如[常量传播](https://zh.wikipedia.org/wiki/%E5%B8%B8%E9%87%8F%E5%B9%B3%E6%8E%A8)和循环提升。你可以在[Pyjion 的在线编译器 UI](https://live.trypyjion.com)中看到一个例子。
 
 “完整”JIT 的一个大缺点是编译一次成 IL，然后再次成机器码的过程**缓慢**。它不仅慢，而且占用内存。为了说明这一点，最近研究数据[“Python meets JIT compilers: A simple implementation and a comparative evaluation”](https://doi.org/10.1002/spe.3267)表明，像 GraalPy 和 Jython 这样基于 Java 的 Python JIT，启动时间可能比普通 CPython 长 100 倍，并且消耗多达额外的 1GB 的 RAM 进行编译。已经有了 Python 的完整 JIT 实现。
 

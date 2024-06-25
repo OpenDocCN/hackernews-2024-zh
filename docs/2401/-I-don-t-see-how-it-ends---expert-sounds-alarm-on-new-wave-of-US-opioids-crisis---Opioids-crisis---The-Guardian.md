@@ -8,11 +8,11 @@ date: 2024-05-27 15:17:03
 
 # ‘我看不出这会有什么结果’: 专家对新一波美国阿片类药物危机的警告 | 阿片类药物危机 | 卫报
 
-> 来源：[https://www.theguardian.com/us-news/2024/jan/28/us-opioids-crisis-fentanyl-appalachia](https://www.theguardian.com/us-news/2024/jan/28/us-opioids-crisis-fentanyl-appalachia)
+> 来源：[`www.theguardian.com/us-news/2024/jan/28/us-opioids-crisis-fentanyl-appalachia`](https://www.theguardian.com/us-news/2024/jan/28/us-opioids-crisis-fentanyl-appalachia)
 
 当阿特·范·齐医生最终意识到潜伏在他所在乡村[弗吉尼亚](https://www.theguardian.com/us-news/virginia)一角的灾难规模时，他天真地想象药物行业会同样感到震惊。
 
-所以，圣查尔斯这个陷入困境的前矿业城镇中任职时间最长的医生在21世纪初开始告诉制药行业高管、联邦监管机构、国会以及任何愿意听的人，一种强效新阿片类止痛药的出现正在摧毁生命和家庭，并为更大的灾难奠定了基础。
+所以，圣查尔斯这个陷入困境的前矿业城镇中任职时间最长的医生在 21 世纪初开始告诉制药行业高管、联邦监管机构、国会以及任何愿意听的人，一种强效新阿片类止痛药的出现正在摧毁生命和家庭，并为更大的灾难奠定了基础。
 
 <gu-island name="SignInGateSelector" priority="feature" deferuntil="visible" props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;us-news&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;us-news/opioids&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;阿片类药物危机&quot;},{&quot;id&quot;:&quot;us-news/virginia&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;弗吉尼亚州&quot;},{&quot;id&quot;:&quot;us-news/us-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国新闻&quot;},{&quot;id&quot;:&quot;business/pharmaceuticals-industry&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;制药行业&quot;},{&quot;id&quot;:&quot;science/drugs&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;药物&quot;},{&quot;id&quot;:&quot;society/drugs&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;药物&quot;},{&quot;id&quot;:&quot;education/medicine&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;医学&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/features&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;特写&quot;},{&quot;id&quot;:&quot;profile/chrismcgreal&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;克里斯·麦格雷尔&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2023/09/15/Chris_McGreal.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=7494b7f3a584f9c8181e9cfbf4fc5030&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2023/09/15/Chris_McGreal.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=55b64e28e305d562fadeb6f343239041&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国新闻&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;us-news/2024/jan/28/us-opioids-crisis-fentanyl-appalachia&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
 
@@ -64,25 +64,25 @@ date: 2024-05-27 15:17:03
 
 到了 2001 年，李县的情况已经如此糟糕，以至于 Van Zee 在圣查尔斯组织了一次市政厅会议，并开始向食品药品管理局提交请愿书，要求撤回奥施康定的销售。
 
-“我们学校的小礼堂里聚集了800人，讨论奥斯康的问题，因为这很痛苦，很严重。没有人能置身事外，”他说。
+“我们学校的小礼堂里聚集了 800 人，讨论奥斯康的问题，因为这很痛苦，很严重。没有人能置身事外，”他说。
 
 最后，普渡公司同意开会，范兹建议公司向全国各地的医生发出警告信，提醒他们关注奥斯康成瘾和死亡问题，并停止推广该药物，除非真正需要的患者，比如癌症患者。
 
-普渡公司没有采取任何行动。因此，范兹敦促FDA将奥斯康限制在严重疼痛的治疗范围内。该机构召开了听证会。
+普渡公司没有采取任何行动。因此，范兹敦促 FDA 将奥斯康限制在严重疼痛的治疗范围内。该机构召开了听证会。
 
-到那时，奥斯康每年为普渡制药公司赚取超过15亿美元，并使其所有者，萨克勒家族，变得非常富有。他们都没有打算让一位小城镇医生和其他批评他们药物的人阻碍蓬勃发展的利润。
+到那时，奥斯康每年为普渡制药公司赚取超过 15 亿美元，并使其所有者，萨克勒家族，变得非常富有。他们都没有打算让一位小城镇医生和其他批评他们药物的人阻碍蓬勃发展的利润。
 
-该行业纷纷找来了权威的疼痛专家为大规模处方阿片类药物进行辩护，这种处方速度远远超过了其他任何国家。其中一位提供证据的专家接受了来自16家制药公司的资助，其中包括普渡公司。
+该行业纷纷找来了权威的疼痛专家为大规模处方阿片类药物进行辩护，这种处方速度远远超过了其他任何国家。其中一位提供证据的专家接受了来自 16 家制药公司的资助，其中包括普渡公司。
 
-2019年4月2日，普渡制药公司在康涅狄格州斯坦福的总部。照片：德鲁·安格纳/盖蒂图片社
+2019 年 4 月 2 日，普渡制药公司在康涅狄格州斯坦福的总部。照片：德鲁·安格纳/盖蒂图片社
 
-范兹在FDA会议上提出了自己的观点，当时允许公众发言，但在为期两天的听证会结束时，他清楚地感到，联邦机构没有表现出紧迫感。
+范兹在 FDA 会议上提出了自己的观点，当时允许公众发言，但在为期两天的听证会结束时，他清楚地感到，联邦机构没有表现出紧迫感。
 
-“如果FDA坐公共汽车来中部阿巴拉契亚地区，或者去缅因州，花几天时间与社区中的人们交谈，也许他们会更了解情况。他们只是没有理解到问题的严重性和悲剧性，”他说。
+“如果 FDA 坐公共汽车来中部阿巴拉契亚地区，或者去缅因州，花几天时间与社区中的人们交谈，也许他们会更了解情况。他们只是没有理解到问题的严重性和悲剧性，”他说。
 
-范兹得出结论，FDA与药品行业关系过于密切，该机构官员经常跳槽到大型制药公司工作，无法正确监管。
+范兹得出结论，FDA 与药品行业关系过于密切，该机构官员经常跳槽到大型制药公司工作，无法正确监管。
 
-因此，范兹试图通过国会来解决问题。2000年代，两院委员会举行了一系列听证会。
+因此，范兹试图通过国会来解决问题。2000 年代，两院委员会举行了一系列听证会。
 
 “过去三年来，我们所见到的与奥斯康相比，从未有过任何可比拟的药物滥用和成瘾的流行病，”范兹告诉参议员们。
 
@@ -92,7 +92,7 @@ date: 2024-05-27 15:17:03
 
 但范兹对多德和其他参议院委员会成员发出了有关未来的预警。
 
-2008年在华盛顿特区国会山举行的一次听证会上，克里斯托弗·多德参议员。照片：苏珊·沃尔什/AP
+2008 年在华盛顿特区国会山举行的一次听证会上，克里斯托弗·多德参议员。照片：苏珊·沃尔什/AP
 
 “在未来十年，我们将发现我们在很多方面都犯了很多不幸的错误，我们所做的事情与我们所拥有的知识量相比是微不足道的，”他说。
 
@@ -104,7 +104,7 @@ date: 2024-05-27 15:17:03
 
 “那只是一小部分，因为很多孩子并没有进入寄养家庭，而是被祖父母或表亲收养。他们没有被统计在官方统计数据中，”他说。
 
-范·齐和其他人竭力限制奥施康定销售的活动，在2007年美国司法部起诉普渡制药公司及其三名高级主管欺骗性地将止痛药宣传为比类似药物更安全之后，找到了新的希望。
+范·齐和其他人竭力限制奥施康定销售的活动，在 2007 年美国司法部起诉普渡制药公司及其三名高级主管欺骗性地将止痛药宣传为比类似药物更安全之后，找到了新的希望。
 
 这是普渡和其他公司，如已经跟风进入阿片类药物行列的强生公司，最终被迫停止销售“一粒药中的海洛因”的时刻吗？
 
@@ -122,43 +122,43 @@ date: 2024-05-27 15:17:03
 
 “他们能够在允许和容许制药业对医学专业人员、监管机构、国会产生如此巨大影响的体系内操作。我们必须超越萨克勒家族去改变这个体系。”
 
-Van Zee指出在美国以及其他国家从未见过的以营销药物为目的的巨额资金支出，包括仅在新西兰允许的处方药电视广告。他还希望打破医学界与大型制药公司资金之间的联系。
+Van Zee 指出在美国以及其他国家从未见过的以营销药物为目的的巨额资金支出，包括仅在新西兰允许的处方药电视广告。他还希望打破医学界与大型制药公司资金之间的联系。
 
-Van Zee回忆起参加了由Russell Portenoy主持的演讲，Portenoy是一位对于阐明阿片类药物成瘾风险的谨慎态度有巨大影响并引导医生大规模处方止痛药的医生。他对Portenoy从Purdue等一系列药品公司那里获得的资金数量印象深刻，用于研究。
+Van Zee 回忆起参加了由 Russell Portenoy 主持的演讲，Portenoy 是一位对于阐明阿片类药物成瘾风险的谨慎态度有巨大影响并引导医生大规模处方止痛药的医生。他对 Portenoy 从 Purdue 等一系列药品公司那里获得的资金数量印象深刻，用于研究。
 
-2019年5月29日，Dr Russell Portenoy在俄克拉何马州诺曼市的一场审判的第二天发表了视频证词，审判涉及约翰逊和约翰逊公司涉嫌进行欺骗性营销，从而导致全国阿片类药物流行病。照片：Chris Landsberger/Pool via Reuters
+2019 年 5 月 29 日，Dr Russell Portenoy 在俄克拉何马州诺曼市的一场审判的第二天发表了视频证词，审判涉及约翰逊和约翰逊公司涉嫌进行欺骗性营销，从而导致全国阿片类药物流行病。照片：Chris Landsberger/Pool via Reuters
 
-“他有点自豪地谈论制药公司付给他的钱。所以，如果你是一名全科医生，对这个领域不太了解，并且听到一个在其名字后有13个字母的领域专家的消息，你不得不受到消息的影响。但是那条消息受到了所有那些给他付钱的制药公司的影响，”他说。
+“他有点自豪地谈论制药公司付给他的钱。所以，如果你是一名全科医生，对这个领域不太了解，并且听到一个在其名字后有 13 个字母的领域专家的消息，你不得不受到消息的影响。但是那条消息受到了所有那些给他付钱的制药公司的影响，”他说。
 
 几年后，Portenoy [撤回了他的声明](https://www.theguardian.com/us-news/2019/apr/10/purdue-opioids-crisis-doctor-testify-against-drugmaker)关于阿片类药物的安全性，并且承认大型制药公司的研究资金影响了研究结果，但那时伤害早已造成。
 
-2019年，由《美国医学协会杂志》和国家经济研究局进行的[研究](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2720914)表明，美国部分地区针对药品公司销售推动与阿片类药物死亡率上升之间存在相关性。
+2019 年，由《美国医学协会杂志》和国家经济研究局进行的[研究](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2720914)表明，美国部分地区针对药品公司销售推动与阿片类药物死亡率上升之间存在相关性。
 
 此外，该行业收买了联邦监管机构，医学界往往过于关注医生的利益而忽视了患者的利益，以及漠不关心和腐败的政治家更愿意听取游说者而不是医生的意见。
 
 医院公司和健康保险公司加入了推动阿片类药物的行列，因为这符合他们的财务利益。作为美国最大的公司之一的药品分销商，他们将数百万阿片类药片输送到流行病的中心，却没有尝试履行他们的法律义务，更不用说道德义务，来监测和报告明显的证据，即流氓药店正在滋养和从中获利。
 
-唐纳德·特朗普总统任命了一个阿片类药物委员会，将所谓的美国“国家噩梦”的[责任](https://www.whitehouse.gov/sites/whitehouse.gov/files/images/Final_Report_Draft_11-1-2017.pdf)归咎于本该保护美国人的公共机构。首当其冲的是FDA，他们首先开放了大量强效阿片类药物的处方，并且没有真正努力再次关闭。
+唐纳德·特朗普总统任命了一个阿片类药物委员会，将所谓的美国“国家噩梦”的[责任](https://www.whitehouse.gov/sites/whitehouse.gov/files/images/Final_Report_Draft_11-1-2017.pdf)归咎于本该保护美国人的公共机构。首当其冲的是 FDA，他们首先开放了大量强效阿片类药物的处方，并且没有真正努力再次关闭。
 
-2018年3月19日，唐纳德·特朗普总统在新罕布什尔州曼彻斯特市与Jeanne Moser握手，她的儿子于2015年死于过量。 照片：Susan Walsh/AP
+2018 年 3 月 19 日，唐纳德·特朗普总统在新罕布什尔州曼彻斯特市与 Jeanne Moser 握手，她的儿子于 2015 年死于过量。 照片：Susan Walsh/AP
 
-FDA的独立性日益受到对来自制药行业的收入的依赖的威胁，始终将公共健康置于药品制造商的财务利益之下，[允许更多的阿片类药物进入市场](https://www.theguardian.com/news/2018/nov/08/the-making-of-an-opioid-epidemic)。
+FDA 的独立性日益受到对来自制药行业的收入的依赖的威胁，始终将公共健康置于药品制造商的财务利益之下，[允许更多的阿片类药物进入市场](https://www.theguardian.com/news/2018/nov/08/the-making-of-an-opioid-epidemic)。
 
-2019年，时任FDA委员会主席的Raeford Brown博士警告说，FDA未能吸取其在这一流行病中的角色教训将使危机持续下去。
+2019 年，时任 FDA 委员会主席的 Raeford Brown 博士警告说，FDA 未能吸取其在这一流行病中的角色教训将使危机持续下去。
 
 “五年、十年、十五年和二十五年后，我们将重新审视阿片类药物问题。 我们不能假装事情会消失，”他说。
 
-Van Zee感叹说，太多医生对医学界与大型制药公司之间的舒适关系感到满意。
+Van Zee 感叹说，太多医生对医学界与大型制药公司之间的舒适关系感到满意。
 
 “在医学中只有一小部分人说我们必须与行业分开。 当我上医学院时，常见的事情是药品公司给医学生提供黑色包和听诊器。 有一小部分人不会接受，”他说。
 
-Van Zee支持“没有免费午餐”运动，旨在打破药品行业与医生培训之间的联系。 大型制药公司在编写培训手册方面发表意见，有时会导致他们的药物优先于其他更有效的治疗方法，这是美国人服用处方药的速率比其他国家高得多的原因之一。
+Van Zee 支持“没有免费午餐”运动，旨在打破药品行业与医生培训之间的联系。 大型制药公司在编写培训手册方面发表意见，有时会导致他们的药物优先于其他更有效的治疗方法，这是美国人服用处方药的速率比其他国家高得多的原因之一。
 
 “他们引起了注意，但这始终是少数声音。 总体上，这个行业很愿意接受免费午餐，”他说。
 
-Van Zee并不乐观地认为企业资金、监管和医学实践之间的联系很快就会断开。
+Van Zee 并不乐观地认为企业资金、监管和医学实践之间的联系很快就会断开。
 
-示威者在2019年在华盛顿特区卫生和人类服务总部前抗议食品和药物管理局与制药阿片类药物有关的政策。 照片：J Scott Applewhite/AP
+示威者在 2019 年在华盛顿特区卫生和人类服务总部前抗议食品和药物管理局与制药阿片类药物有关的政策。 照片：J Scott Applewhite/AP
 
 “如果不进行体系结构上的变革，那将是一个巨大的错过机会。 但是，要在美国资本主义结构中发生地震才能做到这一点，”他说。
 

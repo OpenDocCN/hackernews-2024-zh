@@ -8,7 +8,7 @@ date: 2024-05-27 14:35:49
 
 # 未经验证的虚荣 URL 和兴趣追踪催化了网络欺诈 — Eli Grey
 
-> 来源：[https://eligrey.com/blog/adtech-catalyzing-fraud/](https://eligrey.com/blog/adtech-catalyzing-fraud/)
+> 来源：[`eligrey.com/blog/adtech-catalyzing-fraud/`](https://eligrey.com/blog/adtech-catalyzing-fraud/)
 
 链接欺诈日益破坏对主要在线平台的信任，包括谷歌、必应和 Twitter.com 等广告支持的网站。这些平台[允许广告商伪装链接](https://support.google.com/google-ads/answer/6246601)使用*未经验证*的‘虚荣 URL’，在他们的系统中洗白信任，同时在这些机制被用于欺诈目的时将责任推给广告商。
 
@@ -30,13 +30,13 @@ URL 伪装是呈现一个看似导向一个地方但实际上导向另一个意�
 
 兴趣定向广告是另一个广告技术对社会产生负面影响的领域。兴趣追踪通常与链接欺诈结合使用，以使诈骗对消费者更具诱惑力。
 
-网站通常通过第三方Cookie等方式跟踪用户兴趣。还存在其他更注重隐私保护的解决方案，例如Google的[受保护受众API](https://developers.google.com/privacy-sandbox/relevance/protected-audience)，但这些解决方案仍然在用户硬件上运行未经同意的跟踪广告技术。我认为这种跟踪是未经同意的，因为它在Google Chrome中默认启用，并故意不尊重浏览器级别的隐私信号，尽管尊重这些信号[很快将成为加州法律所要求的](https://cppa.ca.gov/announcements/2023/20231211.html)。
+网站通常通过第三方 Cookie 等方式跟踪用户兴趣。还存在其他更注重隐私保护的解决方案，例如 Google 的[受保护受众 API](https://developers.google.com/privacy-sandbox/relevance/protected-audience)，但这些解决方案仍然在用户硬件上运行未经同意的跟踪广告技术。我认为这种跟踪是未经同意的，因为它在 Google Chrome 中默认启用，并故意不尊重浏览器级别的隐私信号，尽管尊重这些信号[很快将成为加州法律所要求的](https://cppa.ca.gov/announcements/2023/20231211.html)。
 
-公司开始采用隐私沙盒API，例如受保护受众（Protected Audience）用于其广告用例，这些公司现在被要求分别绘制并符合世界各地潜在用户权利、用户代理隐私信号和用户隐私选择的矩阵。这使得公司必须在其网站上安装同意管理解决方案，以便以符合法律的方式使用这些API。（完整披露：我目前的雇主正在开发一款同意管理SDK。）
+公司开始采用隐私沙盒 API，例如受保护受众（Protected Audience）用于其广告用例，这些公司现在被要求分别绘制并符合世界各地潜在用户权利、用户代理隐私信号和用户隐私选择的矩阵。这使得公司必须在其网站上安装同意管理解决方案，以便以符合法律的方式使用这些 API。（完整披露：我目前的雇主正在开发一款同意管理 SDK。）
 
 兴趣定向广告使广告商能够根据社会经济地位量身定制广告。通过基本兴趣可以推断出人们是否有能力进行度假或购买汽车。能够根据“度假”和“汽车”等兴趣区分，与“快餐”等不同，使广告商能够利用链接欺诈，向不同的社会经济群体提供相似的产品或服务。未经同意追踪个人兴趣侵犯了人们的个人自主权。
 
-Google 的新广告技术实验已经开始步履蹒跚。[隐私沙盒（Privacy Sandbox）于2023年9月在Google Chrome中正式推出](https://privacysandbox.com/news/privacy-sandbox-for-the-web-reaches-general-availability)，最初向用户[声称隐私沙盒“增强了广告隐私”](https://mastodon.social/@wchr/110392171208763650)，以误导用户继续选择参与隐私沙盒实验，但实际上并非如此。Google误导性地将第三方Cookie的移除与隐私沙盒混为一谈，以证明这些说法的合理性。此外，退出这些新的广告技术实验目前需要许多点击，需要用户在Google Chrome浏览器设置的三个独立的隐私沙盒子菜单中进行漫长而曲折的操作。
+Google 的新广告技术实验已经开始步履蹒跚。[隐私沙盒（Privacy Sandbox）于 2023 年 9 月在 Google Chrome 中正式推出](https://privacysandbox.com/news/privacy-sandbox-for-the-web-reaches-general-availability)，最初向用户[声称隐私沙盒“增强了广告隐私”](https://mastodon.social/@wchr/110392171208763650)，以误导用户继续选择参与隐私沙盒实验，但实际上并非如此。Google 误导性地将第三方 Cookie 的移除与隐私沙盒混为一谈，以证明这些说法的合理性。此外，退出这些新的广告技术实验目前需要许多点击，需要用户在 Google Chrome 浏览器设置的三个独立的隐私沙盒子菜单中进行漫长而曲折的操作。
 
 ## 我们是如何到达这里的？
 
@@ -66,6 +66,6 @@ Adtech 提供商应验证虚拟 URL 中使用的域名的所有权，或者完�
 
 有一些形式的广告不需要跟踪用户行为或兴趣。其中之一是上下文广告，其中广告网络使用可用的上下文信息，例如广告所放置的网页的类别和相关主题信息。
 
-谷歌隐私沙盒的技术负责人迈克尔·克莱伯（Michael Kleber）表示：“[…]将网络限制在上下文广告解决方案上，大大降低了网站自筹资金的能力 —— 例如，根据[一份来源](https://services.google.com/fh/files/misc/disabling_third-party_cookies_publisher_revenue.pdf)，平均网站收入减少了52%，新闻网站减少了62%，其他来源普遍复制了类似的数字。”
+谷歌隐私沙盒的技术负责人迈克尔·克莱伯（Michael Kleber）表示：“[…]将网络限制在上下文广告解决方案上，大大降低了网站自筹资金的能力 —— 例如，根据[一份来源](https://services.google.com/fh/files/misc/disabling_third-party_cookies_publisher_revenue.pdf)，平均网站收入减少了 52%，新闻网站减少了 62%，其他来源普遍复制了类似的数字。”
 
-广告收入减少了52%，对于大多数网站所有者来说仍然有足够的余地。广告商没有在您的设备硬件上获得最佳利润的固有权利，他们应该对他们最终获得的任何利润心存感激。上下文广告更加公平地服务于整个网络生态系统，因为它更好地尊重用户的隐私。
+广告收入减少了 52%，对于大多数网站所有者来说仍然有足够的余地。广告商没有在您的设备硬件上获得最佳利润的固有权利，他们应该对他们最终获得的任何利润心存感激。上下文广告更加公平地服务于整个网络生态系统，因为它更好地尊重用户的隐私。

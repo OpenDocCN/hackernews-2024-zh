@@ -8,11 +8,11 @@
 
 # 条件 Git 配置 - Scott's Weblog - 一个专注于云计算、Kubernetes、Linux、容器和网络的 IT 专业人士的博客
 
-> 来源：[https://blog.scottlowe.org/2023/12/15/conditional-git-configuration/](https://blog.scottlowe.org/2023/12/15/conditional-git-configuration/)
+> 来源：[`blog.scottlowe.org/2023/12/15/conditional-git-configuration/`](https://blog.scottlowe.org/2023/12/15/conditional-git-configuration/)
 
 # 条件 Git 配置
 
-* 发布于 2023 年 12 月 15 日 · * 存档在 [解释](/categories/explanation) 中 · * 304 字（估计阅读时间 2 分钟）*** ***在之前关于 [自动转换 Git URL](/2023/12/11/automatically-transforming-git-urls/) 的文章的基础上，我又回来了，这次是关于 [Git](https://www.git-scm.com) 的另一篇文章——条件性地包含 Git 配置文件的功能（可能很强大）。这意味着你可以配置 Git 根据某些条件不同地进行配置（和行为），只需包含或不包含 Git 配置文件。让我们看一个直接从我的工作流程中取出的相当简单的例子。
+* 发布于 2023 年 12 月 15 日 · * 存档在 解释 中 · * 304 字（估计阅读时间 2 分钟）*** ***在之前关于 自动转换 Git URL 的文章的基础上，我又回来了，这次是关于 [Git](https://www.git-scm.com) 的另一篇文章——条件性地包含 Git 配置文件的功能（可能很强大）。这意味着你可以配置 Git 根据某些条件不同地进行配置（和行为），只需包含或不包含 Git 配置文件。让我们看一个直接从我的工作流程中取出的相当简单的例子。
 
 这是我的系统范围的 Git 配置的配置段落：
 
@@ -36,7 +36,7 @@
 
 ### 元数据和导航
 
-* [Git](/tags/git) * [CLI](/tags/cli)
+* Git * CLI
 
 *上一篇文章：[自动转换 Git URL](https://blog.scottlowe.org/2023/12/11/automatically-transforming-git-urls/)
 

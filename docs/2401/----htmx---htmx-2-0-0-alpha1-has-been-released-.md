@@ -8,7 +8,7 @@ category: 未分类
 
 # htmx ~ htmx 2.0.0-alpha1 版本已发布！
 
-> 来源：[https://v2-0v2-0.htmx.org/posts/2024-01-26-htmx-2-0-0-alpha1-is-released/](https://v2-0v2-0.htmx.org/posts/2024-01-26-htmx-2-0-0-alpha1-is-released/)
+> 来源：[`v2-0v2-0.htmx.org/posts/2024-01-26-htmx-2-0-0-alpha1-is-released/`](https://v2-0v2-0.htmx.org/posts/2024-01-26-htmx-2-0-0-alpha1-is-released/)
 
 # htmx 2.0.0-alpha1 版本已发布！
 
@@ -48,13 +48,13 @@ category: 未分类
 
 扩展已从主代码库中删除，并现在在此 github 存储库中：
 
-[https://github.com/bigskysoftware/htmx-extensions/tree/main/ext](https://github.com/bigskysoftware/htmx-extensions/tree/main/ext)
+[`github.com/bigskysoftware/htmx-extensions/tree/main/ext`](https://github.com/bigskysoftware/htmx-extensions/tree/main/ext)
 
-它们最终将在 [https://extensions.htmx.org](https://extensions.htmx.org) 和 NPM 上提供，但现在必须从 github 存储库中链接。
+它们最终将在 [`extensions.htmx.org`](https://extensions.htmx.org) 和 NPM 上提供，但现在必须从 github 存储库中链接。
 
 扩展中有一个重要变化，SSE，因此您必须使用该扩展的较新版本：
 
-[https://github.com/bigskysoftware/htmx-extensions/blob/main/ext/sse.js](https://github.com/bigskysoftware/htmx-extensions/blob/main/ext/sse.js)
+[`github.com/bigskysoftware/htmx-extensions/blob/main/ext/sse.js`](https://github.com/bigskysoftware/htmx-extensions/blob/main/ext/sse.js)
 
 ### 新特性
 

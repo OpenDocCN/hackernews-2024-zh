@@ -8,7 +8,7 @@
 
 # 不飞波音 737 MAX 的航空公司 | 完整列表
 
-> 来源：[https://www.alternativeairlines.com/airlines-not-flying-boeing-737-max](https://www.alternativeairlines.com/airlines-not-flying-boeing-737-max)
+> 来源：[`www.alternativeairlines.com/airlines-not-flying-boeing-737-max`](https://www.alternativeairlines.com/airlines-not-flying-boeing-737-max)
 
 ## 不飞波音 737 MAX 的航空公司 - 按国家或洲划分
 
@@ -62,7 +62,7 @@ Air Peace、阿里克航空、Comair、埃塞俄比亚航空、毛里塔尼亚�
 
 ### **南美**
 
-在南美，阿根廷航空和GOL是目前使用波音 737 MAX 的唯一南美航空公司。在南美最受欢迎的航空公司中，以下航空公司不使用该飞机：
+在南美，阿根廷航空和 GOL 是目前使用波音 737 MAX 的唯一南美航空公司。在南美最受欢迎的航空公司中，以下航空公司不使用该飞机：
 
 智利航空、哥伦比亚航空、阿祖尔航空、Viva 航空、SKY 航空、JetSMART、玻利维亚航空、Flybondi、Satena
 

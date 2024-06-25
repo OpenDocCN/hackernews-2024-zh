@@ -8,7 +8,7 @@ date: 2024-05-27 14:57:55
 
 # Pratt 解析器：轻松解析表达式 – journal.stuffwithstuff.com
 
-> 来源：[https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
+> 来源：[`journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/`](https://journal.stuffwithstuff.com/2011/03/19/pratt-parsers-expression-parsing-made-easy/)
 
 时不时地，我会偶然发现一些算法或思想，它们非常聪明，对于解决问题来说是如此完美的解决方案，以至于我觉得通过学习它们我变得更聪明或获得了 [一种新的超能力](http://xkcd.com/208/)。堆就是其中之一，几乎是我在截断的计算机科学教育中得到的唯一东西。我最近又发现了另一种：Pratt 或“自顶向下运算符优先级”解析器。
 
@@ -74,9 +74,9 @@ class ConditionalExpression implements Expression {
 
 ## 先说重要的事情
 
-尽管“完整”的Pratt解析器非常小，但我发现它很难解读。有点像[快速排序](http://en.wikipedia.org/wiki/Quicksort)，实现是一小撮深度交织的代码，看起来简单但实则错综复杂。为了解开这一困惑，我们将一步一步地构建它。
+尽管“完整”的 Pratt 解析器非常小，但我发现它很难解读。有点像[快速排序](http://en.wikipedia.org/wiki/Quicksort)，实现是一小撮深度交织的代码，看起来简单但实则错综复杂。为了解开这一困惑，我们将一步一步地构建它。
 
-最简单的表达式解析是前缀操作符和单令牌表达式。对于这些，当前标记告诉我们我们需要做什么。Bantam只有一个单令牌表达式：命名变量。它有四个前缀操作符：`+`、`-`、`~`和`!`。解析这些的最简单代码是：
+最简单的表达式解析是前缀操作符和单令牌表达式。对于这些，当前标记告诉我们我们需要做什么。Bantam 只有一个单令牌表达式：命名变量。它有四个前缀操作符：`+`、`-`、`~`和`!`。解析这些的最简单代码是：
 
 ```
 Expression parseExpression() {
@@ -89,7 +89,7 @@ Expression parseExpression() {
 } 
 ```
 
-但这有点庞大。正如你所看到的，我们正在从TokenType转换为不同的解析行为。让我们直接将其编码，通过将TokenType映射到解析代码块的Map。我们将这些块称为“解析器”，它们将实现这个：
+但这有点庞大。正如你所看到的，我们正在从 TokenType 转换为不同的解析行为。让我们直接将其编码，通过将 TokenType 映射到解析代码块的 Map。我们将这些块称为“解析器”，它们将实现这个：
 
 ```
 interface PrefixParselet {
@@ -332,8 +332,8 @@ public class Precedence {
 
 ## 前进并繁殖
 
-我已经使用这种方法重写了[Magpie的解析器](https://github.com/munificent/magpie/blob/master/src/com/stuffwithstuff/magpie/parser/MagpieParser.java)，它运行得非常完美。我还正在使用这种技术开发一个JavaScript解析器，同样效果很好。
+我已经使用这种方法重写了[Magpie 的解析器](https://github.com/munificent/magpie/blob/master/src/com/stuffwithstuff/magpie/parser/MagpieParser.java)，它运行得非常完美。我还正在使用这种技术开发一个 JavaScript 解析器，同样效果很好。
 
-我认为Pratt解析器应该是简单的、简洁的、可扩展的（例如，Magpie就使用这个特性在运行时[让你扩展自己的语法](/2011/02/13/extending-syntax-from-within-a-language/)），并且易于阅读。我已经到了无法想象以其他方式编写解析器的地步。我从未想过会说出这样的话，但是现在解析器感觉很容易。
+我认为 Pratt 解析器应该是简单的、简洁的、可扩展的（例如，Magpie 就使用这个特性在运行时让你扩展自己的语法），并且易于阅读。我已经到了无法想象以其他方式编写解析器的地步。我从未想过会说出这样的话，但是现在解析器感觉很容易。
 
 想要亲自见识，只需查看[完整的程序](https://github.com/munificent/bantam)。

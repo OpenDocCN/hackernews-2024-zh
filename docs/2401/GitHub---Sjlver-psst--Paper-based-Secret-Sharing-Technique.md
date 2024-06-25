@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:55
 
 # GitHub - Sjlver/psst: 基于纸张的秘密共享技术
 
-> 来源：[https://github.com/Sjlver/psst](https://github.com/Sjlver/psst)
+> 来源：[`github.com/Sjlver/psst`](https://github.com/Sjlver/psst)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

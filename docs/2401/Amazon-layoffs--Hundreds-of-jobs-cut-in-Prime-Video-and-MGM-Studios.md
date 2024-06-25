@@ -8,7 +8,7 @@ date: 2024-05-27 14:41:30
 
 # Amazon layoffs: Hundreds of jobs cut in Prime Video and MGM Studios
 
-> 来源：[https://www.cnbc.com/2024/01/10/amazon-layoffs-hundreds-of-jobs-cut-in-prime-video-and-mgm-studios.html](https://www.cnbc.com/2024/01/10/amazon-layoffs-hundreds-of-jobs-cut-in-prime-video-and-mgm-studios.html)
+> 来源：[`www.cnbc.com/2024/01/10/amazon-layoffs-hundreds-of-jobs-cut-in-prime-video-and-mgm-studios.html`](https://www.cnbc.com/2024/01/10/amazon-layoffs-hundreds-of-jobs-cut-in-prime-video-and-mgm-studios.html)
 
 在经历了一年的大规模裁员之后，亚马逊继续裁减其员工总数。从 2022 年底开始，一直持续到 2023 年，亚马逊启动了其历史上最大规模的裁员行动，裁减了公司几乎每个领域的超过 27,000 个岗位。
 

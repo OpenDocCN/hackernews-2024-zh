@@ -6,9 +6,9 @@
 
 -->  
 
-# Todepond点com
+# Todepond 点 com
 
-> 来源：[https://www.todepond.com/wikiblogarden/better-computing/just/](https://www.todepond.com/wikiblogarden/better-computing/just/)  
+> 来源：[`www.todepond.com/wikiblogarden/better-computing/just/`](https://www.todepond.com/wikiblogarden/better-computing/just/)  
 
 # 只是  
 
@@ -26,7 +26,7 @@
 
 只需租用一台服务器（用于托管您的网站）。  
 
-只需租用一台位于无法看到的地方的服务器。只需在其上安装操作系统。只需弄清楚如何远程控制它。这很容易。只需将其连接。使用你的密钥。就像房子的钥匙一样。为什么我需要保持安静。为什么你要告诉我ssh。为什么人们期望我知道这些。  
+只需租用一台位于无法看到的地方的服务器。只需在其上安装操作系统。只需弄清楚如何远程控制它。这很容易。只需将其连接。使用你的密钥。就像房子的钥匙一样。为什么我需要保持安静。为什么你要告诉我 ssh。为什么人们期望我知道这些。  
 
 为什么这是正常的。  
 
@@ -64,4 +64,4 @@
 > 
 > 这只是在浪费时间而已  
 
-返回到[wikiblogarden](/wikiblogarden)。  
+返回到 wikiblogarden。  

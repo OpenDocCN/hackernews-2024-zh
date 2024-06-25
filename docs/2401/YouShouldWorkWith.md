@@ -2,19 +2,19 @@
 
 分类：未分类
 
-日期：2024年05月27日14:45:25
+日期：2024 年 05 月 27 日 14:45:25
 
 -->
 
 # YouShouldWorkWith
 
-> 来源：[https://www.youshouldworkwith.com](https://www.youshouldworkwith.com)
+> 来源：[`www.youshouldworkwith.com`](https://www.youshouldworkwith.com)
 
 ## 使用案例
 
 ## 帮助你的网络，找到工作。
 
-YouShouldWorkWith是一个帮助大家找到优秀合作伙伴的工具。以下是你可以使用它的一些方式：
+YouShouldWorkWith 是一个帮助大家找到优秀合作伙伴的工具。以下是你可以使用它的一些方式：
 
 找工作
 

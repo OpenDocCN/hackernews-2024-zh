@@ -8,7 +8,7 @@
 
 # 黑暗森林假设是荒谬的 - 由诺亚·史密斯撰写
 
-> 来源：[https://www.noahpinion.blog/p/the-dark-forest-hypothesis-is-absurd](https://www.noahpinion.blog/p/the-dark-forest-hypothesis-is-absurd)
+> 来源：[`www.noahpinion.blog/p/the-dark-forest-hypothesis-is-absurd`](https://www.noahpinion.blog/p/the-dark-forest-hypothesis-is-absurd)
 
 **警告：本文包含刘慈欣的** ***三体****、*黑暗森林* 和 *死神永生* 的重大剧透。**
 
@@ -42,7 +42,7 @@
 
 而这意味着在现实世界中，您不一定要等待外星人发送无线电信息才能探测到它们。 您只需建造一个太空望远镜并*寻找*它们。 如今，我们人类开始观察宇宙中的许多外星世界。 随着望远镜越来越大、越来越先进，我们将能够以更高的分辨率观察到这些世界。
 
-现在，这并不意味着我们将能够看到外星人的表情。根据我粗略的估算，要在距离10光年的世界上获得1厘米的分辨率，将需要一个[干涉仪](https://en.wikipedia.org/wiki/Space_Interferometry_Mission)，其尺寸与土星的轨道相当。这是不可能的。但如果外星人建造了大型结构，或者释放了大量能量的机器，我们也许有一天能够看到它们。
+现在，这并不意味着我们将能够看到外星人的表情。根据我粗略的估算，要在距离 10 光年的世界上获得 1 厘米的分辨率，将需要一个[干涉仪](https://en.wikipedia.org/wiki/Space_Interferometry_Mission)，其尺寸与土星的轨道相当。这是不可能的。但如果外星人建造了大型结构，或者释放了大量能量的机器，我们也许有一天能够看到它们。
 
 请记住刘慈欣小说中的三体人已经足够先进，能够向地球发送多维感知粒子称为“苏菲”来阻止人类发展特定技术。建造一个大型望远镜可能超出了他们虚构能力的范围。即使在现实世界中，我们正在[考虑](https://exoplanets.nasa.gov/news/1461/want-to-see-the-surface-of-another-earth-use-our-sun/)如何利用太阳的引力透镜效应，将分辨率提高到我们可以看到系外行星表面的山脉和海洋的程度。即使望远镜无法工作或者部署起来太危险，文明始终可以使用深空探测器。
 

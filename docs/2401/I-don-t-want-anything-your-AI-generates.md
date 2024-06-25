@@ -8,7 +8,7 @@ date: 2024-05-27 15:22:35
 
 # 我不想要任何你的 AI 生成的东西
 
-> 来源：[https://coryd.dev/posts/2024/i-dont-want-anything-your-ai-generates/](https://coryd.dev/posts/2024/i-dont-want-anything-your-ai-generates/)
+> 来源：[`coryd.dev/posts/2024/i-dont-want-anything-your-ai-generates/`](https://coryd.dev/posts/2024/i-dont-want-anything-your-ai-generates/)
 
 我真的不想要。AI 产出基本上是衍生和剥削性的（对内容、劳动力和环境）。
 

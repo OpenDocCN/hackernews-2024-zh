@@ -8,7 +8,7 @@
 
 # Darknetlive 出售给了 Incognito Market · darkdot。
 
-> 来源：[https://darkdot.com/articles/darknetlive-sold/](https://darkdot.com/articles/darknetlive-sold/)
+> 来源：[`darkdot.com/articles/darknetlive-sold/`](https://darkdot.com/articles/darknetlive-sold/)
 
 [Incognito](https://dark.fail/incognito)，一个深网毒品市场，于 2022 年 11 月购买了新闻网站 [Darknetlive](https://darknetlive.com)。自那时以来，他们一直在利用它来压制批评并引导公众舆论朝着他们的方向发展。这种所有权的转变让 Tor 新闻报道变得不可思议，确保了一个宝贵的出版物将来会被政府查封和审查：[DeepDotWeb 的历史重演。](https://en.wikipedia.org/wiki/DeepDotWeb)
 
@@ -20,7 +20,7 @@ Darknetlive 曾经密切关注 Tor 隐藏服务，并在网站有欺诈行为或
 
 自收购以来，关于 Incognito Market 的诸多问题没有发布任何警告。
 
-### 很少有记者报道深网 [#](#few-journalists-cover-the-darknet)
+### 很少有记者报道深网 #
 
 四年来，Darknetlive 是 Tor 隐藏服务用户（“深网”）的一家罕见的公正新闻来源。
 
@@ -32,7 +32,7 @@ DeepDotWeb 是六年来深网新闻和安全信息的主要来源。当它被美
 
 此后不久，Darknetlive、Hugbunter 和 DarkDotFail 将各自的网站推向了 Tor 用户突然出现的安全内容空白：Darknetlive.com、Dread 论坛和 Dark.fail。
 
-### 谁来代表匿名者？[#](#who-speaks-for-the-anonymous)
+### 谁来代表匿名者？#
 
 关于“深网”话题的新闻曾经很流行。2013 年罗斯·乌尔布莱希特因涉嫌经营 Silk Road 毒品市场而被捕时，记者们疯狂地发布了五百多篇涵盖他案件的文章。一年后，当 Silk Road 2 的涉嫌管理员被捕时，又发表了一百多篇文章。
 
@@ -44,17 +44,17 @@ DeepDotWeb 是六年来深网新闻和安全信息的主要来源。当它被美
 
 稀少的新闻报道非常适合激进的监视：虐待可能会继续下去。
 
-### 谁来验证 Tor 用户的安全性？[#](#who-verifies-the-safety-of-tor-users)
+### 谁来验证 Tor 用户的安全性？#
 
 公众被灌输一种关于 Tor 危险的叙事，认为它是用于儿童色情和恐怖主义的技术。许多记者甚至不愿登陆以查看暗网社区中真正存在的情况，他们认为存在太多的法律风险。
 
 与此同时，西方政府不知何故已经掌握了一种技巧来查封 Tor 隐藏服务。目前公开尚不清楚这是如何发生的。
 
-> 为危险国家的活动人士的生命发声。如果您对 Tor 可能受到损害有信息，请联系我们的消息提示线：[tips@darkdot.com](mailto:tips@darkdot.com) - 使用 Protonmail。
+> 为危险国家的活动人士的生命发声。如果您对 Tor 可能受到损害有信息，请联系我们的消息提示线：tips@darkdot.com - 使用 Protonmail。
 
 毫无疑问，致力于确定托管“暗网” Tor 网站服务器物理位置的白帽子团队不希望记者四处张扬并鼓励告密者。
 
-### Incognito 的空前的暗网集中化[#](#incognitos-unprecedented-darknet-centralization)
+### Incognito 的空前的暗网集中化#
 
 [Darknetlive、Libre、Sector、Antinalysis 和 Incognito Market。](https://web.archive.org/web/20231005001631/https://incognite.com/)
 
@@ -68,7 +68,7 @@ Darknetlive 的网络档案显示，法老在购买后的一周内完全重建�
 
 法老对权力的追求几乎肯定会导致他们的整个网站网络被政府查封或被骗关闭。
 
-### 中心化失败[#](#centralization-fails)
+### 中心化失败#
 
 毫无疑问，Darknetlive.com 将会消失：这是那些希望在暗网上有黑暗的人的胜利。
 

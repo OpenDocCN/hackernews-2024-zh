@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:33:33
+日期：2024 年 05 月 27 日 14:33:33
 
 -->
 
 # 通过一个 musl 发行版维护者的视角看 systemd——The Cat Fox Life
 
-> 来源：[https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/](https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/)
+> 来源：[`catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/`](https://catfox.life/2024/01/05/systemd-through-the-eyes-of-a-musl-distribution-maintainer/)
 
 欢迎回到 FOSS Fridays！本周，我将涵盖一个真正棘手的问题。
 
@@ -68,7 +68,7 @@ networkd 尚不成熟，对于高级用例支持不足，并且没有面向最�
 
 timedated 看起来像是一种可爱的方式，允许用户通过 PolicyKit 操作更改时区，但除此之外，它似乎更适合由“真正的”NTP 客户端（如 Chrony 或 NTP）处理。而且，我不明白为什么它应该存在于系统层。
 
-systemd-boot仅支持EFI，这使它不具备可移植性和灵活性。你在Power或Z上找不到EFI，而且我有很多ARM板也不支持主线U-Boot。这并不是systemd-boot的问题，因为只想处理单个平台的特殊性是完全可以理解的。令人担忧的是，像Fedora这样的发行版正在摆脱GRUB，转而支持systemd-boot，这意味着它们失去了更多的可移植性。
+systemd-boot 仅支持 EFI，这使它不具备可移植性和灵活性。你在 Power 或 Z 上找不到 EFI，而且我有很多 ARM 板也不支持主线 U-Boot。这并不是 systemd-boot 的问题，因为只想处理单个平台的特殊性是完全可以理解的。令人担忧的是，像 Fedora 这样的发行版正在摆脱 GRUB，转而支持 systemd-boot，这意味着它们失去了更多的可移植性。
 
 ## 总结：一份摘要
 
@@ -76,8 +76,8 @@ systemd-boot仅支持EFI，这使它不具备可移植性和灵活性。你在Po
 
 +   我并不盲目地憎恨 systemd，事实上，我真的很钦佩它作为一个实际的服务管理器的许多特质。我不喜欢的是它试图接管他们所谓的“系统层”，当没有其他选择可用时。
 
-+   我对systemd的问题是实际的，而不仅仅是模糊的“Unix好，sysd坏”。
++   我对 systemd 的问题是实际的，而不仅仅是模糊的“Unix 好，sysd 坏”。
 
-+   如果有人努力让systemd与其生长出的所有其他触手分离，我真的会推动将其作为Adélie的服务管理器可用。我认为作为一个服务管理器——只是作为一个服务管理器——它将提供一种无法与其他现有解决方案相媲美的出色用户体验。
++   如果有人努力让 systemd 与其生长出的所有其他触手分离，我真的会推动将其作为 Adélie 的服务管理器可用。我认为作为一个服务管理器——只是作为一个服务管理器——它将提供一种无法与其他现有解决方案相媲美的出色用户体验。
 
 谢谢您的阅读。祝您拥有美好的一天，请记住，在每个键盘背后都是一个有着真实感受的真实人。

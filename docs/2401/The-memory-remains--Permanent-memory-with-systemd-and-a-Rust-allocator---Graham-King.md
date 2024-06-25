@@ -2,23 +2,23 @@
 
 类别：未分类
 
-日期：2024年05月27日14:39:00
+日期：2024 年 05 月 27 日 14:39:00
 
 -->
 
-# 内存保留：永久内存和Rust分配器与systemd · Graham King
+# 内存保留：永久内存和 Rust 分配器与 systemd · Graham King
 
-> 来源：[https://darkcoding.net/software/rust-systemd-memory-remains/](https://darkcoding.net/software/rust-systemd-memory-remains/)
+> 来源：[`darkcoding.net/software/rust-systemd-memory-remains/`](https://darkcoding.net/software/rust-systemd-memory-remains/)
 
-我们要**将三件事**连在一起，以创建在程序重新启动时**仍然存在的Rust对象**。对象背后的内存将在程序重启时继续存在。
+我们要**将三件事**连在一起，以创建在程序重新启动时**仍然存在的 Rust 对象**。对象背后的内存将在程序重启时继续存在。
 
-1.  Systemd的[文件描述符存储](https://systemd.io/FILE_DESCRIPTOR_STORE/)（systemd 254+）允许我们将任何文件描述符交给systemd，然后稍后请求回来。当我们`systemctl restart <prog>`时，文件保持打开状态。是的，这类似于[套接字激活](https://darkcoding.net/software/systemd-socket-activation-in-go/)。
+1.  Systemd 的[文件描述符存储](https://systemd.io/FILE_DESCRIPTOR_STORE/)（systemd 254+）允许我们将任何文件描述符交给 systemd，然后稍后请求回来。当我们`systemctl restart <prog>`时，文件保持打开状态。是的，这类似于[套接字激活](https://darkcoding.net/software/systemd-socket-activation-in-go/)。
 
 1.  [memfd_create](https://www.man7.org/linux/man-pages/man2/memfd_create.2.html)系统调用（Linux 3.17+）创建一个仅存在于内存中的匿名文件，只要对它的引用存在。它有效地为我们提供了指向一块分配的内存的文件描述符。它行为类似于常规文件，所以我们可以用[mmap](https://www.man7.org/linux/man-pages/man2/mmap.2.html)将其映射到常规内存中。
 
-1.  Rust的[分配器特性](https://doc.rust-lang.org/std/alloc/trait.Allocator.html)允许我们控制对象所在的内存（至少在两年前的Rust nightly）。我们将用[Box::new_in](https://doc.rust-lang.org/std/boxed/struct.Box.html#method.new_in)来选择我们的分配器。
+1.  Rust 的[分配器特性](https://doc.rust-lang.org/std/alloc/trait.Allocator.html)允许我们控制对象所在的内存（至少在两年前的 Rust nightly）。我们将用[Box::new_in](https://doc.rust-lang.org/std/boxed/struct.Box.html#method.new_in)来选择我们的分配器。
 
-我们将制作一个Rust分配器，它创建一个memfd，与systemd共享，将其映射，然后使用该内存作为我们的分配器返回的分配。当程序重新启动时，我们向systemd请求我们的memfd，将其映射，并将其转换为我们的对象。最后，我们将分配器和"恢复者"包装在一个函数中，该函数会判断我们是在分配一个新对象还是恢复一个现有对象。
+我们将制作一个 Rust 分配器，它创建一个 memfd，与 systemd 共享，将其映射，然后使用该内存作为我们的分配器返回的分配。当程序重新启动时，我们向 systemd 请求我们的 memfd，将其映射，并将其转换为我们的对象。最后，我们将分配器和"恢复者"包装在一个函数中，该函数会判断我们是在分配一个新对象还是恢复一个现有对象。
 
 这是一些我们将在文中使用的任意对象：
 
@@ -38,11 +38,11 @@ struct Person {
 
 注意那个相当尴尬的`name`数组。我们不想在我们的对象中有任何指针，所以不会有`String`或`Vec`，因为那些也需要存储在我们的永久内存存储中。
 
-`repr(C)`确保了这个对象的内存布局（表示）在我们的二进制版本之间不会改变。除非你请求特定的表示，Rust不会对内存布局进行承诺。（感谢Hacker News上的Harry Stern提出这一点）。
+`repr(C)`确保了这个对象的内存布局（表示）在我们的二进制版本之间不会改变。除非你请求特定的表示，Rust 不会对内存布局进行承诺。（感谢 Hacker News 上的 Harry Stern 提出这一点）。
 
-## 一个Rust分配器
+## 一个 Rust 分配器
 
-如果我们用`Box`在堆上分配一个对象，默认情况下它将使用系统分配器，在Linux上使用malloc。[观察汇编](/software/underrust-rust-assembly-output/)，我们看到它调用`__rust_alloc`（通过`GLOBAL_OFFSET_TABLE`）然后调用`__rdl_alloc`，最后调用glibc的`malloc`。
+如果我们用`Box`在堆上分配一个对象，默认情况下它将使用系统分配器，在 Linux 上使用 malloc。观察汇编，我们看到它调用`__rust_alloc`（通过`GLOBAL_OFFSET_TABLE`）然后调用`__rdl_alloc`，最后调用 glibc 的`malloc`。
 
 `malloc`会从操作系统获取内存（[详情](https://darkcoding.net/software/how-memory-is-allocated/)），通过移动程序断点（`sbrk`系统调用）或通过内存映射匿名区域（通过`mmap`系统调用）。
 

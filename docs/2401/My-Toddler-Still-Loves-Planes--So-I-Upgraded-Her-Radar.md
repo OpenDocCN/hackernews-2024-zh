@@ -8,7 +8,7 @@
 
 # 我的幼儿仍然热爱飞机，所以我升级了她的雷达。
 
-> 来源：[https://jacobbartlett.substack.com/p/my-toddler-still-loves-planes-so](https://jacobbartlett.substack.com/p/my-toddler-still-loves-planes-so)
+> 来源：[`jacobbartlett.substack.com/p/my-toddler-still-loves-planes-so`](https://jacobbartlett.substack.com/p/my-toddler-still-loves-planes-so)
 
 这部分是独立开发者的故事，部分发布说明，部分技术文档，我在其中详细描述了 [Aviator——您手机上的雷达](https://apps.apple.com/app/aviator-radar-on-your-phone/id6469189335) 的期待已久的升级！
 
@@ -62,13 +62,13 @@ var body: some View {
     .presentationBackgroundInteraction(.enabled)
 ```
 
-我计划在2.1中利用新的[TipKit](https://developer.apple.com/documentation/tipkit)来确保这种渐进式披露不会让我们年轻、经验不足的苹果粉丝们错过。
+我计划在 2.1 中利用新的[TipKit](https://developer.apple.com/documentation/tipkit)来确保这种渐进式披露不会让我们年轻、经验不足的苹果粉丝们错过。
 
-这个`presentationBackground`包装了另一个抛光效果：我使用了[Paul Hudson的浮雕效果](https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-metal-shaders-to-swiftui-views-using-layer-effects)。这是另一个Metal着色器，它在菜单上应用了一种可爱的金属质感，进一步改善了作为真实雷达控制面板的拟态。
+这个`presentationBackground`包装了另一个抛光效果：我使用了[Paul Hudson 的浮雕效果](https://www.hackingwithswift.com/quick-start/swiftui/how-to-add-metal-shaders-to-swiftui-views-using-layer-effects)。这是另一个 Metal 着色器，它在菜单上应用了一种可爱的金属质感，进一步改善了作为真实雷达控制面板的拟态。
 
-> 如果您想了解更多关于在SwiftUI中制作自己的着色器的信息，请阅读我的教程[SwiftUI中的金属：如何编写着色器](https://jacobbartlett.substack.com/p/metal-in-swiftui-how-to-write-shaders)。
+> 如果您想了解更多关于在 SwiftUI 中制作自己的着色器的信息，请阅读我的教程[SwiftUI 中的金属：如何编写着色器](https://jacobbartlett.substack.com/p/metal-in-swiftui-how-to-write-shaders)。
 
-在构建1.0版本时，我遇到了一个持久的问题。雷达效果*太好了*。
+在构建 1.0 版本时，我遇到了一个持久的问题。雷达效果*太好了*。
 
 更具体地说，它捕获了我不可能看到的飞机的飞行详情，无论是远在地平线之外还是隐藏在地形后面。这在伦敦郊区的梯田群岛中成为一个真正的痛点。
 
@@ -78,7 +78,7 @@ var body: some View {
 
 飞行员在伦敦上空的视图，默认（左）和放大（右）
 
-MapKit SDK具有悬浮在地球上方显示地图的`camera`概念。您可以向其提供一个`distance`（以米为单位），它会根据此距离放大和缩小地球表面。
+MapKit SDK 具有悬浮在地球上方显示地图的`camera`概念。您可以向其提供一个`distance`（以米为单位），它会根据此距离放大和缩小地球表面。
 
 ```
 // AviatorView.swift
@@ -110,15 +110,15 @@ private var radarCircles: some View {
 }
 ```
 
-最初，我有一个处理缩放级别的`Slider`组件，但即使是我漂亮的A17芯片也无法以合理的帧速率处理这个问题。我现在正在使用二进制缩放切换，但可能会考虑替代方法来处理这个界面。
+最初，我有一个处理缩放级别的`Slider`组件，但即使是我漂亮的 A17 芯片也无法以合理的帧速率处理这个问题。我现在正在使用二进制缩放切换，但可能会考虑替代方法来处理这个界面。
 
-[OpenSky Network API](https://openskynetwork.github.io/opensky-api/)从飞机应答器中收集了大量信息，我在1.0版本中没有利用这些信息。这些信息有助于推动2.0版本的许多新功能。
+[OpenSky Network API](https://openskynetwork.github.io/opensky-api/)从飞机应答器中收集了大量信息，我在 1.0 版本中没有利用这些信息。这些信息有助于推动 2.0 版本的许多新功能。
 
 其中最重要的是切换标志的能力 —— 在每个图标下方显示每架飞机的原产国的简单表情符号。
 
 切换原点标志开和关
 
-这里利用了来自 OpenSky Network API 的`origin_country`属性。这将飞机的起点给出为一个简单的文本字符串。使用在线找到的全面国家名称列表，我可以将字符串转换为2字符国家代码，将其转换为 Unicode 标量，最终构造成一个国旗表情符号。
+这里利用了来自 OpenSky Network API 的`origin_country`属性。这将飞机的起点给出为一个简单的文本字符串。使用在线找到的全面国家名称列表，我可以将字符串转换为 2 字符国家代码，将其转换为 Unicode 标量，最终构造成一个国旗表情符号。
 
 ```
 // Country.swift
@@ -136,7 +136,7 @@ extension Flight {
 }
 ```
 
-当用户打开此功能时，向MapKit注释添加文本就变得很简单了。
+当用户打开此功能时，向 MapKit 注释添加文本就变得很简单了。
 
 ```
 @AppStorage("showFlags") var showFlags: Bool = false
@@ -322,7 +322,7 @@ func getBase64LoginString() -> String? {
 
 一如既往，能够创造出我女儿想玩的东西是非常令人满足的。我期待着她能培养出更多的兴趣 - 也许很快她会对平台游戏或重金属音乐感兴趣。
 
-如果有人有任何功能想法或 ASO 的建议，请留下评论。最重要的是，今天立即下载[飞行员 - 你手机上的雷达](https://apps.apple.com/app/aviator-radar-on-your-phone/id6469189335)2.0版（并留下评论，请）！
+如果有人有任何功能想法或 ASO 的建议，请留下评论。最重要的是，今天立即下载[飞行员 - 你手机上的雷达](https://apps.apple.com/app/aviator-radar-on-your-phone/id6469189335)2.0 版（并留下评论，请）！
 
 如果你喜欢这个系列，请考虑与你的朋友和同事分享。
 

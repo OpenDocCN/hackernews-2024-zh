@@ -8,11 +8,11 @@ date: 2024-05-27 14:31:08
 
 # 硬盘指示灯和嘈杂的机器 - 作者：[胡里奥·梅里诺](https://blogsystem5.substack.com/p/hard-disk-leds-and-noisy-machines)
 
-> 来源：[https://blogsystem5.substack.com/p/hard-disk-leds-and-noisy-machines](https://blogsystem5.substack.com/p/hard-disk-leds-and-noisy-machines)
+> 来源：[`blogsystem5.substack.com/p/hard-disk-leds-and-noisy-machines`](https://blogsystem5.substack.com/p/hard-disk-leds-and-noisy-machines)
 
 昔日的计算机有这么一个小功能，叫做闪烁的 LED 灯🔆。它们还有另一个功能，叫做嘈杂的磁盘💾和响亮的风扇🪭。等等。功能？为什么是“功能”而不是“烦恼”呢？！
 
-90年代末的常见 PC 机箱前面板。我的奔腾 MMX 166 就放在其中一个里面。
+90 年代末的常见 PC 机箱前面板。我的奔腾 MMX 166 就放在其中一个里面。
 
 你看，这些明亮的灯光和响亮的声音就像性能矿井中的金丝雀🐦一样。它们给开发者一个机会，让他们立即注意到性能方面的问题。如果你的代码误用了 CPU 或硬盘，你可以立即知道。
 

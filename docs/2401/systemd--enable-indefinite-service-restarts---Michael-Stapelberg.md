@@ -8,7 +8,7 @@ date: 2024-05-27 14:53:34
 
 # systemd：启用无限服务重启 - Michael Stapelberg
 
-> 来源：[https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/](https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/)
+> 来源：[`michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/`](https://michael.stapelberg.ch/posts/2024-01-17-systemd-indefinite-service-restarts/)
 
 当一个服务连续启动失败了足够多次时，systemd 就放弃了它。
 

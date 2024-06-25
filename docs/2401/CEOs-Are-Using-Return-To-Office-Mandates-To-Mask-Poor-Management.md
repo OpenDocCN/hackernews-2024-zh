@@ -8,7 +8,7 @@ date: 2024-05-27 15:21:08
 
 # 首席执行官正在利用返办公命令掩盖管理不善
 
-> 来源：[https://www.forbes.com/sites/qhamirani/2024/01/26/ceos-are-using-return-to-office-mandates-to-mask-poor-management/](https://www.forbes.com/sites/qhamirani/2024/01/26/ceos-are-using-return-to-office-mandates-to-mask-poor-management/)
+> 来源：[`www.forbes.com/sites/qhamirani/2024/01/26/ceos-are-using-return-to-office-mandates-to-mask-poor-management/`](https://www.forbes.com/sites/qhamirani/2024/01/26/ceos-are-using-return-to-office-mandates-to-mask-poor-management/)
 
 <fbs-accordion>穿着红色毛衣的男人</fbs-accordion> getty
 
@@ -26,11 +26,11 @@ date: 2024-05-27 15:21:08
 
 相当多的公司继续努力寻找与所有利益相关者的偏好和理念相一致的合适模式 - 包括客户、员工、董事会、领导团队和股东。在疫情期间，许多公司虽然不情愿，却被迫接受了远程工作模式，并在虚拟环境中发现了提高生产力、降低成本以促进长期业务增长的潜力。
 
-爱彼迎是一个典范，他们在疫情爆发初期经历了收入突然停滞，随后迅速实现了盈利并成功进行了首次公开募股，所有这些都是在完全远程操作的情况下。爱彼迎利用他们的经验在2022年4月创建了独特的[随时随地生活和工作](https://news.airbnb.com/airbnbs-design-to-live-and-work-anywhere/ "https://news.airbnb.com/airbnbs-design-to-live-and-work-anywhere/")计划，这个计划在远程工作和面对面聚会之间取得了平衡。该计划取得了巨大成功，因为它与他们的业务模式相契合，并促进了所有利益相关者的远程工作，包括股东、员工以及他们的客户（房客和房东）。
+爱彼迎是一个典范，他们在疫情爆发初期经历了收入突然停滞，随后迅速实现了盈利并成功进行了首次公开募股，所有这些都是在完全远程操作的情况下。爱彼迎利用他们的经验在 2022 年 4 月创建了独特的[随时随地生活和工作](https://news.airbnb.com/airbnbs-design-to-live-and-work-anywhere/ "https://news.airbnb.com/airbnbs-design-to-live-and-work-anywhere/")计划，这个计划在远程工作和面对面聚会之间取得了平衡。该计划取得了巨大成功，因为它与他们的业务模式相契合，并促进了所有利益相关者的远程工作，包括股东、员工以及他们的客户（房客和房东）。
 
-然而，像WebMD这样的公司的CEO继续以2024年告诉员工“不要惹我们”的方式，以及向员工传达威胁，对他们的[沟通](https://www.vice.com/en/article/7kxqnx/dont-mess-with-us-webmd-parent-company-demands-return-to-office-in-bizarre-video "https://www.vice.com/en/article/7kxqnx/dont-mess-with-us-webmd-parent-company-demands-return-to-office-in-bizarre-video")需求不佳。这种做法的讽刺之处在于，他们的一些产品，比如他们的[在线症状检查器](https://symptoms.webmd.com/ "https://symptoms.webmd.com/")，都是帮助任何人远程评估他们的症状并确定需要的治疗方案的工具。为什么那些推广远程服务的公司如此反对开展远程工作，并且更重要的是，感觉有必要威胁他们的员工呢？
+然而，像 WebMD 这样的公司的 CEO 继续以 2024 年告诉员工“不要惹我们”的方式，以及向员工传达威胁，对他们的[沟通](https://www.vice.com/en/article/7kxqnx/dont-mess-with-us-webmd-parent-company-demands-return-to-office-in-bizarre-video "https://www.vice.com/en/article/7kxqnx/dont-mess-with-us-webmd-parent-company-demands-return-to-office-in-bizarre-video")需求不佳。这种做法的讽刺之处在于，他们的一些产品，比如他们的[在线症状检查器](https://symptoms.webmd.com/ "https://symptoms.webmd.com/")，都是帮助任何人远程评估他们的症状并确定需要的治疗方案的工具。为什么那些推广远程服务的公司如此反对开展远程工作，并且更重要的是，感觉有必要威胁他们的员工呢？
 
-上周在瑞士达沃斯世界经济论坛上，欧莱雅的CEO坚称他确信他们组织中的远程工作者缺乏归属感、热情和创造力。他接着解释说，根据[商业内幕](https://www.businessinsider.com/remote-workers-lack-passion-and-creativity-loreal-ceo-says-2024-1 "https://www.businessinsider.com/remote-workers-lack-passion-and-creativity-loreal-ceo-says-2024-1")报道，远程工作对员工的心理健康有害。
+上周在瑞士达沃斯世界经济论坛上，欧莱雅的 CEO 坚称他确信他们组织中的远程工作者缺乏归属感、热情和创造力。他接着解释说，根据[商业内幕](https://www.businessinsider.com/remote-workers-lack-passion-and-creativity-loreal-ceo-says-2024-1 "https://www.businessinsider.com/remote-workers-lack-passion-and-creativity-loreal-ceo-says-2024-1")报道，远程工作对员工的心理健康有害。
 
 ## 意外后果
 

@@ -2,41 +2,41 @@
 
 category: 未分类
 
-日期：2024年5月27日14:32:31
+日期：2024 年 5 月 27 日 14:32:31
 
 -->
 
-# 纯Python中的SIMD | 博客
+# 纯 Python 中的 SIMD | 博客
 
-> 来源：[https://www.da.vidbuchanan.co.uk/blog/python-swar.html](https://www.da.vidbuchanan.co.uk/blog/python-swar.html)
+> 来源：[`www.da.vidbuchanan.co.uk/blog/python-swar.html`](https://www.da.vidbuchanan.co.uk/blog/python-swar.html)
 
-# 纯Python中的SIMD
+# 纯 Python 中的 SIMD
 
-*戴维·布坎南，2024年1月4日*
+*戴维·布坎南，2024 年 1 月 4 日*
 
-首先，这篇文章是一种娱乐性的“因为我可以而编程的练习”。如果你只是想让你的Python代码跑得更快，也许这篇文章不适合你。也许Python也不是你想要的语言！
+首先，这篇文章是一种娱乐性的“因为我可以而编程的练习”。如果你只是想让你的 Python 代码跑得更快，也许这篇文章不适合你。也许 Python 也不是你想要的语言！
 
-最后，我将解释我是如何在纯Python中实现[生命游戏](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)（外加pysdl2用于图形输出）以4K分辨率以180fps运行的，这代表了比朴素实现快了~3800倍。
+最后，我将解释我是如何在纯 Python 中实现[生命游戏](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)（外加 pysdl2 用于图形输出）以 4K 分辨率以 180fps 运行的，这代表了比朴素实现快了~3800 倍。
 
 ![](img/7b57f311eb4ea0c2294d0c82ecd87168.png)
 
-如果你已经熟悉SIMD和矢量化，也许你想跳过下一节。
+如果你已经熟悉 SIMD 和矢量化，也许你想跳过下一节。
 
-### SIMD简要介绍
+### SIMD 简要介绍
 
-如果你想从现代CPU中获得最佳性能，你可能会使用[SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)指令 - 单一指令，多重数据。
+如果你想从现代 CPU 中获得最佳性能，你可能会使用[SIMD](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data)指令 - 单一指令，多重数据。
 
-例如，如果你有两个长度为4的数组，包含32位整数，大多数现代CPU将允许你将这两个数组的对应元素在一条机器指令中相加（假设你已经将数据加载到寄存器中）。希望这明显地说明了为什么这比遍历单个数组元素更高效。自从2000年引入[SSE2](https://en.wikipedia.org/wiki/SSE2)以来，英特尔CPU就拥有了这种*特定*的功能，但SIMD作为一个概念已经比它更早很多了，可以查看这里[历史](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data#History)。
+例如，如果你有两个长度为 4 的数组，包含 32 位整数，大多数现代 CPU 将允许你将这两个数组的对应元素在一条机器指令中相加（假设你已经将数据加载到寄存器中）。希望这明显地说明了为什么这比遍历单个数组元素更高效。自从 2000 年引入[SSE2](https://en.wikipedia.org/wiki/SSE2)以来，英特尔 CPU 就拥有了这种*特定*的功能，但 SIMD 作为一个概念已经比它更早很多了，可以查看这里[历史](https://en.wikipedia.org/wiki/Single_instruction,_multiple_data#History)。
 
-新一代CPU核心一直在扩展这些功能，这意味着SIMD指令对于最大化CPU吞吐量比以往任何时候都更加重要。
+新一代 CPU 核心一直在扩展这些功能，这意味着 SIMD 指令对于最大化 CPU 吞吐量比以往任何时候都更加重要。
 
-如果你在像C这样的语言中编程，优化编译器会识别可以使用SIMD指令加速的代码，并自动发出适当的机器代码。然而，编译器无法完美地优化所有内容，因此任何想要挤出最大性能的人可能最终会使用[内在操作](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)来明确告诉编译器使用哪些指令。如果*还*不够，你可能会直接使用汇编语言编程。
+如果你在像 C 这样的语言中编程，优化编译器会识别可以使用 SIMD 指令加速的代码，并自动发出适当的机器代码。然而，编译器无法完美地优化所有内容，因此任何想要挤出最大性能的人可能最终会使用[内在操作](https://www.intel.com/content/www/us/en/docs/intrinsics-guide/index.html)来明确告诉编译器使用哪些指令。如果*还*不够，你可能会直接使用汇编语言编程。
 
-表达SIMD程序的方式有很多种，但本文的范围不包括这些方式！
+表达 SIMD 程序的方式有很多种，但本文的范围不包括这些方式！
 
-“矢量化”是将典型程序转变为一次性（例如，使用SIMD）在整个数据数组（即矢量）上操作的过程。上述优化编译器所做的工作，或者人工编写的内在操作，都属于矢量化。
+“矢量化”是将典型程序转变为一次性（例如，使用 SIMD）在整个数据数组（即矢量）上操作的过程。上述优化编译器所做的工作，或者人工编写的内在操作，都属于矢量化。
 
-### CPython的简要介绍
+### CPython 的简要介绍
 
 [CPython](https://github.com/python/cpython) 是 Python 语言的参考实现，主要用 C 编写，因此得名。还有其他实现存在，但是当人们说“Python”时，他们通常隐含地指的是 CPython。我尽量只在提到语言整体时说“Python”，而在谈论 CPython 的实现细节时说“CPython”（我们稍后会深入讨论）。
 
@@ -278,19 +278,19 @@ if words_left_to_xor > 2:
 
 这种方法的另一个重大限制是它涉及创建一个全新的整数来容纳结果。 这会浪费内存空间，给内存分配器/垃圾回收器带来压力，也许最重要的是，它会浪费内存带宽。 尽管你可以在 Python 中编写 `a ^= b` 来表示就地异或操作，但它仍然会在内部分配一个新对象来存储结果。
 
-如果你想知道为什么NumPy的实现仍然稍微快一些，我认为答案在于CPython表示其整数的方式。`ob_digit`数组中的每个条目只表示整个数字的30位。我猜这使得在算术操作期间处理进位传播更简单。这意味着内存表示与最佳填充相比有大约7%的额外开销。虽然我没有检查过NumPy的实现细节，但我想象它们会紧密地打包数组元素。
+如果你想知道为什么 NumPy 的实现仍然稍微快一些，我认为答案在于 CPython 表示其整数的方式。`ob_digit`数组中的每个条目只表示整个数字的 30 位。我猜这使得在算术操作期间处理进位传播更简单。这意味着内存表示与最佳填充相比有大约 7%的额外开销。虽然我没有检查过 NumPy 的实现细节，但我想象它们会紧密地打包数组元素。
 
 ### 进行有用的工作
 
-现在我们知道我们可以进行高效的按位SIMD操作，我们能否从中构建出一些有用的东西呢？
+现在我们知道我们可以进行高效的按位 SIMD 操作，我们能否从中构建出一些有用的东西呢？
 
-一个用例是位切片密码学。[这里是](https://github.com/DavidBuchanan314/python-bitsliced-aes)我纯Python实现的位切片AES-128-ECB。它比我能找到的下一个最快的纯Python AES实现快20多倍，在理论上它也更安全，因为它没有任何数据相关的数组索引（但我仍然不会信任它作为一个安全的实现；使用一个[适当的密码库！](https://cryptography.io/en/latest/))
+一个用例是位切片密码学。[这里是](https://github.com/DavidBuchanan314/python-bitsliced-aes)我纯 Python 实现的位切片 AES-128-ECB。它比我能找到的下一个最快的纯 Python AES 实现快 20 多倍，在理论上它也更安全，因为它没有任何数据相关的数组索引（但我仍然不会信任它作为一个安全的实现；使用一个[适当的密码库！](https://cryptography.io/en/latest/))
 
-想要更详细地了解位切片，请查看[这篇文章](https://timtaubert.de/blog/2018/08/bitslicing-an-introduction/)。其核心思想是将整个算法表达为逻辑门电路，或者换句话说，一堆布尔表达式。你可以对任何计算都这样做，但AES特别适合。一旦你有了布尔表达式，你就可以使用位并行操作（即位级SIMD操作）来并行计算多个算法实例。由于AES是基于块的密码，你可以利用这个想法同时计算多个AES密码块。
+想要更详细地了解位切片，请查看[这篇文章](https://timtaubert.de/blog/2018/08/bitslicing-an-introduction/)。其核心思想是将整个算法表达为逻辑门电路，或者换句话说，一堆布尔表达式。你可以对任何计算都这样做，但 AES 特别适合。一旦你有了布尔表达式，你就可以使用位并行操作（即位级 SIMD 操作）来并行计算多个算法实例。由于 AES 是基于块的密码，你可以利用这个想法同时计算多个 AES 密码块。
 
 ### SWAR
 
-我们可以使用Python整数进行的不仅仅是并行的按位操作。我们也可以用它们进行并行相加！
+我们可以使用 Python 整数进行的不仅仅是并行的按位操作。我们也可以用它们进行并行相加！
 
 |
 
@@ -334,23 +334,23 @@ print(hex((a + b) & m)) # 0xa0c0e00 => [0xa, 0xc, 0xe, 0x0] == [10, 12, 14, 0]
 
 |
 
-如此所示，我们可以将多个固定宽度的整数打包到一个Python整数中，并一次性将它们全部相加。然而，如果它们被紧密打包并且发生整数溢出，这会在通道之间引起不必要的进位传播。解决方法很简单：稍微分开它们一点。在这个例子中，我使用宽松的4位宽填充来使事情更明显，但原则上你只需要一个单独的填充位。最后，我们使用按位AND运算符来屏蔽任何溢出位。如果我们不这样做，溢出位可能会在多次相加过程中累积，并再次在通道之间引起溢出。在通道之间使用的填充位越多，您就可以在需要掩码之前存活更多链接的加法。
+如此所示，我们可以将多个固定宽度的整数打包到一个 Python 整数中，并一次性将它们全部相加。然而，如果它们被紧密打包并且发生整数溢出，这会在通道之间引起不必要的进位传播。解决方法很简单：稍微分开它们一点。在这个例子中，我使用宽松的 4 位宽填充来使事情更明显，但原则上你只需要一个单独的填充位。最后，我们使用按位 AND 运算符来屏蔽任何溢出位。如果我们不这样做，溢出位可能会在多次相加过程中累积，并再次在通道之间引起溢出。在通道之间使用的填充位越多，您就可以在需要掩码之前存活更多链接的加法。
 
 对于减法、乘以一个小常数以及位移/旋转，我们可以做类似的事情，只要在每种情况下都有足够的填充位来防止溢出。
 
-这个概念的通用术语是 SWAR，代表着[寄存器内的SIMD](https://en.wikipedia.org/wiki/SWAR)。但在这里，我们不是使用机器寄存器，而是使用任意长的Python整数。我将这种变体称为SWAB：大整数内的SIMD。
+这个概念的通用术语是 SWAR，代表着[寄存器内的 SIMD](https://en.wikipedia.org/wiki/SWAR)。但在这里，我们不是使用机器寄存器，而是使用任意长的 Python 整数。我将这种变体称为 SWAB：大整数内的 SIMD。
 
-在Python中，SWAB是一个有用的想法，因为它最大化了每个VM指令的工作量，减少了解释器的开销；CPU得以花费大部分时间在实现整数操作的快速本机代码中。
+在 Python 中，SWAB 是一个有用的想法，因为它最大化了每个 VM 指令的工作量，减少了解释器的开销；CPU 得以花费大部分时间在实现整数操作的快速本机代码中。
 
 ### 做~~有用的工作~~有趣的事情
 
 这就够理论了；现在是时候让生命游戏加速了。首先，让我描述一下我试图解决的“问题”。我假设您已经对生命游戏有了广泛的了解，但如果没有，请阅读[维基百科文章。](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)
 
-有一些非常聪明的算法可以让生命游戏加速，其中最著名的是[Hashlife](https://johnhw.github.io/hashlife/index.md.html)，它通过发现空间和时间中的重复模式来工作。然而，我最喜欢模拟的GoL模式是[“汤”](https://conwaylife.com/wiki/Soup)，即一个大的随机起始网格。这些混沌模式不适合Hashlife算法，因此我们需要回到基础。
+有一些非常聪明的算法可以让生命游戏加速，其中最著名的是[Hashlife](https://johnhw.github.io/hashlife/index.md.html)，它通过发现空间和时间中的重复模式来工作。然而，我最喜欢模拟的 GoL 模式是[“汤”](https://conwaylife.com/wiki/Soup)，即一个大的随机起始网格。这些混沌模式不适合 Hashlife 算法，因此我们需要回到基础。
 
-当你在经典的GoL规则集中模拟汤时，它通常会在几千代之后消亡，产生一种相当无聊的振荡[“灰烬”](https://conwaylife.com/wiki/Soup#Ash)排列（这是Hashlife可以快速模拟的）。我更喜欢我的模拟在永恒的混沌中生存下去，而且经典规则集的一个变体几乎可以保证这一点，称为[DryLife](https://conwaylife.com/wiki/OCA:DryLife)。我喜欢DryLife，因为它仍然表现出大多数熟悉的GoL行为（例如，滑翔机），而汤却永远存在，创造出一种令人愉悦的屏保式动画。
+当你在经典的 GoL 规则集中模拟汤时，它通常会在几千代之后消亡，产生一种相当无聊的振荡[“灰烬”](https://conwaylife.com/wiki/Soup#Ash)排列（这是 Hashlife 可以快速模拟的）。我更喜欢我的模拟在永恒的混沌中生存下去，而且经典规则集的一个变体几乎可以保证这一点，称为[DryLife](https://conwaylife.com/wiki/OCA:DryLife)。我喜欢 DryLife，因为它仍然表现出大多数熟悉的 GoL 行为（例如，滑翔机），而汤却永远存在，创造出一种令人愉悦的屏保式动画。
 
-GoL算法内部循环的“显而易见”的实现大致如下：
+GoL 算法内部循环的“显而易见”的实现大致如下：
 
 |
 
@@ -394,9 +394,9 @@ for y in range(1, height + 1):
 
 |
 
-它遍历网格中的每个单元格，计算其周围8个相邻单元格的数量，并应用规则以决定单元格是否在下一个迭代中存活。就大O记法而言，这是一个<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>算法，其中<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>是网格中单元格的数量（即宽度<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>×</mi></mrow></math>高度）。
+它遍历网格中的每个单元格，计算其周围 8 个相邻单元格的数量，并应用规则以决定单元格是否在下一个迭代中存活。就大 O 记法而言，这是一个<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>算法，其中<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>n</mi></mrow></math>是网格中单元格的数量（即宽度<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>×</mi></mrow></math>高度）。
 
-尽管在上面的片段中没有明确说明，但细胞的状态是存储在一个大数组中的，通过`get_cell`和`set_cell`辅助函数访问。如果我们不使用数组，而是将整个状态存储在一个非常长的整数中，并使用SWAB算术一次处理整个事物，会怎样呢？这个过程最棘手的部分将是计算邻居的数量，这些邻居的总和最多可以达到8（或者如果我们还计算初始细胞值的话，达到9）。那是一个4位值，我们可以肯定它不会溢出为5位值，因此我们可以将每个细胞存储为4位宽的“SWAB lane”。不再拖延，这里是等效的内部循环代码：
+尽管在上面的片段中没有明确说明，但细胞的状态是存储在一个大数组中的，通过`get_cell`和`set_cell`辅助函数访问。如果我们不使用数组，而是将整个状态存储在一个非常长的整数中，并使用 SWAB 算术一次处理整个事物，会怎样呢？这个过程最棘手的部分将是计算邻居的数量，这些邻居的总和最多可以达到 8（或者如果我们还计算初始细胞值的话，达到 9）。那是一个 4 位值，我们可以肯定它不会溢出为 5 位值，因此我们可以将每个细胞存储为 4 位宽的“SWAB lane”。不再拖延，这里是等效的内部循环代码：
 
 |
 
@@ -464,13 +464,13 @@ state = (has_3_neighbors &#124; (state & has_4_neighbors)) & MASK_CANVAS
 
 （我省略了一些细节，比如环绕处理；你可以在[这里](https://github.com/DavidBuchanan314/pyswargol/blob/main/swargol.py)看到完整的代码，以及那些神奇常量的定义）
 
-除了不同的状态表示之外，这与前面的片段完全相同。对每个细胞的<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>循环已完全消除！嗯，几乎是的。有<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math> CPython VM操作，但仍然有<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>的工作正在进行，隐藏在CPython的bigint算术例程的SIMD加速本机代码中。这是一个*巨大*的性能优势，我稍后会量化。但首先，我们如何将那个`state`整数转换为屏幕上的像素？
+除了不同的状态表示之外，这与前面的片段完全相同。对每个细胞的<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>循环已完全消除！嗯，几乎是的。有<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow></math> CPython VM 操作，但仍然有<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>的工作正在进行，隐藏在 CPython 的 bigint 算术例程的 SIMD 加速本机代码中。这是一个*巨大*的性能优势，我稍后会量化。但首先，我们如何将那个`state`整数转换为屏幕上的像素？
 
 ### Blitting
 
-要在屏幕上显示像素，我们需要将数据转换为更标准的格式。第一步非常简单：Python整数有一个`to_bytes`方法，将它们序列化为字节（就像我之前在本文中的XOR函数示例中使用的那样）。接下来该怎么处理这些字节就不那么明显了。
+要在屏幕上显示像素，我们需要将数据转换为更标准的格式。第一步非常简单：Python 整数有一个`to_bytes`方法，将它们序列化为字节（就像我之前在本文中的 XOR 函数示例中使用的那样）。接下来该怎么处理这些字节就不那么明显了。
 
-在只使用“纯”Python的精神下，我想出了一个荒谬的方法：创建一个压缩的gzip流，当解压缩时，将奇怪的每像素4位缓冲区转换为更标准的每像素8位灰度缓冲区，并将其包含在必要的帧数据中，以成为YUV4MPEG视频流。Python脚本的输出可以通过gzip解压缩器管道传输，随后是视频播放器。那段代码在[这里](https://gist.github.com/DavidBuchanan314/acae2aab38953759aacc114b417ed0b9)，可能值得一篇单独的文章，但我今天不打算深入探讨。
+在只使用“纯”Python 的精神下，我想出了一个荒谬的方法：创建一个压缩的 gzip 流，当解压缩时，将奇怪的每像素 4 位缓冲区转换为更标准的每像素 8 位灰度缓冲区，并将其包含在必要的帧数据中，以成为 YUV4MPEG 视频流。Python 脚本的输出可以通过 gzip 解压缩器管道传输，随后是视频播放器。那段代码在[这里](https://gist.github.com/DavidBuchanan314/acae2aab38953759aacc114b417ed0b9)，可能值得一篇单独的文章，但我今天不打算深入探讨。
 
 虽然这是一个很棒的技巧，但 gzip 不是特别高效的[位块传输器](https://en.wikipedia.org/wiki/Blitter)。在我 2021 年的 MacBook 上，我可以在全屏分辨率下获得约 24fps，但我真的希望至少能达到 60fps，而这种方法是不行的。
 
@@ -584,6 +584,6 @@ to multiprocessing).
 
 作为提醒，这两种方法都是<math xmlns="http://www.w3.org/1998/Math/MathML" display="inline"><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow></math>，但更快的版本可以在高效的本地代码中花更多时间。
 
-如果我用 SIMD 内置函数（与 SWAR 或其他技巧结合）在 C 中重写整个东西，我预计我会得到10倍到100倍的速度提升，因为更有效地使用了 SIMD 寄存器和内存访问。GPU 实现可能会更快。这些加速效果会很好，但我认为有意思的是，我只是通过优化 Python 版本就能取得这么大的进展。
+如果我用 SIMD 内置函数（与 SWAR 或其他技巧结合）在 C 中重写整个东西，我预计我会得到 10 倍到 100 倍的速度提升，因为更有效地使用了 SIMD 寄存器和内存访问。GPU 实现可能会更快。这些加速效果会很好，但我认为有意思的是，我只是通过优化 Python 版本就能取得这么大的进展。
 
 源代码可以在[这里](https://github.com/DavidBuchanan314/pyswargol)找到。

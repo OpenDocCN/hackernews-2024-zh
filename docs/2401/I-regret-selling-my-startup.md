@@ -8,7 +8,7 @@ date: 2024-05-27 14:52:25
 
 # 我后悔出售我的创业公司
 
-> 来源：[https://www.nothingeasyaboutthis.com/i-regret-selling-my-startup/](https://www.nothingeasyaboutthis.com/i-regret-selling-my-startup/)
+> 来源：[`www.nothingeasyaboutthis.com/i-regret-selling-my-startup/`](https://www.nothingeasyaboutthis.com/i-regret-selling-my-startup/)
 
 出售我的公司是许多企业家梦寐以求的一个里程碑。一切都始于我肩上的一个筹码，我比其他人更了解，以及一台笔记本电脑，最终成长为一家成功的公司。在[之前的文章](https://www.nothingeasyaboutthis.com/lessons-from-selling-a-bootstrapped-company-to-a-pe-backed-company/)中，我分享了一些关于出售我的公司过程的信息。但是今天，我可以以近两年的时间回顾所有这些，并从事后的益处中进行反思。
 
@@ -26,7 +26,7 @@ date: 2024-05-27 14:52:25
 
 我很幸运地卖掉了我的公司，买方对我、我的公司、我的客户和我的员工都很好。这不是一个大恶人收购者做错了什么的故事。
 
-当我出售公司时，我没有任何赚取利润或留任条款。我期望离开并致力于一个特定的创业想法。我利用业余时间建立了MVP，并在6个月内取得了惊人的进展，直到2022年秋天市场崩溃。然后我的所有最初客户都被解雇或项目被终止。
+当我出售公司时，我没有任何赚取利润或留任条款。我期望离开并致力于一个特定的创业想法。我利用业余时间建立了 MVP，并在 6 个月内取得了惊人的进展，直到 2022 年秋天市场崩溃。然后我的所有最初客户都被解雇或项目被终止。
 
 从那时起，我没有任何让我感到非常强大的想法。没有了这个，我感觉自己一直在四处游荡，寻找那个强大的想法。
 
@@ -34,7 +34,7 @@ date: 2024-05-27 14:52:25
 
 ## 创始人后的生活
 
-出售摧毁了我作为“CEO和创始人”建立的身份认同。在出售公司之前我没有去过心理治疗。我出售的问题部分来自于我事先没有确定自己的价值观。一旦我知道了它们，显然如果我不在之后再开始另一家公司的话，我的前10个价值观中的4个将受到出售公司的负面影响：
+出售摧毁了我作为“CEO 和创始人”建立的身份认同。在出售公司之前我没有去过心理治疗。我出售的问题部分来自于我事先没有确定自己的价值观。一旦我知道了它们，显然如果我不在之后再开始另一家公司的话，我的前 10 个价值观中的 4 个将受到出售公司的负面影响：
 
 +   家庭
 
@@ -64,7 +64,7 @@ date: 2024-05-27 14:52:25
 
 虽然我很幸运找到了一个没有做过你经常听说的坏事情的收购者，但我也看到了在出售公司过程中我犯的许多错误。
 
-+   没有找到导师/教练帮助我理解如何成为更好的CEO。
++   没有找到导师/教练帮助我理解如何成为更好的 CEO。
 
 +   没有与心理治疗师讨论动机，看看我的目标是否可以通过其他方法更好地实现。
 
@@ -84,4 +84,4 @@ date: 2024-05-27 14:52:25
 
 我继续努力寻找新的想法，甚至是创意过程本身。我构建像 [har-cleaner](https://github.com/AbregaInc/har-cleaner?ref=nothingeasyaboutthis.com) 这样的随机项目，/ [Securel](https://marketplace.atlassian.com/apps/1232593/securely-for-jira-har-file-cleaner-compliance-and-privacy?tab=overview&hosting=cloud&ref=nothingeasyaboutthis.com) 来感觉自己在推动事情向前发展。毕竟，行动会带来动力。我 [天使投资](https://www.nothingeasyaboutthis.com/capital/) 并与现任和有抱负的创始人咨询。经常谈论类似上面的话题（如果你是这样的人，请随时联系我）。
 
-大多数时候，我继续寻找新的想法和共同创始人来合作。如果你在纽约，并且有兴趣和我一起工作，请随时通过 [https://twitter.com/BorisBerenberg](https://twitter.com/BorisBerenberg?ref=nothingeasyaboutthis.com) 或 [https://www.linkedin.com/in/borisberenberg/](https://www.linkedin.com/in/borisberenberg/?ref=nothingeasyaboutthis.com) 联系我。
+大多数时候，我继续寻找新的想法和共同创始人来合作。如果你在纽约，并且有兴趣和我一起工作，请随时通过 [`twitter.com/BorisBerenberg`](https://twitter.com/BorisBerenberg?ref=nothingeasyaboutthis.com) 或 [`www.linkedin.com/in/borisberenberg/`](https://www.linkedin.com/in/borisberenberg/?ref=nothingeasyaboutthis.com) 联系我。

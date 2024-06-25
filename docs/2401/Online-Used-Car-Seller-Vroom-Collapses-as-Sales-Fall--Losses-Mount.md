@@ -8,7 +8,7 @@ category: 未分类
 
 # 网络二手车销售商 Vroom 因销量下滑、亏损加剧而崩溃
 
-> 来源：[https://www.thedrive.com/news/online-use-car-seller-vroom-collapses-as-sales-fall-losses-mount](https://www.thedrive.com/news/online-use-car-seller-vroom-collapses-as-sales-fall-losses-mount)
+> 来源：[`www.thedrive.com/news/online-use-car-seller-vroom-collapses-as-sales-fall-losses-mount`](https://www.thedrive.com/news/online-use-car-seller-vroom-collapses-as-sales-fall-losses-mount)
 
 这是在线购物的时代，几年前，人们争相建立二手车版的 [亚马逊](https://www.thedrive.com/news/you-can-buy-an-entire-hyundai-on-amazon-starting-in-2024)。然而，事情并没有按照计划进行，[像 Carvana 这样的公司](https://www.thedrive.com/news/it-can-get-worse-for-carvana-and-it-is) 遭受了二手车市场不顺利的打击。现在，主要竞争对手 Vroom 正式关闭其在线二手车销售业务，并将清算其库存。
 

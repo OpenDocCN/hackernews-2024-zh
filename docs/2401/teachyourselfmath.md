@@ -8,7 +8,7 @@ date: 2024-05-27 15:06:47
 
 # teachyourselfmath
 
-> 来源：[https://teachyourselfmath.app/](https://teachyourselfmath.app/)
+> 来源：[`teachyourselfmath.app/`](https://teachyourselfmath.app/)
 
 `<select name="difficulty" id="difficulty-filter"><option value="ANY">难度</option> <option value="EASY">简单</option> <option value="MEDIUM">中等</option> <option value="HARD">困难</option></select>`
 

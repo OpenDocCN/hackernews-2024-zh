@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日 14:28:55
+日期：2024 年 5 月 27 日 14:28:55
 
 -->
 
 # GitHub - attractivechaos/plb2：一种编程语言基准测试
 
-> 来源：[https://github.com/attractivechaos/plb2](https://github.com/attractivechaos/plb2)
+> 来源：[`github.com/attractivechaos/plb2`](https://github.com/attractivechaos/plb2)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

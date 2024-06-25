@@ -8,7 +8,7 @@
 
 # GitHub - risolvipro/playdate-mode7：Playdate 的 Mode 7 库。
 
-> 来源：[https://github.com/risolvipro/playdate-mode7](https://github.com/risolvipro/playdate-mode7)
+> 来源：[`github.com/risolvipro/playdate-mode7`](https://github.com/risolvipro/playdate-mode7)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

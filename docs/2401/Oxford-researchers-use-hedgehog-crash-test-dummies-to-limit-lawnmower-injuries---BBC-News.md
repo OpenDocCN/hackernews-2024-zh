@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:57:48
+日期：2024 年 5 月 27 日 14:57:48
 
 -->
 
 # 牛津研究人员使用刺猬碰撞测试假人来减少割草机伤害 - BBC 新闻
 
-> 来源：[https://www.bbc.co.uk/news/uk-england-oxfordshire-67999226](https://www.bbc.co.uk/news/uk-england-oxfordshire-67999226)
+> 来源：[`www.bbc.co.uk/news/uk-england-oxfordshire-67999226`](https://www.bbc.co.uk/news/uk-england-oxfordshire-67999226)
 
 她说，她测试的所有割草机都必须物理接触刺猬才能检测到它，并且有些根本无法检测到，就这样还带着刀片继续运转着碾过了它。
 

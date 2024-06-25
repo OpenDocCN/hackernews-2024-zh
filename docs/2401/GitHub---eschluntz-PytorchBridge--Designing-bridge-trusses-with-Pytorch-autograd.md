@@ -8,7 +8,7 @@ date: 2024-05-27 14:40:41
 
 # [GitHub - eschluntz/PytorchBridge](https://github.com/eschluntz/PytorchBridge)：使用 Pytorch autograd 设计桥梁桁架
 
-> 来源：[https://github.com/eschluntz/PytorchBridge](https://github.com/eschluntz/PytorchBridge)
+> 来源：[`github.com/eschluntz/PytorchBridge`](https://github.com/eschluntz/PytorchBridge)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

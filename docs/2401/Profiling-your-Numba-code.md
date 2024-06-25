@@ -8,9 +8,9 @@
 
 # 对你的 Numba 代码进行性能分析
 
-> 来源：[https://pythonspeed.com/articles/numba-profiling/](https://pythonspeed.com/articles/numba-profiling/)
+> 来源：[`pythonspeed.com/articles/numba-profiling/`](https://pythonspeed.com/articles/numba-profiling/)
 
-如果你正在编写数值 Python 代码，[Numba](/articles/numba-faster-python/) 可能是加速程序的好方法。通过将 Python 的子集编译为机器代码，Numba 允许你编写在普通 Python 中速度太慢的循环和其他结构。换句话说，它类似于 Cython、C 或 Rust，因为它允许你为 Python 编写编译扩展。
+如果你正在编写数值 Python 代码，Numba 可能是加速程序的好方法。通过将 Python 的子集编译为机器代码，Numba 允许你编写在普通 Python 中速度太慢的循环和其他结构。换句话说，它类似于 Cython、C 或 Rust，因为它允许你为 Python 编写编译扩展。
 
 然而，Numba 代码并不总是像它可能的那样快。这就是性能分析有用的地方：它可以找出你代码中至少一些的瓶颈。
 
@@ -24,7 +24,7 @@
 
 [Profila](https://github.com/pythonspeed/profila) 是一个专门设计的性能分析器，用于识别你的 Numba 代码中哪些行代码运行较慢。它通过采样工作：每隔大约 10ms 运行一个 `gdb` 进程，连接到你的进程，获取回溯信息，然后使用它来确定哪些行代码正在运行。获取足够的样本，你将了解到程序中花费时间最多的地方。
 
-让我们看看 Profila 的实际效果！我们将对以下程序进行性能分析，该程序将图像抖动，将其从灰度转换为黑白。（这是最初的朴素版本，我随后在[另一篇文章中对其进行了性能优化](/articles/optimizing-dithering/)。）
+让我们看看 Profila 的实际效果！我们将对以下程序进行性能分析，该程序将图像抖动，将其从灰度转换为黑白。（这是最初的朴素版本，我随后在另一篇文章中对其进行了性能优化。）
 
 ```
 from numba import njit
@@ -137,7 +137,7 @@ Lines 3157 to 3157:
 
 然后，我们可以看到 `np.round()` 和 `new_value = np.uint8(np.round(old_value / 255.0)) * 255` 的组合占总样本的 30.2 + 9.8 = 40%。所以这意味着 40/60，三分之二的时间，都花费在了这一行代码上，将 `old_value` 转换为 `new_value`。
 
-正如我们在[原文](/articles/optimizing-dithering/)中看到的这个示例，我们可以将这段代码替换为：
+正如我们在原文中看到的这个示例，我们可以将这段代码替换为：
 
 ```
 if old_value < 0:
@@ -188,13 +188,13 @@ Lines 14 to 35:
   0.6% |     return result.astype(np.uint8) 
 ```
 
-就像在[原文](/articles/optimizing-dithering/)中一样，我们的代码现在运行速度提高了 3 倍！
+就像在原文中一样，我们的代码现在运行速度提高了 3 倍！
 
 这次我们不必猜测，我们有一个性能分析器指向主要的瓶颈。
 
 ## 性能分析的局限性
 
-虽然分析非常有帮助，但它并不总是能告诉您加速代码所需的所有信息。要了解更多关于这些问题的信息，请查看我的[即将发布的关于编写高性能低级代码的书籍](/products/lowlevelcode/)。
+虽然分析非常有帮助，但它并不总是能告诉您加速代码所需的所有信息。要了解更多关于这些问题的信息，请查看我的即将发布的关于编写高性能低级代码的书籍。
 
 ### 限制 #1：编译后的代码并不总是匹配源代码。
 
@@ -272,7 +272,7 @@ Lines 13 to 14:
 
 ### 限制 #3：更快的代码可能需要更全面的视角。
 
-查看代码哪些行速度较慢可能非常有帮助，但有些优化是对代码进行更广泛重新思考的结果。例如，[原文](/articles/optimizing-dithering/)中的最终优化版本将内存使用减少了三分之二，同时比第二版本运行速度快了50%。这是通过改变算法的结构来实现的，而不仅仅是专注于一两行代码。
+查看代码哪些行速度较慢可能非常有帮助，但有些优化是对代码进行更广泛重新思考的结果。例如，原文中的最终优化版本将内存使用减少了三分之二，同时比第二版本运行速度快了 50%。这是通过改变算法的结构来实现的，而不仅仅是专注于一两行代码。
 
 ## 试试 Profila 吧！
 

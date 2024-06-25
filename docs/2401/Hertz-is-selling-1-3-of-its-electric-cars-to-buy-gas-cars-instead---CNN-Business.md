@@ -8,7 +8,7 @@ category: 未分类
 
 # Hertz 正在出售其电动车队的三分之一以购买汽油车 | CNN 商业
 
-> 来源：[https://www.cnn.com/2024/01/11/business/hertz-tesla-selling/index.html](https://www.cnn.com/2024/01/11/business/hertz-tesla-selling/index.html)
+> 来源：[`www.cnn.com/2024/01/11/business/hertz-tesla-selling/index.html`](https://www.cnn.com/2024/01/11/business/hertz-tesla-selling/index.html)
 
 CNN  —
 

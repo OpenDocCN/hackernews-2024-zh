@@ -8,7 +8,7 @@
 
 # 提议的 Windows NT 同步驱动程序带来了 Wine / Proton 的大幅性能改进 | GamingOnLinux
 
-> 来源：[https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/](https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/)
+> 来源：[`www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/`](https://www.gamingonlinux.com/2024/01/proposed-windows-nt-sync-driver-brings-big-wine-proton-performance-improvements/)
 
 CodeWeavers 的 Zeb Figura [提出了](https://lore.kernel.org/lkml/20240124004028.16826-1-zfigura@codeweavers.com/) 一个 Windows NT 同步原语驱动程序，以帮助在 Linux 上使用 Wine / Proton 运行的针对 Windows 的游戏和应用的性能。
 

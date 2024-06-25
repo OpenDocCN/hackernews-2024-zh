@@ -8,19 +8,19 @@
 
 # 老板们利用返回办公室的命令来‘以员工为替罪羊’，新研究发现 | 财富
 
-> 来源：[https://fortune.com/2024/01/13/managers-scapegoating-workers-return-to-office/](https://fortune.com/2024/01/13/managers-scapegoating-workers-return-to-office/)
+> 来源：[`fortune.com/2024/01/13/managers-scapegoating-workers-return-to-office/`](https://fortune.com/2024/01/13/managers-scapegoating-workers-return-to-office/)
 
-所谓的[返回办公室（RTO）命令](https://fortune.com/2023/11/17/companies-new-return-to-office-strategy-glassdoor/)在很大程度上并没有改变实际的现场工作比例，尽管普遍存在犹豫不决。根据大都市区域的办公楼安全公司Kastle Systems每周的跟踪数据显示，自疫苗广泛使用以来，主要大都市区域的办公室入住率基本保持在接近50%的水平。
+所谓的[返回办公室（RTO）命令](https://fortune.com/2023/11/17/companies-new-return-to-office-strategy-glassdoor/)在很大程度上并没有改变实际的现场工作比例，尽管普遍存在犹豫不决。根据大都市区域的办公楼安全公司 Kastle Systems 每周的跟踪数据显示，自疫苗广泛使用以来，主要大都市区域的办公室入住率基本保持在接近 50%的水平。
 
 [生产力并没有改变](https://fortune.com/2023/12/26/return-to-office-mandates-no-productivity-impact-experts-predict/)。正如经济衰退的威胁所证明的那样，过去一年里的一系列裁员以及普遍谨慎的[经济前景](https://fortune.com/2024/01/09/how-many-businesses-bankrupt-covid-pandemic-2020-2023-global-financial-crisis/)，对于大多数白领工作来说，现场工作并不能总是让员工更加高效——毕竟，这应该是任何重大商业决策的北极星。
 
-然而，这长久以来一直是返回办公室背后的动机。像[Clorox](https://fortune.com/company/clorox/)和Shake Shack这样的公司的CEO们[曾表示](https://fortune.com/2022/08/09/ceos-say-remote-work-hurting-businesses/)，让人们返回办公室对于公司的疫后恢复至关重要。尽管有Kastle的证据，但许多其他公司并没有放弃；64%的CEO表示他们[预计到2026年全面返回办公室](https://fortune.com/2023/10/16/office-return-rto-ceos-hybrid-remote-work-5-days/)。
+然而，这长久以来一直是返回办公室背后的动机。像[Clorox](https://fortune.com/company/clorox/)和 Shake Shack 这样的公司的 CEO 们[曾表示](https://fortune.com/2022/08/09/ceos-say-remote-work-hurting-businesses/)，让人们返回办公室对于公司的疫后恢复至关重要。尽管有 Kastle 的证据，但许多其他公司并没有放弃；64%的 CEO 表示他们[预计到 2026 年全面返回办公室](https://fortune.com/2023/10/16/office-return-rto-ceos-hybrid-remote-work-5-days/)。
 
-这一切可能都是徒劳的。匹兹堡大学副教授马（Shuai）·马和其Katz商学院的博士生丁宇叶的一篇新的[工作论文](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675401)发现，返回办公室实际上并没有提高公司的底线。更重要的是：许多老板只是为了重新掌控一个他们已经无法看到——或者说，无法信任的员工群体而执行命令。
+这一切可能都是徒劳的。匹兹堡大学副教授马（Shuai）·马和其 Katz 商学院的博士生丁宇叶的一篇新的[工作论文](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4675401)发现，返回办公室实际上并没有提高公司的底线。更重要的是：许多老板只是为了重新掌控一个他们已经无法看到——或者说，无法信任的员工群体而执行命令。
 
 ## **逆境之中，责备工人**
 
-这篇论文目前正在同行评审中，从实证角度考察了是什么决定了标普500公司决定要求回到办公室以及其后果——以及不是。研究人员通过手动收集来自100多家公司的 RTO 要求数据，然后逆向评估了决定的基础。他们首先研究了为什么一些公司希望强制执行要求，而另一些公司则不希望，Ma 向 *财富* 透露。“我们能够看到三个基础：管理者说什么，员工说什么，专家说什么。”
+这篇论文目前正在同行评审中，从实证角度考察了是什么决定了标普 500 公司决定要求回到办公室以及其后果——以及不是。研究人员通过手动收集来自 100 多家公司的 RTO 要求数据，然后逆向评估了决定的基础。他们首先研究了为什么一些公司希望强制执行要求，而另一些公司则不希望，Ma 向 *财富* 透露。“我们能够看到三个基础：管理者说什么，员工说什么，专家说什么。”
 
 Ma 解释说，管理者所说的通常是离实际最远的。他收集到的情绪是，老板们希望看到员工，因为他们在家里表现不佳，这反过来又损害了公司的绩效。这是一个站不住脚的论点，Ma 说，并且他的研究没有证明工作地点与公司的财务结果之间存在联系。
 
@@ -34,7 +34,7 @@ Ma 得出结论，绩效和股东价值并不是 RTO 要求的真正最终目的
 
 “总的来说，我们的结果不支持这样的论点，即管理者强加这些要求是为了增加公司价值，”他写道。“相反，这些发现与管理者使用 RTO 要求重新对员工进行控制，并将员工作为糟糕公司绩效的替罪羊的说法一致。”
 
-正如公关执行官 Ed Zitron 在 [*商业内幕*](https://www.businessinsider.com/return-to-office-mandates-employees-managers-fight-messy-remote-work-2023-11?utm_source=substack&utm_medium=email) 中在11月份写道的，并且Ma在报告中引用了他的话，返办公政策不过是一种企图说服投资者减少的收入和盈利不是由于管理不善而是由于那些穿着睡衣在家里懒散的员工引起的。“这是高管们的一招妙计”，因为这让他们在人们对劳工权益的认识前所未有的社会中“建立对工人的控制……同时将差劲的股票表现的责任和后果转嫁给那些最不负责任的人。”
+正如公关执行官 Ed Zitron 在 [*商业内幕*](https://www.businessinsider.com/return-to-office-mandates-employees-managers-fight-messy-remote-work-2023-11?utm_source=substack&utm_medium=email) 中在 11 月份写道的，并且 Ma 在报告中引用了他的话，返办公政策不过是一种企图说服投资者减少的收入和盈利不是由于管理不善而是由于那些穿着睡衣在家里懒散的员工引起的。“这是高管们的一招妙计”，因为这让他们在人们对劳工权益的认识前所未有的社会中“建立对工人的控制……同时将差劲的股票表现的责任和后果转嫁给那些最不负责任的人。”
 
 [经理们是否真的将返办公政策视为改善公司价值或绩效的一种方法，那么这些政策就会有所不同。"在那些有更强动力去最大化公司价值的经理中，这些政策将更为严格——比如拥有更多公司股票或股权的业主，他们的利益更加与公司利益一致," Ma 说道。
 
@@ -42,7 +42,7 @@ Ma 得出结论，绩效和股东价值并不是 RTO 要求的真正最终目的
 
 长期来看，Ma 对 *财富* 杂志表示，任何形式的强制性政策都有可能削弱经理们声称其首要目标的实现。“人们会辞职，而且现在人们很容易找到其他能让他们灵活工作的工作机会，” Ma 说道。“但我们没有足够长的时间来看到长期后果。”
 
-Ma支持一种 [“吸引而非强制”](https://fortune.com/2024/01/10/neiman-marcus-return-to-office-policy-magnet-not-mandate/) 的工作安排方式，适用于希望取得某种平衡的公司。这种方式鼓励员工回到一个开放、灵活的工作场所，而不是强迫他们这样做。对于那些坚持认为自己留在原地更好的远程工作者，“没有理由强迫他们回来。”
+Ma 支持一种 [“吸引而非强制”](https://fortune.com/2024/01/10/neiman-marcus-return-to-office-policy-magnet-not-mandate/) 的工作安排方式，适用于希望取得某种平衡的公司。这种方式鼓励员工回到一个开放、灵活的工作场所，而不是强迫他们这样做。对于那些坚持认为自己留在原地更好的远程工作者，“没有理由强迫他们回来。”
 
 他迅速质疑了显示在场员工的 [轻微提高的生产力水平](https://fortune.com/2023/07/06/remote-workers-less-productive-wfh-research/) 的数据。“即使一些员工在疫情前在办公室更有生产力，这并不一定意味着他们在疫情后回到办公室后会变得更有生产力，” 他写道。“因为他们更有可能对被强迫回到办公室工作这件事作出消极反应，而他们之前享受了居家办公的好处。”
 

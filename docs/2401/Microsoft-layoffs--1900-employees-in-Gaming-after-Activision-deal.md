@@ -8,9 +8,9 @@
 
 # 微软裁员：收购 Activision 后游戏部门裁员 1900 人
 
-> 来源：[https://www.cnbc.com/2024/01/25/microsoft-lays-off-1900-workers-nearly-9percent-of-gaming-division-after-activision-blizzard-acquisition.html](https://www.cnbc.com/2024/01/25/microsoft-lays-off-1900-workers-nearly-9percent-of-gaming-division-after-activision-blizzard-acquisition.html)
+> 来源：[`www.cnbc.com/2024/01/25/microsoft-lays-off-1900-workers-nearly-9percent-of-gaming-division-after-activision-blizzard-acquisition.html`](https://www.cnbc.com/2024/01/25/microsoft-lays-off-1900-workers-nearly-9percent-of-gaming-division-after-activision-blizzard-acquisition.html)
 
-[微软](/quotes/MSFT/)将裁员约 1,900 名员工，占[总员工数](https://www.cnbc.com/2023/07/10/microsoft-confirms-more-job-cuts-on-top-of-10000-layoffs-in-january.html)的约 9%，根据 CNBC 获得的周四备忘录。
+微软将裁员约 1,900 名员工，占[总员工数](https://www.cnbc.com/2023/07/10/microsoft-confirms-more-job-cuts-on-top-of-10000-layoffs-in-january.html)的约 9%，根据 CNBC 获得的周四备忘录。
 
 微软游戏部门 CEO 菲尔·斯宾塞表示，裁员是一个更大的“执行计划”的一部分，将减少“重叠领域”，这是微软收购 Activision Blizzard 约三个多月后的举措。
 
@@ -26,7 +26,7 @@
 
 随着经济压力加剧，科技投资者开始期待更高的效率和更清晰的增长或盈利道路。
 
-科技公司在2024年初进行了深度裁员，其中大部分与并购无关。从腾讯旗下的 [Riot Games](https://www.cnbc.com/2024/01/22/tencents-riot-games-division-cuts-11percent-of-staff-to-create-focus.html) 到 [TikTok](https://www.cnbc.com/2024/01/23/tiktok-cuts-about-60-jobs-as-january-layoffs-continue-across-tech-.html) 以及 Discord 等公司的裁员，都是在 2023 年的[惨淡](https://www.cnbc.com/2023/12/21/over-100000-workers-were-laid-off-from-tech-jobs-this-year-where-they-went.html)之后进行的，当时有超过 100,000 名技术工作者被裁员。
+科技公司在 2024 年初进行了深度裁员，其中大部分与并购无关。从腾讯旗下的 [Riot Games](https://www.cnbc.com/2024/01/22/tencents-riot-games-division-cuts-11percent-of-staff-to-create-focus.html) 到 [TikTok](https://www.cnbc.com/2024/01/23/tiktok-cuts-about-60-jobs-as-january-layoffs-continue-across-tech-.html) 以及 Discord 等公司的裁员，都是在 2023 年的[惨淡](https://www.cnbc.com/2023/12/21/over-100000-workers-were-laid-off-from-tech-jobs-this-year-where-they-went.html)之后进行的，当时有超过 100,000 名技术工作者被裁员。
 
 本周早些时候，eBay 宣布将裁员 [1,000 名员工](https://www.cnbc.com/2024/01/23/ebay-to-slash-about-1000-roles-or-approximately-9percent-of-full-time-employees.html)，而 SAP 则表示将调整或买断 [8,000 名员工](https://www.cnbc.com/2024/01/23/sap-plans-job-changes-or-buyouts-for-8000-employees-in-restructuring-plan.html)。
 

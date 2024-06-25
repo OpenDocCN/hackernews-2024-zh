@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:49:39
+日期：2024 年 05 月 27 日 14:49:39
 
 -->
 
 # Infowars 和 Goop 出售完全相同的伪科学“健康”产品
 
-> 来源：[https://qz.com/1010684/all-the-wellness-products-american-love-to-buy-are-sold-on-both-infowars-and-goop](https://qz.com/1010684/all-the-wellness-products-american-love-to-buy-are-sold-on-both-infowars-and-goop)
+> 来源：[`qz.com/1010684/all-the-wellness-products-american-love-to-buy-are-sold-on-both-infowars-and-goop`](https://qz.com/1010684/all-the-wellness-products-american-love-to-buy-are-sold-on-both-infowars-and-goop)
 
 有人说，美国有两个。
 
@@ -20,7 +20,7 @@
 
 ## 灵草
 
-阿什瓦甘达是印度阿育吠陀医学中常用的草药。在健康领域，它被宣称具有各种好处，从减轻压力到预防癌症。据 Goop 称，它“增强免疫系统”，不管那是什么意思。（牛津词典[说](https://en.oxforddictionaries.com/definition/tonify)这意味着“增加（身体部位或系统）的可用能量”。）Infowars称其为“滋补”。实验室中的动物研究[表明](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/ashwagandha)阿什瓦甘达可能有效治疗癌症、糖尿病，以及减轻疲劳和作为镇静剂，但这些效果尚未经过充分的人体测试。
+阿什瓦甘达是印度阿育吠陀医学中常用的草药。在健康领域，它被宣称具有各种好处，从减轻压力到预防癌症。据 Goop 称，它“增强免疫系统”，不管那是什么意思。（牛津词典[说](https://en.oxforddictionaries.com/definition/tonify)这意味着“增加（身体部位或系统）的可用能量”。）Infowars 称其为“滋补”。实验室中的动物研究[表明](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/ashwagandha)阿什瓦甘达可能有效治疗癌症、糖尿病，以及减轻疲劳和作为镇静剂，但这些效果尚未经过充分的人体测试。
 
 **Goop：**推荐在[**清晰、美丽和能量的魔法药水**](http://goop.com/magic-potions-for-clarity-beauty-and-energy/)中使用
 
@@ -36,7 +36,7 @@
 
 **Goop：**[**为什么我这么疲惫**](https://shop.goop.com/shop/products/why-am-i-so-effing-tired)
 
-> 由各种维生素（包括高剂量的B族维生素）和补充剂配制而成，许多补充剂源自古老的阿育吠陀医学，有助于重新平衡过度紧张的系统。补充你可能缺乏的营养物质可以提高能量水平并减轻压力。
+> 由各种维生素（包括高剂量的 B 族维生素）和补充剂配制而成，许多补充剂源自古老的阿育吠陀医学，有助于重新平衡过度紧张的系统。补充你可能缺乏的营养物质可以提高能量水平并减轻压力。
 
 **Infowars：**[**Brain Force Plus**](https://www.infowarsstore.com/brain-force.html)
 
@@ -44,7 +44,7 @@
 
 ## 查加蘑菇
 
-这些保健网站大多提供了成分如冬虫夏草的潜在好处的长列表。 [一个网站](https://www.globalhealingcenter.com/natural-health/chaga-mushroom-the-immune-boosting-superfood/)承诺*瘤胃层菌*提供免疫系统支持，“舒缓特性”，血压正常化，“DNA损伤保护”，以及一些不可思议的健康益处。 月亮果汁称这种蘑菇为“欢乐促进剂。” 对动物的研究[表明](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/chaga-mushroom)冬虫夏草可以“抑制癌症进展”和“激活某些类型的免疫细胞”，但共识是需要进行人类研究。
+这些保健网站大多提供了成分如冬虫夏草的潜在好处的长列表。 [一个网站](https://www.globalhealingcenter.com/natural-health/chaga-mushroom-the-immune-boosting-superfood/)承诺*瘤胃层菌*提供免疫系统支持，“舒缓特性”，血压正常化，“DNA 损伤保护”，以及一些不可思议的健康益处。 月亮果汁称这种蘑菇为“欢乐促进剂。” 对动物的研究[表明](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/chaga-mushroom)冬虫夏草可以“抑制癌症进展”和“激活某些类型的免疫细胞”，但共识是需要进行人类研究。
 
 **月亮果汁：**[**灵芝**](https://www.moonjuiceshop.com/products/chaga)
 
@@ -56,15 +56,15 @@
 
 ## 胶体银
 
-显然，胶体银是“液体中悬浮着微小银颗粒的悬浮液。” 在Goop上，格温妮丝·帕特罗[写道](http://goop.com/fly-better-tricks-for-better-plane-trips/)，“他们说活性银可以抵御细菌，所以我在坐下时会喷洒这个在我周围的空气。” 另一方面，美国国家卫生研究院[NCCIH直接表示](https://nccih.nih.gov/health/silver)，“关于服用胶体银对健康有益的说法没有研究支持，”并补充说，“胶体银可能会引起严重的副作用。”
+显然，胶体银是“液体中悬浮着微小银颗粒的悬浮液。” 在 Goop 上，格温妮丝·帕特罗[写道](http://goop.com/fly-better-tricks-for-better-plane-trips/)，“他们说活性银可以抵御细菌，所以我在坐下时会喷洒这个在我周围的空气。” 另一方面，美国国家卫生研究院[NCCIH 直接表示](https://nccih.nih.gov/health/silver)，“关于服用胶体银对健康有益的说法没有研究支持，”并补充说，“胶体银可能会引起严重的副作用。”
 
-**高级自然：**[**胶体银**](https://www.highernature.co.uk/Products/Colloidal-Silver-Spray)** (Goop推荐)**
+**高级自然：**[**胶体银**](https://www.highernature.co.uk/Products/Colloidal-Silver-Spray)** (Goop 推荐)**
 
-> 我们的胶体银含有纯净的医用级银，已经使用了许多世纪。 它是使用电控技术和来自9级水纯化过程的纯净水制成的，以获得非常小的粒径（0.0006到0.005微米）。 这种小的粒径很重要，因为它提供了更大的表面积，因此更有效的液体。
+> 我们的胶体银含有纯净的医用级银，已经使用了许多世纪。 它是使用电控技术和来自 9 级水纯化过程的纯净水制成的，以获得非常小的粒径（0.0006 到 0.005 微米）。 这种小的粒径很重要，因为它提供了更大的表面积，因此更有效的液体。
 
 **Infowars：**[**银子弹**](https://www.infowarsstore.com/silver-bullet-40-off.html)
 
-> Infowars Life Silver Bullet胶体银终于问世，这是Alex对强大的胶体银产品进行了广泛搜索的结果，该产品不含人工添加剂，并利用高质量的工艺确保真正独特的产品，适用于应急和常规使用。
+> Infowars Life Silver Bullet 胶体银终于问世，这是 Alex 对强大的胶体银产品进行了广泛搜索的结果，该产品不含人工添加剂，并利用高质量的工艺确保真正独特的产品，适用于应急和常规使用。
 
 ## 冬虫夏草
 
@@ -72,9 +72,9 @@
 
 **Goop：**[**太阳药剂**](https://shop.goop.com/shop/products/cordyceps?taxon_id=751)
 
-> 有机、美国种植的冬虫夏草，是重要的阳性滋补品。可能支持全身氧气供应，提高精神力，增强肌肉力量，性能量和免疫功能。每日1-2次在温水或茶中加入1/2茶匙（2克）。非常适合添加到汤、冰沙、生巧克力中，以及任何时候您希望激活坚韧、感性和耐力的时候。
+> 有机、美国种植的冬虫夏草，是重要的阳性滋补品。可能支持全身氧气供应，提高精神力，增强肌肉力量，性能量和免疫功能。每日 1-2 次在温水或茶中加入 1/2 茶匙（2 克）。非常适合添加到汤、冰沙、生巧克力中，以及任何时候您希望激活坚韧、感性和耐力的时候。
 
-**Infowars：**[**唤醒美国免疫支持混合100%有机咖啡**](http://www.infowarsshop.com/Immune-Support-Blend-100-Organic-Coffee_p_1174.html)
+**Infowars：**[**唤醒美国免疫支持混合 100%有机咖啡**](http://www.infowarsshop.com/Immune-Support-Blend-100-Organic-Coffee_p_1174.html)
 
 > 一些蘑菇品种，如冬虫夏草和灵芝，在中国、西藏和日本等国家有着跨越千年的药用历史。在历史上，这些都是世界上最昂贵的草药原料之一。直到最近，西方医学才开始研究药用蘑菇的所有潜在医疗效益。前沿的唤醒美国！免疫支持混合将古代亚洲智慧与现代技术结合在一起。
 
@@ -104,7 +104,7 @@
 
 ## Maca
 
-Maca 应该可以增加性欲和男性生育能力。斯隆凯特林癌症中心[称](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/maca)：“支持使用Maca改善性功能的证据有限”，“需要更多的研究”。Moon Juice 和 Infowars 都将其作为增加性欲的产品的成分销售。（尽管在 Moon Juice 中，它既是“性之尘”又是“脑之尘”的成分。）
+Maca 应该可以增加性欲和男性生育能力。斯隆凯特林癌症中心[称](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/maca)：“支持使用 Maca 改善性功能的证据有限”，“需要更多的研究”。Moon Juice 和 Infowars 都将其作为增加性欲的产品的成分销售。（尽管在 Moon Juice 中，它既是“性之尘”又是“脑之尘”的成分。）
 
 **月亮果汁：**[**性之尘**](https://shop.goop.com/shop/products/sex-dust)
 
@@ -118,7 +118,7 @@ Maca 应该可以增加性欲和男性生育能力。斯隆凯特林癌症中心
 
 我们找不到任何可靠的科学信息关于“新生碘”。普通的碘是身体中的重要物质，但大多数人[从富含该矿物质的食物中](https://ods.od.nih.gov/factsheets/Iodine-Consumer/)摄取足够。这种“新生”物质[据称](https://www.globalhealingcenter.com/natural-health/what-is-nascent-iodine/)具有“电磁充电”，使其更易消化。
 
-将对这些主张真实性的质疑放在一边，独立测试和审核膳食补充剂的消费者实验室称，这种“充电”形式的碘[甚至不能](http://www.consumerlab.com/answers/I+have+heard+that+nascent+iodine+may+be+better+than+regular+iodine+or+potassium+iodide+for+thyroid+support.+Is+this+true,+and+what+exactly+is+nascent+iodine%3F/nascent_iodine/)以液体形式存在，这也是艾力克斯·琼斯和他的公司分发的方式。此外，健康网站建议你摄入的“新生碘”量——通常是为了保持健康的甲状腺——远远超过了我们通常从食物中摄入的普通碘的正常水平。美国国家卫生研究院称“成年人应避免长时间使用超过1,100微克/天的剂量”。Infowars和“[全球愈合中心](https://www.globalhealingcenter.com/nascent-iodine-detoxadine.html?icn_ghc=ddt1_1_052412_winix&ici_ghc=ddnha#description)”都推荐每天摄入1,950微克。
+将对这些主张真实性的质疑放在一边，独立测试和审核膳食补充剂的消费者实验室称，这种“充电”形式的碘[甚至不能](http://www.consumerlab.com/answers/I+have+heard+that+nascent+iodine+may+be+better+than+regular+iodine+or+potassium+iodide+for+thyroid+support.+Is+this+true,+and+what+exactly+is+nascent+iodine%3F/nascent_iodine/)以液体形式存在，这也是艾力克斯·琼斯和他的公司分发的方式。此外，健康网站建议你摄入的“新生碘”量——通常是为了保持健康的甲状腺——远远超过了我们通常从食物中摄入的普通碘的正常水平。美国国家卫生研究院称“成年人应避免长时间使用超过 1,100 微克/天的剂量”。Infowars 和“[全球愈合中心](https://www.globalhealingcenter.com/nascent-iodine-detoxadine.html?icn_ghc=ddt1_1_052412_winix&ici_ghc=ddnha#description)”都推荐每天摄入 1,950 微克。
 
 **Goop: 没有特定产品，但在** [**网站上发布的问答中推荐了新生碘**](http://goop.com/why-we-shouldnt-dismiss-iodine/)
 
@@ -128,19 +128,19 @@ Maca 应该可以增加性欲和男性生育能力。斯隆凯特林癌症中心
 
 ## 靈芝菌
 
-这是另一种具有[据称的](https://draxe.com/reishi-mushroom/)健康益处的菌类。目前的研究显示，没有科学证据支持靈芝菌能治疗疲劳或增加耐力的说法。有一些不确定的科学支持声称这些菌类能改善免疫系统功能、减少炎症和降低胆固醇。靈芝菌是Infowars的“唤醒美国”咖啡中的另一种成分。
+这是另一种具有[据称的](https://draxe.com/reishi-mushroom/)健康益处的菌类。目前的研究显示，没有科学证据支持靈芝菌能治疗疲劳或增加耐力的说法。有一些不确定的科学支持声称这些菌类能改善免疫系统功能、减少炎症和降低胆固醇。靈芝菌是 Infowars 的“唤醒美国”咖啡中的另一种成分。
 
 **月亮汁: **[**精神尘**](https://www.moonjuiceshop.com/products/spirit-dust)
 
 > 精神尘®是一种提升情绪的超级草药和超级蘑菇的混合物，有助于[打击压力的影响，扩展内心平和意识，与幸福对齐。]
 
-**Infowars：**[**唤醒美国 免疫支持混合咖啡100%有机**](http://www.infowarsshop.com/Immune-Support-Blend-100-Organic-Coffee_p_1174.html)
+**Infowars：**[**唤醒美国 免疫支持混合咖啡 100%有机**](http://www.infowarsshop.com/Immune-Support-Blend-100-Organic-Coffee_p_1174.html)
 
 > 数千年来，蘑菇因其烹饪和药用特性而备受珍视，它们不仅是面条和比萨饼的低千焦、低钠和高纤维成分。某些品种的蘑菇被发现可以治愈的许多病症之一是人类乳头瘤病毒感染，由于其与某些癌症的关联而备受恐惧。
 
 ## 硒
 
-硒是一种微量元素，在所有动物中，包括人类，在所有细胞功能中都需要。Infowars称这种元素“支持健康的甲状腺功能，支持免疫系统，对代谢途径至关重要，还有许多其他作用”。这些声明中的一些是[有证据支持的](https://www.uofmhealth.org/health-library/hn-2908005#hn-2908005-uses)，尽管许多不是。关于硒可以防止癌症的[声明](https://draxe.com/selenium-benefits/)也是极度不确定的。“临床试验表明，硒可能无助于预防癌症；事实上，它可能增加激进和继发性癌症的风险，”[斯隆·凯特琳癌症中心](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/selenium)写道。
+硒是一种微量元素，在所有动物中，包括人类，在所有细胞功能中都需要。Infowars 称这种元素“支持健康的甲状腺功能，支持免疫系统，对代谢途径至关重要，还有许多其他作用”。这些声明中的一些是[有证据支持的](https://www.uofmhealth.org/health-library/hn-2908005#hn-2908005-uses)，尽管许多不是。关于硒可以防止癌症的[声明](https://draxe.com/selenium-benefits/)也是极度不确定的。“临床试验表明，硒可能无助于预防癌症；事实上，它可能增加激进和继发性癌症的风险，”[斯隆·凯特琳癌症中心](https://www.mskcc.org/cancer-care/integrative-medicine/herbs/selenium)写道。
 
 **Goop：**[**玩转人生**](https://shop.goop.com/shop/products/balls-in-the-air)
 
@@ -160,11 +160,11 @@ Maca 应该可以增加性欲和男性生育能力。斯隆凯特林癌症中心
 
 **Infowars: **[**Z-Shield**](http://www.infowarsshop.com/Z-Shield_p_2053.html)
 
-> 四年多以前，我们的医生、化学家、中草药大师和营养保健专家团队着手开发一种不偷工减料的毒性金属和化学防御支持配方。现在，在多年的深入研究和新的专有加工技术开发之后，我们的团队自豪地宣布推出了Z-Shield：Infowars Life系列超高质量配方的下一个重大改变者。Z-Shield旨在帮助您用不吝啬的天然成分进行抗击。
+> 四年多以前，我们的医生、化学家、中草药大师和营养保健专家团队着手开发一种不偷工减料的毒性金属和化学防御支持配方。现在，在多年的深入研究和新的专有加工技术开发之后，我们的团队自豪地宣布推出了 Z-Shield：Infowars Life 系列超高质量配方的下一个重大改变者。Z-Shield 旨在帮助您用不吝啬的天然成分进行抗击。
 
 ## 酸枣（有时被称为“jujube”）
 
-Infowars将其称为“滋养调理剂”，建议用它来平息你的孩子。尽管有关乌椒具有镇静作用的研究并不多（尽管一些对大鼠的研究显示了一些希望），[根据](https://examine.com/supplements/ziziphus-jujuba/)Examine.com，一家分析补充剂证据的在线百科全书。获得一个良好的夜间睡眠可能仍然是一个艰巨的任务。
+Infowars 将其称为“滋养调理剂”，建议用它来平息你的孩子。尽管有关乌椒具有镇静作用的研究并不多（尽管一些对大鼠的研究显示了一些希望），[根据](https://examine.com/supplements/ziziphus-jujuba/)Examine.com，一家分析补充剂证据的在线百科全书。获得一个良好的夜间睡眠可能仍然是一个艰巨的任务。
 
 **Moon Juice: **[**Dream Dust**](https://www.moonjuiceshop.com/products/dream-dust)
 
@@ -172,6 +172,6 @@ Infowars将其称为“滋养调理剂”，建议用它来平息你的孩子。
 
 **Infowars: **[**Child Ease**](https://www.infowarsstore.com/health-and-wellness/wellness/child-ease.html)
 
-> 当今的孩子生活在一个充满压力的世界中。 过度刺激可能会影响他们的行为和注意力。 Infowars Life™的Child Ease™是一种特殊的草药混合物，专门设计用于舒缓儿童的头脑和身体。 我们的新配方使用了如洋甘菊、香脂菜和猫薄荷等舒缓植物，以及滋养调理剂山楂、酸枣、积雪草提取物和印度醉茄。 我们甚至添加了传统上被世界各地文化使用的其他草药和关键营养素。
+> 当今的孩子生活在一个充满压力的世界中。 过度刺激可能会影响他们的行为和注意力。 Infowars Life™的 Child Ease™是一种特殊的草药混合物，专门设计用于舒缓儿童的头脑和身体。 我们的新配方使用了如洋甘菊、香脂菜和猫薄荷等舒缓植物，以及滋养调理剂山楂、酸枣、积雪草提取物和印度醉茄。 我们甚至添加了传统上被世界各地文化使用的其他草药和关键营养素。
 
 ____________________________________________________________________________

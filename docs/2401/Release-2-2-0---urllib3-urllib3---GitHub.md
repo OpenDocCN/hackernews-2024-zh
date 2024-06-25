@@ -8,7 +8,7 @@
 
 # [urllib3/urllib3 · GitHub](https://github.com/urllib3/urllib3/releases/tag/2.2.0)
 
-> 来源：[https://github.com/urllib3/urllib3/releases/tag/2.2.0](https://github.com/urllib3/urllib3/releases/tag/2.2.0)
+> 来源：[`github.com/urllib3/urllib3/releases/tag/2.2.0`](https://github.com/urllib3/urllib3/releases/tag/2.2.0)
 
 ## 🖥️ urllib3 现在在浏览器中可用
 
@@ -44,4 +44,4 @@
 
 +   修复了在服务器证书验证被禁用时 TLS 1.3 后握手认证的问题（[#3325](https://github.com/urllib3/urllib3/issues/3325)）。
 
-下游分发商注意事项：为了运行集成测试，现在需要使用`--integration` pytest标志再次运行测试。 ([#3181](https://github.com/urllib3/urllib3/issues/3181))
+下游分发商注意事项：为了运行集成测试，现在需要使用`--integration` pytest 标志再次运行测试。 ([#3181](https://github.com/urllib3/urllib3/issues/3181))

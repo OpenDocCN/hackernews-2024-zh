@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:41:18
+日期：2024 年 5 月 27 日 14:41:18
 
 -->
 
 # 伊朗在阿曼湾扣押了一艘油轮 | 美国有线电视新闻网 商业
 
-> 来源：[https://www.cnn.com/2024/01/11/business/oil-tanker-boarded-armed-people-iran/index.html](https://www.cnn.com/2024/01/11/business/oil-tanker-boarded-armed-people-iran/index.html)
+> 来源：[`www.cnn.com/2024/01/11/business/oil-tanker-boarded-armed-people-iran/index.html`](https://www.cnn.com/2024/01/11/business/oil-tanker-boarded-armed-people-iran/index.html)
 
 阿布扎比 美国有线电视新闻网  —
 
@@ -32,16 +32,16 @@
 
 最大的集装箱航运公司已被迫绕过非洲，影响了贸易并推高了货运成本。[石油高管担心](https://www.cnn.com/2024/01/09/business/big-oil-ceo-war-in-middle-east-price-surge/index.html)以色列-哈马斯的战争可能升级为地区冲突，并干扰原油出口。
 
-阿曼湾北部的霍尔木兹海峡是世界上最大的石油交通要道。大约20%的世界日石油消费量每天经此地通过。周四原油价格上涨了约3%。
+阿曼湾北部的霍尔木兹海峡是世界上最大的石油交通要道。大约 20%的世界日石油消费量每天经此地通过。周四原油价格上涨了约 3%。
 
-一家海事监测网站 Tanker Trackers 表示，周四被扣押的船只是一艘马绍尔群岛旗下的Suez Rajan号原油轮，之前称为St Nkolaios。
+一家海事监测网站 Tanker Trackers 表示，周四被扣押的船只是一艘马绍尔群岛旗下的 Suez Rajan 号原油轮，之前称为 St Nkolaios。
 
 **Suez Rajan**是美国和伊朗之间争端的核心，根据美国司法部的新闻稿，去年法庭裁定该船用于“秘密出售和运输伊朗原油至国外的客户”，于是被美国政府扣押。
 
 根据法庭文件显示，美国司法部表示，“多个机构”与伊斯兰革命卫队有关联，参与了“掩盖原油来源并非法向中国出售”的计划。
 
-**美国司法部**当时扣押了近100万桶伊朗原油。
+**美国司法部**当时扣押了近 100 万桶伊朗原油。
 
-**帝国航运**是去年四月运载原油的货船的经营公司，它承认了**密谋违反国际紧急经济权力法案**罪名。根据美国司法部的说法，Suez Rajan将走私品运往美国，并且“支付了与货船航行到美国相关的重大费用”。
+**帝国航运**是去年四月运载原油的货船的经营公司，它承认了**密谋违反国际紧急经济权力法案**罪名。根据美国司法部的说法，Suez Rajan 将走私品运往美国，并且“支付了与货船航行到美国相关的重大费用”。
 
-CNN已经联系了帝国航运以获取评论。
+CNN 已经联系了帝国航运以获取评论。

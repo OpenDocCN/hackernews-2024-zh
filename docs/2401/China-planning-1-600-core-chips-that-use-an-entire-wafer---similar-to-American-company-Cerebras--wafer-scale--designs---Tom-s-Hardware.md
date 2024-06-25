@@ -8,7 +8,7 @@ category: 未分类
 
 # China planning 1,600-core chips that use an entire wafer — similar to American company Cerebras 'wafer-scale' designs | Tom's Hardware
 
-> 来源：[https://www.tomshardware.com/pc-components/cpus/china-planning-1600-core-chips-that-use-an-entire-wafer-similar-to-american-company-cerebras-wafer-scale-design](https://www.tomshardware.com/pc-components/cpus/china-planning-1600-core-chips-that-use-an-entire-wafer-similar-to-american-company-cerebras-wafer-scale-design)
+> 来源：[`www.tomshardware.com/pc-components/cpus/china-planning-1600-core-chips-that-use-an-entire-wafer-similar-to-american-company-cerebras-wafer-scale-design`](https://www.tomshardware.com/pc-components/cpus/china-planning-1600-core-chips-that-use-an-entire-wafer-similar-to-american-company-cerebras-wafer-scale-design)
 
 中国科学院计算技术研究所的科学家们介绍了一种先进的 256 核多芯片组，并计划将设计扩展到使用整个晶圆作为一个计算设备的 1,600 核芯片。
 
@@ -22,7 +22,7 @@ category: 未分类
 
 该论文探讨了光刻和芯片组技术的极限，并讨论了这种新架构对未来计算需求的潜力。研究人员指出，多芯片组设计可以用于构建百亿亿次超级计算机的处理器，这是今天 AMD 和 Intel 所做的事情。
 
-“对于当前和未来的百亿亿次计算，我们预测分层芯片组架构将成为一种强大而灵活的解决方案，” 研究人员写道。“分层芯片组架构设计为许多核心和许多芯片组，具有分层互连。在芯片组内部，核心使用超低延迟互连进行通信，而芯片组间则通过低延迟互连相互连接，从先进的封装技术中获益，以便在这种高可扩展性系统中将芯片组内的延迟和NUMA效应最小化。”
+“对于当前和未来的百亿亿次计算，我们预测分层芯片组架构将成为一种强大而灵活的解决方案，” 研究人员写道。“分层芯片组架构设计为许多核心和许多芯片组，具有分层互连。在芯片组内部，核心使用超低延迟互连进行通信，而芯片组间则通过低延迟互连相互连接，从先进的封装技术中获益，以便在这种高可扩展性系统中将芯片组内的延迟和 NUMA 效应最小化。”
 
 与此同时，中科院的研究人员提出使用多级存储器层次结构进行此类组装，这可能会引入编程此类设备的困难。
 
@@ -30,6 +30,6 @@ category: 未分类
 
 “内存层次结构包含核心内存 [高速缓存]、芯片组内存和芯片组外存储器，” 描述中写道。“这三个级别的内存在内存带宽、延迟、功耗和成本方面有所不同。在分层芯片组架构概述中，多个核心通过交叉开关连接，并共享高速缓存。这形成了一个 pod 结构，而 pod 则通过芯片组内网络相互连接。多个 pod 组成一个芯片组，而芯片组通过芯片组间网络连接，然后连接到芯片组外存储器。需要精心设计才能充分利用这种层次结构。合理利用内存带宽以平衡不同计算层次的工作负载，可以显著提高芯片组系统的效率。正确设计通信网络资源可以确保芯片组共同执行共享内存任务。”
 
-大芯片设计还可以利用光电子计算、近存储计算和3D堆叠内存等技术。然而，该论文没有具体说明这些技术的实现细节，也没有解决这些复杂系统设计和构建中可能遇到的挑战。
+大芯片设计还可以利用光电子计算、近存储计算和 3D 堆叠内存等技术。然而，该论文没有具体说明这些技术的实现细节，也没有解决这些复杂系统设计和构建中可能遇到的挑战。
 
-与此同时，The Next Platform假设中科院已经构建了其256核浙江大芯片多芯片组计算复合体。从这里开始，公司可以探索其芯片组设计的性能，然后根据系统中的核心数量、不同类别的内存和晶圆尺寸集成等因素做出决策。
+与此同时，The Next Platform 假设中科院已经构建了其 256 核浙江大芯片多芯片组计算复合体。从这里开始，公司可以探索其芯片组设计的性能，然后根据系统中的核心数量、不同类别的内存和晶圆尺寸集成等因素做出决策。

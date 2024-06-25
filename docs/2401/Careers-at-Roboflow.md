@@ -8,7 +8,7 @@ date: 2024-05-27 14:37:52
 
 # Roboflow 的职业生涯
 
-> 来源：[https://roboflow.com/careers](https://roboflow.com/careers)
+> 来源：[`roboflow.com/careers`](https://roboflow.com/careers)
 
 ## 让世界变得可编程
 

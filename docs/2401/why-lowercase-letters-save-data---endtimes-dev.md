@@ -8,7 +8,7 @@
 
 # 为什么小写字母能节省数据 | endtimes.dev
 
-> 来源：[https://endtimes.dev/why-lowercase-letters-save-data/](https://endtimes.dev/why-lowercase-letters-save-data/)
+> 来源：[`endtimes.dev/why-lowercase-letters-save-data/`](https://endtimes.dev/why-lowercase-letters-save-data/)
 
 <main class="text-content post-main">
 
@@ -30,7 +30,7 @@
 
 +   展示一些例子，说明这种知识如何**系统地节省数据**。
 
-## 为什么小写字母能节省数据？[ #](#why-do-lowercase-letters-save-data)
+## 为什么小写字母能节省数据？ #
 
 文本压缩在以下情况下更有效…
 
@@ -44,13 +44,13 @@
 
 要理解为什么这样做有效，您需要
 
-## 文本压缩如何工作？[ #](#how-does-text-compression-work)
+## 文本压缩如何工作？ #
 
 要解释文本压缩的工作原理，我们将专门看一下通常用于 `zip` 文件的 `deflate` 算法。其他算法的原理也是相同的。
 
 Deflate 使用两种压缩方法 — `Huffman 编码` 和 `LZSS` — 这两种压缩方法都受到用小写字母替换大写字母的影响。
 
-### Huffman 编码[ #](#huffman-encoding)
+### Huffman 编码 #
 
 Deflate 算法以 `Huffman 编码` 开始。
 
@@ -78,11 +78,11 @@ Deflate 算法以 `Huffman 编码` 开始。
 
 文本 `Baobab` 将被压缩为 `100001110011`。
 
-单词`Baobab`包含四个不同的字符，我们能做的最好的就是给它们每个一个`2位`的序列。
+单词`Baobab`包含四个不同的字符，我们能做的最好的就是给它们每个一个`2 位`的序列。
 
 但是如果我们将`B`变成小写，我们只会有三个不同的字符，我们可以再进一步。
 
-我们可以改变编码，使得最频繁使用的字符`b`只用`1位`表示。将`baobab`的压缩版本减少为`101001011`
+我们可以改变编码，使得最频繁使用的字符`b`只用`1 位`表示。将`baobab`的压缩版本减少为`101001011`
 
 我们使用`哈夫曼编码`来做到这一点。
 
@@ -114,7 +114,7 @@ Deflate 算法以 `Huffman 编码` 开始。
 
 在我们的文本中更频繁出现的字符需要在树上向下爬的距离更短 — 因此可以用更少的`1s`和`0s`进行编码。
 
-### 较小的树可以节省更多[ #](#more-savings-with-smaller-trees)
+### 较小的树可以节省更多 #
 
 我们无法在没有树的情况下解码`哈夫曼编码`。所以当我们发送用`哈夫曼编码`压缩的文本时，我们也会发送树。
 
@@ -122,7 +122,7 @@ Deflate 算法以 `Huffman 编码` 开始。
 
 例如，如果我们将文本“解压缩是压缩委员会的任务”从`标题大小写`改为`句子大小写`，我们就不需要一个树中的大写`M`和`C`。这使得我们的压缩更有效 —— 但也使`哈夫曼树`更小。
 
-## LZSS[ #](#lzss)
+## LZSS #
 
 `Deflate`还使用另一种压缩方法。它首先用`哈夫曼编码`压缩数据，然后再使用`Lempel-Ziv-Storer-Szymanski（LZSS）`算法。
 
@@ -138,25 +138,25 @@ Deflate 算法以 `Huffman 编码` 开始。
 
 在下面的输入中尝试一下。看看删除大写字母如何导致更多的重复序列 — 以及更少的字节。
 
-## 小写能节省多少数据？[ #](#how-much-data-can-lowercase-save)
+## 小写能节省多少数据？ #
 
 在你开始转换所有字母为小写之前，请记住在线资源浪费中还有更糟糕的例子。*例如，未经优化的图像、自动播放的视频、未使用的 JavaScript。* 首先解决这些问题！
 
 但话虽如此，小写确实非常有效。这里是一个例子：
 
-### 在 Hacker News 上用句子大小写替换标题大小写[ #](#replacing-title-case-with-sentence-case-on-hacker-news)
+### 在 Hacker News 上用句子大小写替换标题大小写 #
 
 如介绍中所述 — 我将 Hacker News 的首页标题改写为`sentence case`而不是`title case`。
 
-每个`html`文件的字符数完全相同 — 但压缩成zip文件后，`title case`文件为`5,992字节`，而`sentence case`文件为`5,961字节`。节省了`31字节`！
+每个`html`文件的字符数完全相同 — 但压缩成 zip 文件后，`title case`文件为`5,992 字节`，而`sentence case`文件为`5,961 字节`。节省了`31 字节`！
 
 也许不多，但这对于使标题更易于阅读来说是一个不错的副作用。
 
-使用[sustainablewebdesign.org](https://sustainablewebdesign.org/calculating-digital-emissions/)提供的公式告诉我们，如果以`sentence case`编写，则每次访问 Hacker News 将节省`0.00001059642克`的碳。
+使用[sustainablewebdesign.org](https://sustainablewebdesign.org/calculating-digital-emissions/)提供的公式告诉我们，如果以`sentence case`编写，则每次访问 Hacker News 将节省`0.00001059642 克`的碳。
 
-假设 Hacker News 每天约有`1000万`次访问，转换为句子大小写将每天节省`105克`的碳。这相当于每年燃烧`4.3`加仑的汽油。足够驾驶一辆 Mini Cooper `137.6英里` — 大约等于斯里兰卡的宽度。
+假设 Hacker News 每天约有`1000 万`次访问，转换为句子大小写将每天节省`105 克`的碳。这相当于每年燃烧`4.3`加仑的汽油。足够驾驶一辆 Mini Cooper `137.6 英里` — 大约等于斯里兰卡的宽度。
 
-## 对大小写不敏感的代码进行系统转换为小写。[ #](#systematically-lowercasing-case%E2%80%91insensitive-code)
+## 对大小写不敏感的代码进行系统转换为小写。 #
 
 一些代码压缩工具会在压缩后自动将一些代码转换为小写，以节省一些字节 — 但这并不常见，也不一直适用。
 
@@ -168,7 +168,7 @@ Deflate 算法以 `Huffman 编码` 开始。
 <!DOCTYPE html>
 ```
 
-但是[`HTML5`规范说明不区分大小写](https://html.spec.whatwg.org/multipage/syntax.html#the-doctype)，所以一个`html压缩工具`可以通过将其更改为以下内容节省一些数据：
+但是[`HTML5`规范说明不区分大小写](https://html.spec.whatwg.org/multipage/syntax.html#the-doctype)，所以一个`html 压缩工具`可以通过将其更改为以下内容节省一些数据：
 
 ```
 <!doctype html>
@@ -176,7 +176,7 @@ Deflate 算法以 `Huffman 编码` 开始。
 
 这些优化已经被[`html-minifier`](https://github.com/kangax/html-minifier/issues/822)实现，但其他工具未实现。
 
-### 一些可转换为小写的代码示例[ #](#some-examples-of-lowercase%E2%80%91able-code)
+### 一些可转换为小写的代码示例 #
 
 有许多可以转换为小写以节省数据的代码示例。以下是一些通常大写但不需要的示例。
 
@@ -184,11 +184,11 @@ Deflate 算法以 `Huffman 编码` 开始。
 
 发布
 
-2023年11月25日
+2023 年 11 月 25 日
 
 修改
 
-2023年11月25日
+2023 年 11 月 25 日
 
 作者
 

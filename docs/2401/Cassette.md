@@ -8,7 +8,7 @@
 
 # Cassette
 
-> 来源：[https://cassette-lang.com](https://cassette-lang.com)
+> 来源：[`cassette-lang.com`](https://cassette-lang.com)
 
 Cassette 是一种小型的、类似 Lisp 的编程语言。它看起来像这样：
 

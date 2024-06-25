@@ -8,7 +8,7 @@ date: 2024-05-27 14:28:58
 
 # Rails 7.1 引入了枚举的验证选项 | Saeloun 博客
 
-> 来源：[https://blog.saeloun.com/2024/01/02/rails-enums-validate-option/](https://blog.saeloun.com/2024/01/02/rails-enums-validate-option/)
+> 来源：[`blog.saeloun.com/2024/01/02/rails-enums-validate-option/`](https://blog.saeloun.com/2024/01/02/rails-enums-validate-option/)
 
 枚举是一种数据类型，允许我们定义一组命名常量。Rails 7.1 通过引入`:validate`选项，枚举处理得到了显著的增强。
 

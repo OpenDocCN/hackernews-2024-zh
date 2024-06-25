@@ -8,7 +8,7 @@
 
 # 中情局关于破坏会议的 1944 年指南 — 正宗沟通战略顾问公司
 
-> 来源：[https://www.authenticcomms.co.uk/blog/the-1944-cia-guide-to-sabotaging-meetings](https://www.authenticcomms.co.uk/blog/the-1944-cia-guide-to-sabotaging-meetings)
+> 来源：[`www.authenticcomms.co.uk/blog/the-1944-cia-guide-to-sabotaging-meetings`](https://www.authenticcomms.co.uk/blog/the-1944-cia-guide-to-sabotaging-meetings)
 
 # 谁写了中情局的“破坏会议”指南，为什么？
 

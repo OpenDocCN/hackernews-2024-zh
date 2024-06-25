@@ -2,17 +2,17 @@
 
 category: 未分类
 
-日期：2024年05月27日 14:53:19
+日期：2024 年 05 月 27 日 14:53:19
 
 -->
 
 # 环保和青年团体赢得针对挪威政府的气候法庭案件 - 绿色和平国际
 
-> 来源：[https://www.greenpeace.org/international/press-release/64831/environmental-youth-groups-win-climate-court-case-against-norwegian-state/](https://www.greenpeace.org/international/press-release/64831/environmental-youth-groups-win-climate-court-case-against-norwegian-state/)
+> 来源：[`www.greenpeace.org/international/press-release/64831/environmental-youth-groups-win-climate-court-case-against-norwegian-state/`](https://www.greenpeace.org/international/press-release/64831/environmental-youth-groups-win-climate-court-case-against-norwegian-state/)
 
 奥斯陆，挪威 - **绿色和平北欧以及挪威地球之友（Young Friends of the Earth Norway）在与挪威政府的一场历史性胜利中获得了胜利，使北海三个油气田的批准无效。**
 
-2023年11月，环境组织绿色和平北欧和青年团体挪威地球之友再次将挪威政府告上法庭。组织辩称，最近批准的三个新油气田，布雷达布利克、伊格德拉西尔和提尔文，都位于北海，违反了挪威宪法、欧洲经济区法律和挪威的国际人权承诺。他们还辩称，能源部在批准这些油田时未考虑联合国《儿童权利公约》，因此使得这些批准无效。
+2023 年 11 月，环境组织绿色和平北欧和青年团体挪威地球之友再次将挪威政府告上法庭。组织辩称，最近批准的三个新油气田，布雷达布利克、伊格德拉西尔和提尔文，都位于北海，违反了挪威宪法、欧洲经济区法律和挪威的国际人权承诺。他们还辩称，能源部在批准这些油田时未考虑联合国《儿童权利公约》，因此使得这些批准无效。
 
 “我非常高兴和宽慰法院作出了如此积极和彻底的裁决。这一裁决确定布雷达布利克、伊格德拉西尔和提尔文油气田的批准是非法的，生产必须立即停止。我们期待所有进一步的发展都会停止，”**Frode Pleym，绿色和平挪威主席**说道。
 
@@ -38,7 +38,7 @@ category: 未分类
 
 **备注：**
 
-[1] 具体来说，法院裁定，石油法规第20条及其后续条款，即要求进行影响评估的规定，必须根据挪威宪法第112条进行解释。它参考了2020年最高法院的判决，认为第112条应该涵盖石油生产和消费的排放，即使燃烧在挪威以外。法院裁定，国家必须在批准油气田之前评估由石油开发和运营产生的两种温室气体排放的实际影响，并且必须对是否批准违反挪威宪法第112条进行实际测试。
+[1] 具体来说，法院裁定，石油法规第 20 条及其后续条款，即要求进行影响评估的规定，必须根据挪威宪法第 112 条进行解释。它参考了 2020 年最高法院的判决，认为第 112 条应该涵盖石油生产和消费的排放，即使燃烧在挪威以外。法院裁定，国家必须在批准油气田之前评估由石油开发和运营产生的两种温室气体排放的实际影响，并且必须对是否批准违反挪威宪法第 112 条进行实际测试。
 
 **联系人：**
 
@@ -48,4 +48,4 @@ Gytis Blaževičius，挪威地球之友（Young Friends of the Earth Norway）�
 
 [[email protected]](/cdn-cgi/l/email-protection)，+47 452 97 542
 
-绿色和平国际新闻部：[[email protected]](/cdn-cgi/l/email-protection)，+31 (0) 20 718 2470（24小时服务）。关注[@greenpeacepress](https://twitter.com/Greenpeacepress)获取我们最新的国际新闻稿。
+绿色和平国际新闻部：[[email protected]](/cdn-cgi/l/email-protection)，+31 (0) 20 718 2470（24 小时服务）。关注[@greenpeacepress](https://twitter.com/Greenpeacepress)获取我们最新的国际新闻稿。

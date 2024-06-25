@@ -8,13 +8,13 @@
 
 # "1195725856" 和其他神秘数字
 
-> 来源：[https://chrisdown.name/2020/01/13/1195725856-and-friends-the-origins-of-mysterious-numbers.html](https://chrisdown.name/2020/01/13/1195725856-and-friends-the-origins-of-mysterious-numbers.html)
+> 来源：[`chrisdown.name/2020/01/13/1195725856-and-friends-the-origins-of-mysterious-numbers.html`](https://chrisdown.name/2020/01/13/1195725856-and-friends-the-origins-of-mysterious-numbers.html)
 
 # "1195725856" 和其他神秘数字
 
-上周是Facebook本半年绩效审查的最后一周，我们在此期间撰写了关于我们和同事在过去半年中的工作和影响的总结。自然而然，这只能意味着一件事：整个公司都趋向于达到拖延的巅峰水平，不惜一切代价地做任何事情来避免不可言喻的恐怖，即写几段文字的不可避免。
+上周是 Facebook 本半年绩效审查的最后一周，我们在此期间撰写了关于我们和同事在过去半年中的工作和影响的总结。自然而然，这只能意味着一件事：整个公司都趋向于达到拖延的巅峰水平，不惜一切代价地做任何事情来避免不可言喻的恐怖，即写几段文字的不可避免。
 
-在最后期限前几天，我个人的分心选择是看着这样的行，从一些提供NFS流量的主机中不断发送：
+在最后期限前几天，我个人的分心选择是看着这样的行，从一些提供 NFS 流量的主机中不断发送：
 
 ```
 RPC: fragment too large: 1195725856
@@ -42,14 +42,14 @@ static inline u32 svc_sock_reclen(struct svc_sock *svsk)
 }
 ```
 
-`ntohl`将一个uint从网络字节顺序转换为主机的字节顺序。与`RPC_FRAGMENT_SIZE_MASK`进行的按位`AND`导致只保留了一些数据，查看定义显示了我们保留了多少位：
+`ntohl`将一个 uint 从网络字节顺序转换为主机的字节顺序。与`RPC_FRAGMENT_SIZE_MASK`进行的按位`AND`导致只保留了一些数据，查看定义显示了我们保留了多少位：
 
 ```
 #define RPC_LAST_STREAM_FRAGMENT (1U << 31)
 #define RPC_FRAGMENT_SIZE_MASK   (~RPC_LAST_STREAM_FRAGMENT)
 ```
 
-好的，我们将只保留前31位并清除高位比特，因为`~`是按位`NOT`。
+好的，我们将只保留前 31 位并清除高位比特，因为`~`是按位`NOT`。
 
 这意味着这些数字来自片段的前四个字节，省略了最高位，该位保留用于记录该片段是否为此记录的最后一个片段（参见[`svc_sock_final_rec`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/sunrpc/svcsock.h?h=v5.4#n47)）。特别是错误发生得如此早的片段解析让我想到，片段可能根本不符合协议，因为我们根本没有进行到任何地方的处理，甚至没有超过前四个字节。那么，那么*这*四个字节是什么呢？查看十六进制数中的数字显示了一些有趣的东西：
 
@@ -61,7 +61,7 @@ static inline u32 svc_sock_reclen(struct svc_sock *svsk)
 '0x48454144'
 ```
 
-这些数字都非常紧密地聚集在一起，通常从0x40到0x50，这意味着每字节可能实际上有一些语义含义。而且由于这些是`char`大小的，这里猜测可能编码了什么……
+这些数字都非常紧密地聚集在一起，通常从 0x40 到 0x50，这意味着每字节可能实际上有一些语义含义。而且由于这些是`char`大小的，这里猜测可能编码了什么……
 
 ```
 >>> '\x47\x45\x54\x20'
@@ -70,9 +70,9 @@ static inline u32 svc_sock_reclen(struct svc_sock *svsk)
 'HEAD'
 ```
 
-哦亲爱的。有人正在向NFS RPC发送HTTP请求，但至少我们直接拒绝了片段，而不是实际分配并使一千兆字节的内存脏。
+哦亲爱的。有人正在向 NFS RPC 发送 HTTP 请求，但至少我们直接拒绝了片段，而不是实际分配并使一千兆字节的内存脏。
 
-接下来是找出到底是谁在发送这些请求。`rpcinfo -p`显示NFS正在监听默认端口2049，所以我们可以像这样设置tcpdump陷阱：
+接下来是找出到底是谁在发送这些请求。`rpcinfo -p`显示 NFS 正在监听默认端口 2049，所以我们可以像这样设置 tcpdump 陷阱：
 
 ```
 tcpdump -i any -w trap.pcap dst port 2049

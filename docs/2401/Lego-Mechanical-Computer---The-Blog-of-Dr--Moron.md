@@ -6,19 +6,19 @@
 
 -->
 
-# 乐高机械计算机 - Moron博士的博客
+# 乐高机械计算机 - Moron 博士的博客
 
-> 来源：[https://www.drmoron.org/posts/mechanical-computer/](https://www.drmoron.org/posts/mechanical-computer/)
+> 来源：[`www.drmoron.org/posts/mechanical-computer/`](https://www.drmoron.org/posts/mechanical-computer/)
 
 不久前，我参与了关于使用机械装置来演示计算概念的讨论（比如用火柴盒构建[学习井字棋游戏](http://boingboing.net/2009/11/02/mechanical-computer.html)）。这让我开始思考使用机械装置进行计算的不同方式，无论这种计算是否有用。我觉得我家里有足够多的乐高积木可以做一些有趣的东西。
 
-我首先想到了一些更有名的早期计算机，比如[Pascal的计算器](http://en.wikipedia.org/wiki/Pascal's_calculator)和[Babbage的差分机](http://en.wikipedia.org/wiki/Difference_engine)。但我选择不去实现它们。也许部分原因是它们在机械上很复杂，但也因为它们缺少了我们在计算中视为理所当然的一些基本组件。我想要的是一种具有可以保存状态并根据该状态执行操作的记忆形式。我还想要一些我可以通过改变状态转换逻辑来“编程”的东西。
+我首先想到了一些更有名的早期计算机，比如[Pascal 的计算器](http://en.wikipedia.org/wiki/Pascal's_calculator)和[Babbage 的差分机](http://en.wikipedia.org/wiki/Difference_engine)。但我选择不去实现它们。也许部分原因是它们在机械上很复杂，但也因为它们缺少了我们在计算中视为理所当然的一些基本组件。我想要的是一种具有可以保存状态并根据该状态执行操作的记忆形式。我还想要一些我可以通过改变状态转换逻辑来“编程”的东西。
 
-我最终转向了一款聪明的玩具，名为[Digi-Comp I](http://en.wikipedia.org/wiki/Digi-Comp_I)，它是在1960年代制造的。Digi-Comp I是一款简单的3位机器，可以通过在其侧面添加或移除销来编程。恰好，一家名为[Minds-On Toys](http://mindsontoys.com)的公司最近开始销售[复制版Digi-Comp I套件](http://mindsontoys.com/kits.htm?dc1_main.htm)。一个理性的人可能只会买来组装一个。但不是我。
+我最终转向了一款聪明的玩具，名为[Digi-Comp I](http://en.wikipedia.org/wiki/Digi-Comp_I)，它是在 1960 年代制造的。Digi-Comp I 是一款简单的 3 位机器，可以通过在其侧面添加或移除销来编程。恰好，一家名为[Minds-On Toys](http://mindsontoys.com)的公司最近开始销售[复制版 Digi-Comp I 套件](http://mindsontoys.com/kits.htm?dc1_main.htm)。一个理性的人可能只会买来组装一个。但不是我。
 
-我想自己制作一个设备来证明我自己能做到。我从Digi-Comp设计中借鉴了很多东西，并最终得到了一个运行相当不错的东西。我的计算机只有两位而不是三位，而且我没有一个好的时钟机制，但它非常紧凑并且运行得相当好。这里有一个它操作的视频。
+我想自己制作一个设备来证明我自己能做到。我从 Digi-Comp 设计中借鉴了很多东西，并最终得到了一个运行相当不错的东西。我的计算机只有两位而不是三位，而且我没有一个好的时钟机制，但它非常紧凑并且运行得相当好。这里有一个它操作的视频。
 
-[https://www.youtube.com/embed/LfFbX2GgPnE](https://www.youtube.com/embed/LfFbX2GgPnE)
+[`www.youtube.com/embed/LfFbX2GgPnE`](https://www.youtube.com/embed/LfFbX2GgPnE)
 
 视频
 
@@ -42,9 +42,9 @@
 
 幸运的是，有一个简单的方法可以解决所有这些问题。这种方法通过完全不使用门来构建触发器，从而绕过了所有这些问题。下面展示了一个简单的设备。
 
-一个输出为0的机械 SR 触发器。
+一个输出为 0 的机械 SR 触发器。
 
-一个输出为1的机械 SR 触发器。
+一个输出为 1 的机械 SR 触发器。
 
 没错。机械触发器是一根棍子。我添加了一些标签来定义 SR 实现和一个柱子来清楚地标记位置，但最终触发器只是你来回推动的一根棍子。与电子不同，棍子（实际上大多数物理事物）倾向于保持不动，因此你可以通过它们所处的位置来表示状态。
 

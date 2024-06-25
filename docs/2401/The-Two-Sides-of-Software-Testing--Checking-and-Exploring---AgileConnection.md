@@ -8,7 +8,7 @@
 
 # 软件测试的两面：检查与探索 | 敏捷连接
 
-> 来源：[https://www.agileconnection.com/article/two-sides-software-testing-checking-and-exploring](https://www.agileconnection.com/article/two-sides-software-testing-checking-and-exploring)
+> 来源：[`www.agileconnection.com/article/two-sides-software-testing-checking-and-exploring`](https://www.agileconnection.com/article/two-sides-software-testing-checking-and-exploring)
 
 许多年前，在一次会议的走廊交谈中，一位测试经理和我讨论了我们各自的测试方法。
 
@@ -48,7 +48,7 @@
 
 然后我应该被重定向到编辑个人资料页面
 
-(此示例采用了行为驱动开发（BDD）社区推广的Given/When/Then风格，并与Cucumber等BDD工具相关联。)
+(此示例采用了行为驱动开发（BDD）社区推广的 Given/When/Then 风格，并与 Cucumber 等 BDD 工具相关联。)
 
 您可能会注意到，当我们以此类期望的具体示例形式捕获验收标准时，它们看起来很像脚本化测试。我们也像脚本化测试一样使用它们；我们不仅在首次发布功能时检查这些期望是否得到满足，还在后续的回归测试中验证系统是否仍然满足这些期望。由于敏捷团队重视快速反馈并且需要频繁运行这些测试，我们自动化这些检查以将回归测试的负担控制在可管理的水平。
 

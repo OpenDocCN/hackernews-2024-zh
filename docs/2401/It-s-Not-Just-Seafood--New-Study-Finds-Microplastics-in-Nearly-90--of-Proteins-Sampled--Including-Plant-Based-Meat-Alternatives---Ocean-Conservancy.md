@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:37:44
+日期：2024 年 05 月 27 日 14:37:44
 
 -->
 
-# 不仅仅是海鲜：新研究发现，近90％的蛋白质样本中含有微塑料，包括植物基肉类替代品 - 海洋保护协会
+# 不仅仅是海鲜：新研究发现，近 90％的蛋白质样本中含有微塑料，包括植物基肉类替代品 - 海洋保护协会
 
-> 来源：[https://oceanconservancy.org/news/its-not-just-seafood-new-study-finds-microplastics-in-nearly-90-of-proteins-sampled-including-plant-based-meat-alternatives/](https://oceanconservancy.org/news/its-not-just-seafood-new-study-finds-microplastics-in-nearly-90-of-proteins-sampled-including-plant-based-meat-alternatives/)
+> 来源：[`oceanconservancy.org/news/its-not-just-seafood-new-study-finds-microplastics-in-nearly-90-of-proteins-sampled-including-plant-based-meat-alternatives/`](https://oceanconservancy.org/news/its-not-just-seafood-new-study-finds-microplastics-in-nearly-90-of-proteins-sampled-including-plant-based-meat-alternatives/)
 
 **注意：**
 

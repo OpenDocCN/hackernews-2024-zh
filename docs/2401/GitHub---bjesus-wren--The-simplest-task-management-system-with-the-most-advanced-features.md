@@ -8,7 +8,7 @@ date: 2024-05-27 15:21:19
 
 # GitHub - bjesus/wren: The simplest task management system with the most advanced features
 
-> 来源：[https://github.com/bjesus/wren](https://github.com/bjesus/wren)
+> 来源：[`github.com/bjesus/wren`](https://github.com/bjesus/wren)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

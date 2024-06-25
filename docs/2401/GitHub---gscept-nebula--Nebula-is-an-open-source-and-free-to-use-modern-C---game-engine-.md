@@ -8,7 +8,7 @@
 
 # GitHub - gscept/nebula：Nebula 是一个开源且免费使用的现代 C++ 游戏引擎。
 
-> 来源：[https://github.com/gscept/nebula](https://github.com/gscept/nebula)
+> 来源：[`github.com/gscept/nebula`](https://github.com/gscept/nebula)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

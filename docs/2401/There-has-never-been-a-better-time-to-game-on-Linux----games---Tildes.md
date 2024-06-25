@@ -8,7 +8,7 @@
 
 # 如今是在 Linux 上玩游戏的最佳时机 - ~games - Tildes
 
-> 来源：[https://tildes.net/~games/1dcj/there_has_never_been_a_better_time_to_game_on_linux](https://tildes.net/~games/1dcj/there_has_never_been_a_better_time_to_game_on_linux)
+> 来源：[`tildes.net/~games/1dcj/there_has_never_been_a_better_time_to_game_on_linux`](https://tildes.net/~games/1dcj/there_has_never_been_a_better_time_to_game_on_linux)
 
 自从 Valve 发布了 Proton 以来，我基本上一直在全职使用 Linux。我还记得在 ProtonDB 只是一个共享的 Google 表时就向其提交报告！在接下来的几年里，我一直坚持测试和报告不同游戏在新版本的 Proton 发布和支持改善后的情况。我认为我们有一个好的数据集来记录什么有效，什么无效是很重要的。在这些年里，我测试了数百款游戏，并向数据库提交了同样数量的报告。
 

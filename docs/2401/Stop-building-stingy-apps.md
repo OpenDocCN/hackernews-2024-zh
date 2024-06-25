@@ -8,7 +8,7 @@
 
 # 停止制作吝啬的应用
 
-> 来源：[https://blog.usmanity.com/stop-building-stingy-apps/](https://blog.usmanity.com/stop-building-stingy-apps/)
+> 来源：[`blog.usmanity.com/stop-building-stingy-apps/`](https://blog.usmanity.com/stop-building-stingy-apps/)
 
 你是一个贪婪的小家伙吗？你的应用程序里有专有数据吗？你是在建造一座长满杂草的围墙花园吗？停下来。停止制作囤积我的数据的应用。我们有标准格式，让我导出我的数据。不要制作当我删除你的应用时会删除我的健康数据的应用。
 

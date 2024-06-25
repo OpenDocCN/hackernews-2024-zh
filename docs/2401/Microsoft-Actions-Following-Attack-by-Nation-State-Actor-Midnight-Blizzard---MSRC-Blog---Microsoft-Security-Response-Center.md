@@ -8,11 +8,11 @@ date: 2024-05-27 14:55:07
 
 # 微软对午夜暴风这一国家级行动者的攻击的反应 | MSRC 博客 | 微软安全响应中心
 
-> 来源：[https://msrc.microsoft.com/blog/2024/01/microsoft-actions-following-attack-by-nation-state-actor-midnight-blizzard/](https://msrc.microsoft.com/blog/2024/01/microsoft-actions-following-attack-by-nation-state-actor-midnight-blizzard/)
+> 来源：[`msrc.microsoft.com/blog/2024/01/microsoft-actions-following-attack-by-nation-state-actor-midnight-blizzard/`](https://msrc.microsoft.com/blog/2024/01/microsoft-actions-following-attack-by-nation-state-actor-midnight-blizzard/)
 
-微软安全团队于2024年1月12日检测到对我们企业系统的国家级攻击，并立即启动了我们的响应流程，以调查、破坏恶意活动、减轻攻击并阻止威胁行为者进一步访问。微软确定了威胁行为者为[午夜暴风](https://www.microsoft.com/en-us/security/blog/tag/midnight-blizzard-nobelium/)，也就是俄罗斯政府支持的行动者，又称诺贝尔。作为我们在最近确认的[安全未来倡议](https://blogs.microsoft.com/on-the-issues/2023/11/02/secure-future-initiative-sfi-cybersecurity-cyberattacks/)（SFI）中持续承诺负责任的透明性的一部分，我们正在分享此更新。
+微软安全团队于 2024 年 1 月 12 日检测到对我们企业系统的国家级攻击，并立即启动了我们的响应流程，以调查、破坏恶意活动、减轻攻击并阻止威胁行为者进一步访问。微软确定了威胁行为者为[午夜暴风](https://www.microsoft.com/en-us/security/blog/tag/midnight-blizzard-nobelium/)，也就是俄罗斯政府支持的行动者，又称诺贝尔。作为我们在最近确认的[安全未来倡议](https://blogs.microsoft.com/on-the-issues/2023/11/02/secure-future-initiative-sfi-cybersecurity-cyberattacks/)（SFI）中持续承诺负责任的透明性的一部分，我们正在分享此更新。
 
-从2023年11月底开始，威胁行为者使用密码喷洒攻击来篡改传统非生产测试租户帐户并获得立足点，然后使用该帐户的权限访问了微软企业邮件帐户的极小部分，包括我们的高级领导团队成员以及我们的网络安全、法律和其他职能人员，并窃取了一些电子邮件和附件文件。调查表明，他们最初是针对与午夜暴风本身有关的电子邮件帐户的信息。我们正在通知被访问邮箱的员工。
+从 2023 年 11 月底开始，威胁行为者使用密码喷洒攻击来篡改传统非生产测试租户帐户并获得立足点，然后使用该帐户的权限访问了微软企业邮件帐户的极小部分，包括我们的高级领导团队成员以及我们的网络安全、法律和其他职能人员，并窃取了一些电子邮件和附件文件。调查表明，他们最初是针对与午夜暴风本身有关的电子邮件帐户的信息。我们正在通知被访问邮箱的员工。
 
 这次攻击不是微软产品或服务的漏洞造成的。迄今为止，没有证据表明威胁行为者可以访问客户环境、生产系统、源代码或人工智能系统。如果需要采取任何行动，我们将通知客户。
 

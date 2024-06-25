@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:40
 
 # 复制危机是否可复制？- Ben Recht
 
-> 来源：[https://www.argmin.net/p/is-the-reproducibility-crisis-reproducible](https://www.argmin.net/p/is-the-reproducibility-crisis-reproducible)
+> 来源：[`www.argmin.net/p/is-the-reproducibility-crisis-reproducible`](https://www.argmin.net/p/is-the-reproducibility-crisis-reproducible)
 
 在我冬季休假前不久，[Andrew Gelman 和他的合作者们发表了一篇论文，声称大多数临床试验的功效不足](https://statmodeling.stat.columbia.edu/2023/12/23/bayesians-moving-from-defense-to-offense-i-really-think-its-kind-of-irresponsible-now-not-to-use-the-information-from-all-those-thousands-of-medical-trials-that-came-before-is-that-very/)，引起了社交媒体的轰动。在一篇 *[NEJM Evidence](https://evidence.nejm.org/doi/full/10.1056/EVIDoa2300003)* 的论文中，他们把目光投向了每个人都喜欢批评的总结统计量，即 p 值。Gelman 将这篇论文称为“贝叶斯人由防守转向进攻”。合作者包括经济学诺贝尔奖获得者 Guido Imbens 和多产的流行病学家 Sander Greenland。论文中包含了诸如以下的声明：
 

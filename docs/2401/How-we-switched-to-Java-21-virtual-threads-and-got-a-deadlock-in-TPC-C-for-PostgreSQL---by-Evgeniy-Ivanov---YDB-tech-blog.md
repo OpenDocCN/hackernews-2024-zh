@@ -6,23 +6,23 @@
 
 -->
 
-# 我们如何切换到Java 21虚拟线程并在PostgreSQL的TPC-C中遇到死锁 | 作者：Evgeniy Ivanov | YDB.tech博客
+# 我们如何切换到 Java 21 虚拟线程并在 PostgreSQL 的 TPC-C 中遇到死锁 | 作者：Evgeniy Ivanov | YDB.tech 博客
 
-> 来源：[https://blog.ydb.tech/how-we-switched-to-java-21-virtual-threads-and-got-deadlock-in-tpc-c-for-postgresql-cca2fe08d70b](https://blog.ydb.tech/how-we-switched-to-java-21-virtual-threads-and-got-deadlock-in-tpc-c-for-postgresql-cca2fe08d70b)
+> 来源：[`blog.ydb.tech/how-we-switched-to-java-21-virtual-threads-and-got-deadlock-in-tpc-c-for-postgresql-cca2fe08d70b`](https://blog.ydb.tech/how-we-switched-to-java-21-virtual-threads-and-got-deadlock-in-tpc-c-for-postgresql-cca2fe08d70b)
 
-# **我们如何切换到Java 21虚拟线程并在PostgreSQL的TPC-C中遇到死锁**
+# **我们如何切换到 Java 21 虚拟线程并在 PostgreSQL 的 TPC-C 中遇到死锁**
 
-Java 21的餐馆哲学家有问题
+Java 21 的餐馆哲学家有问题
 
-在我们之前的[文章](/ydb-meets-tpc-c-distributed-transactions-performance-now-revealed-42f1ed44bd73)中讨论了TPC-C的一些缺点，这些缺点来自于[Benchbase](https://github.com/cmu-db/benchbase)项目的原始实现（尽管这个项目仍然很棒）。其中一个缺点是由于生成了太多物理线程而导致的并发限制，我们通过切换到Java 21虚拟线程来解决了这个问题。后来我们发现，和往常一样，没有免费的午餐。在这篇文章中，我们提供了一个案例研究，介绍了我们如何在TPC-C中遇到了虚拟线程在PostgreSQL中的死锁问题，即使没有餐馆哲学家问题。
+在我们之前的文章中讨论了 TPC-C 的一些缺点，这些缺点来自于[Benchbase](https://github.com/cmu-db/benchbase)项目的原始实现（尽管这个项目仍然很棒）。其中一个缺点是由于生成了太多物理线程而导致的并发限制，我们通过切换到 Java 21 虚拟线程来解决了这个问题。后来我们发现，和往常一样，没有免费的午餐。在这篇文章中，我们提供了一个案例研究，介绍了我们如何在 TPC-C 中遇到了虚拟线程在 PostgreSQL 中的死锁问题，即使没有餐馆哲学家问题。
 
-这篇文章可能对考虑切换到虚拟线程的Java开发人员有所帮助。我们首先复习了一些基本背景，然后强调了虚拟线程背后的一个重要问题：死锁可能是不可预测的，因为它们可能发生在你使用的库的深处。幸运的是，调试是直接了当的，我们解释了如何在发生死锁时找到它们。
+这篇文章可能对考虑切换到虚拟线程的 Java 开发人员有所帮助。我们首先复习了一些基本背景，然后强调了虚拟线程背后的一个重要问题：死锁可能是不可预测的，因为它们可能发生在你使用的库的深处。幸运的是，调试是直接了当的，我们解释了如何在发生死锁时找到它们。
 
-# 为什么在YDB博客中谈论PostgreSQL
+# 为什么在 YDB 博客中谈论 PostgreSQL
 
-PostgreSQL是一个以其高性能、丰富的功能集、高级SQL兼容性水平和充满活力和支持性社区而闻名的开源数据库管理系统。直到你考虑到水平扩展性和容错性为止，它都很棒。然后，你会得到基于PostgreSQL的第三方解决方案，如Citus，它们实现了分片的PostgreSQL。拥有一只大象可能很有趣。成为一群大象的驭象人是一个挑战，特别是如果你想让这些大象维护多个一致的副本并执行具有可序列化隔离的分布式事务。
+PostgreSQL 是一个以其高性能、丰富的功能集、高级 SQL 兼容性水平和充满活力和支持性社区而闻名的开源数据库管理系统。直到你考虑到水平扩展性和容错性为止，它都很棒。然后，你会得到基于 PostgreSQL 的第三方解决方案，如 Citus，它们实现了分片的 PostgreSQL。拥有一只大象可能很有趣。成为一群大象的驭象人是一个挑战，特别是如果你想让这些大象维护多个一致的副本并执行具有可序列化隔离的分布式事务。
 
-与此相反，[YDB](https://ydb.tech/)是一个按其原始设计分布式数据库管理系统。 YDB的分布式事务是一流的公民，并且默认情况下以可序列化隔离级别运行。现在，我们正在积极地向PostgreSQL兼容性迈进，因为我们看到PostgreSQL用户中有很强的需求，希望他们的现有应用程序能够自动扩展和容错。这就是为什么我们维护[TPC-C for PostgreSQL](https://github.com/ydb-platform/tpcc)（我们希望很快将其合并到上游Benchbase中）。
+与此相反，[YDB](https://ydb.tech/)是一个按其原始设计分布式数据库管理系统。 YDB 的分布式事务是一流的公民，并且默认情况下以可序列化隔离级别运行。现在，我们正在积极地向 PostgreSQL 兼容性迈进，因为我们看到 PostgreSQL 用户中有很强的需求，希望他们的现有应用程序能够自动扩展和容错。这就是为什么我们维护[TPC-C for PostgreSQL](https://github.com/ydb-platform/tpcc)（我们希望很快将其合并到上游 Benchbase 中）。
 
 # 一个非常简短的背景和动机
 
@@ -66,7 +66,7 @@ userNameFuture.get(); // wait for the completion of your request
 
 # 死锁变得简单了
 
-想象一下，您已经有了多线程Java代码。添加一个选项来使用虚拟线程非常容易，并且可能非常有益。通过简单地将标准线程创建替换为新的虚拟线程构建器，您的应用程序可以处理数千个并发任务，而无需与物理线程相关的开销。以下是我们TPC-C实现的一个[示例](https://github.com/ydb-platform/tpcc/blob/c8474bc7cf40456de0fe4c7fb060d867dd985ede/src/main/java/com/oltpbenchmark/ThreadBench.java#L65-L69)：
+想象一下，您已经有了多线程 Java 代码。添加一个选项来使用虚拟线程非常容易，并且可能非常有益。通过简单地将标准线程创建替换为新的虚拟线程构建器，您的应用程序可以处理数千个并发任务，而无需与物理线程相关的开销。以下是我们 TPC-C 实现的一个[示例](https://github.com/ydb-platform/tpcc/blob/c8474bc7cf40456de0fe4c7fb060d867dd985ede/src/main/java/com/oltpbenchmark/ThreadBench.java#L65-L69)：
 
 ```
 if (useRealThreads) {
@@ -76,13 +76,13 @@ if (useRealThreads) {
 }
 ```
 
-就是这样；现在，您正在使用虚拟线程。在幕后，Java虚拟机创建了一个`载体线程`池，用于执行您的`虚拟线程`。这种过渡看起来是无缝的，直到您的应用程序意外地冻结。
+就是这样；现在，您正在使用虚拟线程。在幕后，Java 虚拟机创建了一个`载体线程`池，用于执行您的`虚拟线程`。这种过渡看起来是无缝的，直到您的应用程序意外地冻结。
 
-我们的PostgreSQL TPC-C实现利用了[c3p0](https://www.mchange.com/projects/c3p0/)进行连接池管理。[TPC-C标准](https://www.tpc.org/tpcc/)规定每个终端必须拥有自己的连接。然而，在许多实际场景中，这并不实际，因此我们提供了一个选项来限制数据库连接数。
+我们的 PostgreSQL TPC-C 实现利用了[c3p0](https://www.mchange.com/projects/c3p0/)进行连接池管理。[TPC-C 标准](https://www.tpc.org/tpcc/)规定每个终端必须拥有自己的连接。然而，在许多实际场景中，这并不实际，因此我们提供了一个选项来限制数据库连接数。
 
 终端数量远远大于可用连接数量。因此，一些终端必须等待会话变为可用，即由另一个终端释放。
 
-当我们启动TPC-C运行时，应用程序卡住了。幸运的是，调试这种情况很简单：
+当我们启动 TPC-C 运行时，应用程序卡住了。幸运的是，调试这种情况很简单：
 
 1.  使用`jstack <PID>`捕获线程堆栈。
 
@@ -122,7 +122,7 @@ if (useRealThreads) {
         at java.util.concurrent.ForkJoinWorkerThread.run(java.base@21.0.1/ForkJoinWorkerThread.java:188)
 ```
 
-正如您所看到的，线程卡在`Object.wait()`中，这是与`synchronized`一起使用的方法。这导致载体线程被固定住，意味着它没有被释放以执行其他虚拟线程。与此同时，持有会话的线程在等待I/O操作时已经释放了它们的载体线程：
+正如您所看到的，线程卡在`Object.wait()`中，这是与`synchronized`一起使用的方法。这导致载体线程被固定住，意味着它没有被释放以执行其他虚拟线程。与此同时，持有会话的线程在等待 I/O 操作时已经释放了它们的载体线程：
 
 ```
 java.base/java.lang.VirtualThread.park(VirtualThread.java:582)

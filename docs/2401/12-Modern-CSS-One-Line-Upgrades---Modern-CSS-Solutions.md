@@ -8,17 +8,17 @@
 
 # 12 现代 CSS 一行升级 | 现代 CSS 解决方案
 
-> 来源：[https://moderncss.dev/12-modern-css-one-line-upgrades/](https://moderncss.dev/12-modern-css-one-line-upgrades/)
+> 来源：[`moderncss.dev/12-modern-css-one-line-upgrades/`](https://moderncss.dev/12-modern-css-one-line-upgrades/)
 
 有时，改进应用的 CSS 只需要一行升级或增强！了解 12 种属性，开始将它们融入到您的项目中，享受减少技术债务、删除 JavaScript 并为用户体验赢得轻松胜利。
 
 属性被探索以下类别：
 
-+   **[稳定的升级](#stable-upgrades)**：通过替换较旧的技术修复 hack 或问题
++   **稳定的升级**：通过替换较旧的技术修复 hack 或问题
 
-+   **[稳定的增强](#stable-enhancements)**：通过良好支持的现代属性提供改进的体验
++   **稳定的增强**：通过良好支持的现代属性提供改进的体验
 
-+   **[渐进式增强](#progressive-enhancements)**：在支持这些属性时提供升级的体验，而不会在不支持的浏览器中造成损害
++   **渐进式增强**：在支持这些属性时提供升级的体验，而不会在不支持的浏览器中造成损害
 
 以下受到良好支持的属性可以通过替换较旧的技术来修复 hack 或长期存在的问题。
 
@@ -94,7 +94,7 @@ margin-inline: auto;
 
 逻辑属性已经可用了几年，现在支持率已经达到[98%以上](https://caniuse.com/css-logical-props)（偶尔需要前缀）。阅读 Ahmad Shadeed 的这篇文章，了解更多关于[使用逻辑属性](https://ishadeed.com/article/css-logical-properties/)及其在面向国际观众的网站中的重要性。
 
-这些得到很好支持的现代 CSS 属性可以提供更好的体验，并且还可以替换旧的方法甚至是JavaScript辅助的解决方案。不太可能需要回退解决方案，尽管这取决于你特定的应用考虑因素，始终鼓励进行测试。
+这些得到很好支持的现代 CSS 属性可以提供更好的体验，并且还可以替换旧的方法甚至是 JavaScript 辅助的解决方案。不太可能需要回退解决方案，尽管这取决于你特定的应用考虑因素，始终鼓励进行测试。
 
 使用 `text-underline-offset` 属性允许你控制文本基线和下划线之间的距离。这个属性已经成为我的标准重置的一部分，应用如下：
 
@@ -110,7 +110,7 @@ a:not([class]) {
 
 你是否一直在使用 `box-shadow` 或者一个伪元素来在焦点时提供自定义轮廓与元素之间的距离？
 
-好消息！长期以来可用的 `outline-offset` 属性（[早在2006年](https://caniuse.com/?search=outline-offset)！）可能是你错过的一个，它允许用正值将轮廓推离元素或用负值将轮廓拉入元素内。
+好消息！长期以来可用的 `outline-offset` 属性（[早在 2006 年](https://caniuse.com/?search=outline-offset)！）可能是你错过的一个，它允许用正值将轮廓推离元素或用负值将轮廓拉入元素内。
 
 在演示中，灰色实线是元素边框，蓝色虚线是通过`outline-offset`定位的轮廓。
 
@@ -210,7 +210,7 @@ a:not([class]) {
 
 ## **渐进增强**
 
-[#](#progressive-enhancements)
+#
 
 当这些属性得到支持并且可以在不支持的浏览器中使用时，最后一组属性提供了升级的体验。这意味着即使它们是现代 CSS 的最新添加，也不需要回退方法。
 

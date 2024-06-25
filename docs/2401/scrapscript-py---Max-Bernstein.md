@@ -8,7 +8,7 @@ category: 未分类
 
 # scrapscript.py | Max Bernstein
 
-> 来源：[https://bernsteinbear.com/blog/scrapscript/](https://bernsteinbear.com/blog/scrapscript/)
+> 来源：[`bernsteinbear.com/blog/scrapscript/`](https://bernsteinbear.com/blog/scrapscript/)
 
 [Scrapscript](https://scrapscript.org/) 是一种小型、纯粹的、功能型、内容可寻址的、以网络为先的编程语言。它旨在允许创建小型、简单共享的程序。该语言由 [Taylor Troesh](https://taylor.town/) 创建，主要实现由我和 [Chris](https://www.chrisgregory.me/) 创建。
 
@@ -76,7 +76,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(self._run("1 - 2"), Int(-1)) 
 ```
 
-选择Python主要是一个怪癖。Python一般来说并不特别；它只是恰好是我和克里斯经常使用的一种语言。
+选择 Python 主要是一个怪癖。Python 一般来说并不特别；它只是恰好是我和克里斯经常使用的一种语言。
 
 ### 我们测试策略的后果
 
@@ -97,9 +97,9 @@ class Tests(unittest.TestCase):
 
 ## 为什么这个解释器与所有其他解释器不同？
 
-不是。这是一个相当标准的树遍历解释器，用于增强的lambda演算^(也许我们最终会生成字节码或其他IR并将其编译，但我们目前没有任何性能问题。而且scrapscript并不像一个“工业强度”的语言；没有人在其中编写大型应用程序，而且该语言明确不是为此设计的。)
+不是。这是一个相当标准的树遍历解释器，用于增强的 lambda 演算^(也许我们最终会生成字节码或其他 IR 并将其编译，但我们目前没有任何性能问题。而且 scrapscript 并不像一个“工业强度”的语言；没有人在其中编写大型应用程序，而且该语言明确不是为此设计的。)
 
-对我来说有点不同，因为它具有我以前从未实现过的功能！特别是，scrapscript支持一些相当广泛的模式匹配，我们不得不学习如何从零开始实现它。
+对我来说有点不同，因为它具有我以前从未实现过的功能！特别是，scrapscript 支持一些相当广泛的模式匹配，我们不得不学习如何从零开始实现它。
 
 ```
 def eval_exp(env: Env, exp: Object) -> Object:
@@ -126,7 +126,7 @@ def eval_exp(env: Env, exp: Object) -> Object:
 
 ### REPL
 
-您可能已经看过[我最近的博客文章](/blog/simple-python-repl/)，关于使用Python提供的一个很好的库构建一个功能丰富的REPL。我在学习有关scrapscript的所有内容时编写了那篇文章。Scrapscript的REPL实现非常简短，但它具有`readline`支持、制表符补全、行继续等功能。谢谢，Python！
+您可能已经看过我最近的博客文章，关于使用 Python 提供的一个很好的库构建一个功能丰富的 REPL。我在学习有关 scrapscript 的所有内容时编写了那篇文章。Scrapscript 的 REPL 实现非常简短，但它具有`readline`支持、制表符补全、行继续等功能。谢谢，Python！
 
 ```
 >>> $$[^tab]

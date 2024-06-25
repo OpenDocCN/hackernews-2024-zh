@@ -8,7 +8,7 @@ date: 2024-05-27 14:58:28
 
 # Wind River Linux 发行版 | Wind River
 
-> 来源：[https://www.windriver.com/products/linux/distro](https://www.windriver.com/products/linux/distro)
+> 来源：[`www.windriver.com/products/linux/distro`](https://www.windriver.com/products/linux/distro)
 
 ## Linux 发行版用于智能边缘
 

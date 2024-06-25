@@ -8,7 +8,7 @@
 
 # 并非所有自动化测试工具都支持 Web 组件中的 Shadow DOM - Manuel Matuzovic
 
-> 来源：[https://matuzo.at/blog/2024/automated-testing-tools-and-web-components](https://matuzo.at/blog/2024/automated-testing-tools-and-web-components)
+> 来源：[`matuzo.at/blog/2024/automated-testing-tools-and-web-components`](https://matuzo.at/blog/2024/automated-testing-tools-and-web-components)
 
 # 并非所有自动化测试工具都支持 Web 组件中的 Shadow DOM
 
@@ -18,7 +18,7 @@
 
 许多自动化测试工具是你在页面上运行的 JavaScript 函数的集合。其中大多数依赖于查询 DOM。如果一个工具不考虑影子树，它只能捕获 Light DOM 中的无障碍错误，这可能会给您一种错误的安全感，并可能影响到您的用户。
 
-这是另一个 [不仅依赖自动化测试的原因](/blog/building-the-most-inaccessible-site-possible-with-a-perfect-lighthouse-score/)。
+这是另一个 不仅依赖自动化测试的原因。
 
 这并不意味着如果你的网站包含 Web 组件就不应该使用自动化测试。你只需确保你正在使用的工具支持它们。一个好的方法是创建一个简单的组件，其中包含一些由连接到组件的 Shadow DOM 的节点引起的无障碍错误，就像下面的组件一样。
 

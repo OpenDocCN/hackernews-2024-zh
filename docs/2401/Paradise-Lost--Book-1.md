@@ -6,11 +6,11 @@
 
 -->
 
-# 失乐园：第1卷
+# 失乐园：第 1 卷
 
-> 来源：[https://milton.host.dartmouth.edu/reading_room/pl/book_1/text.shtml](https://milton.host.dartmouth.edu/reading_room/pl/book_1/text.shtml)
+> 来源：[`milton.host.dartmouth.edu/reading_room/pl/book_1/text.shtml`](https://milton.host.dartmouth.edu/reading_room/pl/book_1/text.shtml)
 
-## 第1卷
+## 第 1 卷
 
 ### 论点
 
@@ -808,11 +808,11 @@
 
 对他严峻的偶像。亚扪人他
 
-在Rabba和她的水平原上崇拜，
+在 Rabba 和她的水平原上崇拜，
 
-在Argob和Basan，到溪流
+在 Argob 和 Basan，到溪流
 
-至高的Arnon。也不满足于此
+至高的 Arnon。也不满足于此
 
 大胆的邻里，最智慧的心脏 [ 400 ]
 
@@ -822,23 +822,23 @@
 
 在那个可耻的山上，并建立了他的树林
 
-Hinnom的愉快谷地，从那里来的Tophet
+Hinnom 的愉快谷地，从那里来的 Tophet
 
 被称为黑色的盖厄拿，地狱的象征。 [ 405 ]
 
-接下来是Chemos，摩押的恐怖，恶心
+接下来是 Chemos，摩押的恐怖，恶心
 
-从Aroar到Nebo，以及荒野
+从 Aroar 到 Nebo，以及荒野
 
-南部的Abarim；在Hesebon
+南部的 Abarim；在 Hesebon
 
-以及Horonaim，Seons Realm，超越
+以及 Horonaim，Seons Realm，超越
 
-Sibma的花园谷，被藤蔓包裹，
+Sibma 的花园谷，被藤蔓包裹，
 
-和Eleale到Asphaltick Pool。
+和 Eleale 到 Asphaltick Pool。
 
-Peor他的其他名字，当他诱惑时
+Peor 他的其他名字，当他诱惑时
 
 以色列在西底婁从尼罗河出发时
 

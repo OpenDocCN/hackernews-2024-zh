@@ -8,7 +8,7 @@ date: 2024-05-27 14:57:01
 
 # Lazarus Homepage
 
-> 来源：[https://www.lazarus-ide.org/](https://www.lazarus-ide.org/)
+> 来源：[`www.lazarus-ide.org/`](https://www.lazarus-ide.org/)
 
 ## UPDATE 3.0 Release DEB downloads - December 23, 2023, 04:30:31 pm
 

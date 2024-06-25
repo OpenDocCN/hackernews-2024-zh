@@ -8,7 +8,7 @@
 
 # Carta 客户表示平台试图未经许可交易他们的股票
 
-> 来源：[https://www.ft.com/content/40340631-134d-493e-aec5-b5acc168e784](https://www.ft.com/content/40340631-134d-493e-aec5-b5acc168e784)
+> 来源：[`www.ft.com/content/40340631-134d-493e-aec5-b5acc168e784`](https://www.ft.com/content/40340631-134d-493e-aec5-b5acc168e784)
 
 ### 标准数字
 

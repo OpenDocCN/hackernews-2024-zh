@@ -8,7 +8,7 @@ date: 2024-05-27 15:18:04
 
 # OpenAI: Copy, steal, paste – Computerworld
 
-> 来源：[https://www.computerworld.com/article/3712540/openai-copy-steal-paste.html](https://www.computerworld.com/article/3712540/openai-copy-steal-paste.html)
+> 来源：[`www.computerworld.com/article/3712540/openai-copy-steal-paste.html`](https://www.computerworld.com/article/3712540/openai-copy-steal-paste.html)
 
 我们已经走过这条路了。在 1990 年代，报纸和杂志开始长期衰落，因为他们无法掌握如何从互联网出版中获利。这就是为什么谷歌能够通过广告将我们的内容转化为利润，赚取了数十亿，而新闻出版物继续在濒临破产边缘徘徊的原因。
 

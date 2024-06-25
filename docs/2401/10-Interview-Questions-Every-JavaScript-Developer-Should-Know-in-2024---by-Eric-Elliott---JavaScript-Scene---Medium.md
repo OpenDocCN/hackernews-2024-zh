@@ -8,7 +8,7 @@
 
 # 2024 年每个 JavaScript 开发人员都应该知道的 10 个面试问题 | 作者：Eric Elliott | JavaScript 场景 | Medium
 
-> 来源：[https://medium.com/javascript-scene/10-interview-questions-every-javascript-developer-should-know-in-2024-c1044bcb0dfb](https://medium.com/javascript-scene/10-interview-questions-every-javascript-developer-should-know-in-2024-c1044bcb0dfb)
+> 来源：[`medium.com/javascript-scene/10-interview-questions-every-javascript-developer-should-know-in-2024-c1044bcb0dfb`](https://medium.com/javascript-scene/10-interview-questions-every-javascript-developer-should-know-in-2024-c1044bcb0dfb)
 
 # **2024 年每个 JavaScript 开发人员都应该知道的 10 个面试问题**
 
@@ -47,7 +47,7 @@ console.log(mySecret.getSecret()); // My new secret
 
 +   数据隐私
 
-+   柯里化和部分应用（经常用于改进函数组合，例如对 Express 中间件或[React 高阶组件](/javascript-scene/why-every-react-developer-should-learn-function-composition-23f41d4db3b1)进行参数化）
++   柯里化和部分应用（经常用于改进函数组合，例如对 Express 中间件或 React 高阶组件进行参数化）
 
 +   与事件处理程序和回调共享数据
 
@@ -129,7 +129,7 @@ const h = compose(f, g);
 h(20); // 42
 ```
 
-[React 开发人员可以通过函数组合清理大型组件树](/javascript-scene/why-every-react-developer-should-learn-function-composition-23f41d4db3b1)。你可以将组件组合在一起，而不是嵌套它们，以创建一个新的高阶组件，可以通过传递给它的任何组件增强附加功能。
+React 开发人员可以通过函数组合清理大型组件树。你可以将组件组合在一起，而不是嵌套它们，以创建一个新的高阶组件，可以通过传递给它的任何组件增强附加功能。
 
 # 4\. 什么是函数式编程？
 
@@ -313,9 +313,9 @@ Hooks 是一种让您在不编写类的情况下使用状态和其他 React 功�
 
 钩子解决了类组件的一些常见痛点，比如需要在构造函数中绑定方法，以及需要将功能拆分为多个生命周期方法。它们还使得更容易在组件之间共享逻辑，并且在不改变组件层次结构的情况下重用有状态逻辑。
 
-# 9\. 如何在React中创建一个点击计数器？
+# 9\. 如何在 React 中创建一个点击计数器？
 
-你可以使用`useState`钩子在React中创建一个点击计数器，如下所示：
+你可以使用`useState`钩子在 React 中创建一个点击计数器，如下所示：
 
 ```
 import React, { useState } from "react";
@@ -338,23 +338,23 @@ export default ClickCounter;
 
 # 10\. 什么是测试驱动开发（TDD）？
 
-测试驱动开发（TDD）是一种软件开发方法，其中测试在实际代码之前编写。它围绕着一个短小、重复的开发周期，旨在确保代码符合指定的需求，并且没有错误。TDD可以在提高代码质量、减少错误和提高开发人员生产力方面发挥重要作用。
+测试驱动开发（TDD）是一种软件开发方法，其中测试在实际代码之前编写。它围绕着一个短小、重复的开发周期，旨在确保代码符合指定的需求，并且没有错误。TDD 可以在提高代码质量、减少错误和提高开发人员生产力方面发挥重要作用。
 
-开发团队生产力的一个重要衡量标准是部署频率。持续交付的主要障碍之一是对变更的恐惧。TDD通过确保代码始终处于可部署状态来减少这种恐惧。这使得更容易部署新功能和错误修复，从而增加部署频率。
+开发团队生产力的一个重要衡量标准是部署频率。持续交付的主要障碍之一是对变更的恐惧。TDD 通过确保代码始终处于可部署状态来减少这种恐惧。这使得更容易部署新功能和错误修复，从而增加部署频率。
 
 先测试有许多优点，比后测试要好：
 
 +   **更好的代码覆盖率：**先编写测试时，测试更有可能覆盖所有边缘情况。
 
-+   **改进的API设计：**在编写代码之前，测试会迫使你考虑API设计，这有助于避免将实现细节泄漏到API中。
++   **改进的 API 设计：**在编写代码之前，测试会迫使你考虑 API 设计，这有助于避免将实现细节泄漏到 API 中。
 
 +   **更少的错误：**先测试有助于你在开发过程中更早地捕捉错误，这样更容易修复。
 
 +   **更好的代码质量：**先测试会迫使你编写模块化、低耦合的代码，这样更容易维护和重用。
 
-最后一点是TDD我最喜欢的特性，它教会了我大部分关于编写模块化、整洁架构的代码的知识。
+最后一点是 TDD 我最喜欢的特性，它教会了我大部分关于编写模块化、整洁架构的代码的知识。
 
-TDD的关键步骤：
+TDD 的关键步骤：
 
 1.  **编写一个测试：**这个测试最初会失败，因为相应的功能尚不存在。
 
@@ -376,6 +376,6 @@ TDD的关键步骤：
 
 # **接下来的步骤**
 
-提升职业生涯的最快方式是一对一的导师指导。考虑到这一点，我共同创建了一个平台，该平台将工程师和工程领导与资深导师配对，他们将每周通过视频与您会面。主题包括*JavaScript，TypeScript，React，TDD，* [*AI 驱动开发*](/javascript-scene/the-art-of-effortless-programming-3e1860abe1d3)*和工程领导力*。立即加入 [DevAnywhere.io](https://devanywhere.io)。
+提升职业生涯的最快方式是一对一的导师指导。考虑到这一点，我共同创建了一个平台，该平台将工程师和工程领导与资深导师配对，他们将每周通过视频与您会面。主题包括*JavaScript，TypeScript，React，TDD，* *AI 驱动开发**和工程领导力*。立即加入 [DevAnywhere.io](https://devanywhere.io)。
 
 更愿意自学有关函数式编程和 JavaScript 等主题吗？请查看 [EricElliottJS.com](https://ericelliottjs.com) 或购买我的书，[电子书](https://leanpub.com/composingsoftware) 或 [纸质书](https://amzn.to/3H2xqsQ)。

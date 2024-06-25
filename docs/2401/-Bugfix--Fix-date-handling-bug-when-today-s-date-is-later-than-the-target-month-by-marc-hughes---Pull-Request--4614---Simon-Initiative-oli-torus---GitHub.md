@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:40
 
 # [Bugfix] Fix date-handling bug when today's date is later than the target month by marc-hughes · Pull Request #4614 · Simon-Initiative/oli-torus · GitHub
 
-> 来源：[https://github.com/Simon-Initiative/oli-torus/pull/4614](https://github.com/Simon-Initiative/oli-torus/pull/4614)
+> 来源：[`github.com/Simon-Initiative/oli-torus/pull/4614`](https://github.com/Simon-Initiative/oli-torus/pull/4614)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

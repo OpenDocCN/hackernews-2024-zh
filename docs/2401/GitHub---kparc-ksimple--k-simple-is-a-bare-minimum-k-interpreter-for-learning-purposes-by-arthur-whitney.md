@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - kparc/ksimple: k/simple 是由亚瑟·惠特尼为学习目的而创建的最简单的 k 解释器
 
-> 来源：[https://github.com/kparc/ksimple](https://github.com/kparc/ksimple)
+> 来源：[`github.com/kparc/ksimple`](https://github.com/kparc/ksimple)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

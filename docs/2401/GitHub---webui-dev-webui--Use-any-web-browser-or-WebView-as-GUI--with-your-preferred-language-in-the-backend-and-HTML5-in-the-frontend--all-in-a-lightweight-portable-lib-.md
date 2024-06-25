@@ -8,7 +8,7 @@ date: 2024-05-27 14:25:02
 
 # GitHub - webui-dev/webui: 使用任何网络浏览器或 WebView 作为 GUI，在后端使用您喜欢的语言，在前端使用 HTML5，在一个轻量级便携库中实现全部。
 
-> 来源：[https://github.com/webui-dev/webui](https://github.com/webui-dev/webui)
+> 来源：[`github.com/webui-dev/webui`](https://github.com/webui-dev/webui)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

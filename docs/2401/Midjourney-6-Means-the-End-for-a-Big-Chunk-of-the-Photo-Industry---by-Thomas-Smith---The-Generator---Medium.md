@@ -2,13 +2,13 @@
 
 分类: 未分类
 
-日期：2024年05月27日 15:03:14
+日期：2024 年 05 月 27 日 15:03:14
 
 -->
 
 # Midjourney 6 意味着摄影行业的一大部分将走向终结 | 作者：托马斯·史密斯 | 发电机 | Medium
 
-> 来源：[https://medium.com/the-generator/midjourney-6-means-the-end-for-a-big-chunk-of-the-photo-industry-068cb5faeddc](https://medium.com/the-generator/midjourney-6-means-the-end-for-a-big-chunk-of-the-photo-industry-068cb5faeddc)
+> 来源：[`medium.com/the-generator/midjourney-6-means-the-end-for-a-big-chunk-of-the-photo-industry-068cb5faeddc`](https://medium.com/the-generator/midjourney-6-means-the-end-for-a-big-chunk-of-the-photo-industry-068cb5faeddc)
 
 # Midjourney 6 意味着摄影行业的一大部分将走向终结
 

@@ -8,19 +8,19 @@
 
 # 波特兰女子讲述了在一根掉落的电线杀死三人后救出婴儿的经过|CNN
 
-> 来源：[https://edition.cnn.com/2024/01/20/us/majiah-washington-portland-baby-rescue-trnd/index.html](https://edition.cnn.com/2024/01/20/us/majiah-washington-portland-baby-rescue-trnd/index.html)
+> 来源：[`edition.cnn.com/2024/01/20/us/majiah-washington-portland-baby-rescue-trnd/index.html`](https://edition.cnn.com/2024/01/20/us/majiah-washington-portland-baby-rescue-trnd/index.html)
 
 CNN  —
 
 好心人在东北波特兰一根电线落在汽车顶上，造成三人死亡后冒险施救一名婴儿，她表示她毫不犹豫地跳进去帮忙。
 
-“我当时没想‘哦，我可能会被电击’，我更多地在想‘我必须抓住这个婴儿’，”18岁的马贾·华盛顿在周四的新闻发布会上回忆起她的英勇行动时说。
+“我当时没想‘哦，我可能会被电击’，我更多地在想‘我必须抓住这个婴儿’，”18 岁的马贾·华盛顿在周四的新闻发布会上回忆起她的英勇行动时说。
 
-这起事件发生在周三早上，一根树枝撞到了一辆车顶部，将一根电线拉了下来，[CNN之前报道过](https://www.cnn.com/2024/01/18/weather/winter-storm-snow-ice-weather/index.html)。
+这起事件发生在周三早上，一根树枝撞到了一辆车顶部，将一根电线拉了下来，[CNN 之前报道过](https://www.cnn.com/2024/01/18/weather/winter-storm-snow-ice-weather/index.html)。
 
 波特兰消防和救援发言人瑞克·格雷夫斯周四表示，三人下车后滑倒，然后滑行直到遇到活电线，结果导致他们死亡。
 
-自1月11日以来，连续两场冰风暴[最近袭击了俄勒冈州](https://www.cnn.com/2024/01/18/weather/winter-storm-snow-ice-weather/index.html)，打倒了树木和电线。自1月11日以来，俄勒冈州已报告至少11起与冬季风暴有关的死亡事件。
+自 1 月 11 日以来，连续两场冰风暴[最近袭击了俄勒冈州](https://www.cnn.com/2024/01/18/weather/winter-storm-snow-ice-weather/index.html)，打倒了树木和电线。自 1 月 11 日以来，俄勒冈州已报告至少 11 起与冬季风暴有关的死亡事件。
 
 华盛顿说，她记得周三早上在床上时看到窗帘闭着时外面闪了一下。
 
@@ -34,7 +34,7 @@ CNN  —
 
 华盛顿称，一名赶去查看婴儿情况的女子也滑倒了，摔倒并以类似的方式触碰到了电线。
 
-当华盛顿正在和911操作员通话时，她说，一名青少年从她身边跑过去帮忙，但滑倒了，向前跌倒，并触碰到了倒下的但仍然处于活跃状态的电线。
+当华盛顿正在和 911 操作员通话时，她说，一名青少年从她身边跑过去帮忙，但滑倒了，向前跌倒，并触碰到了倒下的但仍然处于活跃状态的电线。
 
 “那时候，我不知道该怎么想，感觉就像发生得太快了一样，” 她回忆道。
 

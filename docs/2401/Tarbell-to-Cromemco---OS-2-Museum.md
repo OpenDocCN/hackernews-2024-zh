@@ -8,7 +8,7 @@ date: 2024-05-27 15:05:16
 
 # Tarbell to Cromemco | OS/2 Museum
 
-> 来源：[https://www.os2museum.com/wp/tarbell-to-cromemco/](https://www.os2museum.com/wp/tarbell-to-cromemco/)
+> 来源：[`www.os2museum.com/wp/tarbell-to-cromemco/`](https://www.os2museum.com/wp/tarbell-to-cromemco/)
 
 在玩弄[旧版本的 86-DOS](https://www.os2museum.com/wp/86-dos-revisited/)时，我找到了[86-DOS 1.14](https://archive.org/details/86-dos-1.14)的磁盘映像。我在 SIMH 模拟器中运行了较旧版本的 86-DOS，该模拟器可以模拟 86-DOS 支持的 Cromemco 磁盘控制器。
 
@@ -22,7 +22,7 @@ date: 2024-05-27 15:05:16
 
 #### 准备 SIMH 环境
 
-在任何工作开始之前，必须使用 IMDU 实用程序将压缩的 IMD 映像转换为未压缩的映像，以便 SIMH 可以对其进行写入。这已经完成了，并且可以通过[此处](/files/tarbell-to-cromemco.zip)获取带有所需磁盘映像和 SIMH 的存档。最初用于运行 86-DOS 的 SIMH 模拟器来自[这里](https://web.archive.org/web/20080819181906/http://www.86dos.org/)。
+在任何工作开始之前，必须使用 IMDU 实用程序将压缩的 IMD 映像转换为未压缩的映像，以便 SIMH 可以对其进行写入。这已经完成了，并且可以通过此处获取带有所需磁盘映像和 SIMH 的存档。最初用于运行 86-DOS 的 SIMH 模拟器来自[这里](https://web.archive.org/web/20080819181906/http://www.86dos.org/)。
 
 要使用双磁盘设置，请在 Windows 机器上运行“altairz80 tartocro”。请记住，要退出 SIMH，可以使用 Ctrl-Break。
 
@@ -140,4 +140,4 @@ Current date is 00-00-19 80
 Enter new date:
 ```
 
-这就是！在模拟的Cromemco控制器上运行的86-DOS 1.14。所有必要的工具都在1.14磁盘上，唯一缺少的是运行它们的方法。借用一个现有的SIMH兼容的86-DOS磁盘解决了这个问题。
+这就是！在模拟的 Cromemco 控制器上运行的 86-DOS 1.14。所有必要的工具都在 1.14 磁盘上，唯一缺少的是运行它们的方法。借用一个现有的 SIMH 兼容的 86-DOS 磁盘解决了这个问题。

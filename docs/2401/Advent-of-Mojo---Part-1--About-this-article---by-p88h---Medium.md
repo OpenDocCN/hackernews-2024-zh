@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:33:05
+日期：2024 年 5 月 27 日 14:33:05
 
 -->
 
 # Mojo 之旅：第一部分。关于本文 | 作者：p88h | Medium
 
-> 来源：[https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb](https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb)
+> 来源：[`medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb`](https://medium.com/@p88h/advent-of-mojo-part-1-c1bcaa367fcb)
 
 # 关于本文
 
 这是关于在《冒险代码》中使用 Mojo 的系列文章的第一部分。
 
-点击[这里](/@p88h/advent-of-mojo-6d6d0d00761b)查看介绍和目录。
+点击这里查看介绍和目录。
 
 # 性能概览
 
@@ -36,15 +36,15 @@ def dot(mat, vec):
 
 # Mojo 'equivalent'
     fn dot(self, mult: SIMD[DType.int32, 32]) -> Int:
-        var acc = SIMD[DType.int32, 32](0)
+        var acc = SIMDDType.int32, 32
         for i in range(0, self.rows, 32):
-            acc = self.data.aligned_simd_load[32, 32](i).fma(mult, acc)
+            acc = self.data.aligned_simd_load32, 32.fma(mult, acc)
         return acc.reduce_add().to_int()
 ```
 
 我能够实现的最高改进大约是 Python 的 1000 倍 —— 这与 Mojo 的使用案例类似 —— 低级矩阵操作。使用融合乘法和加法编写 SIMD 代码，同时使用类似 Python 的语法比 Rust 或 C++ 中的类似原生解决方案更简单。核心 SIMD 数据类型被很好地集成，并提供全面但基本的操作。如果那个特定的解决方案是可并行化的（并且要大得多），那么在某些拥有 100 个核心的怪物 CPU 上，可能会产生 10,000 倍甚至更多的改进。
 
-还有其他优化 Python 的方法。虽然相对于 Python 的平均改进是 >100 倍（注意这包括并行化），但对于 PyPy3，相同的度量指标只有‘仅’38倍。而且这个解决方案中的一些部分也可以使用 numpy。
+还有其他优化 Python 的方法。虽然相对于 Python 的平均改进是 >100 倍（注意这包括并行化），但对于 PyPy3，相同的度量指标只有‘仅’38 倍。而且这个解决方案中的一些部分也可以使用 numpy。
 
 # 独特的字符串
 
@@ -52,7 +52,7 @@ Mojo 中有很多怪癖，这些怪癖使这种速度优势很快消失。我的
 
 ```
 # Reasonably fast string split.. to perform adequately against s.split(' ')
-fn parse[sep: Int8](inout self, skip_empty: Bool = True):
+fn parsesep: Int8:
     var start: Int = 0
     for i in range(self.ptr_size):
         if self.contents[i] == sep:
@@ -73,7 +73,7 @@ Mojo 中没有线程原语，但有更高级别的并行化。想想看。真正
 
 ```
 let A = DTypePointer[DType.int32].aligned_alloc(16, 1024)
-var S = Atomic[DType.int32](0)
+var S = AtomicDType.int32
 
 @parameter
 fn worker(id: Int):
@@ -83,7 +83,7 @@ fn worker(id: Int):
      S.max(M)        
 
 fn parallel_max() -> Int32:
-    parallelize[worker](len, 4)
+    parallelizeworker
     return S.value
 ```
 
@@ -97,7 +97,7 @@ fn parallel_max() -> Int32:
 
 总体而言，Mojo 提出了一个**非常**引人注目的性能方案。我对与 C++ 的比较不多，但我做了一个例子，Mojo 非常接近。编程模型暗示着更多潜在的改进，比如将代码编译为 GPU 目标，并在假装是单个程序运行时运行，但现在还没有真正实现，很难预测实现这一点需要做出什么妥协。
 
-在我的解决方案中，一些收益可能更多地是由于 Mojo 缺乏标准库，而不是更好的编译技术所迫使的。例如，我不会在 Python 中实现自己的低级字符串处理。当处理矩阵操作时，我可能会使用 NumPy，而不是自己编写代码。我在第 24 天就是这样做的——Python 解决方案归结为运行一个线性代数求解器（我相信它使用的是 LAPACK 的 GESV，它使用高斯消元法对矩阵进行因式分解）。我的 Mojo 代码直接实现了高斯求解器，这稍微简单一些——但该求解器针对这个_具体的_问题，我不能用它同时解决多个方程，而 LAPACK 可以。结果代码的运行速度比 Python 快 30 倍（这是 PyPy 比 Python 更慢的那些晦涩案例之一）。Python 中的高斯求解器甚至比 NumPy 还要慢，所以我猜这仍然是一个有效的比较，但我不确定一个_通用_解决方案或 Mojo 的 NumPy 等效性会有多快。
+在我的解决方案中，一些收益可能更多地是由于 Mojo 缺乏标准库，而不是更好的编译技术所迫使的。例如，我不会在 Python 中实现自己的低级字符串处理。当处理矩阵操作时，我可能会使用 NumPy，而不是自己编写代码。我在第 24 天就是这样做的——Python 解决方案归结为运行一个线性代数求解器（我相信它使用的是 LAPACK 的 GESV，它使用高斯消元法对矩阵进行因式分解）。我的 Mojo 代码直接实现了高斯求解器，这稍微简单一些——但该求解器针对这个 _ 具体的 _ 问题，我不能用它同时解决多个方程，而 LAPACK 可以。结果代码的运行速度比 Python 快 30 倍（这是 PyPy 比 Python 更慢的那些晦涩案例之一）。Python 中的高斯求解器甚至比 NumPy 还要慢，所以我猜这仍然是一个有效的比较，但我不确定一个 _ 通用 _ 解决方案或 Mojo 的 NumPy 等效性会有多快。
 
 当然，ML 编程的某些方面可能会受益于这一点——也许是自定义张量操作符或激活函数，而 Modular 可能正在关注这些关键性能痛点，并且 AOC 中的一些任务支持这一假设——这意味着你可以期望这确实会提高你想要用它运行的任何训练或推断工作负载的性能，假设这些工作负载依赖于在 GPU/TPU 和 CPU 之间来回切换进行计算，而 CPU 端的计算主要是 Python。它可能在其他一些领域也很有用，前提是语言成熟一点。
 

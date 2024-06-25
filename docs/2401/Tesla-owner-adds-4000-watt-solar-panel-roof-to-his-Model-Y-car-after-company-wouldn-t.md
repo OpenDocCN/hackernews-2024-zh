@@ -8,7 +8,7 @@ category: 未
 
 # 特斯拉车主在公司拒绝后为他的 Model Y 车增加了 4000 瓦的太阳能电池板车顶
 
-> 来源：[https://www.uniladtech.com/vehicles/car-news/tesla-owner-adds-solar-panel-roof-506677-20240118](https://www.uniladtech.com/vehicles/car-news/tesla-owner-adds-solar-panel-roof-506677-20240118)
+> 来源：[`www.uniladtech.com/vehicles/car-news/tesla-owner-adds-solar-panel-roof-506677-20240118`](https://www.uniladtech.com/vehicles/car-news/tesla-owner-adds-solar-panel-roof-506677-20240118)
 
 发表于 2024 年 1 月 18 日 GMT 10:27
 
@@ -28,15 +28,15 @@ Antonio Masiello / 贡献者 / Getty
 
 这个想法很明显——你的车顶整天都在阳光或自然光下（除非在[车库](https://www.uniladtech.com/vehicles/car-news)），所以在你开车的过程中可以收集太阳能，以延长汽车的行驶里程——这实际上是免费能源。
 
-为了看看这个系统是否可以应用于真实可驾驶、适合通勤的汽车，YouTuber DartSolar将事情搬到了自己手上。
+为了看看这个系统是否可以应用于真实可驾驶、适合通勤的汽车，YouTuber DartSolar 将事情搬到了自己手上。
 
-他的20分钟视频展示了他是如何从构思到实际建造一个由九块太阳能电池板组成的折叠式阵列，安装在他们的特斯拉[Model](https://www.uniladtech.com/vehicles/car-news/tesla-monthly-cost-lease-model-3-402732-20240118?) Y车顶上的。
+他的 20 分钟视频展示了他是如何从构思到实际建造一个由九块太阳能电池板组成的折叠式阵列，安装在他们的特斯拉[Model](https://www.uniladtech.com/vehicles/car-news/tesla-monthly-cost-lease-model-3-402732-20240118?) Y 车顶上的。
 
 这是一个引人入胜的过程，涉及到不少工程和制造。这意味着如果你想自己尝试，这不完全是一个指南，而且结果非常有趣。
 
 当然，我们不能假装当它们展开时看起来很棒——电池板是方形的，基本上就像一块大木板放在汽车顶部一样。
 
-不过，DartSolar的计算和实验表明，在一个阳光明媚的日子里，他的特斯拉额外续航里程可能会增加 20 到 75 英里，考虑到不同条件。
+不过，DartSolar 的计算和实验表明，在一个阳光明媚的日子里，他的特斯拉额外续航里程可能会增加 20 到 75 英里，考虑到不同条件。
 
 这意味着人们潜在地可以完全依靠不使用电网能源就能上下班通勤，对于任何热衷于可再生[能源](https://www.uniladtech.com/tesla)的人来说，这是一个令人兴奋的前景。
 

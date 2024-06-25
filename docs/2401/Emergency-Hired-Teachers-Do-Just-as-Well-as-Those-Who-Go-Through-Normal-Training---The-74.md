@@ -8,7 +8,7 @@
 
 # 紧急聘用的教师与通过常规培训的教师一样出色-《74 条》
 
-> 来源：[https://www.the74million.org/article/emergency-hired-teachers-do-just-as-well-as-those-who-go-through-normal-training/](https://www.the74million.org/article/emergency-hired-teachers-do-just-as-well-as-those-who-go-through-normal-training/)
+> 来源：[`www.the74million.org/article/emergency-hired-teachers-do-just-as-well-as-those-who-go-through-normal-training/`](https://www.the74million.org/article/emergency-hired-teachers-do-just-as-well-as-those-who-go-through-normal-training/)
 
 *获取这样的故事直接发送到您的收件箱。*[**订阅《74 条》通讯**](https://www.the74million.org/about/newsletters/?utm_source=website&utm_medium=article&utm_campaign=top&utm_id=newsletter)
 
@@ -28,15 +28,15 @@
 
 持有这些许可证工作的教师也有助于使该州的教室多样化，因为他们约有其他新教育工作者的两倍可能是黑人、西班牙裔或亚裔。
 
-新泽西的许可政策类似。候选人可以在通过常规许可考试或完成教师培训计划之前获得临时资格。许可有效期为一年，此后候选人需要重新参加考试并完成培训。但是，[研究人员Ben Backes和Dan Goldhaber](https://caldercenter.org/sites/default/files/CALDER%20WP%20286-0623.pdf)发现与马萨诸塞州类似的结果：没有经过正常培训和考试的教师在阅读和数学方面至少与其他新手一样有效。
+新泽西的许可政策类似。候选人可以在通过常规许可考试或完成教师培训计划之前获得临时资格。许可有效期为一年，此后候选人需要重新参加考试并完成培训。但是，[研究人员 Ben Backes 和 Dan Goldhaber](https://caldercenter.org/sites/default/files/CALDER%20WP%20286-0623.pdf)发现与马萨诸塞州类似的结果：没有经过正常培训和考试的教师在阅读和数学方面至少与其他新手一样有效。
 
 新泽西州研究中的一个初步解释是，获得临时许可的教师正在工作的学校有记录表明他们在帮助学生取得良好的学术成绩方面表现强劲。可能这些学校已经有了支持措施，比如教师辅导，强有力的课程或其他补偿较少培训的支持。
 
-加利福尼亚州奥克兰最近的另一项研究支持了这一理论。拥有高中文凭的父母在接受了10周的结构化识字计划培训后，帮助学生取得了良好的早期识字成就，与完全持证教师的学生取得的成就基本持平。[帮助学生取得](https://www.the74million.org/article/oakland-study-finds-parents-as-effective-as-teachers-in-tutoring-young-readers/)
+加利福尼亚州奥克兰最近的另一项研究支持了这一理论。拥有高中文凭的父母在接受了 10 周的结构化识字计划培训后，帮助学生取得了良好的早期识字成就，与完全持证教师的学生取得的成就基本持平。[帮助学生取得](https://www.the74million.org/article/oakland-study-finds-parents-as-effective-as-teachers-in-tutoring-young-readers/)
 
 现在更好的问题是，为什么这些临时豁免不会变成永久的呢。新泽西政策在一年后[到期](https://www.nj.gov/education/covid19/teacherresources/instructionalCEtemp.shtml)，而马萨诸塞正在尝试在今年[逐步](https://www.doe.mass.edu/licensure/emergency/) 淘汰这种机制。但是考虑到如此有前途的结果，决策者可能需要重新考虑。
 
-实际上，这些结果是教师培训中的一个钟摆效应。10年前，各州还在努力提高标准。1990年代和2000年代，新教育者的供应量稳步增加，教师候选人一直处于 [过剩](https://caldercenter.org/sites/default/files/CALDER%20Policy%20Brief%203-1116-1.pdf) 状态。当然，特定地区和学科领域可能存在短缺，但总的来说，学区在选择雇用谁的时候可以挑剔一些。
+实际上，这些结果是教师培训中的一个钟摆效应。10 年前，各州还在努力提高标准。1990 年代和 2000 年代，新教育者的供应量稳步增加，教师候选人一直处于 [过剩](https://caldercenter.org/sites/default/files/CALDER%20Policy%20Brief%203-1116-1.pdf) 状态。当然，特定地区和学科领域可能存在短缺，但总的来说，学区在选择雇用谁的时候可以挑剔一些。
 
 在这种背景下，各色的决策者齐心协力，专注于质量而不是数量。
 
@@ -46,8 +46,8 @@
 
 有一些证据表明，教师资格考试能在一定程度上准确地预测谁会成为一个好教育者。其他条件相同的情况下，学校更好选择考试成绩更高的候选人，尤其是如果他们将要教授数学或科学。但是这一通用规则会误解很多教师——有些人考试成绩不错，但在课堂管理或人际交往技能方面表现不佳，而其他人可能考试不好，但在与孩子们打交道方面很有成效。
 
-不容置疑的是，提高成为一名教师的门槛会减少供应量。研究人员发现，采用一种名为edTPA的新教师资格考试将供应量减少了14%，不成比例地影响了少数族裔候选人在非选择性较低或少数族裔集中的大学。另一项新的[工作论文](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4644356)发现，在21个州和哥伦比亚特区，2013-14年将Praxis Core作为他们的教师资格考试的转变导致了教师准备完成率的下降12.5%。
+不容置疑的是，提高成为一名教师的门槛会减少供应量。研究人员发现，采用一种名为 edTPA 的新教师资格考试将供应量减少了 14%，不成比例地影响了少数族裔候选人在非选择性较低或少数族裔集中的大学。另一项新的[工作论文](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4644356)发现，在 21 个州和哥伦比亚特区，2013-14 年将 Praxis Core 作为他们的教师资格考试的转变导致了教师准备完成率的下降 12.5%。
 
-换句话说，加大成为一名教师的难度会减少供应量，但并不能保证达到标准的人实际上在课堂上表现出色。最近与COVID相关的豁免情况应该促使决策者重新评估是否成为教师的障碍实际上起到了有意义的作用，或者它们是否让潜在的有才华的教育工作者无法进入课堂。
+换句话说，加大成为一名教师的难度会减少供应量，但并不能保证达到标准的人实际上在课堂上表现出色。最近与 COVID 相关的豁免情况应该促使决策者重新评估是否成为教师的障碍实际上起到了有意义的作用，或者它们是否让潜在的有才华的教育工作者无法进入课堂。
 
 *获取类似的故事直接发送到您的收件箱。* [**立即订阅《The 74 Newsletter》**](https://www.the74million.org/about/newsletters/?utm_source=website&utm_medium=article&utm_campaign=top&utm_id=newsletter)

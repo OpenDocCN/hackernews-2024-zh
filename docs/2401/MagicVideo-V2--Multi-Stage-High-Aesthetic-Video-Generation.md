@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:57
 
 # MagicVideo-V2: 多阶段高审美视频生成
 
-> 来源：[https://magicvideov2.github.io/](https://magicvideov2.github.io/)
+> 来源：[`magicvideov2.github.io/`](https://magicvideov2.github.io/)
 
 ## BibTeX
 

@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - fwsGonzo/rvscript：快速的基于 RISC-V 的游戏引擎脚本后端
 
-> 来源：[https://github.com/fwsGonzo/rvscript](https://github.com/fwsGonzo/rvscript)
+> 来源：[`github.com/fwsGonzo/rvscript`](https://github.com/fwsGonzo/rvscript)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

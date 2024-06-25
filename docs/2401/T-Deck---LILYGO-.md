@@ -8,7 +8,7 @@ category: 未分类
 
 # T-Deck – LILYGO®
 
-> 来源：[https://www.lilygo.cc/products/t-deck](https://www.lilygo.cc/products/t-deck)
+> 来源：[`www.lilygo.cc/products/t-deck`](https://www.lilygo.cc/products/t-deck)
 
 **方法与交货时间**
 
@@ -34,4 +34,4 @@ category: 未分类
 
 **请确保您的地址填写完整**（包括省份和大陆，这将影响您订单的运输时间）。
 
-更多详情请查看我们的[运输政策](/pages/copy-of-shipping-delivery-1 "Shipping & Delivery")。
+更多详情请查看我们的运输政策。

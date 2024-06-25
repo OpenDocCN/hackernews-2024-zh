@@ -8,7 +8,7 @@
 
 # 我们的愚蠢身体
 
-> 来源：[https://radiolab.org/podcast/our-stupid-little-bodies](https://radiolab.org/podcast/our-stupid-little-bodies)
+> 来源：[`radiolab.org/podcast/our-stupid-little-bodies`](https://radiolab.org/podcast/our-stupid-little-bodies)
 
 有时一个看似愚蠢的问题会卡在你的喉咙里，你无法摆脱这种感觉，觉得其背后有着重大的事情。我们不断地收集这些问题，不仅来自于我们的听众，还有我们自己的一堆“愚蠢”问题，我们爱称之为。不久前，我们注意到一系列问题似乎有着共同的锐利能量，并且都引导我们走向了同一个地方：我们自己的身体。所以，今天在 Radiolab 上，我们深入到我们的喉咙并深入到我们的皮肤下，我们探讨了进化、解剖学和分子化妆品，以发现我们看似愚蠢问题的非常不愚蠢的答案。
 
@@ -22,7 +22,7 @@
 
 *Radiolab 得到像你们这样的听众的支持。今天就成为* [*The Lab*](http://members.radiolab.org) *(https://members.radiolab.org/)* 的一员，支持 Radiolab。
 
-*关注我们的节目的* [*Instagram*](http://instagram.com/radiolab)*、* [*Twitter*](http://twitter.com/radiolab) *和* [*Facebook*](http://facebook.com/radiolab) *@radiolab，通过电子邮件与我们分享你的想法* [*radiolab@wnyc.org*](mailto:radiolab@wnyc.org)*。*
+*关注我们的节目的* [*Instagram*](http://instagram.com/radiolab)*、* [*Twitter*](http://twitter.com/radiolab) *和* [*Facebook*](http://facebook.com/radiolab) *@radiolab，通过电子邮件与我们分享你的想法* *radiolab@wnyc.org**。*
 
 * * *
 

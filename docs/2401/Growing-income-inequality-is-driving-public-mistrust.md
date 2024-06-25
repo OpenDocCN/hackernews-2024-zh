@@ -8,7 +8,7 @@
 
 # 日益增长的收入不平等正在推动公众不信任
 
-> 来源：[https://www.ft.com/content/3e1b5f36-6c10-4a28-842c-2831ff89e5c2](https://www.ft.com/content/3e1b5f36-6c10-4a28-842c-2831ff89e5c2)
+> 来源：[`www.ft.com/content/3e1b5f36-6c10-4a28-842c-2831ff89e5c2`](https://www.ft.com/content/3e1b5f36-6c10-4a28-842c-2831ff89e5c2)
 
 ### 标准数字版
 

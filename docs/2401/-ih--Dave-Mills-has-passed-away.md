@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:56:32
+日期：2024 年 5 月 27 日 14:56:32
 
 -->
 
 # [ih] Dave Mills 已经去世
 
-> 来源：[https://elists.isoc.org/pipermail/internet-history/2024-January/009265.html](https://elists.isoc.org/pipermail/internet-history/2024-January/009265.html)
+> 来源：[`elists.isoc.org/pipermail/internet-history/2024-January/009265.html`](https://elists.isoc.org/pipermail/internet-history/2024-January/009265.html)
 
 # [ih] Dave Mills 已经去世
 
-**文顿·瑟夫** [vgcerf at gmail.com](mailto:internet-history%40elists.isoc.org?Subject=Re%3A%20%5Bih%5D%20Dave%20Mills%20has%20passed%20away&In-Reply-To=%3CCAAFtm_UCRsBSbZYcSAzb4wGapWgpUGKPAQcgcjMqjqScmhQdtA%40mail.gmail.com%3E "[ih] Dave Mills 已经去世")
+**文顿·瑟夫** vgcerf at gmail.com
 
-*2024年1月18日 下午5:35:14（太平洋标准时间）*
+*2024 年 1 月 18 日 下午 5:35:14（太平洋标准时间）*
 
 * * *
 

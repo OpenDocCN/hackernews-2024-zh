@@ -6,9 +6,9 @@ date: 2024-05-27 14:46:14
 
 -->
 
-# GitHub - vanna-ai/vanna: 🤖 与您的SQL数据库聊天 📊。通过RAG使用LLMs进行准确的文本到SQL生成🔄。
+# GitHub - vanna-ai/vanna: 🤖 与您的 SQL 数据库聊天 📊。通过 RAG 使用 LLMs 进行准确的文本到 SQL 生成🔄。
 
-> 来源：[https://github.com/vanna-ai/vanna](https://github.com/vanna-ai/vanna)
+> 来源：[`github.com/vanna-ai/vanna`](https://github.com/vanna-ai/vanna)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

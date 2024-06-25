@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年05月27日 14:42:08
+日期：2024 年 05 月 27 日 14:42:08
 
 -->
 
-# 东京“最长寿者”已经去世30年- BBC新闻
+# 东京“最长寿者”已经去世 30 年- BBC 新闻
 
-> 来源：[https://www.bbc.com/news/world-asia-pacific-10809128.amp](https://www.bbc.com/news/world-asia-pacific-10809128.amp)
+> 来源：[`www.bbc.com/news/world-asia-pacific-10809128.amp`](https://www.bbc.com/news/world-asia-pacific-10809128.amp)
 
 ## 在 AMP 页面上管理同意设置
 

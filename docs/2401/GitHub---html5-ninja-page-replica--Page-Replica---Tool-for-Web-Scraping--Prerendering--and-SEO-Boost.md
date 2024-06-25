@@ -8,7 +8,7 @@
 
 # GitHub - html5-ninja/page-replica: 页面复制 – 用于网页抓取、预渲染和提升 SEO 的工具
 
-> 来源：[https://github.com/html5-ninja/page-replica](https://github.com/html5-ninja/page-replica)
+> 来源：[`github.com/html5-ninja/page-replica`](https://github.com/html5-ninja/page-replica)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

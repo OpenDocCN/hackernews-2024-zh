@@ -8,7 +8,7 @@
 
 # GitHub - Maratyszcza/PeachPy: x86-64 assembler embedded in Python
 
-> 来源：[https://github.com/Maratyszcza/PeachPy](https://github.com/Maratyszcza/PeachPy)
+> 来源：[`github.com/Maratyszcza/PeachPy`](https://github.com/Maratyszcza/PeachPy)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

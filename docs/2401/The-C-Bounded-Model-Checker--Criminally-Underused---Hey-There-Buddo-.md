@@ -6,11 +6,11 @@
 
 -->
 
-# C有界模型检查器：鲜为人知的使用 | 嗨，伙计！
+# C 有界模型检查器：鲜为人知的使用 | 嗨，伙计！
 
-> 来源：[https://www.philipzucker.com/cbmc_tut/](https://www.philipzucker.com/cbmc_tut/)
+> 来源：[`www.philipzucker.com/cbmc_tut/`](https://www.philipzucker.com/cbmc_tut/)
 
-在Google Colab上跟着做：[https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb](https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb)
+在 Google Colab 上跟着做：[`colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb`](https://colab.research.google.com/github/philzook58/philzook58.github.io/blob/master/pynb/cbmc_tut.ipynb)
 
 ```
 %%bash
@@ -20,13 +20,13 @@ apt-get install bash-completion
 dpkg -i ubuntu-20.04-cbmc-5.95.1-Linux.deb 
 ```
 
-每当我在C语言中摸索时，我都希望有一种简单的方法来检查我的工作。有各种各样的选项（打开所有警告，内置编译器[静态分析器](https://developers.redhat.com/articles/2022/04/12/state-static-analysis-gcc-12-compiler#a_taint_mode_for_c)，[sanitizers](https://clang.llvm.org/docs/AddressSanitizer.html)（地址，线程，cfi），[infer](https://fbinfer.com/)，进入强大的交互式定理证明器模式），但其中一个不太被重视的方法是使用自动静态验证器。
+每当我在 C 语言中摸索时，我都希望有一种简单的方法来检查我的工作。有各种各样的选项（打开所有警告，内置编译器[静态分析器](https://developers.redhat.com/articles/2022/04/12/state-static-analysis-gcc-12-compiler#a_taint_mode_for_c)，[sanitizers](https://clang.llvm.org/docs/AddressSanitizer.html)（地址，线程，cfi），[infer](https://fbinfer.com/)，进入强大的交互式定理证明器模式），但其中一个不太被重视的方法是使用自动静态验证器。
 
 我对[软件验证竞赛](https://sv-comp.sosy-lab.org/)风格的求解器印象深刻，特别是[CBMC](https://github.com/diffblue/cbmc)（[文档](https://diffblue.github.io/cbmc//index.html)）。
 
-我以为CBMC可能已经停用了，因为它的[主页](https://www.cprover.org/cbmc/)没有显示最近的开发，但实际上[github仓库](https://github.com/diffblue/cbmc)非常活跃。看来亚马逊正在投资于它的使用，许多重要的C项目都有基于CBMC的规范和验证。
+我以为 CBMC 可能已经停用了，因为它的[主页](https://www.cprover.org/cbmc/)没有显示最近的开发，但实际上[github 仓库](https://github.com/diffblue/cbmc)非常活跃。看来亚马逊正在投资于它的使用，许多重要的 C 项目都有基于 CBMC 的规范和验证。
 
-安装和使用都很简单。只需从[github仓库](https://github.com/diffblue/cbmc/releases)获取一个发布版（apt上的版本相对过时）
+安装和使用都很简单。只需从[github 仓库](https://github.com/diffblue/cbmc/releases)获取一个发布版（apt 上的版本相对过时）
 
 这是一个基本的例子：
 
@@ -49,7 +49,7 @@ dpkg -i ubuntu-20.04-cbmc-5.95.1-Linux.deb
 ex1: /tmp/ex1.c:3: main: Assertion `1 == 0' failed. 
 ```
 
-但我也可以通过cbmc运行源代码。
+但我也可以通过 cbmc 运行源代码。
 
 ```
 CBMC version 5.95.1 (cbmc-5.95.1) 64-bit x86_64 linux
@@ -101,7 +101,7 @@ VERIFICATION FAILED
 ! gcc /tmp/ex2.c -o /tmp/ex2 && /tmp/ex2 
 ```
 
-然而，CBMC运行所有可能的执行路径，发现了未初始化变量可能采用的错误值。我们也可以使用`--trace`选项逐行跟踪执行。
+然而，CBMC 运行所有可能的执行路径，发现了未初始化变量可能采用的错误值。我们也可以使用`--trace`选项逐行跟踪执行。
 
 ```
 ! cbmc /tmp/ex2.c --trace 
@@ -155,7 +155,7 @@ State 11 file /tmp/ex2.c function main line 3 thread 0
 VERIFICATION FAILED 
 ```
 
-如果我们把这个断言放在一个守护if中，就不可能再触发这个断言了。
+如果我们把这个断言放在一个守护 if 中，就不可能再触发这个断言了。
 
 ```
 %%file /tmp/ex3.c
@@ -295,7 +295,7 @@ State 23 file /tmp/test.c function main line 12 thread 0
 VERIFICATION FAILED 
 ```
 
-说什么？？？？？？？？？哦，对。通过跟踪，看到它选了负的maxint。在二进制补码中，负数的数量比正数多一个。所以实际上不清楚编译器应该在这里做什么。我猜它可以做任何事情。
+说什么？？？？？？？？？哦，对。通过跟踪，看到它选了负的 maxint。在二进制补码中，负数的数量比正数多一个。所以实际上不清楚编译器应该在这里做什么。我猜它可以做任何事情。
 
 这是你更可能关心的东西，检查常见的内存错误，如缓冲区溢出等
 
@@ -326,9 +326,9 @@ Runtime Postprocess Equation: 0.000160385s
 VERIFICATION SUCCESSFUL 
 ```
 
-哇！？哪里有bug？！
+哇！？哪里有 bug？！
 
-是的，CBMC需要标志来打开这些默认检查，无论好坏。我有点希望有一个做所有事情的标志，但据我所知没有。这里有一堆可能有用的bug可以查找。
+是的，CBMC 需要标志来打开这些默认检查，无论好坏。我有点希望有一个做所有事情的标志，但据我所知没有。这里有一堆可能有用的 bug 可以查找。
 
 ```
 ! cbmc /tmp/buffer.c --bounds-check --conversion-check --div-by-zero-check --float-overflow-check --malloc-fail-null \
@@ -379,17 +379,17 @@ VERIFICATION FAILED
 
 我认为今天的内容就够了，但我们只是触及了表面。但为了激发一些兴趣，这里是关于循环和比较检查的一些未编辑的片段。
 
-[https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ](https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ)
+[`www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ`](https://www.youtube.com/embed/AUsNTNq0dbY?si=zfELEKMDjHjIytVZ)
 
 视频。
 
 ## 循环。
 
-好吧，到目前为止，我们已经描绘了一个美好的画面。显然，CBMC不会扩展到任意大型和困难的问题。
+好吧，到目前为止，我们已经描绘了一个美好的画面。显然，CBMC 不会扩展到任意大型和困难的问题。
 
-基本技术是展开它们。一切并没有失去，许多循环（特别是for循环）可以完全展开。您可以添加 `--unwinding-assertions` 以了解是否已覆盖所有可能的执行。即使你不能，通过这些检查确实会给你一些信心。
+基本技术是展开它们。一切并没有失去，许多循环（特别是 for 循环）可以完全展开。您可以添加 `--unwinding-assertions` 以了解是否已覆盖所有可能的执行。即使你不能，通过这些检查确实会给你一些信心。
 
-如果您要进入下一个级别，还可以添加不变量注释的功能。我不确定CBMC是否能成功推断这些。
+如果您要进入下一个级别，还可以添加不变量注释的功能。我不确定 CBMC 是否能成功推断这些。
 
 在更大的问题上，我在调试方面取得了一些成功。
 
@@ -437,23 +437,23 @@ esbmc /tmp/test.c
 
 +   ## 您可能没有源代码。
 
-总的来说，考虑50年的软件堆栈是一个有趣的问题。
+总的来说，考虑 50 年的软件堆栈是一个有趣的问题。
 
 更糟的是更好：一个愚蠢编译器的用例。
 
 # 一些小东西。
 
-这是一个带有CBMC仪器的严肃C项目列表，其中许多来自亚马逊：[https://model-checking.github.io/cbmc-training/projects.html](https://model-checking.github.io/cbmc-training/projects.html)。它们在库函数的单元测试中扮演着类似的角色。
+这是一个带有 CBMC 仪器的严肃 C 项目列表，其中许多来自亚马逊：[`model-checking.github.io/cbmc-training/projects.html`](https://model-checking.github.io/cbmc-training/projects.html)。它们在库函数的单元测试中扮演着类似的角色。
 
-SV Comp [https://sv-comp.sosy-lab.org/](https://sv-comp.sosy-lab.org/) - CPAchecker UAutomizer在竞赛中非常成功。我没有多少使用过它们。
+SV Comp [`sv-comp.sosy-lab.org/`](https://sv-comp.sosy-lab.org/) - CPAchecker UAutomizer 在竞赛中非常成功。我没有多少使用过它们。
 
-Klee，symcc是符号执行器。在许多方面类似于有界模型检查器。我认为最大的哲学区别在于它们并不真正围绕着确保不存在错误，而是围绕着查找错误，这有些不同。
+Klee，symcc 是符号执行器。在许多方面类似于有界模型检查器。我认为最大的哲学区别在于它们并不真正围绕着确保不存在错误，而是围绕着查找错误，这有些不同。
 
-Frama-C VST [https://github.com/verifast/verifast](https://github.com/verifast/verifast) 格雷厄姆似乎喜欢这个。
+Frama-C VST [`github.com/verifast/verifast`](https://github.com/verifast/verifast) 格雷厄姆似乎喜欢这个。
 
-[esbmc](http://esbmc.org/) 是一个C有界模型检查器。
+[esbmc](http://esbmc.org/) 是一个 C 有界模型检查器。
 
-将C函数与它的语法进行比较？
+将 C 函数与它的语法进行比较？
 
 ```
 echo "
@@ -471,9 +471,9 @@ bool check_balance(char *input){
 cbmc /tmp/parens.c 
 ```
 
-简单易用 [首页](https://www.cprover.org/cbmc/) [https://arxiv.org/abs/2302.02384](https://arxiv.org/abs/2302.02384) `sudo apt install cbmc` [https://github.com/diffblue/cbmc](https://github.com/diffblue/cbmc) github [https://diffblue.github.io/cbmc/](https://diffblue.github.io/cbmc/) 文档
+简单易用 [首页](https://www.cprover.org/cbmc/) [`arxiv.org/abs/2302.02384`](https://arxiv.org/abs/2302.02384) `sudo apt install cbmc` [`github.com/diffblue/cbmc`](https://github.com/diffblue/cbmc) github [`diffblue.github.io/cbmc/`](https://diffblue.github.io/cbmc/) 文档
 
-[https://github.com/diffblue/aws-training](https://github.com/diffblue/aws-training) [https://model-checking.github.io/cbmc-training/](https://model-checking.github.io/cbmc-training/) [https://github.com/model-checking/cbmc-starter-kit](https://github.com/model-checking/cbmc-starter-kit) 入门套件模板 [https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html](https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html) 对maloc进行检测 [https://github.com/model-checking/cbmc-proof-debugger](https://github.com/model-checking/cbmc-proof-debugger)
+[`github.com/diffblue/aws-training`](https://github.com/diffblue/aws-training) [`model-checking.github.io/cbmc-training/`](https://model-checking.github.io/cbmc-training/) [`github.com/model-checking/cbmc-starter-kit`](https://github.com/model-checking/cbmc-starter-kit) 入门套件模板 [`model-checking.github.io/cbmc-starter-kit/tutorial/index.html`](https://model-checking.github.io/cbmc-starter-kit/tutorial/index.html) 对 maloc 进行检测 [`github.com/model-checking/cbmc-proof-debugger`](https://github.com/model-checking/cbmc-proof-debugger)
 
 [手册](http://www.cprover.org/cprover-manual/) 参见教程
 
@@ -502,13 +502,13 @@ ESBMC
 
 +   仍然在实际开发中
 
-[https://awslabs.github.io/aws-proof-build-assistant/](https://awslabs.github.io/aws-proof-build-assistant/) [https://github.com/awslabs/aws-c-common](https://github.com/awslabs/aws-c-common) corejson [https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc](https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc) s2n-tls [https://github.com/aws/s2n-tls/tree/main/tests/cbmc](https://github.com/aws/s2n-tls/tree/main/tests/cbmc) [https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc](https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc) [https://github.com/aws/s2n-quic](https://github.com/aws/s2n-quic)
+[`awslabs.github.io/aws-proof-build-assistant/`](https://awslabs.github.io/aws-proof-build-assistant/) [`github.com/awslabs/aws-c-common`](https://github.com/awslabs/aws-c-common) corejson [`github.com/FreeRTOS/coreJSON/tree/main/test/cbmc`](https://github.com/FreeRTOS/coreJSON/tree/main/test/cbmc) s2n-tls [`github.com/aws/s2n-tls/tree/main/tests/cbmc`](https://github.com/aws/s2n-tls/tree/main/tests/cbmc) [`github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc`](https://github.com/aws/aws-encryption-sdk-c/tree/master/verification/cbmc) [`github.com/aws/s2n-quic`](https://github.com/aws/s2n-quic)
 
 有界证明 vs 起搏器 vs 合同
 
-[https://crates.io/crates/libcprover_rust/5.91.0](https://crates.io/crates/libcprover_rust/5.91.0) rust api
+[`crates.io/crates/libcprover_rust/5.91.0`](https://crates.io/crates/libcprover_rust/5.91.0) rust api
 
-[https://dl.acm.org/doi/pdf/10.1145/3551349.3559523](https://dl.acm.org/doi/pdf/10.1145/3551349.3559523) CBMC-SSM：使用符号化阴影内存对 C 程序进行有界模型检查 [https://github.com/diffblue/cbmc/issues/7757](https://github.com/diffblue/cbmc/issues/7757)
+[`dl.acm.org/doi/pdf/10.1145/3551349.3559523`](https://dl.acm.org/doi/pdf/10.1145/3551349.3559523) CBMC-SSM：使用符号化阴影内存对 C 程序进行有界模型检查 [`github.com/diffblue/cbmc/issues/7757`](https://github.com/diffblue/cbmc/issues/7757)
 
 ```
 %%script sqlite3 --echo

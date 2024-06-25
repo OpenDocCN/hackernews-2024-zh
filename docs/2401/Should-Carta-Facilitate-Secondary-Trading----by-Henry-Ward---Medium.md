@@ -8,11 +8,11 @@
 
 # 应该 Carta 促进二级交易吗？| 作者：亨利·沃德 | Medium
 
-> 来源：[https://henrysward.medium.com/should-carta-facilitate-secondary-trading-c319e0c9f080](https://henrysward.medium.com/should-carta-facilitate-secondary-trading-c319e0c9f080)
+> 来源：[`henrysward.medium.com/should-carta-facilitate-secondary-trading-c319e0c9f080`](https://henrysward.medium.com/should-carta-facilitate-secondary-trading-c319e0c9f080)
 
 对于那些感兴趣的人，让我在下面提供更多背景信息。
 
-*流动性一直是我想解决的问题，已经有近十年了。从我们的* [*A轮融资文档*](https://carta.com/blog/carta-series-a/) *开始，2014 年。*
+*流动性一直是我想解决的问题，已经有近十年了。从我们的* [*A 轮融资文档*](https://carta.com/blog/carta-series-a/) *开始，2014 年。*
 
 **私人市场的纳斯达克？**
 
@@ -24,7 +24,7 @@
 
 **因为我们拥有数据，所以我们不能使用它**
 
-但我正在学到另一件事 —— Carta可能不是*能够解决这个问题的公司*。许多人认为我们最有能力解决流动性问题，因为我们拥有股本数据。但是同样的论点也适用于数据产品。人们说：“你拥有所有数据，所以应该让 Pitchbook 破产！”但正是*因为*我们拥有数据，所以我们不能使用它。这是我们客户的数据，不是我们的。这就是为什么在十年中，Carta 从未发布过数据产品。在我与 CEO 会面之前，我会使用 Pitchbook 和 Techcrunch 进行公司研究。
+但我正在学到另一件事 —— Carta 可能不是*能够解决这个问题的公司*。许多人认为我们最有能力解决流动性问题，因为我们拥有股本数据。但是同样的论点也适用于数据产品。人们说：“你拥有所有数据，所以应该让 Pitchbook 破产！”但正是*因为*我们拥有数据，所以我们不能使用它。这是我们客户的数据，不是我们的。这就是为什么在十年中，Carta 从未发布过数据产品。在我与 CEO 会面之前，我会使用 Pitchbook 和 Techcrunch 进行公司研究。
 
 如果我们不能使用地面真实数据，那就不是优势。而且，如果人们认为我们在使用它，那就是一个劣势。例如，如果我们通过公开信息向潜在客户发送电子邮件，客户怎么知道我们是公开获取的还是内部获取的？如果我们告诉他们，他们会相信我们吗？这重要吗？只要出现不端行为的外观，就是毁灭性的。
 

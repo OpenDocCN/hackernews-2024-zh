@@ -8,7 +8,7 @@ date: 2024-05-27 14:52:09
 
 # GitHub - rupa/z: z - jump around
 
-> 来源：[https://github.com/rupa/z](https://github.com/rupa/z)
+> 来源：[`github.com/rupa/z`](https://github.com/rupa/z)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

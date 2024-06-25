@@ -8,7 +8,7 @@ date: 2024-05-27 14:49:44
 
 # 芝加哥地区特斯拉充电站被冻结的汽车围满：'我们这里有一大堆废弃的机器人' | 福克斯商业
 
-> 来源：[https://www.foxbusiness.com/technology/chicago-area-tesla-charging-stations-lined-with-dead-cars-in-freezing-cold-a-bunch-of-dead-robots-out-here](https://www.foxbusiness.com/technology/chicago-area-tesla-charging-stations-lined-with-dead-cars-in-freezing-cold-a-bunch-of-dead-robots-out-here)
+> 来源：[`www.foxbusiness.com/technology/chicago-area-tesla-charging-stations-lined-with-dead-cars-in-freezing-cold-a-bunch-of-dead-robots-out-here`](https://www.foxbusiness.com/technology/chicago-area-tesla-charging-stations-lined-with-dead-cars-in-freezing-cold-a-bunch-of-dead-robots-out-here)
 
 汽车专家 Mike Caudill 认为特斯拉 Cybertruck 的设计将会让潜在的购买者望而却步，详见 'Cavuto: Coast to Coast'。
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:55
 
 # GitHub - jbroll/isbl: ISBL - 信息系统基础语言
 
-> 来源：[https://github.com/jbroll/isbl](https://github.com/jbroll/isbl)
+> 来源：[`github.com/jbroll/isbl`](https://github.com/jbroll/isbl)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

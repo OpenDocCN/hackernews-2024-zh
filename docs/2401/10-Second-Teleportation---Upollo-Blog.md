@@ -8,7 +8,7 @@
 
 # 10 秒钟传送 | Upollo Blog
 
-> 来源：[https://upollo.ai/blog/10-second-teleportation](https://upollo.ai/blog/10-second-teleportation)
+> 来源：[`upollo.ai/blog/10-second-teleportation`](https://upollo.ai/blog/10-second-teleportation)
 
 ## 场景
 
@@ -58,7 +58,7 @@
 
 在一页又一页的产品页面之后，最终我们无法确定到底是什么产品。我们渴望知道，如果您知道，请给我们留言告诉我们！
 
-这些现在已经安全地排除在我们用户的显示范围之外，并且这只是Upollo为确保向我们的客户提供准确和可行动信息而做的众多工作之一。
+这些现在已经安全地排除在我们用户的显示范围之外，并且这只是 Upollo 为确保向我们的客户提供准确和可行动信息而做的众多工作之一。
 
 我们期待着很快与您分享更多有趣的互联网内容。
 
@@ -74,6 +74,6 @@
 
 Cayden Meyer
 
-创始人兼CEO
+创始人兼 CEO
 
 使命是帮助数百万企业了解他们的用户并更快地增长！

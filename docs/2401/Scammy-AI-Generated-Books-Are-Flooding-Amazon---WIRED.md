@@ -8,7 +8,7 @@
 
 # 欺诈性的由 AI 生成的图书正在涌入亚马逊 | WIRED
 
-> 来源：[https://www.wired.com/story/scammy-ai-generated-books-flooding-amazon/](https://www.wired.com/story/scammy-ai-generated-books-flooding-amazon/)
+> 来源：[`www.wired.com/story/scammy-ai-generated-books-flooding-amazon/`](https://www.wired.com/story/scammy-ai-generated-books-flooding-amazon/)
 
 作家 Sarah Stankorb 就是其中之一。今年夏天，她出版了 [*Disobedient Women: How a Small Group of Faithful Women Exposed Abuse, Brought Down Powerful Pastors, and Ignited an Evangelical Reckoning*](https://www.amazon.com/Disobedient-Women-Faithful-Evangelical-Reckoning/dp/1546003800)。摘要在几天内就出现在亚马逊上。其中一篇，她怀疑是基于普遍分发给评论员的预发行副本，甚至在她的书出版之前的那天就出现了。
 
@@ -24,10 +24,10 @@ Stankorb 感到震惊。*Disobedient Women* 是多年来仔细报道的成果。
 
 “克利夫笔记之所以合法，并不是因为它们是合理使用。它们之所以合法，是因为它们实际上并不复制书籍。它们只是对书籍内容进行解释的简化版，” Garcia 通过电子邮件表示。
 
-其他知识产权专家并不确定。毕竟，CliffsNotes和这一新潮的摘要之间存在很大区别——CliffsNotes除了总结外，还提供了对书籍的实质性分析，并由人类撰写。“简单概括一本书更难辩护，”康奈尔大学互联网法教授詹姆斯·格里梅尔曼说。“在选题和排版上仍然存在实质性相似性，语言上也可能存在一些相似性。”
+其他知识产权专家并不确定。毕竟，CliffsNotes 和这一新潮的摘要之间存在很大区别——CliffsNotes 除了总结外，还提供了对书籍的实质性分析，并由人类撰写。“简单概括一本书更难辩护，”康奈尔大学互联网法教授詹姆斯·格里梅尔曼说。“在选题和排版上仍然存在实质性相似性，语言上也可能存在一些相似性。”
 
-作家公会的拉森伯格认为，企鹅兰登集团起诉那些为其作品创作儿童版的作者的2017年案件是一项先例，可以帮助作家们打击由人工智能生成的摘要。法院[发现](https://www.copyright.gov/fair-use/summaries/penguinrandomhouse-colting-sdny2017.pdf)这些儿童摘要不合法，因为它们主要是重新讲述受版权保护的故事。
+作家公会的拉森伯格认为，企鹅兰登集团起诉那些为其作品创作儿童版的作者的 2017 年案件是一项先例，可以帮助作家们打击由人工智能生成的摘要。法院[发现](https://www.copyright.gov/fair-use/summaries/penguinrandomhouse-colting-sdny2017.pdf)这些儿童摘要不合法，因为它们主要是重新讲述受版权保护的故事。
 
 直到一位作者真正对这一新一代摘要的创作者提起诉讼，它们的合法性仍然是一个悬而未决的问题。尽管亚马逊确实撤下了米切尔的摘要，但它并没有宣布计划主动监控这一波摘要。“我讨厌这是新的现实，但亚马逊要改变政策可能需要一个重大且反复发生的公关噩梦，”弗里德曼说。
 
-目前，没有什么能够阻止下一个AI电子书行销者明天创作新摘要并上传。“亚马逊似乎没有采取太多措施来阻止这种情况，”米切尔说。不过，出版行业似乎也不太清楚该如何处理这个问题。米切尔记得她写信给她的代理人询问关于AI模仿的事情时，她的代理人是怎么回应的：“这就是我们现在生活的新世界。”
+目前，没有什么能够阻止下一个 AI 电子书行销者明天创作新摘要并上传。“亚马逊似乎没有采取太多措施来阻止这种情况，”米切尔说。不过，出版行业似乎也不太清楚该如何处理这个问题。米切尔记得她写信给她的代理人询问关于 AI 模仿的事情时，她的代理人是怎么回应的：“这就是我们现在生活的新世界。”

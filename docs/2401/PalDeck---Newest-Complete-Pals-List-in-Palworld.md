@@ -8,7 +8,7 @@
 
 # PalDeck - Palworld 中最新的完整伙伴列表
 
-> 来源：[https://www.paldeck.co/](https://www.paldeck.co/)
+> 来源：[`www.paldeck.co/`](https://www.paldeck.co/)
 
 ### 什么是 PalWorld？
 

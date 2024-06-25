@@ -8,9 +8,9 @@ date: 2024-05-27 15:17:59
 
 # 悲观主义的七大定律
 
-> 来源：[https://quillette.com/2024/01/26/the-seven-laws-of-pessimism/](https://quillette.com/2024/01/26/the-seven-laws-of-pessimism/)
+> 来源：[`quillette.com/2024/01/26/the-seven-laws-of-pessimism/`](https://quillette.com/2024/01/26/the-seven-laws-of-pessimism/)
 
-我们刚刚度过了人类历史上最好的一年吗？当我们通过后视镜审视2023年时，我认为这是一个值得辩护的说法。事实上，自新千年开始以来的几乎每一年末都可以这样说（除了2020年和2021年这两年[灾难性的](https://blogs.worldbank.org/opendata/poverty-back-pre-covid-levels-globally-not-low-income-countries?s=03&ref=quillette.com) 大流行年）。从未有如此多的人生活在富裕、安全和健康之中。
+我们刚刚度过了人类历史上最好的一年吗？当我们通过后视镜审视 2023 年时，我认为这是一个值得辩护的说法。事实上，自新千年开始以来的几乎每一年末都可以这样说（除了 2020 年和 2021 年这两年[灾难性的](https://blogs.worldbank.org/opendata/poverty-back-pre-covid-levels-globally-not-low-income-countries?s=03&ref=quillette.com) 大流行年）。从未有如此多的人生活在富裕、安全和健康之中。
 
 然而，事实并不*感觉*如此。世界上有如此多的恐怖和悲惨事件—看看[乌克兰](https://apnews.com/article/ukraine-russia-war-putin-zelenskyy-4c62940dd5ae56bc753cee7dbddbe3fb?ref=quillette.com)、[加沙](https://www.theguardian.com/world/2023/dec/19/palestinian-casualties-in-gaza-near-20000-with-nearly-2m-people-displaced?ref=quillette.com#:~:text=Palestinian%20death%20toll%20in%20Gaza%20nears%2020%2C000%20with%20nearly%202%20million%20people%20displaced&text=Israel%2DGaza%20war)、[苏丹](https://www.bbc.com/news/world-africa-67356375?ref=quillette.com) 和[也门](https://www.wfp.org/emergencies/yemen-emergency?ref=quillette.com) —就单单这些地方，就很难相信，*平均来说*，过去的一年可能是有史以来最好的一年。那么，如果生活比以往任何时候都更好，为什么世界看起来如此沮丧呢？
 

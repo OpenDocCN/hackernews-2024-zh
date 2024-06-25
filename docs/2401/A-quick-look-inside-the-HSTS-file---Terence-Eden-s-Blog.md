@@ -8,7 +8,7 @@
 
 # 查看 HSTS 文件的简要概况 – Terence Eden’s Blog
 
-> 来源：[https://shkspr.mobi/blog/2024/01/a-quick-look-inside-the-hsts-file/](https://shkspr.mobi/blog/2024/01/a-quick-look-inside-the-hsts-file/)
+> 来源：[`shkspr.mobi/blog/2024/01/a-quick-look-inside-the-hsts-file/`](https://shkspr.mobi/blog/2024/01/a-quick-look-inside-the-hsts-file/)
 
 您在浏览器的地址栏中输入 `example.com`，它会自动将您重定向到 https:// 版本。您的浏览器如何知道需要请求网站的更安全版本？
 
@@ -67,6 +67,6 @@
 
 还有大约 187 个域名中含有 "porn"。
 
-你不能从这个数据集中推断出*太多*。很多域名似乎已经过期或不再有效。阅读 [https://hstspreload.org](https://hstspreload.org) 周围的内容，指出由于这个列表是*硬编码*到 Chrome 中的，因此可能需要几个月才能将站点添加到列表中。同样，删除也可能需要很长时间。
+你不能从这个数据集中推断出*太多*。很多域名似乎已经过期或不再有效。阅读 [`hstspreload.org`](https://hstspreload.org) 周围的内容，指出由于这个列表是*硬编码*到 Chrome 中的，因此可能需要几个月才能将站点添加到列表中。同样，删除也可能需要很长时间。
 
 我无法摆脱这样的感觉，认为应该有更好的方式来管理所有这些。

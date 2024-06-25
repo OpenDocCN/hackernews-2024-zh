@@ -8,13 +8,13 @@ date: 2024-05-27 14:36:34
 
 # 渐进式网络应用的功能
 
-> 来源：[https://whatpwacando.today](https://whatpwacando.today)
+> 来源：[`whatpwacando.today`](https://whatpwacando.today)
 
 # 渐进式网络应用的功能
 
 现在展示了今天渐进式网络应用的可能性。
 
-渐进式网络应用（PWA）是一个可以安装到您的设备并提供类似应用的体验的网站[阅读更多](/info)
+渐进式网络应用（PWA）是一个可以安装到您的设备并提供类似应用的体验的网站阅读更多
 
 ## 如何使用此应用程序
 
@@ -30,4 +30,4 @@ date: 2024-05-27 14:36:34
 
 ## 功能
 
-[<material-button>*videocam*</material-button>](/media)[<material-button>*gps_fixed*</material-button>](/geolocation)[<material-button>*notifications_none*</material-button>](/notifications)[<material-button>*auto_awesome_motion*</material-button>](/view-transitions)[<material-button>*fingerprint*</material-button>](/authentication)[<material-button>*language*</material-button>](/protocol-handling)[<material-button>*folder_open*</material-button>](/file-handling)[<material-button>*account_box*</material-button>](/contacts)[<material-button>*share*</material-button>](/web-share)[<material-button>*qr_code_scanner*</material-button>](/barcode)[<material-button>*face*</material-button>](/face-detection)[<material-button>*vibration*</material-button>](/vibration)[<material-button>*mic*</material-button>](/audio-recording)[<material-button>*play_circle_filled*</material-button>](/audio)[<material-button>*tune*</material-button>](/audiosession)[<material-button>*screen_share*</material-button>](/capture-handle)[<material-button>*sync*</material-button>](/background-sync)[<material-button>*downloading*</material-button>](/background-fetch)[<material-button>*inventory*</material-button>](/storage)[<material-button>*bluetooth*</material-button>](/bluetooth)[<material-button>*nfc*</material-button>](/nfc)[<material-button>*layers*</material-button>](/ar-vr)[<material-button>*credit_card*</material-button>](/payment)[<material-button>*screen_lock_portrait*</material-button>](/wake-lock)[<material-button>*screen_rotation*</material-button>](/device-orientation)[<material-button>*3d_rotation*</material-button>](/device-motion)[<material-button>*network_check*</material-button>](/network-info)[<material-button>*record_voice_over*</material-button>](/speech-synthesis)[<material-button>*hearing*</material-button>](/speech-recognition)[<material-button>*touch_app*</material-button>](/multi-touch)
+<material-button>*videocam*</material-button><material-button>*gps_fixed*</material-button><material-button>*notifications_none*</material-button><material-button>*auto_awesome_motion*</material-button><material-button>*fingerprint*</material-button><material-button>*language*</material-button><material-button>*folder_open*</material-button><material-button>*account_box*</material-button><material-button>*share*</material-button><material-button>*qr_code_scanner*</material-button><material-button>*face*</material-button><material-button>*vibration*</material-button><material-button>*mic*</material-button><material-button>*play_circle_filled*</material-button><material-button>*tune*</material-button><material-button>*screen_share*</material-button><material-button>*sync*</material-button><material-button>*downloading*</material-button><material-button>*inventory*</material-button><material-button>*bluetooth*</material-button><material-button>*nfc*</material-button><material-button>*layers*</material-button><material-button>*credit_card*</material-button><material-button>*screen_lock_portrait*</material-button><material-button>*screen_rotation*</material-button><material-button>*3d_rotation*</material-button><material-button>*network_check*</material-button><material-button>*record_voice_over*</material-button><material-button>*hearing*</material-button><material-button>*touch_app*</material-button>

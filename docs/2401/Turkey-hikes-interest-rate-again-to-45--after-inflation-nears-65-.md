@@ -2,25 +2,25 @@
 
 类别：未分类
 
-日期：2024年05月27日 15:09:29
+日期：2024 年 05 月 27 日 15:09:29
 
 -->
 
-# 在通货膨胀接近65%之后，土耳其再次将利率提高至45%。
+# 在通货膨胀接近 65%之后，土耳其再次将利率提高至 45%。
 
-> 来源：[https://www.cnbc.com/2024/01/25/turkey-hikes-interest-rate-again-to-45percent-as-inflation-remains-stubbornly-high.html](https://www.cnbc.com/2024/01/25/turkey-hikes-interest-rate-again-to-45percent-as-inflation-remains-stubbornly-high.html)
+> 来源：[`www.cnbc.com/2024/01/25/turkey-hikes-interest-rate-again-to-45percent-as-inflation-remains-stubbornly-high.html`](https://www.cnbc.com/2024/01/25/turkey-hikes-interest-rate-again-to-45percent-as-inflation-remains-stubbornly-high.html)
 
-居民在伊斯坦布尔的一个巴士站下，站下的土耳其大旗，时间是2023年4月30日星期日。
+居民在伊斯坦布尔的一个巴士站下，站下的土耳其大旗，时间是 2023 年 4 月 30 日星期日。
 
 彭博社 | 彭博社 | 盖蒂图片社
 
-土耳其央行于周四将其关键利率再次提高了250个基点，至45%。
+土耳其央行于周四将其关键利率再次提高了 250 个基点，至 45%。
 
 一周基准回购利率的提高符合经济学家的预期。
 
 土耳其货币政策制定者正在与双位数通胀率进行持续战斗，此次利率上调是这一努力的最新一步。
 
-[土耳其的通胀率](https://www.cnbc.com/2024/01/03/turkeys-annual-inflation-rate-climbs-to-nearly-65percent-with-more-rises-expected.html)于去年十二月同比增长到了64.8%，高于十一月的62%，而该国货币土耳其里拉（[lira](https://www.cnbc.com/quotes/TRY=/)）在今年一月初针对美元创下了[新的历史新低](https://www.cnbc.com/2024/01/11/turkish-lira-hits-fresh-record-low-against-the-dollar.html#:~:text=ordinary%20Turkish%20people.-,A%20new%20finance%20team%20was%20appointed%20in%20June%20last%20year,from%208.5%25%20to%2042.5%25.)，首次跌破30。
+[土耳其的通胀率](https://www.cnbc.com/2024/01/03/turkeys-annual-inflation-rate-climbs-to-nearly-65percent-with-more-rises-expected.html)于去年十二月同比增长到了 64.8%，高于十一月的 62%，而该国货币土耳其里拉（[lira](https://www.cnbc.com/quotes/TRY=/)）在今年一月初针对美元创下了[新的历史新低](https://www.cnbc.com/2024/01/11/turkish-lira-hits-fresh-record-low-against-the-dollar.html#:~:text=ordinary%20Turkish%20people.-,A%20new%20finance%20team%20was%20appointed%20in%20June%20last%20year,from%208.5%25%20to%2042.5%25.)，首次跌破 30。
 
 分析师们预测，这将是一段时间内的最后一次加息，特别是在即将到来的三月地方选举之际。
 
@@ -28,21 +28,21 @@
 
 土耳其共和国中央银行本身也暗示，这很可能是加息周期的结束，表示其决定：“建立防通货膨胀的紧缩路径所需的货币紧缩程度已经实现……政策利率的当前水平将保持不变，直到月度通胀的基本趋势显著下降，并且通胀预期收敛到预期的预测范围为止。”
 
-央行此举是自2023年5月选举以来的一系列利率上调中的最新一步，这已经是连续第八次加息，对土耳其人来说是痛苦的，因为该国正面临货币急剧贬值和生活成本飙升的问题。
+央行此举是自 2023 年 5 月选举以来的一系列利率上调中的最新一步，这已经是连续第八次加息，对土耳其人来说是痛苦的，因为该国正面临货币急剧贬值和生活成本飙升的问题。
 
-土耳其央行行长哈菲兹·盖耶·埃尔坎在2023年7月27日在土耳其安卡拉举行的《2023年第三季度通货膨胀报告》新闻发布会上回答记者提问。
+土耳其央行行长哈菲兹·盖耶·埃尔坎在 2023 年 7 月 27 日在土耳其安卡拉举行的《2023 年第三季度通货膨胀报告》新闻发布会上回答记者提问。
 
 安纳多卢通讯社 | 安纳多卢通讯社 | 盖蒂图片社
 
-过去几年的高通货膨胀在很大程度上是安卡拉政府坚持松散货币政策的结果。里拉兑美元今年迄今已下跌了38%，过去五年已贬值超过80%。
+过去几年的高通货膨胀在很大程度上是安卡拉政府坚持松散货币政策的结果。里拉兑美元今年迄今已下跌了 38%，过去五年已贬值超过 80%。
 
-去年6月，一支新的财政团队组建，并且土耳其央行在土耳其央行行长哈菲兹·埃尔坎的监督下开始了急剧的转变，将利率上调。此后，该国的基准利率从8.5%提高到了45%。
+去年 6 月，一支新的财政团队组建，并且土耳其央行在土耳其央行行长哈菲兹·埃尔坎的监督下开始了急剧的转变，将利率上调。此后，该国的基准利率从 8.5%提高到了 45%。
 
 尽管如此，一些观察家仍然认为这还不足以有效降低通货膨胀。
 
-资本经济学预计，土耳其的通货膨胀率将从目前的65%降至年底的“30-35%左右”，而Conotoxia Fintech的市场分析师巴托什·萨维克（Bartosz Sawicki）认为，5月份的通货膨胀率将接近75%然后开始下降。
+资本经济学预计，土耳其的通货膨胀率将从目前的 65%降至年底的“30-35%左右”，而 Conotoxia Fintech 的市场分析师巴托什·萨维克（Bartosz Sawicki）认为，5 月份的通货膨胀率将接近 75%然后开始下降。
 
-“3650个基点的累积紧缩可能不足以彻底遏制土耳其长期存在的通货膨胀问题，”萨维克说，他描述这是由“松散的货币政策、深度负实际利率和持续的里拉贬值”造成的恶性循环。
+“3650 个基点的累积紧缩可能不足以彻底遏制土耳其长期存在的通货膨胀问题，”萨维克说，他描述这是由“松散的货币政策、深度负实际利率和持续的里拉贬值”造成的恶性循环。
 
 广泛来看，分析师们预计央行将在今年余下的时间保持利率不变，短期内不会有降息。
 

@@ -8,7 +8,7 @@
 
 # 美国办公室所有者面临 1170 亿美元的债务偿还难题
 
-> 来源：[https://www.ft.com/content/4ed9e5b0-f3de-422a-9a07-a328ebf2340c](https://www.ft.com/content/4ed9e5b0-f3de-422a-9a07-a328ebf2340c)
+> 来源：[`www.ft.com/content/4ed9e5b0-f3de-422a-9a07-a328ebf2340c`](https://www.ft.com/content/4ed9e5b0-f3de-422a-9a07-a328ebf2340c)
 
 ### 标准数字
 

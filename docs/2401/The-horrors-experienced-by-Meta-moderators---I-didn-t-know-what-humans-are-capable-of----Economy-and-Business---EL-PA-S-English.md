@@ -8,19 +8,19 @@
 
 # Meta 审核员经历的恐怖：‘我不知道人类能做到这种程度’ | 经济与商业 | EL PAÍS 英语
 
-> 来源：[https://english.elpais.com/economy-and-business/2024-01-29/the-horrors-experienced-by-meta-moderators-i-didnt-know-what-humans-are-capable-of.html](https://english.elpais.com/economy-and-business/2024-01-29/the-horrors-experienced-by-meta-moderators-i-didnt-know-what-humans-are-capable-of.html)
+> 来源：[`english.elpais.com/economy-and-business/2024-01-29/the-horrors-experienced-by-meta-moderators-i-didnt-know-what-humans-are-capable-of.html`](https://english.elpais.com/economy-and-business/2024-01-29/the-horrors-experienced-by-meta-moderators-i-didnt-know-what-humans-are-capable-of.html)
 
 在不得不反复观看了无数自杀、谋杀、肢解和强奸视频后，他发生了恐慌，并寻求帮助。这名员工在一家为 Meta（拥有 Facebook、Instagram 和 WhatsApp 的公司）工作的内容审核员。他被告知去游乐楼层：位于巴塞罗那 Glòries 大厦的一个大型游戏室，那里是加利福尼亚科技巨头的内容审核办公室。他坐在乒乓球桌前发呆。游乐楼层对他毫无帮助。另一次，在他再次发生恐慌两个小时后，他的老板批准他去见公司心理医生。她在另一个楼层，心理楼层。他花了半个多小时和她交谈，把一切都说了出来。当他结束时，她告诉他，他的工作对社会非常重要，他们都是英雄，他应该更坚强。然后他们的时间就到了。
 
-[内容审核员](https://english.elpais.com/science-tech/2023-12-26/as-social-media-guardrails-fade-and-ai-deepfakes-go-mainstream-experts-warn-of-impact-on-elections.html)负责在Facebook和Instagram上保持墙壁和动态信息的清洁和和平。数百万人每天使用这些平台，却不知道这一黑暗面的存在。这些工作人员决定是否发布虚假新闻或不符合 Meta 政策的照片。但他们也是那些不得不处理最残酷内容的人：观看、评估、审查，并在必要时将其发送给警方。
+[内容审核员](https://english.elpais.com/science-tech/2023-12-26/as-social-media-guardrails-fade-and-ai-deepfakes-go-mainstream-experts-warn-of-impact-on-elections.html)负责在 Facebook 和 Instagram 上保持墙壁和动态信息的清洁和和平。数百万人每天使用这些平台，却不知道这一黑暗面的存在。这些工作人员决定是否发布虚假新闻或不符合 Meta 政策的照片。但他们也是那些不得不处理最残酷内容的人：观看、评估、审查，并在必要时将其发送给警方。
 
 2018 年，CCC 巴塞罗那数字服务公司搬进了 Glòries 大厦。该公司的分包商的到来受到了加泰罗尼亚当局的热烈欢迎，因为这家大型技术公司的分包商成为了巴塞罗那创新公司的一员，并且占据了一栋刚失去了欧洲药品管理局总部机会的建筑的一部分。
 
-公司开始雇佣人员——主要是讲多种语言的年轻外国人——来审查不同市场的内容。去年十月，《先锋报》的一项调查揭露了这些审查员工作的条件。在此之前，加泰罗尼亚劳工检察院于2021年展开了调查，次年对该公司因工作场所心理社会风险评估和预防不足而处以超过4万欧元（43,314美元）的罚款。2020年，该公司被加拿大的Telus International收购，后者声称这些指控是虚假的，并且他们已经采取了足够的安全措施。
+公司开始雇佣人员——主要是讲多种语言的年轻外国人——来审查不同市场的内容。去年十月，《先锋报》的一项调查揭露了这些审查员工作的条件。在此之前，加泰罗尼亚劳工检察院于 2021 年展开了调查，次年对该公司因工作场所心理社会风险评估和预防不足而处以超过 4 万欧元（43,314 美元）的罚款。2020 年，该公司被加拿大的 Telus International 收购，后者声称这些指控是虚假的，并且他们已经采取了足够的安全措施。
 
-这名工人于2018年开始工作，直到2020年，他因心理健康问题获得了病假。公司和互助保险公司将其归类为常见疾病。“然后我们请求更改保险事故，因为他的案例完全符合职业事故的情况。社会保障国家研究所同意了我们的看法，公司提出上诉，从而引发了法律程序，”Espacio Jurídico Feliu Fins法律事务所的合伙人Francesc Feliu解释道，该公司专门处理医疗问题。
+这名工人于 2018 年开始工作，直到 2020 年，他因心理健康问题获得了病假。公司和互助保险公司将其归类为常见疾病。“然后我们请求更改保险事故，因为他的案例完全符合职业事故的情况。社会保障国家研究所同意了我们的看法，公司提出上诉，从而引发了法律程序，”Espacio Jurídico Feliu Fins 法律事务所的合伙人 Francesc Feliu 解释道，该公司专门处理医疗问题。
 
-1月12日，巴塞罗那第28劳动法院驳回了公司的主张，并裁定该工人的病假应归类为工伤。这是第一次判决认定审查员患有的精神疾病是由工作引起的。“[与工作相关的压力](https://english.elpais.com/society/2022-03-11/when-one-can-work-no-more-the-effects-of-burnout-on-your-body.html)是引发这些障碍的唯一、专属和不容置疑的触发因素，”裁决称，该裁决仍可上诉。Feliu还有大约25名其他等待他们的疾病被认定为职业事故的工人，去年十月他还对公司提起了刑事诉讼，声称缺乏安全措施。
+1 月 12 日，巴塞罗那第 28 劳动法院驳回了公司的主张，并裁定该工人的病假应归类为工伤。这是第一次判决认定审查员患有的精神疾病是由工作引起的。“[与工作相关的压力](https://english.elpais.com/society/2022-03-11/when-one-can-work-no-more-the-effects-of-burnout-on-your-body.html)是引发这些障碍的唯一、专属和不容置疑的触发因素，”裁决称，该裁决仍可上诉。Feliu 还有大约 25 名其他等待他们的疾病被认定为职业事故的工人，去年十月他还对公司提起了刑事诉讼，声称缺乏安全措施。
 
 该工人要求匿名，因为他受到严格的保密协议约束，他更愿意不谈论自己的感受或非常个人的问题，因为这项工作留下的伤口仍然很新。他对裁决的新闻报道感到很困扰，这让他重温了他所见到的事情。“但至少这鼓励了更多的人寻求正义，”他指出。
 

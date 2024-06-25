@@ -8,7 +8,7 @@ date: 2024-05-27 15:19:01
 
 # GitHub - collabora/WhisperFusion: WhisperFusion builds upon the capabilities of WhisperLive and WhisperSpeech to provide a seamless conversations with an AI.
 
-> 来源：[https://github.com/collabora/WhisperFusion](https://github.com/collabora/WhisperFusion)
+> 来源：[`github.com/collabora/WhisperFusion`](https://github.com/collabora/WhisperFusion)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

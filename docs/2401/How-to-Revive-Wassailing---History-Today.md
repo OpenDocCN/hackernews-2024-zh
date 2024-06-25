@@ -8,7 +8,7 @@ category: 未分类
 
 # 如何复兴苹果酒礼仪 | 历史今天
 
-> 来源：[https://www.historytoday.com/archive/out-margins/how-revive-wassailing](https://www.historytoday.com/archive/out-margins/how-revive-wassailing)
+> 来源：[`www.historytoday.com/archive/out-margins/how-revive-wassailing`](https://www.historytoday.com/archive/out-margins/how-revive-wassailing)
 
 当我在谈到中世纪的节日年时，人们经常问我的一个问题是‘你认为我们应该复兴哪些中世纪的传统？’我从来不太确定如何回答。复兴古老的传统可以很有趣，但这也是一个棘手的问题；存在着人为性、夸张的古老风格，可能会使曾经生机勃勃的习俗看起来虚假和无意义。
 

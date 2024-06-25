@@ -8,7 +8,7 @@
 
 # Vox：即将推出的 V 语言开源浏览器引擎
 
-> 来源：[https://vox.sx/](https://vox.sx/)
+> 来源：[`vox.sx/`](https://vox.sx/)
 
 ## 一个全新的浏览器引擎从零开始构建
 

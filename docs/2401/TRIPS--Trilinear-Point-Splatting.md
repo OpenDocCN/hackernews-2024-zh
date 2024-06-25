@@ -8,9 +8,9 @@ date: 2024-05-27 14:43:19
 
 # TRIPS: 三线性点喷洒
 
-> 来源：[https://lfranke.github.io/trips/](https://lfranke.github.io/trips/)
+> 来源：[`lfranke.github.io/trips/`](https://lfranke.github.io/trips/)
 
-[Kerbl 和 Kopanas 2023] Kerbl, B., Kopanas, G., Leimkühler, T., 和 Drettakis, G. 2023\. "用于实时辐射场渲染的3D高斯喷洒." ACM Transactions on Graphics (ToG), 42(4).
+[Kerbl 和 Kopanas 2023] Kerbl, B., Kopanas, G., Leimkühler, T., 和 Drettakis, G. 2023\. "用于实时辐射场渲染的 3D 高斯喷洒." ACM Transactions on Graphics (ToG), 42(4).
 
 [Rückert 2022] Rückert, D., Franke, L., 和 Stamminger, M., 2022\. "Adop: 近似可微分的单像素点渲染." ACM Transactions on Graphics (ToG) 41.4 (2022): 1-14.
 

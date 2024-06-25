@@ -8,7 +8,7 @@
 
 # Keypirinha — Keypirinha
 
-> 来源：[https://keypirinha.com/](https://keypirinha.com/)
+> 来源：[`keypirinha.com/`](https://keypirinha.com/)
 
 Keypirinha 是 Windows 上键盘忍者们的快速启动器。
 
@@ -38,4 +38,4 @@ Keypirinha 是 Windows 上键盘忍者们的快速启动器。
 
 +   在单独的配置文件中进行机器特定和/或用户特定的配置
 
-+   … 以及更多，请参阅[已发货的软件包](shipped-packages.html)和[第三方软件包](contributions.html)
++   … 以及更多，请参阅已发货的软件包和第三方软件包

@@ -2,29 +2,29 @@
 
 类别：未分类
 
-时间：2024年05月27日14:53:35
+时间：2024 年 05 月 27 日 14:53:35
 
 -->
 
-# 大脑转储：在联合广播上的ompromised证书
+# 大脑转储：在联合广播上的 ompromised 证书
 
-> 来源：[https://www.hezmatt.org/~mpalmer/blog/2024/01/16/pwned-certificates-on-the-fediverse.html](https://www.hezmatt.org/~mpalmer/blog/2024/01/16/pwned-certificates-on-the-fediverse.html)
+> 来源：[`www.hezmatt.org/~mpalmer/blog/2024/01/16/pwned-certificates-on-the-fediverse.html`](https://www.hezmatt.org/~mpalmer/blog/2024/01/16/pwned-certificates-on-the-fediverse.html)
 
-发布日期：2024年1月16日星期二 | [固定链接](//www.hezmatt.org/~mpalmer/blog/2024/01/16/pwned-certificates-on-the-fediverse.html) | [无评论](//www.hezmatt.org/~mpalmer/blog/2024/01/16/pwned-certificates-on-the-fediverse.html#comments)
+发布日期：2024 年 1 月 16 日星期二 | 固定链接 | 无评论
 
-除了[ompromised keys](https://pwnedkeys.com)的收集和分发之外，[pwnedkeys](https://pwnedkeys.com)项目还将这些ompromised keys与颁发的SSL证书进行匹配。我很高兴地宣布，从2024年初开始，所有匹配的证书现在都正在通过[联合广播](https://botsin.space/@pwnedcerts)发布，感谢[botsin.space](https://botsin.space/)Mastodon服务器。
+除了[ompromised keys](https://pwnedkeys.com)的收集和分发之外，[pwnedkeys](https://pwnedkeys.com)项目还将这些 ompromised keys 与颁发的 SSL 证书进行匹配。我很高兴地宣布，从 2024 年初开始，所有匹配的证书现在都正在通过[联合广播](https://botsin.space/@pwnedcerts)发布，感谢[botsin.space](https://botsin.space/)Mastodon 服务器。
 
 想知道哪些网站容易受到拦截和干扰，实时或准实时？您是否渴望知道是谁向在公开场合发布其私钥的人颁发证书？现在你可以了。
 
 # 工作原理
 
-发布ompromised certs的过程大致如下：
+发布 ompromised certs 的过程大致如下：
 
 1.  [证书透明度](https://certificate.transparency.dev)（CT）日志中的所有证书都被汇集起来（使用我的[scrape-ct-log](https://github.com/mpalmer/scrape-ct-log)工具，这是西部最快的日志抓取工具！），并且每个证书的公钥指纹都被存储在一个[LMDB](https://lmdb.tech/)数据文件中。
 
-1.  当新的私钥被确定为已被ompromised时，该密钥的指纹将与所有LMDB文件进行比对，这些文件将密钥指纹映射到证书（实际上是到CT日志条目ID，从中检索证书本身）。
+1.  当新的私钥被确定为已被 ompromised 时，该密钥的指纹将与所有 LMDB 文件进行比对，这些文件将密钥指纹映射到证书（实际上是到 CT 日志条目 ID，从中检索证书本身）。
 
-1.  如果发现了一个或多个匹配项，则使用被ompromised key的证书会被转发给“tooter”，其[将它们发布供全世界赞叹](https://botsin.space/@pwnedcerts)。
+1.  如果发现了一个或多个匹配项，则使用被 ompromised key 的证书会被转发给“tooter”，其[将它们发布供全世界赞叹](https://botsin.space/@pwnedcerts)。
 
 这听起来似乎非常简单，实际上也是如此……在理论上。技巧在于优化流水线，使得每天大约五百万个新证书能够在我拥有的这台略显中年的服务器上得到索引，而不会被积压。
 
@@ -32,7 +32,7 @@
 
 关于这个有趣的故事…
 
-我曾经通知CA有关使用ompromised keys颁发的证书，这导致他们不得不撤销相关证书。然而，有几家CA不喜欢撤销所有这些证书，因为这会花费他们的员工时间（从而花费钱财）。他们甚至走得更远，改变了他们的程序，不再接受标准的问题报告方式（通过电子邮件发送ompromised的一般性声明），而是要求进行特定于CA的跳跃来通知他们ompromised keys。
+我曾经通知 CA 有关使用 ompromised keys 颁发的证书，这导致他们不得不撤销相关证书。然而，有几家 CA 不喜欢撤销所有这些证书，因为这会花费他们的员工时间（从而花费钱财）。他们甚至走得更远，改变了他们的程序，不再接受标准的问题报告方式（通过电子邮件发送 ompromised 的一般性声明），而是要求进行特定于 CA 的跳跃来通知他们 ompromised keys。
 
 由于 WebPKI 中吊销的有效性最多只能称为“顺势疗法”，我决定不再费心与那些只想刁难的 CA 打击莫尔游戏，并停止向 CA 发送受损密钥通知。相反，我现在将受损证书的详细信息发布给所有人，这样用户就可以直接保护自己，如果他们选择这样做的话。
 

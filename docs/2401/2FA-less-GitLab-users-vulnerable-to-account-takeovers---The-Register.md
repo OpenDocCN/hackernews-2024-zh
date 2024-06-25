@@ -8,7 +8,7 @@
 
 # 2FA-less GitLab 用户容易受到账户接管的威胁 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/15/critical_gitlab_vulnerability/](https://www.theregister.com/2024/01/15/critical_gitlab_vulnerability/)
+> 来源：[`www.theregister.com/2024/01/15/critical_gitlab_vulnerability/`](https://www.theregister.com/2024/01/15/critical_gitlab_vulnerability/)
 
 GitLab 管理员应立即应用最新一批安全补丁，鉴于刚刚披露的新的关键账户绕过漏洞。
 
@@ -44,25 +44,25 @@ GitLab 表示，所有身份验证机制都受到影响，即使是一些使用�
 
 幸运的是，在披露时，没有证据表明该漏洞已成功被利用，但是一如既往，当一个漏洞被公开时，像这样简单的利用方式，更广泛的利用尝试是可能的，并且这变成了与攻击者的竞赛来修补该漏洞。
 
-由于管理员需要时间来应用补丁，为了防止稳定性问题的出现，不要跳过升级停止，一种更快速的临时缓解措施就是要求所有账户开启2FA，因为在绝大多数情况下，这将阻止账户劫持尝试。
+由于管理员需要时间来应用补丁，为了防止稳定性问题的出现，不要跳过升级停止，一种更快速的临时缓解措施就是要求所有账户开启 2FA，因为在绝大多数情况下，这将阻止账户劫持尝试。
 
 理想情况下，一旦启用，它将会永久启用，特别是对于具有管理员权限的关键账户。
 
-我们只需要回顾上周就可以了解到启用2FA的价值-即使是安全界最大的名字也会不时地[出现失误](https://www.theregister.com/2024/01/11/mandiant_x_account_brute_forced/)。
+我们只需要回顾上周就可以了解到启用 2FA 的价值-即使是安全界最大的名字也会不时地[出现失误](https://www.theregister.com/2024/01/11/mandiant_x_account_brute_forced/)。
 
-对GitLab账户的劫持对攻击者来说可能意味着严重的后果，考虑到组织在DevOps平台上拥有的大量知识产权和源代码。
+对 GitLab 账户的劫持对攻击者来说可能意味着严重的后果，考虑到组织在 DevOps 平台上拥有的大量知识产权和源代码。
 
-GitLab表示，客户可以检查其日志以查看是否存在利用行为，强调可以通过以下两种方式揭示任何恶意活动：
+GitLab 表示，客户可以检查其日志以查看是否存在利用行为，强调可以通过以下两种方式揭示任何恶意活动：
 
-+   检查gitlab-rails/production_json.log有关到`/users/password`路径的HTTP请求，其中params.value.email包含具有多个电子邮件地址的JSON数组。
++   检查 gitlab-rails/production_json.log 有关到`/users/password`路径的 HTTP 请求，其中 params.value.email 包含具有多个电子邮件地址的 JSON 数组。
 
-+   检查gitlab-rails/audit_json.log标有`meta.caller_id`为`PasswordsController#create`，并且`target_details`包含具有多个电子邮件地址的JSON数组的条目。
++   检查 gitlab-rails/audit_json.log 标有`meta.caller_id`为`PasswordsController#create`，并且`target_details`包含具有多个电子邮件地址的 JSON 数组的条目。
 
-自漏洞通过GitLab的漏洞赏金计划引起公司的注意以来，该公司已新增了新的测试以验证密码重置逻辑，以防止未来发生类似漏洞。
+自漏洞通过 GitLab 的漏洞赏金计划引起公司的注意以来，该公司已新增了新的测试以验证密码重置逻辑，以防止未来发生类似漏洞。
 
 公司还启动了根本原因分析流程，预计将生成其他后续操作并更新文档，以提高工程师对问题的了解。
 
-在同一轮补丁中还解决了第二个关键性漏洞。CVE-2023-5356被认定为9.6的CVSS分数，允许攻击者在[Slack](https://www.theregister.com/2023/05/30/slack_e2ee_protest/)或Mattermost中执行斜杠命令。
+在同一轮补丁中还解决了第二个关键性漏洞。CVE-2023-5356 被认定为 9.6 的 CVSS 分数，允许攻击者在[Slack](https://www.theregister.com/2023/05/30/slack_e2ee_protest/)或 Mattermost 中执行斜杠命令。
 
 虽然不像账户劫持那么严重，但成功利用漏洞可能为攻击者提供机会将自己添加到渠道中，从而潜在地将组织的秘密工作暴露给未经授权的各方。
 
@@ -70,8 +70,8 @@ GitLab表示，客户可以检查其日志以查看是否存在利用行为，�
 
 其他较轻微的修复包括：
 
-+   **CVE-2023-4812**：发现了GitLab的问题，影响从15.3开始的所有版本，16.5.5之前的所有版本，16.6之前的16.6.4所有版本和16.7之前的16.7.2所有版本。所需的CODEOWNERS批准可以通过向先前批准的合并请求添加更改来绕过。
++   **CVE-2023-4812**：发现了 GitLab 的问题，影响从 15.3 开始的所有版本，16.5.5 之前的所有版本，16.6 之前的 16.6.4 所有版本和 16.7 之前的 16.7.2 所有版本。所需的 CODEOWNERS 批准可以通过向先前批准的合并请求添加更改来绕过。
 
-+   **CVE-2023-6955**：存在GitLab远程开发中的不正确访问控制漏洞，影响16.5.6之前的所有版本，16.6 之前的16.6.4和16.7之前的16.7.2版本。这种情况允许攻击者在一个组中创建一个与另一个组中代理相关的工作区。
++   **CVE-2023-6955**：存在 GitLab 远程开发中的不正确访问控制漏洞，影响 16.5.6 之前的所有版本，16.6 之前的 16.6.4 和 16.7 之前的 16.7.2 版本。这种情况允许攻击者在一个组中创建一个与另一个组中代理相关的工作区。
 
 +   **CVE-2023-2030**：发现了一个问题，影响 GitLab CE/EE 的所有版本，从 12.2 到 16.5.6 之前的版本，16.6 到 16.6.4 之前的版本，以及 16.7 到 16.7.2 之前的版本，攻击者可能会潜在地修改已签名提交的元数据。®

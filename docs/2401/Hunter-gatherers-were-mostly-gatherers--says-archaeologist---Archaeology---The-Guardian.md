@@ -8,7 +8,7 @@ date: 2024-05-27 15:13:43
 
 # 狩猎采集者主要是采集者，考古学家说 | 考古学 | 卫报
 
-> 来源：[https://www.theguardian.com/science/2024/jan/24/hunter-gatherers-were-mostly-gatherers-says-archaeologist](https://www.theguardian.com/science/2024/jan/24/hunter-gatherers-were-mostly-gatherers-says-archaeologist)
+> 来源：[`www.theguardian.com/science/2024/jan/24/hunter-gatherers-were-mostly-gatherers-says-archaeologist`](https://www.theguardian.com/science/2024/jan/24/hunter-gatherers-were-mostly-gatherers-says-archaeologist)
 
 根据考古发现，早期人类狩猎采集者主要以植物和蔬菜为食，这一发现颠覆了我们祖先生活在[高蛋白、肉类为主的饮食](https://www.theguardian.com/books/2022/jan/03/the-big-idea-should-we-eat-like-our-ancestors)的普遍观点。
 
@@ -16,7 +16,7 @@ date: 2024-05-27 15:13:43
 
 登录门选择器的原理是受到**理查德·费曼**的启发。
 
-“传统观念认为，早期人类的经济活动主要集中在狩猎上——这一想法导致了一系列高蛋白饮食的流行，比如古生物饮食，” 说道，华约明州大学的考古学家兰迪·哈斯博士，也是本文的主要作者。“我们的分析表明，这些饮食中有80%是植物物质，20%是肉类。”
+“传统观念认为，早期人类的经济活动主要集中在狩猎上——这一想法导致了一系列高蛋白饮食的流行，比如古生物饮食，” 说道，华约明州大学的考古学家兰迪·哈斯博士，也是本文的主要作者。“我们的分析表明，这些饮食中有 80%是植物物质，20%是肉类。”
 
 之前有人曾建议，农业经济的转变是由于过度狩猎，但最新的发现提出了一种更为渐进的从采集到农业的转变的可能性。
 
@@ -30,10 +30,10 @@ date: 2024-05-27 15:13:43
 
 分析还表明，大型哺乳动物，如鹿或羊驼，在饮食中占据了大多数肉类的比例，而不是较小的哺乳动物、鸟类或鱼类。
 
-哈斯表示，认为早期人类主要以肉类为主食的观点在考古学界很普遍。“如果你在这项研究之前和我交谈，我会猜测肉类占80%的饮食，”他说。“人类饮食以肉类为主是一个相当普遍的假设。”
+哈斯表示，认为早期人类主要以肉类为主食的观点在考古学界很普遍。“如果你在这项研究之前和我交谈，我会猜测肉类占 80%的饮食，”他说。“人类饮食以肉类为主是一个相当普遍的假设。”
 
 这种观点在一定程度上是由考古记录驱动的，考古记录偏向于对食肉证据的保存，因为石器工具和屠宰动物的骨骼比植物遗骸更容易保存。
 
 大多数男性考古学家来自西方文化，他们的偏见也很可能导致了对早期人类社会的“ macho caveman”刻板印象的持续存在，其中狩猎被视为一种男性追求。这是根据哈斯的说法，他补充说，类似的偏见可能也影响了对其他地区早期人类饮食的研究。
 
-本文于2024年1月25日进行了修改。早期版本中的排版错误导致引用了“ smaller mammals such as birds or fish”，而实际上应该是“ smaller mammals, birds or fish”。
+本文于 2024 年 1 月 25 日进行了修改。早期版本中的排版错误导致引用了“ smaller mammals such as birds or fish”，而实际上应该是“ smaller mammals, birds or fish”。

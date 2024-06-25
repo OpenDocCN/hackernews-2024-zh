@@ -8,9 +8,9 @@
 
 # 变换的高阶导数 - Nosferalatu
 
-> 来源：[https://nosferalatu.com/HigherOrderDerivativesTransforms.html](https://nosferalatu.com/HigherOrderDerivativesTransforms.html)
+> 来源：[`nosferalatu.com/HigherOrderDerivativesTransforms.html`](https://nosferalatu.com/HigherOrderDerivativesTransforms.html)
 
-在[之前的帖子](DerivativesLogarithmsTransforms.html)中，我讨论了导数、对数和变换之间的关系。这篇博客文章是对那篇文章的补充，并解释了如何找到变换的二阶及更高阶导数。
+在之前的帖子中，我讨论了导数、对数和变换之间的关系。这篇博客文章是对那篇文章的补充，并解释了如何找到变换的二阶及更高阶导数。
 
 ### 变换的导数概念
 
@@ -50,7 +50,7 @@
 
 这是一个交互式示例，在这里你可以看到切向量（绿色箭头）和加速度向量（红色箭头）随着时间从原点插值到 gizmo 的变换时的情况。您可以操作 gizmo 来平移和旋转变换。您还可以启用速度向量场或加速度向量场的可视化。
 
-应用程序的源代码可以在 [这里](../../js/HigherOrderDerivativesOfTransforms_example.js) 找到。
+应用程序的源代码可以在 这里 找到。
 
 ### 评论
 

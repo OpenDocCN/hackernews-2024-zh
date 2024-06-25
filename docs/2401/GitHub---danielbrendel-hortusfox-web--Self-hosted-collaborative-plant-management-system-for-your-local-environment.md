@@ -8,7 +8,7 @@ date: 2024-05-27 14:33:48
 
 # GitHub - danielbrendel/hortusfox-web: 用于您的本地环境的自托管协作植物管理系统
 
-> 来源：[https://github.com/danielbrendel/hortusfox-web](https://github.com/danielbrendel/hortusfox-web)
+> 来源：[`github.com/danielbrendel/hortusfox-web`](https://github.com/danielbrendel/hortusfox-web)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

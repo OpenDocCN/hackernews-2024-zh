@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:52
 
 # Edge 看起来在未经用户许可的情况下导入 Chrome 标签页 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/30/microsoft_edge_tabs/](https://www.theregister.com/2024/01/30/microsoft_edge_tabs/)
+> 来源：[`www.theregister.com/2024/01/30/microsoft_edge_tabs/`](https://www.theregister.com/2024/01/30/microsoft_edge_tabs/)
 
 更新的 Windows 用户请注意：据称，微软的 Edge 浏览器正在未经许可的情况下主动导入来自谷歌浏览器的开放式标签页和其他数据，即使已禁用导致此情况发生的“功能”。
 
@@ -20,7 +20,7 @@ date: 2024-05-27 15:23:52
 
 自去年以来，即使那些不常使用 Edge 的 Windows 用户也一直在报告导入功能的问题和意外惊喜。其他媒体已经[报道过](https://www.ghacks.net/2023/10/13/how-to-stop-microsoft-edge-from-importing-google-chrome-browsing-data-at-launch/)该功能的贪婪本质，并建议采取措施阻止其发生（例如通过打开 `edge://settings/profiles/importBrowsingData` 并确保关闭），但读者对这些报道的回应表明设置并不重要，导入仍然会发生。
 
-此问题最近由 The Verge 的 Tom Warren 再次提出，他[表示](https://www.theverge.com/24054329/microsoft_edge-automatic-chrome-import-data-feature)他注意到 Edge 在系统重新启动时以与 Chrome 重新启动前相同的状态打开。Warren声称他既没有将 Chrome 数据导入 Edge，也没有授权其从 Chrome 导入开放的浏览器标签页，但情况却是如此。Warren说他从未切换过此设置，并且在他检查时它是关闭的。
+此问题最近由 The Verge 的 Tom Warren 再次提出，他[表示](https://www.theverge.com/24054329/microsoft_edge-automatic-chrome-import-data-feature)他注意到 Edge 在系统重新启动时以与 Chrome 重新启动前相同的状态打开。Warren 声称他既没有将 Chrome 数据导入 Edge，也没有授权其从 Chrome 导入开放的浏览器标签页，但情况却是如此。Warren 说他从未切换过此设置，并且在他检查时它是关闭的。
 
 快速在互联网上转一圈就会发现，这种情况发生在很多人身上——默认情况下，数据被拉入 Edge 而没有得到许可——尽管这似乎并非普遍现象。
 
@@ -34,12 +34,12 @@ date: 2024-05-27 15:23:52
 
 这一切都是公开的——在某种程度上——因为微软在臭名昭著的 KB5034204 更新安装时简要提到了这一点。
 
-除了Edge的问题之外，KB5034204似乎存在着一些影响许多Windows 11用户的问题，这可以从其发布几天后的一个[Reddit帖子](https://www.reddit.com/r/WindowsHelp/comments/1abedvs/update_kb5034204_fails_to_install/)中看出。用户报告了安装失败和启动问题，而其他网站则[报道](https://windowsreport.com/windows-11-kb5034204-issues/)了应用程序崩溃、文件资源管理器和任务栏的[问题](https://www.windowslatest.com/2024/01/28/windows-11-kb5034204-is-crashing-file-explorer-taskbar-and-wont-install-for-some/)以及其他问题。我们再次联系了微软，询问了KB5034204的更广泛问题，但是至今也没有得到回复。
+除了 Edge 的问题之外，KB5034204 似乎存在着一些影响许多 Windows 11 用户的问题，这可以从其发布几天后的一个[Reddit 帖子](https://www.reddit.com/r/WindowsHelp/comments/1abedvs/update_kb5034204_fails_to_install/)中看出。用户报告了安装失败和启动问题，而其他网站则[报道](https://windowsreport.com/windows-11-kb5034204-issues/)了应用程序崩溃、文件资源管理器和任务栏的[问题](https://www.windowslatest.com/2024/01/28/windows-11-kb5034204-is-crashing-file-explorer-taskbar-and-wont-install-for-some/)以及其他问题。我们再次联系了微软，询问了 KB5034204 的更广泛问题，但是至今也没有得到回复。
 
-无论微软是否在该更新中征求了Edge从其他浏览器导入数据的许可，问题并不新鲜——在论坛帖子和帮助请求中已经有了充分的记录。我们已经向微软寻求解释，虽然我们被告知他们正在调查此事，但我们还没有收到实际的回复。
+无论微软是否在该更新中征求了 Edge 从其他浏览器导入数据的许可，问题并不新鲜——在论坛帖子和帮助请求中已经有了充分的记录。我们已经向微软寻求解释，虽然我们被告知他们正在调查此事，但我们还没有收到实际的回复。
 
-同时，在微软修补补丁之前，最好先暂停安装最新一轮的Windows 11更新。或者解释一下。啊，我们在开玩笑。我们已经要求评论。®
+同时，在微软修补补丁之前，最好先暂停安装最新一轮的 Windows 11 更新。或者解释一下。啊，我们在开玩笑。我们已经要求评论。®
 
 ### 更新添加
 
-微软目前拒绝发表评论。一位熟悉这一混乱情况且对Windows巨头有了解的人士，尽管不愿透露身份，告诉我们似乎“如果用户在其他设备上选择了Edge的连续导入体验，那么这种状态可能会在他们的设备之间同步错误。这并不是预期的功能体验。”我们得到的保证是，微软将在下一次Edge稳定版发布时解决这个问题。
+微软目前拒绝发表评论。一位熟悉这一混乱情况且对 Windows 巨头有了解的人士，尽管不愿透露身份，告诉我们似乎“如果用户在其他设备上选择了 Edge 的连续导入体验，那么这种状态可能会在他们的设备之间同步错误。这并不是预期的功能体验。”我们得到的保证是，微软将在下一次 Edge 稳定版发布时解决这个问题。

@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日14:25:18
+日期：2024 年 05 月 27 日 14:25:18
 
 -->
 
 # 为什么我的打印在分段错误之前没有输出 - 叶林的随机东西
 
-> 来源：[https://blog.yelinaung.com/posts/what-happened-to-my-print/](https://blog.yelinaung.com/posts/what-happened-to-my-print/)
+> 来源：[`blog.yelinaung.com/posts/what-happened-to-my-print/`](https://blog.yelinaung.com/posts/what-happened-to-my-print/)
 
 因此，当我学习一些[C](https://beej.us/guide/bgc/)时，在指针/段错误中，我自己尝试了这段代码。
 
@@ -22,7 +22,7 @@
 $ gcc -Wall -Wextra -o hello hello.c && ./hello Segmentation fault (core dumped) 
 ```
 
-令我惊讶的是，它没有打印出“Hello！”和“Another Hello！”并且程序只是以“分段错误（核心已转储）”（也称为segfault）崩溃。
+令我惊讶的是，它没有打印出“Hello！”和“Another Hello！”并且程序只是以“分段错误（核心已转储）”（也称为 segfault）崩溃。
 
 对于“Another Hello!”，我明白了。程序在达到那一行之前崩溃了。
 
@@ -34,7 +34,7 @@ $ gcc -Wall -Wextra -o hello hello.c && ./hello Segmentation fault (core dumped)
 
 等等，这个崩溃怎么阻止程序在终端打印“Hello！”？好像与我们的`printf`无关，因为它发生在崩溃之前。
 
-当你执行`printf`时会发生什么？在大多数系统中，它会将数据打印到输出设备，即终端。结果输出设备是“行缓冲”。行缓冲意味着输出被存储在一个称为“缓冲区”的地方，直到满足特定条件才会被打印出来。根据[GNU C指南](https://www.gnu.org/software/libc/manual/html_node/Flushing-Buffers.html)的条件
+当你执行`printf`时会发生什么？在大多数系统中，它会将数据打印到输出设备，即终端。结果输出设备是“行缓冲”。行缓冲意味着输出被存储在一个称为“缓冲区”的地方，直到满足特定条件才会被打印出来。根据[GNU C 指南](https://www.gnu.org/software/libc/manual/html_node/Flushing-Buffers.html)的条件
 
 * * *
 
@@ -90,7 +90,7 @@ ubuntu@playground:~$ gcc -Wall -Wextra -o hello hello.c && ./hello Hello!Another
 $ gcc -Wall -Wextra -o hello hello.c && ./hello Hello! Segmentation fault (core dumped) 
 ```
 
-“另一个Hello！”没有出现，但没关系。程序在到达那一行之前就崩溃了。
+“另一个 Hello！”没有出现，但没关系。程序在到达那一行之前就崩溃了。
 
 检查程序的退出代码：
 

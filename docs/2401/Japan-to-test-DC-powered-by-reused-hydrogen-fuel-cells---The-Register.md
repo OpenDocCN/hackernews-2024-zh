@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:28:29
+日期：2024 年 05 月 27 日 14:28:29
 
 -->
 
 # 日本测试由重复使用的氢燃料电池供电的数据中心 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/03/japan_to_test_datacenter_powered/](https://www.theregister.com/2024/01/03/japan_to_test_datacenter_powered/)
+> 来源：[`www.theregister.com/2024/01/03/japan_to_test_datacenter_powered/`](https://www.theregister.com/2024/01/03/japan_to_test_datacenter_powered/)
 
 本田和三菱将测试使用来自电动汽车的燃料电池为数据中心提供动力的可行性，使用作为工业过程副产品产生的氢气。
 
-该项目计划于日本周南市的3月31日开始运行两年。其目的是评估通过将本田开发的固定燃料电池电站供电的“分布式数据中心”由三菱运营，使用从电动汽车中重新利用的燃料电池来降低数据中心运营产生的二氧化碳排放。
+该项目计划于日本周南市的 3 月 31 日开始运行两年。其目的是评估通过将本田开发的固定燃料电池电站供电的“分布式数据中心”由三菱运营，使用从电动汽车中重新利用的燃料电池来降低数据中心运营产生的二氧化碳排放。
 
-燃料电池电站的氢气将由第三家日本公司Tokuyama Corporation提供，作为其盐水电解业务的副产品，该业务每年生产约5万吨次氯酸钠。
+燃料电池电站的氢气将由第三家日本公司 Tokuyama Corporation 提供，作为其盐水电解业务的副产品，该业务每年生产约 5 万吨次氯酸钠。
 
 该项目由日本新能源和产业技术综合开发机构（NEDO）提出，该机构促进工业、能源和环境技术的研究、开发和采用。
 
@@ -24,11 +24,11 @@
 
 过去几年来，氢能和燃料电池频繁出现在新闻中，被视为为数据中心提供更环保电源的潜在途径，可以作为柴油发电机的备用电源或作为主要电源。
 
-在2022年，荷兰数据中心运营商[NorthC](https://www.theregister.com/2022/02/15/northc_hydrogen_power/)声称是欧洲第一个在其位于格罗宁根的站点部署氢动力燃料电池模块以取代备用发电机的公司。
+在 2022 年，荷兰数据中心运营商[NorthC](https://www.theregister.com/2022/02/15/northc_hydrogen_power/)声称是欧洲第一个在其位于格罗宁根的站点部署氢动力燃料电池模块以取代备用发电机的公司。
 
-去年，韩国公司SK Group[披露了计划](https://www.theregister.com/2023/11/07/ireland_to_develop_datacenter_powered/)在爱尔兰建设一个完全由燃料电池提供动力的数据中心，尽管在这种情况下，该站点最初可能由气体运行，并将来使用氢气作为燃料。
+去年，韩国公司 SK Group[披露了计划](https://www.theregister.com/2023/11/07/ireland_to_develop_datacenter_powered/)在爱尔兰建设一个完全由燃料电池提供动力的数据中心，尽管在这种情况下，该站点最初可能由气体运行，并将来使用氢气作为燃料。
 
-由Equinix和新加坡国立大学（NUS）共同制作的十月份报告[得出结论](https://www.theregister.com/2023/10/04/fuel_cell_datacenter_power/)，燃料电池比其他替代发电技术更有效率。
+由 Equinix 和新加坡国立大学（NUS）共同制作的十月份报告[得出结论](https://www.theregister.com/2023/10/04/fuel_cell_datacenter_power/)，燃料电池比其他替代发电技术更有效率。
 
 氢气可以被视为一种清洁燃料，因为在燃料电池中消耗时只产生水作为副产品。但问题在于氢气的来源。许多商业生产的氢气是通过一个能耗高的过程从甲烷气中提取的，这个过程通常由化石燃料提供动力。
 

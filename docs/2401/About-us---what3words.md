@@ -8,7 +8,7 @@
 
 # 关于我们 | what3words
 
-> 来源：[https://what3words.com/about](https://what3words.com/about)
+> 来源：[`what3words.com/about`](https://what3words.com/about)
 
 what3words 的目标不是取代街道寻址。相反，当街道地址不够准确时，它是一个有用的补充，并且在地址不存在时是一个即时且可扩展的解决方案。
 

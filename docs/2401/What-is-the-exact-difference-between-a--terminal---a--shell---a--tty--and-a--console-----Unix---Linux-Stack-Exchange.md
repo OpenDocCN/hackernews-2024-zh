@@ -6,15 +6,15 @@
 
 -->
 
-# 什么是“终端”、“壳”、“tty”和“控制台”的确切区别？- Unix和Linux Stack Exchange
+# 什么是“终端”、“壳”、“tty”和“控制台”的确切区别？- Unix 和 Linux Stack Exchange
 
-> 来源：[https://unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con](https://unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con)
+> 来源：[`unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con`](https://unix.stackexchange.com/questions/4126/what-is-the-exact-difference-between-a-terminal-a-shell-a-tty-and-a-con)
 
-终端是电线的末端，壳是乌龟的家，tty是一个奇怪的缩写，而控制台是一种类型的柜子。
+终端是电线的末端，壳是乌龟的家，tty 是一个奇怪的缩写，而控制台是一种类型的柜子。
 
 从词源学上讲，无论如何。
 
-从Unix术语上讲，简短的答案是
+从 Unix 术语上讲，简短的答案是
 
 +   终端 = tty = 文本输入/输出环境
 
@@ -24,11 +24,11 @@
 
 * * *
 
-控制台、终端和tty密切相关。最初，它们指的是一种可以与计算机交互的设备：在Unix的早期，这意味着一种类似于打字机的[电传打印机](https://en.wikipedia.org/wiki/Teleprinter)式设备，有时被称为电传打字机，或者简称为“tty”。 “终端”一词来自电子角度，而“控制台”一词来自家具角度。在Unix历史的早期阶段，电子键盘和显示器成为终端的常态。
+控制台、终端和 tty 密切相关。最初，它们指的是一种可以与计算机交互的设备：在 Unix 的早期，这意味着一种类似于打字机的[电传打印机](https://en.wikipedia.org/wiki/Teleprinter)式设备，有时被称为电传打字机，或者简称为“tty”。 “终端”一词来自电子角度，而“控制台”一词来自家具角度。在 Unix 历史的早期阶段，电子键盘和显示器成为终端的常态。
 
-在Unix术语中，**tty**是一种特定类型的[设备文件](https://en.wikipedia.org/wiki/Device_file)，它实现了除读写之外的一些其他命令（[ioctls](https://en.wikipedia.org/wiki/Ioctl#Terminals)）。在其最常见的含义中，**终端**与tty是同义词。一些tty由内核代表硬件设备提供，例如输入来自键盘，输出发送到文本模式屏幕，或者输入和输出通过串行线传输。其他tty，有时称为**伪终端**，由称为[**终端模拟器**](https://en.wikipedia.org/wiki/Terminal_emulator)的程序（通过一个薄内核层）提供，例如[Xterm](https://en.wikipedia.org/wiki/Xterm)（在[X窗口系统](https://en.wikipedia.org/wiki/X_Window_System)中运行），[Screen](https://en.wikipedia.org/wiki/GNU_Screen)（提供程序和另一个终端之间的隔离层），[SSH](https://en.wikipedia.org/wiki/Secure_Shell)（将一台机器上的终端连接到另一台机器上的程序），[Expect](https://en.wikipedia.org/wiki/Expect)（用于脚本化终端交互），等等。
+在 Unix 术语中，**tty**是一种特定类型的[设备文件](https://en.wikipedia.org/wiki/Device_file)，它实现了除读写之外的一些其他命令（[ioctls](https://en.wikipedia.org/wiki/Ioctl#Terminals)）。在其最常见的含义中，**终端**与 tty 是同义词。一些 tty 由内核代表硬件设备提供，例如输入来自键盘，输出发送到文本模式屏幕，或者输入和输出通过串行线传输。其他 tty，有时称为**伪终端**，由称为[**终端模拟器**](https://en.wikipedia.org/wiki/Terminal_emulator)的程序（通过一个薄内核层）提供，例如[Xterm](https://en.wikipedia.org/wiki/Xterm)（在[X 窗口系统](https://en.wikipedia.org/wiki/X_Window_System)中运行），[Screen](https://en.wikipedia.org/wiki/GNU_Screen)（提供程序和另一个终端之间的隔离层），[SSH](https://en.wikipedia.org/wiki/Secure_Shell)（将一台机器上的终端连接到另一台机器上的程序），[Expect](https://en.wikipedia.org/wiki/Expect)（用于脚本化终端交互），等等。
 
-术语“终端”也可以具有更传统的含义，即通过该设备与计算机进行交互，通常具有键盘和显示器。例如，X终端是一种[瘦客户端](https://en.wikipedia.org/wiki/Thin_client)，是一种特殊用途的计算机，其唯一目的是驱动键盘、显示器、鼠标和偶尔其他人机交互外围设备，实际应用程序在另一台更强大的计算机上运行。
+术语“终端”也可以具有更传统的含义，即通过该设备与计算机进行交互，通常具有键盘和显示器。例如，X 终端是一种[瘦客户端](https://en.wikipedia.org/wiki/Thin_client)，是一种特殊用途的计算机，其唯一目的是驱动键盘、显示器、鼠标和偶尔其他人机交互外围设备，实际应用程序在另一台更强大的计算机上运行。
 
 **控制台**通常是物理上连接到计算机的终端。控制台在操作系统中显示为（内核实现的）tty。在某些系统中，如 Linux 和 FreeBSD，控制台显示为多个 tty（特殊的键组合在这些 tty 之间切换）；为了混淆事情，对每个特定的 tty 给出的名称可以是“控制台”、“虚拟控制台”、“虚拟终端”和其他变体。
 

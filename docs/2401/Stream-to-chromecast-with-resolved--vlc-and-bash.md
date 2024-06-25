@@ -8,7 +8,7 @@ category: 未分类
 
 # 使用 resolved、vlc 和 bash 向 Chromecast 流式传输
 
-> 来源：[https://linderud.dev/blog/stream-to-chromecast-with-resolved-vlc-and-bash/](https://linderud.dev/blog/stream-to-chromecast-with-resolved-vlc-and-bash/)
+> 来源：[`linderud.dev/blog/stream-to-chromecast-with-resolved-vlc-and-bash/`](https://linderud.dev/blog/stream-to-chromecast-with-resolved-vlc-and-bash/)
 
 Chromecast 是我经常使用的设备之一。它们小巧实用，使我能够从多个设备向电视机传输视频或音乐。但它也需要你拥有支持的浏览器或视频播放器。显然，这有点无聊。
 
@@ -97,7 +97,7 @@ yt-dlp "$1" -o - | cvlc --sout "#chromecast" --sout-chromecast-ip="$IP" -
 
 我们将使用 qutebrowser 中的当前 chromecast 脚本：
 
-[https://github.com/qutebrowser/qutebrowser/blob/main/misc/userscripts/cast](https://github.com/qutebrowser/qutebrowser/blob/main/misc/userscripts/cast)
+[`github.com/qutebrowser/qutebrowser/blob/main/misc/userscripts/cast`](https://github.com/qutebrowser/qutebrowser/blob/main/misc/userscripts/cast)
 
 并在这里应用差异，只删除我们实际不需要的代码。
 

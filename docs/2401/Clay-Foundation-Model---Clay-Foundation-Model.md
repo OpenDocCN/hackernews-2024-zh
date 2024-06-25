@@ -8,7 +8,7 @@ date: 2024-05-27 14:52:43
 
 # Clay 基础模型 — Clay 基础模型
 
-> 来源：[https://clay-foundation.github.io/model/](https://clay-foundation.github.io/model/)
+> 来源：[`clay-foundation.github.io/model/`](https://clay-foundation.github.io/model/)
 
 ## 一个面向地球的开源 AI 模型
 

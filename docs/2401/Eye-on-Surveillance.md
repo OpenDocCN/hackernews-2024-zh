@@ -8,7 +8,7 @@
 
 # Eye on Surveillance
 
-> 来源：[https://eyeonsurveillance.org/blog/rag-for-new-orleans-city-council-transparency](https://eyeonsurveillance.org/blog/rag-for-new-orleans-city-council-transparency)
+> 来源：[`eyeonsurveillance.org/blog/rag-for-new-orleans-city-council-transparency`](https://eyeonsurveillance.org/blog/rag-for-new-orleans-city-council-transparency)
 
 [Sawt](https://sawt.us) 是一个由新奥尔良市议会会议录制训练的 [开源](https://github.com/eye-on-surveillance/sawt) AI 助手。如今，任何居民都可以问 Sawt 有关议会正在进行的事情的问题。我们的长期目标是开发一个道德的、社区控制的大型语言模型（LLM）。
 
@@ -50,7 +50,7 @@
 
 ‍
 
-图 4：Sawt的详细反馈。图 4 包含与图 3 相同的结果，但是对每个受访者进行了归一化处理。图 4 显示人们如何根据准确性、有用性、平衡和整体评分回答。k参数对应于用于通知生成响应的文档数量。k=5 意味着使用了五个视频片段、会议记录和/或文章来通知响应。k=15 意味着使用了十五个这样的文档。
+图 4：Sawt 的详细反馈。图 4 包含与图 3 相同的结果，但是对每个受访者进行了归一化处理。图 4 显示人们如何根据准确性、有用性、平衡和整体评分回答。k 参数对应于用于通知生成响应的文档数量。k=5 意味着使用了五个视频片段、会议记录和/或文章来通知响应。k=15 意味着使用了十五个这样的文档。
 
 ‍
 
@@ -60,15 +60,15 @@
 
 ## 制作过程
 
-最初的Sawt [原型](https://colab.research.google.com/drive/1DpEuim10ZxngSQ_m3hAWjnFETqO9_Zaf?usp=sharing) 是由[@ayyubibrahimi](https://github.com/ayyubibrahimi) 在一个周末开发的。核心逻辑从那时起保持一致。我们首先摄取原始数据，创建嵌入，并设置FAISS。当有人向Sawt提问时，我们使用FAISS识别最相关的文档，将它们与查询组合，并将它们发送到OpenAI以获得回应。
+最初的 Sawt [原型](https://colab.research.google.com/drive/1DpEuim10ZxngSQ_m3hAWjnFETqO9_Zaf?usp=sharing) 是由[@ayyubibrahimi](https://github.com/ayyubibrahimi) 在一个周末开发的。核心逻辑从那时起保持一致。我们首先摄取原始数据，创建嵌入，并设置 FAISS。当有人向 Sawt 提问时，我们使用 FAISS 识别最相关的文档，将它们与查询组合，并将它们发送到 OpenAI 以获得回应。
 
 ‍
 
-图 5：Sawt的工作原理
+图 5：Sawt 的工作原理
 
 ‍
 
-在预处理/FAISS阶段，我们实现了 '[无相关标签的精确零-shot稠密检索](https://arxiv.org/abs/2212.10496)’ 中的Hypothetical Document Embeddings（HyDE）方法，以为我们的检索增强生成创建嵌入空间。RAG是一种技术，它将大型语言模型的优势与外部数据检索相结合，旨在增强AI模型生成的响应的相关性和准确性。用于生成这些嵌入的假设文档是使用零-shot提示生成的。这个提示 [如下所示：](https://github.com/eye-on-surveillance/sawt/blob/ec64a5f92e2ec978131df55832bdaab4707df5d9/packages/backend/src/preprocessor.py#L29C4-L29C134)
+在预处理/FAISS 阶段，我们实现了 '[无相关标签的精确零-shot 稠密检索](https://arxiv.org/abs/2212.10496)’ 中的 Hypothetical Document Embeddings（HyDE）方法，以为我们的检索增强生成创建嵌入空间。RAG 是一种技术，它将大型语言模型的优势与外部数据检索相结合，旨在增强 AI 模型生成的响应的相关性和准确性。用于生成这些嵌入的假设文档是使用零-shot 提示生成的。这个提示 [如下所示：](https://github.com/eye-on-surveillance/sawt/blob/ec64a5f92e2ec978131df55832bdaab4707df5d9/packages/backend/src/preprocessor.py#L29C4-L29C134)
 
 ‍
 
@@ -78,7 +78,7 @@
 
 这种方法确保模型使用其训练时的特定数据集，旨在对问题提供全面和公正的答案。
 
-在最后阶段发送给OpenAI的提示更加复杂和详细。它包含了几条强调清晰格式化回答的指示。它旨在平衡回答的广度与简洁性。提示的一个重要部分专门用于明确调查和解决回答中潜在偏见的问题。此外，提示指示模型定义不常见的词语，使得对于可能不熟悉与市议会活动相关的特定术语的人们来说，回答更易于理解和信息丰富。
+在最后阶段发送给 OpenAI 的提示更加复杂和详细。它包含了几条强调清晰格式化回答的指示。它旨在平衡回答的广度与简洁性。提示的一个重要部分专门用于明确调查和解决回答中潜在偏见的问题。此外，提示指示模型定义不常见的词语，使得对于可能不熟悉与市议会活动相关的特定术语的人们来说，回答更易于理解和信息丰富。
 
 ‍
 
@@ -110,13 +110,13 @@ Eye on Surveillance 的大多数成员是有白天工作的志愿者。在他们
 
 +   [预测性警务](https://thelensnola.org/2023/11/15/the-das-office-wants-to-use-predictive-analytics-software-to-direct-city-resources-to-places-that-drive-crime-will-it-work/): 以前支持禁止预测性警务的委员会成员现在是地方检察官，并正在试点这种非法技术。我们是从报纸上得知的。
 
-+   [无人机](https://www.fox8live.com/2023/11/29/nopd-solicits-public-feedback-proposed-drone-program/): NOPD征求对他们已购买的无人机的反馈意见。
++   [无人机](https://www.fox8live.com/2023/11/29/nopd-solicits-public-feedback-proposed-drone-program/): NOPD 征求对他们已购买的无人机的反馈意见。
 
 ‍
 
 ## 下一步
 
-随着我们迈入2024年，我们正在思考Sawt的更广泛影响。我们在质疑我们可能正在持续 AI 偏见，并考虑到可能阻碍我们努力的监控眼成员的特定偏见。尽管如此，我们对持续的进展和在2024年夏季推出官方版本的前景感到兴奋。我们致力于创建社区拥有和运营的 AI 模型。
+随着我们迈入 2024 年，我们正在思考 Sawt 的更广泛影响。我们在质疑我们可能正在持续 AI 偏见，并考虑到可能阻碍我们努力的监控眼成员的特定偏见。尽管如此，我们对持续的进展和在 2024 年夏季推出官方版本的前景感到兴奋。我们致力于创建社区拥有和运营的 AI 模型。
 
 如果你想参与：
 

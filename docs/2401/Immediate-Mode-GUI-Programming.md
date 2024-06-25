@@ -8,7 +8,7 @@ date: 2024-05-27 14:47:31
 
 # 即时模式 GUI 编程
 
-> 来源：[https://eliasnaur.com/blog/immediate-mode-gui-programming](https://eliasnaur.com/blog/immediate-mode-gui-programming)
+> 来源：[`eliasnaur.com/blog/immediate-mode-gui-programming`](https://eliasnaur.com/blog/immediate-mode-gui-programming)
 
 # 即时模式 GUI 编程
 
@@ -52,7 +52,7 @@ In the *immediate mode* model, library owned state is minimized, and the
 program is responsible for drawing, layout and event handling,
 supported by the facilities offered by the UI library.
 
-A [complete Gio version](/include/files/clickcounter/main.go) of the
+A complete Gio version of the
 click counter is reproduced below (import statements omitted).
 
 ```
@@ -151,7 +151,7 @@ load.
 
 保留模型通常会遇到困难。
 
-这是[一个程序](/include/files/bounce/main.go)，显示
+这是一个程序，显示
 
 由按钮控制的弹跳球。
 
@@ -373,7 +373,7 @@ updating the elements: either go through them one by one, or remove
 them all and recreate them. Both options perform worse as the number
 of elements grows.
 
-The equivalent [Gio program](/include/files/list/main.go) has just two
+The equivalent Gio program has just two
 variables: the integer factor adjusted by the button, and the list
 object that tracks the scroll position. There is no need for a
 persistent representation of each row and the list spans a million rows
@@ -449,7 +449,7 @@ func (s *state) layout(gtx layout.Context, th *material.Theme) {
 
 在小部件之间。
 
-下面是基本复选框的[实现](/include/files/checkbox/main.go)
+下面是基本复选框的实现
 
 展示了低级输入处理：
 

@@ -2,15 +2,15 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:25:34
+日期：2024 年 05 月 27 日 14:25:34
 
 -->
 
 # 史蒂夫·乔布斯认为设备将成为“大脑的自行车”，但它们对我们的大脑的影响类似于吸烟和垃圾食品
 
-> 来源：[https://www.getclearspace.com/blog/post/optimistic-future-digital-wellbeing](https://www.getclearspace.com/blog/post/optimistic-future-digital-wellbeing)
+> 来源：[`www.getclearspace.com/blog/post/optimistic-future-digital-wellbeing`](https://www.getclearspace.com/blog/post/optimistic-future-digital-wellbeing)
 
-自从史蒂夫·乔布斯谈论个人电脑成为[大脑的自行车](https://www.youtube.com/watch?v=L40B08nWoMk)已经过去了33年。在这些年里，智能手机的出现和社交媒体的大规模采用将这些自行车变成了失控的火车。美国人每天在智能手机上花费超过四个小时，而且[超过一半的人表示他们对自己的设备上瘾](https://www.reviews.org/mobile/cell-phone-addiction/)。2023年5月，外科医生[发布了一份警告](https://www.hhs.gov/about/news/2023/05/23/surgeon-general-issues-new-advisory-about-effects-social-media-use-has-youth-mental-health.html)，警告社交媒体对青少年心理健康的不良影响。
+自从史蒂夫·乔布斯谈论个人电脑成为[大脑的自行车](https://www.youtube.com/watch?v=L40B08nWoMk)已经过去了 33 年。在这些年里，智能手机的出现和社交媒体的大规模采用将这些自行车变成了失控的火车。美国人每天在智能手机上花费超过四个小时，而且[超过一半的人表示他们对自己的设备上瘾](https://www.reviews.org/mobile/cell-phone-addiction/)。2023 年 5 月，外科医生[发布了一份警告](https://www.hhs.gov/about/news/2023/05/23/surgeon-general-issues-new-advisory-about-effects-social-media-use-has-youth-mental-health.html)，警告社交媒体对青少年心理健康的不良影响。
 
 我们大多数人可能不需要这样的统计数据来识别这种现象：我们自己的习惯表明，如今数字健康的状况是严峻的。当我们与屏幕交互时，人类注意力和意图存在根本性的不一致。
 
@@ -18,11 +18,11 @@
 
 # **行为错位的普遍挑战**
 
-**行为错位–我们的行动偏离了我们的最佳利益–是各个领域都面临的一个不断出现的挑战。从大规模引入加工食品所导致的肥胖流行到易得信用后习惯性超支，历史上充满了这类错位的例子。然而，美国吸烟的趋势提供了一个有希望的例子，说明在社会范围内解决行为错位问题的进展。在近几十年里，美国吸烟者的人数已经[从约40%下降到约12%。](https://news.gallup.com/poll/509720/cigarette-smoking-rate-steady-near-historical-low.aspx#:~:text=When%20Gallup%20first%20asked%20about,1989%20and%2020%25%20in%202015.)**
+**行为错位–我们的行动偏离了我们的最佳利益–是各个领域都面临的一个不断出现的挑战。从大规模引入加工食品所导致的肥胖流行到易得信用后习惯性超支，历史上充满了这类错位的例子。然而，美国吸烟的趋势提供了一个有希望的例子，说明在社会范围内解决行为错位问题的进展。在近几十年里，美国吸烟者的人数已经[从约 40%下降到约 12%。](https://news.gallup.com/poll/509720/cigarette-smoking-rate-steady-near-historical-low.aspx#:~:text=When%20Gallup%20first%20asked%20about,1989%20and%2020%25%20in%202015.)**
 
 **这个图表的下行压力是由一系列协同努力驱动的：**
 
-+   ****公众意识和教育:** 外科医生[ ](https://profiles.nlm.nih.gov/spotlight/nn/feature/smoking)[1964年的报告](https://profiles.nlm.nih.gov/spotlight/nn/feature/smoking)关于吸烟健康风险引发了广泛的关注，导致了大规模的公共卫生宣传活动。**
++   ****公众意识和教育:** 外科医生[ ](https://profiles.nlm.nih.gov/spotlight/nn/feature/smoking)[1964 年的报告](https://profiles.nlm.nih.gov/spotlight/nn/feature/smoking)关于吸烟健康风险引发了广泛的关注，导致了大规模的公共卫生宣传活动。**
 
 +   ****政策干预:** 全面的立法，包括在公共场所禁止吸烟和严格的广告限制，显著减少了吸烟习惯。**
 

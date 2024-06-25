@@ -8,7 +8,7 @@ date: 2024-05-27 14:48:23
 
 # 胡塞武装发射弹道导弹袭击美国拥有和运营的货船，美国中央司令部表示 | CNN 政治
 
-> 来源：[https://www.cnn.com/2024/01/15/politics/houthi-missile-strikes-us-owned-ship/index.html](https://www.cnn.com/2024/01/15/politics/houthi-missile-strikes-us-owned-ship/index.html)
+> 来源：[`www.cnn.com/2024/01/15/politics/houthi-missile-strikes-us-owned-ship/index.html`](https://www.cnn.com/2024/01/15/politics/houthi-missile-strikes-us-owned-ship/index.html)
 
 CNN  —
 
@@ -40,18 +40,18 @@ CNN  —
 
 “如果有必要，我们将完全做好自卫并保护航运，” 国家安全委员会战略沟通协调员约翰·柯比周五说。
 
-胡塞武装承诺进行报复，称任何美国或英国资产都是“合法目标”。自11月中旬以来，胡塞武装向国际航运航道发动了大约30次袭击，迫使许多世界上最大的航运公司避开了[红海，世界上最关键的水道之一](https://www.cnn.com/2024/01/10/economy/red-sea-attacks-economic-impact/index.html)。
+胡塞武装承诺进行报复，称任何美国或英国资产都是“合法目标”。自 11 月中旬以来，胡塞武装向国际航运航道发动了大约 30 次袭击，迫使许多世界上最大的航运公司避开了[红海，世界上最关键的水道之一](https://www.cnn.com/2024/01/10/economy/red-sea-attacks-economic-impact/index.html)。
 
 周一早些时候，中央司令部表示，胡塞武装试图发射一枚反舰弹道导弹，在飞行过程中失败并在也门坠毁。
 
-总部位于英国的海上安全集团Ambrey表示，周一共发射了三枚导弹向红海方向。该集团称其中两枚导弹未能抵达海洋，第三枚导弹击中了一艘美国拥有和操作的船只。
+总部位于英国的海上安全集团 Ambrey 表示，周一共发射了三枚导弹向红海方向。该集团称其中两枚导弹未能抵达海洋，第三枚导弹击中了一艘美国拥有和操作的船只。
 
-周四，[美国和英国对28个不同的胡塞武装据点进行了打击](https://www.cnn.com/2024/01/12/politics/us-strikes-yemen-houthis/index.html)，试图破坏该组织对红海国际航运航道的射击能力。这两个国家还得到了加拿大、澳大利亚、巴林和荷兰的支持。
+周四，[美国和英国对 28 个不同的胡塞武装据点进行了打击](https://www.cnn.com/2024/01/12/politics/us-strikes-yemen-houthis/index.html)，试图破坏该组织对红海国际航运航道的射击能力。这两个国家还得到了加拿大、澳大利亚、巴林和荷兰的支持。
 
 美国官员表示，周五晚上进行了更小规模的额外打击，目标是胡塞武装使用的雷达设施。
 
-Sare’e表示，他们将继续对红海商船进行侵略。
+Sare’e 表示，他们将继续对红海商船进行侵略。
 
-*CNN的Eyad Kourdi和Niamh Kennedy为本文做出了贡献。*
+*CNN 的 Eyad Kourdi 和 Niamh Kennedy 为本文做出了贡献。*
 
 *本故事已更新，添加了额外信息。*

@@ -8,21 +8,21 @@
 
 # 风投资本家是否希望永久战争？ | 负责任的国家战略
 
-> 来源：[https://responsiblestatecraft.org/venture-capital-defense-companies/](https://responsiblestatecraft.org/venture-capital-defense-companies/)
+> 来源：[`responsiblestatecraft.org/venture-capital-defense-companies/`](https://responsiblestatecraft.org/venture-capital-defense-companies/)
 
 随着世界各地的冲突不断爆发，在乌克兰拖延的同时，中东也在迸发，风投正在押注国防。
 
-确实，总部位于美国的风险投资对国防初创企业的投资在四年内[翻了一番](https://www.ft.com/content/d50dbbc0-9137-4411-8ac3-8254451e60a7)。仅在2019年投资约160亿美元的美国风投 [在2023年头五个月里就达成了](https://www.ft.com/content/d50dbbc0-9137-4411-8ac3-8254451e60a7)超过200项国防和航空交易，总额接近170亿美元。与此同时，风投巨头Sequoia [今年早些时候投资了](https://www.reuters.com/technology/sequoia-makes-first-defense-tech-investment-mach-industries-2023-06-15/)Mach Industries， [成为其首家国防集团投资者](https://www.sequoiacap.com/article/partnering-with-mach-a-new-generation-of-defense-technology/)。
+确实，总部位于美国的风险投资对国防初创企业的投资在四年内[翻了一番](https://www.ft.com/content/d50dbbc0-9137-4411-8ac3-8254451e60a7)。仅在 2019 年投资约 160 亿美元的美国风投 [在 2023 年头五个月里就达成了](https://www.ft.com/content/d50dbbc0-9137-4411-8ac3-8254451e60a7)超过 200 项国防和航空交易，总额接近 170 亿美元。与此同时，风投巨头 Sequoia [今年早些时候投资了](https://www.reuters.com/technology/sequoia-makes-first-defense-tech-investment-mach-industries-2023-06-15/)Mach Industries， [成为其首家国防集团投资者](https://www.sequoiacap.com/article/partnering-with-mach-a-new-generation-of-defense-technology/)。
 
 ### 谁是防御风投？
 
 通过他们的共同努力，包括亿万富翁彼得·蒂尔的[创始人基金](https://foundersfund.com/)、[Andreessen Horowitz（a16z）](https://a16z.com/)和[Lux Capital](https://www.luxcapital.com/)在内的著名风投公司是今天国防部门崛起的新星，包括[Anduril](https://www.anduril.com/)、[Hadrian](https://www.hadrian.co/)和[Rebellion Defense](https://rebelliondefense.com/)。与此同时，风投不仅获得了高额投资回报，还在美国外交政策上日益发挥影响力。
 
-此外，风投支持的国防领域团体正在给像洛克希德·马丁和RTX（原雷神公司）这样的传统国防承包商带来竞争压力。正如Jamie Martin四年前在[BookForum](https://www.bookforum.com/print/2602/a-history-sheds-light-on-venture-capital-s-ties-to-the-military-industrial-complex-22006)上指出的那样，由Founders Fund支持的Palantir击败了RTX，获得了一份价值8亿美元的军方合同，而埃隆·马斯克的[风投支持](https://app.dealroom.co/companies/spacex)的SpaceX一直在吸纳卫星行业的资金，迫使波音和洛克希德·马丁发展他们自己的风投业务，分别是[Horizon X](https://www.aeroequity.com/horizon-x/)和[洛克希德·马丁风投](https://www.lockheedmartin.com/en-us/who-we-are/lockheed-martin-ventures.html)，以竞争。
+此外，风投支持的国防领域团体正在给像洛克希德·马丁和 RTX（原雷神公司）这样的传统国防承包商带来竞争压力。正如 Jamie Martin 四年前在[BookForum](https://www.bookforum.com/print/2602/a-history-sheds-light-on-venture-capital-s-ties-to-the-military-industrial-complex-22006)上指出的那样，由 Founders Fund 支持的 Palantir 击败了 RTX，获得了一份价值 8 亿美元的军方合同，而埃隆·马斯克的[风投支持](https://app.dealroom.co/companies/spacex)的 SpaceX 一直在吸纳卫星行业的资金，迫使波音和洛克希德·马丁发展他们自己的风投业务，分别是[Horizon X](https://www.aeroequity.com/horizon-x/)和[洛克希德·马丁风投](https://www.lockheedmartin.com/en-us/who-we-are/lockheed-martin-ventures.html)，以竞争。
 
-快进到2023年，风投对国防领域的主导地位已经在一个充满冲突的时代中凝固。新兴的机械零部件初创公司Hadrian仅[成立于2020年](https://www.crunchbase.com/organization/hadrian-caa2)，但已经[飙升至](https://research.contrary.com/reports/hadrian)国防工业的前沿，截至2023年末，已经筹集了[近1亿美元](https://www.crunchbase.com/organization/hadrian-caa2/company_financials)的资金，
+快进到 2023 年，风投对国防领域的主导地位已经在一个充满冲突的时代中凝固。新兴的机械零部件初创公司 Hadrian 仅[成立于 2020 年](https://www.crunchbase.com/organization/hadrian-caa2)，但已经[飙升至](https://research.contrary.com/reports/hadrian)国防工业的前沿，截至 2023 年末，已经筹集了[近 1 亿美元](https://www.crunchbase.com/organization/hadrian-caa2/company_financials)的资金，
 
-同样，风险投资也支持了国防新秀Rebellion Defense的迅速崛起，Rebellion通过前Google CEO埃里克·施密特的新风险投资公司[Innovation Endeavors](https://www.innovationendeavors.com/)、Founders Fund和天使投资者詹姆斯·默多克筹集了6300万美元，[在2019年](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/)。施密特、[默多克](https://www.forbes.com/sites/thomasbrewster/2021/09/08/project-maven-startups-backed-by-google-peter-thiel-eric-schmidt-and-james-murdoch-build-ai-and-facial-recognition-surveillance-for-the-defense-department/)以及In-Q-Tel（[CIA的风险投资公司](https://scholarlycommons.law.northwestern.edu/njilb/vol33/iss3/4/)）的董事特德·施莱因 [坐](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/) 在Rebellion的董事会上。
+同样，风险投资也支持了国防新秀 Rebellion Defense 的迅速崛起，Rebellion 通过前 Google CEO 埃里克·施密特的新风险投资公司[Innovation Endeavors](https://www.innovationendeavors.com/)、Founders Fund 和天使投资者詹姆斯·默多克筹集了 6300 万美元，[在 2019 年](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/)。施密特、[默多克](https://www.forbes.com/sites/thomasbrewster/2021/09/08/project-maven-startups-backed-by-google-peter-thiel-eric-schmidt-and-james-murdoch-build-ai-and-facial-recognition-surveillance-for-the-defense-department/)以及 In-Q-Tel（[CIA 的风险投资公司](https://scholarlycommons.law.northwestern.edu/njilb/vol33/iss3/4/)）的董事特德·施莱因 [坐](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/) 在 Rebellion 的董事会上。
 
 “在五角大楼工作似乎不再是一个糟糕的词汇，” 昆西国家责任政策研究所的高级研究员威廉·哈唐解释说。“看起来很多这些初创公司非常渴望，然后风险投资公司正在促成这一点。”
 
@@ -38,11 +38,11 @@
 
 无论如何，以国防为重点的风险投资公司都在利用这个主要客户：就像[美国政府 - 国防承包商轮换门](https://responsiblestatecraft.org/pentagon-revolving-door/)倡导[永久冲突](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2547996)一样，风投现在成为了华盛顿的主要影响力者，同时也在推动国防领域最新最大的公司的起步。
 
-在这方面，亿万富翁风险投资家如彼得·蒂尔和埃里克·施密特因涉足政府和国防部门关系的双方而引人注目。尽管蒂尔表示他不会资助2024年的竞选，但他此前曾[支持过](https://www.reuters.com/world/us/peter-thiel-republican-megadonor-wont-fund-candidates-2024-sources-2023-04-26/#:~:text=In%20the%202022%20election%20cycle,Twelve%20of%20those%20candidates%20won)一系列成功的共和党国会竞选活动。在曾担任蒂尔现已破产的Clarium Capital Management的首席财务官和蒂尔资本的首席助理后，迈克尔·克拉西奥斯在特朗普政府担任白宫和国防部门职务，使蒂尔更加接近权力。
+在这方面，亿万富翁风险投资家如彼得·蒂尔和埃里克·施密特因涉足政府和国防部门关系的双方而引人注目。尽管蒂尔表示他不会资助 2024 年的竞选，但他此前曾[支持过](https://www.reuters.com/world/us/peter-thiel-republican-megadonor-wont-fund-candidates-2024-sources-2023-04-26/#:~:text=In%20the%202022%20election%20cycle,Twelve%20of%20those%20candidates%20won)一系列成功的共和党国会竞选活动。在曾担任蒂尔现已破产的 Clarium Capital Management 的首席财务官和蒂尔资本的首席助理后，迈克尔·克拉西奥斯在特朗普政府担任白宫和国防部门职务，使蒂尔更加接近权力。
 
 此外，叛乱国防的投资者施密特是[国防创新委员会](https://innovation.defense.gov/ai/)的成员，该委员会向立法者和五角大楼就技术政策提供建议，并且正如美国前进步杂志的前任主编乔纳森·盖尔所[写的](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/)，“正在向叛乱所[销售的技术](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/)分配资源。”
 
-2020年，叛乱国防获得了美国空军价值高达9.5亿美元的合同。
+2020 年，叛乱国防获得了美国空军价值高达 9.5 亿美元的合同。
 
 根据盖尔的说法，这种安排表明“施密特在政府和私营部门之间没有防火墙。”叛乱国防的两名员工还[曾](https://prospect.org/power/silicon-valley-takes-battlespace-eric-schmidt-rebellion/)在担任拜登政府的总统过渡团队成员。
 
@@ -54,15 +54,15 @@
 
 此外，风险投资公司正在挑起对中国的冲突，而 Palantir 的高级政策顾问雅各布·海耳伯格则认为这是一场即将爆发的“[技术战](https://archive.ph/o/JIzCi/https://www.youtube.com/watch?v=R-F2w7twT70)”（海耳伯格也是[美中经济安全审查委员会](https://www.uscc.gov/about-us/commission-members)的成员，使他具备向立法者重点关注国家安全相关政策问题的优势地位）。
 
-与此同时，Lux Capital的网站[明确表示](https://www.luxcapital.com/securities/national-security-and-vc-exits)中国“对美国的全球霸权构成严重威胁。”而 a16z 联合创始人马克·安德烈森则[观察到](https://fortune.com/2023/07/23/marc-andreessen-ai-policy-conversations-in-dc-go-differently-once-china-brought-up/)，在他与立法者进行政策对话时，只要一提到中国：“[突然之间就会说，‘哦，我们需要美国的人工智能成功，我们需要美国的技术公司取得成功，我们需要打败中国。’”
+与此同时，Lux Capital 的网站[明确表示](https://www.luxcapital.com/securities/national-security-and-vc-exits)中国“对美国的全球霸权构成严重威胁。”而 a16z 联合创始人马克·安德烈森则[观察到](https://fortune.com/2023/07/23/marc-andreessen-ai-policy-conversations-in-dc-go-differently-once-china-brought-up/)，在他与立法者进行政策对话时，只要一提到中国：“[突然之间就会说，‘哦，我们需要美国的人工智能成功，我们需要美国的技术公司取得成功，我们需要打败中国。’”
 
-**今年早些时候，进一步合作的是一群13家著名的科技公司和相关风险投资公司签署了一封[公开信](https://web.archive.org/web/20230626111126/https://assets.website-files.com/62baa0bcbd9dbe47abc1c53e/64992ef219dfafab24e70424_Defense%20Acquisition%20Reform-Letter.pdf)，[要求国防采购改革](https://www.ft.com/content/45da39f2-4e05-46f1-96f4-813fbba79b16)，更好地向初创企业开放美国的国防预算。这封信警告称，如果不进行改变，美国的“竞争对手将继续在技术战场上获得优势”，这将让美国的军事作战者在实体战场处于劣势。**
+**今年早些时候，进一步合作的是一群 13 家著名的科技公司和相关风险投资公司签署了一封[公开信](https://web.archive.org/web/20230626111126/https://assets.website-files.com/62baa0bcbd9dbe47abc1c53e/64992ef219dfafab24e70424_Defense%20Acquisition%20Reform-Letter.pdf)，[要求国防采购改革](https://www.ft.com/content/45da39f2-4e05-46f1-96f4-813fbba79b16)，更好地向初创企业开放美国的国防预算。这封信警告称，如果不进行改变，美国的“竞争对手将继续在技术战场上获得优势”，这将让美国的军事作战者在实体战场处于劣势。**
 
-**Anduril的创始人帕尔默·勒基甚至在一次[最近的采访](https://breakingdefense.com/2023/09/palmer-luckey-anduril-ipo-chatgpt-interview/)中将风险投资公司称为为了保护他们目前的投资而变得“鹰派”，并且[观察到](https://breakingdefense.com/2023/09/palmer-luckey-anduril-ipo-chatgpt-interview/)，*“[]在意乌克兰的人都在关注台湾，因为...台湾的前景对他们许多投资[设在那里]构成了真正的存在威胁。所以我认为你会看到许多风险投资人变得鹰派。”**
+**Anduril 的创始人帕尔默·勒基甚至在一次[最近的采访](https://breakingdefense.com/2023/09/palmer-luckey-anduril-ipo-chatgpt-interview/)中将风险投资公司称为为了保护他们目前的投资而变得“鹰派”，并且[观察到](https://breakingdefense.com/2023/09/palmer-luckey-anduril-ipo-chatgpt-interview/)，*“[]在意乌克兰的人都在关注台湾，因为...台湾的前景对他们许多投资[设在那里]构成了真正的存在威胁。所以我认为你会看到许多风险投资人变得鹰派。”**
 
-***更直白地说，风险投资公司[美国前沿基金（AFF）](https://americasfrontier.org/)的代表在[炫耀](https://techinquiry.org/?article=10x-overnight)：“如果太平洋发生动态事件”，提及台湾，“我们的一些投资将会[涨]10倍，就像一夜之间。”***
+***更直白地说，风险投资公司[美国前沿基金（AFF）](https://americasfrontier.org/)的代表在[炫耀](https://techinquiry.org/?article=10x-overnight)：“如果太平洋发生动态事件”，提及台湾，“我们的一些投资将会[涨]10 倍，就像一夜之间。”***
 
-***与此同时，现金流表明风险投资公司的努力正在取得成功：[Anduril](https://sacra.com/c/anduril/)在2023年估计赚得了[$3.42亿的收入](https://sacra.com/research/anduril-revenue-growth-valuation/)，告诉投资者今年将获得新的政府合同高达$6.25亿。叛乱国防的合同[仅在2023年翻了一番](https://www.defenseone.com/business/2023/11/defense-business-brief-november-06-2023/391824/)。尽管[多年亏损](https://apnews.com/article/8691ffc371ed9b8ca4a720cde84059f7)，但 Palantir 的股价在令人印象深刻的[第三季度业绩](https://www.palantir.com/q3-2023-letter/en/)之后上涨了20%，公司净利润达到7200万美元。正如 Palantir 的 Alex Karp 之前[所说](https://www.forbes.com/sites/jonathanponciano/2022/05/09/palantir-stock-collapses-after-disappointing-earnings-ceo-warns-threat-of-nuclear-war-significantly-underestimated/)，“[]困难时期对 Palantir 来说非常有利。”***
+***与此同时，现金流表明风险投资公司的努力正在取得成功：[Anduril](https://sacra.com/c/anduril/)在 2023 年估计赚得了[$3.42 亿的收入](https://sacra.com/research/anduril-revenue-growth-valuation/)，告诉投资者今年将获得新的政府合同高达$6.25 亿。叛乱国防的合同[仅在 2023 年翻了一番](https://www.defenseone.com/business/2023/11/defense-business-brief-november-06-2023/391824/)。尽管[多年亏损](https://apnews.com/article/8691ffc371ed9b8ca4a720cde84059f7)，但 Palantir 的股价在令人印象深刻的[第三季度业绩](https://www.palantir.com/q3-2023-letter/en/)之后上涨了 20%，公司净利润达到 7200 万美元。正如 Palantir 的 Alex Karp 之前[所说](https://www.forbes.com/sites/jonathanponciano/2022/05/09/palantir-stock-collapses-after-disappointing-earnings-ceo-warns-threat-of-nuclear-war-significantly-underestimated/)，“[]困难时期对 Palantir 来说非常有利。”***
 
 ***最终，风险投资公司在这个领域的成功依赖于冲突。换句话说，他们在寻找战斗。***
 

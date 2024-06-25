@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日14:34:45
+日期：2024 年 05 月 27 日 14:34:45
 
 -->
 
 # Quanta Magazine
 
-> 来源：[https://www.quantamagazine.org/deep-beneath-earths-surface-clues-to-lifes-origins-20240104/](https://www.quantamagazine.org/deep-beneath-earths-surface-clues-to-lifes-origins-20240104/)
+> 来源：[`www.quantamagazine.org/deep-beneath-earths-surface-clues-to-lifes-origins-20240104/`](https://www.quantamagazine.org/deep-beneath-earths-surface-clues-to-lifes-origins-20240104/)
 
 兰格最多预期在地下发现微量的氢气。但是，最深的水样品含有大量的气体，当其上升到表面时，在管内形成气泡，这与打开一罐新饮料时发生的现象类似。
 
@@ -20,7 +20,7 @@
 
 远征结束六个多月后，团队仍在处理大量样品——研究水化学、鉴定微生物、表征岩石等等。“人们将对这些岩石进行一系列的元素分析，”利兹大学地质学家、远征队联合领导者[安德鲁·麦凯格](https://environment.leeds.ac.uk/see/staff/1409/dr-andrew-mccaig)说道。
 
-初步模型暗示，钻孔底部附近的温度甚至可能达到摄氏122度，这是目前已知的生命存在极限（尽管[一些研究](https://www.sciencedirect.com/science/article/abs/pii/S0967063721001436)表明这个极限可能更高）。兰格警告称，这些模型需要确认，因为它们是基于钻探期间流通的冷水稍微抑制了钻孔温度的测量结果。如果条件被确认如此极端，那么这个深度将允许科学家在没有微生物干扰的情况下研究供养生命的化学反应。
+初步模型暗示，钻孔底部附近的温度甚至可能达到摄氏 122 度，这是目前已知的生命存在极限（尽管[一些研究](https://www.sciencedirect.com/science/article/abs/pii/S0967063721001436)表明这个极限可能更高）。兰格警告称，这些模型需要确认，因为它们是基于钻探期间流通的冷水稍微抑制了钻孔温度的测量结果。如果条件被确认如此极端，那么这个深度将允许科学家在没有微生物干扰的情况下研究供养生命的化学反应。
 
 这将是研究生命水源起源的科学家们迈出的一大步。“今天的地球上，很难目睹无生物或前生物化学，因为生命统治着一切；生命无处不在，”美国国家航空航天局喷气推进实验室的天体生物学家[劳瑞·巴吉](https://science.jpl.nasa.gov/people/barge/)说道，她并没有参加这次远征。
 

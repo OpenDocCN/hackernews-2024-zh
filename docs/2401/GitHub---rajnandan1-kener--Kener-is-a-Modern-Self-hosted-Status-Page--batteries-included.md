@@ -8,7 +8,7 @@ date: 2024-05-27 15:03:37
 
 # GitHub - rajnandan1/kener: Kener is a Modern Self hosted Status Page, batteries included
 
-> 来源：[https://github.com/rajnandan1/kener](https://github.com/rajnandan1/kener)
+> 来源：[`github.com/rajnandan1/kener`](https://github.com/rajnandan1/kener)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

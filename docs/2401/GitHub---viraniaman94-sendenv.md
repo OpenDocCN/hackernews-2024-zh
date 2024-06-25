@@ -8,7 +8,7 @@ date: 2024-05-27 15:03:55
 
 # GitHub - viraniaman94/sendenv
 
-> 来源：[https://github.com/viraniaman94/sendenv](https://github.com/viraniaman94/sendenv)
+> 来源：[`github.com/viraniaman94/sendenv`](https://github.com/viraniaman94/sendenv)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

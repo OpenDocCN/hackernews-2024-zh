@@ -6,9 +6,9 @@
 
 -->
 
-# GitHub - kffl/speedbump: TCP代理，用于模拟可变但可预测的网络延迟:globe_with_meridians::hourglass_flowing_sand:
+# GitHub - kffl/speedbump: TCP 代理，用于模拟可变但可预测的网络延迟:globe_with_meridians::hourglass_flowing_sand:
 
-> 来源：[https://github.com/kffl/speedbump](https://github.com/kffl/speedbump)
+> 来源：[`github.com/kffl/speedbump`](https://github.com/kffl/speedbump)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:55:17
 
 # 2024 年 Xilem 后端路线图 - Linebender
 
-> 来源：[https://linebender.org/blog/xilem-backend-roadmap/](https://linebender.org/blog/xilem-backend-roadmap/)
+> 来源：[`linebender.org/blog/xilem-backend-roadmap/`](https://linebender.org/blog/xilem-backend-roadmap/)
 
 # 2024 年 Xilem 后端路线图
 
@@ -42,31 +42,31 @@ Xilem 是一个研究和开发项目，是系列中的最新项目（Xi-Core、D
 
 我的志向是在年底之前让这段文字过时。我希望 Xilem 能够在未来几年里被提及，就像 Iced 和 SlintUI 一样。在未来的几年里，我希望整个生态系统能够达到一个程度，在那里人们讨论 Rust GUI 就像他们谈论 ripgrep 或 rustls 一样。
 
-举个具体的例子：我的个人目标是在2024年底之前为Xilem实现无缝热重载。我相信这是可行的，我相信这样做将从根本上改变人们对Rust GUI的看法，同时也希望解锁[随着时间推移希望实现的其他改进](https://poignardazur.github.io/2023/02/02/masonry-01-and-my-vision-for-rust-ui/)。
+举个具体的例子：我的个人目标是在 2024 年底之前为 Xilem 实现无缝热重载。我相信这是可行的，我相信这样做将从根本上改变人们对 Rust GUI 的看法，同时也希望解锁[随着时间推移希望实现的其他改进](https://poignardazur.github.io/2023/02/02/masonry-01-and-my-vision-for-rust-ui/)。
 
-短期内，我的计划是专注于基本功能、小部件和样式选项，以便人们可以通过在过去一年中Raph在Vello上的工作基础上进行实验。[John Skottis的Xilem UX笔记](https://gist.github.com/giannissc/172c6c591997ee14f6120134a7990697)很好地描述了我将要处理的工作类型。
+短期内，我的计划是专注于基本功能、小部件和样式选项，以便人们可以通过在过去一年中 Raph 在 Vello 上的工作基础上进行实验。[John Skottis 的 Xilem UX 笔记](https://gist.github.com/giannissc/172c6c591997ee14f6120134a7990697)很好地描述了我将要处理的工作类型。
 
-另一个短期内的重大优先事项将是文档编写。我们看到很多人抱怨Linebender项目的文档编写不足，难以理解；这是对我们[2024年公告](https://linebender.org/blog/xilem-2024/)的最普遍的反应，但它回应了我们以前看到的观点。我们意识到了问题，并打算着手解决。
+另一个短期内的重大优先事项将是文档编写。我们看到很多人抱怨 Linebender 项目的文档编写不足，难以理解；这是对我们[2024 年公告](https://linebender.org/blog/xilem-2024/)的最普遍的反应，但它回应了我们以前看到的观点。我们意识到了问题，并打算着手解决。
 
-中期内，我还计划着重处理Xilem的性能方面。来自Google Fonts的人们对我们能从Rust UI中获得多少性能表示出了兴趣。虽然我的任务不仅限于性能工作，但这将是一个持续关注的重点，特别是因为Rust语言在这方面带来了独特的机会。我将在以后的文章中更详细地介绍Rust的性能和功耗效率。
+中期内，我还计划着重处理 Xilem 的性能方面。来自 Google Fonts 的人们对我们能从 Rust UI 中获得多少性能表示出了兴趣。虽然我的任务不仅限于性能工作，但这将是一个持续关注的重点，特别是因为 Rust 语言在这方面带来了独特的机会。我将在以后的文章中更详细地介绍 Rust 的性能和功耗效率。
 
 ## 我想尽快实施的重大变化
 
 这些是我希望尽快处理的重大变化。实际上，“尽快”是相对的，因为其中一些变化会引起争议，而工作的一部分将是说服人们它们的价值。
 
-### 切换到Masonry作为后端
+### 切换到 Masonry 作为后端
 
 好吧，这个让我有点害羞。
 
-我是Masonry的唯一维护者，这是一个GitHub上星数仅仅超过300颗且外部兴趣不大的GUI创建。我真的能够理直气壮地接受Google支付我来改进Xilem的资金，并把我的时间花在Masonry上吗？
+我是 Masonry 的唯一维护者，这是一个 GitHub 上星数仅仅超过 300 颗且外部兴趣不大的 GUI 创建。我真的能够理直气壮地接受 Google 支付我来改进 Xilem 的资金，并把我的时间花在 Masonry 上吗？
 
-请注意，这个选择并不是随意的：Masonry是从Druid分叉出来的，而Druid是Xilem的祖先，实际上，目前Xilem和Masonry共享很多代码。
+请注意，这个选择并不是随意的：Masonry 是从 Druid 分叉出来的，而 Druid 是 Xilem 的祖先，实际上，目前 Xilem 和 Masonry 共享很多代码。
 
-事实上，我会认为Masonry的代码库质量比Xilem当前的本地后端要好。这并不是要贬低Xilem维护者的工作；相反，这是因为优先级的不同所导致的结果。没人对Xilem的本地后端很感兴趣（尽管Raph意识到了它的重要性，这也是我被付费撰写这篇文章的原因），而很多人对前端和网络后端非常感兴趣，因此前端和网络后端看到了最多的工作。
+事实上，我会认为 Masonry 的代码库质量比 Xilem 当前的本地后端要好。这并不是要贬低 Xilem 维护者的工作；相反，这是因为优先级的不同所导致的结果。没人对 Xilem 的本地后端很感兴趣（尽管 Raph 意识到了它的重要性，这也是我被付费撰写这篇文章的原因），而很多人对前端和网络后端非常感兴趣，因此前端和网络后端看到了最多的工作。
 
 来自我们的[RFC#0001](https://github.com/linebender/rfcs/pull/1)：
 
-> 结果，Xilem的本地后端处于糟糕的状态：
+> 结果，Xilem 的本地后端处于糟糕的状态：
 
 Masonry 的后端代码库是一个更健康的起点。 Masonry 还带有一些内置的好处，比如强大的单元测试和结构化小部件图表。
 

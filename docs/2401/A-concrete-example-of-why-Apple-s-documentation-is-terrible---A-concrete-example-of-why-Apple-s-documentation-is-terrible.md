@@ -8,7 +8,7 @@
 
 # 苹果文档糟糕的一个具体例子 | 苹果文档糟糕的一个具体例子
 
-> 来源：[https://www.amimetic.co.uk/blog/a-concrete-example-of-why-apples-docs-are-terrible/](https://www.amimetic.co.uk/blog/a-concrete-example-of-why-apples-docs-are-terrible/)
+> 来源：[`www.amimetic.co.uk/blog/a-concrete-example-of-why-apples-docs-are-terrible/`](https://www.amimetic.co.uk/blog/a-concrete-example-of-why-apples-docs-are-terrible/)
 
 苹果的文档声名狼藉。特别是经常缺失或不完整。[没有概述可用](https://nooverviewavailable.com/) 给出了一些相关数据，但我认为那实际上低估了问题。即使有时可用，也经常很糟糕。这是我最近在做一些 MacOS 开发时遇到的一个小的具体例子（这是我不太熟悉的领域）。
 
@@ -50,7 +50,7 @@
 
 1.  缺乏甚至基本用法的示例。
 
-1.  设计不良的、遗留的面向对象编程API：通过良好的类型使用，Swift 有时可以在不需要太多文档的情况下运行。不幸的是，许多 MacOS 的API是一种老式面向对象编程与令人惊讶的低级细节的混合体。
+1.  设计不良的、遗留的面向对象编程 API：通过良好的类型使用，Swift 有时可以在不需要太多文档的情况下运行。不幸的是，许多 MacOS 的 API 是一种老式面向对象编程与令人惊讶的低级细节的混合体。
 
 ## 如果你在进行苹果开发呢？
 

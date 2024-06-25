@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日14:53:19
+日期：2024 年 5 月 27 日 14:53:19
 
 -->
 
 # GitHub - apple/ml-aim：该存储库提供了研究论文的代码和模型检查点：大规模自回归图像模型的可扩展预训练
 
-> 来源：[https://github.com/apple/ml-aim](https://github.com/apple/ml-aim)
+> 来源：[`github.com/apple/ml-aim`](https://github.com/apple/ml-aim)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

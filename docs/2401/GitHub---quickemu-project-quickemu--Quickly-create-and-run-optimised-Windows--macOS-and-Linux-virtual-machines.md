@@ -8,7 +8,7 @@ date: 2024-05-27 15:21:47
 
 # GitHub - quickemu-project/quickemu: 快速创建和运行优化的 Windows、macOS 和 Linux 虚拟机
 
-> 来源：[https://github.com/quickemu-project/quickemu](https://github.com/quickemu-project/quickemu)
+> 来源：[`github.com/quickemu-project/quickemu`](https://github.com/quickemu-project/quickemu)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

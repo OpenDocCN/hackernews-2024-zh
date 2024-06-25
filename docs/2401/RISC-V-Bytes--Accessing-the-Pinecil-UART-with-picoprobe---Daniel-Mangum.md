@@ -6,19 +6,19 @@ date: 2024-05-27 15:22:09
 
 -->
 
-# RISC-V Bytes：使用picoprobe访问Pinecil UART · Daniel Mangum
+# RISC-V Bytes：使用 picoprobe 访问 Pinecil UART · Daniel Mangum
 
-> 来源：[https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/](https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/)
+> 来源：[`danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/`](https://danielmangum.com/posts/risc-v-bytes-accessing-pinecil-uart-picoprobe/)
 > 
-> 本帖是关于[PINE64](https://pine64.org/) Pinecil焊接熨斗和开发板的RISC-V Bytes子系列的第二篇文章。 可以在[RISC-V Bytes](https://danielmangum.com/categories/risc-v-bytes/)类别下找到之前和之后的帖子。
+> 本帖是关于[PINE64](https://pine64.org/) Pinecil 焊接熨斗和开发板的 RISC-V Bytes 子系列的第二篇文章。 可以在[RISC-V Bytes](https://danielmangum.com/categories/risc-v-bytes/)类别下找到之前和之后的帖子。
 
-在[最新的Pinecil帖子](https://danielmangum.com/posts/risc-v-bytes-soldering-pinecil-breakout-board/)中，我们介绍了如何在Pinecil [分机板](https://pine64.com/product/pinecil-break-out-board/)上焊接标题引脚。 通过连接标题引脚，我们现在可以通过多种协议与Pinecil的微控制器通信。 今天我们将专注于访问通用异步收发器/转换器（UART）硬件，以便在开发机器（例如笔记本电脑）上接收来自微控制器的串行数据，例如日志消息。
+在[最新的 Pinecil 帖子](https://danielmangum.com/posts/risc-v-bytes-soldering-pinecil-breakout-board/)中，我们介绍了如何在 Pinecil [分机板](https://pine64.com/product/pinecil-break-out-board/)上焊接标题引脚。 通过连接标题引脚，我们现在可以通过多种协议与 Pinecil 的微控制器通信。 今天我们将专注于访问通用异步收发器/转换器（UART）硬件，以便在开发机器（例如笔记本电脑）上接收来自微控制器的串行数据，例如日志消息。
 
-然而，尽管分机板确实允许我们访问UART引脚，但你的开发机器可能不会暴露自己的UART接口。 相反，大多数机器配备了更常用的外围设备端口，例如[通用串行总线（USB）](https://en.wikipedia.org/wiki/USB)。 为了在Pinecil微控制器和开发机器之间进行通信，我们需要某种桥接设备。 虽然有很多可以花几美元购买的专用硬件，例如这个[USB转串口转换器](https://www.adafruit.com/product/5335)，但自从[参加了2023年Hackaday Supercon](https://danielmangum.com/posts/supercon-2023-day-1/)并且[在会议徽章上进行了黑客攻击](https://danielmangum.com/posts/supercon-2023-day-2/)，我一直在利用我的小型[Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html)收藏来执行此类任务，其中包括将Pico[安装在PCB的背面](https://hackaday.com/2023/10/18/2023-hackaday-supercon-badge-welcome-to-the-vectorscope/#under-the-hood)。
+然而，尽管分机板确实允许我们访问 UART 引脚，但你的开发机器可能不会暴露自己的 UART 接口。 相反，大多数机器配备了更常用的外围设备端口，例如[通用串行总线（USB）](https://en.wikipedia.org/wiki/USB)。 为了在 Pinecil 微控制器和开发机器之间进行通信，我们需要某种桥接设备。 虽然有很多可以花几美元购买的专用硬件，例如这个[USB 转串口转换器](https://www.adafruit.com/product/5335)，但自从[参加了 2023 年 Hackaday Supercon](https://danielmangum.com/posts/supercon-2023-day-1/)并且[在会议徽章上进行了黑客攻击](https://danielmangum.com/posts/supercon-2023-day-2/)，我一直在利用我的小型[Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/raspberry-pi-pico.html)收藏来执行此类任务，其中包括将 Pico[安装在 PCB 的背面](https://hackaday.com/2023/10/18/2023-hackaday-supercon-badge-welcome-to-the-vectorscope/#under-the-hood)。
 
-Pico是第一个使用内部硅芯片的树莓派产品，其中包含了[RP2040](https://www.raspberrypi.com/products/rp2040/)，一个带有双ARM [Cortex-M0+](https://developer.arm.com/Processors/Cortex-M0-Plus)处理器和高度灵活的[可编程输入/输出（PIO）](https://www.raspberrypi.com/news/what-is-pio/)系统的微控制器。 使用通用微控制器而不是专用硬件的“缺点”是我们需要编写或获取执行所需功能的固件。
+Pico 是第一个使用内部硅芯片的树莓派产品，其中包含了[RP2040](https://www.raspberrypi.com/products/rp2040/)，一个带有双 ARM [Cortex-M0+](https://developer.arm.com/Processors/Cortex-M0-Plus)处理器和高度灵活的[可编程输入/输出（PIO）](https://www.raspberrypi.com/news/what-is-pio/)系统的微控制器。 使用通用微控制器而不是专用硬件的“缺点”是我们需要编写或获取执行所需功能的固件。
 
-幸运的是，Raspbery Pi明确鼓励使用Pico进行这种类型的用例。
+幸运的是，Raspbery Pi 明确鼓励使用 Pico 进行这种类型的用例。
 
 [Pico 入门指南](https://datasheets.raspberrypi.com/pico/getting-started-with-pico.pdf)的附录 A 介绍了 Pico 作为编程和调试设备的使用。为了支持这种情况，他们提供了开源固件，名为`picoprobe`，构建在[FreeRTOS](https://github.com/FreeRTOS/FreeRTOS-Kernel)和[Pico C/C++ SDK](https://github.com/raspberrypi/pico-sdk)之上。
 
@@ -76,7 +76,7 @@ $ ls /dev/ | grep "ACM\|USB" ttyACM0
 $ minicom -D /dev/ttyACM0 -b 2000000 
 ```
 
-Pinecil v2 运行在[Bouffalo Lab BL706](https://en.bouffalolab.com/product/?type=detail&id=8)芯片组上，其中包括基于[SiFive E24 核心](https://sifive-china.oss-cn-zhangjiakou.aliyuncs.com/Standard%20Core%20IP/e24_core_complex_manual_21G2.pdf)的[32位 RISC-V 处理器](https://riscv.org/)。它受到开源项目[IronOS](https://github.com/Ralim/IronOS)的支持，最初是作为[TS100](https://www.ifixit.com/products/ts100-soldering-iron)铁的替代固件开发的。IronOS 是 Pinecil 的默认固件。
+Pinecil v2 运行在[Bouffalo Lab BL706](https://en.bouffalolab.com/product/?type=detail&id=8)芯片组上，其中包括基于[SiFive E24 核心](https://sifive-china.oss-cn-zhangjiakou.aliyuncs.com/Standard%20Core%20IP/e24_core_complex_manual_21G2.pdf)的[32 位 RISC-V 处理器](https://riscv.org/)。它受到开源项目[IronOS](https://github.com/Ralim/IronOS)的支持，最初是作为[TS100](https://www.ifixit.com/products/ts100-soldering-iron)铁的替代固件开发的。IronOS 是 Pinecil 的默认固件。
 
 IronOS 也是基于 FreeRTOS 构建的，并利用了`bl_mcu_sdk`，它已经演变成了[bouffalo_sdk](https://github.com/bouffalolab/bouffalo_sdk)。根据[数据手册](http://download.bl602.fun/BL702_%E5%AE%98%E6%96%B9%E8%8A%AF%E7%89%87%E6%89%8B%E5%86%8C.pdf)，BL706 有两个内置 UART，并且 IronOS [配置](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/peripheral_config.h#L82) `UART0` 的波特率为 `2000000`，这就是我们在上面提供 `-b 2000000` 给 `minicom` 的原因。
 
@@ -104,7 +104,7 @@ $ ./scripts/deploy.sh   ====>>>> Firing up & starting container...  * type "./sc
 $ ls source/Hexfile/ Pinecilv2_EN.bin  Pinecilv2_EN.dfu  Pinecilv2_EN.elf  Pinecilv2_EN.elf.map  Pinecilv2_EN.hex 
 ```
 
-通过按住标有`-`的按钮，同时将 USB 电缆插入开发计算机，即可在连接至 Breakout 板时对 Pinecil 进行编程。Pine64为其 Bouffalo Lab 设备提供了一个名为`blisp`的[系统内编程工具（ISP）](https://en.wikipedia.org/wiki/In-system_programming)，可以从该项目的[发布页面](https://github.com/pine64/blisp/releases)下载。
+通过按住标有`-`的按钮，同时将 USB 电缆插入开发计算机，即可在连接至 Breakout 板时对 Pinecil 进行编程。Pine64 为其 Bouffalo Lab 设备提供了一个名为`blisp`的[系统内编程工具（ISP）](https://en.wikipedia.org/wiki/In-system_programming)，可以从该项目的[发布页面](https://github.com/pine64/blisp/releases)下载。
 
 安装后，可以使用以下命令将 IronOS 固件刷新到设备上。
 
@@ -112,7 +112,7 @@ $ ls source/Hexfile/ Pinecilv2_EN.bin  Pinecilv2_EN.dfu  Pinecilv2_EN.elf  Pinec
 $ sudo ./blisp write -c bl70x --reset Pinecilv2_EN.bin Sending a handshake... Handshake successful! Getting chip info... BootROM version 1.0.2.7, ChipID: 0000C41CD8FDD7C4 0b / 59200 (0.00%) 4092b / 59200 (6.91%) ... 59200b / 59200 (100.00%) Sending a handshake... Handshake with eflash_loader successful. Input file identified as a .bin file Erasing flash to flash boot header Flashing boot header... Erasing flash for firmware, this might take a while... Flashing the firmware 188440 bytes @ 0x00002000... 0b / 188440 (0.00%) 2052b / 188440 (1.09%) ... 188440b / 188440 (100.00%) Checking program... Program OK! Resetting the chip. Flash complete! 
 ```
 
-## 将 Pinecil 连接到 Pico [*链接到标题*](#connecting-the-pinecil-to-the-pico)
+## 将 Pinecil 连接到 Pico *链接到标题*
 
 *查看 Pinecil 上运行的 IronOS 固件发出的串行输出的最后一步是将 Breakout 板上的 UART 引脚连接到运行 `picoprobe` 的 Pico 上。 Pico 上的 `UART1` 用于 USB-UART 桥接器，引脚 6 和 7 分别对应 `UART1 TX` 和 `UART1 RX`。 Pinecil Breakout UART 头上的 `RX` 引脚应连接到 Pico 上的引脚 6，而 `TX` 应连接到引脚 7。 最后，Breakout 板上的 UART `GND`（地）引脚应连接到 Pico 上的 `GND` 引脚，例如引脚 3。下面提供了完整的映射。
 
@@ -124,10 +124,10 @@ $ sudo ./blisp write -c bl70x --reset Pinecilv2_EN.bin Sending a handshake... Ha
 
 > 要查看映射的可视化表示，请查看本文的封面图片，其中包含了布线的引脚准确描述。
 
-完成布线，将Pico连接到开发机器，并运行`minicom`后，我们可以通过连接板将Pinecil连接到电源源。在我们的`minicom`会话中，我们应该看到以下输出。
+完成布线，将 Pico 连接到开发机器，并运行`minicom`后，我们可以通过连接板将 Pinecil 连接到电源源。在我们的`minicom`会话中，我们应该看到以下输出。
 
 ```
 dynamic memory init success,heap size = 48 Kbyte show flash cfg: jedec id   0x000000 mid            0xC2 iomode         0x11 clk delay      0x01 clk invert     0x01 read reg cmd0  0x05 read reg cmd1  0x00 write reg cmd0 0x01 write reg cmd1 0x00 qe write len   0x02 cread support  0x00 cread code     0x00 burst wrap cmd 0x77 ------------------- Enable IRQ's Hello from Pinecil via picoprobe! Pine64 Pinecilv2 Starting BLE Starting  BLE Starting...Done BLE Starting advertising 
 ```
 
-这些信息在启动时通过[调用`bflb_platform_init()`](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/bl_mcu_sdk/bsp/bsp_common/platform/bflb_platform.c#L72)来发出。有了构建、编程和监控固件的能力，我们可以开始在Pinecil硬件上进行更改和测试。在我们的下一篇文章中，我们将逐步解释Bouffalo Lab SDK和IronOS的确切操作，然后看看我们如何修改它们以包含新功能。
+这些信息在启动时通过[调用`bflb_platform_init()`](https://github.com/Ralim/IronOS/blob/6e2bca9699347d9d1381087149ab70ca0f6fcb4c/source/Core/BSP/Pinecilv2/bl_mcu_sdk/bsp/bsp_common/platform/bflb_platform.c#L72)来发出。有了构建、编程和监控固件的能力，我们可以开始在 Pinecil 硬件上进行更改和测试。在我们的下一篇文章中，我们将逐步解释 Bouffalo Lab SDK 和 IronOS 的确切操作，然后看看我们如何修改它们以包含新功能。

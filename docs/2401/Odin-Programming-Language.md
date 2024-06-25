@@ -8,7 +8,7 @@
 
 # 奥丁编程语言
 
-> 来源：[https://odin-lang.org/](https://odin-lang.org/)
+> 来源：[`odin-lang.org/`](https://odin-lang.org/)
 
 <select class="form-select mb-2" id="example-code-select"><option id="example-1-select" value="example-1-code">Hellope</option><option id="example-2-select" value="example-2-code">Array Programming</option><option id="example-3-select" value="example-3-code">SOA Types</option><option id="example-4-select" value="example-4-code">Context System</option><option id="example-5-select" value="example-5-code">Reflection</option></select>
 

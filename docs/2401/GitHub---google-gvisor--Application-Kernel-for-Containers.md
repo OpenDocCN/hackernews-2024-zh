@@ -8,7 +8,7 @@ date: 2024-05-27 14:28:09
 
 # GitHub - google/gvisor: Application Kernel for Containers
 
-> 来源：[https://github.com/google/gvisor](https://github.com/google/gvisor)
+> 来源：[`github.com/google/gvisor`](https://github.com/google/gvisor)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

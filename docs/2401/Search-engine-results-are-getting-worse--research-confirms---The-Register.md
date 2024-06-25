@@ -8,11 +8,11 @@ date: 2024-05-27 14:51:29
 
 # Search engine results are getting worse, research confirms • The Register
 
-> 来源：[https://www.theregister.com/2024/01/17/google_search_results_spam/](https://www.theregister.com/2024/01/17/google_search_results_spam/)
+> 来源：[`www.theregister.com/2024/01/17/google_search_results_spam/`](https://www.theregister.com/2024/01/17/google_search_results_spam/)
 
 Updated No, it's not just you - search engine results really are getting worse as the internet is flooded with low-effort garbage from SEO farms and affiliate link sites, a group of German researchers has concluded.
 
-这些专家在审查了谷歌、必应和DuckDuckGo的7392个产品评论查询结果后做出了他们的[结论](https://webis.de/publications#bevendorff_2024a)，他们表示这是对搜索引擎结果质量恶化问题的首次系统审查。
+这些专家在审查了谷歌、必应和 DuckDuckGo 的 7392 个产品评论查询结果后做出了他们的[结论](https://webis.de/publications#bevendorff_2024a)，他们表示这是对搜索引擎结果质量恶化问题的首次系统审查。
 
 在过去的一年里，团队研究了无数链接后得出结论，所有抱怨谷歌质量下降的人似乎都是正确的，而且随着生成式人工智能的出现，情况可能会变得更糟 - [正如我们预测的那样](https://www.theregister.com/2022/12/06/internet_ai_gpt_ios/)。请参阅上述链接的研究以获取完整的详细信息，包括对必应、DuckDuckGo 和谷歌的比较。
 
@@ -22,9 +22,9 @@ Updated No, it's not just you - search engine results really are getting worse a
 
 换句话说，一个页面如果充斥着联盟链接和搜索引擎优化（SEO）策略，那么它的质量就会越差。这些页面随处可见，因此搜索结果通常变得越来越糟糕。
 
-此外，研究人员确定所有三大搜索引擎都容易受到大规模联盟链接垃圾邮件活动的操纵，并且它们通过算法更新来反击这种操纵的努力，最多只能起到“暂时的积极作用”。团队发现，谷歌针对SEO和联盟垃圾邮件的定位似乎最有效。
+此外，研究人员确定所有三大搜索引擎都容易受到大规模联盟链接垃圾邮件活动的操纵，并且它们通过算法更新来反击这种操纵的努力，最多只能起到“暂时的积极作用”。团队发现，谷歌针对 SEO 和联盟垃圾邮件的定位似乎最有效。
 
-尽管如此，“搜索引擎似乎在SEO垃圾邮件的猫鼠游戏中处于劣势，” 研究人员得出结论。
+尽管如此，“搜索引擎似乎在 SEO 垃圾邮件的猫鼠游戏中处于劣势，” 研究人员得出结论。
 
 ### Bad results getting worse thanks to generative AI
 

@@ -8,7 +8,7 @@
 
 # A CAP tradeoff in the wild - decomposition ∘ al
 
-> 来源：[https://decomposition.al/blog/2023/12/31/a-cap-tradeoff-in-the-wild/](https://decomposition.al/blog/2023/12/31/a-cap-tradeoff-in-the-wild/)
+> 来源：[`decomposition.al/blog/2023/12/31/a-cap-tradeoff-in-the-wild/`](https://decomposition.al/blog/2023/12/31/a-cap-tradeoff-in-the-wild/)
 
 在复制数据系统的背景下，安全性和活性之间存在经典的折衷，最初由 Eric Brewer 提出，后来由 Seth Gilbert 和 Nancy Lynch 进行了精确定义。其思想是，在一个易受分区影响的服务器网络系统中（即，服务器之间的消息可能会被任意延迟，甚至永远延迟），无法同时确保服务器响应请求时使用的是“正确”的响应（*一致性*，一种安全属性），以及每个请求最终都会收到响应（*可用性*，一种活性属性）。
 
@@ -18,7 +18,7 @@
 
 [这篇 HotOS 2021 论文的图 2](https://sigops.org/s/conferences/hotos/2021/papers/hotos21-s11-sun.pdf)由孙旭东等人绘制，说明了这个 bug。图的左列标有“history”，表示 etcd（一种强一致性数据存储）关于集群状态的“真相”。然而，各种 Kubernetes 组件（称为“apiservers”和“kubelets”）并不直接与 etcd 交流，而是通过各种缓存间接看到该状态。图中的中间两列代表 apiservers API-1 和 API-2，它们各自维护这样的缓存。
 
-在示例运行的图中显示，API-2“与etcd的网络连接出现问题”，因此其缓存落后。同时，Pod P1 在 kubelet K1 上创建，然后移动到 K2 上，这需要在 K1 上删除它，然后在 K2 上创建它。API-1 知道 P1 已从 K1 移动到 K2，但 API-2 不知道。
+在示例运行的图中显示，API-2“与 etcd 的网络连接出现问题”，因此其缓存落后。同时，Pod P1 在 kubelet K1 上创建，然后移动到 K2 上，这需要在 K1 上删除它，然后在 K2 上创建它。API-1 知道 P1 已从 K1 移动到 K2，但 API-2 不知道。
 
 然后 K1 崩溃了，重新启动，从 API-2 上读取集群状态（它说 P1 应该仍然存在于 K1 上！），结果在 K1 上重新创建了 P1。现在我们违反了一个安全性属性，即同名的两个 Pod 不应该同时存在。
 

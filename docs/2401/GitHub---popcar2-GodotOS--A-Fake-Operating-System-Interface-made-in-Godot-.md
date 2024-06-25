@@ -6,9 +6,9 @@ date: 2024-05-27 14:41:55
 
 -->
 
-# GitHub - popcar2/GodotOS: 一个使用Godot制作的虚假操作系统界面！
+# GitHub - popcar2/GodotOS: 一个使用 Godot 制作的虚假操作系统界面！
 
-> 来源：[https://github.com/popcar2/GodotOS](https://github.com/popcar2/GodotOS)
+> 来源：[`github.com/popcar2/GodotOS`](https://github.com/popcar2/GodotOS)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

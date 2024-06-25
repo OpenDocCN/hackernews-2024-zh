@@ -8,7 +8,7 @@
 
 # 树莓派现在每周生产 70,000 块 Pi 5，将在 2 月份增至 90,000 | 汤姆硬件
 
-> 来源：[https://www.tomshardware.com/raspberry-pi/raspberry-pi-is-now-manufacturing-70000-pi-5s-per-week-will-surge-to-90000-in-february](https://www.tomshardware.com/raspberry-pi/raspberry-pi-is-now-manufacturing-70000-pi-5s-per-week-will-surge-to-90000-in-february)
+> 来源：[`www.tomshardware.com/raspberry-pi/raspberry-pi-is-now-manufacturing-70000-pi-5s-per-week-will-surge-to-90000-in-february`](https://www.tomshardware.com/raspberry-pi/raspberry-pi-is-now-manufacturing-70000-pi-5s-per-week-will-surge-to-90000-in-february)
 
 在过去的几年里，除了 Pico 微控制器之外，所有型号的树莓派都供不应求，现在大多数 SKU 都比较容易找到库存。然而，新的树莓派 5 仍然可能有些挑战；截至报道时，美国授权零售商已售罄，但英国零售商有库存。
 

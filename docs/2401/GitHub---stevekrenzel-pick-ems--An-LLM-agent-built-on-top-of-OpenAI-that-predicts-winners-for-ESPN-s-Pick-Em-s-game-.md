@@ -8,7 +8,7 @@ date: 2024-05-27 14:49:29
 
 # GitHub - stevekrenzel/pick-ems: An LLM agent built on top of OpenAI that predicts winners for ESPN's Pick-Em's game.
 
-> 来源：[https://github.com/stevekrenzel/pick-ems](https://github.com/stevekrenzel/pick-ems)
+> 来源：[`github.com/stevekrenzel/pick-ems`](https://github.com/stevekrenzel/pick-ems)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,13 +8,13 @@ category: 未分类
 
 # Chapel 中 GPU 编程简介
 
-> 来源：[https://chapel-lang.org/blog/posts/intro-to-gpus/](https://chapel-lang.org/blog/posts/intro-to-gpus/)
+> 来源：[`chapel-lang.org/blog/posts/intro-to-gpus/`](https://chapel-lang.org/blog/posts/intro-to-gpus/)
 
 Chapel 是一种用于高效并行计算的编程语言。近年来，并行计算的一个特定子领域变得异常流行：GPU 计算。因此，Chapel 团队一直在努力增加对 GPU 的支持，使得创建厂商中立且性能优异的 GPU 程序变得轻松。自首次发布以来，Chapel 编译器的这一方面已经迅速改进，并在时间上不断接收增强和性能修复。本教程将介绍 Chapel 的 GPU 编程功能。
 
-虽然诸如 CUDA 和 HIP 等框架通常用于编写 GPU 程序，但本教程并不假设读者熟悉它们。示例将利用 Chapel 的一些通用功能，并在此过程中进行解释。想要更加深入地了解 Chapel，请参阅本博客上的 [Advent of Code](../../series/advent-of-code-2022/) 系列，或查看 [Learning Chapel](https://chapel-lang.org/learning.html) 页面以获取更多资源。
+虽然诸如 CUDA 和 HIP 等框架通常用于编写 GPU 程序，但本教程并不假设读者熟悉它们。示例将利用 Chapel 的一些通用功能，并在此过程中进行解释。想要更加深入地了解 Chapel，请参阅本博客上的 Advent of Code 系列，或查看 [Learning Chapel](https://chapel-lang.org/learning.html) 页面以获取更多资源。
 
-在本文中，我们将直接使用 Chapel 的 GPU 编程功能。如果你对 GPU 适用于解决哪些问题感兴趣，请查看 [*Appendix* 部分包含此信息](#appendix-what-sorts-of-problems-benefit-from-gpus)。
+在本文中，我们将直接使用 Chapel 的 GPU 编程功能。如果你对 GPU 适用于解决哪些问题感兴趣，请查看 *Appendix* 部分包含此信息。
 
 ### Locales 和 `on` 语句：Chapel 的基础
 
@@ -66,19 +66,19 @@ export CHPL_GPU_ARCH=your_arch_here
  foreach  i  in  1..n  do A[i]  =  i  *  2; 
 ```
 
-我们可以观察到`5*2`的结果不会影响`3*2`的计算。每次迭代访问`A`的不同元素，因此不存在数据竞争。因此，我们的示例是无序循环的一个实例。Chapel让程序员指示哪些循环具有这个特性；为了断言循环是无序的，应该写成 [注意：Chapel还具有`forall`循环。这些循环允许被遍历的数据结构决定如何并行迭代。Chapel标准库提供的数据结构足够智能，可以利用无序性，因此，在GPU环境中合格的`forall`循环也会在GPU上执行。
+我们可以观察到`5*2`的结果不会影响`3*2`的计算。每次迭代访问`A`的不同元素，因此不存在数据竞争。因此，我们的示例是无序循环的一个实例。Chapel 让程序员指示哪些循环具有这个特性；为了断言循环是无序的，应该写成 [注意：Chapel 还具有`forall`循环。这些循环允许被遍历的数据结构决定如何并行迭代。Chapel 标准库提供的数据结构足够智能，可以利用无序性，因此，在 GPU 环境中合格的`forall`循环也会在 GPU 上执行。
 
-查看[循环入门](https://chapel-lang.org/docs/main/primers/loops.html)以了解有关Chapel各种类型循环的更多信息。
+查看[循环入门](https://chapel-lang.org/docs/main/primers/loops.html)以了解有关 Chapel 各种类型循环的更多信息。
 
-很容易看出为什么无序循环很适合在GPU上执行。如果循环的迭代顺序无关紧要，那么我们可以将每个迭代视为要交给GPU核心处理的独立子问题。这一观察是Chapel GPU支持的基础：**无序循环可以在GPU上并行执行**。实际上，Chapel会自动将无序循环转换为GPU代码，只要可能。
+很容易看出为什么无序循环很适合在 GPU 上执行。如果循环的迭代顺序无关紧要，那么我们可以将每个迭代视为要交给 GPU 核心处理的独立子问题。这一观察是 Chapel GPU 支持的基础：**无序循环可以在 GPU 上并行执行**。实际上，Chapel 会自动将无序循环转换为 GPU 代码，只要可能。
 
-<details><summary>**（我了解CUDA/HIP。你能告诉我更多关于它是如何工作的吗？）**</summary>
+<details><summary>**（我了解 CUDA/HIP。你能告诉我更多关于它是如何工作的吗？）**</summary>
 
-在CUDA和HIP中，编写启用GPU的程序通常涉及创建一个标记为`device`或`global`的函数，并在核心启动中使用此函数。在底层，Chapel也是这样做的。
+在 CUDA 和 HIP 中，编写启用 GPU 的程序通常涉及创建一个标记为`device`或`global`的函数，并在核心启动中使用此函数。在底层，Chapel 也是这样做的。
 
-当Chapel遇到一个适合GPU的循环时，它会将其主体转换为一个函数，命名为类似`chpl_gpu_kernel_filename_linenumber`的函数。如果循环主体/新定义的核函数包含对其他函数或方法的调用，Chapel还会生成这些函数的`device`版本。
+当 Chapel 遇到一个适合 GPU 的循环时，它会将其主体转换为一个函数，命名为类似`chpl_gpu_kernel_filename_linenumber`的函数。如果循环主体/新定义的核函数包含对其他函数或方法的调用，Chapel 还会生成这些函数的`device`版本。
 
-Chapel在原始循环旁边插入一个核心启动。由于相同的代码可以从`here.gpus[0]`（GPU）或默认的环境（CPU）执行，Chapel也保留了循环。因此，在GPU上执行核心启动，在CPU上则退回到循环。
+Chapel 在原始循环旁边插入一个核心启动。由于相同的代码可以从`here.gpus[0]`（GPU）或默认的环境（CPU）执行，Chapel 也保留了循环。因此，在 GPU 上执行核心启动，在 CPU 上则退回到循环。
 
 相比之下，示例中的第二个循环是*顺序相关的*。
 
@@ -86,7 +86,7 @@ Chapel在原始循环旁边插入一个核心启动。由于相同的代码可�
  for  i  in  1..n  do writeln("A[",  i,  "] = ",  A[i]); 
 ```
 
-我们特意希望按顺序打印`A`的元素。因此，打印第五个元素的迭代必须发生在打印第四个之后；存在依赖关系。在Chapel中，需要按顺序执行迭代的循环（称为*串行循环*）使用`for`关键字编写。使用`for`编写的循环不被编译器视为GPU执行的对象。
+我们特意希望按顺序打印`A`的元素。因此，打印第五个元素的迭代必须发生在打印第四个之后；存在依赖关系。在 Chapel 中，需要按顺序执行迭代的循环（称为*串行循环*）使用`for`关键字编写。使用`for`编写的循环不被编译器视为 GPU 执行的对象。
 
 现在我们几乎审查了示例的每个部分。还有一个重要的部分：我们还声明了一个包含偶数的数组`A`：
 

@@ -2,15 +2,15 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:57:27
+日期：2024 年 05 月 27 日 14:57:27
 
 -->
 
 # 你在工作中是“提问者”还是“猜测者”？
 
-> 来源：[https://spin.atomicobject.com/asker-or-guesser/](https://spin.atomicobject.com/asker-or-guesser/)
+> 来源：[`spin.atomicobject.com/asker-or-guesser/`](https://spin.atomicobject.com/asker-or-guesser/)
 
-多年来，“问文化”和“猜测文化”的概念一直让我着迷。Andrea Donderi 在[2007年的MetaFilter帖子](https://ask.metafilter.com/55153/Whats-the-middle-ground-between-FU-and-Welcome#830421)中命名了这一现象。许多[引人思考的](https://www.theatlantic.com/national/archive/2010/05/askers-vs-guessers/340891/) [文章](https://www.theguardian.com/lifeandstyle/2010/may/08/change-life-asker-guesser) [探讨](https://newrepublic.com/article/74900/ask-dont-guess)了这一概念在破坏人际关系方面的作用。
+多年来，“问文化”和“猜测文化”的概念一直让我着迷。Andrea Donderi 在[2007 年的 MetaFilter 帖子](https://ask.metafilter.com/55153/Whats-the-middle-ground-between-FU-and-Welcome#830421)中命名了这一现象。许多[引人思考的](https://www.theatlantic.com/national/archive/2010/05/askers-vs-guessers/340891/) [文章](https://www.theguardian.com/lifeandstyle/2010/may/08/change-life-asker-guesser) [探讨](https://newrepublic.com/article/74900/ask-dont-guess)了这一概念在破坏人际关系方面的作用。
 
 概念是世界上有两种类型的人：猜测者和提问者。
 

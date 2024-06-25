@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:42:44
+日期：2024 年 5 月 27 日 14:42:44
 
 -->
 
-# GitHub - microsoft/xbox-multiplayer-analysis-tool：Xbox多人游戏分析工具是一款用于帮助调试Xbox服务问题和PC和Xbox开发主机的网络流量捕获工具。
+# GitHub - microsoft/xbox-multiplayer-analysis-tool：Xbox 多人游戏分析工具是一款用于帮助调试 Xbox 服务问题和 PC 和 Xbox 开发主机的网络流量捕获工具。
 
-> 来源：[https://github.com/microsoft/xbox-multiplayer-analysis-tool](https://github.com/microsoft/xbox-multiplayer-analysis-tool)
+> 来源：[`github.com/microsoft/xbox-multiplayer-analysis-tool`](https://github.com/microsoft/xbox-multiplayer-analysis-tool)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

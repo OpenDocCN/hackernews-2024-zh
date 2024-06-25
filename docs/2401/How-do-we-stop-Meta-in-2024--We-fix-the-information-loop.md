@@ -8,7 +8,7 @@
 
 # 我们如何在 2024 年阻止 Meta？我们修复信息循环
 
-> 来源：[https://www.fromjason.xyz/p/notebook/how-do-we-stop-meta-in-2024-we-fix-the-information-loop/](https://www.fromjason.xyz/p/notebook/how-do-we-stop-meta-in-2024-we-fix-the-information-loop/)
+> 来源：[`www.fromjason.xyz/p/notebook/how-do-we-stop-meta-in-2024-we-fix-the-information-loop/`](https://www.fromjason.xyz/p/notebook/how-do-we-stop-meta-in-2024-we-fix-the-information-loop/)
 
 # 我们如何在 2024 年阻止 Meta？我们修复信息循环
 
@@ -56,17 +56,17 @@
 
 在一个功能齐全的数字社会中，这些角色在一个无尽的循环中互相影响 —— 放大器依赖发帖者，聚合器依赖放大器。发帖者然后通过合成整体来闭环。这就是生命的循环，宝贝！
 
-在Mastodon上，这种信息循环是自然而然的。发帖者、放大器和聚合器为“Mastodonians”提供了多样观点和事件描述的稳定流。然后社区塑造其世界观，并在需要时采取知情行动。在我看来，决定使Mastodon按时间顺序排列就是对这一现象的回应。
+在 Mastodon 上，这种信息循环是自然而然的。发帖者、放大器和聚合器为“Mastodonians”提供了多样观点和事件描述的稳定流。然后社区塑造其世界观，并在需要时采取知情行动。在我看来，决定使 Mastodon 按时间顺序排列就是对这一现象的回应。
 
 关键不在于算法*总是*等同于“坏”。许多用户显然希望至少有*一些*策展。问题在于，在企业社交媒体中，算法无法摆脱糟糕化。
 
-在像Threads和Twitter这样的平台上，自然信息循环或许不那么普遍，因为算法影响行为并且扭曲动机。现代算法是为什么grindset账户和最糟糕的热点话题在Threads上占主导地位的原因。激励不是为了提供信息，而是为了提供算法“喜欢”的内容。
+在像 Threads 和 Twitter 这样的平台上，自然信息循环或许不那么普遍，因为算法影响行为并且扭曲动机。现代算法是为什么 grindset 账户和最糟糕的热点话题在 Threads 上占主导地位的原因。激励不是为了提供信息，而是为了提供算法“喜欢”的内容。
 
 当恶意行为者操纵信息渠道并占据传播角色时，他们的行为会在信息循环中造成裂缝。社区成员随后会感受到较低的能力，无法将真诚的情感与合成的喋喋不休分开。没有共识，人们组织起来对抗恶意行为者的能力就会受到阻碍。
 
 在典型的企业社交媒体平台中，算法自动化地操纵信息渠道。恶意行为者只需要通过反复试验学习算法偏好什么。
 
-恶意行为者必须开发新方法来打破像Mastodon这样具有时间顺序的信息循环的平台。
+恶意行为者必须开发新方法来打破像 Mastodon 这样具有时间顺序的信息循环的平台。
 
 这样的方法可能包括：
 

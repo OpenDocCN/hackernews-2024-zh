@@ -2,15 +2,15 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:23:40
+日期：2024 年 5 月 27 日 14:23:40
 
 -->
 
 # Coproc 教程，重制
 
-> 来源：[https://www.zsh.org/mla/users/2011/msg00095.html](https://www.zsh.org/mla/users/2011/msg00095.html)
+> 来源：[`www.zsh.org/mla/users/2011/msg00095.html`](https://www.zsh.org/mla/users/2011/msg00095.html)
 
-**[Zsh 邮件列表存档](/mla/)**按照消息的顺序排序：[逆序日期](index.html)，[日期](date.html)，[主题](threads.html)，[作者](author.html)
+**Zsh 邮件列表存档**按照消息的顺序排序：逆序日期，日期，主题，作者
 
 # Coproc 教程，重制
 
@@ -24,13 +24,13 @@
 
 +   *主题*：Coproc 教程，重制
 
-+   *日期*：星期六，2011年2月5日 15:26:45 -0800
++   *日期*：星期六，2011 年 2 月 5 日 15:26:45 -0800
 
-+   *列表帮助*：<[mailto:zsh-users-help@zsh.org](mailto:zsh-users-help@zsh.org)>
++   *列表帮助*：<mailto:zsh-users-help@zsh.org>
 
-+   *列表ID*：Zsh用户列表 <zsh-users.zsh.org>
++   *列表 ID*：Zsh 用户列表 <zsh-users.zsh.org>
 
-+   *列表发布*：<[mailto:zsh-users@zsh.org](mailto:zsh-users@zsh.org)>
++   *列表发布*：<mailto:zsh-users@zsh.org>
 
 +   *邮件列表*：联系 zsh-users-help@xxxxxxx；由 ezmlm 运行
 
@@ -229,4 +229,4 @@ No, that about covers it.  Enjoy.
 
 * * *
 
-按照消息的顺序排序：[逆序日期](index.html)，[日期](date.html)，[主题](threads.html)，[作者](author.html)
+按照消息的顺序排序：逆序日期，日期，主题，作者

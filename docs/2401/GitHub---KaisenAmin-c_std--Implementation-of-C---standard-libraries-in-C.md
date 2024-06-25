@@ -6,9 +6,9 @@ date: 2024-05-27 15:17:18
 
 -->
 
-# GitHub - KaisenAmin/c_std: C++标准库在C中的实现
+# GitHub - KaisenAmin/c_std: C++标准库在 C 中的实现
 
-> 来源：[https://github.com/KaisenAmin/c_std](https://github.com/KaisenAmin/c_std)
+> 来源：[`github.com/KaisenAmin/c_std`](https://github.com/KaisenAmin/c_std)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

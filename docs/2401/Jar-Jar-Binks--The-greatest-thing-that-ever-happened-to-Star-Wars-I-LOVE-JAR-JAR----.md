@@ -8,7 +8,7 @@ date: 2024-05-27 15:04:51
 
 # Jar Jar Binks：发生在星球大战中最伟大的事情——我爱贾贾·宾克斯！！！
 
-> 来源：[https://ilovejarjarbinks.tripod.com/](https://ilovejarjarbinks.tripod.com/)
+> 来源：[`ilovejarjarbinks.tripod.com/`](https://ilovejarjarbinks.tripod.com/)
 
 任何不喜欢贾贾·宾克斯的人现在都可以离开我的网站！！！
 
@@ -32,6 +32,6 @@ date: 2024-05-27 15:04:51
 
 如果你喜欢贾贾·宾克斯，请填写你的电子邮件地址，以加入我的贾贾·宾克斯邮件列表。
 
-[.](id35.htm ".")
+.
 
 如果你讨厌贾贾·宾克斯，我告诉你滚开我的网站！

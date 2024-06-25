@@ -8,9 +8,9 @@
 
 # 忽略即将到来的选举增长 » 尼曼新闻实验室
 
-> 来源：[https://www.niemanlab.org/2023/12/ignore-the-coming-election-bump/](https://www.niemanlab.org/2023/12/ignore-the-coming-election-bump/)
+> 来源：[`www.niemanlab.org/2023/12/ignore-the-coming-election-bump/`](https://www.niemanlab.org/2023/12/ignore-the-coming-election-bump/)
 
-2024年将是一个重要的选举年，不仅仅是在美国，在其他地方也是如此。许多新闻出版商将看到受众注意力的增加，甚至可能有广告，一些高端刊物将通过折扣试用订阅业务做出交易。
+2024 年将是一个重要的选举年，不仅仅是在美国，在其他地方也是如此。许多新闻出版商将看到受众注意力的增加，甚至可能有广告，一些高端刊物将通过折扣试用订阅业务做出交易。
 
 我担心一些人会把这种周期性的增长误认为是结构性转折点。事实并非如此，我们也不应该这样认为。
 
@@ -18,7 +18,7 @@
 
 但最基本的问题是，许多公众并不觉得新闻特别有价值，因此对其的参与越来越少。
 
-并不是因为他们不能。当然，一些高端标题现在运营着相当严格的付费模式。但在美国，人们仍然可以免费获取ABC、CBS、CNN、福克斯、MSNBC、NBC、NPR等在线新闻。在英国，他们可以依靠BBC、Channel 4、卫报、ITV、邮报、天空等。这还没有考虑到所有在各种付费墙之外的通讯、播客和社交帖子，重要的非营利组织提供的内容，以及各种聚合器和门户网站。当互联网用户不与新闻接触时，不是因为他们不能接触。而是因为他们认为这不值得他们去做。
+并不是因为他们不能。当然，一些高端标题现在运营着相当严格的付费模式。但在美国，人们仍然可以免费获取 ABC、CBS、CNN、福克斯、MSNBC、NBC、NPR 等在线新闻。在英国，他们可以依靠 BBC、Channel 4、卫报、ITV、邮报、天空等。这还没有考虑到所有在各种付费墙之外的通讯、播客和社交帖子，重要的非营利组织提供的内容，以及各种聚合器和门户网站。当互联网用户不与新闻接触时，不是因为他们不能接触。而是因为他们认为这不值得他们去做。
 
 然而，无论演讲者对新闻业如何为公众利益服务进行多少演讲，如果公众对此不感兴趣，那么这个行业和商业都无法得救。[新闻存在于其受众的背景中。](https://rasmuskleisnielsen.net/2018/09/11/what-can-we-do-for-journalism/)其中一些具有内在价值。但只有当它与其旨在服务和宣称要服务的人群建立联系时，它才能发挥其全部作用。你为你拥有的公众服务，而不是你想要的公众。
 
@@ -28,14 +28,14 @@
 
 许多政治新闻都是新闻中的贝维斯和巴特——受到一小部分狭隘而奇怪的目标受众的喜爱，对大多数其他人来说则是难以理解和令人反感的。
 
-内部分析将捕捉到关注度的增加——当前受众带来的页面浏览量、参与时间、转化率的渐进变化。但它们有风险混淆下降的参与度结构性趋势，因为它们没有提供关于其他所有人的信息。（我们永远不应忘记，大多数新闻网站的受众比甚至曾被称为Twitter的颠倒世界的受众要小、更怪异，也更不代表普通大众。）
+内部分析将捕捉到关注度的增加——当前受众带来的页面浏览量、参与时间、转化率的渐进变化。但它们有风险混淆下降的参与度结构性趋势，因为它们没有提供关于其他所有人的信息。（我们永远不应忘记，大多数新闻网站的受众比甚至曾被称为 Twitter 的颠倒世界的受众要小、更怪异，也更不代表普通大众。）
 
 我无法强调结构性趋势是多么清晰，以及它们将如何从服务广大公众转变为基本上服务像我这样的人，即富裕、受过高等教育、特权的中年或更年长的人。
 
-新闻使用仅占[人们使用数字媒体时间的少数百分比](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315167497-21/economic-contexts-journalism-rasmus-kleis-nielsen)（低于新闻在印刷和电视使用中的百分比）。新闻媒体提供的几乎每个部分都已解绑，而且，至[少在地方层面](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2021/local-news-unbundled-where-audience-value-still-lies)，几乎没有人将新闻视为最佳信息来源的话题。即使在那些定期在纸质或在线阅读他们当地报纸的少数人中，只有很小一部分[说他们如果停业会非常想念它们](https://reutersinstitute.politics.ox.ac.uk/sites/default/files/2020-06/DNR_2020_FINAL.pdf)。[对新闻的兴趣正在下降](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2023/dnr-executive-summary#:~:text=我们的数据显示，网络新闻的兴趣从2017年的63%下降到了46%。)。[有选择性的](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2023/dnr-executive-summary)和[持续的新闻回避](https://cup.columbia.edu/book/avoiding-the-news/9780231205191)正在增加。很多公众觉得新闻并没有很好地[帮助他们理解世界上正在发生的事情](https://www.digitalnewsreport.org/survey/2019/overview-key-findings-2019/)，而[不到一半的人认为新闻媒体对权力人士和企业进行监督和审查](https://www.digitalnewsreport.org/survey/2019/overview-key-findings-2019/)。我需要继续吗？
+新闻使用仅占[人们使用数字媒体时间的少数百分比](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315167497-21/economic-contexts-journalism-rasmus-kleis-nielsen)（低于新闻在印刷和电视使用中的百分比）。新闻媒体提供的几乎每个部分都已解绑，而且，至[少在地方层面](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2021/local-news-unbundled-where-audience-value-still-lies)，几乎没有人将新闻视为最佳信息来源的话题。即使在那些定期在纸质或在线阅读他们当地报纸的少数人中，只有很小一部分[说他们如果停业会非常想念它们](https://reutersinstitute.politics.ox.ac.uk/sites/default/files/2020-06/DNR_2020_FINAL.pdf)。[对新闻的兴趣正在下降](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2023/dnr-executive-summary#:~:text=我们的数据显示，网络新闻的兴趣从 2017 年的 63%下降到了 46%。)。[有选择性的](https://reutersinstitute.politics.ox.ac.uk/digital-news-report/2023/dnr-executive-summary)和[持续的新闻回避](https://cup.columbia.edu/book/avoiding-the-news/9780231205191)正在增加。很多公众觉得新闻并没有很好地[帮助他们理解世界上正在发生的事情](https://www.digitalnewsreport.org/survey/2019/overview-key-findings-2019/)，而[不到一半的人认为新闻媒体对权力人士和企业进行监督和审查](https://www.digitalnewsreport.org/survey/2019/overview-key-findings-2019/)。我需要继续吗？
 
 因此，新闻业面临的最根本问题是，很多公众并不认为这个行业和行业所提供的价值，以及选举年的增长不会消除这种生存挑战。更多相同的做法，激起对新闻民主作用的呼唤，或者对外部挑战的狂怒也不会。指出这一点并不是在责备受害者（这里的受害者将是公众，而不是仍然是一个数十亿美元产业和一个白领阶层，其薪水高于中位数的职业）。
 
 如果新闻界和行业领袖们没有意识到这一点并找到解决方法，我预测最有可能的结果是，很多新闻媒体将[撤退](https://www.cambridge.org/core/books/social-media-and-democracy/democratic-creative-destruction-the-effect-of-a-changing-media-landscape-on-democracy/8C6548E16FA63289FC4C731AC512B075)到其历史上的大部分时间所扮演的角色，为小型商业和政治精英观众提供服务，但在大众政治层面上没有发挥任何有意义的民主作用。它最终可能会类似于古典音乐、当代艺术和文学小说 —— 对于上流社会的少数人很重要，但对大多数公众来说并不重要。
 
-“从少数人和权势集团的新闻，到全体人民的新闻。” 这就是[胡安·冈萨雷斯和约瑟夫·托雷斯](https://www.versobooks.com/en-gb/products/2217-news-for-all-the-people)所描述的他们称之为美国新闻的历史“宏伟弧线”。旅程的方向已经改变，如果新闻媒体错误地将2024年的周期性波动误认为是结构性变化，并倾向于提供更多少数人和权势集团感兴趣的内容，那么他们将进一步推动这个弧线朝着相反的方向发展。
+“从少数人和权势集团的新闻，到全体人民的新闻。” 这就是[胡安·冈萨雷斯和约瑟夫·托雷斯](https://www.versobooks.com/en-gb/products/2217-news-for-all-the-people)所描述的他们称之为美国新闻的历史“宏伟弧线”。旅程的方向已经改变，如果新闻媒体错误地将 2024 年的周期性波动误认为是结构性变化，并倾向于提供更多少数人和权势集团感兴趣的内容，那么他们将进一步推动这个弧线朝着相反的方向发展。

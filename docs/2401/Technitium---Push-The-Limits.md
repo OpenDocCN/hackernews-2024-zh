@@ -8,7 +8,7 @@
 
 # Technitium | Push The Limits
 
-> 来源：[https://technitium.com/](https://technitium.com/)
+> 来源：[`technitium.com/`](https://technitium.com/)
 
 [#### Mesh](https://mesh.im/)
 
@@ -18,10 +18,10 @@ Technitium Mesh 是一个安全的、匿名的、点对点（p2p）、开源即�
 
 [更多信息](https://mesh.im/)
 
-[#### MAC 地址更改器](/tmac/)
+#### MAC 地址更改器
 
 Technitium MAC 地址更改器（TMAC）是一个流行的免费实用程序，用于更改或欺骗 Windows 上有线或无线网络适配器的 MAC 地址。
 
 除了更改 MAC 地址外，您还可以使用这个功能丰富的软件完全配置您的网络适配器，并且还具有预设功能，允许在多个网络配置之间快速切换。
 
-[更多信息](/tmac/)
+更多信息

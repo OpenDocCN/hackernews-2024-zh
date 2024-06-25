@@ -6,21 +6,21 @@ date: 2024-05-27 14:57:32
 
 -->
 
-# 研究人员发现，互联网中很大一部分是由AI生成的污泥
+# 研究人员发现，互联网中很大一部分是由 AI 生成的污泥
 
-> 来源：[https://futurism.com/the-byte/internet-ai-generated-slime](https://futurism.com/the-byte/internet-ai-generated-slime)
+> 来源：[`futurism.com/the-byte/internet-ai-generated-slime`](https://futurism.com/the-byte/internet-ai-generated-slime)
 
 ## 引人注目。
 
 ## 垃圾桶小子
 
-互联网稳步陷入AI搅乱的垃圾箱。正如[*Vice*报道](https://www.vice.com/en/article/y3w4gw/a-shocking-amount-of-the-web-is-already-ai-translated-trash-scientists-determine)，亚马逊网络服务（AWS）AI实验室的研究人员进行的一项最近研究发现，“令人震惊的一部分网络”已经由质量低劣的AI生成和翻译内容组成。
+互联网稳步陷入 AI 搅乱的垃圾箱。正如[*Vice*报道](https://www.vice.com/en/article/y3w4gw/a-shocking-amount-of-the-web-is-already-ai-translated-trash-scientists-determine)，亚马逊网络服务（AWS）AI 实验室的研究人员进行的一项最近研究发现，“令人震惊的一部分网络”已经由质量低劣的 AI 生成和翻译内容组成。
 
-这篇论文尚未经过同行评议，但“令人震惊”似乎是合适的词语。根据研究，*超过一半* — 具体来说是57.1% — 的互联网句子已被翻译成了两种或更多其他语言。这些翻译的质量低劣且规模惊人，表明大型语言模型（LLM）-驱动的人工智能模型被用于创建*和*翻译材料。这种现象在“低资源语言”中尤其突出，即相对缺乏可用数据以更有效地训练人工智能模型的语言。
+这篇论文尚未经过同行评议，但“令人震惊”似乎是合适的词语。根据研究，*超过一半* — 具体来说是 57.1% — 的互联网句子已被翻译成了两种或更多其他语言。这些翻译的质量低劣且规模惊人，表明大型语言模型（LLM）-驱动的人工智能模型被用于创建*和*翻译材料。这种现象在“低资源语言”中尤其突出，即相对缺乏可用数据以更有效地训练人工智能模型的语言。
 
-换句话说，研究人员认为，为了获取点击量驱动的广告收入，人工智能被用来首先大规模生成质量低劣的英语内容，然后再用AI驱动的机器翻译（MT）工具将该内容转录成其他几种语言。翻译材料每次都会变得更糟糕 — 结果就是，整个网络的某些地区充斥着[退化的AI混乱的副本](https://futurism.com/ai-trained-ai-generated-data-interview)。
+换句话说，研究人员认为，为了获取点击量驱动的广告收入，人工智能被用来首先大规模生成质量低劣的英语内容，然后再用 AI 驱动的机器翻译（MT）工具将该内容转录成其他几种语言。翻译材料每次都会变得更糟糕 — 结果就是，整个网络的某些地区充斥着[退化的 AI 混乱的副本](https://futurism.com/ai-trained-ai-generated-data-interview)。
 
-“机器生成的、多向并行的翻译不仅在网络中占据了低资源语言的全部翻译内容的大部分”，AWS的研究人员在论文中写道，“它还构成了这些语言中总网络内容的很大一部分。”'
+“机器生成的、多向并行的翻译不仅在网络中占据了低资源语言的全部翻译内容的大部分”，AWS 的研究人员在论文中写道，“它还构成了这些语言中总网络内容的很大一部分。”'
 
 ## 亡灵网络理论
 

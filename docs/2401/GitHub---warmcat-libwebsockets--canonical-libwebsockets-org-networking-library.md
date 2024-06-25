@@ -8,7 +8,7 @@ date: 2024-05-27 14:32:35
 
 # GitHub - warmcat/libwebsockets: canonical libwebsockets.org networking library
 
-> Source: [https://github.com/warmcat/libwebsockets](https://github.com/warmcat/libwebsockets)
+> Source: [`github.com/warmcat/libwebsockets`](https://github.com/warmcat/libwebsockets)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

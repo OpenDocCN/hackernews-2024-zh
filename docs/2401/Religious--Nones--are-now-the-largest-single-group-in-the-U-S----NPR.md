@@ -2,27 +2,27 @@
 
 类别：未分类
 
-日期：2024年5月27日15:04:11
+日期：2024 年 5 月 27 日 15:04:11
 
 -->
 
 # 宗教‘无宗教’现在是美国最大的单一群体：NPR
 
-> 来源：[https://www.npr.org/2024/01/24/1226371734/religious-nones-are-now-the-largest-single-group-in-the-u-s](https://www.npr.org/2024/01/24/1226371734/religious-nones-are-now-the-largest-single-group-in-the-u-s)
+> 来源：[`www.npr.org/2024/01/24/1226371734/religious-nones-are-now-the-largest-single-group-in-the-u-s`](https://www.npr.org/2024/01/24/1226371734/religious-nones-are-now-the-largest-single-group-in-the-u-s)
 
-根据皮尤研究的一项新研究，无宗教人士现在占美国成年人口的28%。这一比例比天主教徒或福音派新教徒更大。**Natacha Pisarenko/AP** ****隐藏标题****
+根据皮尤研究的一项新研究，无宗教人士现在占美国成年人口的 28%。这一比例比天主教徒或福音派新教徒更大。**Natacha Pisarenko/AP** ****隐藏标题****
 
 ****显示标题****Natacha Pisarenko/AP
 
-根据皮尤研究的一项新研究，无宗教人士现在占美国成年人口的28%。这一比例比天主教徒或福音派新教徒更大。
+根据皮尤研究的一项新研究，无宗教人士现在占美国成年人口的 28%。这一比例比天主教徒或福音派新教徒更大。
 
 Natacha Pisarenko/AP
 
-当美国人被要求在宗教信仰方面选择一个选项时，有28%现在选择“无宗教”。
+当美国人被要求在宗教信仰方面选择一个选项时，有 28%现在选择“无宗教”。
 
 皮尤研究的一项新[研究](https://www.pewresearch.org/religion/2024/01/24/religious-nones-in-america-who-they-are-and-what-they-believe/)发现，无宗教人士——一个由无神论者、不可知论者和那些称自己宗教信仰是“无所谓”的人组成的群体——现在是美国最大的群体。他们在美国成年人中比天主教徒（23%）或福音派新教徒（24%）更普遍。
 
-2007年，无宗教人士仅占美国人口的16%，但皮尤对3300多名美国成年人进行的新调查显示，这一数字现在已经大幅上升。
+2007 年，无宗教人士仅占美国人口的 16%，但皮尤对 3300 多名美国成年人进行的新调查显示，这一数字现在已经大幅上升。
 
 研究人员称这个群体为“无宗教”。
 

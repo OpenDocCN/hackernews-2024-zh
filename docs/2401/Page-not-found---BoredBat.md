@@ -8,7 +8,7 @@ date: 2024-05-27 14:24:36
 
 # 页面未找到 – BoredBat
 
-> 来源：[https://boredbat.com/u-s-oil-production-hit-a-record-under-joe-biden/](https://boredbat.com/u-s-oil-production-hit-a-record-under-joe-biden/)
+> 来源：[`boredbat.com/u-s-oil-production-hit-a-record-under-joe-biden/`](https://boredbat.com/u-s-oil-production-hit-a-record-under-joe-biden/)
 
 ## 404 • 页面未找到
 

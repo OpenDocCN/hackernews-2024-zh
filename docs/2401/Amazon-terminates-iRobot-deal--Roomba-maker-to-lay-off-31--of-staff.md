@@ -8,9 +8,9 @@
 
 # 亚马逊终止 iRobot 协议，Roomba 制造商将裁员 31% 的员工
 
-> 来源：[https://www.cnbc.com/2024/01/29/amazon-terminates-irobot-deal-vacuum-maker-to-lay-off-31percent-of-staff.html](https://www.cnbc.com/2024/01/29/amazon-terminates-irobot-deal-vacuum-maker-to-lay-off-31percent-of-staff.html)
+> 来源：[`www.cnbc.com/2024/01/29/amazon-terminates-irobot-deal-vacuum-maker-to-lay-off-31percent-of-staff.html`](https://www.cnbc.com/2024/01/29/amazon-terminates-irobot-deal-vacuum-maker-to-lay-off-31percent-of-staff.html)
 
-[亚马逊](/quotes/AMZN/)周一表示，将不会继续计划收购吸尘器制造商[iRobot](/quotes/IRBT/)，两家公司在一份新闻稿中[表示](https://www.prnewswire.com/news-releases/amazon-and-irobot-agree-to-terminate-pending-acquisition-302046311.html)，“该交易没有获得监管批准的路径。”
+亚马逊周一表示，将不会继续计划收购吸尘器制造商 iRobot，两家公司在一份新闻稿中[表示](https://www.prnewswire.com/news-releases/amazon-and-irobot-agree-to-terminate-pending-acquisition-302046311.html)，“该交易没有获得监管批准的路径。”
 
 Roomba 制造商还[宣布](https://www.prnewswire.com/news-releases/irobot-announces-operational-restructuring-plan-to-position-company-for-the-future-302046345.html)它将裁员 31% 的员工，约 350 人，并且其董事长兼首席执行官 Colin Angle 将立即辞职。
 
@@ -38,7 +38,7 @@ iRobot 表示将专注于利润改善，减少研发支出，并暂停所有“�
 
 全球各地的监管机构已经开始审查大型科技公司，引用潜在的反竞争影响。亚马逊也是 [美国联邦贸易委员会调查](https://www.cnbc.com/2024/01/25/ftc-looking-into-ai-deals-at-amazon-alphabet-microsoft-openai-.html) 大科技公司与人工智能开发商（如 Anthropic 和 OpenAI）之间的投资和合作的主题之一。
 
-在欧洲，英国的竞争与市场管理局和欧盟的欧洲委员会已推迟或停止了几笔交易。其中包括 [Meta](/quotes/META/) 对 Giphy 的 [收购](https://www.cnbc.com/2023/05/23/meta-sells-giphy-to-shutterstock-at-a-loss-in-a-53-million-deal.html)，[Adobe](/quotes/ADBE/) 终止的 [收购](https://www.cnbc.com/2023/12/18/adobe-and-figma-call-off-20-billion-merger.html) Figma 和 [Microsoft](/quotes/MSFT/) 对 OpenAI 的投资，以及 Microsoft 对 Activision Blizzard 的 [收购](https://www.cnbc.com/2023/10/13/microsoft-closes-activision-blizzard-deal-after-regulatory-review.html)。
+在欧洲，英国的竞争与市场管理局和欧盟的欧洲委员会已推迟或停止了几笔交易。其中包括 Meta 对 Giphy 的 [收购](https://www.cnbc.com/2023/05/23/meta-sells-giphy-to-shutterstock-at-a-loss-in-a-53-million-deal.html)，Adobe 终止的 [收购](https://www.cnbc.com/2023/12/18/adobe-and-figma-call-off-20-billion-merger.html) Figma 和 Microsoft 对 OpenAI 的投资，以及 Microsoft 对 Activision Blizzard 的 [收购](https://www.cnbc.com/2023/10/13/microsoft-closes-activision-blizzard-deal-after-regulatory-review.html)。
 
 *— CNBC 的 Annie Palmer 贡献了报道。*
 

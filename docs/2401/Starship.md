@@ -8,9 +8,9 @@
 
 # Starship
 
-> 来源：[https://starship.rs/](https://starship.rs/)
+> 来源：[`starship.rs/`](https://starship.rs/)
 
-+   将初始化脚本添加到您的Shell配置文件中：
++   将初始化脚本添加到您的 Shell 配置文件中：
 
     #### Bash
 
@@ -26,7 +26,7 @@
 
     #### Powershell
 
-    将以下内容添加到`Microsoft.PowerShell_profile.ps1`的末尾。您可以通过在PowerShell中查询`$PROFILE`变量来检查此文件的位置。通常路径为`~\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`或-Nix上的`~/.config/powershell/Microsoft.PowerShell_profile.ps1`。
+    将以下内容添加到`Microsoft.PowerShell_profile.ps1`的末尾。您可以通过在 PowerShell 中查询`$PROFILE`变量来检查此文件的位置。通常路径为`~\Documents\PowerShell\Microsoft.PowerShell_profile.ps1`或-Nix 上的`~/.config/powershell/Microsoft.PowerShell_profile.ps1`。
 
     #### Ion
 
@@ -36,7 +36,7 @@
 
     警告
 
-    仅支持elvish v0.18或更高版本。
+    仅支持 elvish v0.18 或更高版本。
 
     将以下内容添加到`~/.elvish/rc.elv`的末尾：
 
@@ -48,11 +48,11 @@
 
     警告
 
-    这将在未来更改。仅支持Nushell v0.78+。
+    这将在未来更改。仅支持 Nushell v0.78+。
 
-    将以下内容添加到您的Nushell环境文件的末尾（通过在Nushell中运行`$nu.env-path`找到该文件）：
+    将以下内容添加到您的 Nushell 环境文件的末尾（通过在 Nushell 中运行`$nu.env-path`找到该文件）：
 
-    并将以下内容添加到您的Nushell配置的末尾（通过运行`$nu.config-path`在其中找到它）：
+    并将以下内容添加到您的 Nushell 配置的末尾（通过运行`$nu.config-path`在其中找到它）：
 
     #### Xonsh
 
@@ -60,4 +60,4 @@
 
     #### Cmd
 
-    您需要使用[Clink](https://chrisant996.github.io/clink/clink.html)（v1.2.30+）与Cmd。将以下内容添加到名为`starship.lua`的文件中，并将此文件放置在Clink脚本目录中：
+    您需要使用[Clink](https://chrisant996.github.io/clink/clink.html)（v1.2.30+）与 Cmd。将以下内容添加到名为`starship.lua`的文件中，并将此文件放置在 Clink 脚本目录中：

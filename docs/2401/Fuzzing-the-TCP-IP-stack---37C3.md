@@ -8,7 +8,7 @@ date: 2024-05-27 14:25:13
 
 # Fuzzing the TCP/IP stack - 37C3
 
-> 来源：[https://events.ccc.de/congress/2023/hub/en/event/fuzzing_the_tcp_ip_stack/](https://events.ccc.de/congress/2023/hub/en/event/fuzzing_the_tcp_ip_stack/)
+> 来源：[`events.ccc.de/congress/2023/hub/en/event/fuzzing_the_tcp_ip_stack/`](https://events.ccc.de/congress/2023/hub/en/event/fuzzing_the_tcp_ip_stack/)
 
 我们的探索始于对之前应用于 TCP/IP 协议栈的传统模糊测试方法（如 ISIC）的诚实评估，揭示了它们固有的局限性，例如，它们无法超越 TCP 的初始状态。认识到需要更进化的方法，我们采取了不同的方法，利用全面的主动网络连接进行模糊测试。在这段旅程中的一个关键发现是有意绕过构建自定义 TCP/IP 协议栈的艰巨任务，这是一种根植于实际考虑的选择。
 

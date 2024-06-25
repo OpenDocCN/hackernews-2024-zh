@@ -8,7 +8,7 @@
 
 # 最佳笔记本 - 联想 T430
 
-> 来源：[https://devcara.com/blog/best-laptop](https://devcara.com/blog/best-laptop)
+> 来源：[`devcara.com/blog/best-laptop`](https://devcara.com/blog/best-laptop)
 
 <主要 id="main">
 

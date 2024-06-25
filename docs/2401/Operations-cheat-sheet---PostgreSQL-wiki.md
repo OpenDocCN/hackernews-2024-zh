@@ -8,7 +8,7 @@
 
 # 操作备忘单 - PostgreSQL wiki
 
-> 来源：[https://wiki.postgresql.org/wiki/Operations_cheat_sheet](https://wiki.postgresql.org/wiki/Operations_cheat_sheet)
+> 来源：[`wiki.postgresql.org/wiki/Operations_cheat_sheet`](https://wiki.postgresql.org/wiki/Operations_cheat_sheet)
 
 ## 介绍
 
@@ -66,7 +66,7 @@
 
     +   template1：除非指定了另一个模板数据库，否则新数据库将从此克隆
 
-    +   template0：模板1的原始内容的原始副本
+    +   template0：模板 1 的原始内容的原始副本
 
     +   postgres：实用程序和用户使用的默认数据库
 
@@ -374,11 +374,11 @@
 
 +   本地内存
 
-    +   工作内存：为排序和哈希等查询操作分配。通过work_mem和hash_mem_multiplier参数配置。
+    +   工作内存：为排序和哈希等查询操作分配。通过 work_mem 和 hash_mem_multiplier 参数配置。
 
-    +   维护工作内存：为维护操作分配，例如VACUUM、CREATE INDEX和ALTER TABLE。通过maintenance_work_mem参数配置。
+    +   维护工作内存：为维护操作分配，例如 VACUUM、CREATE INDEX 和 ALTER TABLE。通过 maintenance_work_mem 参数配置。
 
-    +   临时缓冲区：用于缓存临时表块。通过temp_buffers参数配置。
+    +   临时缓冲区：用于缓存临时表块。通过 temp_buffers 参数配置。
 
     +   其他各种区域：为特定用途（例如来自客户端的消息、事务、查询计划、执行状态）分配内存上下文。每个会话可能有数百个内存上下文。
 
@@ -396,25 +396,25 @@
 
 +   写
 
-    +   查找目标共享缓冲区，修改其内容，并将更改写入WAL缓冲区。
+    +   查找目标共享缓冲区，修改其内容，并将更改写入 WAL 缓冲区。
 
-    +   修改事务将其WAL记录从WAL缓冲区写入磁盘，包括提交WAL记录。
+    +   修改事务将其 WAL 记录从 WAL 缓冲区写入磁盘，包括提交 WAL 记录。
 
     +   修改的脏共享缓冲区由后台写入程序、检查点程序或任何其他进程刷新到磁盘。这与事务完成是异步的。
 
-+   任何后端都可以读取和写入共享缓冲区、WAL缓冲区、数据和WAL文件。与其他一些DBMS不同，写操作不是由特定的后台进程执行的。
++   任何后端都可以读取和写入共享缓冲区、WAL 缓冲区、数据和 WAL 文件。与其他一些 DBMS 不同，写操作不是由特定的后台进程执行的。
 
-+   数据库数据文件一次读取和写入一个块。没有多块I/O。
++   数据库数据文件一次读取和写入一个块。没有多块 I/O。
 
 +   一些操作绕过共享缓冲区：在索引创建期间写入索引、CREATE DATABASE、ALTER TABLE ... SET TABLESPACE
 
 ### 查询处理
 
-1.  客户端连接到数据库，向服务器发送查询（SQL命令），然后接收结果。
+1.  客户端连接到数据库，向服务器发送查询（SQL 命令），然后接收结果。
 
 1.  解析器首先检查查询的正确语法。然后，解释查询的语义，以了解引用了哪些表、视图、函数、数据类型等。
 
-1.  重写系统（重写器）根据系统目录pg_rewrite中存储的规则转换查询。一个例子是视图：访问视图的查询被重写以使用基表。
+1.  重写系统（重写器）根据系统目录 pg_rewrite 中存储的规则转换查询。一个例子是视图：访问视图的查询被重写以使用基表。
 
 1.  计划器/优化器创建查询计划。
 
@@ -644,11 +644,11 @@ MVCC：多版本并发控制
 
     +   一旦删除事务提交，所有新的后续事务将无法看到行版本。其他现有事务继续看到行版本。现在行版本是一个“死元组”。
 
-    +   最后，当没有剩余的事务能够看到死元组时，vacuum会将其移除。
+    +   最后，当没有剩余的事务能够看到死元组时，vacuum 会将其移除。
 
 +   元组可见性的工作原理：
 
-    +   每个事务使用自己的快照、提交日志（clog）、以及目标元组头中的xmin和/或xmax，以确定它是否可以看到给定的行版本。
+    +   每个事务使用自己的快照、提交日志（clog）、以及目标元组头中的 xmin 和/或 xmax，以确定它是否可以看到给定的行版本。
 
     +   快照是什么：
 
@@ -656,17 +656,17 @@ MVCC：多版本并发控制
 
         +   你可以运行"`SELECT pg_current_snapshot();`"来查看当前事务的快照。
 
-        +   快照的文本表示形式是xmin:xmax:xip_list。例如，10:20:10,14,15。
+        +   快照的文本表示形式是 xmin:xmax:xip_list。例如，10:20:10,14,15。
 
-        +   xmin：仍处于活动状态的最低事务ID。所有小于xmin的事务ID要么已提交且可见，要么已回滚且已死。
+        +   xmin：仍处于活动状态的最低事务 ID。所有小于 xmin 的事务 ID 要么已提交且可见，要么已回滚且已死。
 
-        +   xmax：最高已完成的事务ID的后一个。所有大于或等于xmax的事务ID在快照生成时尚未完成，因此是不可见的。
+        +   xmax：最高已完成的事务 ID 的后一个。所有大于或等于 xmax 的事务 ID 在快照生成时尚未完成，因此是不可见的。
 
-        +   xip_list：在快照生成时正在进行的事务。一个事务ID，满足xmin <= X < xmax且不在此列表中，已在快照生成时完成，因此根据其提交状态，它可能是可见的或死的。
+        +   xip_list：在快照生成时正在进行的事务。一个事务 ID，满足 xmin <= X < xmax 且不在此列表中，已在快照生成时完成，因此根据其提交状态，它可能是可见的或死的。
 
-        +   在读提交事务中，每个SQL语句的开始都会获取一个快照。
+        +   在读提交事务中，每个 SQL 语句的开始都会获取一个快照。
 
-        +   在可重复读或串行化事务中，快照在第一个SQL语句开始时获取，并在整个事务期间使用。
+        +   在可重复读或串行化事务中，快照在第一个 SQL 语句开始时获取，并在整个事务期间使用。
 
     +   提交日志（clog）是什么：
 
@@ -676,33 +676,33 @@ MVCC：多版本并发控制
 
         +   存储在$PGDATA/pg_xact/目录下的一组文件中。
 
-        +   缓存在128个8 KB页面的内存缓冲区中。
+        +   缓存在 128 个 8 KB 页面的内存缓冲区中。
 
-    +   当快照显示目标事务已完成时，会查询clog。
+    +   当快照显示目标事务已完成时，会查询 clog。
 
-    +   基于快照和clog，已提交事务的更改是可见的，而已中止或正在运行的事务的更改是不可见的。
+    +   基于快照和 clog，已提交事务的更改是可见的，而已中止或正在运行的事务的更改是不可见的。
 
     +   实际的元组可见性要复杂得多...
 
 **提示位**
 
-+   提示位是元组头的infomask字段中帮助确定元组可见性的位。
++   提示位是元组头的 infomask 字段中帮助确定元组可见性的位。
 
 +   它们用于性能优化。对数据正确性不是必需的。
 
-+   它们表示由xmin或xmax指示的事务是已提交还是已中止。有四个标志位：
++   它们表示由 xmin 或 xmax 指示的事务是已提交还是已中止。有四个标志位：
 
-    1.  `HEAP_XMIN_COMMITTED`: xmin事务已提交
+    1.  `HEAP_XMIN_COMMITTED`: xmin 事务已提交
 
-    1.  `HEAP_XMIN_INVALID`: xmin事务已中止
+    1.  `HEAP_XMIN_INVALID`: xmin 事务已中止
 
-    1.  `HEAP_XMAX_COMMITTED`: xmax事务已提交
+    1.  `HEAP_XMAX_COMMITTED`: xmax 事务已提交
 
-    1.  `HEAP_XMAX_INVALID`: xmax事务已中止
+    1.  `HEAP_XMAX_INVALID`: xmax 事务已中止
 
 +   提示位的使用方式：
 
-    1.  事务检查提示位以查看xmin和/或xmax事务是否已提交或已中止。
+    1.  事务检查提示位以查看 xmin 和/或 xmax 事务是否已提交或已中止。
 
     1.  如果设置了提示位，完成。
 
@@ -732,7 +732,7 @@ MVCC：多版本并发控制
 
     +   在非高峰时段，和/或者
 
-    +   带有锁定超时。例如，在DDL之前运行 "`SET lock_timeout = '5s';`"。如果超时，请重试DDL。
+    +   带有锁定超时。例如，在 DDL 之前运行 "`SET lock_timeout = '5s';`"。如果超时，请重试 DDL。
 
 +   对于轻量级锁来说，这并不正确。在极端情况下，对 LWLock 的独占模式请求可能会等待几十秒，因为后续的共享模式请求者一个接一个地到来。
 
@@ -772,13 +772,13 @@ WAL CRC
 
 +   WAL 在每个 WAL 记录头中使用 32 位 CRC。
 
-+   当WAL记录放入WAL缓冲区时设置CRC，并在读取WAL记录时验证。
++   当 WAL 记录放入 WAL 缓冲区时设置 CRC，并在读取 WAL 记录时验证。
 
 检测、绕过或修复数据损坏的实用工具（有些可能很危险！）
 
 +   附加模块
 
-    +   [amcheck](https://www.postgresql.org/docs/current/amcheck.html)：检测堆（表、序列、物化视图）和B-tree索引的逻辑损坏。
+    +   [amcheck](https://www.postgresql.org/docs/current/amcheck.html)：检测堆（表、序列、物化视图）和 B-tree 索引的逻辑损坏。
 
     +   [pg_surgery](https://www.postgresql.org/docs/current/pgsurgery.html)：`heap_force_kill()`和`heap_force_freeze()`分别强制删除和冻结堆元组。
 
@@ -798,37 +798,37 @@ WAL CRC
 
 1.  文件系统级备份（二进制格式）
 
-1.  SQL dump与pg_dump/pg_dumpall（文本格式）
+1.  SQL dump 与 pg_dump/pg_dumpall（文本格式）
 
 1.  连续归档（二进制格式）
 
 备份和恢复方法的特征
 
-+   SQL dump和连续归档可以在线执行。文件系统级备份需要关闭数据库服务器。
++   SQL dump 和连续归档可以在线执行。文件系统级备份需要关闭数据库服务器。
 
-+   SQL dump可以选择性地备份和还原单个表。其他方法无法备份或还原仅某些单个表或表空间。
++   SQL dump 可以选择性地备份和还原单个表。其他方法无法备份或还原仅某些单个表或表空间。
 
-+   SQL dump通常会更小，因为SQL脚本只需包含索引创建命令，而不是索引数据。
++   SQL dump 通常会更小，因为 SQL 脚本只需包含索引创建命令，而不是索引数据。
 
-+   SQL dump可以加载到较新主要版本的数据库中。
++   SQL dump 可以加载到较新主要版本的数据库中。
 
-+   SQL dump可以将数据库传输到不同的机器架构，例如从32位服务器到64位服务器。
++   SQL dump 可以将数据库传输到不同的机器架构，例如从 32 位服务器到 64 位服务器。
 
-+   连续归档可以执行PITR。数据库集群可以恢复到最新状态或到某个特定时间点。
++   连续归档可以执行 PITR。数据库集群可以恢复到最新状态或到某个特定时间点。
 
-+   由pg_dump创建的转储文件是一致的；每个数据库的转储是pg_dump启动时数据库的快照。pg_dumpall为每个数据库依次调用pg_dump，因此不保证数据库集群的一致性。
++   由 pg_dump 创建的转储文件是一致的；每个数据库的转储是 pg_dump 启动时数据库的快照。pg_dumpall 为每个数据库依次调用 pg_dump，因此不保证数据库集群的一致性。
 
-+   pg_dump在单个事务中为数据库中的所有数据进行转储，发出许多SELECT命令。该长时间运行的事务可能：
++   pg_dump 在单个事务中为数据库中的所有数据进行转储，发出许多 SELECT 命令。该长时间运行的事务可能：
 
-    +   阻止其他需要强锁定模式的操作，例如ALTER TABLE、TRUNCATE、CLUSTER、REINDEX。
+    +   阻止其他需要强锁定模式的操作，例如 ALTER TABLE、TRUNCATE、CLUSTER、REINDEX。
 
-    +   导致表和索引膨胀，因为vacuum无法删除死元组。
+    +   导致表和索引膨胀，因为 vacuum 无法删除死元组。
 
 +   连续归档的`pg_backup_start()`和`pg_basebackup`在开始时执行检查点。用户可以在“快速”和“扩散”之间选择检查点速度。
 
-+   存档恢复以及崩溃恢复会清空未记录关系的内容。SQL dump会输出未记录表的内容。
++   存档恢复以及崩溃恢复会清空未记录关系的内容。SQL dump 会输出未记录表的内容。
 
-+   pg_dumpall的--no-role-passwords选项使用pg_roles而不是pg_authid来转储数据库角色。这允许在像DBaaS这样的受限环境中使用pg_dumpall，其中用户不被允许读取pg_authid以保护密码。恢复的角色将具有NULL密码。
++   pg_dumpall 的--no-role-passwords 选项使用 pg_roles 而不是 pg_authid 来转储数据库角色。这允许在像 DBaaS 这样的受限环境中使用 pg_dumpall，其中用户不被允许读取 pg_authid 以保护密码。恢复的角色将具有 NULL 密码。
 
 ### 流复制
 
@@ -844,7 +844,7 @@ WAL CRC
 
     +   备用服务器可以级联更改到其他备用服务器。
 
-    +   主服务器不知道备用服务器的位置。备用服务器连接到由primary_conninfo参数指定的主服务器。
+    +   主服务器不知道备用服务器的位置。备用服务器连接到由 primary_conninfo 参数指定的主服务器。
 
         +   例如。`primary_conninfo = 'host=192.168.1.50 port=5432 user=foo password=foopass'`
 
@@ -858,101 +858,101 @@ WAL CRC
 
 +   进程和数据流
 
-    +   在服务器启动时，备用服务器首先从归档中读取并应用WAL，然后从$PGDATA/pg_wal/读取，并启动一个walreceiver，该walreceiver连接到主服务器并从主服务器流式传输WAL。如果复制连接终止，它会以5秒的间隔重复此周期，该间隔可以由wal_retrieve_retry_interval配置。
+    +   在服务器启动时，备用服务器首先从归档中读取并应用 WAL，然后从$PGDATA/pg_wal/读取，并启动一个 walreceiver，该 walreceiver 连接到主服务器并从主服务器流式传输 WAL。如果复制连接终止，它会以 5 秒的间隔重复此周期，该间隔可以由 wal_retrieve_retry_interval 配置。
 
-    +   主服务器在接受来自walreceiver的连接请求时生成walsender。
+    +   主服务器在接受来自 walreceiver 的连接请求时生成 walsender。
 
-    +   walsender读取并发送WAL到walreceiver。
+    +   walsender 读取并发送 WAL 到 walreceiver。
 
-    +   walreceiver将流式WAL写入并刷新到$PGDATA/pg_wal/，并通知启动进程。
+    +   walreceiver 将流式 WAL 写入并刷新到$PGDATA/pg_wal/，并通知启动进程。
 
-    +   单个启动进程读取并应用WAL。
+    +   单个启动进程读取并应用 WAL。
 
-    +   walreceiver定期通知walsender有关复制进度的信息--它已经写入，刷新和应用了多远的WAL。
+    +   walreceiver 定期通知 walsender 有关复制进度的信息--它已经写入，刷新和应用了多远的 WAL。
 
-    +   级联备用服务器具有运行walsenders和walreceiver的功能。
+    +   级联备用服务器具有运行 walsenders 和 walreceiver 的功能。
 
 +   复制用户
 
-    +   复制用户需要REPLICATION角色属性。
+    +   复制用户需要 REPLICATION 角色属性。
 
-    +   REPLICATION使用户能够读取用于复制的所有数据，但不能用于SELECT查询的消耗。
+    +   REPLICATION 使用户能够读取用于复制的所有数据，但不能用于 SELECT 查询的消耗。
 
 一般管理
 
 +   备用服务器是只读的。包括角色在内的任何对象都不能仅在备用服务器上创建。
 
-+   max_wal_senders应该略高于备用服务器的数量，这样在临时意外断开连接后，备用服务器仍然保留断开的walsender时，备用服务器可以接受连接。
++   max_wal_senders 应该略高于备用服务器的数量，这样在临时意外断开连接后，备用服务器仍然保留断开的 walsender 时，备用服务器可以接受连接。
 
 +   备份可以在备用服务器上进行。
 
-+   archive_timeout不需要缩短数据丢失窗口。
++   archive_timeout 不需要缩短数据丢失窗口。
 
 +   级联复制减少了主服务器的负载。
 
-+   主服务器上的WAL
++   主服务器上的 WAL
 
-    +   没有任何措施，主服务器不关心备用服务器并删除/回收备用服务器仍然需要的旧WAL文件。
+    +   没有任何措施，主服务器不关心备用服务器并删除/回收备用服务器仍然需要的旧 WAL 文件。
 
-    +   如果备用服务器请求已删除的WAL，则主服务器会发出如下消息：`"ERROR: requested WAL segment 000000020000000300000041 has already been removed"`。
+    +   如果备用服务器请求已删除的 WAL，则主服务器会发出如下消息：`"ERROR: requested WAL segment 000000020000000300000041 has already been removed"`。
 
-    +   要使主服务器保留WAL文件，可以使用复制插槽（首选）或设置keep_wal_size（旧方法）。
+    +   要使主服务器保留 WAL 文件，可以使用复制插槽（首选）或设置 keep_wal_size（旧方法）。
 
-    +   max_slot_wal_keep_size限制了复制插槽保留的WAL卷。
+    +   max_slot_wal_keep_size 限制了复制插槽保留的 WAL 卷。
 
 +   同步复制
 
     +   如果没有同步备用服务器可用，事务在提交期间会挂起。
 
-    +   要恢复挂起的事务，请移除synchronous_standby_names设置并重新加载配置。这会使复制变为异步。
+    +   要恢复挂起的事务，请移除 synchronous_standby_names 设置并重新加载配置。这会使复制变为异步。
 
 复制延迟的原因
 
 +   硬件配置：服务器、存储和网络
 
-+   主服务器负载过重：主服务器生成的WAL量过大，以至于独立启动进程无法跟上。
++   主服务器负载过重：主服务器生成的 WAL 量过大，以至于独立启动进程无法跟上。
 
-    +   将wal_compression设置为on以减少WAL的数量。
+    +   将 wal_compression 设置为 on 以减少 WAL 的数量。
 
-+   从缓慢的归档检索WAL：备机无法从主服务器获取WAL，因此必须从WAL归档中获取。
++   从缓慢的归档检索 WAL：备机无法从主服务器获取 WAL，因此必须从 WAL 归档中获取。
 
 +   恢复冲突：某些操作的回放可能会被在备机上运行的查询阻塞。
 
     +   当使用热备时，这是相关的。
 
-    +   将max_standby_archive_delay和max_standby_streaming_delay减少到取消冲突查询并尽早恢复WAL回放。
+    +   将 max_standby_archive_delay 和 max_standby_streaming_delay 减少到取消冲突查询并尽早恢复 WAL 回放。
 
 热备
 
 +   在服务器处于归档恢复或备机模式时运行只读查询的能力。
 
-+   要确定服务器是否处于热备状态，请使用PostgreSQL 14+的`"SHOW in_hot_standby"`或否则使用`"SELECT pg_is_in_recovery()"`
++   要确定服务器是否处于热备状态，请使用 PostgreSQL 14+的`"SHOW in_hot_standby"`或否则使用`"SELECT pg_is_in_recovery()"`
 
 +   恢复冲突
 
-    +   WAL回放与备机上的查询之间的冲突。
+    +   WAL 回放与备机上的查询之间的冲突。
 
-    +   延迟WAL回放或取消查询。
+    +   延迟 WAL 回放或取消查询。
 
     +   导致恢复冲突的主服务器操作包括：
 
-        +   需要独占访问锁的操作：DDL、LOCK、通过vacuum进行文件截断（包括自动vacuum）
+        +   需要独占访问锁的操作：DDL、LOCK、通过 vacuum 进行文件截断（包括自动 vacuum）
 
-            +   独占访问锁请求通过WAL记录并由备机重放。
+            +   独占访问锁请求通过 WAL 记录并由备机重放。
 
         +   在备机上放置临时文件的表空间被删除
 
         +   删除备机上连接的客户端的数据库
 
-        +   对备机事务仍然可见的死元组进行vacuum清理，根据它们的快照
+        +   对备机事务仍然可见的死元组进行 vacuum 清理，根据它们的快照
 
-        +   对备机事务有缓冲引用的页面进行vacuum清理（例如，光标位于该页面上。）
+        +   对备机事务有缓冲引用的页面进行 vacuum 清理（例如，光标位于该页面上。）
 
     +   在恢复冲突发生时会发生什么
 
-        +   WAL应用程序最多等待由max_standby_archive_delay和max_standby_streaming_delay指定的时间段（除了回放DROP DATABASE和ALTER DATABASE SET TABLESPACE之外。）
+        +   WAL 应用程序最多等待由 max_standby_archive_delay 和 max_standby_streaming_delay 指定的时间段（除了回放 DROP DATABASE 和 ALTER DATABASE SET TABLESPACE 之外。）
 
-        +   然后，在回放DROP DATABASE时终止冲突会话，或在其他情况下取消冲突查询。
+        +   然后，在回放 DROP DATABASE 时终止冲突会话，或在其他情况下取消冲突查询。
 
         +   如果空闲会话持有锁，则该会话也将被终止。
 
@@ -960,7 +960,7 @@ WAL CRC
 
         +   [pg_stat_database_conflicts](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-DATABASE-CONFLICTS-VIEW) 在备机上显示由于每种恢复冲突类型而取消的查询数量。
 
-        +   "log_recovery_conflict_waits = on" 记录WAL应用程序等待时间超过deadlock_timeout并且等待结束的消息。
+        +   "log_recovery_conflict_waits = on" 记录 WAL 应用程序等待时间超过 deadlock_timeout 并且等待结束的消息。
 
             +   `LOG: recovery still waiting after 1.023 ms: recovery conflict on snapshot`
 
@@ -972,21 +972,21 @@ WAL CRC
 
         +   避免需要独占访问锁的操作。例如，ALTER TABLE、VACUUM FULL、CLUSTER、REINDEX、TRUNCATE
 
-        +   通过在主服务器上设置vacuum_truncate存储参数来禁用通过vacuum进行的文件截断。
+        +   通过在主服务器上设置 vacuum_truncate 存储参数来禁用通过 vacuum 进行的文件截断。
 
             +   ex. `ALTER TABLE some_table SET (vacuum_truncate = off);`
 
-        +   在备机上设置hot_standby_feedback = on。
+        +   在备机上设置 hot_standby_feedback = on。
 
-            +   将最老的XID发送给主服务器，在pg_stat_replication.backend_xmin中反映，当清理死元组时会考虑这一点。
+            +   将最老的 XID 发送给主服务器，在 pg_stat_replication.backend_xmin 中反映，当清理死元组时会考虑这一点。
 
             +   可能因为延迟清理死元组而导致表膨胀。
 
             +   无法阻止所有冲突。
 
-        +   在备机上调整max_standby_streaming_delay/max_standby_archive_delay。
+        +   在备机上调整 max_standby_streaming_delay/max_standby_archive_delay。
 
-        +   在主服务器上调整vacuum_defer_cleanup_age。
+        +   在主服务器上调整 vacuum_defer_cleanup_age。
 
     +   最好有单独的备机，一些用于高可用性，另一些用于容忍陈旧数据的读工作负载。
 
@@ -996,21 +996,21 @@ WAL CRC
 
     +   不仅在主服务器上可用，也在级联备机上可用。
 
-    +   pg_current_wal_lsn和视图的sent_lsn字段之间存在很大差异，可能表明主服务器负载过重。
+    +   pg_current_wal_lsn 和视图的 sent_lsn 字段之间存在很大差异，可能表明主服务器负载过重。
 
-    +   在备机上，sent_lsn和pg_last_wal_receive_lsn之间的差异可能表示网络延迟，或者备机负载过重。
+    +   在备机上，sent_lsn 和 pg_last_wal_receive_lsn 之间的差异可能表示网络延迟，或者备机负载过重。
 
 +   [pg_stat_wal_receiver](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-WAL-RECEIVER-VIEW)
 
-    +   pg_last_wal_replay_lsn()和视图的flushed_lsn之间存在很大差异，表明WAL接收速度快于回放速度。
+    +   pg_last_wal_replay_lsn()和视图的 flushed_lsn 之间存在很大差异，表明 WAL 接收速度快于回放速度。
 
     +   例如。`SELECT pg_wal_lsn_diff(pg_last_wal_replay_lsn(), flushed_lsn) FROM pg_stat_wal_receiver;`
 
 +   [pg_stat_wal](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-WAL-VIEW)
 
-    +   检查为重写工作负载生成的WAL量。
+    +   检查为重写工作负载生成的 WAL 量。
 
-+   检查存储写入延迟、IOPs和吞吐量，以检查是否存在大量写入活动。
++   检查存储写入延迟、IOPs 和吞吐量，以检查是否存在大量写入活动。
 
 +   [pg_stat_database_conflicts](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-DATABASE-CONFLICTS-VIEW)
 
@@ -1032,29 +1032,29 @@ WAL CRC
 
     +   一个订阅可以订阅多个发布物。
 
-    +   发布物可以选择限制它们产生的更改到任何组合的INSERT、UPDATE、DELETE和TRUNCATE。
+    +   发布物可以选择限制它们产生的更改到任何组合的 INSERT、UPDATE、DELETE 和 TRUNCATE。
 
     +   发布物可以限制要复制的行和列。
 
 +   进程和数据流
 
-    +   参与的进程：发布者上的walsender，订阅者上的订阅工作者（应用工作者、表同步工作者）。
+    +   参与的进程：发布者上的 walsender，订阅者上的订阅工作者（应用工作者、表同步工作者）。
 
-    +   walreceiver不会出现，即使使用了一些与walreceiver相关的参数。
+    +   walreceiver 不会出现，即使使用了一些与 walreceiver 相关的参数。
 
-    1.  在订阅者的服务器启动时，逻辑复制启动器会启动，除非max_logical_replication_workers为0。
+    1.  在订阅者的服务器启动时，逻辑复制启动器会启动，除非 max_logical_replication_workers 为 0。
 
     1.  逻辑复制启动器为每个启用的订阅启动一个应用工作者。
 
     1.  应用工作者连接到发布者。
 
-    1.  应用工作者为尚未完成初始同步的表启动tablesync工作者。这些tablesync工作者各自连接到发布者。
+    1.  应用工作者为尚未完成初始同步的表启动 tablesync 工作者。这些 tablesync 工作者各自连接到发布者。
 
-    1.  发布者为每个来自订阅工作者的连接请求生成一个walsender。
+    1.  发布者为每个来自订阅工作者的连接请求生成一个 walsender。
 
-    1.  tablesync工作者的发布者为tablesync工作者发送表的初始副本。（初始数据同步/复制）
+    1.  tablesync 工作者的发布者为 tablesync 工作者发送表的初始副本。（初始数据同步/复制）
 
-    1.  walsender读取WAL，将更改解码为逻辑复制协议格式，并将它们存储在逻辑解码工作内存和可能的文件中。当事务提交时，walsender将其解码的更改发送给订阅工作者。
+    1.  walsender 读取 WAL，将更改解码为逻辑复制协议格式，并将它们存储在逻辑解码工作内存和可能的文件中。当事务提交时，walsender 将其解码的更改发送给订阅工作者。
 
     1.  订阅工作者应用接收到的更改。
 
@@ -1064,7 +1064,7 @@ WAL CRC
 
     +   发布只能包含表。
 
-    +   DDL不会被复制。
+    +   DDL 不会被复制。
 
         +   在订阅者上首先添加表列，然后在发布者上添加。删除表列时反转顺序。
 
@@ -1072,29 +1072,29 @@ WAL CRC
 
 +   复制标识
 
-    +   发布的表必须具有复制标识以复制UPDATE和DELETE操作。
+    +   发布的表必须具有复制标识以复制 UPDATE 和 DELETE 操作。
 
     +   用作在订阅者上更新或删除行的标识键。
 
-    +   如果发布表没有复制标识，那么在发布者上UPDATE和DELETE会失败。INSERT会成功。
+    +   如果发布表没有复制标识，那么在发布者上 UPDATE 和 DELETE 会失败。INSERT 会成功。
 
     +   可以是主键（默认）、唯一索引或整行。
 
     +   可以通过`ALTER TABLE REPLICA IDENTITY`进行配置。
 
-    +   复制标识列的旧值被记录在WAL中。
+    +   复制标识列的旧值被记录在 WAL 中。
 
 +   调整性能
 
     +   max_sync_workers_per_subscription
 
-        +   基于max_sync_workers_per_subscription配置，多个tablesync工作者（每个表一个）将并行运行。
+        +   基于 max_sync_workers_per_subscription 配置，多个 tablesync 工作者（每个表一个）将并行运行。
 
         +   当一个订阅中有许多表时，这可能会有效地加快初始表同步的速度。
 
     +   logical_decoding_work_mem
 
-        +   检查[pg_stat_replication_slots](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-REPLICATION-SLOTS-VIEW)以查看溢出到磁盘的事务。如果spill_txns、spill_count和spill_bytes很高，请考虑增加此参数值。
+        +   检查[pg_stat_replication_slots](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-REPLICATION-SLOTS-VIEW)以查看溢出到磁盘的事务。如果 spill_txns、spill_count 和 spill_bytes 很高，请考虑增加此参数值。
 
 复制冲突
 
@@ -1104,7 +1104,7 @@ WAL CRC
 
     1.  如果尚未，请通过运行`"ALTER SUBSCRIPTION name DISABLE;"`来禁用订阅。订阅可以被配置为在应用工作者检测到任何错误时自动禁用。运行`"ALTER SUBSCRIPTION ... WITH (disable_on_error = on);"`
 
-    1.  在服务器日志中查找冲突事务的复制起点名称和结束LSN。
+    1.  在服务器日志中查找冲突事务的复制起点名称和结束 LSN。
 
     1.  执行以下操作之一：
 
@@ -1204,15 +1204,15 @@ WAL
 
 +   在 SQL 标准和其他 DBMS 中，需要使用 `SET ROLE` 命令以获取另一个角色的权限。
 
-+   在PostgreSQL中，角色会自动继承其所属的其他角色的权限。这可能会让人感到惊讶。
++   在 PostgreSQL 中，角色会自动继承其所属的其他角色的权限。这可能会让人感到惊讶。
 
-+   为了逼近SQL标准，对于用户和角色使用NOINHERIT。
++   为了逼近 SQL 标准，对于用户和角色使用 NOINHERIT。
 
 预定义角色
 
 +   提供了一些角色，以将部分管理权限授予非超级用户。
 
-+   可以由GRANT给予。
++   可以由 GRANT 给予。
 
 +   代表角色是：
 
@@ -1220,7 +1220,7 @@ WAL
 
     +   pg_signal_backend：可以向其他后端发送信号以取消查询或终止会话。
 
-    +   pg_read_server_files、pg_write_server_files和pg_execute_server_program：以数据库运行的用户身份访问文件并在数据库服务器上运行程序。例如，这些使COPY可以在服务器上的文件和另一个程序之间复制数据，如gzip和curl。
+    +   pg_read_server_files、pg_write_server_files 和 pg_execute_server_program：以数据库运行的用户身份访问文件并在数据库服务器上运行程序。例如，这些使 COPY 可以在服务器上的文件和另一个程序之间复制数据，如 gzip 和 curl。
 
 默认权限
 
@@ -1234,9 +1234,9 @@ WAL
 
 ### 参考资料
 
-PostgreSQL文档
+PostgreSQL 文档
 
-+   [PostgreSQL用户账户](https://www.postgresql.org/docs/current/postgres-user.html)
++   [PostgreSQL 用户账户](https://www.postgresql.org/docs/current/postgres-user.html)
 
 +   [数据库角色](https://www.postgresql.org/docs/current/user-manag.html)
 
@@ -1248,9 +1248,9 @@ PostgreSQL文档
 
 +   [加密选项](https://www.postgresql.org/docs/current/encryption-options.html)
 
-+   [SSL安全TCP/IP连接](https://www.postgresql.org/docs/current/ssl-tcp.html)
++   [SSL 安全 TCP/IP 连接](https://www.postgresql.org/docs/current/ssl-tcp.html)
 
-+   [使用GSSAPI加密的安全TCP/IP连接](https://www.postgresql.org/docs/current/gssapi-enc.html)
++   [使用 GSSAPI 加密的安全 TCP/IP 连接](https://www.postgresql.org/docs/current/gssapi-enc.html)
 
 身份验证
 
@@ -1264,57 +1264,57 @@ PostgreSQL文档
 
 大型结果集导致客户端内存耗尽
 
-+   运行SELECT时，psql检索整个结果集并将所有行存储在客户端内存中。
++   运行 SELECT 时，psql 检索整个结果集并将所有行存储在客户端内存中。
 
-+   使用FETCH_COUNT变量，例如`"psql -v FETCH_COUNT=100 ..."`，psql使用游标并发出DECLARE、FETCH和CLOSE以逐步检索结果集。
++   使用 FETCH_COUNT 变量，例如`"psql -v FETCH_COUNT=100 ..."`，psql 使用游标并发出 DECLARE、FETCH 和 CLOSE 以逐步检索结果集。
 
-+   客户端驱动程序具有类似的功能，例如psqlODBC的UseDeclareFetch和PgJDBC的defaultRowFetchSize连接参数。
++   客户端驱动程序具有类似的功能，例如 psqlODBC 的 UseDeclareFetch 和 PgJDBC 的 defaultRowFetchSize 连接参数。
 
 服务器端内存不足（OOM）问题的常见原因
 
 +   高数量的连接
 
-    +   即使空闲连接也可能继续占用大量内存。PostgreSQL在会话期间将数据库对象元数据保留在内存中。这是为了性能。您可以通过庞大的CacheMemoryContext来注意到这一点。
+    +   即使空闲连接也可能继续占用大量内存。PostgreSQL 在会话期间将数据库对象元数据保留在内存中。这是为了性能。您可以通过庞大的 CacheMemoryContext 来注意到这一点。
 
     +   如果使用连接池，许多连接随着时间的推移可能会消耗大量内存。这是因为连接是随机从池中选取的，用于访问某些关系，然后释放回池中，这导致许多会话积累了许多关系的元数据。
 
-+   高的work_mem值
++   高的 work_mem 值
 
-    +   建议不要在实例级别（postgresql.conf）或数据库级别（ALTER DATABASE）设置高值的work_mem。许多会话可能同时分配那么多内存。更糟糕的是，每个SQL语句可能会并行运行这样的排序和/或哈希操作，其中每个操作可以分配与work_mem一样多的内存。
+    +   建议不要在实例级别（postgresql.conf）或数据库级别（ALTER DATABASE）设置高值的 work_mem。许多会话可能同时分配那么多内存。更糟糕的是，每个 SQL 语句可能会并行运行这样的排序和/或哈希操作，其中每个操作可以分配与 work_mem 一样多的内存。
 
-    +   对于基于哈希的操作，最多将分配work_mem * hash_mem_multiplier字节的工作内存。
+    +   对于基于哈希的操作，最多将分配 work_mem * hash_mem_multiplier 字节的工作内存。
 
-+   低的max_locks_per_transaction值
++   低的 max_locks_per_transaction 值
 
     +   每个可锁定对象（例如，表、索引、序列、XID，但不是行）在锁定时都会在锁表中分配一个条目。该条目表示可锁定对象、授予者、等待者和授予/请求的锁模式。
 
     +   锁表分配在共享内存中。其大小在服务器启动时固定。
 
-    +   max_locks_per_transaction的默认值为64。这意味着每个事务预计将锁定64个或更少的对象。
+    +   max_locks_per_transaction 的默认值为 64。这意味着每个事务预计将锁定 64 个或更少的对象。
 
     +   锁表中的条目数为（max_connections + max_prepared_transactions + alpha）* max_locks_per_transaction。
 
-    +   如果可用的话，一个事务可以使用超过max_locks_per_transaction条目。
+    +   如果可用的话，一个事务可以使用超过 max_locks_per_transaction 条目。
 
-    +   如果许多并发事务中的每个事务可能会访问更多对象，例如，触及数百或数千个分区，请增加max_locks_per_transaction。
+    +   如果许多并发事务中的每个事务可能会访问更多对象，例如，触及数百或数千个分区，请增加 max_locks_per_transaction。
 
-无法检索大的bytea值
+无法检索大的 bytea 值
 
-+   例如，成功插入550 MB的bytea列值后，抓取失败，并显示类似于`"invalid memory aloc request size 1277232195"`的错误消息。
++   例如，成功插入 550 MB 的 bytea 列值后，抓取失败，并显示类似于`"invalid memory aloc request size 1277232195"`的错误消息。
 
 +   为什么？
 
-    +   当PostgreSQL服务器将查询结果发送给客户端时，它会将数据转换为文本格式或以二进制格式返回。
+    +   当 PostgreSQL 服务器将查询结果发送给客户端时，它会将数据转换为文本格式或以二进制格式返回。
 
-    +   psql和客户端驱动程序指示服务器使用文本格式。
+    +   psql 和客户端驱动程序指示服务器使用文本格式。
 
-    +   [当将bytea数据转换为文本格式时，PostgreSQL使用十六进制或转义格式](https://www.postgresql.org/docs/current/datatype-binary.html)。默认格式为十六进制。十六进制和转义格式分别使用2和4个字节来表示文本格式中的每个原始字节。
+    +   [当将 bytea 数据转换为文本格式时，PostgreSQL 使用十六进制或转义格式](https://www.postgresql.org/docs/current/datatype-binary.html)。默认格式为十六进制。十六进制和转义格式分别使用 2 和 4 个字节来表示文本格式中的每个原始字节。
 
         +   例如。`SELECT 'abc'::bytea;` 返回`\x616263`
 
-    +   PostgreSQL服务器为将每个列值转换为文本格式分配一个连续的内存区域。此分配大小限制为1 GB - 1。这个限制与TOAST中的可变长度数据类型的处理有关。
+    +   PostgreSQL 服务器为将每个列值转换为文本格式分配一个连续的内存区域。此分配大小限制为 1 GB - 1。这个限制与 TOAST 中的可变长度数据类型的处理有关。
 
-    +   由于这个限制，PostgreSQL无法以文本格式返回超过500 MB的bytea数据。
+    +   由于这个限制，PostgreSQL 无法以文本格式返回超过 500 MB 的 bytea 数据。
 
 ### 存储
 
@@ -1322,45 +1322,45 @@ PostgreSQL文档
 
 +   表膨胀是因为清理程序无法移除死元组：死元组保留的原因另行描述。
 
-+   WAL积累：WAL容量持续增长的原因另行描述。
++   WAL 积累：WAL 容量持续增长的原因另行描述。
 
 +   服务器日志文件
 
-    +   因为pgAudit、auto_explain和其他日志参数（如log_statement和log_min_duration_statement）而导致过多的日志记录
+    +   因为 pgAudit、auto_explain 和其他日志参数（如 log_statement 和 log_min_duration_statement）而导致过多的日志记录
 
     +   日志轮换和清除未正确配置：log_rotation_age、log_rotation_size、log_truncate_on_rotation
 
 +   创建临时文件
 
-    +   work_mem较小和/或查询计划不佳。
+    +   work_mem 较小和/或查询计划不佳。
 
     +   保持可保持的游标打开。
 
         +   例如 `DECLARE CURSOR cur WITH HOLD FOR SELECT * FROM mytable; COMMIT;`
 
-        +   在提交期间，可保持游标的结果集存储在大小为work_mem的工作内存区域中，并将超出work_mem的内容溢出到临时文件中。
+        +   在提交期间，可保持游标的结果集存储在大小为 work_mem 的工作内存区域中，并将超出 work_mem 的内容溢出到临时文件中。
 
     +   使用以下命令检查临时文件的使用情况：
 
-        +   pg_stat_database的temp_files和temp_bytes
+        +   pg_stat_database 的 temp_files 和 temp_bytes
 
         +   log_temp_files = on，当删除文件时记录文件路径和大小
 
-        +   通过EXPLAIN ANALYZE或auto_explain获得的查询计划
+        +   通过 EXPLAIN ANALYZE 或 auto_explain 获得的查询计划
 
 存储配额
 
-+   PostgreSQL除了临时文件外无法限制存储使用。
++   PostgreSQL 除了临时文件外无法限制存储使用。
 
-+   temp_file_limit可以限制每个会话在任何时刻使用的临时文件的总大小。超过此限制的事务将被中止。
++   temp_file_limit 可以限制每个会话在任何时刻使用的临时文件的总大小。超过此限制的事务将被中止。
 
-+   如果要限制数据库、表或WAL（$PGDATA/pg_wal/）的大小，请将其放入具有有限大小的文件系统上的表空间中。
++   如果要限制数据库、表或 WAL（$PGDATA/pg_wal/）的大小，请将其放入具有有限大小的文件系统上的表空间中。
 
-    +   可以通过`CREATE/ALTER DATABASE/TABLE ... TABLESPACE`显式指定数据库/表的表空间，也可以通过default_tablespace参数隐式指定。
+    +   可以通过`CREATE/ALTER DATABASE/TABLE ... TABLESPACE`显式指定数据库/表的表空间，也可以通过 default_tablespace 参数隐式指定。
 
-    +   temp_tablespaces可用于指定为临时表/索引和排序/散列操作创建临时文件的位置。
+    +   temp_tablespaces 可用于指定为临时表/索引和排序/散列操作创建临时文件的位置。
 
-    +   WAL目录可以通过initdb的--waldir选项指定。另外，在创建数据库集群后，可以将其移动到数据目录外并使用符号链接进行链接。
+    +   WAL 目录可以通过 initdb 的--waldir 选项指定。另外，在创建数据库集群后，可以将其移动到数据目录外并使用符号链接进行链接。
 
 ### 记录和调试
 
@@ -1370,9 +1370,9 @@ PostgreSQL文档
 
 +   这可能看起来令人震惊，但这并不是实际问题。
 
-+   “为什么？pg_ctl start”在后台启动postmaster，并尝试在1秒间隔内连接到数据库。如果连接成功，pg_ctl将返回成功。否则，如果服务器仍在执行恢复且无法接受连接，则报告以上消息。
++   “为什么？pg_ctl start”在后台启动 postmaster，并尝试在 1 秒间隔内连接到数据库。如果连接成功，pg_ctl 将返回成功。否则，如果服务器仍在执行恢复且无法接受连接，则报告以上消息。
 
-+   在较新的主要版本中，您将不再看到此消息。 pg_ctl不会尝试连接。相反，当postmaster可以接受连接时，postmaster在postmaster.pid中写入“ready”，并且pg_ctl对其进行检查。
++   在较新的主要版本中，您将不再看到此消息。 pg_ctl 不会尝试连接。相反，当 postmaster 可以接受连接时，postmaster 在 postmaster.pid 中写入“ready”，并且 pg_ctl 对其进行检查。
 
 避免通过限制目标来避免过多的记录。
 
@@ -1386,7 +1386,7 @@ PostgreSQL文档
 
 可以为会话启用调试日志记录，而不会使服务器日志混乱
 
-+   可能不可接受将log_min_messages全局设置为DEBUG1 - DEBUG5，因为那样会输出大量日志。
++   可能不可接受将 log_min_messages 全局设置为 DEBUG1 - DEBUG5，因为那样会输出大量日志。
 
 +   您可以像这样在客户端仅获取特定操作的调试消息：
 
@@ -1394,15 +1394,15 @@ PostgreSQL文档
 
 `psql -d postgres -c "select 1"`
 
-弄清楚psql的反斜杠命令的作用
+弄清楚 psql 的反斜杠命令的作用
 
-+   使用psql的-E/--echo-hidden选项。它会显示后台发出的查询。
++   使用 psql 的-E/--echo-hidden 选项。它会显示后台发出的查询。
 
 删除重复行
 
-+   以下查询删除重复行，仅保留最小ctid的行并显示已删除的行内容。
++   以下查询删除重复行，仅保留最小 ctid 的行并显示已删除的行内容。
 
-+   ctid是一个系统列，表示行版本在其表内的物理位置：（块编号，项ID）。由于UPDATE和VACUUM FULL，ctid可能会改变，因此在此操作期间锁定表可能是安全的。
++   ctid 是一个系统列，表示行版本在其表内的物理位置：（块编号，项 ID）。由于 UPDATE 和 VACUUM FULL，ctid 可能会改变，因此在此操作期间锁定表可能是安全的。
 
 ````
 WITH x AS (SELECT some_table dup, min(ctid)
@@ -1424,29 +1424,29 @@ RETURNING some_table.*;
 
 +   为了回收或重用由更新或删除行占用的磁盘空间。
 
-+   为了更新PostgreSQL查询规划器使用的数据统计信息。
++   为了更新 PostgreSQL 查询规划器使用的数据统计信息。
 
 +   为了更新可见性图，从而加速仅索引扫描。
 
-+   为防止由于事务ID环绕或多事务ID环绕而导致的非常旧数据的丢失。
++   为防止由于事务 ID 环绕或多事务 ID 环绕而导致的非常旧数据的丢失。
 
 清理类型
 
 +   并发（惰性或常规）清理
 
-    +   在目标关系上获取共享更新独占锁。不会阻止SELECT和DML命令。
+    +   在目标关系上获取共享更新独占锁。不会阻止 SELECT 和 DML 命令。
 
-    +   保留原始数据文件并对其进行修改。TIDs不会改变。
+    +   保留原始数据文件并对其进行修改。TIDs 不会改变。
 
     +   仅当末尾有一定数量的连续空块时，数据文件才会收缩。文件中间未使用的空间留作重用。
 
-    +   在pg_stat_progress_vacuum视图中报告其进度。
+    +   在 pg_stat_progress_vacuum 视图中报告其进度。
 
 +   全量清理
 
-    +   在目标关系上获取独占访问锁。阻止SELECT和DML命令。
+    +   在目标关系上获取独占访问锁。阻止 SELECT 和 DML 命令。
 
-    +   将活跃元组从旧数据文件复制到新数据文件，并删除旧数据文件。重建索引。TIDs会改变。
+    +   将活跃元组从旧数据文件复制到新数据文件，并删除旧数据文件。重建索引。TIDs 会改变。
 
     +   数据文件将被完全和最小地打包。
 
@@ -1454,9 +1454,9 @@ RETURNING some_table.*;
 
     +   总是积极地冻结元组。
 
-    +   实际处理与CLUSTER相同。
+    +   实际处理与 CLUSTER 相同。
 
-    +   在pg_stat_progress_cluster视图中报告其进度。
+    +   在 pg_stat_progress_cluster 视图中报告其进度。
 
 +   自动清理永远不会运行全量清理。
 
@@ -1468,75 +1468,75 @@ RETURNING some_table.*;
 
 1.  获取堆的共享更新独占锁并打开它。如果关系无法获取锁，不可逆转的清理会放弃对关系的清理，发出以下消息。
 
-    +   `LOG: 跳过了vacuum "rel_name" --- 锁不可用`
+    +   `LOG: 跳过了 vacuum "rel_name" --- 锁不可用`
 
 1.  获取索引的行独占锁并打开它们。
 
-1.  分配工作内存以累积死元组的TIDs。
+1.  分配工作内存以累积死元组的 TIDs。
 
 1.  直到整个堆被处理完为止，重复执行以下步骤：
 
-    +   扫描堆：在工作内存中累积死元组TIDs，直到工作内存满或达到堆的末尾。保留死元组的项ID。此外，如果需要，修剪和重组每个页面，并可能冻结活元组。
+    +   扫描堆：在工作内存中累积死元组 TIDs，直到工作内存满或达到堆的末尾。保留死元组的项 ID。此外，如果需要，修剪和重组每个页面，并可能冻结活元组。
 
-    +   清理索引：删除包含死元组TID的索引条目。
+    +   清理索引：删除包含死元组 TID 的索引条目。
 
-    +   对堆进行清理：回收死元组的项目ID。这是在这里完成的，而不是在扫描堆时完成的，因为直到指向它的索引条目被删除之后，项目ID才能被释放。
+    +   对堆进行清理：回收死元组的项目 ID。这是在这里完成的，而不是在扫描堆时完成的，因为直到指向它的索引条目被删除之后，项目 ID 才能被释放。
 
-    +   在上述处理过程中更新FSM和VM。
+    +   在上述处理过程中更新 FSM 和 VM。
 
 1.  清理索引。
 
-    +   更新pg_class的relpages和reltuples中每个索引的统计信息。
+    +   更新 pg_class 的 relpages 和 reltuples 中每个索引的统计信息。
 
     +   关闭索引，但保留它们的锁直到事务结束。
 
 1.  截断堆，以便将关系末尾的空页面返回给操作系统。
 
-    +   如果堆至少具有1,000个块和（relation_size / 16）个连续空块，那么数据文件将被截断。
+    +   如果堆至少具有 1,000 个块和（relation_size / 16）个连续空块，那么数据文件将被截断。
 
-    +   在堆上获取访问独占锁。如果另一个事务持有冲突的锁，则最多等待5秒。如果无法获得锁，则放弃截断。
+    +   在堆上获取访问独占锁。如果另一个事务持有冲突的锁，则最多等待 5 秒。如果无法获得锁，则放弃截断。
 
     +   向后扫描堆以验证末尾页面仍然为空。定期检查是否有另一个事务正在等待冲突的锁。如果有其他人在等待，释放访问独占锁并放弃截断。
 
 1.  更新关系统计信息。
 
-    +   更新pg_class的relpages、reltuples、relallvisible、relhasindex、relhasrules、relhastriggers、relfrozenxid和relminmxid。
+    +   更新 pg_class 的 relpages、reltuples、relallvisible、relhasindex、relhasrules、relhastriggers、relfrozenxid 和 relminmxid。
 
 1.  关闭关系。
 
 1.  提交事务。
 
-1.  对关系的TOAST表进行清理。
+1.  对关系的 TOAST 表进行清理。
 
 1.  为每个关系重复上述处理过程。
 
 1.  更新数据库统计信息。
 
-    +   将pg_database.datfrozenxid更新为pg_class.relfrozenxid值的最小值，并在pg_xact/中截断提交日志。
+    +   将 pg_database.datfrozenxid 更新为 pg_class.relfrozenxid 值的最小值，并在 pg_xact/中截断提交日志。
 
-    +   将pg_database.datminmxid更新为pg_class.relminmxid值的最小值，并在pg_multixact/中截断MultiXact数据。
+    +   将 pg_database.datminmxid 更新为 pg_class.relminmxid 值的最小值，并在 pg_multixact/中截断 MultiXact 数据。
 
-Autovacuum设计为非侵入式。
+Autovacuum 设计为非侵入式。
 
-+   Autovacuum每完成一定量的工作就休息（睡眠）一次。因此，它不会持续消耗资源。
++   Autovacuum 每完成一定量的工作就休息（睡眠）一次。因此，它不会持续消耗资源。
 
-    +   “一定量的工作”和休眠时间可以通过autovacuum_vacuum_cost_limit和autovacuum_vacuum_cost_delay进行配置。autovacuum_vacuum_cost_delay默认为2毫秒。
+    +   “一定量的工作”和休眠时间可以通过 autovacuum_vacuum_cost_limit 和 autovacuum_vacuum_cost_delay 进行配置。autovacuum_vacuum_cost_delay 默认为 2 毫秒。
 
-+   如果由于某些冲突的锁而无法锁定关系，则Autovacuum跳过该关系。回绕防止自动真空不会执行此操作。
++   如果由于某些冲突的锁而无法锁定关系，则 Autovacuum 跳过该关系。回绕防止自动真空不会执行此操作。
 
-+   如果并发事务在等待冲突的关系锁并且发现该锁被Autovacuum持有，则取消非侵入式autovacuum。可以看到这些消息：
++   如果并发事务在等待冲突的关系锁并且发现该锁被 Autovacuum 持有，则取消非侵入式 autovacuum。可以看到这些消息：
 
     +   `ERROR: canceling autovacuum task`
 
     +   `DETAIL: automatic vacuum of table "mytable"`
 
-+   如果VM显示数据页仅具有对所有事务可见的元组（VM中设置了all-visible位），则VACUUM跳过读取数据页。即使是这样的页面，Aggressive vacuum也会读取以冻结元组。
++   如果 VM 显示数据页仅具有对所有事务可见的元组（VM 中设置了 all-visible 位），则 VACUUM 跳过读取数据页。即使是这样的页面，Aggressive vacuum 也会读取以冻结元组。
 
-+   如果VM显示数据页仅具有冻结元组（VM中设置了all-frozen位），则VACUUM跳过读取数据页。
++   如果 VM 显示数据页仅具有冻结元组（VM 中设置了 all-frozen 位），则 VACUUM 跳过读取数据页。
 
-+   当无法在数据页上获得独占LWLock时，Autovacuum对数据页执行减少的工作。对于回绕，Autovacuum不会执行此操作。
++   当无法在数据页上获得独占 LWLock 时，Autovacuum 对数据页执行减少的工作。对于回绕，Autovacuum 不会执行此操作。
 
-+   如果另一个事务持有或等待对目标关系的锁，则VACUUM放弃截断关系。
++   如果另一个事务持有或等待对目标关系的锁，则 VACUUM 放弃截断关系。
 
 自动清理未针对一个关系运行
 
@@ -1764,25 +1764,25 @@ PostgreSQL 文档
 
 数字
 
-+   对于精确计算和/或数字位数很多的情况，请选择numeric类型。
++   对于精确计算和/或数字位数很多的情况，请选择 numeric 类型。
 
 +   对于小的存储空间和更快的计算，请选择整数类型（smallint、int、bigint）和浮点类型（real、double precision、float）。
 
-+   decimal类型是numeric的别名。 psql的\d和pg_dump输出decimal列为numeric而不是decimal。
++   decimal 类型是 numeric 的别名。 psql 的\d 和 pg_dump 输出 decimal 列为 numeric 而不是 decimal。
 
 时间戳
 
-+   timestamp without time zone忽略TimeZone参数。 值被存储并原样返回。
++   timestamp without time zone 忽略 TimeZone 参数。 值被存储并原样返回。
 
-+   timestamp with time zone尊重输入值中的显式时区或者TimeZone参数。输入值转换为UTC，输出值根据生效的时区从存储值转换。
++   timestamp with time zone 尊重输入值中的显式时区或者 TimeZone 参数。输入值转换为 UTC，输出值根据生效的时区从存储值转换。
 
 二进制
 
 +   存储二进制数据的可用方法
 
-    +   bytea数据类型
+    +   bytea 数据类型
 
-    +   大对象：使用类似文件系统的open/close/read/write接口，数据存储在pg_largeobject中，用户表列包含指向pg_largeobject中行的OID值。
+    +   大对象：使用类似文件系统的 open/close/read/write 接口，数据存储在 pg_largeobject 中，用户表列包含指向 pg_largeobject 中行的 OID 值。
 
     +   外部文件：应用程序在文件系统或对象存储中管理数据，并将文件路径存储在表字符列中。
 
@@ -1790,43 +1790,43 @@ PostgreSQL 文档
 
     +   需要事务（ACID）属性吗？->bytea、大对象
 
-    +   处理1 GB或更大的列值？->大对象、外部文件
+    +   处理 1 GB 或更大的列值？->大对象、外部文件
 
     +   需要随机和/或分段访问吗？->大对象、外部文件
 
-    +   想要在100 MB或更大的列值中获得最佳性能？->外部文件
+    +   想要在 100 MB 或更大的列值中获得最佳性能？->外部文件
 
 使用大对象的提示
 
-+   **不要使用大对象。** 它们可能会有问题。 使用bytea列或外部文件存储，如操作系统文件系统和对象存储。
++   **不要使用大对象。** 它们可能会有问题。 使用 bytea 列或外部文件存储，如操作系统文件系统和对象存储。
 
-+   删除大量的LOB
++   删除大量的 LOB
 
     +   尝试在单个事务中删除多个大对象，例如，`"SELECT lo_unlink(lo_oid) FROM mytable;"`可能会失败，并显示以下消息：
 
         +   `错误：共享内存已用完`
 
-        +   `提示：您可能需要增加max_locks_per_transaction。`
+        +   `提示：您可能需要增加 max_locks_per_transaction。`
 
-    +   原因：当删除大对象时，它会以独占访问模式锁定。因此，需要在锁表中有与删除的LOB相同数量的条目。
+    +   原因：当删除大对象时，它会以独占访问模式锁定。因此，需要在锁表中有与删除的 LOB 相同数量的条目。
 
     +   解决方案：执行以下任一项或两项：
 
-        +   增加max_locks_per_transaction。必须重新启动数据库服务器。
+        +   增加 max_locks_per_transaction。必须重新启动数据库服务器。
 
-        +   按块删除LOB，例如，每个事务删除100个LOB。
+        +   按块删除 LOB，例如，每个事务删除 100 个 LOB。
 
-+   处理孤立的LOB
++   处理孤立的 LOB
 
-    +   孤立的LOB是一个大对象，其OID未出现在数据库的任何oid或lo数据列中。
+    +   孤立的 LOB 是一个大对象，其 OID 未出现在数据库的任何 oid 或 lo 数据列中。
 
-    +   如果应用程序在删除关联表行时未调用`lo_unlink()`，则会导致这样一个孤立的LOB存在。
+    +   如果应用程序在删除关联表行时未调用`lo_unlink()`，则会导致这样一个孤立的 LOB 存在。
 
         +   解决方案：执行以下任一项或两项：
 
-        +   使用[vacuumlo](https://www.postgresql.org/docs/current/vacuumlo.html)来删除孤立的LOB。
+        +   使用[vacuumlo](https://www.postgresql.org/docs/current/vacuumlo.html)来删除孤立的 LOB。
 
-        +   使用[扩展](https://www.postgresql.org/docs/current/lo.htmllo)，并在LOB列上设置触发器。当包含LOB OID的表行被更新或删除时，它会自动调用lo_unlink()。
+        +   使用[扩展](https://www.postgresql.org/docs/current/lo.htmllo)，并在 LOB 列上设置触发器。当包含 LOB OID 的表行被更新或删除时，它会自动调用 lo_unlink()。
 
 ### 序列
 
@@ -1834,15 +1834,15 @@ PostgreSQL 文档
 
 +   当：
 
-    +   事务回滚：因为nextval()和setval()调用永远不会回滚，分配的序列值不会被回收。
+    +   事务回滚：因为 nextval()和 setval()调用永远不会回滚，分配的序列值不会被回收。
 
-    +   缓存的值未使用：如果为序列启用了缓存，则nextval()会预先分配指定数量的值，并将它们缓存在会话的本地内存中。随后的nextval()调用会从缓存中获取值，直到缓存为空，然后再次预分配一些值。因此，如果会话结束而未使用所有缓存的值，则会出现间隙。
+    +   缓存的值未使用：如果为序列启用了缓存，则 nextval()会预先分配指定数量的值，并将它们缓存在会话的本地内存中。随后的 nextval()调用会从缓存中获取值，直到缓存为空，然后再次预分配一些值。因此，如果会话结束而未使用所有缓存的值，则会出现间隙。
 
-    +   服务器崩溃：即使使用NO CACHE序列，您也可以在这些步骤中看到间隙：nextval() -> 崩溃恢复 -> nextval()。出于性能考虑，PostgreSQL不会为每次从序列获取值都进行WAL日志记录。nextval()会WAL日志记录当前值之后32个数字的值，接下来的32次调用nextval()不会WAL日志记录任何内容。因此，某些数字似乎被跳过了。
+    +   服务器崩溃：即使使用 NO CACHE 序列，您也可以在这些步骤中看到间隙：nextval() -> 崩溃恢复 -> nextval()。出于性能考虑，PostgreSQL 不会为每次从序列获取值都进行 WAL 日志记录。nextval()会 WAL 日志记录当前值之后 32 个数字的值，接下来的 32 次调用 nextval()不会 WAL 日志记录任何内容。因此，某些数字似乎被跳过了。
 
 ### 参考文献
 
-PostgreSQL文档
+PostgreSQL 文档
 
 数据类型
 
@@ -1860,35 +1860,35 @@ PostgreSQL文档
 
 +   在每个应用程序服务器以及中央服务器上设置连接池。
 
-+   将max_connections和实际连接数限制为CPU核心数量的几倍，或者最多几百个。
++   将 max_connections 和实际连接数限制为 CPU 核心数量的几倍，或者最多几百个。
 
 +   性能往往会在此限制以上下降，主要原因是：
 
     +   客户端后端的内存使用率高，可能导致交换。
 
-    +   CPU上下文切换
+    +   CPU 上下文切换
 
-    +   CPU缓存行争用
+    +   CPU 缓存行争用
 
-    +   锁，特别是自旋锁：如果一个进程持有自旋锁，并且其他进程进入相同的受保护区域，那些后来者将等待自旋锁并继续消耗CPU。
+    +   锁，特别是自旋锁：如果一个进程持有自旋锁，并且其他进程进入相同的受保护区域，那些后来者将等待自旋锁并继续消耗 CPU。
 
-    +   处理PostgreSQL内部数据结构：某些数据结构及其处理取决于连接数；在这里，创建快照突出显示
+    +   处理 PostgreSQL 内部数据结构：某些数据结构及其处理取决于连接数；在这里，创建快照突出显示
 
 +   即使是空闲连接也不是无辜的。它们会导致高资源使用率。
 
 ### 检测问题
 
-为ORM（对象关系映射器）增加track_activity_query_size
+为 ORM（对象关系映射器）增加 track_activity_query_size
 
-+   一些视图，如pg_stat_activity和pg_stat_statements，显示查询字符串。
++   一些视图，如 pg_stat_activity 和 pg_stat_statements，显示查询字符串。
 
-+   因为这些查询字符串存储在固定大小的共享内存中，每个这样的查询字符串的长度都是固定的，即track_activity_query_size。较长的查询会被截断到此限制。
++   因为这些查询字符串存储在固定大小的共享内存中，每个这样的查询字符串的长度都是固定的，即 track_activity_query_size。较长的查询会被截断到此限制。
 
-+   Hibernate或其他ORM产生非常长的查询。将track_activity_query_size设置为32 KB左右可能会有用。
++   Hibernate 或其他 ORM 产生非常长的查询。将 track_activity_query_size 设置为 32 KB 左右可能会有用。
 
-利用[plprofiler](https://github.com/bigsql/plprofiler)诊断PL/pgSQL函数和过程的瓶颈
+利用[plprofiler](https://github.com/bigsql/plprofiler)诊断 PL/pgSQL 函数和过程的瓶颈
 
-+   这是一个创建HTML报告的扩展，显示函数和过程每个步骤的运行时间，从那里调用的例程的总运行时间，以及每个例程的执行时间。
++   这是一个创建 HTML 报告的扩展，显示函数和过程每个步骤的运行时间，从那里调用的例程的总运行时间，以及每个例程的执行时间。
 
 ### 日志记录
 
@@ -1896,7 +1896,7 @@ PostgreSQL文档
 
 +   日志收集器（记录器）是唯一将日志写入服务器日志文件的进程。
 
-+   每个后端进程将日志写入其标准错误，该标准错误通过Unix管道连接到记录器的读端点。记录器从管道中读取消息并将其写入文件。
++   每个后端进程将日志写入其标准错误，该标准错误通过 Unix 管道连接到记录器的读端点。记录器从管道中读取消息并将其写入文件。
 
 +   如果管道被填满，后端在写入时可能会被阻塞。当日志记录量过大时（例如，当使用了一些 pgAudit、auto_explain 和 log_min_duration_statement 的组合并且有许多并发会话运行短查询时），就会发生这种情况。
 
@@ -1956,23 +1956,23 @@ PostgreSQL文档
 
     +   这些扩展中的不可变函数和运算符被认为会在本地服务器和远程服务器上产生相同的结果。因此，它们的执行将被发送到远程服务器。
 
-    +   这在WHERE子句中使用这些函数和运算符时特别有益。这些过滤器将在远程服务器上执行，因此传输的行数较少。
+    +   这在 WHERE 子句中使用这些函数和运算符时特别有益。这些过滤器将在远程服务器上执行，因此传输的行数较少。
 
 ### 全文搜索
 
 插入许多新文档后，全文搜索查询变得慢得多
 
-+   插入数据到启用了fastupdate的GIN索引时，新的索引条目不会放入主索引结构中。相反，它们被放在由gin_pending_list_limit设置的索引的挂起列表中。稍后，当挂起列表区域变满时，那些挂起列表条目将被移动到主索引结构中。
++   插入数据到启用了 fastupdate 的 GIN 索引时，新的索引条目不会放入主索引结构中。相反，它们被放在由 gin_pending_list_limit 设置的索引的挂起列表中。稍后，当挂起列表区域变满时，那些挂起列表条目将被移动到主索引结构中。
 
 +   这对于良好的性能很重要，因为插入一个文档会涉及对主索引的许多插入，具体取决于文档中的单词数量。
 
 +   全文搜索查询在扫描主索引结构之前会扫描挂起列表。因此，如果挂起列表包含许多挂起条目，查询就会变慢。
 
-+   执行vacuum（包括自动vacuum）也会将pending-list项移到主索引中。因此，在vacuum后，全文搜索查询将变得更快。
++   执行 vacuum（包括自动 vacuum）也会将 pending-list 项移到主索引中。因此，在 vacuum 后，全文搜索查询将变得更快。
 
-+   建议调整autovacuum，以便在插入或更新文档后合理频繁地运行。
++   建议调整 autovacuum，以便在插入或更新文档后合理频繁地运行。
 
-+   可以使用以下查询来查看挂起列表页面和元组的数量（pgstatginindex在pgstattuple扩展中）：
++   可以使用以下查询来查看挂起列表页面和元组的数量（pgstatginindex 在 pgstattuple 扩展中）：
 
     +   `SELECT * FROM pgstatginindex('some_gin_index');`
 
@@ -1984,9 +1984,9 @@ PostgreSQL文档
 
     +   `SELECT * FROM mytable ORDER BY random() LIMIT 1;`
 
-+   使用TABLESAMPLE子句返回行非常快，几乎与表的大小无关。
++   使用 TABLESAMPLE 子句返回行非常快，几乎与表的大小无关。
 
-    +   TABLESAMPLE获取表的抽样部分。提供了一些内置的抽样方法。
+    +   TABLESAMPLE 获取表的抽样部分。提供了一些内置的抽样方法。
 
     +   此外，可以通过添加扩展来定制抽样方法。例如，[tsm_system_rows](https://www.postgresql.org/docs/current/tsm-system-rows.html)检索指定数量的随机行：
 
@@ -1994,21 +1994,21 @@ PostgreSQL文档
 
         +   `SELECT * FROM mytable TABLESAMPLE SYSTEM_ROWS(1);`
 
-    +   SYSTEM_ROWS在表的数据文件中随机选取一个块，然后在其中顺序提取行。如果需要更多行，将选择其他块。
+    +   SYSTEM_ROWS 在表的数据文件中随机选取一个块，然后在其中顺序提取行。如果需要更多行，将选择其他块。
 
 ### 内存
 
-使用huge pages
+使用 huge pages
 
-+   设置huge_pages = on。
++   设置 huge_pages = on。
 
     +   这将大大减少内存使用，因为页面表变得更小。
 
-    +   同样，由于CPU的TLB缓存未命中减少，可以期待性能得到改善。
+    +   同样，由于 CPU 的 TLB 缓存未命中减少，可以期待性能得到改善。
 
-+   在稳定运行的一部分中，应优先选择“on”而不是“try”来使用huge_pages，考虑到内存使用量的减少和性能的改善。
++   在稳定运行的一部分中，应优先选择“on”而不是“try”来使用 huge_pages，考虑到内存使用量的减少和性能的改善。
 
-    +   当huge_pages设置为“on”且操作系统无法分配足够的huge页面时，PostgreSQL拒绝启动并发出以下消息：
+    +   当 huge_pages 设置为“on”且操作系统无法分配足够的 huge 页面时，PostgreSQL 拒绝启动并发出以下消息：
 
         +   `FATAL: could not map anonymous shared memory: Cannot allocate memory`
 
@@ -2062,19 +2062,19 @@ PostgreSQL文档
 
 本地内存的技巧
 
-+   设置足够的work_mem需要尝试和错误。
++   设置足够的 work_mem 需要尝试和错误。
 
-    +   不幸的是，没有一种简单的方法来估算work_mem设置以避免磁盘溢出。
+    +   不幸的是，没有一种简单的方法来估算 work_mem 设置以避免磁盘溢出。
 
-    +   log_temp_files显示的临时文件不足以说明问题。必须包括在内存中缓冲临时数据的额外开销。
+    +   log_temp_files 显示的临时文件不足以说明问题。必须包括在内存中缓冲临时数据的额外开销。
 
-    +   估算work_mem的一种方法是将在查询计划中找到的已排序或已散列的计划行的宽度和数量相乘。为了考虑额外的开销，比如再乘以1.1或者更多。
+    +   估算 work_mem 的一种方法是将在查询计划中找到的已排序或已散列的计划行的宽度和数量相乘。为了考虑额外的开销，比如再乘以 1.1 或者更多。
 
     +   如果使用了并行查询，请将结果除以（使用的并行工作者数+1）。“+1”是指并行领导进程。
 
-    +   运行EXPLAIN ANALYZE以查看是否使用了外部文件。尝试增加work_mem直到外部文件的使用消失为止。
+    +   运行 EXPLAIN ANALYZE 以查看是否使用了外部文件。尝试增加 work_mem 直到外部文件的使用消失为止。
 
-+   effective_cache_size不会分配任何内存。
++   effective_cache_size 不会分配任何内存。
 
     +   这仅用于估算索引扫描的成本。规划器假设此数量的内存可用于缓存查询数据。
 
@@ -2082,21 +2082,21 @@ PostgreSQL文档
 
 ### 网络
 
-在运行大量短SQL命令时要注意网络延迟
+在运行大量短 SQL 命令时要注意网络延迟
 
-+   当您将批处理应用程序（在连续发出许多小SQL语句的情况下）迁移到不同的环境时，它是否变得慢了很多倍？
++   当您将批处理应用程序（在连续发出许多小 SQL 语句的情况下）迁移到不同的环境时，它是否变得慢了很多倍？
 
 +   这可能是因为网络延迟较高。检查一下网络通信是否缓慢。
 
-    +   测量简单SQL的往返时间，例如，
+    +   测量简单 SQL 的往返时间，例如，
 
-    +   检查等待事件ClientRead和ClientWrite是否增加。
+    +   检查等待事件 ClientRead 和 ClientWrite 是否增加。
 
 ### 游标
 
-+   DECLARE CURSOR很快。它创建了一个查询计划，但不计算结果集。FETCH开始计算。
++   DECLARE CURSOR 很快。它创建了一个查询计划，但不计算结果集。FETCH 开始计算。
 
-+   游标查询与非游标查询的计划方式不同。您可以看到相同SELECT语句的不同查询计划。
++   游标查询与非游标查询的计划方式不同。您可以看到相同 SELECT 语句的不同查询计划。
 
     +   非游标查询针对总运行时间进行了优化。优化器假设客户端将消耗整个结果集。
 
@@ -2104,17 +2104,17 @@ PostgreSQL文档
 
     +   游标查询针对启动时间和初始数据检索的运行时间进行了优化。优化器假设客户端只会获取结果集的一部分。
 
-        +   优化器选择索引扫描以加快数据的前10%的创建速度。
+        +   优化器选择索引扫描以加快数据的前 10%的创建速度。
 
-        +   “10%”可以通过cursor_tuple_fraction参数进行配置。
+        +   “10%”可以通过 cursor_tuple_fraction 参数进行配置。
 
 ### 锁
 
 利用高性能的快速路径锁
 
-+   如果大量并发的短事务每个都触及许多关系，则保护锁表的lwlocks可能成为争用瓶颈。这种争用可视为LWLock:LockManager等待事件。
++   如果大量并发的短事务每个都触及许多关系，则保护锁表的 lwlocks 可能成为争用瓶颈。这种争用可视为 LWLock:LockManager 等待事件。
 
-+   尽管锁表被分成了16个分区，并且它们被不同的lwlocks覆盖，但数百个并发事务可能导致在这些lwlocks上等待。
++   尽管锁表被分成了 16 个分区，并且它们被不同的 lwlocks 覆盖，但数百个并发事务可能导致在这些 lwlocks 上等待。
 
 +   快速路径锁来拯救：
 
@@ -2238,27 +2238,27 @@ TOAST（超大属性存储技术）
 
     +   压缩和/或将列值移动到 TOAST 表，直到行值短于 2 KB（当页面大小为 8 KB 时）或无法获得更多收益为止。可以使用 CREATE/ALTER TABLE 中的存储参数 toast_tuple_target 来调整每个表的此 2 KB 阈值。
 
-    +   将TOAST值的chunk_id存储在主表的列中。这称为TOAST指针。
+    +   将 TOAST 值的 chunk_id 存储在主表的列中。这称为 TOAST 指针。
 
-+   可以使用`ALTER TABLE ALTER COLUMN column_name SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }`从四个选项中选择值存储策略——是否应该压缩或移动到TOAST表中。
++   可以使用`ALTER TABLE ALTER COLUMN column_name SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }`从四个选项中选择值存储策略——是否应该压缩或移动到 TOAST 表中。
 
-+   压缩方法可以在pglz和lz4之间选择。它可以通过在CREATE/ALTER TABLE中使用COMPRESSION列选项为每个列设置，否则使用default_toast_compression参数。
++   压缩方法可以在 pglz 和 lz4 之间选择。它可以通过在 CREATE/ALTER TABLE 中使用 COMPRESSION 列选项为每个列设置，否则使用 default_toast_compression 参数。
 
-+   TOAST值的插入可能会变得出奇的慢。
++   TOAST 值的插入可能会变得出奇的慢。
 
-    +   这种情况通常在目标表已经拥有数百万个TOAST值后出现，特别是在连续插入大量行之后。
+    +   这种情况通常在目标表已经拥有数百万个 TOAST 值后出现，特别是在连续插入大量行之后。
 
     +   为什么？
 
-        +   每个TOAST值都由一个OID标识。
+        +   每个 TOAST 值都由一个 OID 标识。
 
-        +   OID是一个无符号4字节值，它是从每40亿个值都会环绕的群集范围计数器生成的。因此，单个表不能有超过2^32（40亿）个TOAST值。
+        +   OID 是一个无符号 4 字节值，它是从每 40 亿个值都会环绕的群集范围计数器生成的。因此，单个表不能有超过 2³²（40 亿）个 TOAST 值。
 
-        +   当插入一个TOAST值时，PostgreSQL为其生成一个新的OID，检查目标表中是否已经使用了相同的OID的现有TOAST值。如果已使用，PostgreSQL将生成下一个OID并再次执行检查。直到找到一个空闲的OID。
+        +   当插入一个 TOAST 值时，PostgreSQL 为其生成一个新的 OID，检查目标表中是否已经使用了相同的 OID 的现有 TOAST 值。如果已使用，PostgreSQL 将生成下一个 OID 并再次执行检查。直到找到一个空闲的 OID。
 
-        +   如果目标表中使用连续的OID，则此重试会花费很长时间。
+        +   如果目标表中使用连续的 OID，则此重试会花费很长时间。
 
-+   解决方法是对表进行分区。每个分区都有自己的TOAST表。因此，每个分区中重复OID的可能性降低了。
++   解决方法是对表进行分区。每个分区都有自己的 TOAST 表。因此，每个分区中重复 OID 的可能性降低了。
 
 ### 事务
 
@@ -2272,65 +2272,65 @@ TOAST（超大属性存储技术）
 
 +   子事务是事务的一部分，可以回滚而不回滚主（顶级）事务。
 
-+   子事务可以由SAVEPOINT命令显式启动，也可以在PL/pgSQL中进入带有EXCEPTION子句的块时隐式启动。
++   子事务可以由 SAVEPOINT 命令显式启动，也可以在 PL/pgSQL 中进入带有 EXCEPTION 子句的块时隐式启动。
 
-+   一些客户端驱动程序提供了一个选项，可以为每个SQL语句启动和结束一个子事务，例如PgJDBC的连接参数“autosave”。要注意它们的默认值。
++   一些客户端驱动程序提供了一个选项，可以为每个 SQL 语句启动和结束一个子事务，例如 PgJDBC 的连接参数“autosave”。要注意它们的默认值。
 
-+   每个子事务在执行需要XID的操作时（例如修改数据或锁定行）都会分配自己的XID。
++   每个子事务在执行需要 XID 的操作时（例如修改数据或锁定行）都会分配自己的 XID。
 
-+   元组头的xmin和xmax字段记录了更新它的子事务的XID。为了检查元组的可见性，看到xmin/xmax的事务需要知道主事务是否已经结束，而不是子事务。
++   元组头的 xmin 和 xmax 字段记录了更新它的子事务的 XID。为了检查元组的可见性，看到 xmin/xmax 的事务需要知道主事务是否已经结束，而不是子事务。
 
 +   如何知道子事务的主事务：
 
-    +   当子事务分配其XID时，它会在$PGDATA/pg_subtrans/中记录其直接父项的XID。
+    +   当子事务分配其 XID 时，它会在$PGDATA/pg_subtrans/中记录其直接父项的 XID。
 
-    +   pg_subtrans的结构是XIDS数组。 例如，XID 100的父XID存储在数组的第101个元素中。 数组分为8 KB页面。
+    +   pg_subtrans 的结构是 XIDS 数组。 例如，XID 100 的父 XID 存储在数组的第 101 个元素中。 数组分为 8 KB 页面。
 
-    +   pg_subtrans数据被缓存在32页的内存区域中。 该区域由SLRU（简单最近未使用）缓冲区管理。 因此，缓存可以包含32页 * 8 KB / 4 = 65,536个事务。
+    +   pg_subtrans 数据被缓存在 32 页的内存区域中。 该区域由 SLRU（简单最近未使用）缓冲区管理。 因此，缓存可以包含 32 页 * 8 KB / 4 = 65,536 个事务。
 
-    +   因此，为了获取主事务的XID，需要遍历与子事务嵌套深度相同的条目数。
+    +   因此，为了获取主事务的 XID，需要遍历与子事务嵌套深度相同的条目数。
 
-+   pg_subtrans是否总是用于元组可见性的检查？
++   pg_subtrans 是否总是用于元组可见性的检查？
 
-    +   不。 快照不仅存储主事务的XID，还存储子事务的XID。 如果检查者的快照包含所有子事务，则可以在不查阅pg_subtrans的情况下完成工作。
+    +   不。 快照不仅存储主事务的 XID，还存储子事务的 XID。 如果检查者的快照包含所有子事务，则可以在不查阅 pg_subtrans 的情况下完成工作。
 
-    +   然而，情况并非总是如此。 每个后端最多可以在共享内存中的ProcArray条目中具有64个子事务XID。 如果主事务有超过64个子事务，则其ProcArray条目将被标记为溢出。
+    +   然而，情况并非总是如此。 每个后端最多可以在共享内存中的 ProcArray 条目中具有 64 个子事务 XID。 如果主事务有超过 64 个子事务，则其 ProcArray 条目将被标记为溢出。
 
-    +   在创建快照时，扫描所有运行中事务的ProcArray条目，以收集主事务和子事务的XID。 如果任何条目被标记为溢出，则将快照标记为子溢出。
+    +   在创建快照时，扫描所有运行中事务的 ProcArray 条目，以收集主事务和子事务的 XID。 如果任何条目被标记为溢出，则将快照标记为子溢出。
 
-    +   子溢出的快照不包含确定可见性所需的所有数据，因此必须使用pg_subtrans将元组的xmin/xmax追溯到它们的顶层事务XID。
+    +   子溢出的快照不包含确定可见性所需的所有数据，因此必须使用 pg_subtrans 将元组的 xmin/xmax 追溯到它们的顶层事务 XID。
 
 +   所以，问题是什么？
 
-    +   pg_subtrans的读取器与写入器竞争lwlocks以保护SLRU缓冲区，读取器和写入器分别以共享模式和独占模式锁定其父级的XID。
+    +   pg_subtrans 的读取器与写入器竞争 lwlocks 以保护 SLRU 缓冲区，读取器和写入器分别以共享模式和独占模式锁定其父级的 XID。
 
-    +   pg_subtrans缓存不是很大。 在许多并发子事务中，会出现磁盘I/O。
+    +   pg_subtrans 缓存不是很大。 在许多并发子事务中，会出现磁盘 I/O。
 
 +   我怎样才能知道这种情况发生的可能性？
 
-    +   等待事件LWLock:SubtransBuffer，LWLock:SubtransSLRU，IO:SLRURead和IO:SLRUWrite不断增长。
+    +   等待事件 LWLock:SubtransBuffer，LWLock:SubtransSLRU，IO:SLRURead 和 IO:SLRUWrite 不断增长。
 
-    +   [pg_stat_slru](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-SLRU-VIEW)显示其Subtrans行中的blks_read和blks_hit持续增加。（PostgreSQL 13+）
+    +   [pg_stat_slru](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-SLRU-VIEW)显示其 Subtrans 行中的 blks_read 和 blks_hit 持续增加。（PostgreSQL 13+）
 
-    +   pg_stat_get_backend_subxact(backend_id)返回subxact_count和subxact_overflow。（PostgreSQL 16+）
+    +   pg_stat_get_backend_subxact(backend_id)返回 subxact_count 和 subxact_overflow。（PostgreSQL 16+）
 
-在内部，MultiXact可能会影响性能
+在内部，MultiXact 可能会影响性能
 
-+   MultiXact是什么？
++   MultiXact 是什么？
 
-    +   一种记录元组上多个锁定者XID的机制。（多事务）
+    +   一种记录元组上多个锁定者 XID 的机制。（多事务）
 
-    +   元组头中的xmax字段记录了锁定该元组的XID。
+    +   元组头中的 xmax 字段记录了锁定该元组的 XID。
 
     +   那么，当多个事务在同一元组上获取锁时会发生什么？
 
-        +   例如，具有XID 100的第一个事务运行了`SELECT ... FOR SHARE`。 xmax变成了100。
+        +   例如，具有 XID 100 的第一个事务运行了`SELECT ... FOR SHARE`。 xmax 变成了 100。
 
-        +   接下来，具有XID 101的第二个事务在相同的元组上运行相同的`SELECT ... FOR SHARE`。 然后，分配一个新的MultiXact ID，例如1，并设置为xmax字段。
+        +   接下来，具有 XID 101 的第二个事务在相同的元组上运行相同的`SELECT ... FOR SHARE`。 然后，分配一个新的 MultiXact ID，例如 1，并设置为 xmax 字段。
 
-        +   将MultiXact ID 1到实际锁定者的XIDS（100、101）的映射添加到$PGDATA/pg_multixact/中。
+        +   将 MultiXact ID 1 到实际锁定者的 XIDS（100、101）的映射添加到$PGDATA/pg_multixact/中。
 
-+   外键约束实现为执行`"SELECT ... FOR KEY SHARE"`的约束触发器。 因此，可能在您不知情的情况下使用MultiXact。
++   外键约束实现为执行`"SELECT ... FOR KEY SHARE"`的约束触发器。 因此，可能在您不知情的情况下使用 MultiXact。
 
 +   问题可能是什么？
 
@@ -2392,23 +2392,23 @@ TOAST（超大属性存储技术）
 
 +   监控检查点的频率。
 
-    +   调度和请求的检查点数量分别可以在[pg_stat_bgwriter](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-BGWRITER-VIEW)中的checkpoints_timed和checkpoints_req中查看。
+    +   调度和请求的检查点数量分别可以在[pg_stat_bgwriter](https://www.postgresql.org/docs/current/monitoring-stats.html#MONITORING-PG-STAT-BGWRITER-VIEW)中的 checkpoints_timed 和 checkpoints_req 中查看。
 
         +   绝大部分检查点应该是计划的，而不是请求的。计划的检查点允许负载均匀分布在系统的正常操作中。频繁的请求检查点可能导致性能变化。
 
-    +   如果两个连续检查点之间的经过时间小于checkpoint_warning，并且新的检查点是由WAL积累请求的，则服务器日志会显示以下消息。
+    +   如果两个连续检查点之间的经过时间小于 checkpoint_warning，并且新的检查点是由 WAL 积累请求的，则服务器日志会显示以下消息。
 
-        +   `LOG:检查点发生得太频繁（相隔8秒）`
+        +   `LOG:检查点发生得太频繁（相隔 8 秒）`
 
         +   `提示：考虑增加配置参数“max_wal_size”。`
 
-+   通过增加max_wal_size和/或checkpoint_timeout来降低检查点的频率。
++   通过增加 max_wal_size 和/或 checkpoint_timeout 来降低检查点的频率。
 
     +   注意，这可能会增加崩溃恢复所需的时间。
 
-+   将wal_compression设置为on。这会减少对全页写入WAL的需求。
++   将 wal_compression 设置为 on。这会减少对全页写入 WAL 的需求。
 
-+   增加min_wal_size。这减少了事务创建新WAL段文件的需求。
++   增加 min_wal_size。这减少了事务创建新 WAL 段文件的需求。
 
 ### 索引
 
@@ -2418,19 +2418,19 @@ TOAST（超大属性存储技术）
 
 +   更大的磁盘空间会增加物理备份的大小和持续时间。
 
-+   索引会减慢INSERT/DELETE/COPY语句，因为它们总是要修改所有索引。
++   索引会减慢 INSERT/DELETE/COPY 语句，因为它们总是要修改所有索引。
 
-+   索引会阻止HOT更新。HOT仅适用于对非索引列的修改。
++   索引会阻止 HOT 更新。HOT 仅适用于对非索引列的修改。
 
 你可能没有注意到的索引好处
 
-+   B-tree索引可以加速max()和min()聚合。它们只需在索引的末尾读取索引条目。
++   B-tree 索引可以加速 max()和 min()聚合。它们只需在索引的末尾读取索引条目。
 
 +   表达式上的索引也会收集计算值的统计信息。
 
     +   例如：`CREATE INDEX myindex1 ON mytable ((col1 + col2 * 3));`
 
-    +   你可以查看索引表达式的统计信息。例如，上述情况中，统计信息出现在pg_stats中，tablename=myindex1，attname=expr。
+    +   你可以查看索引表达式的统计信息。例如，上述情况中，统计信息出现在 pg_stats 中，tablename=myindex1，attname=expr。
 
     +   对索引表达式可以设置统计目标。例如，`ALTER INDEX index_name ALTER COLUMN expr SET STATISTICS 1000;`
 
@@ -2438,23 +2438,23 @@ TOAST（超大属性存储技术）
 
     +   例如：`CREATE TABLE orders (...，product_id int REFERENCES products ON CASCADE DELETE);`
 
-    +   你可以使用EXPLAIN ANALYZE和auto_explain来查看约束级联处理所用的时间。外键约束在内部使用触发器实现。
+    +   你可以使用 EXPLAIN ANALYZE 和 auto_explain 来查看约束级联处理所用的时间。外键约束在内部使用触发器实现。
 
         +   例如：`EXPLAIN ANALYZE DELETE FROM products WHERE product_id = 2;`
 
-        +   ...`约束orders_product_id_fkey的触发器：时间=0.322 调用=1`
+        +   ...`约束 orders_product_id_fkey 的触发器：时间=0.322 调用=1`
 
 使索引只扫描起作用
 
-+   使用EXPLAIN ANALYZE查看索引只扫描需要读取堆的次数。例如，它显示类似于“堆抓取：0”。0是最好的。
++   使用 EXPLAIN ANALYZE 查看索引只扫描需要读取堆的次数。例如，它显示类似于“堆抓取：0”。0 是最好的。
 
-+   将autovacuum设置得更积极一些，或者运行VACUUM来更新可见性地图。这会减少堆抓取。
++   将 autovacuum 设置得更积极一些，或者运行 VACUUM 来更新可见性地图。这会减少堆抓取。
 
 ### 查询计划
 
-ANALYZE的风险
+ANALYZE 的风险
 
-+   Autovacuum不会在临时表或外部表上运行ANALYZE。需要手动运行ANALYZE。
++   Autovacuum 不会在临时表或外部表上运行 ANALYZE。需要手动运行 ANALYZE。
 
 +   即使表内容没有更改，ANALYZE 之后也可能会改变查询计划。
 

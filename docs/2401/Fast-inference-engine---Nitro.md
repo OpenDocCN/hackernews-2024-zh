@@ -8,7 +8,7 @@
 
 # 快速推理引擎 | Nitro
 
-> 来源：[https://nitro.jan.ai/](https://nitro.jan.ai/)
+> 来源：[`nitro.jan.ai/`](https://nitro.jan.ai/)
 
 ## Nitro 的架构
 

@@ -8,7 +8,7 @@
 
 # 更多自豪地付款
 
-> 来源：[https://proudtopaymore.org](https://proudtopaymore.org)
+> 来源：[`proudtopaymore.org`](https://proudtopaymore.org)
 
 #### 致达沃斯的全球领导人：
 
@@ -44,4 +44,4 @@
 
 此致，
 
-[***签署ignatures)
+[***签署 ignatures)

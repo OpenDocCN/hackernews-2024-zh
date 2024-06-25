@@ -8,7 +8,7 @@
 
 # GitHub - kspalaiologos/malbolge-lisp: 一个体积轻量（350MB）的 Malbolge Unshackled Lisp 解释器，通常被称为最难的图灵完备编程语言。
 
-> 来源：[https://github.com/kspalaiologos/malbolge-lisp](https://github.com/kspalaiologos/malbolge-lisp)
+> 来源：[`github.com/kspalaiologos/malbolge-lisp`](https://github.com/kspalaiologos/malbolge-lisp)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

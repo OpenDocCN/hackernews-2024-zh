@@ -8,7 +8,7 @@ category: 未分类
 
 # Perception: @Observable 的回溯
 
-> 来源：[https://www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable](https://www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable)
+> 来源：[`www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable`](https://www.pointfree.co/blog/posts/129-perception-a-back-port-of-observable)
 
 Swift 5.9 为语言带来了强大的观察工具，但不幸的是，它们仅适用于 iOS 17、macOS 14、tvOS 17、watchOS 10 和更新的版本。但根据一些统计数据，不到 50% 的设备使用 iOS 17，所以大多数开发者将无法在几年内使用这些工具。
 
@@ -61,7 +61,7 @@ Swift 5.9 为语言带来了强大的观察工具，但不幸的是，它们仅�
 
 ## Perception 库的工作原理
 
-新的 Observation 框架是 Swift 开源项目的一部分，这意味着所有的[源代码](https://github.com/apple/swift/tree/f7f5070454850ed6bda85a9574b1759115705da4/stdlib/public/Observation)都可以立即获得，包括[@Observable宏的源代码](https://github.com/apple/swift/tree/f7f5070454850ed6bda85a9574b1759115705da4/lib/Macros/Sources/ObservationMacros)。因此，我们能够将所有这些代码复制到一个新项目中，并在进行了一些小的更改后使其全部编译通过。
+新的 Observation 框架是 Swift 开源项目的一部分，这意味着所有的[源代码](https://github.com/apple/swift/tree/f7f5070454850ed6bda85a9574b1759115705da4/stdlib/public/Observation)都可以立即获得，包括[@Observable 宏的源代码](https://github.com/apple/swift/tree/f7f5070454850ed6bda85a9574b1759115705da4/lib/Macros/Sources/ObservationMacros)。因此，我们能够将所有这些代码复制到一个新项目中，并在进行了一些小的更改后使其全部编译通过。
 
 我们还对代码进行了一些重大更改，使其表现出我们想要的行为。我们对代码进行的第一个重大更改是将所有“observation”的变体重命名为“perception”（*例如*，`@Observable`变为`@Perceptible`）。我们这样做是为了清楚地表明这些工具是与苹果直接在 Swift 工具链中提供的工具分开的。但我们还[弃用](https://github.com/pointfreeco/swift-perception/blob/92858a542c498742d51c1e736591d91a807d65a7/Sources/Perception/Perceptible.swift#L19-L23)了所有使用重命名的后备工具，这样一旦您将最低部署目标设置为 iOS 17，您就可以轻松过渡到我们的库。
 

@@ -8,7 +8,7 @@
 
 # GitHub - abolinsky/Hook: a graphical C/C++ runtime editor
 
-> 来源：[https://github.com/abolinsky/Hook](https://github.com/abolinsky/Hook)
+> 来源：[`github.com/abolinsky/Hook`](https://github.com/abolinsky/Hook)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

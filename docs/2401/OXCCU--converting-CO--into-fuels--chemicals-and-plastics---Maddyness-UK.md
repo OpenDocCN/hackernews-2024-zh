@@ -8,7 +8,7 @@
 
 # OXCCU，将 CO₂ 转化为燃料、化学品和塑料 - Maddyness UK
 
-> 来源：[https://www.maddyness.com/uk/2024/01/17/oxccu-converting-co₂-into-fuels-chemicals-and-plastics/](https://www.maddyness.com/uk/2024/01/17/oxccu-converting-co₂-into-fuels-chemicals-and-plastics/)
+> 来源：[`www.maddyness.com/uk/2024/01/17/oxccu-converting-co₂-into-fuels-chemicals-and-plastics/`](https://www.maddyness.com/uk/2024/01/17/oxccu-converting-co₂-into-fuels-chemicals-and-plastics/)
 
 *[OXCCU](https://www.oxccu.com/)* 的推出旨在解决温室气体排放，尤其是来自化石燃料的不断升级的影响。碳是一种非常有用的元素，尤其是在碳氢化合物中使用时，一些行业没有可行的替代品。直接使用可再生电力根本不是一个选择。我们的使命是让未来的世代继续使用这些行业的碳氢化合物，但不产生气候影响。
 
@@ -32,7 +32,7 @@ OXCCU 处于科学进步的前沿，该公司于 2021 年从牛津大学分拆�
 
 ## **你们的资金来源是怎样的？**
 
-OXCCU 的资金来自多方。*[2023 年我们获得了1800 万英镑的 A 轮融资](https://www.maddyness.com/uk/2023/06/09/rna-cultivated-pork-sustainable-aviation-fuel-and-community-owned-cannabis-in-this-weeks-maddymoney/)*，并获得了 280 万英镑的政府拨款。我们的主要投资者包括 IP Group（Kiko）、Clean Energy Ventures、ENI、United Airlines、Aramco Ventures、Braavos、Trafigura、TechEnergy Ventures 和 Doral。
+OXCCU 的资金来自多方。*[2023 年我们获得了 1800 万英镑的 A 轮融资](https://www.maddyness.com/uk/2023/06/09/rna-cultivated-pork-sustainable-aviation-fuel-and-community-owned-cannabis-in-this-weeks-maddymoney/)*，并获得了 280 万英镑的政府拨款。我们的主要投资者包括 IP Group（Kiko）、Clean Energy Ventures、ENI、United Airlines、Aramco Ventures、Braavos、Trafigura、TechEnergy Ventures 和 Doral。
 
 ## **迄今为止你们面临的最大挑战是什么，你们是如何克服的？**
 
@@ -40,13 +40,13 @@ OXCCU 的资金来自多方。*[2023 年我们获得了1800 万英镑的 A 轮�
 
 ## **OXCCU 如何满足未满足的需求？**
 
-将CO2和H2直接转化为长链碳氢化合物的直接费舍尔特罗普斯转化具有挑战性；其他尝试直接转化技术的努力只能形成令人不满意的短链碳氢化合物和甲烷，或者产生昂贵且难以与产生的水分离的低价值醇类副产品。因此，大多数人转而首先制备CO，然后使用CO和额外的H2（合成气）进行费舍尔特罗普斯，而不是直接使用CO2和H2。然而，从CO2制备CO（称为逆水煤气变换或RWGS）是一个困难的、能量密集型的过程，并且尚未在商业上实现规模化。另外，使用CO和H2（合成气）进行费舍尔特罗普斯，通常会生成需要在另一个能量密集型步骤中裂解的重质蜡。
+将 CO2 和 H2 直接转化为长链碳氢化合物的直接费舍尔特罗普斯转化具有挑战性；其他尝试直接转化技术的努力只能形成令人不满意的短链碳氢化合物和甲烷，或者产生昂贵且难以与产生的水分离的低价值醇类副产品。因此，大多数人转而首先制备 CO，然后使用 CO 和额外的 H2（合成气）进行费舍尔特罗普斯，而不是直接使用 CO2 和 H2。然而，从 CO2 制备 CO（称为逆水煤气变换或 RWGS）是一个困难的、能量密集型的过程，并且尚未在商业上实现规模化。另外，使用 CO 和 H2（合成气）进行费舍尔特罗普斯，通常会生成需要在另一个能量密集型步骤中裂解的重质蜡。
 
-通常，两个步骤意味着更多的分离步骤，更多的热管理问题和更高的成本。我们在OXCCU与牛津大学世界领先科学家的独特突破催化剂和反应器系统使得在单一步骤中直接形成喷气燃料范围的碳氢化合物成为可能。与其他间接途径（例如通过CO的两步法）相比，我们的直接途径更加节能、选择性强且可扩展，并且可以轻松地编程以生产其他碳氢化合物或有价值的化学品。
+通常，两个步骤意味着更多的分离步骤，更多的热管理问题和更高的成本。我们在 OXCCU 与牛津大学世界领先科学家的独特突破催化剂和反应器系统使得在单一步骤中直接形成喷气燃料范围的碳氢化合物成为可能。与其他间接途径（例如通过 CO 的两步法）相比，我们的直接途径更加节能、选择性强且可扩展，并且可以轻松地编程以生产其他碳氢化合物或有价值的化学品。
 
 ## **未来有什么规划？**
 
-在未来三年内，OXCCU将建立示范和试点工厂，然后许可我们的技术，将我们的催化剂和反应器设计出售给寻求制造可持续航空燃料（SAF）的项目开发者。我们将继续创新和改进我们的催化剂性能和工艺，并开发其他CO2或CO催化剂，使可持续碳氢化合物的扩展超越航空燃料，用于其他燃料、塑料和化学品，以及演示与废弃生物质和沼气工艺的整合。我们将与工程、航空和化工行业的主要参与者建立重要伙伴关系。
+在未来三年内，OXCCU 将建立示范和试点工厂，然后许可我们的技术，将我们的催化剂和反应器设计出售给寻求制造可持续航空燃料（SAF）的项目开发者。我们将继续创新和改进我们的催化剂性能和工艺，并开发其他 CO2 或 CO 催化剂，使可持续碳氢化合物的扩展超越航空燃料，用于其他燃料、塑料和化学品，以及演示与废弃生物质和沼气工艺的整合。我们将与工程、航空和化工行业的主要参与者建立重要伙伴关系。
 
 ## **如果你能给其他创始人或未来的创始人提一个建议，那会是什么？**
 

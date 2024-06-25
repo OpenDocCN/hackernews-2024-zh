@@ -8,7 +8,7 @@ date: 2024-05-27 15:08:27
 
 # GitHub - NativeVision/viro: ViroReact: The AR and VR library for React Native 📳💙💛🤍💚
 
-> 来源：[https://github.com/NativeVision/viro](https://github.com/NativeVision/viro)
+> 来源：[`github.com/NativeVision/viro`](https://github.com/NativeVision/viro)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

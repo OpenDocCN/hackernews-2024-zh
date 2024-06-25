@@ -8,7 +8,7 @@
 
 # HyperDisk 博客 - 有太多的 Mac 应用程序是用 Electron 构建的
 
-> 来源：[https://hyperdiskapp.com/blog/too-many-mac-apps-are-being-built-with-electron/](https://hyperdiskapp.com/blog/too-many-mac-apps-are-being-built-with-electron/)
+> 来源：[`hyperdiskapp.com/blog/too-many-mac-apps-are-being-built-with-electron/`](https://hyperdiskapp.com/blog/too-many-mac-apps-are-being-built-with-electron/)
 
 这个测试涉及“感觉”的概念，就是当你运行应用程序时的感觉。写得效率高的应用程序感觉就像没有任何东西阻碍你与计算机之间的联系，没有任何粘性的层来阻碍工作并减慢速度。
 

@@ -8,7 +8,7 @@
 
 # GitHub 状态 - 与问题、API 请求、拉取请求、操作、页面、Git 操作、Webhooks、软件包和 Codespaces 相关的事故
 
-> 来源：[https://www.githubstatus.com/incidents/pxg3dz4yg7lp](https://www.githubstatus.com/incidents/pxg3dz4yg7lp)
+> 来源：[`www.githubstatus.com/incidents/pxg3dz4yg7lp`](https://www.githubstatus.com/incidents/pxg3dz4yg7lp)
 
 通过电子邮件和/或短信订阅关于**与问题、API 请求、拉取请求、操作、页面、Git 操作、Webhooks、软件包和 Codespaces 相关的事故**的更新。当事故更新时，您将收到电子邮件通知，而每当 GitHub **创建**或**解决**一个事故时，您将收到短信通知。
 

@@ -6,9 +6,9 @@ date: 2024-05-27 14:32:20
 
 -->
 
-# GitHub - binkley/modern-java-practices: 现代Java/JVM构建实践
+# GitHub - binkley/modern-java-practices: 现代 Java/JVM 构建实践
 
-> 来源：[https://github.com/binkley/modern-java-practices](https://github.com/binkley/modern-java-practices)
+> 来源：[`github.com/binkley/modern-java-practices`](https://github.com/binkley/modern-java-practices)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:24:26
 
 # 没有人应该成为危险街道上第二个死亡的人
 
-> 来源：[https://www.strongtowns.org/journal/2024/1/26/no-one-should-be-the-second-person-to-die-on-a-dangerous-street](https://www.strongtowns.org/journal/2024/1/26/no-one-should-be-the-second-person-to-die-on-a-dangerous-street)
+> 来源：[`www.strongtowns.org/journal/2024/1/26/no-one-should-be-the-second-person-to-die-on-a-dangerous-street`](https://www.strongtowns.org/journal/2024/1/26/no-one-should-be-the-second-person-to-die-on-a-dangerous-street)
 
 [迈阿密海滩更美好街道](https://betterstreetsmb.com/bsmb/news/)分享了上面的图片，该图片展示了北美各地每个自治市政府都有权采取的一小步措施，以解决交叉口的安全问题。图片展示了一个交叉口，设计告诉驾驶员他们可以加速。驾驶员能够以更高的速度转弯而不停下或减速。问题在于高速行驶时，驾驶员可能看不到人行横道上的行人，增加了事故的可能性。实施凸出部会迫使驾驶员减速，并使人们过马路更安全。
 

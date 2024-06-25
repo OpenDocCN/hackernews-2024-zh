@@ -8,7 +8,7 @@ date: 2024-05-27 15:19:17
 
 # GitHub - dy/linefont: 用于渲染线图数据的字体
 
-> 来源：[https://github.com/dy/linefont](https://github.com/dy/linefont)
+> 来源：[`github.com/dy/linefont`](https://github.com/dy/linefont)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@
 
 # T-Keyboard – LILYGO®
 
-> 来源：[https://www.lilygo.cc/products/t-keyboard](https://www.lilygo.cc/products/t-keyboard)
+> 来源：[`www.lilygo.cc/products/t-keyboard`](https://www.lilygo.cc/products/t-keyboard)
 
 **方法与交付时间**
 
@@ -34,4 +34,4 @@
 
 **请确保您的地址填写完整**（包括省份和大洲，这将影响您订单的送货时间）
 
-更多详情请查阅我们的[运输政策](/pages/copy-of-shipping-delivery-1 "运输与交付")。
+更多详情请查阅我们的运输政策。

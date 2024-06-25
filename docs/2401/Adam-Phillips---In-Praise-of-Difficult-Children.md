@@ -8,7 +8,7 @@ date: 2024-05-27 14:59:00
 
 # Adam Phillips · In Praise of Difficult Children
 
-> 来源：[https://www.lrb.co.uk/the-paper/v31/n03/adam-phillips/in-praise-of-difficult-children](https://www.lrb.co.uk/the-paper/v31/n03/adam-phillips/in-praise-of-difficult-children)
+> 来源：[`www.lrb.co.uk/the-paper/v31/n03/adam-phillips/in-praise-of-difficult-children`](https://www.lrb.co.uk/the-paper/v31/n03/adam-phillips/in-praise-of-difficult-children)
 
 当你逃课时，你会度过更美好的时光。但是，你怎么知道什么才是更美好的时光，或者你怎么学会什么才是更美好的时光？在青春期以及一种新的方式，你意识到有许多种好时光可以度过，而且它们经常相互冲突。当你背叛自己时，当你让自己失望时，你误认为什么是你心目中的美好时光；或者，间接地，更充分地意识到你真正想要的美好时光可能是什么。你以为做这件事情 - 吸毒，对你最好的朋友撒谎 - 会给你想要的生活；然后它没有。换句话说，你已经发现了关于自己的一些重要信息；你必须背叛自己才能发现自己想成为（或能够成为）哪种美好。你可能需要发现的事情之一是，有些美德是违背本性的：对不起，或者对感激心存疑虑可能会让你感到不真实，例如。
 

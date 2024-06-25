@@ -8,7 +8,7 @@
 
 # 图像被修改以欺骗机器视觉也会影响人类 - Google DeepMind
 
-> 来源：[https://deepmind.google/discover/blog/images-altered-to-trick-machine-vision-can-influence-humans-too/](https://deepmind.google/discover/blog/images-altered-to-trick-machine-vision-can-influence-humans-too/)
+> 来源：[`deepmind.google/discover/blog/images-altered-to-trick-machine-vision-can-influence-humans-too/`](https://deepmind.google/discover/blog/images-altered-to-trick-machine-vision-can-influence-humans-too/)
 
 研究
 
@@ -26,13 +26,13 @@ Gamaleldin Elsayed 和 Michael Mozer
 
 计算机和人类以不同的方式看待世界。我们的生物系统和机器中的人工系统可能并不总是关注相同的视觉信号。经过训练以分类图像的神经网络可以完全被对图像的微小扰动误导，而这些扰动甚至人类都不会注意到。
 
-这种敌对图像可以欺骗AI系统可能指向人类和机器感知之间的根本差异，但这也驱使我们探索在受控测试条件下，人类是否也可能对相同的扰动表现出敏感性。在发表于自然通讯的一系列实验中，我们发现了证据表明，人类的判断确实受到敌对扰动的系统性影响。
+这种敌对图像可以欺骗 AI 系统可能指向人类和机器感知之间的根本差异，但这也驱使我们探索在受控测试条件下，人类是否也可能对相同的扰动表现出敏感性。在发表于自然通讯的一系列实验中，我们发现了证据表明，人类的判断确实受到敌对扰动的系统性影响。
 
-我们的发现突显了人类视觉和机器视觉之间的相似之处，但也表明需要进一步研究来了解对人类和AI系统的影响，以及敌对图像的影响。
+我们的发现突显了人类视觉和机器视觉之间的相似之处，但也表明需要进一步研究来了解对人类和 AI 系统的影响，以及敌对图像的影响。
 
 ## 什么是敌对图像？
 
-敌对图像是通过一种导致AI模型自信地对图像内容进行错误分类的程序微妙地改变的图像。这种故意欺骗被称为敌对攻击。攻击可以针对性地导致AI模型将花瓶误认为猫，或者它们可能被设计为使模型看到除花瓶以外的任何东西。
+敌对图像是通过一种导致 AI 模型自信地对图像内容进行错误分类的程序微妙地改变的图像。这种故意欺骗被称为敌对攻击。攻击可以针对性地导致 AI 模型将花瓶误认为猫，或者它们可能被设计为使模型看到除花瓶以外的任何东西。
 
 左：一个人工神经网络（ANN）正确将图像分类为花瓶，但当图像被整个图片中的看似随机的模式扰动时（中），为了说明的目的，增加了强度——结果图像（右）被错误且自信地误分类为猫。
 

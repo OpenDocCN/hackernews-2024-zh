@@ -8,7 +8,7 @@
 
 # Google 即使在隐身模式下也在追踪您，新的免责声明已经上线
 
-> 来源：[https://news.abplive.com/technology/google-incognito-new-disclaimer-canary-version-you-are-being-tracked-even-in-google-incognito-mode-new-disclaimer-is-up-privacy-lawsuit-1658159](https://news.abplive.com/technology/google-incognito-new-disclaimer-canary-version-you-are-being-tracked-even-in-google-incognito-mode-new-disclaimer-is-up-privacy-lawsuit-1658159)
+> 来源：[`news.abplive.com/technology/google-incognito-new-disclaimer-canary-version-you-are-being-tracked-even-in-google-incognito-mode-new-disclaimer-is-up-privacy-lawsuit-1658159`](https://news.abplive.com/technology/google-incognito-new-disclaimer-canary-version-you-are-being-tracked-even-in-google-incognito-mode-new-disclaimer-is-up-privacy-lawsuit-1658159)
 
 Google 终于承认，即使在隐身模式下，它也会追踪您的搜索历史、活动、您访问的网站以及您使用的服务。在这个搜索引擎同意解决一起价值 50 亿美元的隐私诉讼后，该诉讼指控 Google 在隐身模式下非法追踪用户，Google 现在更新了免责声明以反映透明度。在其金丝雀版（允许用户和开发人员在新功能和更新推出之前测试的早期版本）中，Google 现在表示，即使在隐身模式下，也将收集数据。
 

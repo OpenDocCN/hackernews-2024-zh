@@ -8,7 +8,7 @@
 
 # 就在那时，Lotus Notes 似乎可以做任何事情 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/19/remembering_lotus_notes/](https://www.theregister.com/2024/01/19/remembering_lotus_notes/)
+> 来源：[`www.theregister.com/2024/01/19/remembering_lotus_notes/`](https://www.theregister.com/2024/01/19/remembering_lotus_notes/)
 
 复古技术周 从这个角度看，技术的进步似乎是线性的，新的发展会取代旧的。从这个观点来看，新技术总是更好的，因为它被认为是建立在之前的基础上并对其进行改进了。
 
@@ -26,18 +26,18 @@
 
 如果你想了解一下 Notes 有多有用，可以考虑一下作者为了支持我担任评论编辑角色而可以访问的某些应用程序之一。这本杂志（还记得纸质杂志吗？多么古老啊！）过去每月的每期都会刊登约 30 页产品评论，我们有一个 Notes 上的数据库来帮助跟踪所有内容。
 
-待审查的计算机设备过去会送到出版社办公室，并由工作人员获得序列号并登记到一个储藏室中。作为审查编辑，我会在Notes上收到通知，告知设备已经到达，所以审稿人会被告知等待他们的方便，我也能将其添加到目前正在制作的杂志期刊的产品表中。
+待审查的计算机设备过去会送到出版社办公室，并由工作人员获得序列号并登记到一个储藏室中。作为审查编辑，我会在 Notes 上收到通知，告知设备已经到达，所以审稿人会被告知等待他们的方便，我也能将其添加到目前正在制作的杂志期刊的产品表中。
 
-出版社的内部摄影师（这是上个世纪九十年代，当时出版商有更多的钱）有一个相同的表格视图，因此他们知道为该期刊拍摄哪些产品。这个工作流程是内部建立的，完全依赖Lotus Notes。公司中的其他人也有许多类似的应用程序。
+出版社的内部摄影师（这是上个世纪九十年代，当时出版商有更多的钱）有一个相同的表格视图，因此他们知道为该期刊拍摄哪些产品。这个工作流程是内部建立的，完全依赖 Lotus Notes。公司中的其他人也有许多类似的应用程序。
 
-也许我对Notes有些过分理想化的看法，但我记得由于电子邮件消息链的分层视图，管理电子邮件相当容易，当我后来为一家使用Outlook的公司工作时，这似乎是一大退步。
+也许我对 Notes 有些过分理想化的看法，但我记得由于电子邮件消息链的分层视图，管理电子邮件相当容易，当我后来为一家使用 Outlook 的公司工作时，这似乎是一大退步。
 
-不过，到了新千年之交，Notes开始显得有些笨拙和过时，随着企业转向微软Exchange Server和Outlook的组合，其相当庞大的用户群开始减少，也许是因为这些软件在与Microsoft Office应用程序和Visual Basic for Applications集成以及工作流程方面更容易。
+不过，到了新千年之交，Notes 开始显得有些笨拙和过时，随着企业转向微软 Exchange Server 和 Outlook 的组合，其相当庞大的用户群开始减少，也许是因为这些软件在与 Microsoft Office 应用程序和 Visual Basic for Applications 集成以及工作流程方面更容易。
 
-最终，IBM在1995年收购了Lotus，于2012年宣布将彻底停止使用Lotus品牌，然后在2018年将Notes出售给印度软件公司[HCL Technologies](https://www.hcl-software.com/)。
+最终，IBM 在 1995 年收购了 Lotus，于 2012 年宣布将彻底停止使用 Lotus 品牌，然后在 2018 年将 Notes 出售给印度软件公司[HCL Technologies](https://www.hcl-software.com/)。
 
-该平台仍然存在，HCL去年发布了[Domino 14.0](https://www.theregister.com/2023/06/12/hcl_domino_14/)，正如*The Register*当时评论的那样，这显示了建立在该平台上的定制工作流程的"粘性"。
+该平台仍然存在，HCL 去年发布了[Domino 14.0](https://www.theregister.com/2023/06/12/hcl_domino_14/)，正如*The Register*当时评论的那样，这显示了建立在该平台上的定制工作流程的"粘性"。
 
-对于那些感兴趣的人，有一家公司发布了[IBM Lotus Notes完整历史](https://www.stellarinfo.com/blog/complete-history-ibm-lotus-notes-hcl-notes/)，从其开始直到当前。
+对于那些感兴趣的人，有一家公司发布了[IBM Lotus Notes 完整历史](https://www.stellarinfo.com/blog/complete-history-ibm-lotus-notes-hcl-notes/)，从其开始直到当前。
 
-但Notes远远没有保持最古老软件仍在使用的记录。据说美国国防合同管理局（DCMA），负责处理国防部（DoD）的合同，拥有一个名为合同管理自动化服务（[MOCAS](https://fossbytes.com/mocas-worlds-oldest-computer-program/)）的程序，该程序于1958年推出，几乎是其两倍年龄。®
+但 Notes 远远没有保持最古老软件仍在使用的记录。据说美国国防合同管理局（DCMA），负责处理国防部（DoD）的合同，拥有一个名为合同管理自动化服务（[MOCAS](https://fossbytes.com/mocas-worlds-oldest-computer-program/)）的程序，该程序于 1958 年推出，几乎是其两倍年龄。®

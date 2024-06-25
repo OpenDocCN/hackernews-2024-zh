@@ -8,7 +8,7 @@
 
 # Fossify · GitHub
 
-> 来源：[https://github.com/FossifyOrg](https://github.com/FossifyOrg)
+> 来源：[`github.com/FossifyOrg`](https://github.com/FossifyOrg)
 
 # 👋 嘿！欢迎来到 Fossify！
 
@@ -34,6 +34,6 @@ Fossify 致力于为社区支持的、开源的、无广告的移动应用。它
 
 +   **TRX:** `TGi4VpD1D9A9ZvyP9d3aVowwzMSvev2hub`</details>
 
-如果您有问题或想了解更多信息，请随时在[此处](https://github.com/orgs/FossifyOrg/discussions)开始讨论，或通过 [hello@fossify.org](mailto:hello@fossify.org) 联系我们。
+如果您有问题或想了解更多信息，请随时在[此处](https://github.com/orgs/FossifyOrg/discussions)开始讨论，或通过 hello@fossify.org 联系我们。
 
 您的贡献将不胜感激！ 🌟

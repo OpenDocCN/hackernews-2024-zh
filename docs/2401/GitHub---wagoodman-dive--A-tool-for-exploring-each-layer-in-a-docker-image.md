@@ -8,7 +8,7 @@
 
 # GitHub - wagoodman/dive：探索 Docker 镜像中的每个层的工具
 
-> 来源：[https://github.com/wagoodman/dive](https://github.com/wagoodman/dive)
+> 来源：[`github.com/wagoodman/dive`](https://github.com/wagoodman/dive)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

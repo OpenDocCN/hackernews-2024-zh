@@ -8,11 +8,11 @@ date: 2024-05-27 14:29:10
 
 # Lambdasort - Lucas Seiki Oshiro
 
-> 来源：[https://lucasoshiro.github.io/software-en/2020-06-06-lambdasort/](https://lucasoshiro.github.io/software-en/2020-06-06-lambdasort/)
+> 来源：[`lucasoshiro.github.io/software-en/2020-06-06-lambdasort/`](https://lucasoshiro.github.io/software-en/2020-06-06-lambdasort/)
 
 使用 lambda 编写的快速排序！
 
-GitHub: [https://github.com/lucasoshiro/lambdasort](https://github.com/lucasoshiro/lambdasort)
+GitHub: [`github.com/lucasoshiro/lambdasort`](https://github.com/lucasoshiro/lambdasort)
 
 ## λ演算
 
@@ -121,7 +121,7 @@ def partition(A):
 
 +   布尔值（由验证使用）
 
-幸运的是，lambda演算的创始人**阿隆佐·丘奇**也向我们展示了如何做到这一点。维基百科上有一篇[关于此的文章](https://en.wikipedia.org/wiki/Church_encoding)。
+幸运的是，lambda 演算的创始人**阿隆佐·丘奇**也向我们展示了如何做到这一点。维基百科上有一篇[关于此的文章](https://en.wikipedia.org/wiki/Church_encoding)。
 
 ### 布尔值
 
@@ -381,7 +381,7 @@ LAMBDA_CONS(1)(LAMBDA_CONS(2)(LAMBDA_CONS(3)(LAMBDA_FALSE)))
 (1, (2, (3, LAMBDA_EMPTY))) 
 ```
 
-如此多的括号！但请注意，此时，`LAMBDA_CAR`、`LAMBDA_CDR`和`LAMBDA_CONS`，当应用于**列表**时，具有与我们定义的用于操作Python列表的`car`、`cdr`和`cons`相同的行为：
+如此多的括号！但请注意，此时，`LAMBDA_CAR`、`LAMBDA_CDR`和`LAMBDA_CONS`，当应用于**列表**时，具有与我们定义的用于操作 Python 列表的`car`、`cdr`和`cons`相同的行为：
 
 +   `LAMBDA_CAR`返回第一个对的第一个元素，即列表的**第一个元素**（`1`）
 
@@ -534,7 +534,7 @@ def quicksort(A):
 
 由于缺乏状态，我们不是更改现有值，而是返回一个**新**值，就像我们替换快速排序的标准行为以返回已排序列表而不是对原始列表进行排序时一样。
 
-即使我们在支持函数式和命令式范式的语言中编写代码，例如Python，如果我们限制自己以函数式方式编写代码，我们不能使用循环。
+即使我们在支持函数式和命令式范式的语言中编写代码，例如 Python，如果我们限制自己以函数式方式编写代码，我们不能使用循环。
 
 我们如何解决使用循环解决的问题？根据情况有许多解决方案，例如，我们可以使用`reduce`、列表推导、`map`、`filter`、递归函数等等。在这个快速排序中，我们只有**一个循环**，在`partition`中。我们将其替换为一个**递归函数**。
 
@@ -574,7 +574,7 @@ while True:
 
 从现在开始，我们可以确定哪些元素将有助于编写这个循环作为一个递归函数：
 
-+   输入**`L`和`R`**，初始为空的Church列表；
++   输入**`L`和`R`**，初始为空的 Church 列表；
 
 +   输入**`S`**，初始为`LAMBDA_CDR(A)`；
 
@@ -607,7 +607,7 @@ nL, nR = _partition(S, L, R)
 
 注意，`_partition`不会改变输入`L`和`R`的状态。与其*改变*原始输入数据，它返回*新*数据，这些数据存储在变量`nL`和`nR`中，它们是下一次递归调用的`L`和`R`参数。
 
-我们还可以使该函数返回Church对而不是元组：
+我们还可以使该函数返回 Church 对而不是元组：
 
 ```
 p = LAMBDA_CAR(A)
@@ -633,7 +633,7 @@ nL, nR = LAMBDA_CAR(LR), LAMBDA_CDR(LR)
 
 ## 用`let`替换变量
 
-[let表达式](https://zh.wikipedia.org/wiki/Let%E8%A1%A8%E8%BE%BE%E5%BC%8F)允许我们在一个**作用域**内将一个值定义给一个变量，以便其值**永远不会被改变**。在Python中，这个概念意义不大，但是不同的语言以许多方式实现了它。我会给你展示一些例子。
+[let 表达式](https://zh.wikipedia.org/wiki/Let%E8%A1%A8%E8%BE%BE%E5%BC%8F)允许我们在一个**作用域**内将一个值定义给一个变量，以便其值**永远不会被改变**。在 Python 中，这个概念意义不大，但是不同的语言以许多方式实现了它。我会给你展示一些例子。
 
 从**Kotlin**开始，`let`是可以由任何对象调用的方法，因此我们可以为其分配一个临时名称：
 
@@ -653,15 +653,15 @@ x = let a = 2
     in a + b * a 
 ```
 
-在**[Hy](http://hylang.org)**（具有Lisp语法的Python）中，它与Haskell非常接近：首先我们将值赋给变量，然后声明将使用它们的表达式：
+在**[Hy](http://hylang.org)**（具有 Lisp 语法的 Python）中，它与 Haskell 非常接近：首先我们将值赋给变量，然后声明将使用它们的表达式：
 
 ```
 (setv  x  (let  [  a  2  b  3  ]  (+  a  (*  b  a))  )  ) 
 ```
 
-（上述三个示例中的`x`都将是8）
+（上述三个示例中的`x`都将是 8）
 
-这种构造在函数式语言中非常常见，因为它们的变量在作用域内有一个**固定的值**。此外，它们很容易使用**lambda演算**编写。我们可以像这样重写上面的示例：
+这种构造在函数式语言中非常常见，因为它们的变量在作用域内有一个**固定的值**。此外，它们很容易使用**lambda 演算**编写。我们可以像这样重写上面的示例：
 
 ```
 def _f(a, b):
@@ -690,7 +690,7 @@ def _partition(S, L, R):
     return _partition(S, L, R) 
 ```
 
-这里的 `if` 只改变 `L` 和 `R` 的值，我们可以将其写成一个**if表达式**：
+这里的 `if` 只改变 `L` 和 `R` 的值，我们可以将其写成一个**if 表达式**：
 
 ```
 def _partition(S, L, R):
@@ -774,7 +774,7 @@ def partition(A):
     return _partition4(_partition(LAMBDA_CDR(A), LAMBDA_EMPTY, LAMBDA_EMPTY, LAMBDA_CAR(A))) 
 ```
 
-我们可以用**if表达式**替换所有的 `if`，并用我们使用 Church 布尔值定义的 `LAMBDA_IF` 替换那些 if 表达式。此外，**内部函数**可以使用 `lambda` 而不是 `def` 来定义，因为它们只有**返回表达式**。现在我们有了这段糟糕的代码：
+我们可以用**if 表达式**替换所有的 `if`，并用我们使用 Church 布尔值定义的 `LAMBDA_IF` 替换那些 if 表达式。此外，**内部函数**可以使用 `lambda` 而不是 `def` 来定义，因为它们只有**返回表达式**。现在我们有了这段糟糕的代码：
 
 ```
 def quicksort(A):
@@ -836,27 +836,27 @@ fac = (lambda f: f(f))(lambda f: lambda n: 1 if n == 0 else n * f(f)(n-1))
 # we even don't need to name fac. This expression calculates 5! = 120 recursively: (lambda f: f(f))(lambda f: lambda n: 1 if n == 0 else n * f(f)(n-1))(5) 
 ```
 
-在那个东西里发生了什么？请注意，我们有一个函数`(lambda f: lambda n: 1 if n == 0 else n * f(f)(n-1))`，非常类似于原始的`fac`，**除了**它接受一个参数`f`并调用`f(f)`而不是`fac`。这里Y组合子的思想是，`f`将始终是**相同的函数**，并且它递归地将**自己作为参数**传递，以便递归调用产生另一个递归调用。谁将保证递归的**基础**是`(lambda f: f(f))`，它将为该函数的第一个传递提供第一个传递。
+在那个东西里发生了什么？请注意，我们有一个函数`(lambda f: lambda n: 1 if n == 0 else n * f(f)(n-1))`，非常类似于原始的`fac`，**除了**它接受一个参数`f`并调用`f(f)`而不是`fac`。这里 Y 组合子的思想是，`f`将始终是**相同的函数**，并且它递归地将**自己作为参数**传递，以便递归调用产生另一个递归调用。谁将保证递归的**基础**是`(lambda f: f(f))`，它将为该函数的第一个传递提供第一个传递。
 
 心理练习：尝试模拟`fac(2)`，看看神奇的事情发生了。
 
-#### 使用Y组合子
+#### 使用 Y 组合子
 
-好的，现在我们可以在`quicksort`中用Y组合子替换递归调用。现在它看起来是这样的：
+好的，现在我们可以在`quicksort`中用 Y 组合子替换递归调用。现在它看起来是这样的：
 
 ```
 _quicksort2 = lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(A))(lambda A: A)(lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(LAMBDA_CDR(A)))(A)(_quicksort(A)(partition(A))))
 quicksort = lambda A: _quicksort2(A)(A) 
 ```
 
-如果我们用Y组合子替换它：
+如果我们用 Y 组合子替换它：
 
 ```
 _quicksort2 = lambda r: lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(A))(lambda A: A)(lambda A: LAMBDA_IF(LAMBDA_ISEMPTY(LAMBDA_CDR(A)))(A)(_quicksort(r)(A)(partition(A))))
 quicksort = (lambda r: r(r)) lambda A: _quicksort2(r)(A)(A) 
 ```
 
-心理练习：`quicksort`调用**不在**`quicksort`本身中，而在`_quicksort2`中（由`quicksort`调用）。你能想象出Y组合子在这种情况下是如何使用的吗？
+心理练习：`quicksort`调用**不在**`quicksort`本身中，而在`_quicksort2`中（由`quicksort`调用）。你能想象出 Y 组合子在这种情况下是如何使用的吗？
 
 你可以在[这里](https://github.com/lucasoshiro/lambdasort/blob/y-combinator/lambdasort.py)看到它。
 
@@ -870,9 +870,9 @@ quicksort = (lambda r: r(r)) lambda A: _quicksort2(r)(A)(A)
 
 `quicksort = (lambda r: r(r))(lambda r: lambda A: (lambda r: lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(A))(lambda A: A)(lambda A: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(A)))(A)((lambda r: lambda A: lambda LR: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(r(r)((lambda p: p(lambda a: lambda b: a))(LR))))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))(((lambda r: r(r)) (lambda r: lambda l1: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda p: p(lambda a: lambda b: b))(l1)))(lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(l2))((lambda r: lambda l2: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(l1))(r(r)((lambda p: p(lambda a: lambda b: b))(l1))(l2)))(r))))(r(r)((lambda p: p(lambda a: lambda b: a))(LR)))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))((lambda p: p(lambda a: lambda b: b))(LR)))(r(r)((lambda p: p(lambda a: lambda b: b))((lambda p: p(lambda a: lambda b: b))(LR)))))))(r)(A)((lambda A:((lambda A: lambda LR: (lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(LR))((lambda a: lambda b: lambda l: l(a)(b))((lambda p: p(lambda a: lambda b: a))(A))((lambda p: p(lambda a: lambda b: b))(LR)))))(A)(((lambda r: r(r))(lambda r: lambda S: (lambda c: lambda t: lambda e: c(t)(e))((lambda l: l(lambda h: lambda t: lambda d: (lambda a: lambda b: b))((lambda a: lambda b: a)))(S))(lambda L: lambda R: lambda p: (lambda a: lambda b: lambda l: l(a)(b))(L)(R))(lambda L: lambda R: lambda p: (lambda r: lambda S: lambda LR: lambda p: r(r)((lambda p: p(lambda a: lambda b: b))(S))((lambda p: p(lambda a: lambda b: a))(LR))((lambda p: p(lambda a: lambda b: b))(LR))(p))(r)(S)((lambda x: lambda L: lambda R: lambda p: (lambda c: lambda t: lambda e: c(t)(e))((lambda m: lambda n: (lambda a: lambda b: a(b)((lambda a: lambda b: b)))((lambda m: lambda n: (lambda n: n(lambda x: (lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m: lambda n: n((lambda n: lambda f: lambda x: n(lambda g: lambda h: h(g(f)))(lambda y: x)(lambda y: y)))(m))(m)(n)))(m)(n))((lambda a: a((lambda a: lambda b: b))((lambda a: lambda b: a)))((lambda m
 
-### 使用lambdasort
+### 使用 lambdasort
 
-当然，我们不能单独在列表中使用这个`quicksort`，因为它是以Church编码方式操作的。我们需要一个包装器来将Python类型转换为Church编码，使用`quicksort`对Church列表进行排序，然后将其转换回Python列表。我们将使用之前的函数。
+当然，我们不能单独在列表中使用这个`quicksort`，因为它是以 Church 编码方式操作的。我们需要一个包装器来将 Python 类型转换为 Church 编码，使用`quicksort`对 Church 列表进行排序，然后将其转换回 Python 列表。我们将使用之前的函数。
 
 ```
 def quicksort_wrapper(A):
@@ -881,7 +881,7 @@ def quicksort_wrapper(A):
     return [l2i(x) for x in ll2pl(sorted_church)] 
 ```
 
-现在你可以使用`quicksort_wrapper`来对你的列表进行排序，它将使用我们的lambdasort作为后端：
+现在你可以使用`quicksort_wrapper`来对你的列表进行排序，它将使用我们的 lambdasort 作为后端：
 
 ```
 >>> from lambdasort import quicksort_wrapper
@@ -892,7 +892,7 @@ def quicksort_wrapper(A):
 
 ## 最后的思考
 
-我在2017年（我大学的第三年）只用了两天写出了lambdasort，在参加了[古比教授](https://memorial.ime.usp.br/homenageados/5)关于lambda演算和Y组合子的课程后。他曾经提到过编程无所不用其极。我觉得那太令人印象深刻了，我想做点类似的事情，于是挑战自己写了一些比fizzbuzz更*困难*的东西，所以我们就在这里！
+我在 2017 年（我大学的第三年）只用了两天写出了 lambdasort，在参加了[古比教授](https://memorial.ime.usp.br/homenageados/5)关于 lambda 演算和 Y 组合子的课程后。他曾经提到过编程无所不用其极。我觉得那太令人印象深刻了，我想做点类似的事情，于是挑战自己写了一些比 fizzbuzz 更*困难*的东西，所以我们就在这里！
 
 写下这些真的很有趣，起初我没有注意到我只用了两天就学到了这么多知识，而我花了几年时间才最终写下这篇解释我所做的事情的文字。所以，谢谢你阅读！
 

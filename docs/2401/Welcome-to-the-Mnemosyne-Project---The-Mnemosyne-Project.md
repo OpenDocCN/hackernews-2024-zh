@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年05月27日 15:16:25
+日期：2024 年 05 月 27 日 15:16:25
 
 -->
 
-# 欢迎来到Mnemosyne项目 | Mnemosyne 项目
+# 欢迎来到 Mnemosyne 项目 | Mnemosyne 项目
 
-> 来源：[https://mnemosyne-proj.org/](https://mnemosyne-proj.org/)
+> 来源：[`mnemosyne-proj.org/`](https://mnemosyne-proj.org/)
 
 Mnemosyne 项目有两个方面：
 

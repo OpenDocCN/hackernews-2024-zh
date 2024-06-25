@@ -8,7 +8,7 @@
 
 # SQLite 论坛：JSON 函数在 3.45 版本中停止与 blob 一起工作
 
-> 来源：[https://sqlite.org/forum/forumpost/012136abd5292b8d](https://sqlite.org/forum/forumpost/012136abd5292b8d)
+> 来源：[`sqlite.org/forum/forumpost/012136abd5292b8d`](https://sqlite.org/forum/forumpost/012136abd5292b8d)
 > 
 > 我相信，如果某个特定功能在 N 年内有效，然后停止工作 —— 那就是一个破坏性的变化。
 

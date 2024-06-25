@@ -8,7 +8,7 @@ date: 2024-05-27 14:53:23
 
 # Oxfam：自 2020 年以来，全球五位最富有的人的财富已经翻了一番
 
-> 来源：[https://www.cnbc.com/2024/01/15/worlds-five-richest-men-have-doubled-their-fortunes-since-2020-oxfam.html](https://www.cnbc.com/2024/01/15/worlds-five-richest-men-have-doubled-their-fortunes-since-2020-oxfam.html)
+> 来源：[`www.cnbc.com/2024/01/15/worlds-five-richest-men-have-doubled-their-fortunes-since-2020-oxfam.html`](https://www.cnbc.com/2024/01/15/worlds-five-richest-men-have-doubled-their-fortunes-since-2020-oxfam.html)
 
 杰夫·贝索斯在 2022 年 9 月 15 日在密苏里州堪萨斯城的 GEHA Field at Arrowhead Stadium 观看堪萨斯城酋长队与洛杉矶充电器队的比赛之前。亚马逊创始人和董事长是世界上最富有的人之一。
 
@@ -30,4 +30,4 @@ Oxfam 的报告于周一发表，与最新世界经济论坛年会开始同时�
 
 该慈善机构呼吁政府通过“制约企业权力”来缩小超级富豪与社会其他人之间的差距，包括打破垄断、限制 CEO 的薪酬，并对永久财富和超额利润征收新税。
 
-*CNBC试图联系到被提及的个人以发表评论。*
+*CNBC 试图联系到被提及的个人以发表评论。*

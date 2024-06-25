@@ -8,7 +8,7 @@ date: 2024-05-27 14:27:16
 
 # 我们本可以解决一切，只是我们没有这么做
 
-> 来源：[https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/](https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/)
+> 来源：[`erikmcclure.com/blog/we-could-fix-everything-we-just-dont/`](https://erikmcclure.com/blog/we-could-fix-everything-we-just-dont/)
 
 我还记得小时候常听到的那句老话，说你可能会成为下一个发明治愈癌症或解决气候变化等问题的科学家。但他们没有告诉你的是，我们已经有了许多问题的解决方案，只是我们没有使用它们。有时候这是因为解决方案太昂贵，但通常是因为竞争利益造成了一场共同悲剧。现代时代的大多数问题不是复杂的工程问题，它们都是同一个问题：协调失败。
 
@@ -28,15 +28,15 @@ date: 2024-05-27 14:27:16
 
 > [...] 非洲和中东许多游牧民族社会事实上“根据季节性草地条件平衡地方存栏比率，以一种生态上合理的方式”，反映出对低风险而不是高利润的渴望...
 
-顺便说一下，我们现在实际上已经有了治愈血癌的方法。就像，[我们已经做到了](https://www.pennmedicine.org/news/news-releases/2023/august/an-immunotherapy-strategy-against-all-blood-cancers)。很可能类似的免疫疗法将普遍适用于大多数癌症。不幸的是，我们唯一获得批准的基因治疗是用于镰刀细胞病，[每位患者需要花费200万美元](https://www.nature.com/articles/d41586-023-03590-6)，所以大多数美国人简直就是假设他们永远无法负担这些治疗，即使他们患了癌症，因为保险永远不会支付。这实际上是非常糟糕的，因为如果没有人能负担得起治疗，那么生物技术公司将不会投资于此，因为这是不赚钱的！我们建立了一个 *不能正确激励***治愈癌症***的社会。尽管社会化医疗保健已被证明是一种有效的策略（只要政府[不破坏它](https://www.independent.co.uk/voices/nhs-crisis-covid-privatisation-funding-b2255741.html)）。**我们可以解决这个问题，我们只是不这样做**。
+顺便说一下，我们现在实际上已经有了治愈血癌的方法。就像，[我们已经做到了](https://www.pennmedicine.org/news/news-releases/2023/august/an-immunotherapy-strategy-against-all-blood-cancers)。很可能类似的免疫疗法将普遍适用于大多数癌症。不幸的是，我们唯一获得批准的基因治疗是用于镰刀细胞病，[每位患者需要花费 200 万美元](https://www.nature.com/articles/d41586-023-03590-6)，所以大多数美国人简直就是假设他们永远无法负担这些治疗，即使他们患了癌症，因为保险永远不会支付。这实际上是非常糟糕的，因为如果没有人能负担得起治疗，那么生物技术公司将不会投资于此，因为这是不赚钱的！我们建立了一个 *不能正确激励***治愈癌症***的社会。尽管社会化医疗保健已被证明是一种有效的策略（只要政府[不破坏它](https://www.independent.co.uk/voices/nhs-crisis-covid-privatisation-funding-b2255741.html)）。**我们可以解决这个问题，我们只是不这样做**。
 
-有些人试图抱怨这是因为民主很困难，或者其他什么原因，但他们也是错误的。*我们确切地知道我们当前的投票系统有什么问题*，CGP Grey甚至在13年前就发布了一段视频介绍这个问题（https://www.youtube.com/watch?v=s7tWHJfhiyo）。这 *必然* 导致了一个两党制，因为战略性投票是理性行为，而且你无法摆脱这个两党制，因为会造成投票浪费的影响，解决方案是[排名选择投票](https://www.youtube.com/watch?v=3Y3jE3B8HsE)（或备选投票）。如果你想进一步解决选区划分问题，你可以使用[单记过程式投票](https://www.youtube.com/watch?v=l8XOZJkozfI)。所有这些更好的系统几十年前就提出了。我们对总统选举几乎没有实施过任何一个（[除了缅因州和阿拉斯加](https://en.wikipedia.org/wiki/Ranked-choice_voting_in_the_United_States)）。事实上，美国仍然使用选举人投票系统，这比普通选票制度要糟糕得多，我们都知道这是更糟糕的，我们甚至[有一个潜在的解决方案](https://www.youtube.com/watch?v=tUX-frlNBJY)，但由于对立的社会利益，我们仍然无法摆脱它。
+有些人试图抱怨这是因为民主很困难，或者其他什么原因，但他们也是错误的。*我们确切地知道我们当前的投票系统有什么问题*，CGP Grey 甚至在 13 年前就发布了一段视频介绍这个问题（https://www.youtube.com/watch?v=s7tWHJfhiyo）。这 *必然* 导致了一个两党制，因为战略性投票是理性行为，而且你无法摆脱这个两党制，因为会造成投票浪费的影响，解决方案是[排名选择投票](https://www.youtube.com/watch?v=3Y3jE3B8HsE)（或备选投票）。如果你想进一步解决选区划分问题，你可以使用[单记过程式投票](https://www.youtube.com/watch?v=l8XOZJkozfI)。所有这些更好的系统几十年前就提出了。我们对总统选举几乎没有实施过任何一个（[除了缅因州和阿拉斯加](https://en.wikipedia.org/wiki/Ranked-choice_voting_in_the_United_States)）。事实上，美国仍然使用选举人投票系统，这比普通选票制度要糟糕得多，我们都知道这是更糟糕的，我们甚至[有一个潜在的解决方案](https://www.youtube.com/watch?v=tUX-frlNBJY)，但由于对立的社会利益，我们仍然无法摆脱它。
 
 我们对这些问题*有*解决方案。我们只是不去使用它们。我们*可以*为每个美国家庭铺设光纤电缆，而且我们甚至知道它会花费多少。我们之所以不这样做，是因为我们把钱给了企业，然后[他们一个都没用，反而给自己发了巨额奖金](https://www.reddit.com/r/explainlikeimfive/comments/6c5e97/comment/dhsxq6k/)。我们*知道*自动化正在侵蚀低技能工作，这意味着我们的劳动力需要更好的教育，向每个人提供免费大学教育是个好主意，我们只是不这样做。我们知道如何建设州际高速通勤铁路，我们只是不这样做（尽管[拜登正在尝试](https://www.whitehouse.gov/briefing-room/statements-releases/2023/12/08/fact-sheet-president-biden-announces-billions-to-deliver-world-class-high-speed-rail-and-launch-new-passenger-rail-corridors-across-the-country/)）。**我们可以解决一切，只是不这样做**。
 
 我们再也没有任何借口了。这些问题都不是新鲜或困难的问题，甚至连“公地悲剧”也不例外。我们可以做得更好。我们不需要人工智能来解决问题。我们不需要新技术来解决这些问题。我们*已经知道如何做得更好*，我们只是让自己陷入了一个合作低谷，以至于我们甚至无法实施*我们已经知道的*解决方案，更别提发明新的了。我们之所以陷入困境，仅仅是因为社会是由被激励以牺牲合作为代价获利的人所掌控。就是这样。
 
-今天是新年的1月1日，而有这么多人互相祝愿“新的一年更好”，我在这里提醒你，**除非我们采取行动**，否则*情况只会变得更糟*。社会变得更糟[不是你在幻觉中](https://www.youtube.com/watch?v=q118B_QdP2k)。你骑自行车上班或者中了彩票都无法解决问题。我们正在依赖过去100年的狂野技术进步的尾气，而我们无法建立能够合作的社会系统将摧毁我们所知的文明，除非我们**采取行动**。
+今天是新年的 1 月 1 日，而有这么多人互相祝愿“新的一年更好”，我在这里提醒你，**除非我们采取行动**，否则*情况只会变得更糟*。社会变得更糟[不是你在幻觉中](https://www.youtube.com/watch?v=q118B_QdP2k)。你骑自行车上班或者中了彩票都无法解决问题。我们正在依赖过去 100 年的狂野技术进步的尾气，而我们无法建立能够合作的社会系统将摧毁我们所知的文明，除非我们**采取行动**。
 
 我们生活在或许是人类历史上最关键的转折点上，而我们的船已偏离了航线。技术的迅猛发展意味着我们被迅速卷入，越来越快地前行，使我们越来越难以摆脱前方的冰山。我们***必须***解决我们的协调失败。我们***必须***建立促进更好合作的系统，否则本世纪对于人类来说不会是一个转折点，而将是人类的终结。
 

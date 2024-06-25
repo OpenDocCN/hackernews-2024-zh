@@ -8,7 +8,7 @@
 
 # [GitHub - pdp11/fuzzball-operating-system](https://github.com/pdp11/fuzzball-operating-system)：PDP-11 操作系统。
 
-> 来源：[https://github.com/pdp11/fuzzball-operating-system](https://github.com/pdp11/fuzzball-operating-system)
+> 来源：[`github.com/pdp11/fuzzball-operating-system`](https://github.com/pdp11/fuzzball-operating-system)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

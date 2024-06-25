@@ -6,15 +6,15 @@ date: 2024-05-27 15:00:28
 
 -->
 
-# 山姆·阿尔特曼表示AI消耗能源过多，将需要突破性能源
+# 山姆·阿尔特曼表示 AI 消耗能源过多，将需要突破性能源
 
-> 来源：[https://futurism.com/sam-altman-energy-breakthrough](https://futurism.com/sam-altman-energy-breakthrough)
+> 来源：[`futurism.com/sam-altman-energy-breakthrough`](https://futurism.com/sam-altman-energy-breakthrough)
 
-毫无疑问，像OpenAI的ChatGPT背后的AI模型需要[天文数字般的电力](https://futurism.com/the-byte/ai-electricity-use-spiking-power-entire-country)。
+毫无疑问，像 OpenAI 的 ChatGPT 背后的 AI 模型需要[天文数字般的电力](https://futurism.com/the-byte/ai-electricity-use-spiking-power-entire-country)。
 
 这个过程消耗的能量非常巨大，专家们[估计](https://www.nytimes.com/2023/10/10/climate/ai-could-soon-need-as-much-electricity-as-an-entire-country.html)这个行业很快可能会消耗掉一个国家的电力。
 
-因此，OpenAI首席执行官山姆·阿尔特曼正在寻找更便宜的替代方案并不足为奇。在瑞士达沃斯世界经济论坛年度*彭博*活动上，这位亿万富翁建议明天的AI模型可能需要*更多*的电力——到了需要一个全新的能量*来源*的程度。
+因此，OpenAI 首席执行官山姆·阿尔特曼正在寻找更便宜的替代方案并不足为奇。在瑞士达沃斯世界经济论坛年度*彭博*活动上，这位亿万富翁建议明天的 AI 模型可能需要*更多*的电力——到了需要一个全新的能量*来源*的程度。
 
 "没有突破，我们不可能到达那里，"阿尔特曼告诉观众，正如[*路透社*引用的](https://finance.yahoo.com/news/openai-ceo-altman-says-davos-173636736.html)那样。"这激励我们更多地投资于聚变，"他补充道，我们需要更好的方式来存储太阳能的能量。
 
@@ -24,9 +24,9 @@ date: 2024-05-27 15:00:28
 
 即便如此，包括[杰夫·贝索斯、彼得·蒂尔和比尔·盖茨](https://www.wsj.com/articles/tech-billionaires-bet-on-fusion-as-holy-grail-for-business-9a48a2ac)在内的亿万富翁们已经投入了大量资金到这个想法中。
 
-阿尔特曼本人在2021年投资了[约3.75亿美元](https://www.cnbc.com/2021/11/05/sam-altman-puts-375-million-into-fusion-start-up-helion-energy.html)到一个名为Helion Energy的核聚变公司。方便的是，该公司后来与微软签订了[合作伙伴关系](https://www.helionenergy.com/articles/helion-announces-worlds-first-fusion-ppa-with-microsoft/)，这家科技巨头曾投资了[130亿美元进入OpenAI](https://www.cnbc.com/2023/04/08/microsofts-complex-bet-on-openai-brings-potential-and-uncertainty.html)。阿尔特曼还[提出](https://futurism.com/sam-altman-agi-fusion-world)AI本身可能会解决如何使聚变成为一种实用的能源技术的问题。
+阿尔特曼本人在 2021 年投资了[约 3.75 亿美元](https://www.cnbc.com/2021/11/05/sam-altman-puts-375-million-into-fusion-start-up-helion-energy.html)到一个名为 Helion Energy 的核聚变公司。方便的是，该公司后来与微软签订了[合作伙伴关系](https://www.helionenergy.com/articles/helion-announces-worlds-first-fusion-ppa-with-microsoft/)，这家科技巨头曾投资了[130 亿美元进入 OpenAI](https://www.cnbc.com/2023/04/08/microsofts-complex-bet-on-openai-brings-potential-and-uncertainty.html)。阿尔特曼还[提出](https://futurism.com/sam-altman-agi-fusion-world)AI 本身可能会解决如何使聚变成为一种实用的能源技术的问题。
 
-然而，虽然像Helion这样的新兴公司[反复声称](https://futurism.com/startup-year-practical-fusion-power)[声称](https://futurism.com/the-byte/fusion-power-imminent)聚变能源即将问世，但我们还没有看到任何具体的结果。
+然而，虽然像 Helion 这样的新兴公司[反复声称](https://futurism.com/startup-year-practical-fusion-power)[声称](https://futurism.com/the-byte/fusion-power-imminent)聚变能源即将问世，但我们还没有看到任何具体的结果。
 
 当然，如果阿尔特曼对能源生产未来的乐观愿景变为现实，我们将有一种更为环保的方式来为这些人工智能模型提供动力。
 

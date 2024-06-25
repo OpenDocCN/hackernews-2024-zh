@@ -8,7 +8,7 @@
 
 # GitHub - gboncoffee/egg: Emulador Genérico do Gabriel
 
-> 来源：[https://github.com/gboncoffee/egg](https://github.com/gboncoffee/egg)
+> 来源：[`github.com/gboncoffee/egg`](https://github.com/gboncoffee/egg)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

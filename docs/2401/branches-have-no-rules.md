@@ -8,7 +8,7 @@
 
 # 分支没有规则
 
-> 来源：[https://wizardzines.com/comics/branches-have-no-rules/](https://wizardzines.com/comics/branches-have-no-rules/)
+> 来源：[`wizardzines.com/comics/branches-have-no-rules/`](https://wizardzines.com/comics/branches-have-no-rules/)
 
 ### 你可能期望 git 强制执行一些关于分支的规则
 

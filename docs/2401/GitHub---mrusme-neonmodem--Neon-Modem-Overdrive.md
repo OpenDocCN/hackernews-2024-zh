@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - mrusme/neonmodem: 霓虹调制解调器过载
 
-> 来源：[https://github.com/mrusme/neonmodem](https://github.com/mrusme/neonmodem)
+> 来源：[`github.com/mrusme/neonmodem`](https://github.com/mrusme/neonmodem)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

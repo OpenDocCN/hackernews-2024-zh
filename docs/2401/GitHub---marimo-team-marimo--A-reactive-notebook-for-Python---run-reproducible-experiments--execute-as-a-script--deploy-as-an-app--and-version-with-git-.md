@@ -8,7 +8,7 @@
 
 # GitHub - marimo-team/marimo: 一个用于 Python 的反应式笔记本——可运行可重现实验，作为脚本执行，部署为应用程序，并使用 git 进行版本控制。
 
-> 来源：[https://github.com/marimo-team/marimo](https://github.com/marimo-team/marimo)
+> 来源：[`github.com/marimo-team/marimo`](https://github.com/marimo-team/marimo)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

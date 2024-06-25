@@ -8,7 +8,7 @@
 
 # Dashy
 
-> 来源：[https://commodore.bookmark.computer/](https://commodore.bookmark.computer/)
+> 来源：[`commodore.bookmark.computer/`](https://commodore.bookmark.computer/)
 
 正在加载...
 

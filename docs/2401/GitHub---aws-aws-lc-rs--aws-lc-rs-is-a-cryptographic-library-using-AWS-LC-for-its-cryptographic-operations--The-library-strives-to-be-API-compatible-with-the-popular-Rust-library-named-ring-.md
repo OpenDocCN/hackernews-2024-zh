@@ -8,7 +8,7 @@ date: 2024-05-27 14:45:45
 
 # GitHub - aws/aws-lc-rs：aws-lc-rs 是一个使用 AWS-LC 进行加密操作的加密库。该库致力于与名为 ring 的流行 Rust 库保持 API 兼容。
 
-> 来源：[https://github.com/aws/aws-lc-rs](https://github.com/aws/aws-lc-rs)
+> 来源：[`github.com/aws/aws-lc-rs`](https://github.com/aws/aws-lc-rs)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

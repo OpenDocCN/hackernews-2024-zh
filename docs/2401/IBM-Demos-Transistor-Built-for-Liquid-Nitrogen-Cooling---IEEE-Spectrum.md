@@ -8,9 +8,9 @@ date: 2024-05-27 14:34:39
 
 # IBM 展示出为液氮冷却而建造的晶体管 - IEEE Spectrum
 
-> 来源：[https://spectrum.ieee.org/nanosheet-transistor](https://spectrum.ieee.org/nanosheet-transistor)
+> 来源：[`spectrum.ieee.org/nanosheet-transistor`](https://spectrum.ieee.org/nanosheet-transistor)
 
-液氮在 77 开尔文（-196°C）时沸腾。将电子器件冷却至这种寒冷温度可以提高性能，但今天的晶体管并未考虑到低温条件。在 2023 年 12 月早些时候于旧金山举行的[IEEE国际电子器件会议](https://www.ieee-iedm.org/)（IEDM）上，IBM 的研究人员展示了首个针对液氮冷却优化的先进[CMOS晶体管](https://spectrum.ieee.org/tag/cmos)。
+液氮在 77 开尔文（-196°C）时沸腾。将电子器件冷却至这种寒冷温度可以提高性能，但今天的晶体管并未考虑到低温条件。在 2023 年 12 月早些时候于旧金山举行的[IEEE 国际电子器件会议](https://www.ieee-iedm.org/)（IEDM）上，IBM 的研究人员展示了首个针对液氮冷却优化的先进[CMOS 晶体管](https://spectrum.ieee.org/tag/cmos)。
 
 [纳米片晶体管](https://spectrum.ieee.org/the-nanosheet-transistor-is-the-next-and-maybe-last-step-in-moores-law)将通道分成一堆薄硅片，完全被栅包围。“纳米片器件结构使我们能够在大约指甲大小的空间内容纳 500 亿个晶体管，”IBM 的高级研究员[鲍汝强](https://www.linkedin.com/in/ruqiang-bao-48b971a)说道。这些晶体管有望取代当前的 FinFET 技术，并被用于 IBM 的首个 2 纳米原型处理器中。纳米片技术是逻辑器件尺寸缩小的下一步；将该技术与液氮冷却配对可能会导致更好的性能。
 

@@ -6,9 +6,9 @@ date: 2024-05-27 14:36:49
 
 -->
 
-# GitHub - drmortalwombat/oscar64: 优化小内存C编译器汇编器和C64运行时
+# GitHub - drmortalwombat/oscar64: 优化小内存 C 编译器汇编器和 C64 运行时
 
-> 来源：[https://github.com/drmortalwombat/oscar64](https://github.com/drmortalwombat/oscar64)
+> 来源：[`github.com/drmortalwombat/oscar64`](https://github.com/drmortalwombat/oscar64)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

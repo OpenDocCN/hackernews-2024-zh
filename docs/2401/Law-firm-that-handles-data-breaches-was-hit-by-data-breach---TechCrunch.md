@@ -8,13 +8,13 @@ date: 2024-05-27 14:31:16
 
 # 处理数据泄露的律师事务所遭受了数据泄露 | TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/04/orrick-law-firm-data-breach/](https://techcrunch.com/2024/01/04/orrick-law-firm-data-breach/)
+> 来源：[`techcrunch.com/2024/01/04/orrick-law-firm-data-breach/`](https://techcrunch.com/2024/01/04/orrick-law-firm-data-breach/)
 
 一家与受安全事件影响的公司合作的国际律师事务所经历了自己的网络攻击，暴露了数十万数据泄露受害者的敏感健康信息。
 
 总部位于旧金山的 Orrick, Herrington & Sutcliffe 上周表示，黑客于 2023 年 3 月在其网络上的一个文件共享中侵入，窃取了[超过 637,000 名数据泄露受害者](https://apps.web.maine.gov/online/aeviewer/ME/40/8a2cebbb-af51-4e3b-ab37-a64ff132a972.shtml?=010420240000)的个人信息和敏感健康数据。
 
-Orrick与遭受安全事件影响的公司合作，包括数据泄露，以处理监管要求，例如获取受害者的信息，以通知州政府和受影响的个人。
+Orrick 与遭受安全事件影响的公司合作，包括数据泄露，以处理监管要求，例如获取受害者的信息，以通知州政府和受影响的个人。
 
 在发送给受影响个人的一系列数据泄露通知信中，Orrick 表示黑客从其系统中窃取了大量数据，涉及 Orrick 作为法律顾问参与的其他公司的安全事件。
 
@@ -34,6 +34,6 @@ Orrick 拒绝回答 TechCrunch 关于此事件的问题。Orrick 发言人 Jolie
 
 “我们很高兴在事故发生后不到一年的时间内达成了和解，这结束了这件事，我们将继续专注于保护我们的系统和我们客户及公司信息的工作，” Orrick 的发言人补充道。
 
-*1月8日更正，澄清第五段受影响公司为加州 Delta Dental。*
+*1 月 8 日更正，澄清第五段受影响公司为加州 Delta Dental。*
 
 > [23andMe 告诉受害者他们自己的数据被泄露是他们的错](https://techcrunch.com/2024/01/03/23andme-tells-victims-its-their-fault-that-their-data-was-breached/)

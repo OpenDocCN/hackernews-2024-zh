@@ -8,7 +8,7 @@
 
 # 元学习就是你所需要的一切 —— 詹姆斯·勒
 
-> 来源：[https://jameskle.com/writes/meta-learning-is-all-you-need](https://jameskle.com/writes/meta-learning-is-all-you-need)
+> 来源：[`jameskle.com/writes/meta-learning-is-all-you-need`](https://jameskle.com/writes/meta-learning-is-all-you-need)
 
 在过去几十年中，由于计算能力的提升、非结构化数据的丰富以及算法解决方案的进步，神经网络在机器学习社区中具有极高的影响力。然而，对于研究人员来说，要在数据稀缺且模型准确度/速度要求严格的真实世界环境中完全使用神经网络仍然还有很长的路要走。
 
@@ -38,8 +38,8 @@
 
 从历史上看，有一些论文在这个方向上进行了思考。
 
-+   [1992年](https://www.researchgate.net/publication/2389122_On_the_Optimization_of_a_Synaptic_Learning_Rule)，[Bengio等人](https://www.researchgate.net/publication/2389122_On_the_Optimization_of_a_Synaptic_Learning_Rule)研究了一种可以解决新任务的学习规则的可能性。
++   [1992 年](https://www.researchgate.net/publication/2389122_On_the_Optimization_of_a_Synaptic_Learning_Rule)，[Bengio 等人](https://www.researchgate.net/publication/2389122_On_the_Optimization_of_a_Synaptic_Learning_Rule)研究了一种可以解决新任务的学习规则的可能性。
 
-+   [1997年](https://link.springer.com/article/10.1023/A:1007379606734)，[Rich Caruana](https://link.springer.com/article/10.1023/A:1007379606734)撰写了一份关于**多任务学习**的调查报告，这是元学习的一种变体。他解释了如何通过在模型之间共享表示来并行学习任务，并提出了一种多任务归纳转移概念，该概念使用反向传播来处理额外的任务。
++   [1997 年](https://link.springer.com/article/10.1023/A:1007379606734)，[Rich Caruana](https://link.springer.com/article/10.1023/A:1007379606734)撰写了一份关于**多任务学习**的调查报告，这是元学习的一种变体。他解释了如何通过在模型之间共享表示来并行学习任务，并提出了一种多任务归纳转移概念，该概念使用反向传播来处理额外的任务。
 
-+   [1998年](https://papers.nips.cc/paper/1034-is-learning-the-n-th-thing-any-easier-than-learning-the-first.pdf)，[Sebastian Thrun](https://papers.nips.cc/paper/1034-is-learning-the-n-th-thing-any-easier-than-learning-the-first.pdf)探讨了**终身学习**的问题，灵感来自人类利用来自相关学习任务的经验以概括新任务的能力。
++   [1998 年](https://papers.nips.cc/paper/1034-is-learning-the-n-th-thing-any-easier-than-learning-the-first.pdf)，[Sebastian Thrun](https://papers.nips.cc/paper/1034-is-learning-the-n-th-thing-any-easier-than-learning-the-first.pdf)探讨了**终身学习**的问题，灵感来自人类利用来自相关学习任务的经验以概括新任务的能力。

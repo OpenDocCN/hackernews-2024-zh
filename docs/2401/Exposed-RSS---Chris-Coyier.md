@@ -2,15 +2,15 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:44:34
+日期：2024 年 05 月 27 日 14:44:34
 
 -->
 
 # 公开的 RSS – Chris Coyier
 
-> 来源：[https://chriscoyier.net/2024/01/13/exposed-rss/](https://chriscoyier.net/2024/01/13/exposed-rss/)
+> 来源：[`chriscoyier.net/2024/01/13/exposed-rss/`](https://chriscoyier.net/2024/01/13/exposed-rss/)
 
-2024年1月13日
+2024 年 1 月 13 日
 
 # 公开的 RSS
 

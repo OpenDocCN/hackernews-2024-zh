@@ -8,7 +8,7 @@
 
 # 为对空间敏感的乘客设计的铁路车 | Hackaday
 
-> 来源：[https://hackaday.com/2022/10/08/a-rail-cart-for-the-space-conscious-passenger/](https://hackaday.com/2022/10/08/a-rail-cart-for-the-space-conscious-passenger/)
+> 来源：[`hackaday.com/2022/10/08/a-rail-cart-for-the-space-conscious-passenger/`](https://hackaday.com/2022/10/08/a-rail-cart-for-the-space-conscious-passenger/)
 
 对于居住在有大量废弃铁路的国家的人们，探索它们的一种流行方式是通过自制铁路车。这些通常是简陋的铁路手推车，配备有小型内燃机，并且可以在网上找到大量引人入胜的视频。这样的手推车有一个缺点——它不是最紧凑的设备。[Cato] 提出了一种非常便携的铁路车，[通过用两个悬浮滑板的内部构件替换引擎](https://tech.cato.cat/railkart.html)。
 

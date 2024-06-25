@@ -8,9 +8,9 @@
 
 # 为什么安卓开发者不再需要 Windows USB 驱动程序？
 
-> 来源：[https://fabiensanglard.net/android_windows_driver/](https://fabiensanglard.net/android_windows_driver/)
+> 来源：[`fabiensanglard.net/android_windows_driver/`](https://fabiensanglard.net/android_windows_driver/)
 
-2023年12月30日
+2023 年 12 月 30 日
 
 为什么安卓开发者不再需要 Windows USB 驱动程序？
 
@@ -52,7 +52,7 @@ Device Descriptor
 
 * * *
 
-要理解驱动程序安装时发生的情况，让我们检查来自[Google USB 驱动程序](usb_driver_r13-windows.zip)的“大脑”，`android_winusb.inf`。
+要理解驱动程序安装时发生的情况，让我们检查来自 Google USB 驱动程序的“大脑”，`android_winusb.inf`。
 
 ```
 ;Google Nexus One

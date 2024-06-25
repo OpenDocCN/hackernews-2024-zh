@@ -8,7 +8,7 @@
 
 # Barkey Wolf Consulting - 使用 ZBar 条形码扫描套件在浏览器中使用 WebAssembly
 
-> 来源：[https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar](https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar)
+> 来源：[`barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar`](https://barkeywolf.consulting/posts/barcode-scanner-webassembly/#meet-zbar)
 
 **我没时间看你干瘪的散文，给我看代码！**
 

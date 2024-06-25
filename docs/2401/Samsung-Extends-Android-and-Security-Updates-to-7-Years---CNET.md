@@ -8,7 +8,7 @@
 
 # 三星将 Android 和安全更新延长至 7 年 - CNET
 
-> 来源：[https://www.cnet.com/tech/mobile/samsung-extends-android-and-security-updates-to-7-years/](https://www.cnet.com/tech/mobile/samsung-extends-android-and-security-updates-to-7-years/)
+> 来源：[`www.cnet.com/tech/mobile/samsung-extends-android-and-security-updates-to-7-years/`](https://www.cnet.com/tech/mobile/samsung-extends-android-and-security-updates-to-7-years/)
 
 在周三的[Galaxy Unpacked](https://www.cnet.com/tech/mobile/samsung-unpacked-event-2024-expect-ai-and-the-galaxy-s24-to-share-the-spotlight/)活动上，三星推出了其新的[Galaxy S24](https://www.cnet.com/tech/mobile/samsungs-galaxy-s24-and-s24-plus-have-new-ai-perks-bigger-batteries-and-brighter-screens/)和[S24 Ultra](https://www.cnet.com/tech/mobile/samsung-galaxy-s24-ultra-first-look-ai-takes-center-stage/)手机，并承诺为其手机提供更长时间的支持。在介绍 S24 型号的人工智能功能、更大的电池和更亮的屏幕之前，三星宣布已将其手机的操作系统和安全更新延长。现在，它将提供七年的安全更新以及七代 Android 升级。
 
@@ -20,4 +20,4 @@
 
 ### 三星 Galaxy S24 和 S24 Plus 在铝制外壳中看起来非常漂亮
 
-[查看所有照片](/pictures/the-samsung-galaxy-s24-and-s24-plus-looks-sweet-in-aluminum/)
+查看所有照片

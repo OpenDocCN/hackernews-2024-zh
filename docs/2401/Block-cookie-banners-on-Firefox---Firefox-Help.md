@@ -8,9 +8,9 @@
 
 # 在 Firefox 上屏蔽 Cookie 横幅 | Firefox 帮助
 
-> 来源：[https://support.mozilla.org/en-US/kb/cookie-banner-reduction](https://support.mozilla.org/en-US/kb/cookie-banner-reduction)
+> 来源：[`support.mozilla.org/en-US/kb/cookie-banner-reduction`](https://support.mozilla.org/en-US/kb/cookie-banner-reduction)
 
-由于制定了专门针对用户数据的使用和保留的更严格的消费者隐私法律，例如[GDPR](https://wikipedia.org/wiki/General_Data_Protection_Regulation)，网站已经采用了法律通知，通知用户他们正在使用诸如 Cookie 等技术在用户设备上存储数据。为了解决这些网站上由 Cookie 横幅引起的日益严重的挫败感，[Firefox 版本](/en-US/kb/find-what-version-firefox-you-are-using) 120 引入了 Cookie 横幅拦截器。该功能旨在通过自动处理这些烦人的横幅来使您的浏览体验更加流畅。在本文中，我们将向您展示它现在的工作原理，以及我们打算在将来如何扩展它。
+由于制定了专门针对用户数据的使用和保留的更严格的消费者隐私法律，例如[GDPR](https://wikipedia.org/wiki/General_Data_Protection_Regulation)，网站已经采用了法律通知，通知用户他们正在使用诸如 Cookie 等技术在用户设备上存储数据。为了解决这些网站上由 Cookie 横幅引起的日益严重的挫败感，Firefox 版本 120 引入了 Cookie 横幅拦截器。该功能旨在通过自动处理这些烦人的横幅来使您的浏览体验更加流畅。在本文中，我们将向您展示它现在的工作原理，以及我们打算在将来如何扩展它。
 
 # 为什么 Cookie 横幅是一个问题？
 

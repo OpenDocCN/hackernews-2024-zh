@@ -8,7 +8,7 @@ date: 2024-05-27 14:48:26
 
 # 人工智能提出了一种使用锂量减少 70% 的电池设计 | 新科学家
 
-> 来源：[https://www.newscientist.com/article/2411374-ai-comes-up-with-battery-design-that-uses-70-per-cent-less-lithium/](https://www.newscientist.com/article/2411374-ai-comes-up-with-battery-design-that-uses-70-per-cent-less-lithium/)
+> 来源：[`www.newscientist.com/article/2411374-ai-comes-up-with-battery-design-that-uses-70-per-cent-less-lithium/`](https://www.newscientist.com/article/2411374-ai-comes-up-with-battery-design-that-uses-70-per-cent-less-lithium/)
 
 一位研究人员正在测试由人工智能设计的新材料电池
 
@@ -16,9 +16,9 @@ date: 2024-05-27 14:48:26
 
 人工智能可以加速寻找和测试新材料的过程，现在研究人员已经利用了这一能力来开发一种对昂贵的锂矿物依赖较少的电池。
 
-锂离子电池驱动着我们每天使用的许多设备以及电动汽车。它们也将是绿色电网的必要组成部分，因为电池需要存储风力涡轮机和太阳能电池板的可再生能源。但是[锂很昂贵](/article/mg24933180-600-were-running-out-of-lithium-for-batteries-can-we-use-salt-instead/)，而开采它 [会破坏环境](/article/mg25333710-200-lithium-fields-beautiful-from-the-air-trouble-on-the-ground/)。寻找这种关键金属的替代品可能会耗资巨大且耗时，需要研究人员在数年的时间内开发和测试数百万种候选材料。使用人工智能，微软的[Nathan Baker](https://www.linkedin.com/in/nathanandrewbaker/)及其同事们在几个月内完成了任务。他们设计并建造了一种电池，其锂使用量比某些竞争设计少多达 70%。
+锂离子电池驱动着我们每天使用的许多设备以及电动汽车。它们也将是绿色电网的必要组成部分，因为电池需要存储风力涡轮机和太阳能电池板的可再生能源。但是锂很昂贵，而开采它 会破坏环境。寻找这种关键金属的替代品可能会耗资巨大且耗时，需要研究人员在数年的时间内开发和测试数百万种候选材料。使用人工智能，微软的[Nathan Baker](https://www.linkedin.com/in/nathanandrewbaker/)及其同事们在几个月内完成了任务。他们设计并建造了一种电池，其锂使用量比某些竞争设计少多达 70%。
 
-研究人员专注于一种[仅包含固态部分](/article/2398896-what-are-solid-state-batteries-and-why-do-we-need-them/)的电池类型，并寻找电荷流动的电池组件，即电解质的新材料。 他们从已建立的电解质结构中调整并替换一些锂原子以设计的 23.6 百万 [候选材料](/article/2404929-crystal-hunting-deepmind-ai-could-help-discover-new-wonder-materials/)中开始。然后，人工智能算法淘汰了它计算出的不稳定材料，以及化学反应使电池工作的材料中的弱点。研究人员还考虑了每种材料在电池活动时的行为。仅仅几天后，他们的列表中仅包含几百种候选材料，其中一些以前从未被研究过。
+研究人员专注于一种仅包含固态部分的电池类型，并寻找电荷流动的电池组件，即电解质的新材料。 他们从已建立的电解质结构中调整并替换一些锂原子以设计的 23.6 百万 候选材料中开始。然后，人工智能算法淘汰了它计算出的不稳定材料，以及化学反应使电池工作的材料中的弱点。研究人员还考虑了每种材料在电池活动时的行为。仅仅几天后，他们的列表中仅包含几百种候选材料，其中一些以前从未被研究过。
 
 “但我们不是材料科学家，”贝克尔说。“所以我打电话给一些曾与能源部合作开展大型电池项目的专家……并说：‘你觉得呢？我们疯了吗？’”
 

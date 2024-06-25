@@ -8,11 +8,11 @@ category: 未分类
 
 # 庆祝数学—阿尔伯特—密码学
 
-> 来源：[https://celebratio.org/Albert_AA/article/455/](https://celebratio.org/Albert_AA/article/455/)
+> 来源：[`celebratio.org/Albert_AA/article/455/`](https://celebratio.org/Albert_AA/article/455/)
 
 现在让我们假设消息\( x \)的分量\( x_i \)在其表示\[ \eqref{eq-03} \]中是字母，可能还有其他类似的符号如句号或逗号。那么，所有可能分量的集合\( \mathcal{M}_0 \)是一个有限集，我们希望将其映射到一个也有有限数量的量的环\( \mathcal{N}_0 \)上。让我们来定义一些非常简单的有限环。
 
-我们新环的数量将不再是普通整数，而是整数的*类*。读者已经熟悉将整数分类为两类，即所有偶数和所有奇数。对于这些类，我们有以下规则：\[ \begin{align*} & \text{偶数} + \text{偶数} = \text{偶数}，\\ & \text{偶数} + \text{奇数} = \text{奇数} + \text{偶数} = \text{奇数}，\\ & \text{偶数} \times \text{奇数} =\text{奇数}\times\text{偶数}= \text{偶数}，\\ & \text{奇数} \times \text{奇数} = \text{奇数}。 \end{align*} \]然后我们可以用0表示所有偶数的类，用1表示所有奇数的类，我们有一个两个元素的环，其规则为\[ \begin{align} & 0 + 0 = 0 = 1 + 1, \qquad 1 + 0 = 0 + 1 = 1, \notag \\ & 0 \cdot 0 = 0 \cdot 1 = 1 \cdot 0 = 0, \qquad 1 \cdot 1 = 1. \label{eq-23} \end{align} \]
+我们新环的数量将不再是普通整数，而是整数的*类*。读者已经熟悉将整数分类为两类，即所有偶数和所有奇数。对于这些类，我们有以下规则：\[ \begin{align*} & \text{偶数} + \text{偶数} = \text{偶数}，\\ & \text{偶数} + \text{奇数} = \text{奇数} + \text{偶数} = \text{奇数}，\\ & \text{偶数} \times \text{奇数} =\text{奇数}\times\text{偶数}= \text{偶数}，\\ & \text{奇数} \times \text{奇数} = \text{奇数}。 \end{align*} \]然后我们可以用 0 表示所有偶数的类，用 1 表示所有奇数的类，我们有一个两个元素的环，其规则为\[ \begin{align} & 0 + 0 = 0 = 1 + 1, \qquad 1 + 0 = 0 + 1 = 1, \notag \\ & 0 \cdot 0 = 0 \cdot 1 = 1 \cdot 0 = 0, \qquad 1 \cdot 1 = 1. \label{eq-23} \end{align} \]
 
 我们将类似地定义环\[ A_m \]，其中\( m \)表示普通整数的类数，对于每个固定的整数\( m > 1 \)。如果\( a \)是任意整数，则存在整数\( q \)和\( r \)使得\[ a - q m = r, \label{eq-24} \]其中余数\( r \)是整数\[ 0,1,2,\dots,m-1 \]中的一个且仅一个。如果两个整数\( a \)和\( b \) *同余*，则记作\[ a \equiv b, \label{eq-26} \]如果相应的余数相同。则\[ a \equiv 0 \]当且仅当\( a \)是\( m \)的倍数，\[ a \equiv b \]当且仅当\[ a - b = 0 \]。
 

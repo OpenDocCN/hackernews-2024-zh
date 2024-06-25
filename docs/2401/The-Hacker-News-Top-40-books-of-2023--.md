@@ -6,17 +6,17 @@
 
 -->
 
-# 《黑客新闻》2023年度前40本书籍 -
+# 《黑客新闻》2023 年度前 40 本书籍 -
 
-> 来源：[https://hnreads.com/post/top40_2023/](https://hnreads.com/post/top40_2023/)
+> 来源：[`hnreads.com/post/top40_2023/`](https://hnreads.com/post/top40_2023/)
 
 嗨，欢迎来到全新的网站 HN 读物。我喜欢阅读 [黑客新闻](https://news.ycombinator.com/)，我喜欢购买书籍（和阅读），我也热爱数据，那么有什么比对书籍的数据进行处理以找到一些有趣的结果更好的呢？！这也给了我机会写一些我觉得有趣的书籍的内容。
 
-这里是黑客新闻读者在2023年推荐的前40本书籍。
+这里是黑客新闻读者在 2023 年推荐的前 40 本书籍。
 
 我生成这个列表的方法：
 
-+   获取包含“book”一词的故事，但不包括“macbook”、“chromebook”等。这些故事发布于2023年，并且尽量只获取“ask HN”类型的故事，排除其中含有 url 的故事。
++   获取包含“book”一词的故事，但不包括“macbook”、“chromebook”等。这些故事发布于 2023 年，并且尽量只获取“ask HN”类型的故事，排除其中含有 url 的故事。
 
 +   获取故事的评论
 
@@ -37,7 +37,7 @@
 
 很高兴看到我最喜欢的系列之一出现在这个列表上，那就是《超越疆界》系列。我通常不会选择带有恐怖元素的书籍，但故事非常好，科幻元素也很酷。
 
-有一对具有争议性的人物在2023年度前40名中排名不高：埃隆·马斯克的新传记在关于书籍的“Ask HN”中没有被推荐，尽管黑客新闻上有大量关于他和艾萨克森书籍的故事。另外，安·兰德的书在2023年的提及次数不够多，未能入选列表。
+有一对具有争议性的人物在 2023 年度前 40 名中排名不高：埃隆·马斯克的新传记在关于书籍的“Ask HN”中没有被推荐，尽管黑客新闻上有大量关于他和艾萨克森书籍的故事。另外，安·兰德的书在 2023 年的提及次数不够多，未能入选列表。
 
 毫不拖延，以下是列表：
 
@@ -48,7 +48,7 @@
 | 1 | [计算机程序的构造和解释](https://www.amazon.com/dp/0262510871?tag=reyemdev0f-20) | 哈罗德·阿贝尔森, 杰拉尔德·杰伊·苏斯曼, 朱莉·苏斯曼 | 26 | [34231811](https://news.ycombinator.com/item?id=34231811) |
 | 2 | [设计数据密集型应用程序](https://www.amazon.com/dp/1449373321?tag=reyemdev0f-20) | 马丁·克莱普曼 | 18 | [34231811](https://news.ycombinator.com/item?id=34231811) |
 | 3 | [哥德尔，艾舍尔，巴赫](https://www.amazon.com/dp/0465026567?tag=reyemdev0f-20) | 道格拉斯·霍夫斯塔特 | 18 | [34440923](https://news.ycombinator.com/item?id=34440923) |
-| 4 | [C程序设计语言](https://www.amazon.com/dp/0131103628?tag=reyemdev0f-20) | 布莱恩·W·克尼根，丹尼斯·M·里奇 | 17 | [35933845](https://news.ycombinator.com/item?id=35933845) |
+| 4 | [C 程序设计语言](https://www.amazon.com/dp/0131103628?tag=reyemdev0f-20) | 布莱恩·W·克尼根，丹尼斯·M·里奇 | 17 | [35933845](https://news.ycombinator.com/item?id=35933845) |
 | 5 | [如何赢得朋友和影响人](https://www.amazon.com/dp/0671027034?tag=reyemdev0f-20) | 戴尔·卡耐基 | 15 | [34310435](https://news.ycombinator.com/item?id=34310435) |
 | 6 | [神话般的程序员月度](https://www.amazon.com/dp/B00B8USS14?tag=reyemdev0f-20) | 弗雷德里克·P·布鲁克斯小姐 | 14 | [34333293](https://news.ycombinator.com/item?id=34333293) |
 | 7 | [如何解题](https://www.amazon.com/dp/069111966X?tag=reyemdev0f-20) | 乔治·波利亚 | 14 | [34441085](https://news.ycombinator.com/item?id=34441085) |
@@ -58,7 +58,7 @@
 | 11 | [编码：计算机硬件和软件的隐藏语言](https://www.amazon.com/dp/0735611319?tag=reyemdev0f-20) | 查尔斯·佩兹尔德 | 12 | [34476530](https://news.ycombinator.com/item?id=34476530) |
 | 12 | [编写解释器](https://www.amazon.com/dp/0990582930?tag=reyemdev0f-20) | 罗伯特·尼斯特罗姆 | 11 | [34231811](https://news.ycombinator.com/item?id=34231811) |
 | 13 | [人件](https://www.amazon.com/dp/0321934113?tag=reyemdev0f-20) | 汤姆·德马科，蒂莫西·利斯特 | 11 | [35930473](https://news.ycombinator.com/item?id=35930473) |
-| 14 | [简洁JavaScript](https://www.amazon.com/dp/1593279507?tag=reyemdev0f-20) | 马里恩·哈弗贝克 | 10 | [34412355](https://news.ycombinator.com/item?id=34412355) |
+| 14 | [简洁 JavaScript](https://www.amazon.com/dp/1593279507?tag=reyemdev0f-20) | 马里恩·哈弗贝克 | 10 | [34412355](https://news.ycombinator.com/item?id=34412355) |
 | 15 | [几何原本](https://www.amazon.com/dp/1888009187?tag=reyemdev0f-20) | 欧几里得 | 10 | [34440894](https://news.ycombinator.com/item?id=34440894) |
 | 16 | [计算机程序设计艺术](https://www.amazon.com/dp/020103803X?tag=reyemdev0f-20) | 唐纳德·E·克努斯 | 10 | [34442163](https://news.ycombinator.com/item?id=34442163) |
 | 17 | [视觉残留](https://www.amazon.com/dp/0765319640?tag=reyemdev0f-20) | 彼得·瓦茨 | 10 | [35054030](https://news.ycombinator.com/item?id=35054030) |
@@ -88,6 +88,6 @@
 
 #### 差一点就入选的名单
 
-最初我想发布前50名，但有太多的并列。我选择在40个项目结束，因为那是被提及7次和被提及6次或更少之间的分界线。以下29本书被提及了5次或6次。
+最初我想发布前 50 名，但有太多的并列。我选择在 40 个项目结束，因为那是被提及 7 次和被提及 6 次或更少之间的分界线。以下 29 本书被提及了 5 次或 6 次。
 
 * * *

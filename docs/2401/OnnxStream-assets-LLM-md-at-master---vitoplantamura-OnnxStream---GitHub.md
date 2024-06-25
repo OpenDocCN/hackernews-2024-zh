@@ -2,13 +2,13 @@
 
 分类：未分类
 
-日期：2024年5月27日 14:46:39
+日期：2024 年 5 月 27 日 14:46:39
 
 -->
 
 # [OnnxStream/assets/LLM.md](https://github.com/vitoplantamura/OnnxStream/blob/master/assets/LLM.md) 在 GitHub 上的 vitoplantamura/OnnxStream 仓库。
 
-> 来源：[https://github.com/vitoplantamura/OnnxStream/blob/master/assets/LLM.md](https://github.com/vitoplantamura/OnnxStream/blob/master/assets/LLM.md)
+> 来源：[`github.com/vitoplantamura/OnnxStream/blob/master/assets/LLM.md`](https://github.com/vitoplantamura/OnnxStream/blob/master/assets/LLM.md)
 
 ```
 import transformers 

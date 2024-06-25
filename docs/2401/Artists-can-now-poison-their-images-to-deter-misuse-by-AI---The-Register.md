@@ -2,15 +2,15 @@
 
 类别: 未分类
 
-日期：2024年05月27日 14:57:27
+日期：2024 年 05 月 27 日 14:57:27
 
 -->
 
-# 艺术家现在可以毒害他们的图像以防止被AI滥用 • The Register
+# 艺术家现在可以毒害他们的图像以防止被 AI 滥用 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/20/nightshade_ai_images/](https://www.theregister.com/2024/01/20/nightshade_ai_images/)
+> 来源：[`www.theregister.com/2024/01/20/nightshade_ai_images/`](https://www.theregister.com/2024/01/20/nightshade_ai_images/)
 
-本周，芝加哥大学专家发布了夜草1.0，这是一个工具，旨在惩罚那些未经许可就对数据进行训练的不道德的机器学习模型制造商。
+本周，芝加哥大学专家发布了夜草 1.0，这是一个工具，旨在惩罚那些未经许可就对数据进行训练的不道德的机器学习模型制造商。
 
 [夜草](https://nightshade.cs.uchicago.edu/index.html)是一种攻击性的数据毒害工具，是一种防御样式保护工具[Glaze](https://glaze.cs.uchicago.edu/)的伴侣，*The Register*在去年二月[报道过](https://www.theregister.com/2023/02/16/computer_scientists_develop_new_technique/)。
 
@@ -18,11 +18,11 @@
 
 负责该项目的团队[表示](https://nightshade.cs.uchicago.edu/whatis.html)：“夜草被计算为一个多目标优化，最小化对原始图像的可见变化。”
 
-例如，人眼可能看到一个绿色草地上的阴影牛图像基本上没有变化，但是AI模型可能会看到一个大皮包躺在草地上。
+例如，人眼可能看到一个绿色草地上的阴影牛图像基本上没有变化，但是 AI 模型可能会看到一个大皮包躺在草地上。
 
-夜草是由芝加哥大学博士生Shawn Shan、Wenxin Ding和Josephine Passananti以及教授Heather Zheng和Ben Zhao开发的，其中一些人还帮助了Glaze。
+夜草是由芝加哥大学博士生 Shawn Shan、Wenxin Ding 和 Josephine Passananti 以及教授 Heather Zheng 和 Ben Zhao 开发的，其中一些人还帮助了 Glaze。
 
-在2023年10月的一篇[研究论文](https://arxiv.org/abs/2310.13828)中描述的，夜草是一种针对特定提示的毒害攻击。毒害一张图像包括选择一个标签（例如一只猫），以描述实际描绘的内容，以便在将图像摄入模型训练时模糊该概念的边界。
+在 2023 年 10 月的一篇[研究论文](https://arxiv.org/abs/2310.13828)中描述的，夜草是一种针对特定提示的毒害攻击。毒害一张图像包括选择一个标签（例如一只猫），以描述实际描绘的内容，以便在将图像摄入模型训练时模糊该概念的边界。
 
 因此，一个在夜草影像中受到毒害的模型的用户可能提交一张猫的提示，却收到一张狗或鱼的图像的通知。这种不可预测的响应使得文本到图像模型显著不太有用，这意味着模型制造商有动力确保他们只在已经自由提供的数据上进行训练。
 

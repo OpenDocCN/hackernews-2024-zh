@@ -8,7 +8,7 @@ date: 2024-05-27 15:19:58
 
 # GitHub - oto-labs/librarian: 使用 Transformers 进行更好的书签搜索
 
-> 来源：[https://github.com/oto-labs/librarian](https://github.com/oto-labs/librarian)
+> 来源：[`github.com/oto-labs/librarian`](https://github.com/oto-labs/librarian)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

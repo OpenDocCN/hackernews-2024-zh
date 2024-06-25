@@ -8,7 +8,7 @@
 
 # Coinbase 告诉法官，购买加密货币就像收藏 Beanie Babies 一样。
 
-> 来源：[https://markets.businessinsider.com/news/currencies/coinbase-crypto-judge-buying-beanie-babies-court-argument-judge-bitcoin-2024-1](https://markets.businessinsider.com/news/currencies/coinbase-crypto-judge-buying-beanie-babies-court-argument-judge-bitcoin-2024-1)
+> 来源：[`markets.businessinsider.com/news/currencies/coinbase-crypto-judge-buying-beanie-babies-court-argument-judge-bitcoin-2024-1`](https://markets.businessinsider.com/news/currencies/coinbase-crypto-judge-buying-beanie-babies-court-argument-judge-bitcoin-2024-1)
 
 +   **Coinbase 告诉法官，购买加密货币就像收藏 Beanie Babies 一样。**
 
@@ -40,6 +40,6 @@ Coinbase 律师 William Savitt 表示，当购买加密货币时，买家并不�
 
 “当他们购买这个代币时，他们是在投资其背后的网络。二者不能分离，”SEC 律师 Patrick Costello 说。
 
-SEC 在一个1946年的最高法院裁决中倚重较多，该裁决将证券定义为“投资于共同企业，并合理预期从他人的努力中获利的资金”。
+SEC 在一个 1946 年的最高法院裁决中倚重较多，该裁决将证券定义为“投资于共同企业，并合理预期从他人的努力中获利的资金”。
 
 这一论点能否在这个法庭案件中站得住脚还有待观察。法拉在听证会结束时没有做出裁决。

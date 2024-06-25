@@ -8,7 +8,7 @@
 
 # Bernard — 再也不用担心破损的链接了
 
-> 来源：[https://bernard.app](https://bernard.app)
+> 来源：[`bernard.app`](https://bernard.app)
 
 网站一直在不断地变化。然而，没有什么比跟随一个指向不存在页面的链接更令人沮丧的了。
 

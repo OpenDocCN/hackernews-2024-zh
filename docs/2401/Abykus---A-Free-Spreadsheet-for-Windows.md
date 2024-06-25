@@ -8,7 +8,7 @@
 
 # Abykus - 用于 Windows 的免费电子表格
 
-> 来源：[https://www.abykus.com/](https://www.abykus.com/)
+> 来源：[`www.abykus.com/`](https://www.abykus.com/)
 
 |
 

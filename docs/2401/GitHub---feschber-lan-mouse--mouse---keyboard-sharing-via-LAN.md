@@ -8,7 +8,7 @@
 
 # GitHub - feschber/lan-mouse：通过局域网共享鼠标和键盘
 
-> 来源：[https://github.com/feschber/lan-mouse](https://github.com/feschber/lan-mouse)
+> 来源：[`github.com/feschber/lan-mouse`](https://github.com/feschber/lan-mouse)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

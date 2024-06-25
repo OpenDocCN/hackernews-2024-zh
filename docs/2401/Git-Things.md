@@ -8,7 +8,7 @@ category: 未分类
 
 # Git 事务
 
-> 来源：[https://matklad.github.io/2023/12/31/git-things.html#Git-Things](https://matklad.github.io/2023/12/31/git-things.html#Git-Things)
+> 来源：[`matklad.github.io/2023/12/31/git-things.html#Git-Things`](https://matklad.github.io/2023/12/31/git-things.html#Git-Things)
 
 每个提交都应该通过测试吗？如果应该，那么你的[不是火箭科学规则](https://graydon2.dreamwidth.org/1597.html)实现必须验证这个属性。它可能不是，只测试将特性分支合并到主分支的最终结果。
 
@@ -68,11 +68,11 @@ category: 未分类
 
 [集体代码建设合同](https://rfc.zeromq.org/spec/42/)
 
-我怀疑这个确切的工作流程是否有可能，但我对[Zed的](https://zed.dev)关于允许两个人同时在同一编辑器中编码的想法持谨慎乐观的态度。我认为这实现了类似的效果，并且很好地规避了允许暂时未经审核的代码引起的不安。
+我怀疑这个确切的工作流程是否有可能，但我对[Zed 的](https://zed.dev)关于允许两个人同时在同一编辑器中编码的想法持谨慎乐观的态度。我认为这实现了类似的效果，并且很好地规避了允许暂时未经审核的代码引起的不安。
 
-好了，回到git！
+好了，回到 git！
 
-*首先*，并不是每个项目都需要一个清晰的历史记录。你有没有看过你个人博客或dotfiles的git历史？如果你没有，可以用`.`作为提交信息。我在[https://github.com/matklad/matklad.github.io](https://github.com/matklad/matklad.github.io)上这样做，到目前为止效果很好。
+*首先*，并不是每个项目都需要一个清晰的历史记录。你有没有看过你个人博客或 dotfiles 的 git 历史？如果你没有，可以用`.`作为提交信息。我在[`github.com/matklad/matklad.github.io`](https://github.com/matklad/matklad.github.io)上这样做，到目前为止效果很好。
 
 *其次*，并不是每个变动都需要一个很好的提交信息。如果一个变动真的很小，我会说`minor`是一个可以的提交信息！
 
@@ -80,7 +80,7 @@ category: 未分类
 
 当我致力于一个较大的特性时，我从`git commit --allow-empty`开始写下我要做的事情。大多数情况下，在提交信息的第三段，我意识到我的计划中存在一个缺陷并加以完善。因此，当我开始编写代码时，我已经在第二轮迭代了。而当我完成时，我只需用实际的更改修改提交，并且提交信息已经在那里，只需要进行微调。
 
-最后一件关于提交信息的事情：`man git-commit`告诉我，摘要行应该少于50个字符。这显然是错误的，那太短了！[内核文档](https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html)建议更合理的70-75限制！确实，看看最近的一些内核提交，50显然不够！
+最后一件关于提交信息的事情：`man git-commit`告诉我，摘要行应该少于 50 个字符。这显然是错误的，那太短了！[内核文档](https://www.kernel.org/doc/html/v4.10/process/submitting-patches.html)建议更合理的 70-75 限制！确实，看看最近的一些内核提交，50 显然不够！
 
 ```
 <---               50 characters              --->

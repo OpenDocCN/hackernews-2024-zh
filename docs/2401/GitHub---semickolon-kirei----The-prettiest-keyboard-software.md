@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - semickolon/kirei: 🌸 最漂亮的键盘软件
 
-> 来源：[https://github.com/semickolon/kirei](https://github.com/semickolon/kirei)
+> 来源：[`github.com/semickolon/kirei`](https://github.com/semickolon/kirei)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

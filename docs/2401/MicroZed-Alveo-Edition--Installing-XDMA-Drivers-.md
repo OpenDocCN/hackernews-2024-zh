@@ -8,7 +8,7 @@ date: 2024-05-27 15:15:17
 
 # MicroZed Alveo Edition: 安装 XDMA 驱动程序。
 
-> 来源：[https://www.adiuvoengineering.com/post/microzed-alveo-edition-installing-xdma-drivers](https://www.adiuvoengineering.com/post/microzed-alveo-edition-installing-xdma-drivers)
+> 来源：[`www.adiuvoengineering.com/post/microzed-alveo-edition-installing-xdma-drivers`](https://www.adiuvoengineering.com/post/microzed-alveo-edition-installing-xdma-drivers)
 
 在本系列中到目前为止，我们已经介绍了 Alveo 卡的范围，并创建了我们的第一个应用程序，基于标准的卡管理解决方案。
 

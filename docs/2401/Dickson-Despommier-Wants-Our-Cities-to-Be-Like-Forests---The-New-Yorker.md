@@ -8,13 +8,13 @@ date: 2024-05-27 15:00:13
 
 # Dickson Despommier Wants Our Cities to Be Like Forests | 纽约客
 
-> 来源：[https://www.newyorker.com/culture/the-new-yorker-interview/dickson-despommier-wants-our-cities-to-be-like-forests](https://www.newyorker.com/culture/the-new-yorker-interview/dickson-despommier-wants-our-cities-to-be-like-forests)
+> 来源：[`www.newyorker.com/culture/the-new-yorker-interview/dickson-despommier-wants-our-cities-to-be-like-forests`](https://www.newyorker.com/culture/the-new-yorker-interview/dickson-despommier-wants-our-cities-to-be-like-forests)
 
-2000年，当时是哥伦比亚大学公共卫生与微生物学教授的迪克森·D·德斯庞米尔，在一堂医学生态学课上问他的学生，“2050年的世界会是什么样子？”，以及随后的“你们希望2050年的世界是什么样子？”正如德斯庞米尔2017年告诉《纽约客》的伊恩·弗雷泽所说，他的学生们“决定，到2050年，地球将会非常拥挤，有80亿或90亿人口，他们希望纽约市能够完全依靠在其地理范围内种植的作物来养活其人口。”这堂课计算出，通过在城市的每一平方英尺的屋顶空间种植作物，只能提供足够的热量来养活纽约2050年人口的约2%。
+2000 年，当时是哥伦比亚大学公共卫生与微生物学教授的迪克森·D·德斯庞米尔，在一堂医学生态学课上问他的学生，“2050 年的世界会是什么样子？”，以及随后的“你们希望 2050 年的世界是什么样子？”正如德斯庞米尔 2017 年告诉《纽约客》的伊恩·弗雷泽所说，他的学生们“决定，到 2050 年，地球将会非常拥挤，有 80 亿或 90 亿人口，他们希望纽约市能够完全依靠在其地理范围内种植的作物来养活其人口。”这堂课计算出，通过在城市的每一平方英尺的屋顶空间种植作物，只能提供足够的热量来养活纽约 2050 年人口的约 2%。
 
-城市农业是一个好主意，德斯庞米尔认为，但他的学生们没有把它想得够远。“在建筑物*内部*放置农民有什么问题？”他问道，当时纽约市有“数百到可能是数千”座空置建筑。在接下来的十年中，随着他继续授课，德斯庞米尔和他的学生们发展了这个想法，包括使用几乎不需要土壤的栽培技术，最终在2010年出版了《[垂直农场：21世纪的世界粮食供应](https://www.amazon.com/Vertical-Farm-Tenth-Anniversary-Feeding/dp/1250769809/)》一书。这个概念被证明很受欢迎，并得到了广泛实施。仅在美国，已经有超过[两千个垂直农场](https://www.theguardian.com/environment/2022/aug/17/indoor-vertical-farms-agriculture#:~:text=It's%20estimated%20there%20are%20more,as%20lettuce%2C%20herbs%20and%20berries.)，市场价值在2022年估计为56亿美元。
+城市农业是一个好主意，德斯庞米尔认为，但他的学生们没有把它想得够远。“在建筑物*内部*放置农民有什么问题？”他问道，当时纽约市有“数百到可能是数千”座空置建筑。在接下来的十年中，随着他继续授课，德斯庞米尔和他的学生们发展了这个想法，包括使用几乎不需要土壤的栽培技术，最终在 2010 年出版了《[垂直农场：21 世纪的世界粮食供应](https://www.amazon.com/Vertical-Farm-Tenth-Anniversary-Feeding/dp/1250769809/)》一书。这个概念被证明很受欢迎，并得到了广泛实施。仅在美国，已经有超过[两千个垂直农场](https://www.theguardian.com/environment/2022/aug/17/indoor-vertical-farms-agriculture#:~:text=It's%20estimated%20there%20are%20more,as%20lettuce%2C%20herbs%20and%20berries.)，市场价值在 2022 年估计为 56 亿美元。
 
-虽然已经从全职教学中退休，但德斯庞米耶仍在思考生态问题。他的最新书籍，《[新城市：如何建设我们的可持续城市未来](https://www.amazon.com/New-City-Build-Sustainable-Future/dp/0231205503/)》，起源于他在福特汉姆大学教授的一门[课程](https://www.fordhamopolis.com/)，这是对在[一个变暖的星球上](https://www.newyorker.com/tag/global-warming)城市未来的宣言。正如德斯庞米耶所指出的，世界上的城市占地球表面的两百分之一，但产生了六十分之一的温室气体排放。而且城市可能会继续增长。据估计，到本世纪中叶，世界六十八分之一的人口将居住在城市地区（2021年的比例为五十七分之一）。
+虽然已经从全职教学中退休，但德斯庞米耶仍在思考生态问题。他的最新书籍，《[新城市：如何建设我们的可持续城市未来](https://www.amazon.com/New-City-Build-Sustainable-Future/dp/0231205503/)》，起源于他在福特汉姆大学教授的一门[课程](https://www.fordhamopolis.com/)，这是对在[一个变暖的星球上](https://www.newyorker.com/tag/global-warming)城市未来的宣言。正如德斯庞米耶所指出的，世界上的城市占地球表面的两百分之一，但产生了六十分之一的温室气体排放。而且城市可能会继续增长。据估计，到本世纪中叶，世界六十八分之一的人口将居住在城市地区（2021 年的比例为五十七分之一）。
 
 去年夏天似乎无休止的[野火](https://www.newyorker.com/news/news-desk/living-through-mauis-unimaginable-wildfires)和[极端高温事件](https://www.newyorker.com/science/elements/life-and-death-in-americas-hottest-city)使得德斯庞米耶的想法显得特别紧迫。最近的一天早晨，我通过 Zoom 与他交谈，他从新泽西州福特李的公寓加入了我们的会话。八十三岁的他仍然是一个活跃、有魅力的存在，即使在屏幕上也是如此，他的回答中充满了戏剧性的手势、反问、双关和笑声。我们的对话已经过简化和编辑以确保清晰度。
 
@@ -28,7 +28,7 @@ date: 2024-05-27 15:00:13
 
 **有历史记录显示火灾曾经烧毁过伦敦和芝加哥等城市。今年夏天，我们见证了灾难性的加拿大森林大火。为什么在更容易受火灾和腐蚀的情况下建造木结构而不是其他建筑材料呢？（https://www.newyorker.com/news/our-local-correspondents/trying-to-breathe-in-a-city-of-smoke）**
 
-是的，比如混凝土和钢铁。混凝土和钢铁行业的碳排放量巨大。制造这些东西需要大量能源。在制造混凝土时，会释放出大量CO[2]，而熔化铁来制作工字钢也会释放出大量CO[2]。而且，一旦制作了工字钢，工字钢只适用于一件事，那就是它被测量的建筑。如果你想把它用于其他用途，你可能需要把它熔化并扔进另一个模具里。重点是，你是以这种方式使用了大量能源，对吧？
+是的，比如混凝土和钢铁。混凝土和钢铁行业的碳排放量巨大。制造这些东西需要大量能源。在制造混凝土时，会释放出大量 CO[2]，而熔化铁来制作工字钢也会释放出大量 CO[2]。而且，一旦制作了工字钢，工字钢只适用于一件事，那就是它被测量的建筑。如果你想把它用于其他用途，你可能需要把它熔化并扔进另一个模具里。重点是，你是以这种方式使用了大量能源，对吧？
 
 让我们回到森林。当森林起火、燃烧，然后火势熄灭时，你看到了什么？你看到了一个绝对平坦的平面吗？还是看到了森林的残余，树干仍然存在？为什么那根树干仍然耸立着？那是木头，对吧？它没有烧毁到地面。这有一个很好的原因。树干由非常密实的木质素和纤维素组成。这是木头的两个组成部分。树的内核不是活的。它就像珊瑚礁，树从内核长出来。它是如此密实，以至于氧气无法到达木质素和纤维素的其余部分。现在如果我们能制造出具有相同特性的木制品会怎样呢？
 

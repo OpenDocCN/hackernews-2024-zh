@@ -8,13 +8,13 @@ date: 2024-05-27 14:56:47
 
 # Tomahawk，没有人谈论的最重要的音乐应用程序 | WIRED
 
-> 来源：[https://www.wired.com/2012/02/tomahawk-music-ap/](https://www.wired.com/2012/02/tomahawk-music-ap/)
+> 来源：[`www.wired.com/2012/02/tomahawk-music-ap/`](https://www.wired.com/2012/02/tomahawk-music-ap/)
 
 请注意，Tomahawk 可以播放来自你 Tomahawk 好友电脑的曲目，这使得 Tomahawk 成为了一个可以让你听取朋友音乐收藏的 P2P 流媒体客户端，可以从你的家庭电脑中访问你工作电脑的音乐，等等。
 
 Tomahawk 现在比我们写[我们的长篇教程](http://evolver.fm/2011/03/31/tomahawk-next-generation-music-player-the-beginners-guide/)时容易使用多了，但仍需要一定程度的技术复杂性。主要障碍在于安装内容解析器，这些是让 Tomahawk 钩入到 YouTube、Spotify 等的插件。
 
-很简单。你可以去[Tomahawk页面](http://www.tomahawk-player.org/)，从列表中选择你想要的解析器，如右图所示——或者（这更简单）只需转到 Tomahawk > Preferences > Resolvers 并从那里安装它们。（对于 Grooveshark、Spotify 和其他任何无限音乐订阅，你需要成为高级订阅者才能使其工作。）
+很简单。你可以去[Tomahawk 页面](http://www.tomahawk-player.org/)，从列表中选择你想要的解析器，如右图所示——或者（这更简单）只需转到 Tomahawk > Preferences > Resolvers 并从那里安装它们。（对于 Grooveshark、Spotify 和其他任何无限音乐订阅，你需要成为高级订阅者才能使其工作。）
 
 "本地网络" 允许你在你自己的家庭网络中播放其他计算机上的歌曲，就像你在 iTunes 中所做的那样。"扩展网络" 允许你访问朋友电脑上的歌曲，因此如果你在某个播放列表中没有一首歌，它将从他们的计算机上播放。（他们需要在那个时候运行 Tomahawk。）
 

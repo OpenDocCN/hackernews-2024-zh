@@ -8,7 +8,7 @@ date: 2024-05-27 14:43:51
 
 # GitHub - nirvanasupermind/owlet: 三进制计算的编程语言
 
-> 来源：[https://github.com/nirvanasupermind/owlet](https://github.com/nirvanasupermind/owlet)
+> 来源：[`github.com/nirvanasupermind/owlet`](https://github.com/nirvanasupermind/owlet)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

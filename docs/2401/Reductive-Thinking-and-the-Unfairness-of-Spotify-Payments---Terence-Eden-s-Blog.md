@@ -8,7 +8,7 @@ date: 2024-05-27 14:26:44
 
 # 约化思维和 Spotify 支付的不公平性 - Terence Eden 的博客
 
-> 来源：[https://shkspr.mobi/blog/2024/01/the-unfairness-of-spotify-payments-and-reductive-thinking/](https://shkspr.mobi/blog/2024/01/the-unfairness-of-spotify-payments-and-reductive-thinking/)
+> 来源：[`shkspr.mobi/blog/2024/01/the-unfairness-of-spotify-payments-and-reductive-thinking/`](https://shkspr.mobi/blog/2024/01/the-unfairness-of-spotify-payments-and-reductive-thinking/)
 
 在约翰·冯·诺伊曼和奥斯卡·莫根斯特恩的《博弈论与经济行为》中，作者讨论了扑克牌游戏。有数十种扑克牌的变体，每种都有自己的复杂之处。但它们都归结为相同的模式 - 我的手比你的手强吗？
 
@@ -40,17 +40,17 @@ date: 2024-05-27 14:26:44
 
 现在让我们看一个不同的情景。
 
-用户1听了90首Ariana Grande的歌曲。
+用户 1 听了 90 首 Ariana Grande 的歌曲。
 
-用户2听了10首Billie Eilish的歌曲。
+用户 2 听了 10 首 Billie Eilish 的歌曲。
 
 钱应该如何公平分配？50:50？90:10？还是其他？
 
-[我在Mastodon上问了这个问题](https://mastodon.social/deck/@Edent/111602714475511040)：
+[我在 Mastodon 上问了这个问题](https://mastodon.social/deck/@Edent/111602714475511040)：
 
 我觉得有趣的是，没有一个*明显*公平的分配方式。一些人认为服务应该根据所有用户的总消费进行支付。但是有相当多的人认为资金应按每个个人客户进行分配。这两种观点都是合理的，我可以理解每一种观点的论点。
 
-某些用户为其他用户提供补贴公平吗？如果艺术家A每次流媒体的报酬低于艺术家B，这算公平吗？艺术家可以赚取的最高或最低金额应该是多少？人们是否会接受一个对数公式，随着他们的歌曲被播放的次数增加，降低艺术家的盈利能力？
+某些用户为其他用户提供补贴公平吗？如果艺术家 A 每次流媒体的报酬低于艺术家 B，这算公平吗？艺术家可以赚取的最高或最低金额应该是多少？人们是否会接受一个对数公式，随着他们的歌曲被播放的次数增加，降低艺术家的盈利能力？
 
 [像我们这样的哺乳动物对公平性有一种内在需求](https://phys.org/news/2017-02-animals-unfairly-dont.html)。我们原始的猴脑无法准确量化什么是不公平的，但我们一见之下就知道。
 
@@ -70,7 +70,7 @@ date: 2024-05-27 14:26:44
 
 1.  写下解决方案。
 
-我认为第0步需要进行冯·诺伊曼缩减：
+我认为第 0 步需要进行冯·诺伊曼缩减：
 
 1.  将问题简化到最简单的使用案例。
 

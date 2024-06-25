@@ -8,27 +8,27 @@
 
 # 在波兰列车中破解“DRM” - media.ccc.de
 
-> 来源：[https://media.ccc.de/v/37c3-12142-breaking_drm_in_polish_trains](https://media.ccc.de/v/37c3-12142-breaking_drm_in_polish_trains)
+> 来源：[`media.ccc.de/v/37c3-12142-breaking_drm_in_polish_trains`](https://media.ccc.de/v/37c3-12142-breaking_drm_in_polish_trains)
 
-[Redford](/search?p=Redford)，[q3k](/search?p=q3k)和[MrTick](/search?p=MrTick)
+Redford，q3k 和 MrTick
 
-[硬件与制作](/c/37c3/Hardware%20&%20Making)
+硬件与制作
 
 播放列表：
 
-[从这里开始观看'37c3'的视频](/v/37c3-12142-breaking_drm_in_polish_trains/playlist)
+从这里开始观看'37c3'的视频
 
 /
 
-[音频](/v/37c3-12142-breaking_drm_in_polish_trains/audio)
+音频
 
 我们都曾有过这样的经历：您为客户提供服务的列车突然变砖，并且制造商声称这是因为您干扰了安全系统。
 
-本讲座将讲述一系列波兰电动列车组（Electric Multiple Unit，简称EMUs）的故事，这些列车组在到达“未经授权”的服务公司几天后都拒绝移动。我们将介绍列车控制系统的实际工作原理，我们如何对其进行逆向工程，以及我们实际上在其中找到了什么样的神奇“安全”系统。
+本讲座将讲述一系列波兰电动列车组（Electric Multiple Unit，简称 EMUs）的故事，这些列车组在到达“未经授权”的服务公司几天后都拒绝移动。我们将介绍列车控制系统的实际工作原理，我们如何对其进行逆向工程，以及我们实际上在其中找到了什么样的神奇“安全”系统。
 
-有时现实比最疯狂的CTF任务还要奇怪。有时现实是在十几辆火车上运行`unlock.py`。
+有时现实比最疯狂的 CTF 任务还要奇怪。有时现实是在十几辆火车上运行`unlock.py`。
 
-该讲座将涉及技术和非技术分析的各个方面，对于任何具有技术背景的人来说都应该是可以理解的。我们将简要解释现代电动列车单元内部的情况，列车控制和监测系统的工作原理，以及如何分析TriCore机器码。
+该讲座将涉及技术和非技术分析的各个方面，对于任何具有技术背景的人来说都应该是可以理解的。我们将简要解释现代电动列车单元内部的情况，列车控制和监测系统的工作原理，以及如何分析 TriCore 机器码。
 
 ### 下载
 

@@ -8,7 +8,7 @@
 
 # 技术的下降螺旋- 托马斯·克拉夫克
 
-> 来源：[https://www.creativedestruction.club/p/the-downward-spiral-of-technology](https://www.creativedestruction.club/p/the-downward-spiral-of-technology)
+> 来源：[`www.creativedestruction.club/p/the-downward-spiral-of-technology`](https://www.creativedestruction.club/p/the-downward-spiral-of-technology)
 
 在写完上周的文章 “[一个无摩擦的世界是多么无聊](https://www.creativedestruction.club/p/a-frictionless-world-is-boring-as)” 后，我找到了一些更有趣的文章，它们为这个问题增添了另一个元素。它们的核心可以归结为以下理论：
 

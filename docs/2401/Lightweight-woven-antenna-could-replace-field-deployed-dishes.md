@@ -8,7 +8,7 @@
 
 # 轻量级编织天线可以取代现场部署的碟子
 
-> 来源：[https://newatlas.com/telecommunications/woven-helical-antenna/](https://newatlas.com/telecommunications/woven-helical-antenna/)
+> 来源：[`newatlas.com/telecommunications/woven-helical-antenna/`](https://newatlas.com/telecommunications/woven-helical-antenna/)
 
 通常情况下，在诸如灾难现场之类的地方建立通信，救援人员必须运输和设置相对笨重、昂贵的卫星天线。然而，很快，一个由编织材料条制成的简单的管状天线可能会完成这项工作。
 
@@ -16,7 +16,7 @@
 
 新的“双稳态部署四螺旋天线”取消了支撑，将导线替换为导电纤维复合材料的条片 - 这些条片以螺旋状排列在一起，形成一个空心圆柱。
 
-重要的是，该圆筒可以拉伸成约一英尺高（305毫米）的细长形状，或者压缩成约一英寸高、五英寸宽的环形（25乘127毫米）。
+重要的是，该圆筒可以拉伸成约一英尺高（305 毫米）的细长形状，或者压缩成约一英寸高、五英寸宽的环形（25 乘 127 毫米）。
 
 在拉长状态下 - 并连接到诸如收发器、[接地平面](https://en.wikipedia.org/wiki/Ground_plane)和电池等电子设备时 - 天线向各个方向发射低功率信号，允许与地面团队成员进行无线电通信。在*短*状态下，它向特定方向发送高功率信号，允许卫星通信。
 

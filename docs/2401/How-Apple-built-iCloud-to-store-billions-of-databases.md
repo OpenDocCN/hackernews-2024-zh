@@ -2,29 +2,29 @@
 
 类别：未分类
 
-日期：2024年05月27日14:51:55
+日期：2024 年 05 月 27 日 14:51:55
 
 -->
 
-# 苹果如何构建iCloud来存储数十亿个数据库
+# 苹果如何构建 iCloud 来存储数十亿个数据库
 
-> 来源：[https://read.engineerscodex.com/p/how-apple-built-icloud-to-store-billions](https://read.engineerscodex.com/p/how-apple-built-icloud-to-store-billions)
+> 来源：[`read.engineerscodex.com/p/how-apple-built-icloud-to-store-billions`](https://read.engineerscodex.com/p/how-apple-built-icloud-to-store-billions)
 
-*Engineer’s Codex是一个概括实际软件工程的出版物。*
+*Engineer’s Codex 是一个概括实际软件工程的出版物。*
 
 * * *
 
-在过去的几个月中，我已经写了一些关于大型科技公司“幕后”的技术，例如[Meta的内部无服务器平台](https://engineercodex.substack.com/p/meta-xfaas-serverless-functions-explained)和[Google内部喜爱的代码审查工具](https://engineercodex.substack.com/p/how-google-takes-the-pain-out-of)。
+在过去的几个月中，我已经写了一些关于大型科技公司“幕后”的技术，例如[Meta 的内部无服务器平台](https://engineercodex.substack.com/p/meta-xfaas-serverless-functions-explained)和[Google 内部喜爱的代码审查工具](https://engineercodex.substack.com/p/how-google-takes-the-pain-out-of)。
 
-另一方面，苹果的基础设施并不像公开。我想找出苹果是如何构建iCloud的，在本文中，我涵盖了我所知道的一切。
+另一方面，苹果的基础设施并不像公开。我想找出苹果是如何构建 iCloud 的，在本文中，我涵盖了我所知道的一切。
 
-**苹果使用[FoundationDB](https://www.foundationdb.org/)和Cassandra来构建iCloud和CloudKit，他们的云后端服务。** 是的，标题并没有错误：苹果确实在他们的极端多租户架构中存储**数十亿个数据库**。
+**苹果使用[FoundationDB](https://www.foundationdb.org/)和 Cassandra 来构建 iCloud 和 CloudKit，他们的云后端服务。** 是的，标题并没有错误：苹果确实在他们的极端多租户架构中存储**数十亿个数据库**。
 
 阅读之前，这些是**适用的教训和指南。**
 
-[我发现论文和苹果的很多课程与[Meta的无服务器平台架构](https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained)的课程非常接近。](https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained)
+[我发现论文和苹果的很多课程与[Meta 的无服务器平台架构](https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained)的课程非常接近。](https://read.engineerscodex.com/p/meta-xfaas-serverless-functions-explained)
 
-+   两者都巧妙地使用**异步处理**，以使用户功能更加流畅。Meta使用他们的无服务器堆栈进行非用户界面功能。苹果几乎*所有*的Record Layer功能（在下面进行了详细解释）都使用异步处理，以*隐藏用户的延迟*。
++   两者都巧妙地使用**异步处理**，以使用户功能更加流畅。Meta 使用他们的无服务器堆栈进行非用户界面功能。苹果几乎*所有*的 Record Layer 功能（在下面进行了详细解释）都使用异步处理，以*隐藏用户的延迟*。
 
 +   两者都大量使用**无状态架构**，因为它们具有强大的可扩展性需求。
 
@@ -32,11 +32,11 @@
 
 +   两者都**简单处理多样化的需求**。苹果提到了如何“诱人
 
-    为了提供‘小数据’和‘大数据’而预留和操作单独的系统。”然而，这会增加操作复杂性，而他们通过一个抽象处理所有类型的数据需求。Meta在其无服务器平台上使用相同的方式，为所有类型的功能负载提供一个抽象。
+    为了提供‘小数据’和‘大数据’而预留和操作单独的系统。”然而，这会增加操作复杂性，而他们通过一个抽象处理所有类型的数据需求。Meta 在其无服务器平台上使用相同的方式，为所有类型的功能负载提供一个抽象。
 
 +   两者都**构建抽象层**，以改善开发人员的体验。应用程序开发人员不必担心可扩展性需求 - 这由分布式系统工程师在更深的堆栈中处理。
 
-+   **了解你的用户。** Meta和苹果提供的每个层，API和设计决策都受到对特定技术用户的清晰了解的指导，无论是应用开发团队还是可观察性团队。
++   **了解你的用户。** Meta 和苹果提供的每个层，API 和设计决策都受到对特定技术用户的清晰了解的指导，无论是应用开发团队还是可观察性团队。
 
 * * *
 
@@ -76,7 +76,7 @@ iCloud 中的其他 Cassandra 片段显示，管理着**数量巨大的数据**�
 
 **FoundationDB 和 Record Layer 解决了这两个问题。**
 
-苹果对 FoundationDB 更加公开。他们[在2015年收购了 FoundationDB](https://techcrunch.com/2015/03/24/apple-acquires-durable-database-company-foundationdb/)，此后发布了各种详细介绍他们使用 FoundationDB 的论文。
+苹果对 FoundationDB 更加公开。他们[在 2015 年收购了 FoundationDB](https://techcrunch.com/2015/03/24/apple-acquires-durable-database-company-foundationdb/)，此后发布了各种详细介绍他们使用 FoundationDB 的论文。
 
 [FoundationDB](https://github.com/apple/foundationdb)是一个开源的、分布式的、事务性的键值存储。它被设计用于处理大量数据，对于读/写工作负载和写入重负载都很有效。它也是[ACID 兼容](https://www.swequiz.com/learn/acid-properties)的。
 
@@ -102,15 +102,15 @@ iCloud 中的其他 Cassandra 片段显示，管理着**数量巨大的数据**�
 
 根据[FoundationDB Record Layer](https://www.foundationdb.org/files/record-layer-paper.pdf)的论文，他们写道：
 
-> “[FoundationDB Record Layer被用来]为服务于**数亿用户**的应用程序提供强大的抽象。CloudKit 使用 Record Layer 来托管**数十亿个独立的数据库**，其中许多具有共同的模式。”
+> “[FoundationDB Record Layer 被用来]为服务于**数亿用户**的应用程序提供强大的抽象。CloudKit 使用 Record Layer 来托管**数十亿个独立的数据库**，其中许多具有共同的模式。”
 
 FoundationDB、Record Layer 和 CloudKit 的结构如下：
 
 +   **FoundationDB**完成了所有的分布式系统和并发控制工作。
 
-+   **记录层**作为一个关系型数据库，使得FoundationDB更易于使用。
++   **记录层**作为一个关系型数据库，使得 FoundationDB 更易于使用。
 
-+   **CloudKit**位于最顶层，为应用程序开发人员提供功能和API。CloudKit不是建立在记录层之上的唯一内容，还有其他层次，用于构建需要结构化存储的内容，比如JSON文档存储。
++   **CloudKit**位于最顶层，为应用程序开发人员提供功能和 API。CloudKit 不是建立在记录层之上的唯一内容，还有其他层次，用于构建需要结构化存储的内容，比如 JSON 文档存储。
 
 **记录层使得苹果能够支持大规模的多租户。**
 
@@ -130,11 +130,11 @@ FoundationDB、Record Layer 和 CloudKit 的结构如下：
 
     1.  每个记录存储都被分配了一个特定的键范围，这保证了为不同租户的数据进行逻辑分离。如果需要，将租户的数据转移变得非常简单，只需要将分配的键范围重新定位到新的集群即可，因为管理和使用记录存储所需的所有信息都包含在此范围内。
 
-**在CloudKit中，一个应用程序由一个'逻辑容器'表示，该容器遵循一个定义好的模式。**这个模式概述了启用有效数据检索和查询所需的记录类型、字段和索引。**应用程序在CloudKit中将其数据组织成'区域'**，这允许对记录进行逻辑分组，以便与客户端设备进行选择性同步。
+**在 CloudKit 中，一个应用程序由一个'逻辑容器'表示，该容器遵循一个定义好的模式。**这个模式概述了启用有效数据检索和查询所需的记录类型、字段和索引。**应用程序在 CloudKit 中将其数据组织成'区域'**，这允许对记录进行逻辑分组，以便与客户端设备进行选择性同步。
 
-对于每个用户，CloudKit为FoundationDB中的每个应用程序指定一个独特的**子空间**。在这个子空间内，它为用户与之交互的每个应用程序创建一个**记录存储**。实质上，CloudKit管理着大量的逻辑数据库——将用户数量乘以应用程序数量——每个数据库都包含其自己的记录、索引和元数据，总计**数十亿个数据库。**
+对于每个用户，CloudKit 为 FoundationDB 中的每个应用程序指定一个独特的**子空间**。在这个子空间内，它为用户与之交互的每个应用程序创建一个**记录存储**。实质上，CloudKit 管理着大量的逻辑数据库——将用户数量乘以应用程序数量——每个数据库都包含其自己的记录、索引和元数据，总计**数十亿个数据库。**
 
-当CloudKit从客户端设备收到请求时，它会通过**负载均衡**将此请求定向到可用的**CloudKit服务进程**。然后，该进程与特定的记录层记录存储进行交互，以满足请求。
+当 CloudKit 从客户端设备收到请求时，它会通过**负载均衡**将此请求定向到可用的**CloudKit 服务进程**。然后，该进程与特定的记录层记录存储进行交互，以满足请求。
 
 CloudKit 将定义的应用程序模式转换为 Record Layer 中的 **元数据定义**，该元数据存储在单独的元数据存储中。这些元数据由 CloudKit 特定的系统字段增强，用于跟踪 **记录的创建、修改时间和存储记录的区域**。区域名称被添加到主键前缀，以便在每个区域内有效地访问记录。除了用户定义的索引外，CloudKit 还管理用于内部目的的 **'系统索引'**，例如通过跟踪记录大小的索引来管理存储配额。
 
@@ -168,8 +168,8 @@ FoundationDB 的设计是为了高并发而不是低延迟。这意味着它可�
 
 避免不必要的冲突的一种常见方法是对一系列键进行一种不会引起冲突的特殊读取，称为“快照”读取。如果这次读取发现了重要的键，事务将只标记这些特定的键可能存在的冲突，而不是整个范围。这确保了事务只受到实际影响其结果的变化的影响。
 
-Record Layer使用这种策略来高效管理称为跳表的结构，该结构是其排名索引系统的一部分。然而，手动设置这些冲突范围可能会很棘手，并且可能会导致难以识别的错误，特别是当它们与应用程序的主逻辑混在一起时。因此，**建议基于FoundationDB构建的系统创建更高级的工具，例如自定义索引，来处理这些模式**。这种方法有助于避免将松散的冲突规则责任留给每个客户端应用程序，这可能会导致错误和不一致性。
+Record Layer 使用这种策略来高效管理称为跳表的结构，该结构是其排名索引系统的一部分。然而，手动设置这些冲突范围可能会很棘手，并且可能会导致难以识别的错误，特别是当它们与应用程序的主逻辑混在一起时。因此，**建议基于 FoundationDB 构建的系统创建更高级的工具，例如自定义索引，来处理这些模式**。这种方法有助于避免将松散的冲突规则责任留给每个客户端应用程序，这可能会导致错误和不一致性。
 
 * * *
 
-感谢阅读！如果您对阅读完整的FoundationDB Record Layer论文感兴趣，可以在这里查看：[FoundationDB Record Layer：多租户结构化数据存储](https://www.foundationdb.org/files/record-layer-paper.pdf)。
+感谢阅读！如果您对阅读完整的 FoundationDB Record Layer 论文感兴趣，可以在这里查看：[FoundationDB Record Layer：多租户结构化数据存储](https://www.foundationdb.org/files/record-layer-paper.pdf)。

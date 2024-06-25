@@ -8,21 +8,21 @@
 
 # 如何建造潜艇并存活 - media.ccc.de
 
-> 来源：[https://media.ccc.de/v/37c3-11828-how_to_build_a_submarine_and_survive#l=eng&t=0](https://media.ccc.de/v/37c3-11828-how_to_build_a_submarine_and_survive#l=eng&t=0)
+> 来源：[`media.ccc.de/v/37c3-11828-how_to_build_a_submarine_and_survive#l=eng&t=0`](https://media.ccc.de/v/37c3-11828-how_to_build_a_submarine_and_survive#l=eng&t=0)
 
-[Nico](/search?p=Nico) 和 [Elias](/search?p=Elias)
+Nico 和 Elias
 
-[硬件与制造](/c/37c3/Hardware%20&%20Making)
+硬件与制造
 
 播放列表：
 
-[从这里开始观看'37c3'视频](/v/37c3-11828-how_to_build_a_submarine_and_survive/playlist)
+从这里开始观看'37c3'视频
 
 /
 
-[音频](/v/37c3-11828-how_to_build_a_submarine_and_survive/audio)
+音频
 
-3.4吨重，4.3米长，材料：钢，颜色：橙色，车型为“运动潜艇”。从发现压力罐到首次潜入采石场湖底 - 我们讲述了我们面临的最大挑战和失败。
+3.4 吨重，4.3 米长，材料：钢，颜色：橙色，车型为“运动潜艇”。从发现压力罐到首次潜入采石场湖底 - 我们讲述了我们面临的最大挑战和失败。
 
 我们邀请您参加一次技术咨询，针对那些曾考虑过建造潜艇的人。
 
@@ -36,7 +36,7 @@
 
 我们如何在系统中实现冗余？
 
-如何摆脱CO2，以免窒息？
+如何摆脱 CO2，以免窒息？
 
 为什么玻璃上突然出现了裂缝？
 
@@ -46,7 +46,7 @@
 
 本讲座不涉及其他故障潜艇的问题。我们将用最多一张幻灯片讨论钛金灾难。
 
-由Selene Magnolia拍摄的照片
+由 Selene Magnolia 拍摄的照片
 
 ### 下载
 

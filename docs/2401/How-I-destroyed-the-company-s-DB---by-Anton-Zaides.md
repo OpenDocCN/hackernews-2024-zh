@@ -8,7 +8,7 @@ category: 未分类
 
 # 我是如何摧毁公司的数据库的 - 由 Anton Zaides
 
-> 来源：[https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db](https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db)
+> 来源：[`zaidesanton.substack.com/p/how-i-destroyed-the-companys-db`](https://zaidesanton.substack.com/p/how-i-destroyed-the-companys-db)
 
 那是一个平静的星期六。
 
@@ -60,7 +60,7 @@ category: 未分类
 
 1.  周末在生产环境工作 - 为什么？在这种情况下，甚至不那么紧急。没有人要求我立即修复它。我本可以轻松等到星期一。
 
-1.  谁他妈会在生产数据库上跑东西而不先在QA上跑一下？
+1.  谁他妈会在生产数据库上跑东西而不先在 QA 上跑一下？
 
 1.  为什么我手动编辑了数据库而不是使用 API 调用？
 
@@ -110,7 +110,7 @@ category: 未分类
 
 在羞辱人和不追究责任之间存在着微妙的平衡。当你犯错时，这是发送正确信息的绝佳机会。
 
-**如果你道歉**了1000次，他们会认为你期望他们也这样做。
+**如果你道歉**了 1000 次，他们会认为你期望他们也这样做。
 
 **如果你会取笑**这件事，忽视其含义，他们会认为这是可以接受的。
 

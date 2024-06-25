@@ -8,7 +8,7 @@ date: 2024-05-27 15:10:50
 
 # Google 正迅速成为 BFF Nvidia 的强大竞争对手 — TPU v5p AI 芯片驱动其超级计算机的速度更快，内存和带宽比以往任何时候都多，甚至超过了强大的 H100 | TechRadar
 
-> 来源：[https://www.techradar.com/pro/google-is-rapidly-turning-into-a-formidable-opponent-to-bff-nvidia-the-tpu-v5p-ai-chip-powering-its-hypercomputer-is-faster-and-has-more-memory-and-bandwidth-than-ever-before-beating-even-the-mighty-h100](https://www.techradar.com/pro/google-is-rapidly-turning-into-a-formidable-opponent-to-bff-nvidia-the-tpu-v5p-ai-chip-powering-its-hypercomputer-is-faster-and-has-more-memory-and-bandwidth-than-ever-before-beating-even-the-mighty-h100)
+> 来源：[`www.techradar.com/pro/google-is-rapidly-turning-into-a-formidable-opponent-to-bff-nvidia-the-tpu-v5p-ai-chip-powering-its-hypercomputer-is-faster-and-has-more-memory-and-bandwidth-than-ever-before-beating-even-the-mighty-h100`](https://www.techradar.com/pro/google-is-rapidly-turning-into-a-formidable-opponent-to-bff-nvidia-the-tpu-v5p-ai-chip-powering-its-hypercomputer-is-faster-and-has-more-memory-and-bandwidth-than-ever-before-beating-even-the-mighty-h100)
 
 [Google](https://www.techradar.com/sg/tag/google) 伴随着其 [Gemini](https://www.techradar.com/computing/artificial-intelligence/what-is-google-gemini) AI 模型的最新推出，发布了其旗舰张量处理单元（TPU）的最新版本，用于 AI 训练和推理，似乎是试图挑战 Nvidia 自己的市场领先的 GPU。
 

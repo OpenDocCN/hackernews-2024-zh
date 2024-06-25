@@ -8,7 +8,7 @@
 
 # GitHub - ConsoleScript/hnuser: 悬停时显示的黑客新用户信息
 
-> 来源：[https://github.com/ConsoleScript/hnuser](https://github.com/ConsoleScript/hnuser)
+> 来源：[`github.com/ConsoleScript/hnuser`](https://github.com/ConsoleScript/hnuser)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

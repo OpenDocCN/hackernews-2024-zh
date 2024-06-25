@@ -8,7 +8,7 @@
 
 # Tablesmith：免费、隐私优先、直观的管道
 
-> 来源：[https://tablesmith.io/](https://tablesmith.io/)
+> 来源：[`tablesmith.io/`](https://tablesmith.io/)
 
 创建新帐户以获得 15,000 个 AI 代币，加入 Discord 即可获得额外的 50,000 个！
 

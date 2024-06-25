@@ -8,7 +8,7 @@ date: 2024-05-27 15:01:33
 
 # 惠普首席执行官明确表示：如果你不购买惠普耗材，你是一个‘糟糕的投资’ • The Register 论坛
 
-> 来源：[https://forums.theregister.com/forum/all/2024/01/19/hps_ceo_spells_it_out/](https://forums.theregister.com/forum/all/2024/01/19/hps_ceo_spells_it_out/)
+> 来源：[`forums.theregister.com/forum/all/2024/01/19/hps_ceo_spells_it_out/`](https://forums.theregister.com/forum/all/2024/01/19/hps_ceo_spells_it_out/)
 
 #### 遗憾的是，现在打印机的选择不多...
 

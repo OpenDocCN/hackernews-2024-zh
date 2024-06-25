@@ -2,17 +2,17 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:54:18
+日期：2024 年 5 月 27 日 14:54:18
 
 -->
 
-# 使用 systemd 解决哲学家就餐问题 - 第1部分 - 博客 - Brightbox
+# 使用 systemd 解决哲学家就餐问题 - 第一部分 - 博客 - Brightbox
 
-> 来源：[https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/](https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/)
+> 来源：[`www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/`](https://www.brightbox.com/blog/2024/01/10/solving-dining-philosophers-with-systemd-part-1/)
 
-# 使用 systemd 解决哲学家就餐问题 - 第1部分
+# 使用 systemd 解决哲学家就餐问题 - 第一部分
 
-由**Neil Wilson**发布 • **2024年1月10日**
+由**Neil Wilson**发布 • **2024 年 1 月 10 日**
 
 多年来，开发人员似乎已经忘记了 Unix 是一个编程环境，而不仅仅是你必须安装才能访问 Web 服务器的东西。Unix 是一个强大的多用户系统，拥有许多经受时间考验的工具，并且随着 systemd 的出现，我们有了一个可以轻松建模状态机的新工具。现在，我们可以仅仅使用 Unix 来解决新类别的问题。
 
@@ -74,7 +74,7 @@ AccuracySec=1us
 RemainAfterElapse=false
 ```
 
-我们将计时器单元设为目标的一部分，以便它在目标停止时也停止。这个`RandomizedDelay`、`OnActive`和`Accuracy`的组合将转换时间从0到60秒分布。
+我们将计时器单元设为目标的一部分，以便它在目标停止时也停止。这个`RandomizedDelay`、`OnActive`和`Accuracy`的组合将转换时间从 0 到 60 秒分布。
 
 我们想知道哲学家在想些什么，我们可以通过运行一个调用脚本的服务来模拟。
 

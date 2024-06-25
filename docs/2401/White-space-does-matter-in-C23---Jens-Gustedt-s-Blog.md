@@ -8,7 +8,7 @@
 
 # White space does matter in C23 – Jens Gustedt's Blog
 
-> 来源：[https://gustedt.wordpress.com/2024/01/16/white-space-does-matter-in-c23/](https://gustedt.wordpress.com/2024/01/16/white-space-does-matter-in-c23/)
+> 来源：[`gustedt.wordpress.com/2024/01/16/white-space-does-matter-in-c23/`](https://gustedt.wordpress.com/2024/01/16/white-space-does-matter-in-c23/)
 
 通常情况下，在 C 中，标识符不会直接跟在字符串后面。但是当在 C 中引入 `U` 前缀的文字时，仍然存在一些与现有代码冲突的情况。这种情况发生在一个将 `U` 宏扩展为字符串的宏被用来向字符串添加某种前导字符序列时。在此之前，这种用法对是否在两者之间有空格并不敏感。通过引入前缀，这两种用法（有空格和无空格）变得不同，代码的含义或变得无效。所以对于这种情况，空格实际上已经是有意义的。
 

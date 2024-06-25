@@ -8,7 +8,7 @@
 
 # 我对 Hare 的印象
 
-> 来源：[https://vfoley.xyz/hare/](https://vfoley.xyz/hare/)
+> 来源：[`vfoley.xyz/hare/`](https://vfoley.xyz/hare/)
 
 [当 Hare 宣布](https://harelang.org/blog/2022-04-25-announcing-hare/) 在 2022 年发布时，我在 Hacker News 上看到了这篇文章，转到了网站，查看了文档，我的反应是冷淡的“无所谓”。Hare 是我所谓的“现代 C 语言”的新参与者：这些语言以 C 语言为基础灵感，试图通过添加新特性、移除一些陷阱，并优化一些尖锐的角来改进 C 语言。这些语言还试图通过省略某些特性（例如异常、RAII）来避免 C++、Ada 或 Rust 的复杂性和[认知负荷](https://github.com/zakirullin/cognitive-load/blob/main/README.md#feature-rich-languages)。现代 C 语言包括：
 

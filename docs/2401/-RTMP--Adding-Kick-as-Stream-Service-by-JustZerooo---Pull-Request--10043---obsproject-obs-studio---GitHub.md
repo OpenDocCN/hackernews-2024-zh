@@ -6,9 +6,9 @@ date: 2024-05-27 14:26:10
 
 -->
 
-# [RTMP] 添加Kick为Stream服务，由JustZerooo提出 · Pull Request #10043 · obsproject/obs-studio · GitHub
+# [RTMP] 添加 Kick 为 Stream 服务，由 JustZerooo 提出 · Pull Request #10043 · obsproject/obs-studio · GitHub
 
-> 来源：[https://github.com/obsproject/obs-studio/pull/10043](https://github.com/obsproject/obs-studio/pull/10043)
+> 来源：[`github.com/obsproject/obs-studio/pull/10043`](https://github.com/obsproject/obs-studio/pull/10043)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,7 +8,7 @@
 
 # shelly/README.md at main · naskovai/shelly · GitHub
 
-> 来源：[https://github.com/paletov/shelly/blob/main/README.md](https://github.com/paletov/shelly/blob/main/README.md)
+> 来源：[`github.com/paletov/shelly/blob/main/README.md`](https://github.com/paletov/shelly/blob/main/README.md)
 
 # Shelly：用英语编写终端命令
 

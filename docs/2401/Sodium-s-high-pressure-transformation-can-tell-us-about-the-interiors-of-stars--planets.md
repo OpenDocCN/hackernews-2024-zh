@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:27:11
+日期：2024 年 05 月 27 日 14:27:11
 
 -->
 
 # 钠的高压转变可以告诉我们有关星球、行星内部的情况
 
-> 来源：[https://phys.org/news/2023-12-sodium-high-pressure-interiors-stars-planets.html](https://phys.org/news/2023-12-sodium-high-pressure-interiors-stars-planets.html)
+> 来源：[`phys.org/news/2023-12-sodium-high-pressure-interiors-stars-planets.html`](https://phys.org/news/2023-12-sodium-high-pressure-interiors-stars-planets.html)
 
 在地球表面以下深处或太阳的中心内部，物质会在原子水平上发生变化。
 
@@ -18,15 +18,15 @@
 
 尽管有理论认为高压基本上会将钠的电子挤压到原子之间的空间中，但研究人员的量子化学计算显示，这些电子仍然完全属于周围的原子，并且在化学上彼此键合。
 
-"我们正在回答一个非常简单的问题，即为什么钠会变成绝缘体，但预测其他元素和[化学化合物](https://phys.org/tags/chemical+compounds/)在非常高的压力下的行为将可能揭示更大的问题，"UB艺术与科学学院化学系教授、该研究的合著者Eva Zurek博士说道，该研究发表在德国化学学会期刊《应用化学》上。"星球的内部是什么样的？行星的磁场是如何产生的，如果确实存在的话？星球和行星如何演化？这类研究使我们更接近回答这些问题。"
+"我们正在回答一个非常简单的问题，即为什么钠会变成绝缘体，但预测其他元素和[化学化合物](https://phys.org/tags/chemical+compounds/)在非常高的压力下的行为将可能揭示更大的问题，"UB 艺术与科学学院化学系教授、该研究的合著者 Eva Zurek 博士说道，该研究发表在德国化学学会期刊《应用化学》上。"星球的内部是什么样的？行星的磁场是如何产生的，如果确实存在的话？星球和行星如何演化？这类研究使我们更接近回答这些问题。"
 
-该研究证实并拓展了已故著名物理学家Neil Ashcroft的理论预测，该研究是致敬他的记忆。
+该研究证实并拓展了已故著名物理学家 Neil Ashcroft 的理论预测，该研究是致敬他的记忆。
 
-曾经有人认为材料在高压下总是会变成金属性质—就像理论上构成木星核心的[金属氢](https://phys.org/tags/metallic+hydrogen/)—但是二十年前的Ashcroft和Jeffrey Neaton的开创性论文发现一些材料，如钠，实际上在受压时会变成绝缘体或半导体。他们推测钠的核心电子，被认为是惰性的，会在受到[极端压力](https://phys.org/tags/extreme+pressure/)时相互作用，并与外层价电子相互作用。
+曾经有人认为材料在高压下总是会变成金属性质—就像理论上构成木星核心的[金属氢](https://phys.org/tags/metallic+hydrogen/)—但是二十年前的 Ashcroft 和 Jeffrey Neaton 的开创性论文发现一些材料，如钠，实际上在受压时会变成绝缘体或半导体。他们推测钠的核心电子，被认为是惰性的，会在受到[极端压力](https://phys.org/tags/extreme+pressure/)时相互作用，并与外层价电子相互作用。
 
-"我们的工作现在超越了由Ashcroft和Neaton描绘的物理图景，并将其与化学键合的概念联系起来，"由UB主导的研究的第一作者Stefano Racioppi博士在UB化学系的博士后研究员中说道。
+"我们的工作现在超越了由 Ashcroft 和 Neaton 描绘的物理图景，并将其与化学键合的概念联系起来，"由 UB 主导的研究的第一作者 Stefano Racioppi 博士在 UB 化学系的博士后研究员中说道。
 
-在地球地壳下方找到的压力在实验室中很难复制，因此利用UB计算研究中心的超级计算机，团队对钠原子在高压下的电子行为进行了计算。
+在地球地壳下方找到的压力在实验室中很难复制，因此利用 UB 计算研究中心的超级计算机，团队对钠原子在高压下的电子行为进行了计算。
 
 电子被困在原子之间的空间区域内，称为电子态。这导致了[钠](https://phys.org/tags/sodium/)从闪亮的金属转变为透明绝缘体，因为自由流动的电子吸收并重新发射光线，但被困的电子只是允许光线通过。
 
@@ -36,16 +36,16 @@
 
 虽然以前的研究提出了一种直观的理论，即[高压](https://phys.org/tags/high+pressure/)将电子挤出了原子，但新的计算发现这些电子仍然是周围原子的一部分。
 
-“我们意识到，这些不仅仅是决定离开原子的孤立电子。相反，这些电子在化学键中共享在原子之间，” Racioppi说。“它们非常特殊。”
+“我们意识到，这些不仅仅是决定离开原子的孤立电子。相反，这些电子在化学键中共享在原子之间，” Racioppi 说。“它们非常特殊。”
 
 其他贡献者包括爱丁堡大学物理和天文学院以及极端条件科学中心的 Malcolm McMahon 和 Christian Storm。
 
 这项工作得到了由罗切斯特大学领导的国家科学基金会中心 [压力](https://phys.org/tags/pressure/) 下的物质 的支持，该中心研究星球和星体内部的压力如何重新排列材料的原子结构。
 
-“显然，要复制实验，比如在木星深层大气层内部的条件是困难的，” Zurek说，“但我们可以使用计算，有时还可以使用高科技激光来模拟这类条件。”
+“显然，要复制实验，比如在木星深层大气层内部的条件是困难的，” Zurek 说，“但我们可以使用计算，有时还可以使用高科技激光来模拟这类条件。”
 
-**更多信息：** Stefano Racioppi等人，《关于Na‐hP4的电子态的性质》，*Angewandte Chemie International Edition*（2023年）。[DOI: 10.1002/anie.202310802](https://dx.doi.org/10.1002/anie.202310802)
+**更多信息：** Stefano Racioppi 等人，《关于 Na‐hP4 的电子态的性质》，*Angewandte Chemie International Edition*（2023 年）。[DOI: 10.1002/anie.202310802](https://dx.doi.org/10.1002/anie.202310802)
 
-**引用**：《钠的高压转变可以告诉我们关于星球，行星内部的情况》（2023年12月30日），于2024年5月27日从https://phys.org/news/2023-12-sodium-high-pressure-interiors-stars-planets.html检索
+**引用**：《钠的高压转变可以告诉我们关于星球，行星内部的情况》（2023 年 12 月 30 日），于 2024 年 5 月 27 日从 https://phys.org/news/2023-12-sodium-high-pressure-interiors-stars-planets.html 检索
 
 本文受版权保护。除了为了私人研究或研究目的进行公平交易外，未经许可不得复制任何部分。本内容仅供信息目的。

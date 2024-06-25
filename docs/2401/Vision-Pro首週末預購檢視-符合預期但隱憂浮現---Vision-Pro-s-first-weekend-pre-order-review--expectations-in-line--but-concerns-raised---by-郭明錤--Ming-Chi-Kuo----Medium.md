@@ -8,7 +8,7 @@
 
 # Vision Pro 首周末预购检视：符合预期但隐忧浮现 / Vision Pro 的首周末预购检视：预期符合，但引起了担忧 | 作者：郭明锤（Ming-Chi Kuo）| Medium
 
-> 来源：[https://medium.com/@mingchikuo/vision-pro%E9%A6%96%E9%80%B1%E6%9C%AB%E9%A0%90%E8%B3%BC%E6%AA%A2%E8%A6%96-%E7%AC%A6%E5%90%88%E9%A0%90%E6%9C%9F%E4%BD%86%E9%9A%B1%E6%86%82%E6%B5%AE%E7%8F%BE-vision-pros-first-weekend-pre-order-review-expectations-in-line-0450c1effe66](https://medium.com/@mingchikuo/vision-pro%E9%A6%96%E9%80%B1%E6%9C%AB%E9%A0%90%E8%B3%BC%E6%AA%A2%E8%A6%96-%E7%AC%A6%E5%90%88%E9%A0%90%E6%9C%9F%E4%BD%86%E9%9A%B1%E6%86%82%E6%B5%AE%E7%8F%BE-vision-pros-first-weekend-pre-order-review-expectations-in-line-0450c1effe66)
+> 来源：[`medium.com/@mingchikuo/vision-pro%E9%A6%96%E9%80%B1%E6%9C%AB%E9%A0%90%E8%B3%BC%E6%AA%A2%E8%A6%96-%E7%AC%A6%E5%90%88%E9%A0%90%E6%9C%9F%E4%BD%86%E9%9A%B1%E6%86%82%E6%B5%AE%E7%8F%BE-vision-pros-first-weekend-pre-order-review-expectations-in-line-0450c1effe66`](https://medium.com/@mingchikuo/vision-pro%E9%A6%96%E9%80%B1%E6%9C%AB%E9%A0%90%E8%B3%BC%E6%AA%A2%E8%A6%96-%E7%AC%A6%E5%90%88%E9%A0%90%E6%9C%9F%E4%BD%86%E9%9A%B1%E6%86%82%E6%B5%AE%E7%8F%BE-vision-pros-first-weekend-pre-order-review-expectations-in-line-0450c1effe66)
 > 
 > **结论：**
 

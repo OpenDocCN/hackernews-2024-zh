@@ -8,7 +8,7 @@ category: 未分类
 
 # SQLite：Wal2 模式备注
 
-> 来源：[https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md](https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md)
+> 来源：[`www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md`](https://www.sqlite.org/cgi/src/doc/wal2/doc/wal2.md)
 
 ## 激活/停用 Wal2 模式
 
@@ -33,7 +33,7 @@ category: 未分类
 
 ## Wal2 模式的优势
 
-在传统的 wal 模式中，当写入者向数据库写入数据时，它不会直接修改数据库文件。相反，它会将新数据追加到“<数据库>-wal”文件中。读取者从原始数据库文件和“<数据库>-wal”文件中读取数据。在某个时候，数据从“<数据库>-wal”文件复制到数据库文件中，之后可以删除或覆盖 wal 文件。从 wal 文件中复制数据到数据库文件称为“检查点”，可以显式地完成（通过“PRAGMA wal_checkpoint”或sqlite3_wal_checkpoint_v2()），也可以自动完成（通过配置“PRAGMA wal_autocheckpoint”—这是默认的）。
+在传统的 wal 模式中，当写入者向数据库写入数据时，它不会直接修改数据库文件。相反，它会将新数据追加到“<数据库>-wal”文件中。读取者从原始数据库文件和“<数据库>-wal”文件中读取数据。在某个时候，数据从“<数据库>-wal”文件复制到数据库文件中，之后可以删除或覆盖 wal 文件。从 wal 文件中复制数据到数据库文件称为“检查点”，可以显式地完成（通过“PRAGMA wal_checkpoint”或 sqlite3_wal_checkpoint_v2()），也可以自动完成（通过配置“PRAGMA wal_autocheckpoint”—这是默认的）。
 
 检查点不会阻塞写入者，写入者也不会阻塞检查点。然而，如果在检查点正在进行时写入者向数据库写入数据，那么新数据会被追加到 wal 文件的末尾。这意味着，即使在检查点之后，wal 文件也不能被覆盖或删除，因此所有后续的事务也必须被追加到 wal 文件。检查点的工作不会被浪费——SQLite 会记住已经被复制到数据库文件的 wal 文件的哪些部分，以便下一个检查点不必再次复制——但这也意味着，如果检查点永远没有机会无障碍地完成而不被写入者追加到 wal 文件，wal 文件可能会无限增长。在繁忙的系统中还有一些情况，长时间运行的读取者可能会阻止检查点将整个 wal 文件检查点——也会导致 wal 文件无限增长。
 

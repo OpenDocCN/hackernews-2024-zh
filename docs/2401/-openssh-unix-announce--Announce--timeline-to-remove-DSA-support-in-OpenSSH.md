@@ -8,11 +8,11 @@
 
 # [openssh-unix-announce] 宣布：移除 OpenSSH 中对 DSA 的支持时间表
 
-> 来源：[https://lists.mindrot.org/pipermail/openssh-unix-announce/2024-January/000156.html](https://lists.mindrot.org/pipermail/openssh-unix-announce/2024-January/000156.html)
+> 来源：[`lists.mindrot.org/pipermail/openssh-unix-announce/2024-January/000156.html`](https://lists.mindrot.org/pipermail/openssh-unix-announce/2024-January/000156.html)
 
 # [openssh-unix-announce] 宣布：移除 OpenSSH 中对 DSA 的支持时间表
 
-**djm at openssh.com** [djm at openssh.com](mailto:openssh-unix-announce%40mindrot.org?Subject=Re%3A%20%5Bopenssh-unix-announce%5D%20Announce%3A%20timeline%20to%20remove%20DSA%20support%20in%0A%20OpenSSH&In-Reply-To=%3Cfac472a8f9544382%40cvs.openbsd.org%3E "[openssh-unix-announce] 宣布：移除 OpenSSH 中对 DSA 的支持时间表")
+**djm at openssh.com** djm at openssh.com
 
 *Thu Jan 11 15:31:18 AEDT 2024*
 

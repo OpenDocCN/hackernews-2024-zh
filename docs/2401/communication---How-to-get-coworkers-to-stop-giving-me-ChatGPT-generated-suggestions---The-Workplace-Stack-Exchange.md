@@ -8,7 +8,7 @@
 
 # 沟通 - 如何让同事不再给我 ChatGPT 生成的建议 - 职场 Stack Exchange
 
-> 来源：[https://workplace.stackexchange.com/questions/194969/how-to-get-coworkers-to-stop-giving-me-chatgpt-generated-suggestions](https://workplace.stackexchange.com/questions/194969/how-to-get-coworkers-to-stop-giving-me-chatgpt-generated-suggestions)
+> 来源：[`workplace.stackexchange.com/questions/194969/how-to-get-coworkers-to-stop-giving-me-chatgpt-generated-suggestions`](https://workplace.stackexchange.com/questions/194969/how-to-get-coworkers-to-stop-giving-me-chatgpt-generated-suggestions)
 
 感谢您在评论中澄清，并在这里提出：
 

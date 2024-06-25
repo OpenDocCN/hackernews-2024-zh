@@ -2,19 +2,19 @@
 
 类别：未分类
 
-日期：2024年5月27日15:13:33
+日期：2024 年 5 月 27 日 15:13:33
 
 -->
 
 # LTSE Equity 客户重要更新
 
-> 来源：[https://equity.ltse.com/lp/important-updates](https://equity.ltse.com/lp/important-updates)
+> 来源：[`equity.ltse.com/lp/important-updates`](https://equity.ltse.com/lp/important-updates)
 
 LTSE Equity 客户：
 
 ‍
 
-自2024年4月30日起，我们不再支持我们的股本表管理解决方案或其他工具。为此，我们已与 Astrella 合作，为您提供选择，使 Astrella^Ⓡ by Equiniti 成为您的股本表提供者。如果您想要您的 LTSE Equity 数据副本，请联系 [support@ltse.com](mailto:support@ltse.com)。要开始转移到 Astrella 的过程，请[填写此表格](https://share.hsforms.com/1QAhVClS4QPGe22mDNnal8Q5lokp)。
+自 2024 年 4 月 30 日起，我们不再支持我们的股本表管理解决方案或其他工具。为此，我们已与 Astrella 合作，为您提供选择，使 Astrella^Ⓡ by Equiniti 成为您的股本表提供者。如果您想要您的 LTSE Equity 数据副本，请联系 support@ltse.com。要开始转移到 Astrella 的过程，请[填写此表格](https://share.hsforms.com/1QAhVClS4QPGe22mDNnal8Q5lokp)。
 
 ‍
 
@@ -22,7 +22,7 @@ LTSE Equity 客户：
 
 ‍
 
-Astrella 拥有一支专门的支持团队，致力于为您顺利进行过渡。LTSE Equity 在我们首次宣布在2023年日落时开始转移客户，并为您开发了一个无缝的流程。我们还制定了一份常见问题解答，以回答您可能遇到的一些问题。
+Astrella 拥有一支专门的支持团队，致力于为您顺利进行过渡。LTSE Equity 在我们首次宣布在 2023 年日落时开始转移客户，并为您开发了一个无缝的流程。我们还制定了一份常见问题解答，以回答您可能遇到的一些问题。
 
 ‍
 

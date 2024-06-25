@@ -8,7 +8,7 @@
 
 # 宣布 Qdrant 的 2800 万美元 A 轮融资 - Qdrant
 
-> 来源：[https://qdrant.tech/blog/series-a-funding-round/](https://qdrant.tech/blog/series-a-funding-round/)
+> 来源：[`qdrant.tech/blog/series-a-funding-round/`](https://qdrant.tech/blog/series-a-funding-round/)
 
 今天，我们非常高兴地宣布我们由 Spark Capital 领投、现有投资者 Unusual Ventures 和 42CAP 参与的 2800 万美元 A 轮融资。
 
@@ -24,7 +24,7 @@
 
 为了满足下一代人工智能应用的需求，Qdrant 一直以四个关键点为目标：效率、可伸缩性、性能和灵活性。我们的目标是为我们的用户提供无与伦比的速度和可靠性，即使他们正在构建需要处理数十亿个向量的大规模人工智能应用。我们通过在 Rust 上构建 Qdrant 来实现这一目标，以获得性能、内存安全性和规模化。此外，我们的定制 HNSW 搜索算法和独特的过滤能力始终领先于最高 RPS、最小延迟和高控制精度的大规模高维操作。
 
-除了性能之外，我们为用户提供了最灵活的成本节约和部署选项。先进的效率功能的组合，比如[内置压缩选项](https://qdrant.tech/documentation/guides/quantization/)、[多租户](https://qdrant.tech/documentation/guides/multiple-partitions/)和数据[转移到磁盘](https://qdrant.tech/documentation/concepts/storage/)的功能，显著降低了内存消耗。Qdrant致力于隐私和安全，在现代人工智能应用中至关重要，现在还提供本地化和混合SaaS解决方案，满足了数据敏感世界中多样的企业需求。这种方法，再加上我们的开源基础，让工程师和开发人员对Qdrant信任和可靠性极高，使得Qdrant成为向量数据库领域的颠覆者。
+除了性能之外，我们为用户提供了最灵活的成本节约和部署选项。先进的效率功能的组合，比如[内置压缩选项](https://qdrant.tech/documentation/guides/quantization/)、[多租户](https://qdrant.tech/documentation/guides/multiple-partitions/)和数据[转移到磁盘](https://qdrant.tech/documentation/concepts/storage/)的功能，显著降低了内存消耗。Qdrant 致力于隐私和安全，在现代人工智能应用中至关重要，现在还提供本地化和混合 SaaS 解决方案，满足了数据敏感世界中多样的企业需求。这种方法，再加上我们的开源基础，让工程师和开发人员对 Qdrant 信任和可靠性极高，使得 Qdrant 成为向量数据库领域的颠覆者。
 
 ## 接下来呢？
 

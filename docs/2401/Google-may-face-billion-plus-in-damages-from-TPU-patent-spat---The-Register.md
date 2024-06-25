@@ -6,23 +6,23 @@ date: 2024-05-27 14:42:52
 
 -->
 
-# 谷歌可能面临来自TPU专利纠纷的数十亿美元的损害 • The Register
+# 谷歌可能面临来自 TPU 专利纠纷的数十亿美元的损害 • The Register
 
-> 来源：[https://www.theregister.com/2024/01/10/google_tpu_patent_dispute/](https://www.theregister.com/2024/01/10/google_tpu_patent_dispute/)
+> 来源：[`www.theregister.com/2024/01/10/google_tpu_patent_dispute/`](https://www.theregister.com/2024/01/10/google_tpu_patent_dispute/)
 
-这周，由Singular Computing对搜索巨头提起的陪审团诉讼开始对谷歌对张张的专利侵权指控进行审理。
+这周，由 Singular Computing 对搜索巨头提起的陪审团诉讼开始对谷歌对张张的专利侵权指控进行审理。
 
-谷歌被指控侵犯了由Singular持有、由计算机科学家Joseph Bates开发的专利，后者是一位学术界转型为初创企业创始人。根据他的领英[资料](https://www.linkedin.com/in/joebatessingular/)，Bates在1980年至2011年间在美国的康奈尔大学、麻省理工学院、卡内基梅隆大学和约翰霍普金斯大学担任研究和教学职位。
+谷歌被指控侵犯了由 Singular 持有、由计算机科学家 Joseph Bates 开发的专利，后者是一位学术界转型为初创企业创始人。根据他的领英[资料](https://www.linkedin.com/in/joebatessingular/)，Bates 在 1980 年至 2011 年间在美国的康奈尔大学、麻省理工学院、卡内基梅隆大学和约翰霍普金斯大学担任研究和教学职位。
 
-2005年，Bates创立了Singular Computing，以商业化各种计算架构。根据Singular的[网站](https://www.singularcomputing.com/)，这家公司“开发和许可用于高性能节能计算的硬件和软件技术，包括大规模和嵌入式计算”。
+2005 年，Bates 创立了 Singular Computing，以商业化各种计算架构。根据 Singular 的[网站](https://www.singularcomputing.com/)，这家公司“开发和许可用于高性能节能计算的硬件和软件技术，包括大规模和嵌入式计算”。
 
-Singular与谷歌的法律纠纷可以追溯到2019年底，当时Bates在马萨诸塞州的一个联邦法院对云巨头提起了诉讼[[PDF](https://regmedia.co.uk/2024/01/09/singular_google_complaint.pdf)]。根据投诉，Bates在2010年至2014年间三次根据保密协议向谷歌披露了他提出的各种技术。在此期间，Singular表示，Bates让谷歌知道了涉及的技术是受专利保护的。
+Singular 与谷歌的法律纠纷可以追溯到 2019 年底，当时 Bates 在马萨诸塞州的一个联邦法院对云巨头提起了诉讼[[PDF](https://regmedia.co.uk/2024/01/09/singular_google_complaint.pdf)]。根据投诉，Bates 在 2010 年至 2014 年间三次根据保密协议向谷歌披露了他提出的各种技术。在此期间，Singular 表示，Bates 让谷歌知道了涉及的技术是受专利保护的。
 
-所谓的专利据称首次于2009年提交，并于2010年公开，描述了一种设计用于每个处理器周期执行大量低精度计算的计算机架构。投诉称，虽然这种低精度对于传统的计算工作负载可能不实用，但它非常适合可以适应这种低精度的人工智能软件。
+所谓的专利据称首次于 2009 年提交，并于 2010 年公开，描述了一种设计用于每个处理器周期执行大量低精度计算的计算机架构。投诉称，虽然这种低精度对于传统的计算工作负载可能不实用，但它非常适合可以适应这种低精度的人工智能软件。
 
-Singular Computing还强调，这些技术不仅仅停留在纸面上，因为在第一份专利申请提交后不久，就基于这些设计制造了一个原型。涉及的专利包括：一项初始的美国[8,407,273](https://patents.google.com/patent/US8407273B2)，以及相关的后续美国[9,218,156](https://patents.google.com/patent/US9218156B2)和[10,416,961](https://patents.google.com/patent/US10416961B2)。
+Singular Computing 还强调，这些技术不仅仅停留在纸面上，因为在第一份专利申请提交后不久，就基于这些设计制造了一个原型。涉及的专利包括：一项初始的美国[8,407,273](https://patents.google.com/patent/US8407273B2)，以及相关的后续美国[9,218,156](https://patents.google.com/patent/US9218156B2)和[10,416,961](https://patents.google.com/patent/US10416961B2)。
 
-Singular称，谷歌故意将贝茨的架构纳入其TPU v2和v3处理器中，而不经过许可或许可证，因此明知侵犯了相关专利。TPU是谷歌设计的定制人工智能加速器芯片，[在外部帮助下](https://www.theregister.com/2023/09/22/google_broadcom_tpus/)用于加速其云中神经网络的训练和决策过程。
+Singular 称，谷歌故意将贝茨的架构纳入其 TPU v2 和 v3 处理器中，而不经过许可或许可证，因此明知侵犯了相关专利。TPU 是谷歌设计的定制人工智能加速器芯片，[在外部帮助下](https://www.theregister.com/2023/09/22/google_broadcom_tpus/)用于加速其云中神经网络的训练和决策过程。
 
 谷歌当前的首席科学家 Jeff Dean 写信给同事们，讨论了贝茨的设计如何“非常适合”这家网络巨头的工作负载，这是根据诉讼中披露的内部邮件。与此同时，谷歌的法律团队辩称，没有任何参与 TPU 开发的人与贝茨或他的蓝图有任何关联。
 

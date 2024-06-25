@@ -8,7 +8,7 @@ date: 2024-05-27 15:03:56
 
 # draft-omar-ipv10-06
 
-> 来源：[https://datatracker.ietf.org/doc/html/draft-omar-ipv10-06.html](https://datatracker.ietf.org/doc/html/draft-omar-ipv10-06.html)
+> 来源：[`datatracker.ietf.org/doc/html/draft-omar-ipv10-06.html`](https://datatracker.ietf.org/doc/html/draft-omar-ipv10-06.html)
 
 ```
 draft-omar-ipv10-06                                    Khaled Omar
@@ -82,11 +82,11 @@ Khaled Omar             Internet-Draft                   [Page 1]
 ```
  RFC                   IPv10 Specification            September 2, 2017
 
-[1](#section-1).  Introduction
+1.  Introduction
 
     IP version 10 (IPv10) is a new version of the Internet Protocol,
-    designed to allow IP version 6 [[RFC-2460](/doc/html/rfc2460)] to communicate to
-    IP version 4 (IPv4) [[RFC-791](/doc/html/rfc791)] and vice versa.
+    designed to allow IP version 6 [RFC-2460] to communicate to
+    IP version 4 (IPv4) [RFC-791] and vice versa.
 
 - Internet is the global wide network used for communication between
   hosts connected to it.
@@ -136,7 +136,7 @@ Khaled Omar             Internet-Draft                   [Page 2]
   (IETF).
 
 - IPv6 is (128-bits) address and can support a huge number of unique
-  IP addresses that is approximately equals to 2^128 unique addresses.
+  IP addresses that is approximately equals to 2¹²⁸ unique addresses.
 
 - So, the need for IPv6 became a vital issue to be able to support
   the massive increase of connected hosts to the Internet after the
@@ -195,7 +195,7 @@ Khaled Omar             Internet-Draft                   [Page 2]
   communication using direct IP addresses, also the need for so much
   protocol translations of the source and destination IP addresses
   made the solution complex and not applicable thats why it was moved
-  to the Historic status in the [RFC 2766](/doc/html/rfc2766). Also, NAT64 requires so much
+  to the Historic status in the RFC 2766. Also, NAT64 requires so much
   protocol translations and statically configured bindings, and also
   getting a DNS64 involved in the communication process.
 
@@ -207,7 +207,7 @@ Khaled Omar             Internet-Draft                   [Page 3]
 ```
  RFC                   IPv10 Specification            September 2, 2017
 
-[2](#section-2).  Internet Protocol version 10 (IPv10).
+2.  Internet Protocol version 10 (IPv10).
 
 - IPv10 is the solution presented in this Internet draft.
 
@@ -236,7 +236,7 @@ Khaled Omar             Internet-Draft                   [Page 4]
 ```
  RFC                   IPv10 Specification            September 2, 2017
 
-[3](#section-3).  The Four Types of Communication.
+3.  The Four Types of Communication.
 
      3.1) IPv10: IPv6 Host to IPv4 Host.
          ------------------------------
@@ -456,7 +456,7 @@ Khaled Omar             Internet-Draft                   [Page 8]
 ```
  RFC                   IPv10 Specification            September 2, 2017
 
-[4](#section-4).  IPv10 Packet Header Format.
+4.  IPv10 Packet Header Format.
 
 - The following figure shows the IPv10 packet header which is almost
   the same as the IPv6 packet header:
@@ -499,7 +499,7 @@ Khaled Omar             Internet-Draft                   [Page 8]
    Payload Length       16-bit unsigned integer.  Length of the payload,
                         i.e., the rest of the packet following
                         this IP header, in octets.  (Note that any
-                        extension headers [[section 4](#section-4)] present are
+                        extension headers [section 4] present are
                         considered part of the payload, i.e., included
                         in the length count.)
 
@@ -529,7 +529,7 @@ Khaled Omar             Internet-Draft                   [Page 8]
     +-+-+-+-+-+-+-+-+-+-+-+         +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
     |      128-bit        |         |                      128-bit                      |
 
-[5](#section-5). Advantages of IPv10.
+5. Advantages of IPv10.
 
     1) Introduces an efficient way of communication between IPv6 hosts
        and IPv4 hosts.

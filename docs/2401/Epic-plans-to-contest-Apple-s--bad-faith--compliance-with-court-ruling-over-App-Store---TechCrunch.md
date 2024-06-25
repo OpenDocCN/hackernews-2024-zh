@@ -8,7 +8,7 @@
 
 # Epic 计划就法院对 App Store 的裁决进行挑战 | TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/17/epic-plans-to-contest-apples-bad-faith-compliance-with-court-ruling-over-app-store/](https://techcrunch.com/2024/01/17/epic-plans-to-contest-apples-bad-faith-compliance-with-court-ruling-over-app-store/)
+> 来源：[`techcrunch.com/2024/01/17/epic-plans-to-contest-apples-bad-faith-compliance-with-court-ruling-over-app-store/`](https://techcrunch.com/2024/01/17/epic-plans-to-contest-apples-bad-faith-compliance-with-court-ruling-over-app-store/)
 
 制作《堡垒之夜》的 Epic Games 对苹果打算如何遵守地区法院的禁令并不满意，该禁令允许应用开发者引导用户访问他们自己的网站和支付平台 —— 这是一项在[最高法院决定](https://techcrunch.com/2024/01/16/supreme-court-declines-to-hear-apple-epic-antitrust-case-meaning-developers-can-point-customers-to-the-web/)不审理苹果反垄断案后生效的法院命令，该决定使[目前的裁决生效](https://techcrunch.com/2021/09/10/apple-prohibited-from-blocking-outside-payment-in-epic-ruling/)。尽管苹果在这起案件中基本上取得了胜利，因为法院裁定其不是垄断者，但一位法官裁定应用开发者应该能够通过链接或按钮将其客户引导至网络，这导致[苹果不得不改变其 App Store 规则](https://techcrunch.com/2024/01/17/apple-allows-devs-to-promote-subscriptions-on-the-web-with-a-27-cut/)。
 
@@ -30,14 +30,14 @@ Sweeney 表示 Epic 将在地方法院对 Apple 的合规性提出异议。
 
 开发者游说团体“App 公平联盟”（包括 Epic 在内），就 Apple 的新 App Store 规定发布了自己的声明。
 
-“苹果对地方法院决定的‘合规’方式不会使开发者和消费者受益。对于苹果不处理的支付征收27%的新佣金违反了地方法院禁令的意图，并且破坏了竞争，” 应用公平联盟执行董事 Rick VanMeter 表示。“这些改变对于增强消费者选择、降低应用内购买价格或向苹果的封闭生态系统注入竞争力毫无裨益。正是这种滥用、垄断行为使得国会必须通过《开放应用市场法》。”他补充道。
+“苹果对地方法院决定的‘合规’方式不会使开发者和消费者受益。对于苹果不处理的支付征收 27%的新佣金违反了地方法院禁令的意图，并且破坏了竞争，” 应用公平联盟执行董事 Rick VanMeter 表示。“这些改变对于增强消费者选择、降低应用内购买价格或向苹果的封闭生态系统注入竞争力毫无裨益。正是这种滥用、垄断行为使得国会必须通过《开放应用市场法》。”他补充道。
 
-**更新，1/14/24，美东时间下午2:05：**
+**更新，1/14/24，美东时间下午 2:05：**
 
 Spotify 也发表了以下关于苹果新的 App Store 政策的声明：
 
-> 苹果再次表明他们不惜一切代价保护他们在应用商店垄断下从开发者和消费者身上获得的利润。他们在美国的最新举动——对开发者网站上的应用外交易征收27%的费用——是令人发指的，完全违背了法院促进更大竞争和用户选择的努力。这一行动是苹果为了规避在韩国和荷兰的合规而采取的类似行动的延续。然而，欧盟的数字市场法（DMA）最终将结束这种虚假做姿态，这实际上是苹果费用的重新创造。我们强烈呼吁欧洲委员会迅速果断地采取行动，防止苹果实施类似的被DMA禁止的费用。
+> 苹果再次表明他们不惜一切代价保护他们在应用商店垄断下从开发者和消费者身上获得的利润。他们在美国的最新举动——对开发者网站上的应用外交易征收 27%的费用——是令人发指的，完全违背了法院促进更大竞争和用户选择的努力。这一行动是苹果为了规避在韩国和荷兰的合规而采取的类似行动的延续。然而，欧盟的数字市场法（DMA）最终将结束这种虚假做姿态，这实际上是苹果费用的重新创造。我们强烈呼吁欧洲委员会迅速果断地采取行动，防止苹果实施类似的被 DMA 禁止的费用。
 > 
-> [苹果允许开发者以27%的佣金在网络上推广订阅服务](https://techcrunch.com/2024/01/17/apple-allows-devs-to-promote-subscriptions-on-the-web-with-a-27-cut/)
+> [苹果允许开发者以 27%的佣金在网络上推广订阅服务](https://techcrunch.com/2024/01/17/apple-allows-devs-to-promote-subscriptions-on-the-web-with-a-27-cut/)
 > 
 > [最高法院拒绝审理苹果与 Epic 的反垄断案，这意味着应用开发者现在可以将客户指向网络](https://techcrunch.com/2024/01/16/supreme-court-declines-to-hear-apple-epic-antitrust-case-meaning-developers-can-point-customers-to-the-web/)

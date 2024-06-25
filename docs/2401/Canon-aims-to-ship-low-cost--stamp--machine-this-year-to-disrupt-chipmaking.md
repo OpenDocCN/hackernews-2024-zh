@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 15:20:11
+日期：2024 年 5 月 27 日 15:20:11
 
 -->
 
 # 佳能计划今年发售低成本的‘邮票’机器以颠覆芯片制造
 
-> 来源：[https://www.ft.com/content/2643ed31-8b8c-4d3d-a7a8-c4383d06e8a6](https://www.ft.com/content/2643ed31-8b8c-4d3d-a7a8-c4383d06e8a6)
+> 来源：[`www.ft.com/content/2643ed31-8b8c-4d3d-a7a8-c4383d06e8a6`](https://www.ft.com/content/2643ed31-8b8c-4d3d-a7a8-c4383d06e8a6)
 
 ### 标准数字
 

@@ -8,7 +8,7 @@ date: 2024-05-27 14:37:01
 
 # 小众在线比赛 – Daniel Wirtz
 
-> 来源：[https://danielwirtz.com/blog/niche-online-tournaments](https://danielwirtz.com/blog/niche-online-tournaments)
+> 来源：[`danielwirtz.com/blog/niche-online-tournaments`](https://danielwirtz.com/blog/niche-online-tournaments)
 
 <main class="notion light-mode notion-page notion-block">
 
@@ -46,6 +46,6 @@ date: 2024-05-27 14:37:01
 
 （其中一个最知名的地理猜猜看玩家）从竞争对手中消失了。相反，他在评论比赛。他帮助扩大了游戏的影响力，自那时以来，更多的人 – 通常是年轻选手 – 已迅速超过了他。这就是这个竞技场景发展得如此之快的原因。
 
-随着我观看了更多的在线比赛，我对这些玩家展示出的惊人技巧和承诺感到越来越赞赏。即使其中一些游戏看起来有些不寻常或古怪，如果玩家们在玩游戏中找到了快乐，那就是最重要的。他们找到了一些让他们热情的事情，而这在当今的社会中是其他人所苦苦挣扎的。就我个人而言，我非常喜欢观看这些比赛，即使只是作为一个观众。所以，亲爱的YouTube算法：请给我更多这样的内容！
+随着我观看了更多的在线比赛，我对这些玩家展示出的惊人技巧和承诺感到越来越赞赏。即使其中一些游戏看起来有些不寻常或古怪，如果玩家们在玩游戏中找到了快乐，那就是最重要的。他们找到了一些让他们热情的事情，而这在当今的社会中是其他人所苦苦挣扎的。就我个人而言，我非常喜欢观看这些比赛，即使只是作为一个观众。所以，亲爱的 YouTube 算法：请给我更多这样的内容！
 
 </main>

@@ -8,7 +8,7 @@ date: 2024-05-27 14:55:50
 
 # SpaceX 发射 Axiom Space 的 Ax-3 任务到国际空间站：NPR
 
-> 来源：[https://www.npr.org/2024/01/18/1225191541/spacex-nasa-axiom-space-ax-3-international-space-station-iss](https://www.npr.org/2024/01/18/1225191541/spacex-nasa-axiom-space-ax-3-international-space-station-iss)
+> 来源：[`www.npr.org/2024/01/18/1225191541/spacex-nasa-axiom-space-ax-3-international-space-station-iss`](https://www.npr.org/2024/01/18/1225191541/spacex-nasa-axiom-space-ax-3-international-space-station-iss)
 
 一枚 SpaceX Falcon 9 火箭与其 Crew Dragon 舱在佛罗里达州卡纳维拉尔角的肯尼迪航天中心的 LC-39A 发射，进行了 Axiom Space 的 Ax-3 任务，时间是 2024 年 1 月 18 日。**Chandan Khanna/AFP 通过 Getty Images** ****隐藏标题****
 

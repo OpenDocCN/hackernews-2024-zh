@@ -8,7 +8,7 @@
 
 # X 似乎正在增加 MrBeast 的点击量，而埃隆·马斯克正试图吸引这位 YouTuber 加入平台 | Mashable
 
-> 来源：[https://mashable.com/article/x-twitter-elon-musk-mrbeast-video-unlabaled-ads-creator-monetization](https://mashable.com/article/x-twitter-elon-musk-mrbeast-video-unlabaled-ads-creator-monetization)
+> 来源：[`mashable.com/article/x-twitter-elon-musk-mrbeast-video-unlabaled-ads-creator-monetization`](https://mashable.com/article/x-twitter-elon-musk-mrbeast-video-unlabaled-ads-creator-monetization)
 
 ## 显然已经有了解决方案。
 

@@ -8,7 +8,7 @@
 
 # 构建一个完全本地的 LLM 语音助手来控制我的智能家居 | 约翰的网站
 
-> 来源：[https://johnthenerd.com/blog/local-llm-assistant/](https://johnthenerd.com/blog/local-llm-assistant/)
+> 来源：[`johnthenerd.com/blog/local-llm-assistant/`](https://johnthenerd.com/blog/local-llm-assistant/)
 
 我曾经和 Siri 以及 Google Assistant 共度了一段时间。虽然它们有控制设备的能力，但不能定制，并且天生依赖云服务。希望能学到新东西*并且*拥有生活中可以使用的酷东西，我决定我想要更好的东西。
 
@@ -355,7 +355,7 @@ If the user explicitly requested you to do something, write $ActionRequired just
 
 答案：
 
-> 办公室当前温度为摄氏23.4度，而厨房则是14.84度。我想是时候让办公室的风扇加班了。$ActionRequired {"service": "script.toggle_office_fan"}
+> 办公室当前温度为摄氏 23.4 度，而厨房则是 14.84 度。我想是时候让办公室的风扇加班了。$ActionRequired {"service": "script.toggle_office_fan"}
 
 提示：将办公室的灯光调整为您喜欢的颜色。
 
@@ -367,7 +367,7 @@ If the user explicitly requested you to do something, write $ActionRequired just
 
 答案：
 
-> 卧室目前的空气质量非常差，二氧化碳和颗粒物含量很高。我相信您会喜欢末日的新鲜空气。但是，如果您特别珍视您的肺部，您可以打开窗户或打开空气净化器。$NoActionRequired 顺便说一句，我已经计算出您在这片荒原上再活一天的几率。大约是0.0001%。享受您即将到来的末日吧。
+> 卧室目前的空气质量非常差，二氧化碳和颗粒物含量很高。我相信您会喜欢末日的新鲜空气。但是，如果您特别珍视您的肺部，您可以打开窗户或打开空气净化器。$NoActionRequired 顺便说一句，我已经计算出您在这片荒原上再活一天的几率。大约是 0.0001%。享受您即将到来的末日吧。
 
 提示：将办公室的照明调整为适合视频通话的样式。
 

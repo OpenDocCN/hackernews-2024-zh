@@ -2,43 +2,43 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:36:30
+日期：2024 年 05 月 27 日 14:36:30
 
 -->
 
-# Apple Vision Pro将于2月2日星期五在美国上市 - Apple
+# Apple Vision Pro 将于 2 月 2 日星期五在美国上市 - Apple
 
-> 来源：[https://www.apple.com/newsroom/2024/01/apple-vision-pro-available-in-the-us-on-february-2/](https://www.apple.com/newsroom/2024/01/apple-vision-pro-available-in-the-us-on-february-2/)
+> 来源：[`www.apple.com/newsroom/2024/01/apple-vision-pro-available-in-the-us-on-february-2/`](https://www.apple.com/newsroom/2024/01/apple-vision-pro-available-in-the-us-on-february-2/)
 
-2024年1月8日
+2024 年 1 月 8 日
 
 新闻稿
 
-Apple Vision Pro将于2月2日星期五在美国上市
+Apple Vision Pro 将于 2 月 2 日星期五在美国上市
 
-空间计算时代已经到来——预购将于1月19日星期五开始
+空间计算时代已经到来——预购将于 1 月 19 日星期五开始
 
-**加利福尼亚库比蒂诺** Apple今天宣布，Apple Vision Pro将从2月2日星期五起，在所有美国Apple Store门店和美国Apple Store网店上市。Vision Pro是一款革命性的空间计算机，改变了人们的工作方式、协作方式、连接方式、重温记忆方式和享受娱乐方式。Vision Pro将数字内容与物理世界无缝融合，在由用户的眼睛、手和声音控制的visionOS中解锁强大的空间体验。全新的App Store为用户提供了访问超过100万个与iOS和iPadOS兼容的应用程序，以及利用Vision Pro独特功能的新体验。Apple Vision Pro的预购将于太平洋标准时间1月19日星期五上午5点开始。
+**加利福尼亚库比蒂诺** Apple 今天宣布，Apple Vision Pro 将从 2 月 2 日星期五起，在所有美国 Apple Store 门店和美国 Apple Store 网店上市。Vision Pro 是一款革命性的空间计算机，改变了人们的工作方式、协作方式、连接方式、重温记忆方式和享受娱乐方式。Vision Pro 将数字内容与物理世界无缝融合，在由用户的眼睛、手和声音控制的 visionOS 中解锁强大的空间体验。全新的 App Store 为用户提供了访问超过 100 万个与 iOS 和 iPadOS 兼容的应用程序，以及利用 Vision Pro 独特功能的新体验。Apple Vision Pro 的预购将于太平洋标准时间 1 月 19 日星期五上午 5 点开始。
 
-“空间计算时代已经到来，”苹果首席执行官蒂姆·库克说道。“Apple Vision Pro是有史以来最先进的消费电子设备。其革命性和神奇的用户界面将重新定义我们的连接、创造和探索方式。”
+“空间计算时代已经到来，”苹果首席执行官蒂姆·库克说道。“Apple Vision Pro 是有史以来最先进的消费电子设备。其革命性和神奇的用户界面将重新定义我们的连接、创造和探索方式。”
 
 **一款革命性的操作系统和用户界面**
 
-Apple Vision Pro由visionOS提供动力，该操作系统建立在macOS、iOS和iPadOS几十年的工程创新基础上。visionOS提供强大的空间体验，解锁工作和家庭的新机会。全新的三维用户界面和完全由用户的眼睛、手和声音控制的输入系统，使导航感觉像魔法。直观的手势允许用户通过简单地看着它们与应用程序交互，用手指轻触选择，扭动手腕滚动，或使用虚拟键盘或语音输入输入。通过Siri，用户可以快速打开或关闭应用程序，播放媒体等。
+Apple Vision Pro 由 visionOS 提供动力，该操作系统建立在 macOS、iOS 和 iPadOS 几十年的工程创新基础上。visionOS 提供强大的空间体验，解锁工作和家庭的新机会。全新的三维用户界面和完全由用户的眼睛、手和声音控制的输入系统，使导航感觉像魔法。直观的手势允许用户通过简单地看着它们与应用程序交互，用手指轻触选择，扭动手腕滚动，或使用虚拟键盘或语音输入输入。通过 Siri，用户可以快速打开或关闭应用程序，播放媒体等。
 
-用户还可以沉浸在环境中——动态而美丽的景观，如Haleakalā、Joshua Tree和优胜美地国家公园，甚至是月球表面——以帮助他们集中注意力或减少繁忙空间中的混乱。通过环境，用户的世界可以超越物理空间的维度。通过数字表冠的旋转，用户可以控制他们在环境中的存在或沉浸程度。
+用户还可以沉浸在环境中——动态而美丽的景观，如 Haleakalā、Joshua Tree 和优胜美地国家公园，甚至是月球表面——以帮助他们集中注意力或减少繁忙空间中的混乱。通过环境，用户的世界可以超越物理空间的维度。通过数字表冠的旋转，用户可以控制他们在环境中的存在或沉浸程度。
 
 **非凡的体验**
 
-Apple Vision Pro通过改变用户与其应用程序交互的方式，为强大而个人化的计算机带来了新的维度。三维界面使应用程序摆脱了显示屏的限制，因此它们可以以任何比例并排显示，提供最佳的工作空间，并为多任务处理和协作创建了一个无限的画布。
+Apple Vision Pro 通过改变用户与其应用程序交互的方式，为强大而个人化的计算机带来了新的维度。三维界面使应用程序摆脱了显示屏的限制，因此它们可以以任何比例并排显示，提供最佳的工作空间，并为多任务处理和协作创建了一个无限的画布。
 
-由于visionOS利用了现有的开发者框架，超过100万个熟悉的iOS和iPadOS应用程序可以在Apple Vision Pro上使用，并自动与新的输入系统配合工作。Vision Pro还拥有一个全新的应用商店，用户可以在其中找到提供与任何其他平台都不同的空间计算体验的应用程序。应用程序可以随意排列并调整到完美的尺寸，同时允许用户保持在他们的空间中。
+由于 visionOS 利用了现有的开发者框架，超过 100 万个熟悉的 iOS 和 iPadOS 应用程序可以在 Apple Vision Pro 上使用，并自动与新的输入系统配合工作。Vision Pro 还拥有一个全新的应用商店，用户可以在其中找到提供与任何其他平台都不同的空间计算体验的应用程序。应用程序可以随意排列并调整到完美的尺寸，同时允许用户保持在他们的空间中。
 
-+   **生产力的无限画布**：借助关键的生产力和协作应用程序，如Fantastical、Freeform、JigSpace、Microsoft 365的应用程序和Slack，Apple Vision Pro是日常任务的理想生产力工具。应用程序可以以任何比例并排显示，进行令人难以置信的多任务处理，并且支持Magic Keyboard和Magic Trackpad，用户可以创建完美的工作空间。通过Mac虚拟显示，用户甚至可以将Mac的强大功能带入Vision Pro，创建一个巨大的、私密的、便携式4K显示屏，非常适合专业工作流程。
++   **生产力的无限画布**：借助关键的生产力和协作应用程序，如 Fantastical、Freeform、JigSpace、Microsoft 365 的应用程序和 Slack，Apple Vision Pro 是日常任务的理想生产力工具。应用程序可以以任何比例并排显示，进行令人难以置信的多任务处理，并且支持 Magic Keyboard 和 Magic Trackpad，用户可以创建完美的工作空间。通过 Mac 虚拟显示，用户甚至可以将 Mac 的强大功能带入 Vision Pro，创建一个巨大的、私密的、便携式 4K 显示屏，非常适合专业工作流程。
 
-+   **终极娱乐体验**：Apple Vision Pro拥有超高分辨率的显示屏，为每只眼睛提供比4K电视更多的像素，让用户能够在支持HDR内容的屏幕上观看Apple TV+、Disney+、Max和其他服务的电影和电视节目，感觉就像屏幕宽度达到100英尺。在Apple TV应用中，用户可以访问超过150个3D标题，无论身处何地，都能体验令人难以置信的深度。Vision Pro还引入了Apple Immersive Video，这是由Apple开创的一种引人注目的新娱乐格式，通过Spatial Audio捕获的180度、三维8K录像让用户置身于行动之中。用户还可以享受新的互动体验，比如与恐龙相遇。
++   **终极娱乐体验**：Apple Vision Pro 拥有超高分辨率的显示屏，为每只眼睛提供比 4K 电视更多的像素，让用户能够在支持 HDR 内容的屏幕上观看 Apple TV+、Disney+、Max 和其他服务的电影和电视节目，感觉就像屏幕宽度达到 100 英尺。在 Apple TV 应用中，用户可以访问超过 150 个 3D 标题，无论身处何地，都能体验令人难以置信的深度。Vision Pro 还引入了 Apple Immersive Video，这是由 Apple 开创的一种引人注目的新娱乐格式，通过 Spatial Audio 捕获的 180 度、三维 8K 录像让用户置身于行动之中。用户还可以享受新的互动体验，比如与恐龙相遇。
 
-+   **全新的游戏体验**：玩家可以在App Store上访问游戏，其中包括超过250款Apple Arcade游戏。像NBA 2K24 Arcade Edition和Sonic Dream Team这样的热门游戏可以在大屏幕上以他们想要的尺寸进行游戏，并具备令人惊叹的音频效果和对流行游戏控制器的支持。新的空间游戏，包括Game Room，What the Golf？和Super Fruit Ninja，利用了Apple Vision Pro强大的能力来改变玩家周围的空间，提供独特而引人入胜的游戏体验。
++   **全新的游戏体验**：玩家可以在 App Store 上访问游戏，其中包括超过 250 款 Apple Arcade 游戏。像 NBA 2K24 Arcade Edition 和 Sonic Dream Team 这样的热门游戏可以在大屏幕上以他们想要的尺寸进行游戏，并具备令人惊叹的音频效果和对流行游戏控制器的支持。新的空间游戏，包括 Game Room，What the Golf？和 Super Fruit Ninja，利用了 Apple Vision Pro 强大的能力来改变玩家周围的空间，提供独特而引人入胜的游戏体验。
 
 **生活的回忆**
 
@@ -74,29 +74,29 @@ Apple Vision Pro 提供行业领先的隐私和安全性。Optic ID 是一个新
 
 **Apple Vision Pro 与环境**
 
-Apple Vision Pro的设计考虑到环境因素，所有磁铁均采用100％回收稀土元素，多个印刷电路板采用100％回收锡焊和金镀层。 框架和电池外壳含有100％回收铝，Light Seal和Solo Knit Band各自采用超过70％回收纱线制成。 Vision Pro符合苹果的高能效标准，并且不含汞、溴化阻燃剂、PVC和铍。 包装材料100％基于纤维，使苹果更接近其在2025年消除所有包装中的塑料的目标。
+Apple Vision Pro 的设计考虑到环境因素，所有磁铁均采用 100％回收稀土元素，多个印刷电路板采用 100％回收锡焊和金镀层。 框架和电池外壳含有 100％回收铝，Light Seal 和 Solo Knit Band 各自采用超过 70％回收纱线制成。 Vision Pro 符合苹果的高能效标准，并且不含汞、溴化阻燃剂、PVC 和铍。 包装材料 100％基于纤维，使苹果更接近其在 2025 年消除所有包装中的塑料的目标。
 
-今天，苹果在全球企业运营方面实现了碳中和，并计划到2030年，在每种产品的整个制造供应链和生命周期中实现碳中和。
+今天，苹果在全球企业运营方面实现了碳中和，并计划到 2030 年，在每种产品的整个制造供应链和生命周期中实现碳中和。
 
 **价格和可用性**
 
-+   Apple Vision Pro的起始售价为**$3,499**（美元），配备256GB的存储空间。 Apple Vision Pro的预订将于太平洋标准时间1月19日星期五上午5点开始，可于2月2日星期五开始供应。
++   Apple Vision Pro 的起始售价为**$3,499**（美元），配备 256GB 的存储空间。 Apple Vision Pro 的预订将于太平洋标准时间 1 月 19 日星期五上午 5 点开始，可于 2 月 2 日星期五开始供应。
 
-+   Apple Vision Pro将在所有美国苹果商店和美国苹果商店在线上提供。
++   Apple Vision Pro 将在所有美国苹果商店和美国苹果商店在线上提供。
 
-+   ZEISS光学插件 - 读者售价为**$99**（美元），ZEISS光学插件 - 处方售价为**$149**（美元）。
++   ZEISS 光学插件 - 读者售价为**$99**（美元），ZEISS 光学插件 - 处方售价为**$149**（美元）。
 
-+   Apple Vision Pro配备Solo Knit Band和Dual Loop Band —— 为用户提供两种最适合他们的安装选项。 Apple Vision Pro还包括一个Light Seal、两个Light Seal Cushions、一个用于设备前部的Apple Vision Pro Cover、抛光布、电池、USB-C充电电缆和USB-C电源适配器。
++   Apple Vision Pro 配备 Solo Knit Band 和 Dual Loop Band —— 为用户提供两种最适合他们的安装选项。 Apple Vision Pro 还包括一个 Light Seal、两个 Light Seal Cushions、一个用于设备前部的 Apple Vision Pro Cover、抛光布、电池、USB-C 充电电缆和 USB-C 电源适配器。
 
 **关于苹果**
 
-苹果在1984年推出Macintosh时革新了个人技术。 今天，苹果以iPhone、iPad、Mac、Apple Watch和Apple TV引领世界创新。 苹果的五大软件平台 - iOS、iPadOS、macOS、watchOS和tvOS - 为所有苹果设备提供无缝体验，并通过突破性服务赋予人们力量，包括App Store、Apple Music、Apple Pay和iCloud。 苹果的100,000多名员工致力于制造地球上最好的产品，并且致力于使世界变得比我们发现时更好。
+苹果在 1984 年推出 Macintosh 时革新了个人技术。 今天，苹果以 iPhone、iPad、Mac、Apple Watch 和 Apple TV 引领世界创新。 苹果的五大软件平台 - iOS、iPadOS、macOS、watchOS 和 tvOS - 为所有苹果设备提供无缝体验，并通过突破性服务赋予人们力量，包括 App Store、Apple Music、Apple Pay 和 iCloud。 苹果的 100,000 多名员工致力于制造地球上最好的产品，并且致力于使世界变得比我们发现时更好。
 
-1.  有资格成为Disney Bundle订户的Hulu内容。 需要Disney+订阅。
+1.  有资格成为 Disney Bundle 订户的 Hulu 内容。 需要 Disney+订阅。
 
-1.  Persona处于测试版可用状态。
+1.  Persona 处于测试版可用状态。
 
-1.  需要有效处方。并非所有处方都得到支持。视力矫正配件另售。 ZEISS光学插件 - 处方仅可在线购买。
+1.  需要有效处方。并非所有处方都得到支持。视力矫正配件另售。 ZEISS 光学插件 - 处方仅可在线购买。
 
 新闻联系人
 
@@ -104,14 +104,14 @@ Jacqueline Roy
 
 Apple
 
-[jacqueline_roy@apple.com](mailto:jacqueline_roy@apple.com)
+jacqueline_roy@apple.com
 
 Andrea Schubert
 
 Apple
 
-[a_schubert@apple.com](mailto:a_schubert@apple.com)
+a_schubert@apple.com
 
-Apple媒体支持专线
+Apple 媒体支持专线
 
-[media.help@apple.com](mailto:media.help@apple.com)
+media.help@apple.com

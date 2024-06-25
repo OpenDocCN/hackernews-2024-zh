@@ -8,7 +8,7 @@
 
 # 每个 Facebook 用户都受到数千家公司的监控 - 消费者报告
 
-> 来源：[https://www.consumerreports.org/electronics/privacy/each-facebook-user-is-monitored-by-thousands-of-companies-a5824207467/](https://www.consumerreports.org/electronics/privacy/each-facebook-user-is-monitored-by-thousands-of-companies-a5824207467/)
+> 来源：[`www.consumerreports.org/electronics/privacy/each-facebook-user-is-monitored-by-thousands-of-companies-a5824207467/`](https://www.consumerreports.org/electronics/privacy/each-facebook-user-is-monitored-by-thousands-of-companies-a5824207467/)
 
 在报告中，消费者报告呼吁提出一些涵盖数据收集实践的政策建议，其中一些可能成为国家数字隐私法的一部分，这是该组织长期以来一直主张的。针对 Meta 的技术及其使用的广告商的建议包括：
 

@@ -8,7 +8,7 @@
 
 # 地球有 99 个问题，但指数增长不是其中之一
 
-> 来源：[https://www.ft.com/content/ba6c010e-b8b4-4225-a024-03cc886eaa4d](https://www.ft.com/content/ba6c010e-b8b4-4225-a024-03cc886eaa4d)
+> 来源：[`www.ft.com/content/ba6c010e-b8b4-4225-a024-03cc886eaa4d`](https://www.ft.com/content/ba6c010e-b8b4-4225-a024-03cc886eaa4d)
 
 ### 标准数字版
 

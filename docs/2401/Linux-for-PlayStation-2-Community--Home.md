@@ -2,29 +2,29 @@
 
 分类：未分类
 
-日期：2024年5月27日 15:15:53
+日期：2024 年 5 月 27 日 15:15:53
 
 -->
 
 # Linux for PlayStation 2 Community: Home
 
-> 来源：[https://web.archive.org/web/20100524023205/http://playstation2-linux.com:80/](https://web.archive.org/web/20100524023205/http://playstation2-linux.com:80/)
+> 来源：[`web.archive.org/web/20100524023205/http://playstation2-linux.com:80/`](https://web.archive.org/web/20100524023205/http://playstation2-linux.com:80/)
 
 | **PlayStation®2 开发者网络** **欢迎**
 
-&#124; **欢迎来到SCE的PlayStation 2 Linux社区** 该网站由索尼电脑娱乐公司托管，专门为PlayStation 2 Linux的用户和开发者提供一个交流和托管软件和文档项目的场所。
+&#124; **欢迎来到 SCE 的 PlayStation 2 Linux 社区** 该网站由索尼电脑娱乐公司托管，专门为 PlayStation 2 Linux 的用户和开发者提供一个交流和托管软件和文档项目的场所。
 
-无论你是[编写游戏和图形演示](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/coding-on-playstation2.php)的爱好者，还是使用Linux，Linux for PlayStation 2都是为你提供有用资源的地方。查看我们的[FAQ](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/faq.php)了解新手的许多有用信息，查看我们的[讨论论坛](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/?group_id=1)了解每个人。
+无论你是[编写游戏和图形演示](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/coding-on-playstation2.php)的爱好者，还是使用 Linux，Linux for PlayStation 2 都是为你提供有用资源的地方。查看我们的[FAQ](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/faq.php)了解新手的许多有用信息，查看我们的[讨论论坛](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/?group_id=1)了解每个人。
 
-如果您还没有套件，我们有[有关不同国家价格和可用性的信息](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/faq.php#Availability__When_Where_and_how_much)。**请注意，PlayStation 2 Linux现在在北美已经售罄**。
+如果您还没有套件，我们有[有关不同国家价格和可用性的信息](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/faq.php#Availability__When_Where_and_how_much)。**请注意，PlayStation 2 Linux 现在在北美已经售罄**。
 
-*2004年9月28日，sarahe*
+*2004 年 9 月 28 日，sarahe*
 
-&#124; **您的套件有问题吗？** 以太网：如果你有一台较新的PlayStation®2，并且在短时间使用后以太网冻结了，请查看[改进的SMAP测试版驱动程序](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/project/shownotes.php?release_id=68)在Linux for PlayStation®2社区项目中。
+&#124; **您的套件有问题吗？** 以太网：如果你有一台较新的 PlayStation®2，并且在短时间使用后以太网冻结了，请查看[改进的 SMAP 测试版驱动程序](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/project/shownotes.php?release_id=68)在 Linux for PlayStation®2 社区项目中。
 
-Hardware：如果你遇到了信号10/11错误，请查看[这条消息](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/forum.php?forum_id=778)以确定是否适用于你。
+Hardware：如果你遇到了信号 10/11 错误，请查看[这条消息](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/forum.php?forum_id=778)以确定是否适用于你。
 
-*2003年1月12日，abertsch，由sarahe更新*
+*2003 年 1 月 12 日，abertsch，由 sarahe 更新*
 
 &#124;
 
@@ -34,23 +34,23 @@ Hardware：如果你遇到了信号10/11错误，请查看[这条消息](https:/
 
 &#124; 最新消息 &#124;
 
-&#124; **关闭playstation2-linux.com**  [PlayStation 2 Linux社区](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/ps2linux/) - *sarahe - 2009年6月4日 03:49*
+&#124; **关闭 playstation2-linux.com**  [PlayStation 2 Linux 社区](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/ps2linux/) - *sarahe - 2009 年 6 月 4 日 03:49*
 
-经过7年的服务，现在是我们必须计划关闭这个网站的时候了。我们知道这里有一些有价值的下载和帖子，我们正在考虑在网站关闭后为您提供这些内容的存档 - 请告诉我们您想要放入存档的内容。
+经过 7 年的服务，现在是我们必须计划关闭这个网站的时候了。我们知道这里有一些有价值的下载和帖子，我们正在考虑在网站关闭后为您提供这些内容的存档 - 请告诉我们您想要放入存档的内容。
 
-SPS2？VCL？告诉我们！我们还有几个月的时间，但到2009年10月底，我们将考虑关闭当前的网站。
+SPS2？VCL？告诉我们！我们还有几个月的时间，但到 2009 年 10 月底，我们将考虑关闭当前的网站。
 
-感谢所有热心的PS2Linux社区成员！
+感谢所有热心的 PS2Linux 社区成员！
 
 Sarah。
 
-[(82条评论)](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/forum.php?forum_id=1251)
+[(82 条评论)](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/forum.php?forum_id=1251)
 
 * * *
 
 **服务器故障**
 
-[PlayStation 2 社区中的 Linux](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/ps2linux/) - *mrich - 2008年8月7日 14:12*
+[PlayStation 2 社区中的 Linux](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/ps2linux/) - *mrich - 2008 年 8 月 7 日 14:12*
 
 亲爱的 playstation2-linux.com 社区，
 
@@ -66,7 +66,7 @@ Sarah。
 
 **Firefox 2.0.0.8 已发布**
 
-[Mozilla 对 PlayStation2](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/mozilla-ps2/) - *ppietro - 2007年11月9日 04:10*
+[Mozilla 对 PlayStation2](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/mozilla-ps2/) - *ppietro - 2007 年 11 月 9 日 04:10*
 
 大家好，
 
@@ -82,7 +82,7 @@ Sarah。
 
 **Mozilla 对 PlayStation2 的未来**
 
-[Mozilla 对 PlayStation2](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/mozilla-ps2/) - *ppietro - 2007年11月9日 04:09*
+[Mozilla 对 PlayStation2](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/mozilla-ps2/) - *ppietro - 2007 年 11 月 9 日 04:09*
 
 大家好，
 
@@ -104,9 +104,9 @@ Sarah。
 
 **在 DevStation 的 PS2Linux 专家们**
 
-[PlayStation 2 社区中的 Linux](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/ps2linux/) - *sarahe - 2007年5月4日 03:37*
+[PlayStation 2 社区中的 Linux](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/projects/ps2linux/) - *sarahe - 2007 年 5 月 4 日 03:37*
 
-昨晚，在伦敦的SCEE DevStation开发者活动上，长期使用 #sps2 irc 频道的一群用户相遇了。向 sparky、bjt、kazan、jbit 和 nervus 问好，很高兴看到来自 PS2 Linux 的开发者转正 :)
+昨晚，在伦敦的 SCEE DevStation 开发者活动上，长期使用 #sps2 irc 频道的一群用户相遇了。向 sparky、bjt、kazan、jbit 和 nervus 问好，很高兴看到来自 PS2 Linux 的开发者转正 :)
 
 [(0 条评论)](https://web.archive.org/web/20100524023205/http://playstation2-linux.com/forum/forum.php?forum_id=1223)
 

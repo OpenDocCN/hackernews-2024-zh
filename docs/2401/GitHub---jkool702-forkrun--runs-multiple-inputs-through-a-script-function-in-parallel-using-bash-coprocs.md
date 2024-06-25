@@ -6,9 +6,9 @@ date: 2024-05-27 15:10:19
 
 -->
 
-# GitHub - jkool702/forkrun: 使用bash协处理器并行运行多个输入通过脚本/函数
+# GitHub - jkool702/forkrun: 使用 bash 协处理器并行运行多个输入通过脚本/函数
 
-> 来源：[https://github.com/jkool702/forkrun](https://github.com/jkool702/forkrun)
+> 来源：[`github.com/jkool702/forkrun`](https://github.com/jkool702/forkrun)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

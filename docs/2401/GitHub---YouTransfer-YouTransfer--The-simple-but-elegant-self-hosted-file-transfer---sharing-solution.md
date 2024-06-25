@@ -8,7 +8,7 @@
 
 # GitHub - YouTransfer/YouTransfer：简单而优雅的自托管文件传输和共享解决方案
 
-> 来源：[https://github.com/YouTransfer/YouTransfer](https://github.com/YouTransfer/YouTransfer)
+> 来源：[`github.com/YouTransfer/YouTransfer`](https://github.com/YouTransfer/YouTransfer)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

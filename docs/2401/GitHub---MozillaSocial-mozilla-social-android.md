@@ -8,7 +8,7 @@ date: 2024-05-27 14:34:52
 
 # GitHub - MozillaSocial/mozilla-social-android
 
-> 来源：[https://github.com/MozillaSocial/mozilla-social-android](https://github.com/MozillaSocial/mozilla-social-android)
+> 来源：[`github.com/MozillaSocial/mozilla-social-android`](https://github.com/MozillaSocial/mozilla-social-android)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

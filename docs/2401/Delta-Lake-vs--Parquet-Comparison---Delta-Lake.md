@@ -8,7 +8,7 @@
 
 # Delta Lake vs. Parquet Comparison | Delta Lake
 
-> 来源：[https://delta.io/blog/delta-lake-vs-parquet-comparison/](https://delta.io/blog/delta-lake-vs-parquet-comparison/)
+> 来源：[`delta.io/blog/delta-lake-vs-parquet-comparison/`](https://delta.io/blog/delta-lake-vs-parquet-comparison/)
 
 本文介绍了 Delta Lake 和 Parquet 表格之间的区别，以及为什么 Delta Lake 几乎总是实际用例中更好的选择。Delta Lake 具有 Parquet 表格的所有优点以及许多其他对数据从业者至关重要的功能。这就是为什么使用 Delta Lake 而不是 Parquet 表格几乎总是有利的原因。
 
@@ -40,7 +40,7 @@ Parquet 是一种不可变的、二进制的、列式文件格式，与 CSV 等�
 
 Parquet 表格由数据存储中的文件组成。以下是磁盘上一堆 Parquet 文件的样子。
 
-[复制](#)
+复制
 
 ```
 some_folder/
@@ -76,7 +76,7 @@ Delta Lake 使管理 Parquet 表变得更容易和更快。Delta Lake 也经过�
 
 Delta Lake 在事务日志中存储元数据，表数据存储在 Parquet 文件中。以下是 Delta 表的内容。
 
-[复制](#)
+复制
 
 ```
 some_folder/
@@ -205,35 +205,35 @@ Delta Lake 具有内置的模式强制执行，可防止可能损坏 Delta Lake 
 
 Delta Lake 允许模式演化，因此您可以无缝地向数据集添加新列，而无需运行大型计算。这是另一个通常在实际数据应用程序中非常有用的便利功能。有关模式演化的更多信息，请参阅[这篇博文](https://www.databricks.com/blog/2019/09/24/diving-into-delta-lake-schema-enforcement-evolution.html)。
 
-假设您将DataFrame追加到具有不匹配架构的Parquet表中。在这种情况下，您必须记住每次读取表时设置特定选项，以确保准确的结果。查询引擎通常在确定Parquet表的架构时采取捷径。它们查看一个文件的架构，然后假定所有其他文件具有相同的架构。
+假设您将 DataFrame 追加到具有不匹配架构的 Parquet 表中。在这种情况下，您必须记住每次读取表时设置特定选项，以确保准确的结果。查询引擎通常在确定 Parquet 表的架构时采取捷径。它们查看一个文件的架构，然后假定所有其他文件具有相同的架构。
 
-当手动设置标志时，引擎可以查看Parquet表中所有文件的架构，以确定整个表的架构。检查所有文件的架构会更加耗费计算资源，因此默认情况下不会设置。Delta Lake的架构演变比Parquet提供的更好。
+当手动设置标志时，引擎可以查看 Parquet 表中所有文件的架构，以确定整个表的架构。检查所有文件的架构会更加耗费计算资源，因此默认情况下不会设置。Delta Lake 的架构演变比 Parquet 提供的更好。
 
 ## Delta Lake vs. Parquet：检查约束
 
-你也可以对列应用自定义SQL检查，以确保追加到表中的数据具有指定的形式。
+你也可以对列应用自定义 SQL 检查，以确保追加到表中的数据具有指定的形式。
 
 仅仅检查字符串列的架构可能还不够。您可能还希望确保字符串与某种正则表达式模式匹配，并且列不包含`NULL`值。
 
-Parquet表不支持像Delta Lake那样的检查约束。了解更多，请参阅[Delta Lake Constraints and Checks](https://delta.io/blog/2022-11-21-delta-lake-contraints-check/)的博客文章。
+Parquet 表不支持像 Delta Lake 那样的检查约束。了解更多，请参阅[Delta Lake Constraints and Checks](https://delta.io/blog/2022-11-21-delta-lake-contraints-check/)的博客文章。
 
 ## Delta Lake vs. Parquet：版本化数据
 
-Delta表可以有许多版本，用户可以轻松地在不同版本之间“时间旅行”。版本化数据在监管要求、审计目的、实验和撤消错误时非常有用。
+Delta 表可以有许多版本，用户可以轻松地在不同版本之间“时间旅行”。版本化数据在监管要求、审计目的、实验和撤消错误时非常有用。
 
-版本化数据还会影响引擎执行某些事务的方式。例如，当你“覆盖”Delta表时，你不会从存储中物理删除文件。你只是将现有文件标记为已删除，但实际上并不删除它们。这被称为“逻辑删除”。
+版本化数据还会影响引擎执行某些事务的方式。例如，当你“覆盖”Delta 表时，你不会从存储中物理删除文件。你只是将现有文件标记为已删除，但实际上并不删除它们。这被称为“逻辑删除”。
 
-Parquet表不支持版本化数据。当您从Parquet表中删除数据时，您实际上是从存储中删除它，这被称为“物理删除”。
+Parquet 表不支持版本化数据。当您从 Parquet 表中删除数据时，您实际上是从存储中删除它，这被称为“物理删除”。
 
-逻辑数据操作更好，因为它们更安全，允许撤消错误。如果您覆盖了Parquet表，则是不可逆的错误（除非有单独的机制备份数据）。在Delta表中撤消覆盖事务很容易。
+逻辑数据操作更好，因为它们更安全，允许撤消错误。如果您覆盖了 Parquet 表，则是不可逆的错误（除非有单独的机制备份数据）。在 Delta 表中撤消覆盖事务很容易。
 
 了解更多，请参阅[Why PySpark append and overwrite operations are safer in Delta Lake than Parquet tables](https://delta.io/blog/2022-11-01-pyspark-save-mode-append-overwrite-error/)的博客文章。
 
 ## Delta Lake vs. Parquet：时间旅行
 
-版本化数据还允许您轻松切换到您的Delta Lake的不同版本之间，这被称为时间旅行。
+版本化数据还允许您轻松切换到您的 Delta Lake 的不同版本之间，这被称为时间旅行。
 
-时间旅行在各种情况下都很有用，详细描述请参阅[Delta Lake Time Travel](https://delta.io/blog/2023-02-01-delta-lake-time-travel/)的文章。Parquet表不支持时间旅行。
+时间旅行在各种情况下都很有用，详细描述请参阅[Delta Lake Time Travel](https://delta.io/blog/2023-02-01-delta-lake-time-travel/)的文章。Parquet 表不支持时间旅行。
 
 Delta Lake 需要保留一些数据版本以支持时间旅行，如果您不需要历史数据版本，则会增加不必要的存储成本。Delta Lake 为您可选地删除这些遗留文件提供了便利。
 

@@ -8,7 +8,7 @@ date: 2024-05-27 15:05:25
 
 # GitHub - servo/servo: Servo，可嵌入的，独立的，内存安全的，模块化的，并行的 Web 渲染引擎
 
-> 来源：[https://github.com/servo/servo](https://github.com/servo/servo)
+> 来源：[`github.com/servo/servo`](https://github.com/servo/servo)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

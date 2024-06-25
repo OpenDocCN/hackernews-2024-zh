@@ -8,7 +8,7 @@
 
 # SQLite 存档文件
 
-> 来源：[https://www.sqlite.org/sqlar.html](https://www.sqlite.org/sqlar.html)
+> 来源：[`www.sqlite.org/sqlar.html`](https://www.sqlite.org/sqlar.html)
 
 # 1\. 简介
 
@@ -35,9 +35,9 @@ SQLAR 表的每一行保存单个文件的内容。文件名（相对于存档�
 
 对于像 PostgreSQL 或 Oracle 这样的客户端/服务器数据库，用户和开发人员倾向于将数据库视为服务或 "节点"，而不是作为对象。这是因为数据库内容分布在服务器上的多个文件中，或者可能分布在服务集群中的多个服务器上。不能指向单个文件甚至单个目录并说 "这就是数据库"。
 
-相比之下，SQLite 将所有内容存储在[单个磁盘文件](fileformat2.html)中。这个单个文件是你可以指向并说 "这就是数据库" 的东西。它的行为就像一个对象。SQLite 数据库文件可以被复制、重命名、作为电子邮件附件发送、作为 POST HTTP 请求的参数传递，或者以其他数据对象的方式处理，如图像、文档或媒体文件。
+相比之下，SQLite 将所有内容存储在单个磁盘文件中。这个单个文件是你可以指向并说 "这就是数据库" 的东西。它的行为就像一个对象。SQLite 数据库文件可以被复制、重命名、作为电子邮件附件发送、作为 POST HTTP 请求的参数传递，或者以其他数据对象的方式处理，如图像、文档或媒体文件。
 
-研究表明，许多应用程序已经将 SQLite 作为容器对象使用。例如，[肯尼迪](https://odin.cse.buffalo.edu/papers/2015/TPCTC-sqlite-final.pdf)（与[SQLite 开发者](crew.html#dan)无关）报告称，14% 的安卓应用程序从未向其 SQLite 数据库写入。据信，这些应用程序是从云端下载整个数据库，然后根据需要在本地使用信息。换句话说，这些应用程序使用 SQLite 的方式不是作为数据库，而是作为可查询的传输格式。
+研究表明，许多应用程序已经将 SQLite 作为容器对象使用。例如，[肯尼迪](https://odin.cse.buffalo.edu/papers/2015/TPCTC-sqlite-final.pdf)（与 SQLite 开发者无关）报告称，14% 的安卓应用程序从未向其 SQLite 数据库写入。据信，这些应用程序是从云端下载整个数据库，然后根据需要在本地使用信息。换句话说，这些应用程序使用 SQLite 的方式不是作为数据库，而是作为可查询的传输格式。
 
 ## 1.2\. 使用 SQLite 存档的应用程序
 
@@ -51,7 +51,7 @@ SQLAR 表的每一行保存单个文件的内容。文件名（相对于存档�
 
 1.  SQLite Archive 可以增量更新。可以添加、删除或替换单个文件，而无需重写整个存档。
 
-1.  使用高级查询语言（SQL）可以查询SQLite Archive。一些示例：
+1.  使用高级查询语言（SQL）可以查询 SQLite Archive。一些示例：
 
     +   存档中所有以“.h”或“.cpp”结尾的文件的总大小是多少？
 
@@ -59,7 +59,7 @@ SQLAR 表的每一行保存单个文件的内容。文件名（相对于存档�
 
     +   存档中有多少可执行文件？这些问题（以及无数其他问题）可以在不解压缩或提取任何内容的情况下得到回答。
 
-1.  已经为其他目的使用 SQLite 的应用程序可以轻松添加对 SQLite Archives 的支持，使用小扩展（[https://sqlite.org/src/file/ext/misc/sqlar.c](https://sqlite.org/src/file/ext/misc/sqlar.c)）来处理内容的压缩和解压缩。即使在存档中的文件是未压缩的，甚至可以省略这个微小的扩展。相比之下，支持 ZIP Archives 和/或 Tarballs 需要单独的库或大量额外的自定义代码，有时两者兼而有之。
+1.  已经为其他目的使用 SQLite 的应用程序可以轻松添加对 SQLite Archives 的支持，使用小扩展（[`sqlite.org/src/file/ext/misc/sqlar.c`](https://sqlite.org/src/file/ext/misc/sqlar.c)）来处理内容的压缩和解压缩。即使在存档中的文件是未压缩的，甚至可以省略这个微小的扩展。相比之下，支持 ZIP Archives 和/或 Tarballs 需要单独的库或大量额外的自定义代码，有时两者兼而有之。
 
 1.  SQLite Archive 可以绕过防火墙强加的审查。例如，某些被视为“危险”的文件类型（例如：DLLs）会被 Gmail（例如：[Gmail](https://support.google.com/mail/answer/6590)）以及可能许多其他电子邮件服务和防火墙阻止，即使文件被包装在 ZIP Archive 或 Tarball 中。但是这些防火墙通常（尚未）不了解 SQLite Archives，因此可以将内容放入 SQLite Archive 以规避审查。
 
@@ -74,14 +74,14 @@ SQLAR 表的每一行保存单个文件的内容。文件名（相对于存档�
     | SQLite 存档 | 10,754,048 |
     | --- | --- |
     | ZIP 存档（使用 Info-ZIP 3.0） | 10,662,365 |
-    | ZIP 存档（使用 [zipfile](zipfile.html)） | 10,390,215 |
+    | ZIP 存档（使用 zipfile） | 10,390,215 |
     | Tarball |  9,781,109 |
 
 1.  SQLite 存档仅支持 [Deflate](https://zlib.net/) 压缩方法。Tarballs 和 ZIP 存档支持更广泛的压缩方法。
 
 # 4\. 从命令行管理 SQLite 存档
 
-推荐的创建、更新、列出和提取 SQLite 存档的方式是使用 [sqlite3.exe 命令行 shell](cli.html) 适用于 SQLite [版本 3.23.0](releaselog/3_23_0.html)（2018-04-02）或更高版本。此 CLI 支持 -A 命令行选项，可轻松管理 SQLite 存档。SQLite [版本 3.22.0](releaselog/3_22_0.html)（2018-01-22）的 CLI 具有用于管理 SQLite 存档的 [.archive 命令](cli.html#sqlar)，但需要与 shell 交互。
+推荐的创建、更新、列出和提取 SQLite 存档的方式是使用 sqlite3.exe 命令行 shell 适用于 SQLite 版本 3.23.0（2018-04-02）或更高版本。此 CLI 支持 -A 命令行选项，可轻松管理 SQLite 存档。SQLite 版本 3.22.0（2018-01-22）的 CLI 具有用于管理 SQLite 存档的 .archive 命令，但需要与 shell 交互。
 
 要使用以下命令之一列出名为 "example.sqlar" 的 SQLite 存档中的所有文件：
 
@@ -112,7 +112,7 @@ sqlite3 example.sqlar -Au *.md
 
 ```
 
-要获取使用提示和所有选项的摘要，只需向 [CLI](cli.html) 提供 -A 选项而无需其他参数：
+要获取使用提示和所有选项的摘要，只需向 CLI 提供 -A 选项而无需其他参数：
 
 如果文件名参数是 ZIP 存档而不是 SQLite 数据库，则所有这些命令都以相同的方式工作。
 

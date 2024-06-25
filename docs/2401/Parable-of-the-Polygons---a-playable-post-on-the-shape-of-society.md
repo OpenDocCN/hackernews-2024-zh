@@ -2,17 +2,17 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:35:27
+日期：2024 年 05 月 27 日 14:35:27
 
 -->
 
 # 多边形寓言 - 一个关于社会形态的可玩帖子
 
-> 来源：[https://ncase.me/polygons/](https://ncase.me/polygons/)
+> 来源：[`ncase.me/polygons/`](https://ncase.me/polygons/)
 
 **这是一个讲述无害选择如何造成有害世界的故事。**
 
-这些小可爱的东西是50%的三角形，50%的方形，但是100%的轻微有偏见。但只是轻微！事实上，每个多边形都*更喜欢*在一个多样化的人群中：
+这些小可爱的东西是 50%的三角形，50%的方形，但是 100%的轻微有偏见。但只是轻微！事实上，每个多边形都*更喜欢*在一个多样化的人群中：
 
 你只能移动它们，如果它们对它们的直接邻居感到不满意。一旦它们在当前位置感到满意，*你就不能再移动它们，直到它们再次对邻居感到不满意*。它们只有一个简单的规则：
 
@@ -40,7 +40,7 @@
 
 使用滑块调整形状的个体偏见：
 
-注意，当你将偏见增加到33%以上时，事情变得更加隔离。如果阈值是50%会怎样？一个形状更倾向于不成为少数派似乎是合理的...
+注意，当你将偏见增加到 33%以上时，事情变得更加隔离。如果阈值是 50%会怎样？一个形状更倾向于不成为少数派似乎是合理的...
 
 所以是的，把每个人的偏见都调到零，对吧？哈哈，不。现实世界不会每天都重新开始，随机洗牌市民。每天，你都没有洗牌。
 
@@ -48,7 +48,7 @@
 
 看到什么 *不* 发生了吗？没有变化。没有重新混合在一起。在一个偏见曾经存在的世界里，保持中立是不够的！我们需要采取积极措施。如果形状想要寻找更多的多样性呢？
 
-哇。即使每个多边形最多只能接受90%与它们相似的邻居，它们仍然混在一起！让我们在更大的尺度上看看这种情况发生了什么，当我们改变所有形状的偏见和反偏见的程度时。
+哇。即使每个多边形最多只能接受 90%与它们相似的邻居，它们仍然混在一起！让我们在更大的尺度上看看这种情况发生了什么，当我们改变所有形状的偏见和反偏见的程度时。
 
 世界开始分隔。当形状要求甚至有最小程度的多样性时会发生什么？
 
@@ -78,13 +78,13 @@
 
 感谢阅读这篇博客！
 
-我们可爱的隔离模拟基于诺贝尔奖获得者、博弈理论家托马斯·谢林的工作。具体来说，他的1971年论文，
+我们可爱的隔离模拟基于诺贝尔奖获得者、博弈理论家托马斯·谢林的工作。具体来说，他的 1971 年论文，
 
 [隔离的动态模型](http://www.stat.berkeley.edu/~aldous/157/Papers/Schelling_Seg_Models.pdf)
 
 我们建立在此基础上，并展示了一点对多样性的需求如何能够使一个社区融合。换句话说，我们为他的模型赋予了一个幸福结局。
 
-谢林的模型大致理解了这一点，但当然，现实生活更加复杂。你可能会喜欢查看真实世界的数据，比如 W.A.V. Clark 的1991年论文，
+谢林的模型大致理解了这一点，但当然，现实生活更加复杂。你可能会喜欢查看真实世界的数据，比如 W.A.V. Clark 的 1991 年论文，
 
 [谢林隔离模型的测试](http://smg.media.mit.edu/library/Clark.ResidentialSegregation.pdf)
 
@@ -142,7 +142,7 @@
 
 **翻译：**
 
-[西班牙语](http://ncase.me/polygons-es), [法语](http://ncase.me/polygons-fr), [德语](http://ncase.me/polygons-de), [葡萄牙语（巴西）](http://ncase.me/polygons-pt-br), [日语](http://ncase.me/polygons-ja), [简体中文](http://ncase.me/polygons-zh), [繁体中文](https://audreyt.github.io/polygons/), [波兰语](http://booschie.github.io/polygons-pl), [意大利语](http://ncase.me/polygons-it), [匈牙利语](http://ncase.me/polygons-hu), [荷兰语](http://ncase.me/polygons-nl), [印地语](http://ncase.me/polygons-hi), [捷克语](http://www.bajkaotvarech.cz/), [俄语](https://unkaktus.art/polygons/), [阿拉伯语](//www.aularon.com/playables/polygons-ar/), [波斯语](https://hamed.github.io/polygons/), [乌克兰语](https://zlira.github.io/polygons/), [希伯来语](https://vehpus.github.io/polygons/)
+[西班牙语](http://ncase.me/polygons-es), [法语](http://ncase.me/polygons-fr), [德语](http://ncase.me/polygons-de), [葡萄牙语（巴西）](http://ncase.me/polygons-pt-br), [日语](http://ncase.me/polygons-ja), [简体中文](http://ncase.me/polygons-zh), [繁体中文](https://audreyt.github.io/polygons/), [波兰语](http://booschie.github.io/polygons-pl), [意大利语](http://ncase.me/polygons-it), [匈牙利语](http://ncase.me/polygons-hu), [荷兰语](http://ncase.me/polygons-nl), [印地语](http://ncase.me/polygons-hi), [捷克语](http://www.bajkaotvarech.cz/), [俄语](https://unkaktus.art/polygons/), 阿拉伯语, [波斯语](https://hamed.github.io/polygons/), [乌克兰语](https://zlira.github.io/polygons/), [希伯来语](https://vehpus.github.io/polygons/)
 
 **基于此事物的事物：**
 

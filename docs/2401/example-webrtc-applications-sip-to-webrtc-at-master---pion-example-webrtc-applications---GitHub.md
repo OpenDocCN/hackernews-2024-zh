@@ -8,7 +8,7 @@
 
 # example-webrtc-applications/sip-to-webrtc at master · pion/example-webrtc-applications · GitHub
 
-> 来源：[https://github.com/pion/example-webrtc-applications/tree/master/sip-to-webrtc](https://github.com/pion/example-webrtc-applications/tree/master/sip-to-webrtc)
+> 来源：[`github.com/pion/example-webrtc-applications/tree/master/sip-to-webrtc`](https://github.com/pion/example-webrtc-applications/tree/master/sip-to-webrtc)
 
 SIP 是接受入站 SIP 流量（邀请）并将其与 WebRTC 进行桥接的示例。这是连接电话呼叫与您的 WebRTC 应用程序的最常见方式。这是可能的，因为有优秀的 [emiago/sipgo](https://github.com/emiago/sipgo) 库。
 

@@ -8,7 +8,7 @@
 
 # Dev Board Micro | Coral
 
-> 来源：[https://coral.ai/products/dev-board-micro](https://coral.ai/products/dev-board-micro)
+> 来源：[`coral.ai/products/dev-board-micro`](https://coral.ai/products/dev-board-micro)
 
 ## 描述
 

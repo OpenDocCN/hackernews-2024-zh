@@ -8,7 +8,7 @@ date: 2024-05-27 14:28:50
 
 # GitHub - uutils/coreutils: Cross-platform Rust rewrite of the GNU coreutils
 
-> 来源：[https://github.com/uutils/coreutils](https://github.com/uutils/coreutils)
+> 来源：[`github.com/uutils/coreutils`](https://github.com/uutils/coreutils)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,13 +8,13 @@
 
 # 这款全息相机将任何窗户变成隐形相机 | 数码相机世界
 
-> 来源：[https://www.digitalcameraworld.com/news/this-holographic-camera-turns-any-window-into-an-invisible-camera](https://www.digitalcameraworld.com/news/this-holographic-camera-turns-any-window-into-an-invisible-camera)
+> 来源：[`www.digitalcameraworld.com/news/this-holographic-camera-turns-any-window-into-an-invisible-camera`](https://www.digitalcameraworld.com/news/this-holographic-camera-turns-any-window-into-an-invisible-camera)
 
-[蔡司](https://www.digitalcameraworld.com/tag/zeiss)将其引人注目的Holocam技术带到了[2024年CES](https://www.digitalcameraworld.com/news/ces-2024-everything-you-need-to-know-about-the-camera-and-tech-showcase)，可以将任何玻璃屏幕变成相机。 这意味着你车上的窗户，笔记本电脑上的屏幕甚至门前的玻璃现在都可以拥有隐形图像传感器。
+[蔡司](https://www.digitalcameraworld.com/tag/zeiss)将其引人注目的 Holocam 技术带到了[2024 年 CES](https://www.digitalcameraworld.com/news/ces-2024-everything-you-need-to-know-about-the-camera-and-tech-showcase)，可以将任何玻璃屏幕变成相机。 这意味着你车上的窗户，笔记本电脑上的屏幕甚至门前的玻璃现在都可以拥有隐形图像传感器。
 
 此外，由于技术使摄像头完全透明，消除了切口或冲孔的需要 - 这意味着你可以直接与你聊天的人眼神交流，因为摄像头可以放置在屏幕的任何位置（或者应该是*内*屏幕）。
 
-Holocam技术“使用全息内耦合、光引导和解耦合元件将透明介质的入射光重定向到隐藏的图像传感器。”
+Holocam 技术“使用全息内耦合、光引导和解耦合元件将透明介质的入射光重定向到隐藏的图像传感器。”
 
 蔡司的[CES](https://www.digitalcameraworld.com/tag/ces)展示主要集中在其智能玻璃多功能系统上，特别关注于汽车中的应用，因此其许多用例都是基于全息技术如何提高汽车操作性能。 然而，很容易看出这在更广泛的世界中可能是真正变革性的技术。
 
@@ -22,7 +22,7 @@ Holocam技术“使用全息内耦合、光引导和解耦合元件将透明介�
 
 将整块玻璃用作摄像头镜头也开启了一些迷人的光学可能性。 蔡司的一些要点包括“大光圈隐形相机”和“个人调整视野和大小的方向”。 这让我想知道，像这样的相机的最大光圈和焦距是多少？
 
-当然，这样的技术还存在更黑暗的潜力。 鉴于人们对Airbnb中隐藏摄像头的恐惧，租赁房屋中每一个窗户（甚至淋浴门）都能监视你的想法有点令人不安。
+当然，这样的技术还存在更黑暗的潜力。 鉴于人们对 Airbnb 中隐藏摄像头的恐惧，租赁房屋中每一个窗户（甚至淋浴门）都能监视你的想法有点令人不安。
 
 最佳相机交易、评论、产品建议和不容错过的摄影新闻，直接送到您的收件箱！
 

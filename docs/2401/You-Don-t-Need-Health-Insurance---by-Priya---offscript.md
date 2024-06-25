@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日14:54:03
+日期：2024 年 05 月 27 日 14:54:03
 
 -->
 
 # 不需要健康保险 - 作者：Priya - offscript
 
-> 来源：[https://prigoose.substack.com/p/you-dont-need-health-insurance](https://prigoose.substack.com/p/you-dont-need-health-insurance)
+> 来源：[`prigoose.substack.com/p/you-dont-need-health-insurance`](https://prigoose.substack.com/p/you-dont-need-health-insurance)
 
 几年来，我自愿没有买健康保险。我发现了美国最好的秘密之一：你不需要健康保险。
 
@@ -26,17 +26,17 @@
 
 无论有无保险，定期健康检查都是负担得起的。以下是我的医疗开支的一些例子：
 
-+   我上次的牙科检查、清洁和X光检查是通过[Groupon](https://www.groupon.com/search?query=dentist)只花了$40。我去的那家牙医在Groupon上有4.7颗星，而在Google地图上有5.0颗星。
++   我上次的牙科检查、清洁和 X 光检查是通过[Groupon](https://www.groupon.com/search?query=dentist)只花了$40。我去的那家牙医在 Groupon 上有 4.7 颗星，而在 Google 地图上有 5.0 颗星。
 
 +   多年来，我从英国购买隐形眼镜。他们的验光规定比我们的更合理。当时，我从[Daysoft](https://daysoft.com/)购买了一套三个月的$55，而不是从美国公司购买数百美元。
 
 +   我的眼镜是通过[Zenni](https://www.zennioptical.com/)购买的。他们的眼镜起价是$6.95，所以不需要使用保险来支付它们。
 
-+   几个月前，我断了小指。我打了几个急诊室的电话，发现我可以用$250现金进行检查和X光检查。虽然$250不便宜，但比我买保险的月费还要便宜。另外，我不受“在网络内”的急诊室的限制。由于我可以去任何地方，我选择了离我只有12分钟步行路程的设施。
++   几个月前，我断了小指。我打了几个急诊室的电话，发现我可以用$250 现金进行检查和 X 光检查。虽然$250 不便宜，但比我买保险的月费还要便宜。另外，我不受“在网络内”的急诊室的限制。由于我可以去任何地方，我选择了离我只有 12 分钟步行路程的设施。
 
 +   当我需要开处方药时，我会通过[K Health](https://khealth.com/)或[GoodRX](https://www.goodrx.com/care)预约价格合理的虚拟医生。我喜欢我可以随时预约并在家里完成这些预约。
 
-+   对于需要亲自前往的医生预约，我会在[Zocdoc](https://www.zocdoc.com/)上搜索。首先，我寻找有空位的医生。然后，我会查看医生在Zocdoc和Google地图上的好评。如果是这样，我就会打电话给他们的办公室，询问他们的现金价。现金价可能差别很大，但如果我打电话给3-5个地方，我就可以找到价格合适的预约。
++   对于需要亲自前往的医生预约，我会在[Zocdoc](https://www.zocdoc.com/)上搜索。首先，我寻找有空位的医生。然后，我会查看医生在 Zocdoc 和 Google 地图上的好评。如果是这样，我就会打电话给他们的办公室，询问他们的现金价。现金价可能差别很大，但如果我打电话给 3-5 个地方，我就可以找到价格合适的预约。
 
 我上面列举的例子都是可以提前知道价格的情况。
 

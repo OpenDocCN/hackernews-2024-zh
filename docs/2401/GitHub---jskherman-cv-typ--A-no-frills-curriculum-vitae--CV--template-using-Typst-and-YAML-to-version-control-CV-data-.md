@@ -6,9 +6,9 @@ date: 2024-05-27 14:46:32
 
 -->
 
-# GitHub - jskherman/cv.typ: 使用Typst和YAML对CV数据进行版本控制的简约简历（CV）模板。
+# GitHub - jskherman/cv.typ: 使用 Typst 和 YAML 对 CV 数据进行版本控制的简约简历（CV）模板。
 
-> 来源：[https://github.com/jskherman/cv.typ](https://github.com/jskherman/cv.typ)
+> 来源：[`github.com/jskherman/cv.typ`](https://github.com/jskherman/cv.typ)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -8,11 +8,11 @@
 
 # GitHub - adaptive-scale/dbchaos: Stress-test your database with pre-defined queries. Generate synthetic data and events statically or with GPT.
 
-> 来源：[https://github.com/adaptive-scale/dbchaos](https://github.com/adaptive-scale/dbchaos)
+> 来源：[`github.com/adaptive-scale/dbchaos`](https://github.com/adaptive-scale/dbchaos)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 
-<main id="js-repo-pjax-container"> <turbo-frame id="repo-content-turbo-frame" target="_top" data-turbo-action="advance" class=""># 自适应规模/db混沌
+<main id="js-repo-pjax-container"> <turbo-frame id="repo-content-turbo-frame" target="_top" data-turbo-action="advance" class=""># 自适应规模/db 混沌
 
 此提交不属于此存储库上的任何分支，并且可能属于存储库之外的一个分叉。
 

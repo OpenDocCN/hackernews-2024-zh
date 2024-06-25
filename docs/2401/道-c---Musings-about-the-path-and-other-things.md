@@ -8,7 +8,7 @@ date: 2024-05-27 14:52:14
 
 # 道&c.: 对于道路和其他事物的思考
 
-> 来源：[https://blog.taoetc.org/](https://blog.taoetc.org/)
+> 来源：[`blog.taoetc.org/`](https://blog.taoetc.org/)
 
 <main>
 

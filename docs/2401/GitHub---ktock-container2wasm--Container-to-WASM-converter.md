@@ -6,9 +6,9 @@ date: 2024-05-27 14:28:09
 
 -->
 
-# GitHub - ktock/container2wasm: 容器转换为WASM格式的工具
+# GitHub - ktock/container2wasm: 容器转换为 WASM 格式的工具
 
-> 来源：[https://github.com/ktock/container2wasm](https://github.com/ktock/container2wasm)
+> 来源：[`github.com/ktock/container2wasm`](https://github.com/ktock/container2wasm)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

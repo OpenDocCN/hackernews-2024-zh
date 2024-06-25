@@ -2,19 +2,19 @@
 
 分类：未分类
 
-日期：2024年5月27日 14:39:08
+日期：2024 年 5 月 27 日 14:39:08
 
 -->
 
 # OpenWrt One - 庆祝 OpenWrt 20 周年
 
-> 来源：[https://lists.openwrt.org/pipermail/openwrt-devel/2024-January/042018.html](https://lists.openwrt.org/pipermail/openwrt-devel/2024-January/042018.html)
+> 来源：[`lists.openwrt.org/pipermail/openwrt-devel/2024-January/042018.html`](https://lists.openwrt.org/pipermail/openwrt-devel/2024-January/042018.html)
 
 # OpenWrt One - 庆祝 OpenWrt 20 周年
 
-**约翰·克里斯宾** [john at phrozen.org](mailto:openwrt-devel%40lists.openwrt.org?Subject=Re:%20Re%3A%20OpenWrt%20One%20-%20celebrating%2020%20years%20of%20OpenWrt&In-Reply-To=%3Ca8aaa495-da0b-4ddc-8c4f-3e1192d8b012%40phrozen.org%3E "OpenWrt One - 庆祝 OpenWrt 20 周年")
+**约翰·克里斯宾** john at phrozen.org
 
-*星期二 2024年1月9日 02:49:56 PST*
+*星期二 2024 年 1 月 9 日 02:49:56 PST*
 
 * * *
 

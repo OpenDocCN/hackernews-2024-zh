@@ -6,19 +6,19 @@
 
 -->
 
-# 使用20行Python生成可读的胡言乱语
+# 使用 20 行 Python 生成可读的胡言乱语
 
-> 来源：[https://benhoyt.com/writings/markov-chain/](https://benhoyt.com/writings/markov-chain/)
+> 来源：[`benhoyt.com/writings/markov-chain/`](https://benhoyt.com/writings/markov-chain/)
 
-# 使用20行Python生成可读的胡言乱语
+# 使用 20 行 Python 生成可读的胡言乱语
 
-2023年11月
+2023 年 11 月
 
-> **转到：**[算法](#the-algorithm) | [示例](#some-better-examples) | [Python实现](#python-implementation) | [结论](#conclusion)
+> **转到：**算法 | 示例 | Python 实现 | 结论
 
 我最近学会了如何使用简单的[马尔科夫链](https://zh.wikipedia.org/wiki/%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E9%93%BE)生成文本。生成的文本可读，但也完全是胡言乱语；作为散文，它没有多大价值，但对于预测下一个词，就像你手机键盘的建议一样，它非常有用。
 
-我是在Kernighan和Pike的书[*编程实践*](https://www.cs.princeton.edu/~bwk/tpop.webpage/)第3章中学到这个算法的，他们在各种编程语言中实现了这样一个生成器，来讨论程序设计和数据结构。
+我是在 Kernighan 和 Pike 的书[*编程实践*](https://www.cs.princeton.edu/~bwk/tpop.webpage/)第三章中学到这个算法的，他们在各种编程语言中实现了这样一个生成器，来讨论程序设计和数据结构。
 
 注意，这个算法只是马尔科夫链的一个小应用，而马尔科夫链是一个更一般的统计概念。
 
@@ -75,17 +75,17 @@ not commit        adultery.
 
 ## 一些更好的例子
 
-下面是使用更大的输入文本生成的一些更有趣的输出。我们将从每个输入中生成100个词。这些书籍来自[古腾堡计划](https://www.gutenberg.org/)。
+下面是使用更大的输入文本生成的一些更有趣的输出。我们将从每个输入中生成 100 个词。这些书籍来自[古腾堡计划](https://www.gutenberg.org/)。
 
 ### 使用我的文章
 
-使用[我写的文章](/writings/)作为输入：
+使用我写的文章作为输入：
 
-> 特别是如果你需要返回一个值，但现在非常平坦——几乎快了5倍。不过，如果你需要自定义异常；如果合适的话，使用内置异常。只有当你在Linux上时，这使用x86的SSE/SIMD指令来使用AWK处理CSV，比如`NF`在AWK中是只读的。什么是“Pythonic”？那太有趣了。我的建议：自己编写类型安全的`OrderedMap<int>`。但因为Lox字符串不支持转义序列，所以没有`null`或`undefined`，而你却有它！一个极简的Make在其收入的一部分来自于……
+> 特别是如果你需要返回一个值，但现在非常平坦——几乎快了 5 倍。不过，如果你需要自定义异常；如果合适的话，使用内置异常。只有当你在 Linux 上时，这使用 x86 的 SSE/SIMD 指令来使用 AWK 处理 CSV，比如`NF`在 AWK 中是只读的。什么是“Pythonic”？那太有趣了。我的建议：自己编写类型安全的`OrderedMap<int>`。但因为 Lox 字符串不支持转义序列，所以没有`null`或`undefined`，而你却有它！一个极简的 Make 在其收入的一部分来自于……
 
-我喜欢它如何捕捉到我大部分的技术兴趣：性能，成语代码，向后兼容性，AWK，CSV，小语言等等。它不是ChatGPT，但如果你眯起眼睛看，文本看起来相当合理！
+我喜欢它如何捕捉到我大部分的技术兴趣：性能，成语代码，向后兼容性，AWK，CSV，小语言等等。它不是 ChatGPT，但如果你眯起眼睛看，文本看起来相当合理！
 
-注意输出甚至包括了输入中的有效Markdown（尽管我删除了一些链接）。
+注意输出甚至包括了输入中的有效 Markdown（尽管我删除了一些链接）。
 
 ### 使用*爱丽丝梦游仙境*
 
@@ -121,7 +121,7 @@ not commit        adultery.
 
 ## Python 实现
 
-首先，这是完整的程序 - 有24行空格和注释，没有空格和注释的话只有16行：
+首先，这是完整的程序 - 有 24 行空格和注释，没有空格和注释的话只有 16 行：
 
 ```
 import collections, random, sys, textwrap
@@ -156,7 +156,7 @@ A large rose-tree stood near the entrance of the cakes, and was
 ... 
 ```
 
-该代码也可作为GitHub的Gist：[markov.py](https://gist.github.com/benhoyt/619cf3113866450aa31d8a2c1f8e01dc)。这个程序并不是原创 - 我在这里允许你对它做任何你想做的事情。
+该代码也可作为 GitHub 的 Gist：[markov.py](https://gist.github.com/benhoyt/619cf3113866450aa31d8a2c1f8e01dc)。这个程序并不是原创 - 我在这里允许你对它做任何你想做的事情。
 
 ## 结论
 
@@ -166,4 +166,4 @@ A large rose-tree stood near the entrance of the cakes, and was
 
 快来尝试用你自己的输入生成文本吧！
 
-如果你愿意在GitHub上给我[赞助](https://github.com/sponsors/benhoyt/)，这将激励我继续开发我的开源项目并写更多优质内容。谢谢！
+如果你愿意在 GitHub 上给我[赞助](https://github.com/sponsors/benhoyt/)，这将激励我继续开发我的开源项目并写更多优质内容。谢谢！

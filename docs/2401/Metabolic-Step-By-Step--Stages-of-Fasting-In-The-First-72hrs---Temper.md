@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 15:12:20
+日期：2024 年 05 月 27 日 15:12:20
 
 -->
 
-# 逐步代谢：首72小时禁食阶段 - Temper
+# 逐步代谢：首 72 小时禁食阶段 - Temper
 
-> 来源：[https://usetemper.com/learn/metabolic-step-by-step/](https://usetemper.com/learn/metabolic-step-by-step/)
+> 来源：[`usetemper.com/learn/metabolic-step-by-step/`](https://usetemper.com/learn/metabolic-step-by-step/)
 
 随着间歇性禁食的最近急剧流行，"禁食"这个词不再专门与宗教和抗议联系在一起，而是与一长串健康益处联系在一起，包括改善情绪、增加能量、提高注意力和甚至皮肤更清晰。
 
@@ -18,41 +18,41 @@
 
 ## 什么是长时间禁食？
 
-间歇性禁食有很多不同的类型。在某些配置中，你将不超过12小时进行禁食。对于那些经验较少、不太擅长禁食的人来说，推荐的禁食时间跨度的上限是72小时（3天）的禁食，这已经足够长以被视为长时间禁食。随着禁食时间的延长，效果会叠加。
+间歇性禁食有很多不同的类型。在某些配置中，你将不超过 12 小时进行禁食。对于那些经验较少、不太擅长禁食的人来说，推荐的禁食时间跨度的上限是 72 小时（3 天）的禁食，这已经足够长以被视为长时间禁食。随着禁食时间的延长，效果会叠加。
 
-我们大多数人在生活中至少有几次因为必要或巧合而在12小时、16小时甚至24小时内没有进食，但人们无意中进行三天禁食的情况却少之又少。所以在本文中，我们将重点关注72小时禁食对你的能量、新陈代谢和一般反应的影响。
+我们大多数人在生活中至少有几次因为必要或巧合而在 12 小时、16 小时甚至 24 小时内没有进食，但人们无意中进行三天禁食的情况却少之又少。所以在本文中，我们将重点关注 72 小时禁食对你的能量、新陈代谢和一般反应的影响。
 
-## 第一阶段：12小时
+## 第一阶段：12 小时
 
 通常，人体的主要、首选能源来源是糖原，这是一种储存在肝脏和肌肉中的葡萄糖的存储形式，这种葡萄糖是你从所摄入的碳水化合物中获取的一种糖。当你消化食物时，你的身体将碳水化合物分解为葡萄糖，然后将其储存为糖原。只要你有足够的糖原储备，你的身体就会使用它来提供能量以维持功能。
 
-现在让我们谈谈荷尔蒙。进食后的几小时内，你的胰岛素水平会上升，告诉你的身体分解葡萄糖以获取能量。但是经过12小时的禁食，你的胰岛素会下降。一种叫做瘦素的激素，负责告诉你饱了，也会下降，而告诉你饥饿的激素，称为胃饥饿素，会上升。
+现在让我们谈谈荷尔蒙。进食后的几小时内，你的胰岛素水平会上升，告诉你的身体分解葡萄糖以获取能量。但是经过 12 小时的禁食，你的胰岛素会下降。一种叫做瘦素的激素，负责告诉你饱了，也会下降，而告诉你饥饿的激素，称为胃饥饿素，会上升。
 
-**通过[16/8禁食](https://wordpress.usetemper.com/learn/what-is-16-8-fasting/)或[18/6禁食](https://wordpress.usetemper.com/learn/what-is-18-6-fasting/)，可以达到这些第一阶段的好处。**
+**通过[16/8 禁食](https://wordpress.usetemper.com/learn/what-is-16-8-fasting/)或[18/6 禁食](https://wordpress.usetemper.com/learn/what-is-18-6-fasting/)，可以达到这些第一阶段的好处。**
 
-## 第二阶段：18小时
+## 第二阶段：18 小时
 
 你需要经过四到十八个小时的禁食，身体才会消耗完糖原储备。一旦这种情况发生，你的身体就需要寻找替代的燃料来源。
 
 在停止进食大约四小时后，你的身体将使用一种称为脂解的过程来获取能量。脂解会分解脂肪细胞中的甘油三酯 - 一种脂质 - 作为燃料的来源。它还会分解氨基酸（形成蛋白质的化合物）来获得能量。
 
-但这只能维持你有限的时间。在大约禁食18小时后，你的身体将转入一种称为酮症的状态，这时它开始依赖脂肪作为主要能量形式。在分解脂肪以供能量的过程中，你的身体将释放酮体，或者说是你的肝脏从脂肪酸中产生的分子。
+但这只能维持你有限的时间。在大约禁食 18 小时后，你的身体将转入一种称为酮症的状态，这时它开始依赖脂肪作为主要能量形式。在分解脂肪以供能量的过程中，你的身体将释放酮体，或者说是你的肝脏从脂肪酸中产生的分子。
 
 在这个阶段，你的胰岛素水平将保持较低，但你的胰高血糖素 - 控制血糖水平的激素 - 将开始上升，以防止你的血糖水平过低。
 
-**通过[18/6禁食](https://wordpress.usetemper.com/learn/what-is-18-6-fasting/)、[OMAD禁食](https://wordpress.usetemper.com/learn/omad-why-eat-only-one-meal-a-day/)或[Eat-Stop-Eat禁食](https://wordpress.usetemper.com/learn/what-is-eat-stop-eat/)来达到这些第二阶段的益处。**
+**通过[18/6 禁食](https://wordpress.usetemper.com/learn/what-is-18-6-fasting/)、[OMAD 禁食](https://wordpress.usetemper.com/learn/omad-why-eat-only-one-meal-a-day/)或[Eat-Stop-Eat 禁食](https://wordpress.usetemper.com/learn/what-is-eat-stop-eat/)来达到这些第二阶段的益处。**
 
-## 第三阶段：24小时
+## 第三阶段：24 小时
 
-大约禁食24小时后，你的身体开始做一些非常有趣的事情：[自我修复](https://www.tandfonline.com/doi/full/10.1080/15548627.2016.1271513)。这是一个被称为自噬的过程，也就是你的细胞开始清除任何老化、受损或功能不良的组分。
+大约禁食 24 小时后，你的身体开始做一些非常有趣的事情：[自我修复](https://www.tandfonline.com/doi/full/10.1080/15548627.2016.1271513)。这是一个被称为自噬的过程，也就是你的细胞开始清除任何老化、受损或功能不良的组分。
 
 自噬对于健康非常重要，并且已经被证明可以减轻炎症、杀死癌细胞，并清除被认为是[导致阿尔茨海默病的](https://pubmed.ncbi.nlm.nih.gov/25870960/)错误折叠蛋白。随着年龄的增长，自噬自然下降，因此人们认为由禁食引起的自噬可以减轻衰老的影响。而且，的确，[研究](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4254402/)表明禁食与长寿有关。
 
-**通过[ADF（交替日禁食）](https://wordpress.usetemper.com/learn/what-is-alternate-day-fasting-adf/)、[Eat-Stop-Eat禁食](https://wordpress.usetemper.com/learn/what-is-eat-stop-eat/)或[5:2禁食](https://wordpress.usetemper.com/learn/5-2-fasting/)来达到这些第三阶段的益处。[阅读比较](https://wordpress.usetemper.com/learn/three-different-ways-to-fast-for-24-hours/)。**
+**通过[ADF（交替日禁食）](https://wordpress.usetemper.com/learn/what-is-alternate-day-fasting-adf/)、[Eat-Stop-Eat 禁食](https://wordpress.usetemper.com/learn/what-is-eat-stop-eat/)或[5:2 禁食](https://wordpress.usetemper.com/learn/5-2-fasting/)来达到这些第三阶段的益处。[阅读比较](https://wordpress.usetemper.com/learn/three-different-ways-to-fast-for-24-hours/)。**
 
-## 第四阶段：48小时
+## 第四阶段：48 小时
 
-禁食开始约48小时后，你的身体将进入长期禁食状态。由此将发生一些事情。
+禁食开始约 48 小时后，你的身体将进入长期禁食状态。由此将发生一些事情。
 
 首先，你的生长激素水平会[显著上升](https://academic.oup.com/jcem/article-abstract/74/4/757/3004645?redirectedFrom=fulltext)，促进更快的肌肉修复和保持瘦肌肉量。这被认为与胃饥饿激素胃饥饿素有关，后者可以促进生长激素分泌。
 
@@ -92,16 +92,16 @@
 
 ## 更多阅读
 
-+   Uddin, Md. S., Stachowiak, A., Mamun, A. A., Tzvetkov, N. T., Takeda, S., Atanasov, A. G., Bergantin, L. B., Abdel-Daim, M. M., & Stankiewicz, A. M. (2018). 自噬和阿尔茨海默病：从分子机制到治疗影响。*老年神经科学前沿*, *10*, 04\. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5797541/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5797541/)
++   Uddin, Md. S., Stachowiak, A., Mamun, A. A., Tzvetkov, N. T., Takeda, S., Atanasov, A. G., Bergantin, L. B., Abdel-Daim, M. M., & Stankiewicz, A. M. (2018). 自噬和阿尔茨海默病：从分子机制到治疗影响。*老年神经科学前沿*, *10*, 04\. [`www.ncbi.nlm.nih.gov/pmc/articles/PMC5797541/`](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5797541/)
 
-+   Anton, S. D., Moehl, K., Donahoo, W. T., Marosi, K., Lee, S. A., Mainous, A. G., Leeuwenburgh, C., & Mattson, M. P. (2018). 改变代谢开关：理解和应用禁食的健康益处。*肥胖症*, *26*(2), 254–268\. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5783752/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5783752/)
++   Anton, S. D., Moehl, K., Donahoo, W. T., Marosi, K., Lee, S. A., Mainous, A. G., Leeuwenburgh, C., & Mattson, M. P. (2018). 改变代谢开关：理解和应用禁食的健康益处。*肥胖症*, *26*(2), 254–268\. [`www.ncbi.nlm.nih.gov/pmc/articles/PMC5783752/`](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5783752/)
 
-+   Finnell, J. S., Saul, B. C., Goldhamer, A. C., & Myers, T. R. (2018). 禁食安全吗？对医学监督下纯水禁食期间不良事件的图表回顾。*BMC补充和替代医学*, *18*(1), 67\. [https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5819235/](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5819235/)
++   Finnell, J. S., Saul, B. C., Goldhamer, A. C., & Myers, T. R. (2018). 禁食安全吗？对医学监督下纯水禁食期间不良事件的图表回顾。*BMC 补充和替代医学*, *18*(1), 67\. [`www.ncbi.nlm.nih.gov/pmc/articles/PMC5819235/`](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5819235/)
 
-2021年4月21日[改变环境，使禁食变得更容易](https://usetemper.com/learn/change-your-environment-to-make-fasting-easier/)
+2021 年 4 月 21 日[改变环境，使禁食变得更容易](https://usetemper.com/learn/change-your-environment-to-make-fasting-easier/)
 
 尽管许多人可能认为这是一种不健康的习惯，间歇性禁食……
 
-2021年4月21日[你是真的饿了还是只是无聊？](https://usetemper.com/learn/are-really-you-hungry-or-are-you-just-bored/)
+2021 年 4 月 21 日[你是真的饿了还是只是无聊？](https://usetemper.com/learn/are-really-you-hungry-or-are-you-just-bored/)
 
 冰箱发出低沉的嗡嗡声，并在周围投下白炽光晕……

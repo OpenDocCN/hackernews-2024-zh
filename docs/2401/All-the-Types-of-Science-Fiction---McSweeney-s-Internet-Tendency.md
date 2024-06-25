@@ -8,7 +8,7 @@ date: 2024-05-27 14:40:44
 
 # 所有类型的科幻小说 - **麦克斯威尼**互联网倾向
 
-> 来源：[https://www.mcsweeneys.net/articles/all-the-types-of-science-fiction](https://www.mcsweeneys.net/articles/all-the-types-of-science-fiction)
+> 来源：[`www.mcsweeneys.net/articles/all-the-types-of-science-fiction`](https://www.mcsweeneys.net/articles/all-the-types-of-science-fiction)
 
 1\. 来看看这个地方，太棒了
 
@@ -46,11 +46,11 @@ date: 2024-05-27 14:40:44
 
 18\. 时间，被视为半宝石吸毒者的螺旋
 
-19\. 那是1860年，我们去月球吧
+19\. 那是 1860 年，我们去月球吧
 
 20\. 基本上是*我的奋斗*
 
-21\. *炸弹公鸡2：相互保证的毁灭*
+21\. *炸弹公鸡 2：相互保证的毁灭*
 
 22\. 等同于金融奴役的系列作品
 
@@ -94,7 +94,7 @@ date: 2024-05-27 14:40:44
 
 42\. 图灵测试，但性感
 
-43\. 丹·奎尔理解的1980年代流行文化
+43\. 丹·奎尔理解的 1980 年代流行文化
 
 44\. 我没有朋友，我必须背景介绍（叙事张力是一种罪过）
 
@@ -106,6 +106,6 @@ date: 2024-05-27 14:40:44
 
 48\. 一个你无法分辨乐观主义是天真还是革命性的世界
 
-49\. *炸弹公鸡3：世界战争琴多*
+49\. *炸弹公鸡 3：世界战争琴多*
 
 50\. 暗地里只是一篇经济学论文

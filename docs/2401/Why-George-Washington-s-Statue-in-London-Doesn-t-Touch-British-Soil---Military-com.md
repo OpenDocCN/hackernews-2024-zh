@@ -8,21 +8,21 @@
 
 # 为什么伦敦的乔治·华盛顿雕像不接触英国土地 | Military.com
 
-> 来源：[https://www.military.com/history/george-washington-statue-london-british-soil.html](https://www.military.com/history/george-washington-statue-london-british-soil.html)
+> 来源：[`www.military.com/history/george-washington-statue-london-british-soil.html`](https://www.military.com/history/george-washington-statue-london-british-soil.html)
 
 在伦敦国家美术馆外，坐着特拉法加广场最奇特的雕像，甚至可以说是整个英格兰最奇特的雕像。它的奇怪之处不在于其设计或构成，而是因为雕像所尊崇的人物。
 
-这是一尊复制品，全球有25个或更多，但只有在伦敦才显得奇怪，考虑到雕像所尊崇的人物和雕像所处的位置。
+这是一尊复制品，全球有 25 个或更多，但只有在伦敦才显得奇怪，考虑到雕像所尊崇的人物和雕像所处的位置。
 
 它是乔治·华盛顿的雕像，曾经是英国公民，美利坚合众国之父和叛逆的殖民地人。在标志着英国最伟大胜利之一的广场上，竟然有一个提醒英国最伟大失败之一的雕像。
 
-华盛顿的雕像不仅存在，而且还装饰着权威的象征，比如他依靠的13根木杖（也是13个殖民地的象征）。它就躺在由王室所有的广场上——并且是建在从弗吉尼亚州运来的土壤上。
+华盛顿的雕像不仅存在，而且还装饰着权威的象征，比如他依靠的 13 根木杖（也是 13 个殖民地的象征）。它就躺在由王室所有的广场上——并且是建在从弗吉尼亚州运来的土壤上。
 
 弗吉尼亚州里士满弗吉尼亚州议会大厦内的原版乔治·华盛顿雕像。（阿尔伯特·赫林）
 
-这座雕像于1921年作为礼物赠送给英国，当时美国和英国的关系比1783年好得多得多。它是托马斯·杰斐逊委托制作的一个原版雕像的精确复制品，该雕像仍然可以在里士满的弗吉尼亚州议会大厦中看到。
+这座雕像于 1921 年作为礼物赠送给英国，当时美国和英国的关系比 1783 年好得多得多。它是托马斯·杰斐逊委托制作的一个原版雕像的精确复制品，该雕像仍然可以在里士满的弗吉尼亚州议会大厦中看到。
 
-实际上，这个雕像的铸造品已经有25个以上，遍布全球，从华盛顿特区的华盛顿纪念碑到秘鲁的利马，当然还有伦敦的特拉法加广场。
+实际上，这个雕像的铸造品已经有 25 个以上，遍布全球，从华盛顿特区的华盛顿纪念碑到秘鲁的利马，当然还有伦敦的特拉法加广场。
 
 因为传说中乔治·华盛顿曾经发誓再也不踏上英国土地，特拉法加广场雕像的建造者将其放在弗吉尼亚土壤的基础上，以确保华盛顿没有撒谎。
 
@@ -40,10 +40,10 @@
 
 华盛顿是六位在伦敦拥有雕像或纪念碑的美国总统之一。其他人包括亚伯拉罕·林肯总统、富兰克林·D·罗斯福总统、德怀特·D·艾森豪威尔总统、约翰·F·肯尼迪总统和罗纳德·里根总统。
 
-*-- 布莱克·斯蒂尔韦尔可以通过[blake.stilwell@military.com](mailto:blake.stilwell@military.com)联系。您也可以在Twitter上找到他[@blakestilwell](https://twitter.com/blakestilwell)*或者[在Facebook上](https://www.facebook.com/StilwellAngel/)找到他。
+*-- 布莱克·斯蒂尔韦尔可以通过 blake.stilwell@military.com 联系。您也可以在 Twitter 上找到他[@blakestilwell](https://twitter.com/blakestilwell)*或者[在 Facebook 上](https://www.facebook.com/StilwellAngel/)找到他。
 
 ## 想要了解更多关于军事生活的信息吗？
 
-无论您是考虑加入军队，寻找退伍后的职业还是关心军事生活和福利，Military.com都能满足您的需求。[订阅 Military.com](https://www.military.com/newmembers/genericcta)，即可将军事新闻、更新和资源直接发送到您的收件箱。
+无论您是考虑加入军队，寻找退伍后的职业还是关心军事生活和福利，Military.com 都能满足您的需求。[订阅 Military.com](https://www.military.com/newmembers/genericcta)，即可将军事新闻、更新和资源直接发送到您的收件箱。
 
 故事继续

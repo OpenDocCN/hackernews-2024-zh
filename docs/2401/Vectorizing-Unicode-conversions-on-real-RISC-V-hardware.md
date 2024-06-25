@@ -6,35 +6,35 @@
 
 -->
 
-# 在实际RISC-V硬件上实现向量化Unicode转换
+# 在实际 RISC-V 硬件上实现向量化 Unicode 转换
 
-> 来源：[https://camel-cdr.github.io/rvv-bench-results/articles/vector-utf.html](https://camel-cdr.github.io/rvv-bench-results/articles/vector-utf.html)
+> 来源：[`camel-cdr.github.io/rvv-bench-results/articles/vector-utf.html`](https://camel-cdr.github.io/rvv-bench-results/articles/vector-utf.html)
 
-# 在实际RISC-V硬件上实现向量化Unicode转换
+# 在实际 RISC-V 硬件上实现向量化 Unicode 转换
 
-在本文中，我们将讨论如何利用RISC-V向量扩展实现UTF-8到UTF-16转换的加速。
+在本文中，我们将讨论如何利用 RISC-V 向量扩展实现 UTF-8 到 UTF-16 转换的加速。
 
-我从上面的图表中排除了纯ASCII情况，因为这使得其他结果变得不太可读，速度提升为：C908 8倍，C920 11倍。更全面的测量结果在文章的[结尾](#finbench)。
+我从上面的图表中排除了纯 ASCII 情况，因为这使得其他结果变得不太可读，速度提升为：C908 8 倍，C920 11 倍。更全面的测量结果在文章的结尾。
 
-绝大多数文本都以UTF-8格式编码，但某些语言和API使用UTF-16作为其本机格式（JavaScript、Java、Windows等）。这个和其他原因可能导致你需要在不同的Unicode编码之间进行转换。正如[simdutf](https://github.com/simdutf/simdutf/)所示，这个转换过程具有很多优化潜力。
+绝大多数文本都以 UTF-8 格式编码，但某些语言和 API 使用 UTF-16 作为其本机格式（JavaScript、Java、Windows 等）。这个和其他原因可能导致你需要在不同的 Unicode 编码之间进行转换。正如[simdutf](https://github.com/simdutf/simdutf/)所示，这个转换过程具有很多优化潜力。
 
-在这里，我们将专注于UTF-8到UTF-16转换，并旨在开发一个经过优化的RISC-V实现，可以上游到[simdutf](https://github.com/simdutf/simdutf/)库中，该库被Node.js和Bun等项目使用。（[更改](https://github.com/simdutf/simdutf/pull/373)现已上游）
+在这里，我们将专注于 UTF-8 到 UTF-16 转换，并旨在开发一个经过优化的 RISC-V 实现，可以上游到[simdutf](https://github.com/simdutf/simdutf/)库中，该库被 Node.js 和 Bun 等项目使用。（[更改](https://github.com/simdutf/simdutf/pull/373)现已上游）
 
-RISC-V向量扩展（RVV）添加了一组32个向量寄存器，每个寄存器的宽度为VLEN位，其中VLEN是大于或等于128的2的幂（在标准V扩展中）。向量寄存器可以解释为多个8/16/32/64位元素，并相应地以有符号/无符号整数或单精度/双精度浮点数进行操作。由于我们可以一次操作多个元素，因此相对于标量代码，可以实现大幅加速。
+RISC-V 向量扩展（RVV）添加了一组 32 个向量寄存器，每个寄存器的宽度为 VLEN 位，其中 VLEN 是大于或等于 128 的 2 的幂（在标准 V 扩展中）。向量寄存器可以解释为多个 8/16/32/64 位元素，并相应地以有符号/无符号整数或单精度/双精度浮点数进行操作。由于我们可以一次操作多个元素，因此相对于标量代码，可以实现大幅加速。
 
-在撰写本文时（2024年初），几乎没有硬件支持RVV。
+在撰写本文时（2024 年初），几乎没有硬件支持 RVV。
 
-+   唯一支持RVV的硬件，普通消费者可以购买的是[Kendryte K230](https://www.canaan.io/product/k230)。它具有来自旋铁的1.6GHz的有序核[C908](https://www.t-head.cn/product/%E7%8E%84%E9%93%81C908)，VLEN为128位。（[C908基准测试页面](../canmv_k230/index.html))
++   唯一支持 RVV 的硬件，普通消费者可以购买的是[Kendryte K230](https://www.canaan.io/product/k230)。它具有来自旋铁的 1.6GHz 的有序核[C908](https://www.t-head.cn/product/%E7%8E%84%E9%93%81C908)，VLEN 为 128 位。（C908 基准测试页面)
 
-+   你也可以购买另外两款支持早期不兼容草案版本（0.7.1）的向量扩展的CPU，即[C906](https://www.t-head.cn/product/C906?lang=en)和[C920](https://www.t-head.cn/product/C910?lang=en)（C910带有RVV）。由于C906的性能特征与C908非常相似，我们不会为此提供基准测试。([C906基准测试页面](../mangopi_mq_pro/index.html))
++   你也可以购买另外两款支持早期不兼容草案版本（0.7.1）的向量扩展的 CPU，即[C906](https://www.t-head.cn/product/C906?lang=en)和[C920](https://www.t-head.cn/product/C910?lang=en)（C910 带有 RVV）。由于 C906 的性能特征与 C908 非常相似，我们不会为此提供基准测试。(C906 基准测试页面)
 
-+   然而，[C920](https://www.t-head.cn/product/c910?lang=en)是一个速度更快的乱序核心，频率为 2GHz，其结果比未来硬件的 C908 更加有趣。目标是 RVV 0.7.1，这是很困难的，因为没有官方的工具链支持，但我花了时间手动翻译生成的汇编代码，并且用一个[较旧的 GCC 分支](https://github.com/brucehoult/riscv-gnu-toolchain)来汇编它。（[C920 基准测试页面](../milkv_pioneer/index.html)）
++   然而，[C920](https://www.t-head.cn/product/c910?lang=en)是一个速度更快的乱序核心，频率为 2GHz，其结果比未来硬件的 C908 更加有趣。目标是 RVV 0.7.1，这是很困难的，因为没有官方的工具链支持，但我花了时间手动翻译生成的汇编代码，并且用一个[较旧的 GCC 分支](https://github.com/brucehoult/riscv-gnu-toolchain)来汇编它。（C920 基准测试页面）
 
-+   有[一些开源的 RVV 实现](https://github.com/stars/camel-cdr/lists/rvv-implementations)，但大多数仍处于开发中/不完整状态。唯一一个完整的，我们可以在本地模拟的是 Tenstorrents bobcat（以前是 ocelot），但它是一个概念验证设计，我们将使用的一些指令明确未经过优化。（我们稍后将讨论[此事](#gather)）
++   有[一些开源的 RVV 实现](https://github.com/stars/camel-cdr/lists/rvv-implementations)，但大多数仍处于开发中/不完整状态。唯一一个完整的，我们可以在本地模拟的是 Tenstorrents bobcat（以前是 ocelot），但它是一个概念验证设计，我们将使用的一些指令明确未经过优化。（我们稍后将讨论此事）
 
 幸运的是，我拥有 Kendryte K230，并且能够通过 [perfXlab](http://www.perfxlab.com/) 获得对拥有 64 个 C920 核心的 Milk-V Pioneer 服务器的 ssh 访问权限。开发是通过 qemu 模拟完成的，因为这比使用真实硬件要简单得多，目前是这样的。
 
-接下来的两节将介绍 RVV 和 Unicode 的基础知识，如果你已经对这些主题很熟悉，可以随意[跳过](#attack)。
+接下来的两节将介绍 RVV 和 Unicode 的基础知识，如果你已经对这些主题很熟悉，可以随意跳过。
 
 我将尝试使用一个简短的例子来解释 RVV 的基础知识：
 
@@ -77,39 +77,39 @@ size_t utf8_count_rvv(char const *buf, size_t len) {
 
 如上所述，RVV 支持不同的向量长度。为了使相同的代码能够在具有不同向量长度的机器上运行，RVV 提供了`vsetvl*`指令。你需要给出你的输入元素的数量和元素宽度，它将给你一个小于或等于你提供的数量的计数，以便将其装入一个向量寄存器中。
 
-上面的代码使用了这个功能来迭代输入，`vl = vsetvl_e8m8(len)`代表一次迭代处理的元素数量。接下来的`vle8_v_u8m8()`从我们的输入中加载`vl`个8位整数元素到一个向量寄存器中。
+上面的代码使用了这个功能来迭代输入，`vl = vsetvl_e8m8(len)`代表一次迭代处理的元素数量。接下来的`vle8_v_u8m8()`从我们的输入中加载`vl`个 8 位整数元素到一个向量寄存器中。
 
-然后创建一个掩码，其中每个活动元素（掩码中对应位设置的元素）与模式`**0b10xxxxxx**`不匹配。vsrl代表*右移逻辑*，vmsne代表*不等于*，所以`vmsne(vsrl(v, **6**, vl), **0b10**, vl)`在每个元素上执行`(x >> **6**) != **0b10**`。RVV没有单独的掩码寄存器，而是将掩码存储在向量寄存器的低位中，内置API添加了`vboolN_t`类型以提供更多的类型安全性。最后，我们使用`vcpop`来计算我们的掩码中活动元素的数量，并将其加到我们的总和中。
+然后创建一个掩码，其中每个活动元素（掩码中对应位设置的元素）与模式`**0b10xxxxxx**`不匹配。vsrl 代表*右移逻辑*，vmsne 代表*不等于*，所以`vmsne(vsrl(v, **6**, vl), **0b10**, vl)`在每个元素上执行`(x >> **6**) != **0b10**`。RVV 没有单独的掩码寄存器，而是将掩码存储在向量寄存器的低位中，内置 API 添加了`vboolN_t`类型以提供更多的类型安全性。最后，我们使用`vcpop`来计算我们的掩码中活动元素的数量，并将其加到我们的总和中。
 
-你可能想知道"m8"是什么意思，到目前为止我还没有提到过。RVV有32个VLEN位宽的向量寄存器，但是通过`vsetvl`你也可以配置LMUL（长度乘数），并使处理器将这些寄存器分组。这意味着后续指令将在一个寄存器组上执行，并且`vsetvl`将返回与LMUL对应的`vl`。
+你可能想知道"m8"是什么意思，到目前为止我还没有提到过。RVV 有 32 个 VLEN 位宽的向量寄存器，但是通过`vsetvl`你也可以配置 LMUL（长度乘数），并使处理器将这些寄存器分组。这意味着后续指令将在一个寄存器组上执行，并且`vsetvl`将返回与 LMUL 对应的`vl`。
 
-当LMUL=1时，我们有32个VLEN位宽的寄存器，当LMUL=2时，它们现在就像是16个VLEN*2位宽的寄存器，所以对于"m8"（LMUL=8），我们有4个VLEN*8位宽的寄存器。在这里，我们使用少于五个向量寄存器，所以使用LMUL=8基本上就给了我们免费的循环展开，这使得标量和掩码操作的成本降低了。展开不是LMUL的唯一优势，它还允许我们轻松地处理混合宽度的数据，我们稍后将大量使用它。
+当 LMUL=1 时，我们有 32 个 VLEN 位宽的寄存器，当 LMUL=2 时，它们现在就像是 16 个 VLEN*2 位宽的寄存器，所以对于"m8"（LMUL=8），我们有 4 个 VLEN*8 位宽的寄存器。在这里，我们使用少于五个向量寄存器，所以使用 LMUL=8 基本上就给了我们免费的循环展开，这使得标量和掩码操作的成本降低了。展开不是 LMUL 的唯一优势，它还允许我们轻松地处理混合宽度的数据，我们稍后将大量使用它。
 
-这也解释了为什么掩码存储在向量寄存器中，更具体地说是存储在LMUL=1向量寄存器中，即使它们每个元素只存储一个比特，它们所指的。对于LMUL=8和8位元素，你需要一个完整的LMUL=1寄存器来存储足够的比特来表示其掩码。
+这也解释了为什么掩码存储在向量寄存器中，更具体地说是存储在 LMUL=1 向量寄存器中，即使它们每个元素只存储一个比特，它们所指的。对于 LMUL=8 和 8 位元素，你需要一个完整的 LMUL=1 寄存器来存储足够的比特来表示其掩码。
 
-除了已经讨论过的RVV功能之外，我们将使用的其他功能包括：
+除了已经讨论过的 RVV 功能之外，我们将使用的其他功能包括：
 
 +   **减少**元素：对所有元素应用操作以产生一个标量结果。例如，对所有元素求和。
 
-+   **窄化/扩展**算术运算: 减小/增加元素宽度和LMUL的操作。
++   **窄化/扩展**算术运算: 减小/增加元素宽度和 LMUL 的操作。
 
-+   **排列**: 移动元素的指令，RVV支持滑动、合并（混合）、压缩和聚集（洗牌）。
++   **排列**: 移动元素的指令，RVV 支持滑动、合并（混合）、压缩和聚集（洗牌）。
 
-希望这不会让你太困惑，如果你觉得自己还不够准备好跟上文章的后续内容，这里有一些关于RVV更深入的参考资料：
+希望这不会让你太困惑，如果你觉得自己还不够准备好跟上文章的后续内容，这里有一些关于 RVV 更深入的参考资料：
 
-Unicode定义了一组约150,000个字符，并为它们分配了一个唯一的32位数字，称为代码点。仅存储代码点本身称为UTF-32。实际上不这样做，因为较低的代码点更常见，这会浪费大量空间。还有两种其他的编码方案：UTF-8和UTF-16。
+Unicode 定义了一组约 150,000 个字符，并为它们分配了一个唯一的 32 位数字，称为代码点。仅存储代码点本身称为 UTF-32。实际上不这样做，因为较低的代码点更常见，这会浪费大量空间。还有两种其他的编码方案：UTF-8 和 UTF-16。
 
-UTF-8使用一到四个字节来表示一个代码点，使用下面可视化的格式：
+UTF-8 使用一到四个字节来表示一个代码点，使用下面可视化的格式：
 
-注意小的无效范围。代码点在0xD800-0xDFFF之间是未分配和无效的，这用于允许UTF-16编码。
+注意小的无效范围。代码点在 0xD800-0xDFFF 之间是未分配和无效的，这用于允许 UTF-16 编码。
 
-UTF-16直接将1、2和3字节的UTF-8字符的代码点直接编码为单个16位字符。四字节UTF-8代码点通过利用部分无效字符范围来信号化为多字节UTF-16字符的两个16位字符进行编码。
+UTF-16 直接将 1、2 和 3 字节的 UTF-8 字符的代码点直接编码为单个 16 位字符。四字节 UTF-8 代码点通过利用部分无效字符范围来信号化为多字节 UTF-16 字符的两个 16 位字符进行编码。
 
-在范围0xD800-0xDBFF内的16位字称为高代理，而在范围0xDC00-0xDFFF内的字称为低代理。高代理总是后跟低代理，编码如下：
+在范围 0xD800-0xDBFF 内的 16 位字称为高代理，而在范围 0xDC00-0xDFFF 内的字称为低代理。高代理总是后跟低代理，编码如下：
 
-最后，这里是字符串"rνṿ🧙"的编码的对比，其中包括所有UTF-8字符长度：
+最后，这里是字符串"rνṿ🧙"的编码的对比，其中包括所有 UTF-8 字符长度：
 
-我们的目标是实现一个快速的矢量化验证UTF-8到UTF-16的转换例程，但让我们首先解决非验证通用UTF-8到UTF-32的转换，看看这会带给我们什么。我们可能最终会简单地将Unicode代码点（UTF-32）转换为UTF-16，或者找出一些中间变量的用法来得到UTF-16。
+我们的目标是实现一个快速的矢量化验证 UTF-8 到 UTF-16 的转换例程，但让我们首先解决非验证通用 UTF-8 到 UTF-32 的转换，看看这会带给我们什么。我们可能最终会简单地将 Unicode 代码点（UTF-32）转换为 UTF-16，或者找出一些中间变量的用法来得到 UTF-16。
 
 所以，这给我们留下了一些事情要做：
 
@@ -117,17 +117,17 @@ UTF-16直接将1、2和3字节的UTF-8字符的代码点直接编码为单个16�
 
 +   移除前缀
 
-+   组合到UTF-32代码点
++   组合到 UTF-32 代码点
 
 最重要的问题似乎是，我们如何处理不同的字符大小。
 
 起初，我有两个想法来解决这个问题：
 
-+   **vdecompress:** 浏览规范，看起来符合条件的第一条指令是vdecompress。尽管它实际上并不是一条指令，而是`viota`和`vrgather`指令的组合，用于合成一个`vcompress`的逆过程。它使用一个掩码将向量的每个第n个元素移动到源寄存器中的第n个活动元素。这可以使我们将每个UTF-8字符扩展为四个字节长，这样我们就可以统一处理不同大小的字符。
++   **vdecompress:** 浏览规范，看起来符合条件的第一条指令是 vdecompress。尽管它实际上并不是一条指令，而是`viota`和`vrgather`指令的组合，用于合成一个`vcompress`的逆过程。它使用一个掩码将向量的每个第 n 个元素移动到源寄存器中的第 n 个活动元素。这可以使我们将每个 UTF-8 字符扩展为四个字节长，这样我们就可以统一处理不同大小的字符。
 
-+   **vcompress:** 或者我们也可以`vcompress`每个UTF-8字符的第n个字节到四个单独的向量寄存器的第n个字节。然后我们也可以编写操作所有字符大小的代码，但我们需要重新组合寄存器以存储最终的代码点。
++   **vcompress:** 或者我们也可以`vcompress`每个 UTF-8 字符的第 n 个字节到四个单独的向量寄存器的第 n 个字节。然后我们也可以编写操作所有字符大小的代码，但我们需要重新组合寄存器以存储最终的代码点。
 
-第一种方法对我来说似乎很有前途，所以我草绘了创建解压缩掩码的过程，但卡在了如何继续的地方。问题是，现在你从一个输入寄存器转到了，暂时假设LMUL=1，到一个LMUL=4寄存器，仍然需要做所有去除前缀并将位移动到位的逻辑。这使得我们进行的每个操作都慢了四倍，而且我们需要进行相当多的操作。加上`vrgather`对于较大的LMUL的速度较慢（见[后续讨论](#gather)），这似乎不再是一个好主意了。
+第一种方法对我来说似乎很有前途，所以我草绘了创建解压缩掩码的过程，但卡在了如何继续的地方。问题是，现在你从一个输入寄存器转到了，暂时假设 LMUL=1，到一个 LMUL=4 寄存器，仍然需要做所有去除前缀并将位移动到位的逻辑。这使得我们进行的每个操作都慢了四倍，而且我们需要进行相当多的操作。加上`vrgather`对于较大的 LMUL 的速度较慢（见后续讨论），这似乎不再是一个好主意了。
 
 让我们再次考虑 `vcompress` 方法。一旦我们从四个寄存器中移除了前缀，我们基本上就可以免费获得“将位移动到正确位置”的部分，因为无论如何我们都需要重新组合它们。使用扩展乘法使得在移位六位的同时组合它们变得更容易，甚至比交错字节（移位八位）还要容易，因为我们无法用 `**1**<<**8**` 乘以 8 位。
 
@@ -285,7 +285,7 @@ For validation, we use the method described in ["Validating UTF-8 In Less Than O
 
 There are seven error patterns in a 2 byte UTF-8 sequence, they can all be detected by only looking at the first 12 bits. We use three 4-bit lookup tables that map to a bitmask of the errors matching that pattern and AND them together to determine if the was an error. The only error not detected by this are related to 3-4 byte UTF-8 characters that have the wrong amount of continuation bytes. To detect those, the last remaining bit in the bitmask of the LUTs is used to indicate a pair of continuation bytes, which combined with a few comparisons manages to detect all invalid UTF-8 sequences.
 
-Instead of doing a three LMUL=2 vrgather, we do six LMUL=1 `vrgather`, as we don't need to cross any lanes, and this performs better because it needs to do a less complex task (see [later discussion](#gather)). To help with that, we define the `VRGATHER_u8m1x2` macro, which unrolls the `vrgather` for us. Before we get into the implementation we also need to define the error lookup tables, and some constants we'll use later:
+Instead of doing a three LMUL=2 vrgather, we do six LMUL=1 `vrgather`, as we don't need to cross any lanes, and this performs better because it needs to do a less complex task (see later discussion). To help with that, we define the `VRGATHER_u8m1x2` macro, which unrolls the `vrgather` for us. Before we get into the implementation we also need to define the error lookup tables, and some constants we'll use later:
 
 ```
 

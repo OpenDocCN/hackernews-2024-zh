@@ -8,7 +8,7 @@ date: 2024-05-27 14:39:35
 
 # Re: [PATCH 00/45] C++: Convert the kernel to C++ - H. Peter Anvin
 
-> 来源：[https://lore.kernel.org/lkml/3465e0c6-f5b2-4c42-95eb-29361481f805@zytor.com/](https://lore.kernel.org/lkml/3465e0c6-f5b2-4c42-95eb-29361481f805@zytor.com/)
+> 来源：[`lore.kernel.org/lkml/3465e0c6-f5b2-4c42-95eb-29361481f805@zytor.com/`](https://lore.kernel.org/lkml/3465e0c6-f5b2-4c42-95eb-29361481f805@zytor.com/)
 
 ```
 From: "H. Peter Anvin" <hpa@zytor.com>

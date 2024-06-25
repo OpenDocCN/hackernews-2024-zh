@@ -2,17 +2,17 @@
 
 类别：未分类
 
-日期：2024年5月27日15:21:13
+日期：2024 年 5 月 27 日 15:21:13
 
 -->
 
 # 南卡罗来纳州议员布兰登·古菲因其儿子自杀起诉 Instagram | CNN
 
-> 来源：[https://www.cnn.com/2024/01/30/us/rep-brandon-guffey-instagram-lawsuit-cec/index.html](https://www.cnn.com/2024/01/30/us/rep-brandon-guffey-instagram-lawsuit-cec/index.html)
+> 来源：[`www.cnn.com/2024/01/30/us/rep-brandon-guffey-instagram-lawsuit-cec/index.html`](https://www.cnn.com/2024/01/30/us/rep-brandon-guffey-instagram-lawsuit-cec/index.html)
 
 ### 故事要点
 
-17岁的盖文·古菲在遭到骗子威胁分享他的裸照后自杀身亡
+17 岁的盖文·古菲在遭到骗子威胁分享他的裸照后自杀身亡
 
 盖文父亲表示，盖文认为他是在把照片发送给一个和他年龄相仿的女孩。
 
@@ -22,7 +22,7 @@ CNN  —
 
 在他的长子的葬礼大约两周后，南卡罗来纳州议会议员布兰登·古菲表示，他收到了一个带笑脸表情的 Instagram 私信。
 
-17岁的盖文·古菲于2022年7月在南卡罗来纳州洛克希尔的家中浴室内开枪自杀，悲痛的父亲正在寻找导致他自杀的线索。
+17 岁的盖文·古菲于 2022 年 7 月在南卡罗来纳州洛克希尔的家中浴室内开枪自杀，悲痛的父亲正在寻找导致他自杀的线索。
 
 然后 Guffey 和他的小儿子开始收到索要钱财的信息，以换取他已故儿子的裸照。盖文的 Instagram 关注者列表中姓 Guffey 的人也收到了类似的信息，盖文的父亲说。
 
@@ -40,49 +40,49 @@ CNN  —
 
 在去世前几分钟，盖文在家中的浴室里自杀，给他的弟弟和朋友发了一个爱心形状的符号 - <3 - 放在黑色背景上。
 
-自那时以来，Guffey一直对儿子的死亡大声疾呼，并在去年支持立法，使得对未成年人进行性勒索成为一种加重刑事犯罪，如果受害者是未成年人或者脆弱成年人，或者受害者因直接与犯罪相关的身体伤害或死亡而受到处罚。（https://governor.sc.gov/news/2023-08/governor-henry-mcmaster-signs-gavins-law#:~:text=The%20legislation%20makes%20sexual%20extortion%2C%20the%20act%20of%20blackmailing%20someone%20using%20sexually%20explicit%20images%20or%20videos%2C%20a%20felony%20offense%20and%20an%20aggravated%20felony%20if%20the%20victim%20is%20a%20minor%2C%20vulnerable%20adult%2C%20or%20if%20the%20victim%20suffers%20bodily%20injury%20or%20death%20directly%20related%20to%20the%20crime.）。
+自那时以来，Guffey 一直对儿子的死亡大声疾呼，并在去年支持立法，使得对未成年人进行性勒索成为一种加重刑事犯罪，如果受害者是未成年人或者脆弱成年人，或者受害者因直接与犯罪相关的身体伤害或死亡而受到处罚。（https://governor.sc.gov/news/2023-08/governor-henry-mcmaster-signs-gavins-law#:~:text=The%20legislation%20makes%20sexual%20extortion%2C%20the%20act%20of%20blackmailing%20someone%20using%20sexually%20explicit%20images%20or%20videos%2C%20a%20felony%20offense%20and%20an%20aggravated%20felony%20if%20the%20victim%20is%20a%20minor%2C%20vulnerable%20adult%2C%20or%20if%20the%20victim%20suffers%20bodily%20injury%20or%20death%20directly%20related%20to%20the%20crime.）。
 
 州参议员通过了该法案，并将其命名为“[加文法](https://ed.sc.gov/newsroom/strategic-engagement/gavins-law/)”，然后将其送交给了州长亨利·麦克马斯特（Henry McMaster），他签署了该法案。
 
-在加文自杀身亡之前，骗子已经在Instagram上联系过他，让他相信自己在和同龄女孩交流，并说服他发送裸照，他的父亲说。
+在加文自杀身亡之前，骗子已经在 Instagram 上联系过他，让他相信自己在和同龄女孩交流，并说服他发送裸照，他的父亲说。
 
-紧接着勒索开始了。骗子要求钱，而加文（Gavin）通过Venmo发送了25美元，这是他当时所有的钱，Guffey说。他请求骗子给他更多时间。
+紧接着勒索开始了。骗子要求钱，而加文（Gavin）通过 Venmo 发送了 25 美元，这是他当时所有的钱，Guffey 说。他请求骗子给他更多时间。
 
-“他告诉他们他会给他们更多的钱，请不要发送这些照片出去……他们不在乎，”Guffey说。“我想在他心中，这太多了，他不知道如何克服。”
+“他告诉他们他会给他们更多的钱，请不要发送这些照片出去……他们不在乎，”Guffey 说。“我想在他心中，这太多了，他不知道如何克服。”
 
-在他死后，骗子通过Instagram的一个假账户发送给Guffey一个笑脸表情符号和一条信息，原账户被关闭后使用了一个伪账户。“它说，‘我告诉你你的儿子求生的事了吗？’”Guffey说。他们还要求交换照片来换取金钱。
+在他死后，骗子通过 Instagram 的一个假账户发送给 Guffey 一个笑脸表情符号和一条信息，原账户被关闭后使用了一个伪账户。“它说，‘我告诉你你的儿子求生的事了吗？’”Guffey 说。他们还要求交换照片来换取金钱。
 
 执法官员告诉他不要回复，但他说，他必须竭尽全力忽视它。
 
-“有多个账户与一个人有关。他们关闭了一个账户，然后该人开始勒索我的14岁表弟，16岁的儿子，甚至向我发信息说我的儿子求生了。这发生在我埋葬我儿子的30天内，”他说。
+“有多个账户与一个人有关。他们关闭了一个账户，然后该人开始勒索我的 14 岁表弟，16 岁的儿子，甚至向我发信息说我的儿子求生了。这发生在我埋葬我儿子的 30 天内，”他说。
 
-## FBI称，色情勒索主要针对十几岁的男孩。
+## FBI 称，色情勒索主要针对十几岁的男孩。
 
 色情勒索者通常欺骗年轻受害者，通常是十几岁的男孩，让他们相信自己正在和同龄女孩交流。他们说服他们发送露骨照片和视频，并威胁说如果不付款就会公开这些照片。
 
-骗子通常位于美国境外。FBI称，羞耻、恐惧和困惑经常阻止未成年人寻求帮助或报告滥用行为。
+骗子通常位于美国境外。FBI 称，羞耻、恐惧和困惑经常阻止未成年人寻求帮助或报告滥用行为。
 
-Guffey说，每天至少有一两个家庭的孩子成为色情勒索的受害者，并与他联系。他说，有些人在暗中挣扎，因为他们不想玷污自己孩子的名誉。
+Guffey 说，每天至少有一两个家庭的孩子成为色情勒索的受害者，并与他联系。他说，有些人在暗中挣扎，因为他们不想玷污自己孩子的名誉。
 
-“Meta是这类事件发生的主要平台之一，”他上周告诉CNN。“Meta从未做得足够多。这些掠食者继续在线上对我们的孩子进行攻击，这是荒谬的。”
+“Meta 是这类事件发生的主要平台之一，”他上周告诉 CNN。“Meta 从未做得足够多。这些掠食者继续在线上对我们的孩子进行攻击，这是荒谬的。”
 
-上周的一份新闻稿中，[FBI表示观察到20%的增长](https://www.fbi.gov/contact-us/field-offices/memphis/news/sextortion-a-growing-threat-targeting-minors#:~:text=These%20crimes%20can%20lead%20victims,to%20at%20least%2020%20suicides)，即从2022年10月至2023年3月间，涉及未成年受害者的金融动机在线性敲诈诈骗报告的增加，较前一年同期有所增加。这只是联邦官员最近几个月发出的最新警告，提醒家长保持警惕。
+上周的一份新闻稿中，[FBI 表示观察到 20%的增长](https://www.fbi.gov/contact-us/field-offices/memphis/news/sextortion-a-growing-threat-targeting-minors#:~:text=These%20crimes%20can%20lead%20victims,to%20at%20least%2020%20suicides)，即从 2022 年 10 月至 2023 年 3 月间，涉及未成年受害者的金融动机在线性敲诈诈骗报告的增加，较前一年同期有所增加。这只是联邦官员最近几个月发出的最新警告，提醒家长保持警惕。
 
-“FBI看到金融性敲诈计划的报告数量急剧增加，”FBI孟菲斯办公室负责特工道格拉斯·迪波迪斯塔在一份声明中说道。“我们需要家长和照护者与我们合作，在此类犯罪发生之前阻止它，并在发生时帮助孩子站出来。”
+“FBI 看到金融性敲诈计划的报告数量急剧增加，”FBI 孟菲斯办公室负责特工道格拉斯·迪波迪斯塔在一份声明中说道。“我们需要家长和照护者与我们合作，在此类犯罪发生之前阻止它，并在发生时帮助孩子站出来。”
 
-自2021年10月至2023年3月，联邦官员收到超过13,000份关于未成年人在线金融性敲诈的报告，导致至少20人自杀，FBI上周表示。
+自 2021 年 10 月至 2023 年 3 月，联邦官员收到超过 13,000 份关于未成年人在线金融性敲诈的报告，导致至少 20 人自杀，FBI 上周表示。
 
-在全国范围内，性敲诈骗局越来越频繁地成为头条新闻。今年8月，密歇根州西区联邦检察官办公室引渡了两名尼日利亚男子，指控他们敲诈年轻男子和少年男孩。
+在全国范围内，性敲诈骗局越来越频繁地成为头条新闻。今年 8 月，密歇根州西区联邦检察官办公室引渡了两名尼日利亚男子，指控他们敲诈年轻男子和少年男孩。
 
-其中一名男子被指控[导致17岁的Jordan DeMay死亡](http://%20%20https://www.justice.gov/usao-wdmi/pr/2023_0813_Two_Nigerian_Men_Extradited_To_The_United_States)，他于2022年3月在密歇根州马凯特的家中因自己开枪自杀。该案件仍在审理中。
+其中一名男子被指控[导致 17 岁的 Jordan DeMay 死亡](http://%20%20https://www.justice.gov/usao-wdmi/pr/2023_0813_Two_Nigerian_Men_Extradited_To_The_United_States)，他于 2022 年 3 月在密歇根州马凯特的家中因自己开枪自杀。该案件仍在审理中。
 
-在类似的案件中，一名男子去年因认罪[与Ryan Last死亡有关的敲诈指控被判处18个月监禁](https://www.cnn.com/2022/12/20/us/california-ryan-last-sextortion-scam-arrest/index.html)，Ryan Last于2022年2月在加利福尼亚州圣何塞自杀，几小时前成为性敲诈骗局的受害者。
+在类似的案件中，一名男子去年因认罪[与 Ryan Last 死亡有关的敲诈指控被判处 18 个月监禁](https://www.cnn.com/2022/12/20/us/california-ryan-last-sextortion-scam-arrest/index.html)，Ryan Last 于 2022 年 2 月在加利福尼亚州圣何塞自杀，几小时前成为性敲诈骗局的受害者。
 
-Meta，也是Facebook的所有者，在其向CNN的声明中表示，[它拥有多种工具](http://%20https://www.meta.com/en-gb/help/policies/safety/tools-support-teens-parents/)，确保青少年安全，并支持平台上的家长。
+Meta，也是 Facebook 的所有者，在其向 CNN 的声明中表示，[它拥有多种工具](http://%20https://www.meta.com/en-gb/help/policies/safety/tools-support-teens-parents/)，确保青少年安全，并支持平台上的家长。
 
-Meta表示，一些[资源包括教育材料](https://nofiltr.org/quizzes/)，以支持陷入在线骗局的青少年，并减少暴露所带来的羞耻和污名。
+Meta 表示，一些[资源包括教育材料](https://nofiltr.org/quizzes/)，以支持陷入在线骗局的青少年，并减少暴露所带来的羞耻和污名。
 
-“我们...提供超过30种工具和资源来支持他们及其父母，”公司表示。“我们鼓励青少年和成年人如果感到不安全，向我们报告可疑内容、活动或账户，并在有即将发生的伤害案件时与执法部门联系。”
+“我们...提供超过 30 种工具和资源来支持他们及其父母，”公司表示。“我们鼓励青少年和成年人如果感到不安全，向我们报告可疑内容、活动或账户，并在有即将发生的伤害案件时与执法部门联系。”
 
 但 Guffey 表示，他认为 Meta 和其他社交媒体公司没有受到应有的问责，并敦促其他家长进行反击。
 

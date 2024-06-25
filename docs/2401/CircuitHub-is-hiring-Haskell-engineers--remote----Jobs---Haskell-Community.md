@@ -8,7 +8,7 @@ date: 2024-05-27 14:44:01
 
 # CircuitHub 正在招聘 Haskell 工程师（远程）- 工作 - Haskell 社区
 
-> 来源：[https://discourse.haskell.org/t/circuithub-is-hiring-haskell-engineers-remote/8519](https://discourse.haskell.org/t/circuithub-is-hiring-haskell-engineers-remote/8519)
+> 来源：[`discourse.haskell.org/t/circuithub-is-hiring-haskell-engineers-remote/8519`](https://discourse.haskell.org/t/circuithub-is-hiring-haskell-engineers-remote/8519)
 
 你好！
 
@@ -40,4 +40,4 @@ date: 2024-05-27 14:44:01
 
 相反地，对于在我们领域没有经验的有经验的 Haskell 开发者，我们将寻找与我们试图实现的目标相关的兴趣。生命太短暂了，不要在你对之不感兴趣的东西上浪费时间！
 
-如果您感兴趣，请发送一两句关于您建造或取得的最令人印象深刻的事物，以及某种形式的简历至[careers@circuithub.com](mailto:careers@circuithub.com)。
+如果您感兴趣，请发送一两句关于您建造或取得的最令人印象深刻的事物，以及某种形式的简历至 careers@circuithub.com。

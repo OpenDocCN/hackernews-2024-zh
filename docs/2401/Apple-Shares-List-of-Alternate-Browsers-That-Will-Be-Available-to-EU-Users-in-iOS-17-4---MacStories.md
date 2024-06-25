@@ -6,9 +6,9 @@
 
 -->
 
-# 苹果分享了一份替代浏览器的列表，将在iOS 17.4中提供给欧盟用户 - MacStories
+# 苹果分享了一份替代浏览器的列表，将在 iOS 17.4 中提供给欧盟用户 - MacStories
 
-> 来源：[https://www.macstories.net/news/apple-shares-list-of-alternate-browsers-that-will-be-available-to-eu-users-in-ios-17-4/](https://www.macstories.net/news/apple-shares-list-of-alternate-browsers-that-will-be-available-to-eu-users-in-ios-17-4/)
+> 来源：[`www.macstories.net/news/apple-shares-list-of-alternate-browsers-that-will-be-available-to-eu-users-in-ios-17-4/`](https://www.macstories.net/news/apple-shares-list-of-alternate-browsers-that-will-be-available-to-eu-users-in-ios-17-4/)
 
 ### 使用 Club MacStories 解锁更多功能
 

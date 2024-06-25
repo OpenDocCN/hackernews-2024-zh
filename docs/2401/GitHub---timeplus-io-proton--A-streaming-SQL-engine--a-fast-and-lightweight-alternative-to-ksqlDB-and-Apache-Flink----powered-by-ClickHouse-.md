@@ -8,7 +8,7 @@
 
 # GitHub - timeplus-io/proton：一个流式 SQL 引擎，是 ksqlDB 和 Apache Flink 的快速轻量级替代方案，🚀 由 ClickHouse 提供支持。
 
-> 来源：[https://github.com/timeplus-io/proton](https://github.com/timeplus-io/proton)
+> 来源：[`github.com/timeplus-io/proton`](https://github.com/timeplus-io/proton)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

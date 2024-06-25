@@ -6,21 +6,21 @@ date: 2024-05-27 15:08:54
 
 -->
 
-# HPV疫苗，宫颈癌研究取得历史性成果 - STAT
+# HPV 疫苗，宫颈癌研究取得历史性成果 - STAT
 
-> 来源：[https://www.statnews.com/2024/01/25/hpv-vaccine-prevent-cervical-cancer-cervarix-gardasil-study/](https://www.statnews.com/2024/01/25/hpv-vaccine-prevent-cervical-cancer-cervarix-gardasil-study/)
+> 来源：[`www.statnews.com/2024/01/25/hpv-vaccine-prevent-cervical-cancer-cervarix-gardasil-study/`](https://www.statnews.com/2024/01/25/hpv-vaccine-prevent-cervical-cancer-cervarix-gardasil-study/)
 
-来自苏格兰的一项历史性新研究显示了人类乳头瘤病毒疫苗在现实世界中的影响：该国发现，1988年至1996年出生并在12至13岁之间接种了HPV疫苗的女性中，未检测到任何宫颈癌病例。
+来自苏格兰的一项历史性新研究显示了人类乳头瘤病毒疫苗在现实世界中的影响：该国发现，1988 年至 1996 年出生并在 12 至 13 岁之间接种了 HPV 疫苗的女性中，未检测到任何宫颈癌病例。
 
-许多先前的研究表明HPV疫苗在预防宫颈癌方面是[极其有效](https://www.statnews.com/2023/11/08/hpv-vaccines-cancer-screenings/)的。但这项周一发表在[国家癌症研究所杂志](https://academic.oup.com/jnci/advance-article-abstract/doi/10.1093/jnci/djad263/7577291?redirectedFrom=fulltext&login=true#no-access-message)上的研究是首次对全国妇女队进行如此长时间的监测，并未发现宫颈癌的发生。
+许多先前的研究表明 HPV 疫苗在预防宫颈癌方面是[极其有效](https://www.statnews.com/2023/11/08/hpv-vaccines-cancer-screenings/)的。但这项周一发表在[国家癌症研究所杂志](https://academic.oup.com/jnci/advance-article-abstract/doi/10.1093/jnci/djad263/7577291?redirectedFrom=fulltext&login=true#no-access-message)上的研究是首次对全国妇女队进行如此长时间的监测，并未发现宫颈癌的发生。
 
-“这项研究非常令人兴奋。它表明疫苗效果极佳，”德克萨斯大学MD安德森癌症中心妇科肿瘤学教授Kathleen Schmeler说，她没有参与这项研究。“显然，现在还为时过早。我们才刚开始看到疫苗影响的第一批数据，因为从接种疫苗到产生效果需要很长时间。”
+“这项研究非常令人兴奋。它表明疫苗效果极佳，”德克萨斯大学 MD 安德森癌症中心妇科肿瘤学教授 Kathleen Schmeler 说，她没有参与这项研究。“显然，现在还为时过早。我们才刚开始看到疫苗影响的第一批数据，因为从接种疫苗到产生效果需要很长时间。”
 
-结果强调了在美国努力增加HPV疫苗接种率的重要性，Schmeler说。例如，苏格兰于2008年在学校引入了常规免疫措施，在2022-2023学年，接受至少一剂疫苗的中学四年级学生（相当于美国的10年级）接种率接近90%。[在美国](https://www.cdc.gov/mmwr/volumes/72/wr/mm7234a3.htm#:~:text=In%202022%2C%2089.9%25%20of%20adolescents,HPV%20vaccination%20(HPV%20UTD).)不在学校进行HPV疫苗接种，而在13至17岁之间的青少年中，接种率略高于60%。
+结果强调了在美国努力增加 HPV 疫苗接种率的重要性，Schmeler 说。例如，苏格兰于 2008 年在学校引入了常规免疫措施，在 2022-2023 学年，接受至少一剂疫苗的中学四年级学生（相当于美国的 10 年级）接种率接近 90%。[在美国](https://www.cdc.gov/mmwr/volumes/72/wr/mm7234a3.htm#:~:text=In%202022%2C%2089.9%25%20of%20adolescents,HPV%20vaccination%20(HPV%20UTD).)不在学校进行 HPV 疫苗接种，而在 13 至 17 岁之间的青少年中，接种率略高于 60%。
 
-这项研究还指出了疫苗接种的时间有多么关键。“没有发展任何癌症的女孩是在性行为之前接种的疫苗，”Schlemer说。“所以我们不应该等待接种疫苗，并真正做到，在指南之前进行接种，即在性行为活跃之前。”
+这项研究还指出了疫苗接种的时间有多么关键。“没有发展任何癌症的女孩是在性行为之前接种的疫苗，”Schlemer 说。“所以我们不应该等待接种疫苗，并真正做到，在指南之前进行接种，即在性行为活跃之前。”
 
-## 在14岁之前接种HPV疫苗的好处
+## 在 14 岁之前接种 HPV 疫苗的好处
 
 苏格兰研究的作者监测了所有生于 1988 年至 1996 年之间、符合癌症筛查条件的女性记录，约 45 万名女性。其中，有 4 万名女性在 12 至 13 岁之间接种了疫苗，而 12.4 万名女性在 14 岁或之后接种了疫苗。剩下的女性，将近 30 万名，没有接种疫苗。
 

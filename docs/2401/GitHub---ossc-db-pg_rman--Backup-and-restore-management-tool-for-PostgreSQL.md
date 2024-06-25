@@ -6,9 +6,9 @@
 
 -->
 
-# GitHub - ossc-db/pg_rman：PostgreSQL的备份和恢复管理工具
+# GitHub - ossc-db/pg_rman：PostgreSQL 的备份和恢复管理工具
 
-> 来源：[https://github.com/ossc-db/pg_rman](https://github.com/ossc-db/pg_rman)
+> 来源：[`github.com/ossc-db/pg_rman`](https://github.com/ossc-db/pg_rman)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

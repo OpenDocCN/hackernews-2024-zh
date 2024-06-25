@@ -8,7 +8,7 @@
 
 # 《计算机工程给婴儿》
 
-> 来源：[https://computerengineeringforbabies.com/products/computer-engineering-for-babies](https://computerengineeringforbabies.com/products/computer-engineering-for-babies)
+> 来源：[`computerengineeringforbabies.com/products/computer-engineering-for-babies`](https://computerengineeringforbabies.com/products/computer-engineering-for-babies)
 
 默认的**美国**运输选项是 USPS 媒体邮件（6-8 个工作日）。
 

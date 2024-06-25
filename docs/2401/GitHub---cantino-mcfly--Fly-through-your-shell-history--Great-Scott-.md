@@ -8,7 +8,7 @@ date: 2024-05-27 14:44:00
 
 # GitHub - cantino/mcfly: 飞越你的 shell 历史。Great Scott！
 
-> 来源：[https://github.com/cantino/mcfly](https://github.com/cantino/mcfly)
+> 来源：[`github.com/cantino/mcfly`](https://github.com/cantino/mcfly)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年5月27日 14:32:35
+日期：2024 年 5 月 27 日 14:32:35
 
 -->
 
-# GitHub - adamkarvonen/chess_llm_interpretability：可视化展示GPT在国际象棋PGN字符串上训练的内部棋盘状态，并对其内部棋盘状态和玩家Elo表示进行干预。
+# GitHub - adamkarvonen/chess_llm_interpretability：可视化展示 GPT 在国际象棋 PGN 字符串上训练的内部棋盘状态，并对其内部棋盘状态和玩家 Elo 表示进行干预。
 
-> 来源：[https://github.com/adamkarvonen/chess_llm_interpretability](https://github.com/adamkarvonen/chess_llm_interpretability)
+> 来源：[`github.com/adamkarvonen/chess_llm_interpretability`](https://github.com/adamkarvonen/chess_llm_interpretability)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

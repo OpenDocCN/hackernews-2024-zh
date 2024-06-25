@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - ArchiveBox/ArchiveBox: 🗃 开源自托管的网络归档工具。可保存 URL、浏览历史、书签、Pocket、Pinboard 等，保存 HTML、JS、PDF、媒体等...
 
-> 来源：[https://github.com/ArchiveBox/ArchiveBox](https://github.com/ArchiveBox/ArchiveBox)
+> 来源：[`github.com/ArchiveBox/ArchiveBox`](https://github.com/ArchiveBox/ArchiveBox)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

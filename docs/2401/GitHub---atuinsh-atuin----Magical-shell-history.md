@@ -8,7 +8,7 @@ date: 2024-05-27 14:40:08
 
 # GitHub - atuinsh/atuin: ✨ 魔法般的 shell 历史
 
-> 来源：[https://github.com/atuinsh/atuin](https://github.com/atuinsh/atuin)
+> 来源：[`github.com/atuinsh/atuin`](https://github.com/atuinsh/atuin)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

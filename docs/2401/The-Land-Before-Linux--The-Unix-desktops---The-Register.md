@@ -8,7 +8,7 @@
 
 # 《Linux 诞生之前：Unix 桌面》• The Register
 
-> 来源：[https://www.theregister.com/2024/01/27/opinion_column/](https://www.theregister.com/2024/01/27/opinion_column/)
+> 来源：[`www.theregister.com/2024/01/27/opinion_column/`](https://www.theregister.com/2024/01/27/opinion_column/)
 
 观点今天，由于 Android 和 ChromeOS，Linux 是一个重要的最终用户操作系统。但在 Linux 之前，有重要的 Unix 桌面，尽管其中大多数从未被注意到。
 
@@ -42,22 +42,22 @@ Windows 胜过 Unix 的原因有很多。其中一个最重要的原因是微软
 
 那么，Linux 是如何取得胜利的呢？嗯，它相对于 Unix 发行版有两个主要优势。第一个是它是开源的。在开源的优势中，优秀的代码生存，糟糕的代码消亡。特别是我认为 Linux 使用 GNU 通用公共许可证（GPL）功不可没。
 
-毕竟，如果成功所需的只是开源代码，我们都会运行纯BSD操作系统，如[FreeBSD](https://www.freebsd.org/)、[DragonflyBSD](https://www.dragonflybsd.org/)和[GhostBSD](https://ghostbsd.org/)。相反，虽然BSD Unix系统仍然很重要，但它们没有像Linux那样的市场份额。
+毕竟，如果成功所需的只是开源代码，我们都会运行纯 BSD 操作系统，如[FreeBSD](https://www.freebsd.org/)、[DragonflyBSD](https://www.dragonflybsd.org/)和[GhostBSD](https://ghostbsd.org/)。相反，虽然 BSD Unix 系统仍然很重要，但它们没有像 Linux 那样的市场份额。
 
-今天的Linux基金会开源供应链安全总监大卫·惠勒（David Wheeler）解释说，这是因为BSD许可证一直很麻烦，因为每隔几年就会有人说，“[嘿，让我们基于这个BSD代码创办一家公司！](https://lwn.net/Articles/197875/)”...他们将*BSD代码引入，并吸引了一些最优秀的BSD开发人员，然后编写了一个专有的派生产品。但是作为专有供应商，他们的分支变得昂贵且难以自行维护，最终公司倒闭。反复循环。
+今天的 Linux 基金会开源供应链安全总监大卫·惠勒（David Wheeler）解释说，这是因为 BSD 许可证一直很麻烦，因为每隔几年就会有人说，“[嘿，让我们基于这个 BSD 代码创办一家公司！](https://lwn.net/Articles/197875/)”...他们将*BSD 代码引入，并吸引了一些最优秀的 BSD 开发人员，然后编写了一个专有的派生产品。但是作为专有供应商，他们的分支变得昂贵且难以自行维护，最终公司倒闭。反复循环。
 
-“与此同时，GPL在法律上对主要商业公司强制执行了一项财团……[所有人]都在做出贡献，并且因为其他人也被法律要求这样做而感到安全。它基本上创造了一个合作的‘安全’区域。”
+“与此同时，GPL 在法律上对主要商业公司强制执行了一项财团……[所有人]都在做出贡献，并且因为其他人也被法律要求这样做而感到安全。它基本上创造了一个合作的‘安全’区域。”
 
-Linux的另一个致命优势是有林纳斯·托瓦兹（Linus Torvalds）。有了托瓦兹作为Linux的唯一领导者，它避免了旧Unix的内斗陷阱。
+Linux 的另一个致命优势是有林纳斯·托瓦兹（Linus Torvalds）。有了托瓦兹作为 Linux 的唯一领导者，它避免了旧 Unix 的内斗陷阱。
 
 这不仅仅是因为托瓦兹是一位天才开发者。托瓦兹幽默的头衔可能是终身仁慈独裁者，但多年来，[托瓦兹学会了与他人良好地合作和共事](https://www.theregister.com/2018/10/22/linus_torvalds_back/)。
 
-传闻托瓦兹有点刻薄，而且他确实不容易对付，但我参加过许多[Linux Plumbers会议](https://lpc.events/)。在那里，我看到他和顶级Linux内核开发人员互相合作，毫无戏剧性。如今的Linux是一个集体的努力。
+传闻托瓦兹有点刻薄，而且他确实不容易对付，但我参加过许多[Linux Plumbers 会议](https://lpc.events/)。在那里，我看到他和顶级 Linux 内核开发人员互相合作，毫无戏剧性。如今的 Linux 是一个集体的努力。
 
-如果Linux只有托瓦兹一个人，我会担心操作系统的未来。林纳斯是一个了不起的人和一位优秀的程序员，但如果这就是Linux成功的全部，我们距离它的终结只有一步之遥。
+如果 Linux 只有托瓦兹一个人，我会担心操作系统的未来。林纳斯是一个了不起的人和一位优秀的程序员，但如果这就是 Linux 成功的全部，我们距离它的终结只有一步之遥。
 
-相反，Linux发行商和开发人员已经吸取了他们的Unix历史教训。
+相反，Linux 发行商和开发人员已经吸取了他们的 Unix 历史教训。
 
 他们意识到，要想成功，不仅需要开源，还需要开放标准和共识来制作一个成功的桌面操作系统。
 
-我们可能永远也不会见到传说中的“Linux桌面年”，但是由于Android和Chrome OS的出现，Linux已经成为一款顶级的终端用户操作系统。虽然花了很长时间，但是Unix，通过Linux，终于成为了一款顶级的终端用户操作系统。®
+我们可能永远也不会见到传说中的“Linux 桌面年”，但是由于 Android 和 Chrome OS 的出现，Linux 已经成为一款顶级的终端用户操作系统。虽然花了很长时间，但是 Unix，通过 Linux，终于成为了一款顶级的终端用户操作系统。®

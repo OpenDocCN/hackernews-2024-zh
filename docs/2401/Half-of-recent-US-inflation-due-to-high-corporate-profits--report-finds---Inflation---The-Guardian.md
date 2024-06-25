@@ -8,11 +8,11 @@
 
 # 最近一半的美国通胀归因于企业利润过高，报告发现 | 通胀 | 卫报
 
-> 来源：[https://www.theguardian.com/business/2024/jan/19/us-inflation-caused-by-corporate-profits](https://www.theguardian.com/business/2024/jan/19/us-inflation-caused-by-corporate-profits)
+> 来源：[`www.theguardian.com/business/2024/jan/19/us-inflation-caused-by-corporate-profits`](https://www.theguardian.com/business/2024/jan/19/us-inflation-caused-by-corporate-profits)
 
 一份新报告声称，“压倒性证据”表明，高企业利润是持续通胀的主要驱动因素，即使它们的通胀成本下降，企业仍继续保持高价位。
 
-该报告由进步派[Groundwork Collaborative](https://groundworkcollaborative.org/)智库编制，发现企业利润在去年第二和第三季度占通胀的约53%。 根据该报告，利润在大流行前的40年中仅推动了价格增长的11%。
+该报告由进步派[Groundwork Collaborative](https://groundworkcollaborative.org/)智库编制，发现企业利润在去年第二和第三季度占通胀的约 53%。 根据该报告，利润在大流行前的 40 年中仅推动了价格增长的 11%。
 
 `<gu-island name="SignInGateSelector" priority="feature" deferuntil="visible" props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;business&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;business/inflation&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;通货膨胀&quot;},{&quot;id&quot;:&quot;business/useconomy&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国经济&quot;},{&quot;id&quot;:&quot;business/business&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;商业&quot;},{&quot;id&quot;:&quot;business/economics&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;经济学&quot;},{&quot;id&quot;:&quot;business/proctergamble&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;宝洁公司&quot;},{&quot;id&quot;:&quot;us-news/us-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国新闻&quot;},{&quot;id&quot;:&quot;campaign/email/us-morning-newsletter&quot;,&quot;type&quot;:&quot;Campaign&quot;,&quot;title&quot;:&quot;首要事情（通讯注册）&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;新闻&quot;},{&quot;id&quot;:&quot;profile/tom-perkins&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;汤姆·珀金斯&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-business&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国商业&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;business/2024/jan/19/us-inflation-caused-by-corporate-profits&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;
 
@@ -30,9 +30,9 @@
 
 由于劳动力成本飙升，以及来自大流行和乌克兰战争的供应链冲击造成航运交通拥堵，并且能源供应存疑，价格在 2021 年上涨。但这些问题在很多情况下已得到全面解决或正在减轻，并且劳动力市场已经稳定。报告指出，许多商品和服务生产者的价格实际上已经下降。
 
-关键商品和服务的成本输入的近60%的[下降](https://www.bls.gov/news.release/archives/ppi_01122024.pdf)是由能源成本大幅下降所推动的，例如喷气燃料和柴油成本，而运输和仓储成本自2022年6月以来已下降了近4%。
+关键商品和服务的成本输入的近 60%的[下降](https://www.bls.gov/news.release/archives/ppi_01122024.pdf)是由能源成本大幅下降所推动的，例如喷气燃料和柴油成本，而运输和仓储成本自 2022 年 6 月以来已下降了近 4%。
 
-然而，价格仍然很高。报告指出，消费者仍然为杂货支付大约高出25%的费用。
+然而，价格仍然很高。报告指出，消费者仍然为杂货支付大约高出 25%的费用。
 
 企业通过利用诸如乌克兰战争等事件引起的成本震荡和协调价格上涨来维持高价，韦伯说，她是麻省大学阿姆斯特分校的经济学家，未参与该论文。
 
@@ -42,26 +42,26 @@
 
 韦伯补充说，如果没有企业发起价格战，那么公司会“坚守价格线”并扩大利润率。她以[食品加工企业](https://assets.publishing.service.gov.uk/media/65730e9633b7f2000db720e2/Price_inflation_and_competition_in_food_and_grocery_manufacturing_and_supply____.pdf)为例。
 
-该论文着眼于尿片行业，宝洁和金伯利-克拉克在国内市场控制了70%的份额。自2019年以来，尿片价格已经从平均16.50美元上涨了30%，达到近22美元。
+该论文着眼于尿片行业，宝洁和金伯利-克拉克在国内市场控制了 70%的份额。自 2019 年以来，尿片价格已经从平均 16.50 美元上涨了 30%，达到近 22 美元。
 
-[跳过通讯推广](#EmailSignup-skip-link-16)
+跳过通讯推广
 
 推广通讯后
 
-上涨部分是由于大宗商品的增加，如木浆，是尿片的主要成分之一。批发木浆价格在2021年1月至2023年1月间飙升了87%，但去年价格下降了25%。
+上涨部分是由于大宗商品的增加，如木浆，是尿片的主要成分之一。批发木浆价格在 2021 年 1 月至 2023 年 1 月间飙升了 87%，但去年价格下降了 25%。
 
 然而，作者表示，尿片价格并没有随着成本的降低而下降。基础调查了收益电话，并发现两家公司的高管吹嘘随着成本下降而扩大利润率。公司高管表示，成本下降占金伯利-克拉克利润的约三分之一。
 
-宝洁公司的高管在七月的收益电话中表示，他们预计将因成本下降而获得8亿美元的意外利润，暗示他们不会降低价格。
+宝洁公司的高管在七月的收益电话中表示，他们预计将因成本下降而获得 8 亿美元的意外利润，暗示他们不会降低价格。
 
 [相关：](https://www.theguardian.com/us-news/2023/nov/27/biden-inflation-prices-defense-production-act)拜登计划利用冷战时代的法律试图降低美国物价
 
-与此同时，工人们的境况并不乐观 - 企业利润占国民收入的比例上升约29％，而工人在企业收入中的份额仍低于疫情前的水平。
+与此同时，工人们的境况并不乐观 - 企业利润占国民收入的比例上升约 29％，而工人在企业收入中的份额仍低于疫情前的水平。
 
 潘科蒂指出，拜登政府已采取措施加强供应链，并最近呼吁企业在输入成本下降时停止“加价”消费者。但潘科蒂和韦伯呼吁采取更强有力的行动，指出其他国家已实施形式的价格管制。
 
 在法国，政府介入零售商和生产商之间的价格谈判。本月早些时候，在政府支持下，超市连锁店家乐福因“不可接受的价格上涨”而从货架上[禁售](https://www.theguardian.com/world/2024/jan/04/carrefour-pulls-pepsico-products-four-eu-countries-price-hikes)了一些百事公司的产品。
 
-潘科蒂表示，在定价方面缺乏强有力的政府干预的情况下，特朗普企业减税政策于2025年到期为通过税法约束企业提供了机会。
+潘科蒂表示，在定价方面缺乏强有力的政府干预的情况下，特朗普企业减税政策于 2025 年到期为通过税法约束企业提供了机会。
 
 “我们作为一个国家已经决定我们喜欢拥有非常庞大、强大的企业，并且我们愿意让它们非常有利可图，”她说。“我们需要认真审视我们的税法如何鼓励企业谋利，并问：‘作为一个国家，我们是否要对此采取行动？’”

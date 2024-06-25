@@ -8,7 +8,7 @@
 
 # 我们不需要 DAC - 由 Chris Greening 的 ESP32 PDM 音频
 
-> 来源：[https://atomic14.substack.com/p/esp32-s3-no-dac](https://atomic14.substack.com/p/esp32-s3-no-dac)
+> 来源：[`atomic14.substack.com/p/esp32-s3-no-dac`](https://atomic14.substack.com/p/esp32-s3-no-dac)
 
 所以，在 ESP32-S3 上没有 DAC。
 
@@ -40,9 +40,9 @@ PDM 数据的范围从 -1 到 1，并根据原始信号的值改变密度。
 
 第二个问题是它总是要输出一个时钟信号 - 我们其实不需要这个。我对此的解决方法是将时钟分配给 IO45 或 IO46 - 在 S3 上，你不能真的为这些引脚做太多事情，因为它们是针对引线的引脚，最好是让它们保持不变。但一旦 ESP32 启动了，你可以将它们用于输出。
 
-有“合适”的PDM放大器IC可以接收此信号 - 例如[ MAX98358 ](https://www.analog.com/media/en/technical-documentation/data-sheets/max98358.pdf)或[ SSM2537 ](https://www.analog.com/media/en/technical-documentation/data-sheets/SSM2537.pdf)。
+有“合适”的 PDM 放大器 IC 可以接收此信号 - 例如[ MAX98358 ](https://www.analog.com/media/en/technical-documentation/data-sheets/max98358.pdf)或[ SSM2537 ](https://www.analog.com/media/en/technical-documentation/data-sheets/SSM2537.pdf)。
 
-这一切都出奇的顺利，你可以直接从PDM信号驱动耳机，大多数模拟放大器都会接受合并的立体声PDM信号，并且带宽足够低，它们就可以正常工作。
+这一切都出奇的顺利，你可以直接从 PDM 信号驱动耳机，大多数模拟放大器都会接受合并的立体声 PDM 信号，并且带宽足够低，它们就可以正常工作。
 
 你甚至可以只用一个非常简单的半桥或全桥驱动扬声器，并获得合理的音频输出（尽管可能会有很多噪音）。
 

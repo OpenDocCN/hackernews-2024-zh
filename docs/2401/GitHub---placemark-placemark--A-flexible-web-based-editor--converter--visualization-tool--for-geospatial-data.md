@@ -8,7 +8,7 @@ date: 2024-05-27 15:10:07
 
 # GitHub - placemark/placemark: A flexible web-based editor, converter, visualization tool, for geospatial data
 
-> 来源：[https://github.com/placemark/placemark](https://github.com/placemark/placemark)
+> 来源：[`github.com/placemark/placemark`](https://github.com/placemark/placemark)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

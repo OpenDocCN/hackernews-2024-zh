@@ -8,7 +8,7 @@ date: 2024-05-27 14:49:01
 
 # 数据经纪人观察 | DataBrokersWatch.org
 
-> 来源：[https://databrokerswatch.org/](https://databrokerswatch.org/)
+> 来源：[`databrokerswatch.org/`](https://databrokerswatch.org/)
 
 ### 它们
 

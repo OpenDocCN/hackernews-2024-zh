@@ -8,7 +8,7 @@
 
 # blog/entries/parallelising_hnsw.md at main · GavinMendelGleason/blog · GitHub
 
-> 来源：[https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md](https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md)
+> 来源：[`github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md`](https://github.com/GavinMendelGleason/blog/blob/main/entries/parallelising_hnsw.md)
 
 HNSW（Hierarchical Navigable Small World graphs）是在一篇极好且非常易读的论文中引入的[Yu A. Malkov, D. A. Yashunin](https://arxiv.org/abs/1603.09320)，这篇论文产生了许多流行向量数据库核心中的实现。
 
@@ -36,9 +36,9 @@ Malkov, Yashunin 论文中提出的算法对并行化不太适用。它依赖于
 
 [](#逐层构建)
 
-最简单的批处理并行方法假设我们正在*从无到有*地创建一个索引，逐层构建HNSW。
+最简单的批处理并行方法假设我们正在*从无到有*地创建一个索引，逐层构建 HNSW。
 
-我们首先根据输入索引数据*N*选择层数。这可以通过计算以邻域中的元素数量为基数的M的对数来完成。
+我们首先根据输入索引数据*N*选择层数。这可以通过计算以邻域中的元素数量为基数的 M 的对数来完成。
 
 接下来，我们将输入分成重叠的片段，每个片段包括长度为`M^i`的数据前缀，其中`i`表示层级，从`i=0`开始。在每一层，我们使用单层生成方法。
 
@@ -69,7 +69,7 @@ for i in 0..layer_count {
 
 1.  对于每个节点，可以并行地将邻域写入邻域向量。这可以并行进行，因为每个邻域是独立的且大小固定。
 
-不幸的是，上述算法可能会使一些东西无法到达。我们发现在小数据集上，召回率相当高，通常超过0.999，但一旦达到数百万，该算法可能会使向量变成孤立的，并且召回率可能会下降至0.90以下（取决于搜索队列的大小）。
+不幸的是，上述算法可能会使一些东西无法到达。我们发现在小数据集上，召回率相当高，通常超过 0.999，但一旦达到数百万，该算法可能会使向量变成孤立的，并且召回率可能会下降至 0.90 以下（取决于搜索队列的大小）。
 
 幸运的是，有一种处理滞留者的策略，使用以下算法：
 

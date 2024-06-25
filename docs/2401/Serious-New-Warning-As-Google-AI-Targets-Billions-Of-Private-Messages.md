@@ -8,7 +8,7 @@ date: 2024-05-27 15:19:17
 
 # 谷歌 AI 对数十亿私人消息发出严重的新警告
 
-> 来源：[https://www.forbes.com/sites/zakdoffman/2024/01/28/new-details-free-ai-upgrade-for-google-and-samsung-android-users-leaks/](https://www.forbes.com/sites/zakdoffman/2024/01/28/new-details-free-ai-upgrade-for-google-and-samsung-android-users-leaks/)
+> 来源：[`www.forbes.com/sites/zakdoffman/2024/01/28/new-details-free-ai-upgrade-for-google-and-samsung-android-users-leaks/`](https://www.forbes.com/sites/zakdoffman/2024/01/28/new-details-free-ai-upgrade-for-google-and-samsung-android-users-leaks/)
 
 研究人员刚刚发布了一项预发布的、具有颠覆性的 [谷歌消息 AI 升级](https://www.forbes.com/sites/zakdoffman/2024/01/24/huge-free-ai-upgrade-for-google-and-samsung-android-users-just-leaked/?sh=4be32f4e6193 "https://www.forbes.com/sites/zakdoffman/2024/01/24/huge-free-ai-upgrade-for-google-and-samsung-android-users-just-leaked/?sh=4be32f4e6193")。但这是一个存在严重隐私风险的升级 —— 看来巴德可能会要求读取和分析你的私人消息历史。那么这可能是如何工作的，如何保护你的隐私，以及何时开始呢。
 
@@ -22,37 +22,37 @@ date: 2024-05-27 15:19:17
 
 因此，对于仍在适应应用程序权限、隐私标签和跟踪透明度，以及所有那些语音 AI 助手 [窃听丑闻](https://www.forbes.com/sites/kateoflahertyuk/2020/02/26/new-amazon-apple-google-eavesdropping-threat-should-you-quit-your-smart-speaker/?sh=a432ee0428d1 "https://www.forbes.com/sites/kateoflahertyuk/2020/02/26/new-amazon-apple-google-eavesdropping-threat-should-you-quit-your-smart-speaker/?sh=a432ee0428d1") 仍然历历在目的智能手机所有者来说，这是下一个隐私战场。谷歌面临的挑战将是说服用户，这不会打开与以前看到的那种隐私噩梦相同的大门，在那里用户内容与 AI 平台相遇。
 
-<fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation">与您的Bard消息请求相关的另一个不太有争议的隐私问题将是与云端进行处理，用于培训，也许会被人类看到——尽管是匿名的。这些数据将被存储18个月，并且即使您禁用AI，也会持续几天，尽管手动删除是可用的。
+<fbs-ad position="inread" progressive="" ad-id="article-0-inread" aria-hidden="true" role="presentation">与您的 Bard 消息请求相关的另一个不太有争议的隐私问题将是与云端进行处理，用于培训，也许会被人类看到——尽管是匿名的。这些数据将被存储 18 个月，并且即使您禁用 AI，也会持续几天，尽管手动删除是可用的。
 
-[ForbesGoogle发布新的隐身模式指南供Chrome用户使用By Zak Doffman](https://www.forbes.com/sites/zakdoffman/2024/01/18/new-google-chrome-update-warning-for-windows-iphone-and-android/)
+[ForbesGoogle 发布新的隐身模式指南供 Chrome 用户使用 By Zak Doffman](https://www.forbes.com/sites/zakdoffman/2024/01/18/new-google-chrome-update-warning-for-windows-iphone-and-android/)
 
-此类请求不在Google消息的新默认端到端加密范围内——您实际上是在与Google本身进行消息交流。虽然这并不具有争议性，但值得一提的是。就像所有生成式人工智能聊天机器人一样，包括ChatGPT在内，您需要假设您问的任何事情都是非私密的，并且*可能*会回来困扰您。
+此类请求不在 Google 消息的新默认端到端加密范围内——您实际上是在与 Google 本身进行消息交流。虽然这并不具有争议性，但值得一提的是。就像所有生成式人工智能聊天机器人一样，包括 ChatGPT 在内，您需要假设您问的任何事情都是非私密的，并且*可能*会回来困扰您。
 
-但消息分析不同。这是内容（现在）位于端到端加密屏障内的内容，在这个私密消息成为新常态的世界中。在这里，理想情况是在设备上进行AI处理，数据永远不会离开你的手机，而不是将内容上传到云端，在那里可以进行更多的处理。
+但消息分析不同。这是内容（现在）位于端到端加密屏障内的内容，在这个私密消息成为新常态的世界中。在这里，理想情况是在设备上进行 AI 处理，数据永远不会离开你的手机，而不是将内容上传到云端，在那里可以进行更多的处理。
 
-这就是安卓与iPhone之间可能产生影响的战场。在设备分析方面，苹果历来比谷歌更强大，后者默认使用云端来分析用户内容。
+这就是安卓与 iPhone 之间可能产生影响的战场。在设备分析方面，苹果历来比谷歌更强大，后者默认使用云端来分析用户内容。
 
-《金融时报》*The FT* 本周[报道](https://www.ft.com/content/52839eb2-6641-42a6-acd7-5d41e809c97a "https://www.ft.com/content/52839eb2-6641-42a6-acd7-5d41e809c97a")：“苹果正在悄悄增强其能力，以将人工智能引入其下一代iPhone… 苹果的目标似乎是通过移动设备操作生成式人工智能，使得AI聊天机器人和应用能够在手机的硬件和软件上运行，而不是由数据中心中的云服务提供支持。”
+《金融时报》*The FT* 本周[报道](https://www.ft.com/content/52839eb2-6641-42a6-acd7-5d41e809c97a "https://www.ft.com/content/52839eb2-6641-42a6-acd7-5d41e809c97a")：“苹果正在悄悄增强其能力，以将人工智能引入其下一代 iPhone… 苹果的目标似乎是通过移动设备操作生成式人工智能，使得 AI 聊天机器人和应用能够在手机的硬件和软件上运行，而不是由数据中心中的云服务提供支持。”
 
-*1/29更新：*
+*1/29 更新：*
 
-*有关苹果自己努力将生成式人工智能引入iOS的最新消息表明，其将一切都保留在设备上的意图可能没有预期的那么坚定。*
+*有关苹果自己努力将生成式人工智能引入 iOS 的最新消息表明，其将一切都保留在设备上的意图可能没有预期的那么坚定。*
 
-*在新的iOS 17.4测试版中刚刚被* [*9to5Mac*](https://9to5mac.com/2024/01/26/apple-siri-chatgpt-ios-18-development/ "https://9to5mac.com/2024/01/26/apple-siri-chatgpt-ios-18-development/") *发现的代码揭示了进展的情况。“苹果正在继续开发由大型语言模型技术支持的新版Siri，同时也得到了其他来源的一点帮助。”*
+*在新的 iOS 17.4 测试版中刚刚被* [*9to5Mac*](https://9to5mac.com/2024/01/26/apple-siri-chatgpt-ios-18-development/ "https://9to5mac.com/2024/01/26/apple-siri-chatgpt-ios-18-development/") *发现的代码揭示了进展的情况。“苹果正在继续开发由大型语言模型技术支持的新版 Siri，同时也得到了其他来源的一点帮助。”*
 
-*正如*[*彭博社*](https://www.bloomberg.com/news/newsletters/2023-10-22/what-is-apple-doing-in-ai-revamping-siri-search-apple-music-and-other-apps-lo1ffr7p "https://www.bloomberg.com/news/newsletters/2023-10-22/what-is-apple-doing-in-ai-revamping-siri-search-apple-music-and-other-apps-lo1ffr7p")*的马克·古尔曼去年秋天指出，“当OpenAI的ChatGPT像火箭一样起飞时，苹果基本上只是旁观者…… 它看着谷歌和微软推出了他们搜索引擎的生成式AI版本……苹果唯一值得注意的AI发布是iOS 17中改进的自动纠正系统。”*
+*正如*[*彭博社*](https://www.bloomberg.com/news/newsletters/2023-10-22/what-is-apple-doing-in-ai-revamping-siri-search-apple-music-and-other-apps-lo1ffr7p "https://www.bloomberg.com/news/newsletters/2023-10-22/what-is-apple-doing-in-ai-revamping-siri-search-apple-music-and-other-apps-lo1ffr7p")*的马克·古尔曼去年秋天指出，“当 OpenAI 的 ChatGPT 像火箭一样起飞时，苹果基本上只是旁观者…… 它看着谷歌和微软推出了他们搜索引擎的生成式 AI 版本……苹果唯一值得注意的 AI 发布是 iOS 17 中改进的自动纠正系统。”*
 
-*因此，根据9to5Mac的报道，帮助苹果的“一些消息来源”包括ChatGPT，“苹果似乎正在使用OpenAI的ChatGPT API进行内部测试，以帮助开发自己的AI模型。”*
+*因此，根据 9to5Mac 的报道，帮助苹果的“一些消息来源”包括 ChatGPT，“苹果似乎正在使用 OpenAI 的 ChatGPT API 进行内部测试，以帮助开发自己的 AI 模型。”*
 
-*根据9to5Mac的报道，“iOS 17.4代码表明，苹果正在测试四种不同的AI模型。这包括两个[苹果内部模型]AjaxGPT的版本，包括一个在设备上处理的版本和一个不在设备上处理的版本。”苹果似乎正在将其自己的AI模型的结果与ChatGPT进行对比，其中包括iMessage界面作为其中的一部分，并且并非全部在设备上进行。*
+*根据 9to5Mac 的报道，“iOS 17.4 代码表明，苹果正在测试四种不同的 AI 模型。这包括两个[苹果内部模型]AjaxGPT 的版本，包括一个在设备上处理的版本和一个不在设备上处理的版本。”苹果似乎正在将其自己的 AI 模型的结果与 ChatGPT 进行对比，其中包括 iMessage 界面作为其中的一部分，并且并非全部在设备上进行。*
 
-*对于苹果来说，问题在于谷歌的设置更适合于驱动像ChatGPT这样的生成式AI的更具性能的边缘/云架构。有人保证消息内容分析将仅在设备上进行，但事实是，数百万用户将推动新功能的推出，并且愿意牺牲不易理解的模糊隐私主题。*
+*对于苹果来说，问题在于谷歌的设置更适合于驱动像 ChatGPT 这样的生成式 AI 的更具性能的边缘/云架构。有人保证消息内容分析将仅在设备上进行，但事实是，数百万用户将推动新功能的推出，并且愿意牺牲不易理解的模糊隐私主题。*
 
-*这使得苹果陷入了困境。“你的iPhone上发生的事情就在你的iPhone上”这一哲学根深蒂固。然而，现实是，边缘与云端可用的AI处理将受到处理技术、硬件成本、电池寿命、热量和一般操作限制的限制。*
+*这使得苹果陷入了困境。“你的 iPhone 上发生的事情就在你的 iPhone 上”这一哲学根深蒂固。然而，现实是，边缘与云端可用的 AI 处理将受到处理技术、硬件成本、电池寿命、热量和一般操作限制的限制。*
 
-*古尔曼表示，iOS 18“在公司内部被视为公司历史上最大的iOS更新之一 — 如果不是最大的”。他指出了“苹果内部正在进行的关于如何部署生成式AI的辩论：作为完全基于设备的体验、基于云的设置或介于两者之间。基于设备的方法会更快，有助于保护隐私，但通过云部署苹果的LLMs将允许进行更高级的操作。”*
+*古尔曼表示，iOS 18“在公司内部被视为公司历史上最大的 iOS 更新之一 — 如果不是最大的”。他指出了“苹果内部正在进行的关于如何部署生成式 AI 的辩论：作为完全基于设备的体验、基于云的设置或介于两者之间。基于设备的方法会更快，有助于保护隐私，但通过云部署苹果的 LLMs 将允许进行更高级的操作。”*
 
-*AI处理发生的决定可能是苹果隐私原则的最大动荡。苹果控制着完整的生态系统，因此可以以其他人无法做到的方式弯曲物理定律。但这是一个全新的复杂水平。*
+*AI 处理发生的决定可能是苹果隐私原则的最大动荡。苹果控制着完整的生态系统，因此可以以其他人无法做到的方式弯曲物理定律。但这是一个全新的复杂水平。*
 
 *当 Apple 开始将 AI 集成到 iMessage 中时，我们将看到其用户群中更加直言不讳、关注隐私的人如何回应。对于拟议中的 CSAM 分析引起的强烈反对意见说明了如果 Apple 确实以某种形式复制 Bard 的内容分析，情况可能变得多么有争议。因此，我认为我们不会很快看到这一点，最初的重点将是 Siri 风格的请求和支持。*
 

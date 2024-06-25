@@ -8,15 +8,15 @@ date: 2024-05-27 15:23:26
 
 # Byju's：Byju's 寻求 2 亿美元的权益发行，估值下调 99% - 《经济时报》
 
-> 来源：[https://economictimes.indiatimes.com/tech/startups/byjus-seeks-200-million-in-rights-issue-amid-cash-crunch/articleshow/107230248.cms?from=mdr](https://economictimes.indiatimes.com/tech/startups/byjus-seeks-200-million-in-rights-issue-amid-cash-crunch/articleshow/107230248.cms?from=mdr)
+> 来源：[`economictimes.indiatimes.com/tech/startups/byjus-seeks-200-million-in-rights-issue-amid-cash-crunch/articleshow/107230248.cms?from=mdr`](https://economictimes.indiatimes.com/tech/startups/byjus-seeks-200-million-in-rights-issue-amid-cash-crunch/articleshow/107230248.cms?from=mdr)
 
 曾经被定为印度最有价值的初创公司，以 220 亿美元估值
 
-[Byju's](/topic/byju%E2%80%99s)
+Byju's
 
 正准备将其估值削减 99%，作为潜在的一部分
 
-[权益发行](/topic/rights-issue)
+权益发行
 
 .
 
@@ -46,7 +46,7 @@ Byju 的发言人截至周一新闻发布时间未回复《经济时报》的邮
 
 此轮融资也将成为本地大型初创企业估值最大的一次下跌之一，之前
 
-[PharmEasy 在筹集 350 亿卢比时估值下跌了90%](https://economictimes.indiatimes.com/tech/startups/pharmeasy-plans-rs-2400-crore-rights-issue-at-90-cut-in-share-price/articleshow/101510154.cms)
+[PharmEasy 在筹集 350 亿卢比时估值下跌了 90%](https://economictimes.indiatimes.com/tech/startups/pharmeasy-plans-rs-2400-crore-rights-issue-at-90-cut-in-share-price/articleshow/101510154.cms)
 
 通过去年 11 月的一次权益发行以清除债务。这家药房电商是自过去 12-18 个月资金荒开始以来首家遭受打击的公司。
 
@@ -58,7 +58,7 @@ Byju 的发言人截至周一新闻发布时间未回复《经济时报》的邮
 
 该公司最近几个月来一直受到多个投资者的重大减记影响，其中包括
 
-[BlackRock](/topic/blackrock)
+BlackRock
 
 ，使其估值仅约为 10 亿美元。
 
@@ -70,7 +70,7 @@ Byju 的发言人截至周一新闻发布时间未回复《经济时报》的邮
 
 创始人兼首席执行官在致投资者的信中
 
-[Byju Raveendran]((/panache/panache-people-101/byju-raveendran)/profileshow/79679651.cms)
+Byju Raveendran/profileshow/79679651.cms)
 
 说，“这次资本增加对于防止进一步的价值损失以及为公司提供必要的资源以履行其使命至关重要。”
 
@@ -78,15 +78,15 @@ Byju 的发言人截至周一新闻发布时间未回复《经济时报》的邮
 
 虽然该公司希望其投资者出手支持，但据上述人士称，截至上周，仍有多位投资者并未被说服。权益发行将开放订阅 30 天。
 
-**还阅读 |** [贝佳蕾准备在45-60天内解决流动性危机，我将是最后一名坚持的人：Byju Raveendran告诉高管们](https://economictimes.indiatimes.com/tech/startups/liquidity-crisis-will-be-addressed-in-45-days-ill-be-the-last-man-standing-byju-raveendran-tells-senior-execs/articleshow/105756024.cms)
+**还阅读 |** [贝佳蕾准备在 45-60 天内解决流动性危机，我将是最后一名坚持的人：Byju Raveendran 告诉高管们](https://economictimes.indiatimes.com/tech/startups/liquidity-crisis-will-be-addressed-in-45-days-ill-be-the-last-man-standing-byju-raveendran-tells-senior-execs/articleshow/105756024.cms)
 
 Raveendran — 与妻子和联合创始人
 
-[Divya Gokulnath](/topic/divya-gokulnath)
+Divya Gokulnath
 
-, 兄弟Riju Ravindran 和其他人 — 持有 Think & Learn 约 26% 的股份。据人们称，他正在与多个投资者洽谈，以融资他在该公司的比例投资，这将约为 5200 万美元 — 用于创始人团队投资于该提议。
+, 兄弟 Riju Ravindran 和其他人 — 持有 Think & Learn 约 26% 的股份。据人们称，他正在与多个投资者洽谈，以融资他在该公司的比例投资，这将约为 5200 万美元 — 用于创始人团队投资于该提议。
 
-在致投资者的信中，拉维兰还表示，创始人在过去18个月中注入了约 110 亿美元，“作为对业务及其使命坚定和持续信心的证明”。
+在致投资者的信中，拉维兰还表示，创始人在过去 18 个月中注入了约 110 亿美元，“作为对业务及其使命坚定和持续信心的证明”。
 
 Byju’s 经过一年多的延迟后，
 

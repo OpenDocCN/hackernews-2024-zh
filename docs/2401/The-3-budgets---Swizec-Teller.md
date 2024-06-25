@@ -6,13 +6,13 @@
 
 -->
 
-# 3个预算 | Swizec Teller
+# 3 个预算 | Swizec Teller
 
-> 来源：[https://swizec.com/blog/the-3-budgets/](https://swizec.com/blog/the-3-budgets/)
+> 来源：[`swizec.com/blog/the-3-budgets/`](https://swizec.com/blog/the-3-budgets/)
 
 <main id="content" class="css-1x80348">
 
-软件工程师的薪水来自3个预算中的一个。支付你工资的预算塑造了你的日常工作，并影响了你的职业轨迹。
+软件工程师的薪水来自 3 个预算中的一个。支付你工资的预算塑造了你的日常工作，并影响了你的职业轨迹。
 
 我认为这就像是一条商业物理定律。没有人需要做出有意识的选择，模式就会出现。
 
@@ -72,7 +72,7 @@
 
 ～Swizec
 
-发表于 2023 年 12 月 26 日，属于 [心态](/categories/mindset/)，[职业生涯](/categories/career/) 分类。
+发表于 2023 年 12 月 26 日，属于 心态，职业生涯 分类。
 
 #### 你喜欢这篇文章吗？
 
@@ -92,7 +92,7 @@ GPT-4 精心挑选的语义相似的文章
 
 晋升，获得更高的薪水，为顶级公司工作
 
-[了解更多](/senior-mindset/)
+了解更多
 
 **有燃烧的问题想让我来解答吗？**在 [twitter](https://twitter.com/swizec) 上找我，我会尽力而为。
 

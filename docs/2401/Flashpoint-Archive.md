@@ -8,19 +8,19 @@ category: 未分类
 
 # Flashpoint Archive
 
-> 来源：[https://flashpointarchive.org/](https://flashpointarchive.org/)
+> 来源：[`flashpointarchive.org/`](https://flashpointarchive.org/)
 
 欢迎
 
 * * *
 
-[https://www.youtube.com/embed/0nIbn3vvvMc](https://www.youtube.com/embed/0nIbn3vvvMc)
+[`www.youtube.com/embed/0nIbn3vvvMc`](https://www.youtube.com/embed/0nIbn3vvvMc)
 
 视频
 
 Flashpoint Archive 是一个社区努力，旨在保存来自 web 的游戏和动画。
 
-互联网历史和文化至关重要，网络发展速度如此之快，以至于今天可能很普遍的东西明天就可能过时。该项目致力于尽可能保存这些平台的许多体验，以免它们消失在时间的长河中。自2017年12月以来，
+互联网历史和文化至关重要，网络发展速度如此之快，以至于今天可能很普遍的东西明天就可能过时。该项目致力于尽可能保存这些平台的许多体验，以免它们消失在时间的长河中。自 2017 年 12 月以来，
 
 [超过 200,000 款游戏和动画](https://flashpointproject.github.io/flashpoint-database/statistics/)
 
@@ -40,13 +40,13 @@ Flashpoint Archive 是一个社区努力，旨在保存来自 web 的游戏和�
 
 允许安全播放插件启用的内容的代理-所有这些都是
 
-[开源软件](/source)
+开源软件
 
 。
 
 该项目
 
-[最初是由](/news#starting-date)
+最初是由
 
 由 BlueMaxima 创建，旨在在 Flash 死亡之前赶上 web 游戏的消失。自那以后，这个项目已经发展成为一个由来自世界各地数百名社区贡献者参与的重大工作，涵盖了为众多互联网插件、框架和标准创建的游戏和动画。
 

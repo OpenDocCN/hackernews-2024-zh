@@ -8,7 +8,7 @@
 
 # 在北欧，出生率正在下降。家庭友好政策是否已不再足够？
 
-> 来源：[https://www.ft.com/content/500c0fb7-a04a-4f87-9b93-bf65045b9401](https://www.ft.com/content/500c0fb7-a04a-4f87-9b93-bf65045b9401)
+> 来源：[`www.ft.com/content/500c0fb7-a04a-4f87-9b93-bf65045b9401`](https://www.ft.com/content/500c0fb7-a04a-4f87-9b93-bf65045b9401)
 
 ### 标准数字版
 

@@ -6,31 +6,31 @@
 
 -->
 
-# 日本发布强震后在日本海岸发布海啸警报 | 国际 | 西班牙EL PAÍS英语
+# 日本发布强震后在日本海岸发布海啸警报 | 国际 | 西班牙 EL PAÍS 英语
 
-> 来源：[https://english.elpais.com/international/2024-01-01/japan-issues-tsunami-warnings-after-a-series-of-strong-earthquakes-on-sea-of-japan-coast.html](https://english.elpais.com/international/2024-01-01/japan-issues-tsunami-warnings-after-a-series-of-strong-earthquakes-on-sea-of-japan-coast.html)
+> 来源：[`english.elpais.com/international/2024-01-01/japan-issues-tsunami-warnings-after-a-series-of-strong-earthquakes-on-sea-of-japan-coast.html`](https://english.elpais.com/international/2024-01-01/japan-issues-tsunami-warnings-after-a-series-of-strong-earthquakes-on-sea-of-japan-coast.html)
 
 [日本发布海啸警报](https://english.elpais.com/international/2023-08-21/japanese-government-pledges-long-term-support-for-fisheries-during-fukushima-plant-water-release.html)，并告诉人们在周一其西海岸发生一系列强烈地震后撤离海滨地区。
 
-日本气象厅报告称，石川县和附近县市海岸线附近于下午4点后不久发生了地震，其中一次初步震级为7.6级。
+日本气象厅报告称，石川县和附近县市海岸线附近于下午 4 点后不久发生了地震，其中一次初步震级为 7.6 级。
 
 它为石川县发布了一级海啸警报，并为日本本州岛西海岸其余地区发布了较低级别的海啸警告或提示。
 
-日本公共广播电视公司NHK警告说，水流可能达到5米（16.5英尺）高，并敦促人们尽快逃到高地或附近建筑物的顶部。
+日本公共广播电视公司 NHK 警告说，水流可能达到 5 米（16.5 英尺）高，并敦促人们尽快逃到高地或附近建筑物的顶部。
 
-NHK表示，海啸波浪可能会不断返回，警报在最初警报发出后两个多小时仍在继续播放。该地区还发生了几次余震。
+NHK 表示，海啸波浪可能会不断返回，警报在最初警报发出后两个多小时仍在继续播放。该地区还发生了几次余震。
 
 政府发言人林义昌告诉记者，该地区的核电站没有报告任何异常。但他说，对于沿海地区的人们来说，远离即将到来的海啸至关重要。
 
 “每一分钟都很重要。请立即撤离到安全地区，”他说。
 
-预计将有约3米（约10英尺）高的海啸袭击新泻等日本西海岸的其他县市。据NHK报道，已经确认到达海岸线的较小海啸波浪。
+预计将有约 3 米（约 10 英尺）高的海啸袭击新泻等日本西海岸的其他县市。据 NHK 报道，已经确认到达海岸线的较小海啸波浪。
 
 地震本身也造成了损失。日本新闻画面显示，石川县和市城市的一个地区喷出红色烟雾，指出那里可能有火灾。详细信息尚不可用。
 
 另一个地区的房屋已经倒塌，正在进行搜救以查看是否有人被困在瓦砾中。
 
-该地区的子弹头列车停运。据NHK报道，部分高速公路也关闭，水管已破裂。
+该地区的子弹头列车停运。据 NHK 报道，部分高速公路也关闭，水管已破裂。
 
 日本媒体报道显示，一群人站在裂开的人行道旁，其中包括一个背着婴儿的女人。
 
@@ -44,6 +44,6 @@ NHK表示，海啸波浪可能会不断返回，警报在最初警报发出后�
 
 -   他重申了对受影响地区立即撤离的警告。
 
--   日本是一个极易发生地震的国家。2011年3月，一场[重大地震和海啸导致了一个核电站的熔毁](https://english.elpais.com/elpais/2011/03/13/inenglish/1299997241_850210.html)。
+-   日本是一个极易发生地震的国家。2011 年 3 月，一场[重大地震和海啸导致了一个核电站的熔毁](https://english.elpais.com/elpais/2011/03/13/inenglish/1299997241_850210.html)。
 
--   *订阅我们的* [*每周简报*](https://plus.elpais.com/newsletters/lnp/1/333/?lang=en) *，获取更多来自EL PAÍS美国版的英语新闻报道*
+-   *订阅我们的* [*每周简报*](https://plus.elpais.com/newsletters/lnp/1/333/?lang=en) *，获取更多来自 EL PAÍS 美国版的英语新闻报道*

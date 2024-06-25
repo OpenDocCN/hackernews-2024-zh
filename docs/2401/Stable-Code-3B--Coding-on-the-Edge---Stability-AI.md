@@ -8,7 +8,7 @@
 
 # Stable Code 3B：边缘编码 — Stability AI
 
-> 来源：[https://stability.ai/news/stable-code-2024-llm-code-completion-release](https://stability.ai/news/stable-code-2024-llm-code-completion-release)
+> 来源：[`stability.ai/news/stable-code-2024-llm-code-completion-release`](https://stability.ai/news/stable-code-2024-llm-code-completion-release)
 
 今天，我们宣布我们 2024 年的第一个大型语言模型发布：[Stable Code 3B](https://huggingface.co/stabilityai/stable-code-3b)。这个新的大型语言模型是我们之前发布的 [Stable Code Alpha 3B](https://stability.ai/news/stablecode-llm-generative-ai-coding) 的后续版本，也是第一个重要的 Stable Code 发布，提供了一个新的设计用于代码完成的最新模型，并具有多个额外功能。
 

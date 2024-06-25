@@ -8,7 +8,7 @@ date: 2024-05-27 15:08:16
 
 # GitHub - ashvardanian/SimSIMD: Up to 200x Faster Inner Products and Vector Similarity — for Python, JavaScript, Rust, and C, supporting f64, f32, f16 real & complex, i8, and binary vectors using SIMD for both x86 AVX2 & AVX-512 and Arm NEON & SVE 📐
 
-> 来源：[https://github.com/ashvardanian/SimSIMD](https://github.com/ashvardanian/SimSIMD)
+> 来源：[`github.com/ashvardanian/SimSIMD`](https://github.com/ashvardanian/SimSIMD)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

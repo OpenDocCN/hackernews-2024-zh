@@ -8,7 +8,7 @@
 
 # 一个 Lean 4 中的定理证明的初学者同伴 | 博客 | emallson.net
 
-> 来源：[https://emallson.net/blog/a-beginners-companion-to-theorem-proving-in-lean/](https://emallson.net/blog/a-beginners-companion-to-theorem-proving-in-lean/)
+> 来源：[`emallson.net/blog/a-beginners-companion-to-theorem-proving-in-lean/`](https://emallson.net/blog/a-beginners-companion-to-theorem-proving-in-lean/)
 
 今年，我的一个业余项目之一是在[Lean](https://lean-lang.org/)中实现一些基本属性和[Matroids](https://en.wikipedia.org/wiki/Matroid)之间的转换。
 
@@ -159,7 +159,7 @@ example (S T : Finset α) : S ⊆ T -> T ⊆ S -> S = T := by
 
 **输出状态：**目标被替换为`¬ h`
 
-这在你构建了一个矛盾的假设以证明矛盾时非常有用，但这个矛盾对于Lean来说并不明显的情况下。
+这在你构建了一个矛盾的假设以证明矛盾时非常有用，但这个矛盾对于 Lean 来说并不明显的情况下。
 
 ```
 example (a b : ℕ) : a > b -> b > a -> True := by
@@ -170,7 +170,7 @@ example (a b : ℕ) : a > b -> b > a -> True := by
 
 **输出状态：** *无目标*
 
-`contradiction`在Lean明显地将矛盾切除掉时省去了`absurd`的额外步骤。通常，这意味着你有假设`h：a`和`h'：¬ a`。
+`contradiction`在 Lean 明显地将矛盾切除掉时省去了`absurd`的额外步骤。通常，这意味着你有假设`h：a`和`h'：¬ a`。
 
 ```
 example (a b : ℕ) : a > b -> ¬ a > b -> True := by
@@ -181,7 +181,7 @@ example (a b : ℕ) : a > b -> ¬ a > b -> True := by
 
 **输出状态：**目标被替换为`¬ h`，并且`h`被替换为`¬ goal`
 
-与`absurd`/`contradiction`不同，这实际上是在做一些不同的事情：应用[contraposition](https://en.wikipedia.org/wiki/Contraposition)。我包含它主要是因为在TLiP中没有提到这种策略，我经常发现`contrapose`在简化涉及否定与`rw [not_not]`组合的目标时很有用。
+与`absurd`/`contradiction`不同，这实际上是在做一些不同的事情：应用[contraposition](https://en.wikipedia.org/wiki/Contraposition)。我包含它主要是因为在 TLiP 中没有提到这种策略，我经常发现`contrapose`在简化涉及否定与`rw [not_not]`组合的目标时很有用。
 
 ```
 /- a theorem for this exists in Mathlib, but again we're ignoring it -/ example (S : Finset α) : ¬ S.card = 0 -> S ≠ ∅ := by
@@ -190,7 +190,7 @@ example (a b : ℕ) : a > b -> ¬ a > b -> True := by
 
 在传统的具有代数数据类型的语言中，类型大致分为两组：
 
-在Rust等语言中，这些是`struct`或元组：
+在 Rust 等语言中，这些是`struct`或元组：
 
 ```
 struct Foo {
@@ -198,7 +198,7 @@ struct Foo {
  b: usize; }   struct Bar(usize, usize); 
 ```
 
-在Lean中，`And`类型，虽然通常写成`A ∧ B`，但实际上是一个看起来像这样的结构：
+在 Lean 中，`And`类型，虽然通常写成`A ∧ B`，但实际上是一个看起来像这样的结构：
 
 ```
 structure And where
@@ -218,7 +218,7 @@ have : a ∧ b := sorry  have 〈 a, b 〉 := this
 
 +   转换为子目标：`apply And.intro`（为证明左侧和右侧创建新的目标）
 
-在Rust等语言中，这些是`enum`：
+在 Rust 等语言中，这些是`enum`：
 
 ```
 enum Foo {
@@ -226,7 +226,7 @@ enum Foo {
  B(usize) } 
 ```
 
-在Lean中，`Or`类型是一个求和类型。虽然写成`A ∨ B`，但实际上会是这样的形式：
+在 Lean 中，`Or`类型是一个求和类型。虽然写成`A ∨ B`，但实际上会是这样的形式：
 
 ```
 inductive Or where | inl : α | inr : β 
@@ -244,7 +244,7 @@ have : a ∨ b := sorry  cases this with | inl a => sorry  | inr b => sorry
 
 +   转换为蕴含式：例如`rw [or_iff_not_imp_left]`（将`a ∨ b`转换为`¬ a -> b`，并且给定一个`¬a`的假设将目标改为`b`）
 
-在我的业余项目中给我带来最多麻烦的单一事物是证明涉及*存在量词*的定理。了解Lean的构造元素以充分理解存在量词的设计是很重要的，我认为TPiL在解释这一点方面做得相当不错。然而，这种解释并没有真正告诉你如何在更复杂的情况下证明存在量词。
+在我的业余项目中给我带来最多麻烦的单一事物是证明涉及*存在量词*的定理。了解 Lean 的构造元素以充分理解存在量词的设计是很重要的，我认为 TPiL 在解释这一点方面做得相当不错。然而，这种解释并没有真正告诉你如何在更复杂的情况下证明存在量词。
 
 首先：存在量化器的类型是`Exist α β`。这是一个乘积类型，类似于`And`，并且可以以类似的方式解构：
 
@@ -304,7 +304,7 @@ example [DecidableEq α] (a b : Finset α) (e : α) : ¬ e ∈ a -> insert e a =
 
 1.  定理查找策略开始在大型证明状态下表现得更差，这使得交互体验变得更糟。
 
-这不是 *太* 大的问题——我的 Matroid 秩函数的次模性证明源自独立谓词，大约有100行，并且仍然至少是 *可用的*——但肯定是用户体验的一个因素，与良好实践相一致：小定理，像小函数一样，通常更容易处理，而这与 Lean 交互系统的实际性能相一致。
+这不是 *太* 大的问题——我的 Matroid 秩函数的次模性证明源自独立谓词，大约有 100 行，并且仍然至少是 *可用的*——但肯定是用户体验的一个因素，与良好实践相一致：小定理，像小函数一样，通常更容易处理，而这与 Lean 交互系统的实际性能相一致。
 
 总的来说，通过 Lean 中的这些证明对我来说是一次非常有教益的经验。相对来说，我是一个证明助手的初学者（在研究生期间只轻微地尝试过 Emacs 的[证明通用工具](https://proofgeneral.github.io/) + [Coq](https://coq.inria.fr/)），LSP 和其他工具的质量是巨大的优势。我希望在我更积极地研究理论时存在这样的工具，因为它确实帮助我发现了我做的纸上证明中存在的隐藏假设。
 

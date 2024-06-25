@@ -8,7 +8,7 @@
 
 # LinkedIn Isn't Just for Jobs Anymore. It's Now a Dating App Too.
 
-> 来源：[https://www.businessinsider.com/linkedin-is-a-dating-app-remote-work-online-romance-2024-1](https://www.businessinsider.com/linkedin-is-a-dating-app-remote-work-online-romance-2024-1)
+> 来源：[`www.businessinsider.com/linkedin-is-a-dating-app-remote-work-online-romance-2024-1`](https://www.businessinsider.com/linkedin-is-a-dating-app-remote-work-online-romance-2024-1)
 
 萨缪拉·约翰从未打算使用 LinkedIn 进行约会。相反，追求者主动找上了她。
 
@@ -28,13 +28,13 @@
 
 直接消息的便利性和相对隐私性有助于解释一些人如何在 LinkedIn 上寻找爱情，但并不能解释*为什么*。在这个拥有众多专门的约会平台的时代 —— 从像 Tinder、Bumble 和 Hinge 这样的巨头到包括[Feeld](https://www.businessinsider.com/feeld-app-to-find-ethically-nonmonogamous-people-to-date-2022-6)（为非传统人士）、Pure（为不愿承诺者）和 NUiT（为星座爱好者）在内的小众应用 —— 为什么要把丘比特的箭与企业更新混合在一起呢？
 
-<es-blockquote data-styles="pullquote-right" data-quote="任何你可以看到别人照片的社交媒体都可能变成约会应用。而LinkedIn更好，因为它不仅展示了人们的虚假生活。" data-quote-updated="true" data-source="Add source (optional)" data-source-updated="false" class="premium">> <q class="pullquote-quotation headline-bold ignore-typography">任何你可以看到别人照片的社交媒体都可能变成约会应用。而LinkedIn更好，因为它不仅展示了人们的虚假生活。</q></es-blockquote>
+<es-blockquote data-styles="pullquote-right" data-quote="任何你可以看到别人照片的社交媒体都可能变成约会应用。而 LinkedIn 更好，因为它不仅展示了人们的虚假生活。" data-quote-updated="true" data-source="Add source (optional)" data-source-updated="false" class="premium">> <q class="pullquote-quotation headline-bold ignore-typography">任何你可以看到别人照片的社交媒体都可能变成约会应用。而 LinkedIn 更好，因为它不仅展示了人们的虚假生活。</q></es-blockquote>
 
-其中一个答案可能是越来越多的美国人厌倦了现代约会应用带来的类似于轮盘的经历。在2023年对美国成年人的一项皮尤[调查](https://www.pewresearch.org/short-reads/2023/02/02/key-findings-about-online-dating-in-the-u-s/)中，近三分之一的受访者表示他们曾经使用过在线约会网站或应用。超过一半使用应用的女性报告称他们在过去一年里收到的消息数量让他们感到不知所措，而64%的男性表示他们因为收到的消息数量*少*而感到不安。尽管绝大多数男性和女性表示他们对他们联系到的人感到兴奋，但更大比例的受访者表示他们有时或经常对他们的匹配感到失望。
+其中一个答案可能是越来越多的美国人厌倦了现代约会应用带来的类似于轮盘的经历。在 2023 年对美国成年人的一项皮尤[调查](https://www.pewresearch.org/short-reads/2023/02/02/key-findings-about-online-dating-in-the-u-s/)中，近三分之一的受访者表示他们曾经使用过在线约会网站或应用。超过一半使用应用的女性报告称他们在过去一年里收到的消息数量让他们感到不知所措，而 64%的男性表示他们因为收到的消息数量*少*而感到不安。尽管绝大多数男性和女性表示他们对他们联系到的人感到兴奋，但更大比例的受访者表示他们有时或经常对他们的匹配感到失望。
 
 在线上，要知道一个诱人资料背后的人是否真实并不总是容易的。甚至相对无害的虚拟欺骗，比如过时或过于美好的照片，让人误以为他们的真实外貌，或者关于兴趣和成就的虚假信息，都可能让人感到沮丧。然后还有那些捏造或盗用整个资料的人，这种做法被称为“[catfishing](https://www.businessinsider.com/signs-being-catfished-2018-9)，”让任何在网上被陌生人联系的人都有理由怀疑。所有这些欺骗行为使许多人对于寻找掌控自己爱情命运的方法感到[约会应用疲劳](https://www.businessinsider.com/gen-z-dating-trend-online-apps-friends-romantic-partners-relationships-2023-3#:~:text=In%20interviews%20conducted%20for%20our,the%20person%20they%20eventually%20select.)。
 
-LinkedIn作为一个约会网站的吸引力在于，根据那些以这种方式使用的人所说，该平台能够恢复一些控制权并提升他们的潜在对象的素质。因为这个专业社交网站要求用户链接到他们当前和以前的雇主的资料页面，它提供了其他社交媒体平台所缺乏的额外可信度。许多资料还包括来自前同事和经理的第一人称参考——真实的人有真实的资料页面。
+LinkedIn 作为一个约会网站的吸引力在于，根据那些以这种方式使用的人所说，该平台能够恢复一些控制权并提升他们的潜在对象的素质。因为这个专业社交网站要求用户链接到他们当前和以前的雇主的资料页面，它提供了其他社交媒体平台所缺乏的额外可信度。许多资料还包括来自前同事和经理的第一人称参考——真实的人有真实的资料页面。
 
 一些用户已经将这个想法发挥到了极致。去年夏天，新加坡的一位英国移民[Candice Gallagher](https://www.businessinsider.com/woman-uses-linkedin-as-dating-app-roasted-unprofessional-disrespectful-2023-8)在 [发布了一个 TikTok 视频](https://www.tiktok.com/@candi.licious/video/7260385706999074066?q=a%20grade%20man%20linkedin&t=1702267867731)，其中她说 LinkedIn 有“一流筛选”来找到“一流男人” —— 即医生、律师和“金融兄弟”。在帖子中，她吹捧了你可以使用的各种筛选器来追踪理想的伴侣。最近，有人在 X 上分享了科技企业家乔治·霍兹（George Hotz）的 LinkedIn 简介的[截图](https://twitter.com/jennsun/status/1711809764773220547)。在他的简介中，霍兹宣称他现在“专门将该网站用作约会平台”，并列出了他理想匹配的一系列必备特征 —— “聪明、有吸引力、女性，在圣地亚哥或拜访圣地亚哥”。他写道：“给我发消息，邀请我出去喝一杯。”
 
@@ -50,19 +50,19 @@ LinkedIn作为一个约会网站的吸引力在于，根据那些以这种方式
 
 根据去年的一项调查，受访者表示同意。去年五月，[Passport Photo Online](https://passport-photo.online/blog/is-linkedin-the-new-tinder/)向美国超过 1000 名女性 LinkedIn 用户询问了平台上的浪漫情感问题。虽然这项调查并不严格科学，但压倒性的 91% 的人报告说他们在平台上收到了浪漫邀约或其他不合适的消息。四分之三的人说，在某个时候，这些不受欢迎的进展让他们限制了在该网站上的活动。
 
-Caitlin Begg，组织沟通咨询公司[Authentic Social](https://authsocial.com/)的创始人和前领英员工，将这一困境归结为一个同意的问题。 "当我注册约会应用时，我是在签署约会消息。我愿意接收这些消息，" Begg说道。 在领英上，没有这样的理解，那些跨越平台隐含边界的人冒着破坏他们的专业关系和声誉的风险。 这有点像在办公室调情或试图在大公司的外场活动中约会：它可能点燃共同的火花，但也可能让你被解雇。
+Caitlin Begg，组织沟通咨询公司[Authentic Social](https://authsocial.com/)的创始人和前领英员工，将这一困境归结为一个同意的问题。 "当我注册约会应用时，我是在签署约会消息。我愿意接收这些消息，" Begg 说道。 在领英上，没有这样的理解，那些跨越平台隐含边界的人冒着破坏他们的专业关系和声誉的风险。 这有点像在办公室调情或试图在大公司的外场活动中约会：它可能点燃共同的火花，但也可能让你被解雇。
 
 <es-blockquote data-styles="pullquote-breakout" data-quote="如今越来越多的人渴望更缓慢、更真诚的连接形式。" data-quote-updated="true" data-source="添加来源（可选）" data-source-updated="false" class="premium">> <q class="pullquote-quotation headline-bold ignore-typography">如今越来越多的人渴望更缓慢、更真诚的连接形式。</q></es-blockquote>
 
-约翰·杰伊学院的社会学讲师，以及关于友谊和约会的几本书的作者Jan Yager同意领英用户应该谨慎行事：“领英的主要目标是建立专业关系和与职业相关的利益。 在领英上的任何人在寻求浪漫时都必须非常小心，如果这是他或她的目标的话——否则可能会遭受严重的反击。”
+约翰·杰伊学院的社会学讲师，以及关于友谊和约会的几本书的作者 Jan Yager 同意领英用户应该谨慎行事：“领英的主要目标是建立专业关系和与职业相关的利益。 在领英上的任何人在寻求浪漫时都必须非常小心，如果这是他或她的目标的话——否则可能会遭受严重的反击。”
 
-另一方面，多年来互联网已经模糊了人们专业生活和个人生活之间的界限：Warren在TikTok上遇到了她现在的男朋友，而我的伴侣则是通过Twitter上的直接消息发展起来的——这是一个我们都用来建立专业联系和推广我们作为记者的工作的网站。 即使是线下，未来的夫妇也可以在办公室或专业圈子里相遇。 出于这些原因，Yager承认领英也可以成为将寻求浪漫的人们有机、合乎道德地联系在一起的选择。 一切取决于如何去做。
+另一方面，多年来互联网已经模糊了人们专业生活和个人生活之间的界限：Warren 在 TikTok 上遇到了她现在的男朋友，而我的伴侣则是通过 Twitter 上的直接消息发展起来的——这是一个我们都用来建立专业联系和推广我们作为记者的工作的网站。 即使是线下，未来的夫妇也可以在办公室或专业圈子里相遇。 出于这些原因，Yager 承认领英也可以成为将寻求浪漫的人们有机、合乎道德地联系在一起的选择。 一切取决于如何去做。
 
-“如果有人愿意花时间，让最初的专业联系以一种相互尊重的方式发展，” Yager说道，“如果双方都以某种方式表达了对浪漫的可用性，并且他们想要进一步——这可能意味着电话或Zoom通话或在安全的公共场所见面——希望这是双赢的。”
+“如果有人愿意花时间，让最初的专业联系以一种相互尊重的方式发展，” Yager 说道，“如果双方都以某种方式表达了对浪漫的可用性，并且他们想要进一步——这可能意味着电话或 Zoom 通话或在安全的公共场所见面——希望这是双赢的。”
 
 ## **'手机大脑'**
 
-传播顾问Begg怀疑，对于使用领英约会的兴趣日益增加，至少部分源于更广泛的社交断裂感。 在工作中，她研究了数字优先沟通如何影响人们对关系的期望。 如今，她说，越来越多的人渴望更缓慢、更真诚的连接形式。
+传播顾问 Begg 怀疑，对于使用领英约会的兴趣日益增加，至少部分源于更广泛的社交断裂感。 在工作中，她研究了数字优先沟通如何影响人们对关系的期望。 如今，她说，越来越多的人渴望更缓慢、更真诚的连接形式。
 
 “通知文化——手机思维——有点占据了主导地位，”贝格告诉我。“就约会应用而言，我认为每个人，尤其是疫情后，都变得有点厌倦了。我们厌倦了来自同样约会应用的相同提示和相同类型的联系。”
 
@@ -70,7 +70,7 @@ Caitlin Begg，组织沟通咨询公司[Authentic Social](https://authsocial.com
 
 <es-blockquote data-styles="pullquote-in-content" data-quote="这就是我认为人们在领英上想要获得的，一种集体感。" data-quote-updated="true" data-source="Add source (optional)" data-source-updated="false" class="premium">> <q class="pullquote-quotation headline-bold ignore-typography">这就是我认为人们在领英上想要获得的，一种集体感。</q></es-blockquote>
 
-尽管领英当然是一个数字平台，但贝格补充说，一些用户可能被他们对复制（或至少模仿）模拟、水塔的体验的渴望所吸引。在许多现实生活中的工作场所，这种体验要么被削弱，要么完全消失，这是通过[远程和混合工作](https://www.businessinsider.com/remote-work-fueling-gen-z-job-anxiety-stress-mental-health-2023-12)的兴起实现的。许多年轻专业人士可能根本没有经历过这种面对面的工作场所的友情，这可能有助于解释为什么领英近年来在[青少年](https://www.thecut.com/article/why-teenagers-love-linkedin.html)和[20多岁的人中](https://www.fastcompany.com/90921792/why-gen-z-is-flocking-from-twitter-to-linkedin)的人气激增。
+尽管领英当然是一个数字平台，但贝格补充说，一些用户可能被他们对复制（或至少模仿）模拟、水塔的体验的渴望所吸引。在许多现实生活中的工作场所，这种体验要么被削弱，要么完全消失，这是通过[远程和混合工作](https://www.businessinsider.com/remote-work-fueling-gen-z-job-anxiety-stress-mental-health-2023-12)的兴起实现的。许多年轻专业人士可能根本没有经历过这种面对面的工作场所的友情，这可能有助于解释为什么领英近年来在[青少年](https://www.thecut.com/article/why-teenagers-love-linkedin.html)和[20 多岁的人中](https://www.fastcompany.com/90921792/why-gen-z-is-flocking-from-twitter-to-linkedin)的人气激增。
 
 “我们变得如此孤立，”贝格说。“这就是我认为人们在领英上想要获得的，一种集体感。”
 

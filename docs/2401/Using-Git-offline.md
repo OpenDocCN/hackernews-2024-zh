@@ -8,7 +8,7 @@
 
 # 离线使用 Git
 
-> 来源：[https://www.gibbard.me/using_git_offline/](https://www.gibbard.me/using_git_offline/)
+> 来源：[`www.gibbard.me/using_git_offline/`](https://www.gibbard.me/using_git_offline/)
 
 一些公司使用隔离网络甚至完全缺乏网络作为安全措施，以防止未经授权的访问。在这些系统上工作可能会很艰难，但仍然有可能，并且也许更重要的是，使用像 Git 这样的正确版本控制工具。
 
@@ -93,7 +93,7 @@ git checkout -b new_branch FETCH_HEAD`
 
 Git bundle 允许将仓库的部分或全部压缩成一个 git 能够克隆和从中获取的单个文件中。
 
-工作流程与以前非常相似，但是不再复制整个仓库目录，而是创建git捆绑包。在第一台机器上使用以下命令创建一个捆绑包：
+工作流程与以前非常相似，但是不再复制整个仓库目录，而是创建 git 捆绑包。在第一台机器上使用以下命令创建一个捆绑包：
 
 ```
 `git bundle create repoName.bundle --all` 
@@ -101,7 +101,7 @@ Git bundle 允许将仓库的部分或全部压缩成一个 git 能够克隆和�
 
 `-- all`选项捆绑整个仓库，包括所有分支和标签。可以使用`-b branchName`或`-t tagName`选择特定分支或标签。
 
-将repoName.bundle文件复制到另一台计算机。要克隆仓库，只需使用：
+将 repoName.bundle 文件复制到另一台计算机。要克隆仓库，只需使用：
 
 ```
 `git clone repoName.bundle` 
@@ -113,7 +113,7 @@ Git bundle 允许将仓库的部分或全部压缩成一个 git 能够克隆和�
 `git bundle create repoName.bundle --all` 
 ```
 
-对于更大的仓库，最好只捆绑仓库的一部分，以避免传输比需要的更多的数据。例如，只包括主分支上最后5个提交的话，可以使用：
+对于更大的仓库，最好只捆绑仓库的一部分，以避免传输比需要的更多的数据。例如，只包括主分支上最后 5 个提交的话，可以使用：
 
 ```
 `git bundle create repoName.bundle -5 master` 
@@ -143,7 +143,7 @@ Git bundle 允许将仓库的部分或全部压缩成一个 git 能够克隆和�
 
 ### 创建一个本地的远程仓库
 
-捆绑解决了在没有网络的情况下同步Git仓库的问题，但我们仍然面临着多台计算机都很可能略有不同步的问题。如果新的开发人员加入团队，他们应该从哪里复制仓库？最好的选择是选择一台开发机器作为“服务器”。可以在这台开发机器上创建一个裸的Git仓库，另外还可以在开发人员实际工作的本地克隆仓库中创建一个本地仓库。
+捆绑解决了在没有网络的情况下同步 Git 仓库的问题，但我们仍然面临着多台计算机都很可能略有不同步的问题。如果新的开发人员加入团队，他们应该从哪里复制仓库？最好的选择是选择一台开发机器作为“服务器”。可以在这台开发机器上创建一个裸的 Git 仓库，另外还可以在开发人员实际工作的本地克隆仓库中创建一个本地仓库。
 
 ```
 `cd /path/to/store/main/repo
@@ -152,7 +152,7 @@ cd remoteRepoName.git
 git init --bare` 
 ```
 
-然后导航到本地git仓库或创建一个新的仓库，将remoteRepoName.git仓库添加为远程仓库。
+然后导航到本地 git 仓库或创建一个新的仓库，将 remoteRepoName.git 仓库添加为远程仓库。
 
 ```
 `cd /path/to/local/repo/
@@ -168,4 +168,4 @@ git push origin branchName`
 
 ## 摘要
 
-Git的分布式特性使其可以在没有中央服务器的情况下很好地工作。虽然所提供的选项永远不会像只需推送到github那样方便，但它们肯定比`main_v1_final version_with_bobs_extra_patch finalfinal_version`这样的替代方案好得多。
+Git 的分布式特性使其可以在没有中央服务器的情况下很好地工作。虽然所提供的选项永远不会像只需推送到 github 那样方便，但它们肯定比`main_v1_final version_with_bobs_extra_patch finalfinal_version`这样的替代方案好得多。

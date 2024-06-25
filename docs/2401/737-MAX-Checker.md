@@ -8,7 +8,7 @@ date: 2024-05-27 14:37:50
 
 # 737 MAX 检查器
 
-> 来源：[https://www.ismyplanea737max.com/](https://www.ismyplanea737max.com/)
+> 来源：[`www.ismyplanea737max.com/`](https://www.ismyplanea737max.com/)
 
 ###### 🚨 更新
 

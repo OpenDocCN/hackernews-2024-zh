@@ -6,9 +6,9 @@
 
 -->
 
-# GitHub - joexbayer/RetrOS-32: 32位Hobby操作系统，支持i386架构的图形、多任务和网络。
+# GitHub - joexbayer/RetrOS-32: 32 位 Hobby 操作系统，支持 i386 架构的图形、多任务和网络。
 
-> 来源：[https://github.com/joexbayer/RetrOS-32](https://github.com/joexbayer/RetrOS-32)
+> 来源：[`github.com/joexbayer/RetrOS-32`](https://github.com/joexbayer/RetrOS-32)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

@@ -2,13 +2,13 @@
 
 category: 未分类
 
-日期：2024年5月27日15:04:06
+日期：2024 年 5 月 27 日 15:04:06
 
 -->
 
 # GitHub - stas00/ml-engineering：机器学习工程开放式图书
 
-> 来源：[https://github.com/stas00/ml-engineering](https://github.com/stas00/ml-engineering)
+> 来源：[`github.com/stas00/ml-engineering`](https://github.com/stas00/ml-engineering)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

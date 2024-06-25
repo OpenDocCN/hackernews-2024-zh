@@ -8,7 +8,7 @@
 
 # 亚马逊旗下的 Audible 裁员 5% | TechCrunch
 
-> 来源：[https://techcrunch.com/2024/01/11/amazon-owned-audible-lays-off-5-of-staff/](https://techcrunch.com/2024/01/11/amazon-owned-audible-lays-off-5-of-staff/)
+> 来源：[`techcrunch.com/2024/01/11/amazon-owned-audible-lays-off-5-of-staff/`](https://techcrunch.com/2024/01/11/amazon-owned-audible-lays-off-5-of-staff/)
 
 据[商业内幕](https://www.businessinsider.com/amazon-jobs-layoffs-audible-2024-1)获取的泄露备忘录显示，亚马逊旗下的有声读物公司 Audible 正裁员 5% 的员工。
 

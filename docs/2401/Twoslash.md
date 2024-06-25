@@ -8,7 +8,7 @@ category: 未分类
 
 # Twoslash
 
-> 来源：[https://twoslash.netlify.app/](https://twoslash.netlify.app/)
+> 来源：[`twoslash.netlify.app/`](https://twoslash.netlify.app/)
 
 关于的文档
 
@@ -22,7 +22,7 @@ Visual Studio Code 的语法引擎
 
 混合了 TypeScript 编译器的信息
 
-[开始](/guide/)
+开始
 
 作者：[Orta Therox](https://orta.io)
 

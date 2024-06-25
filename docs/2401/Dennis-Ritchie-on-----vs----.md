@@ -8,7 +8,7 @@
 
 # 丹尼斯·里奇谈& | vs. ==
 
-> 来源：[https://www.lysator.liu.se/c/dmr-on-or.html](https://www.lysator.liu.se/c/dmr-on-or.html)
+> 来源：[`www.lysator.liu.se/c/dmr-on-or.html`](https://www.lysator.liu.se/c/dmr-on-or.html)
 
 来自 decvax!harpo!npoiv!alice!research!dmr Fri Oct 22 01:04:10 1982
 

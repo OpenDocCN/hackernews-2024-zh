@@ -8,7 +8,7 @@ date: 2024-05-27 14:49:21
 
 # The BeOS Bible (1999) : Scot Hacker : Free Download, Borrow, and Streaming : Internet Archive
 
-> 来源：[https://archive.org/details/the-beos-bible/mode/1up](https://archive.org/details/the-beos-bible/mode/1up)
+> 来源：[`archive.org/details/the-beos-bible/mode/1up`](https://archive.org/details/the-beos-bible/mode/1up)
 
 **Table of Contents**
 
@@ -272,7 +272,7 @@ PowerPC 硬件上的基本安装 - 172
 
 采访：Bob Herold - 178
 
-第 4 章：快速上网 - 185
+第四章：快速上网 - 185
 
 BeOS 的优势 - 186
 
@@ -338,7 +338,7 @@ BeMail 和过滤器 - 226
 
 保持清醒 - 235
 
-第 5 章：文件和 Tracker - 237
+第五章：文件和 Tracker - 237
 
 仔细观察 Tracker - 238
 
@@ -452,7 +452,7 @@ BeOS 的磁盘工具 - 298
 
 可选的文件系统支持 - 304
 
-CD-ROM格式 - 304
+CD-ROM 格式 - 304
 
 目录结构 - 305
 
@@ -474,9 +474,9 @@ CD-ROM格式 - 304
 
 采访：Pavel Cisler - 330
 
-第6章：终端 - 335
+第六章：终端 - 335
 
-适用于BeOS的基本bash - 336
+适用于 BeOS 的基本 bash - 336
 
 本章的目的 - 338
 
@@ -486,7 +486,7 @@ CD-ROM格式 - 304
 
 终端应用窗口 - 339
 
-基本的bash - 341
+基本的 bash - 341
 
 导航和文件管理 - 341
 
@@ -496,7 +496,7 @@ CD-ROM格式 - 304
 
 标准输入，标准输出 - 351
 
-基本Shell语法 - 355
+基本 Shell 语法 - 355
 
 终端/跟踪器集成 - 355
 
@@ -504,11 +504,11 @@ CD-ROM格式 - 304
 
 历史课 - 360
 
-TAB键自动补全 - 360
+TAB 键自动补全 - 360
 
 查找文件 - 362
 
-跟踪器Grep - 365
+跟踪器 Grep - 365
 
 设置权限 - 366
 
@@ -522,11 +522,11 @@ GeekGadgets - 372
 
 快速访问长命令 - 376
 
-从图形界面使用Shell命令 - 380
+从图形界面使用 Shell 命令 - 380
 
-与Shell的交流 - 381
+与 Shell 的交流 - 381
 
-谁是Baron，并且他为什么拥有我的文件？ - 382
+谁是 Baron，并且他为什么拥有我的文件？ - 382
 
 调整您的路径 - 383
 
@@ -544,7 +544,7 @@ UserSetupEnvironment versus.profile - 384
 
 采访：Cyril Meurillon - 395
 
-第7章：使用查询 - 401
+第七章：使用查询 - 401
 
 数据挖掘您的硬盘 - 402
 
@@ -552,7 +552,7 @@ UserSetupEnvironment versus.profile - 384
 
 开放式数据格式 - 403
 
-属性和MIME类型 - 405
+属性和 MIME 类型 - 405
 
 淘金 - 405
 
@@ -570,19 +570,19 @@ UserSetupEnvironment versus.profile - 384
 
 “真实”的文件位置还重要吗？ - 415
 
-案例研究：查询和BeMail - 416
+案例研究：查询和 BeMail - 416
 
-Be文件系统是“真实”数据库吗？ - 416
+Be 文件系统是“真实”数据库吗？ - 416
 
 快速一瞥 - 417
 
-编写BeMail查询脚本 - 419
+编写 BeMail 查询脚本 - 419
 
 示例查询 - 420
 
 按公式查询 - 422
 
-Starter公式 - 423
+Starter 公式 - 423
 
 为什么要用双等号？ - 424
 
@@ -590,15 +590,15 @@ Starter公式 - 423
 
 采访：George Hoffman - 430
 
-第8章：网络 - 435
+第八章：网络 - 435
 
-网络概念 - 超越PPP - 436
+网络概念 - 超越 PPP - 436
 
-从20000英尺处进行网络通信 - 436
+从 20000 英尺处进行网络通信 - 436
 
-TCP/IP工作原理 - 438
+TCP/IP 工作原理 - 438
 
-BeOS自制的TCP/IP协议栈 - 438
+BeOS 自制的 TCP/IP 协议栈 - 438
 
 局域网与广域网 - 441
 
@@ -610,15 +610,15 @@ BeOS自制的TCP/IP协议栈 - 438
 
 测试你的连接 - 450
 
-通过FTP移动文件 - 451
+通过 FTP 移动文件 - 451
 
-GUI与CLI - 451
+GUI 与 CLI - 451
 
 设置服务器 - 452
 
 登录 - 453
 
-命令行FTP - 454
+命令行 FTP - 454
 
 其他文件共享和传输方法 - 455
 
@@ -628,15 +628,15 @@ NFS - 457
 
 AppleTalk - 457
 
-五分钟Web服务器 - 458
+五分钟 Web 服务器 - 458
 
 谁需要个人服务器？ - 458
 
-你说的“Web服务器”是什么意思？ - 459
+你说的“Web 服务器”是什么意思？ - 459
 
 托管实际域名 - 461
 
-使用PoorMan发布 - 462
+使用 PoorMan 发布 - 462
 
 大小写敏感问题 - 463
 
@@ -644,9 +644,9 @@ AppleTalk - 457
 
 远程控制 - 471
 
-Telnet到您的BeOS机器 - 471
+Telnet 到您的 BeOS 机器 - 471
 
-从其他操作系统进行Telnet访问 - 472
+从其他操作系统进行 Telnet 访问 - 472
 
 远程访问其他操作系统 - 474
 
@@ -654,27 +654,27 @@ Telnet到您的BeOS机器 - 471
 
 多个网络配置 - 476
 
-使用DHCP - 478
+使用 DHCP - 478
 
 手动编辑网络偏好设置 - 478
 
-代理、IP转发和伪装 - 479
+代理、IP 转发和伪装 - 479
 
-DNS与hosts文件的区别 - 481
+DNS 与 hosts 文件的区别 - 481
 
 串行/终端通信 - 486
 
 串行连接是什么？ - 486
 
-使用Dial-o-Rama自定义连接 - 487
+使用 Dial-o-Rama 自定义连接 - 487
 
 安全 - 488
 
-BeOS是否安全？ - 488
+BeOS 是否安全？ - 488
 
 采访：Russ McMahon - 491
 
-第9章：偏好设置和自定义 - 497
+第九章：偏好设置和自定义 - 497
 
 偏好设置 - 498
 
@@ -696,7 +696,7 @@ BeOS是否安全？ - 488
 
 DriveSetup - 513
 
-MacOS尝试挂载BeOS分区 - 516
+MacOS 尝试挂载 BeOS 分区 - 516
 
 磁盘挂载设置 - 517
 
@@ -708,7 +708,7 @@ MacOS尝试挂载BeOS分区 - 516
 
 字体学 - 528
 
-Bitstream和Be - 530
+Bitstream 和 Be - 530
 
 日本语 - 531
 
@@ -726,7 +726,7 @@ Baka Baka Quiz Show - 533
 
 菜单 - 543
 
-关于Dvorak键盘布局 - 543
+关于 Dvorak 键盘布局 - 543
 
 鼠标 - 545
 
@@ -746,7 +746,7 @@ Baka Baka Quiz Show - 533
 
 时间 - 555
 
-BeOS是否兼容2000年？ - 556
+BeOS 是否兼容 2000 年？ - 556
 
 原子钟 - 556
 
@@ -770,13 +770,13 @@ BeOS是否兼容2000年？ - 556
 
 为什么某些文件类型对话框有空白图标坑？ - 572
 
-在Photoshop和其他图像应用程序中创建BeOS图标 - 572
+在 Photoshop 和其他图像应用程序中创建 BeOS 图标 - 572
 
 恢复系统文件类型和图标 - 573
 
 采访：Hiroshi Lockheimer - 574
 
-第10章：系统工具和实用程序 - 577
+第十章：系统工具和实用程序 - 577
 
 安装程序 - 578
 
@@ -784,7 +784,7 @@ SoftwareValet - 578
 
 修复损坏的软件包文件 - 580
 
-OmicronSoft的EasyInstall/EasyDeinstall - 585
+OmicronSoft 的 EasyInstall/EasyDeinstall - 585
 
 孤儿怎么办？ - 586
 
@@ -820,7 +820,7 @@ freeSpace - 603
 
 采访：Dominic Giampaolo - 605
 
-第11章：网络应用程序 - 613
+第十一章：网络应用程序 - 613
 
 电子邮件客户端 - 614
 
@@ -828,13 +828,13 @@ Adamation's Adam - 614
 
 BeatWare Mail-It - 619
 
-开始使用Mail-It - 619
+开始使用 Mail-It - 619
 
-OmicronSoft邮件集团 - 625
+OmicronSoft 邮件集团 - 625
 
 邮政管理员 - 627
 
-FTP客户端 - 632
+FTP 客户端 - 632
 
 BeatWare's Get-It - 632
 
@@ -850,25 +850,25 @@ BeInformed - 638
 
 终端访问新闻组 - 642
 
-IRC客户端 - 643
+IRC 客户端 - 643
 
 IRC 101 - 643
 
 费利克斯 - 644
 
-Web服务器 - 647
+Web 服务器 - 647
 
 网页浏览器怎么样？ - 647
 
 Apache - 648
 
-修复Apache故障 - 650
+修复 Apache 故障 - 650
 
 餐厅 - 651
 
 Zorro - 653
 
-FTP服务器 - 654
+FTP 服务器 - 654
 
 校园 - 654
 
@@ -882,7 +882,7 @@ ANewsWire - 656
 
 BeCQ - 658
 
-第12章：生产力应用程序 - 659
+第十二章：生产力应用程序 - 659
 
 AbiSoft 的 BePlan - 661
 
@@ -944,7 +944,7 @@ Spellswell - 693
 
 QuickLetter Address Book（QLAB） - 694
 
-第13章：图形应用程序 - 697
+第十三章：图形应用程序 - 697
 
 图像处理和绘图程序 - 698
 
@@ -984,7 +984,7 @@ roDesign 的 roColour - 732
 
 采访：Pierre Raynaud-Richard - 737
 
-第14章：媒体应用程序 - 743
+第十四章：媒体应用程序 - 743
 
 音频应用程序 - 744
 
@@ -1022,7 +1022,7 @@ Tebo Software 的 Grabbo - 773
 
 采访：Jon Watte - 778
 
-第15章：其他好东西 - 781
+第十五章：其他好东西 - 781
 
 厨房水槽 - 782
 
@@ -1052,7 +1052,7 @@ X-窗口服务器 - 798
 
 采访：Tim Martin - 800
 
-第16章：故障排除和维护 - 807
+第十六章：故障排除和维护 - 807
 
 一般故障排除 - 808
 

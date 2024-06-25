@@ -8,13 +8,13 @@ date: 2024-05-27 15:22:06
 
 # 生酮饮食的新前沿：双相情感障碍、抑郁症和其他心理疾病：Shots - Health News : NPR
 
-> 来源：[https://www.npr.org/sections/health-shots/2024/01/27/1227062470/keto-ketogenic-diet-mental-illness-bipolar-depression](https://www.npr.org/sections/health-shots/2024/01/27/1227062470/keto-ketogenic-diet-mental-illness-bipolar-depression)
+> 来源：[`www.npr.org/sections/health-shots/2024/01/27/1227062470/keto-ketogenic-diet-mental-illness-bipolar-depression`](https://www.npr.org/sections/health-shots/2024/01/27/1227062470/keto-ketogenic-diet-mental-illness-bipolar-depression)
 
-苏格兰的研究人员 Iain Campbell 从年轻时就患有双相情感障碍。在尝试了生酮饮食之后，他发现自己的症状有了显著改善——现在他想知道这是否也对其他人有效。他在1月25日于佛罗里达州克利尔沃特举办的[代谢健康峰会](https://metabolichealthsummit.com/)上分享了他最近的发现。**Tina Russell for NPR** ****hide caption****
+苏格兰的研究人员 Iain Campbell 从年轻时就患有双相情感障碍。在尝试了生酮饮食之后，他发现自己的症状有了显著改善——现在他想知道这是否也对其他人有效。他在 1 月 25 日于佛罗里达州克利尔沃特举办的[代谢健康峰会](https://metabolichealthsummit.com/)上分享了他最近的发现。**Tina Russell for NPR** ****hide caption****
 
 ****toggle caption****Tina Russell for NPR
 
-苏格兰的研究人员 Iain Campbell 从年轻时就患有双相情感障碍。在尝试了生酮饮食之后，他发现自己的症状有了显著改善——现在他想知道这是否也对其他人有效。他在1月25日于佛罗里达州克利尔沃特举办的[代谢健康峰会](https://metabolichealthsummit.com/)上分享了他最近的发现。
+苏格兰的研究人员 Iain Campbell 从年轻时就患有双相情感障碍。在尝试了生酮饮食之后，他发现自己的症状有了显著改善——现在他想知道这是否也对其他人有效。他在 1 月 25 日于佛罗里达州克利尔沃特举办的[代谢健康峰会](https://metabolichealthsummit.com/)上分享了他最近的发现。
 
 Tina Russell for NPR
 
@@ -34,39 +34,39 @@ Campbell 处理了不受欢迎的体重增加和代谢问题，这是精神药�
 
 为了减肥，他大大减少了碳水化合物的摄入，转而专注于蛋白质和脂肪。结果他无意间进入了酮症：一种代谢状态，身体从以葡萄糖为主要能源转变为来自脂肪的酮体。
 
-他开始在播客和YouTube视频中了解[生酮饮食](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1528-1167.2008.01821.x)，这种饮食高脂肪、低碳水化合物。很快，他开始追踪自己的酮体水平，通过家中的血液测试。
+他开始在播客和 YouTube 视频中了解[生酮饮食](https://onlinelibrary.wiley.com/doi/full/10.1111/j.1528-1167.2008.01821.x)，这种饮食高脂肪、低碳水化合物。很快，他开始追踪自己的酮体水平，通过家中的血液测试。
 
 "我意识到实际上是酮体水平在以一种以往任何其他东西都没有的方式改变我的症状，" 他说道。"这让我觉得真的很重要，就像改变了一生一样。"
 
 ### 开启职业生涯的时刻
 
-一个饮食究竟是如何完成这种炼金术的？Campbell决定在爱丁堡大学攻读心理健康博士学位，希望能开展自己的研究，并了解它是否能帮助其他人。
+一个饮食究竟是如何完成这种炼金术的？Campbell 决定在爱丁堡大学攻读心理健康博士学位，希望能开展自己的研究，并了解它是否能帮助其他人。
 
 在在线论坛上，患有双相情感障碍的人们[分享了类似的轶事](https://www.cambridge.org/core/journals/bjpsych-open/article/ketosis-and-bipolar-disorder-controlled-analytic-study-of-online-reports/24F5057C04622AB3306F638F3FFB7D65) — 他们发现了心情的改善，思维更清晰，抑郁发作减少。
 
-但是，当Campbell寻找方法启动一项合适的临床试验来测试这种饮食的有效性时，他感到沮丧。
+但是，当 Campbell 寻找方法启动一项合适的临床试验来测试这种饮食的有效性时，他感到沮丧。
 
 "这真的就像你被认为是怪人一样，"他说。"有一次，我以为没有人会为这项研究买单。"
 
-他制作了一个长达45分钟的[视频](https://twitter.com/IainCampbellPhD/status/1359678469727207425)，总结了在双相情感障碍中使用生酮饮食的生物学基础，并在社交媒体上发布了该视频，之后并没有抱太大希望。
+他制作了一个长达 45 分钟的[视频](https://twitter.com/IainCampbellPhD/status/1359678469727207425)，总结了在双相情感障碍中使用生酮饮食的生物学基础，并在社交媒体上发布了该视频，之后并没有抱太大希望。
 
-生酮饮食避免了大多数碳水化合物，而是专注于高脂肪食品、蛋白质和蔬菜。**凯蒂·海斯·卢克为NPR拍摄** ****隐藏说明****
+生酮饮食避免了大多数碳水化合物，而是专注于高脂肪食品、蛋白质和蔬菜。**凯蒂·海斯·卢克为 NPR 拍摄** ****隐藏说明****
 
-****切换说明****凯蒂·海斯·卢克摄于NPR
+****切换说明****凯蒂·海斯·卢克摄于 NPR
 
 但是，一些医生在看到实践中的潜力后已经开始研究它，其中包括[克里斯·帕尔默](https://www.chrispalmermd.com/)，哈佛医学院和麦克林医院的精神科医生。
 
-几年前，Palmer对这种饮食有了自己的领悟，他在2017年的[案例报告](https://www.sciencedirect.com/science/article/pii/S0920996417300634?via%3Dihub)中详细描述了这一点。他说，两名患有分裂性情感障碍的患者的"精神症状真正显著、改变人生的改善"。
+几年前，Palmer 对这种饮食有了自己的领悟，他在 2017 年的[案例报告](https://www.sciencedirect.com/science/article/pii/S0920996417300634?via%3Dihub)中详细描述了这一点。他说，两名患有分裂性情感障碍的患者的"精神症状真正显著、改变人生的改善"。
 
-2021年初，他开始与Jan和David Baszucki的大儿子合作，他们是一位富有的科技企业家。他们的儿子马特患有双相情感障碍，并在最近几年里服用了许多药物。
+2021 年初，他开始与 Jan 和 David Baszucki 的大儿子合作，他们是一位富有的科技企业家。他们的儿子马特患有双相情感障碍，并在最近几年里服用了许多药物。
 
-Jan Baszucki在儿子尝试生酮饮食后寻求了Palmer的帮助。
+Jan Baszucki 在儿子尝试生酮饮食后寻求了 Palmer 的帮助。
 
 "几个月内，我们看到了明显的改变，"她说。
 
 受此启发，她开始联系临床医生和研究人员，希望为这种治疗带来更多的关注和资金支持。由于对该饮食的严格数据仍然缺乏，她希望看到研究人员进行大型临床试验，以支持像她儿子的康复这样的轶事。
 
-不久，一位知名的慈善家与Campbell取得了联系，准备为他的双相情感障碍研究以及其他研究提供资金支持。
+不久，一位知名的慈善家与 Campbell 取得了联系，准备为他的双相情感障碍研究以及其他研究提供资金支持。
 
 现在，大约有[十几项临床试验](https://clinicaltrials.gov/search?cond=Psychiatric%20Disorder&intr=ketogenic%20diet)正在进行中，测试这种饮食对精神疾病的影响，尤其是对双相情感障碍、精神分裂症和抑郁症，以及厌食症、酒精中毒和创伤后应激障碍等病症的影响。
 
@@ -96,21 +96,21 @@ NPR 的蒂娜·拉塞尔报道
 
 这种在癫痫病学中的[良好记录](https://www.cochranelibrary.com/cdsr/doi/10.1002/14651858.CD001903.pub5/full)铺平了它在精神病学中的应用之路。这两种情况之间存在[联系](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9122168/#:~:text=Psychiatric%20disorders%20occur%20very%20often,the%20course%20of%20the%20disorder.)。为癫痫而开发的药物经常用于治疗各种精神疾病，如双相情感障碍。
 
-“我们即使在没有研究表明或证明它们对精神疾病患者有帮助时，也会非正式地使用它们，” Palmer说。“因此，在很多方面，这并不是什么新鲜事。”
+“我们即使在没有研究表明或证明它们对精神疾病患者有帮助时，也会非正式地使用它们，” Palmer 说。“因此，在很多方面，这并不是什么新鲜事。”
 
 ### 代谢链接
 
-各种精神疾病与高血糖和[胰岛素抵抗](https://med.stanford.edu/news/all-news/2021/09/insulin-resistance-major-depressive-disorder.html)、[2型糖尿病](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2806720)、肥胖和[高血压](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3996437/)等代谢问题之间也有[充分的](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6016046/#:~:text=Convincing%20evidence%20shows%20that%20psychiatric,obesity%2C%20hypertension%2C%20and%20hyperglycemia.)关联。
+各种精神疾病与高血糖和[胰岛素抵抗](https://med.stanford.edu/news/all-news/2021/09/insulin-resistance-major-depressive-disorder.html)、[2 型糖尿病](https://jamanetwork.com/journals/jamanetworkopen/fullarticle/2806720)、肥胖和[高血压](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3996437/)等代谢问题之间也有[充分的](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6016046/#:~:text=Convincing%20evidence%20shows%20that%20psychiatric,obesity%2C%20hypertension%2C%20and%20hyperglycemia.)关联。
 
 精神疾病患者的风险增加了。不仅是精神药物会导致体重增加和其他问题。研究表明，即使在严重精神疾病患者接受药物治疗之前或被诊断之前，这些问题也[可能出现](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6352957/)。
 
-“我们很长一段时间以来就知道，在严重精神疾病患者的大脑代谢中有些不太正常的东西，” 麦克林医院精神障碍科主任、哈佛医学院教授[Dost Öngür博士](https://www.mcleanhospital.org/profile/dost-ongur)说。
+“我们很长一段时间以来就知道，在严重精神疾病患者的大脑代谢中有些不太正常的东西，” 麦克林医院精神障碍科主任、哈佛医学院教授[Dost Öngür 博士](https://www.mcleanhospital.org/profile/dost-ongur)说。
 
 几十年来，在精神病学中已经积累了有关大脑和其他部位存在能量问题的证据，这与生酮饮食无关。
 
-“我们不能说存在因果关系，但有很多联系值得进一步探索，” Öngür说，他的[研究](https://pubmed.ncbi.nlm.nih.gov/37812338/)集中在[这一主题](https://pubmed.ncbi.nlm.nih.gov/29523870/)的双相情感障碍和精神分裂症中。
+“我们不能说存在因果关系，但有很多联系值得进一步探索，” Öngür 说，他的[研究](https://pubmed.ncbi.nlm.nih.gov/37812338/)集中在[这一主题](https://pubmed.ncbi.nlm.nih.gov/29523870/)的双相情感障碍和精神分裂症中。
 
-Ede表示：“所有这些数据足够强烈，足以怀疑‘代谢问题可能不仅仅是无辜的旁观者’，事实上，它们可能直接影响精神疾病的发展、严重程度或过程。”
+Ede 表示：“所有这些数据足够强烈，足以怀疑‘代谢问题可能不仅仅是无辜的旁观者’，事实上，它们可能直接影响精神疾病的发展、严重程度或过程。”
 
 一些人使用家用设备来测量血液中的酮体水平，以跟踪他们是否进入了营养性酮症。 **Will Stone/NPR** ****隐藏标题****
 
@@ -152,11 +152,11 @@ Palmer 和其他科学家认为线粒体问题 —— 细胞产生能量的动�
 
 "一旦你向更正常的线粒体功能和代谢健康趋势发展，那就是恢复神经递质系统，甚至恢复大脑的血流，" D'Agostino 说。
 
-生酮饮食的追随者必须逐渐适应在饮食中摄入更多的脂肪。经典形式要求脂肪提供90%的卡路里。**Katie Hayes Luke 摄于 NPR** ****隐藏标题****
+生酮饮食的追随者必须逐渐适应在饮食中摄入更多的脂肪。经典形式要求脂肪提供 90%的卡路里。**Katie Hayes Luke 摄于 NPR** ****隐藏标题****
 
 ****切换标题****Katie Hayes Luke 摄于 NPR
 
-生酮饮食的追随者必须逐渐适应在饮食中摄入更多的脂肪。经典形式要求脂肪提供90%的卡路里。
+生酮饮食的追随者必须逐渐适应在饮食中摄入更多的脂肪。经典形式要求脂肪提供 90%的卡路里。
 
 Katie Hayes Luke 摄于 NPR
 
@@ -174,7 +174,7 @@ Katie Hayes Luke 摄于 NPR
 
 "你可能正在改变细菌的功能方式，这可能会影响你的行为和大脑," 说凯利，马里兰大学医学院的精神病学教授，她正在领导关于用于精神分裂症的生酮饮食的住院试验。
 
-其他科学家正在研究饮食对神经递质如GABA的影响——它在大脑中起到一种刹车的作用。
+其他科学家正在研究饮食对神经递质如 GABA 的影响——它在大脑中起到一种刹车的作用。
 
 研究多巴胺如何影响躁郁症中的奖励回路的玛丽·菲利普斯博士认为，这可能有助于解释其治疗效果。
 
@@ -188,7 +188,7 @@ Katie Hayes Luke 摄于 NPR
 
 现有的研究显示，患者的心理健康和代谢健康都有所改善。
 
-[伊恩·坎贝尔](https://www.cambridge.org/core/journals/bjpsych-open/article/pilot-study-of-a-ketogenic-diet-in-bipolar-disorder/3C44C39ACE747A042179D2876D1AB143)的小型试点研究旨在测试随机对照试验的可行性，发现患者平均减重约10磅，并且血压有“显著降低”。
+[伊恩·坎贝尔](https://www.cambridge.org/core/journals/bjpsych-open/article/pilot-study-of-a-ketogenic-diet-in-bipolar-disorder/3C44C39ACE747A042179D2876D1AB143)的小型试点研究旨在测试随机对照试验的可行性，发现患者平均减重约 10 磅，并且血压有“显著降低”。
 
 “随着酮体水平的提高，我们看到他们的心情改善了，精力充沛了，焦虑减轻了，冲动行为减少了，”现在是爱丁堡大学巴兹基研究员的[坎贝尔](https://www.ed.ac.uk/profile/iain-campbell)说。
 
@@ -196,7 +196,7 @@ Katie Hayes Luke 摄于 NPR
 
 来自法国图卢兹的最新研究是对重度精神疾病患者的[最大规模研究](https://www.frontiersin.org/articles/10.3389/fpsyt.2022.951376/full)。
 
-虽然有三名患者无法坚持，但该研究的合著者埃迪表示，28名坚持的患者在第三周时其抑郁症和精神病症状有了显著改善。
+虽然有三名患者无法坚持，但该研究的合著者埃迪表示，28 名坚持的患者在第三周时其抑郁症和精神病症状有了显著改善。
 
 最终，43% 的患者达到了临床缓解。
 
@@ -220,7 +220,7 @@ Katie Hayes Luke 摄于 NPR
 
 支持者们欣然承认该领域仍处于早期阶段。
 
-“对此必须谨慎，” Öngür说。“生酮饮食确实是一个测试案例，但并非灵丹妙药。”
+“对此必须谨慎，” Öngür 说。“生酮饮食确实是一个测试案例，但并非灵丹妙药。”
 
 帕尔默说，这种饮食是一种有效的干预措施，但“它不会治愈所有患有精神疾病的人，甚至也不一定会帮助所有人。”
 
@@ -238,7 +238,7 @@ Katie Hayes Luke 摄于 NPR
 
 William Stone/NPR
 
-2015年斯坦福大学启动该项目时，她创造了这个术语，并表示，其想法是研究治疗代谢健康——解决高血糖、胰岛素抵抗和肥胖等问题——可能也会改善精神问题。
+2015 年斯坦福大学启动该项目时，她创造了这个术语，并表示，其想法是研究治疗代谢健康——解决高血糖、胰岛素抵抗和肥胖等问题——可能也会改善精神问题。
 
 尽管生酮饮食是最突出的例子，她说，药物也在[研究中](https://med.stanford.edu/news/all-news/2015/11/insulin-sensitizing-drug-relieves-symptoms-of-chronic-depression.html)，包括使身体对胰岛素更敏感的药物——这种激素有助于将葡萄糖引入细胞。
 
@@ -248,9 +248,9 @@ William Stone/NPR
 
 一项[最近的临床试验](https://pubmed.ncbi.nlm.nih.gov/35120288/)强调了针对代谢问题的潜力，不仅仅是生酮饮食。
 
-患有难以治疗的双相抑郁症和胰岛素抵抗的患者，但没有2型糖尿病，被开了降糖药二甲双胍。
+患有难以治疗的双相抑郁症和胰岛素抵抗的患者，但没有 2 型糖尿病，被开了降糖药二甲双胍。
 
-研究结束时，服药者中有一半逆转了他们的胰岛素抵抗——即使多数人已经病了25年且没有任何缓解，他们的精神症状也得到了显著改善。
+研究结束时，服药者中有一半逆转了他们的胰岛素抵抗——即使多数人已经病了 25 年且没有任何缓解，他们的精神症状也得到了显著改善。
 
 “我有点吃惊，”加拿大达尔豪斯大学的精神科医生[辛西娅·卡尔金博士](https://medicine.dal.ca/departments/department-sites/psychiatry/our-people/faculty/cynthia-calkin.html)说。“二甲双胍不是抗抑郁药，而是可以逆转胰岛素抵抗，这会改善结果。”
 
@@ -268,7 +268,7 @@ William Stone/NPR
 
 洛瑞·卡茨
 
-大约四年前，洛瑞·卡茨在尝试了许多治疗双相情感障碍的方法后来到了塞西的斯坦福诊所 —— 这是她18岁时被诊断出的。
+大约四年前，洛瑞·卡茨在尝试了许多治疗双相情感障碍的方法后来到了塞西的斯坦福诊所 —— 这是她 18 岁时被诊断出的。
 
 她还与慢性疼痛、暴饮暴食、情绪性进食和不想要的体重增加作斗争。她的抑郁症发作曾经使她考虑过电惊厥疗法（ECT）。
 
@@ -298,19 +298,19 @@ William Stone/NPR
 
 然而，已经在他们的实践中使用它的医生们表示，通过足够的教育和支持，患者可以取得成功。
 
-Matt Bernstein博士发现他的一些患者有显著的结果。
+Matt Bernstein 博士发现他的一些患者有显著的结果。
 
 一些人选择最严格形式的饮食，特别是如果他们有严重症状，但他强调这可以量身定制，甚至“适度版本”对一些患者产生了“令人难以置信的差异”。
 
 他会逐渐减少他们的碳水化合物摄入量。
 
-“有些人喜欢一下子戒掉，但对很多人来说，这不是最好的选择，”波士顿精神康复计划Ellenhorn的首席医疗官[Bernstein](https://www.ellenhorn.com/our-team/)说道。
+“有些人喜欢一下子戒掉，但对很多人来说，这不是最好的选择，”波士顿精神康复计划 Ellenhorn 的首席医疗官[Bernstein](https://www.ellenhorn.com/our-team/)说道。
 
 “这个想法是，这将是可持续的，而不仅仅是你做几个月然后停止的事情。”
 
 并非很多精神科医生接受过这种饮食的培训，尽管人数正在增加。
 
-Bernstein和其他医生表示，那些有严重精神疾病史的人应该得到医学监督。可能需要进行实验室检查和调整药物。
+Bernstein 和其他医生表示，那些有严重精神疾病史的人应该得到医学监督。可能需要进行实验室检查和调整药物。
 
 尽管乐观，仍有许多未解答的问题。
 

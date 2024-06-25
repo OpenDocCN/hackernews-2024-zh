@@ -8,7 +8,7 @@ date: 2024-05-27 15:12:22
 
 # GitHub - oasislinux/oasis: 一个小型的静态链接的 Linux 系统
 
-> 来源：[https://github.com/oasislinux/oasis](https://github.com/oasislinux/oasis)
+> 来源：[`github.com/oasislinux/oasis`](https://github.com/oasislinux/oasis)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

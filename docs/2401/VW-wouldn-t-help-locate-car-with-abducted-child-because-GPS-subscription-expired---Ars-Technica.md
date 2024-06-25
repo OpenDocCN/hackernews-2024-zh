@@ -6,29 +6,29 @@
 
 -->
 
-# 大众因GPS订阅到期而拒绝帮助找到带有被绑架孩子的汽车| Ars Technica
+# 大众因 GPS 订阅到期而拒绝帮助找到带有被绑架孩子的汽车| Ars Technica
 
-> 来源：[https://arstechnica.com/tech-policy/2023/02/vw-wouldnt-help-locate-car-with-abducted-child-because-gps-subscription-expired/](https://arstechnica.com/tech-policy/2023/02/vw-wouldnt-help-locate-car-with-abducted-child-because-gps-subscription-expired/)
+> 来源：[`arstechnica.com/tech-policy/2023/02/vw-wouldnt-help-locate-car-with-abducted-child-because-gps-subscription-expired/`](https://arstechnica.com/tech-policy/2023/02/vw-wouldnt-help-locate-car-with-abducted-child-because-gps-subscription-expired/)
 
 ![汽车格栅上的大众标志。](img/9e72bbe5fb8d76fb75e0c3b7d16bb88b.png)
 
 Getty Images | NurPhoto
 
-伊利诺伊州的一个警长办公室表示，当一辆带有两岁男童的被盗汽车无法被追踪时，最初因为大众的Car-Net服务拒绝提供对追踪系统的访问，因为车辆的订阅已过期。
+伊利诺伊州的一个警长办公室表示，当一辆带有两岁男童的被盗汽车无法被追踪时，最初因为大众的 Car-Net 服务拒绝提供对追踪系统的访问，因为车辆的订阅已过期。
 
-“在寻找被盗车辆和危及儿童的过程中，警长办公室立即致电大众Car-Net，试图追踪车辆，”湖县警长办公室在关于2月23日事件的一份[发布在Facebook上的声明](https://www.facebook.com/LakeCoILSheriff/posts/pfbid0BkG4cQSwBFyeQ4LJprSWcRi6YVgtEk1viJfS4587qQWNfX6dzBHbo1mX8icgTxYul)中说。 "不幸的是，由于大众Car-Net需要收到支付以重新激活被盗大众车辆的追踪设备，因此存在延迟。"
+“在寻找被盗车辆和危及儿童的过程中，警长办公室立即致电大众 Car-Net，试图追踪车辆，”湖县警长办公室在关于 2 月 23 日事件的一份[发布在 Facebook 上的声明](https://www.facebook.com/LakeCoILSheriff/posts/pfbid0BkG4cQSwBFyeQ4LJprSWcRi6YVgtEk1viJfS4587qQWNfX6dzBHbo1mX8icgTxYul)中说。 "不幸的是，由于大众 Car-Net 需要收到支付以重新激活被盗大众车辆的追踪设备，因此存在延迟。"
 
-大众的[Car-Net](https://www.vw.com/idhub/content/experience-fragments/onehub_pkw/us/en/static/layers/showrooms/shared_content/_2020/technology/car-net/master.html)让车主能够远程跟踪和控制他们的车辆。根据[芝加哥太阳报的一篇文章](https://chicago.suntimes.com/news/2023/2/24/23614215/tracking-service-stolen-volkswagen-toddler-inside-carjacking-lake-county)，“Car-Net试用期已结束，一名代表想要150美元重新启动服务并找到SUV。” 文章继续道：
+大众的[Car-Net](https://www.vw.com/idhub/content/experience-fragments/onehub_pkw/us/en/static/layers/showrooms/shared_content/_2020/technology/car-net/master.html)让车主能够远程跟踪和控制他们的车辆。根据[芝加哥太阳报的一篇文章](https://chicago.suntimes.com/news/2023/2/24/23614215/tracking-service-stolen-volkswagen-toddler-inside-carjacking-lake-county)，“Car-Net 试用期已结束，一名代表想要 150 美元重新启动服务并找到 SUV。” 文章继续道：
 
 > 侦探恳求道，解释说这是“极端紧急情况”，但代表不动声色，称这是公司政策，警长办公室副局长克里斯托弗·科维利周五说。
 > 
-> "侦探不得不想办法获取信用卡号码，然后再打电话给代表支付150美元，而在那个时候，代表提供了车辆的GPS位置，"Covelli说。
+> "侦探不得不想办法获取信用卡号码，然后再打电话给代表支付 150 美元，而在那个时候，代表提供了车辆的 GPS 位置，"Covelli 说。
 
-据警官称，他们支付了150美元并获取了车辆的位置时，车辆已经通过其他方式被找到。 "大约过了30分钟，"太阳报写道，“我们已经找到了两岁的孩子和车辆的位置，甚至在他们提供信息之前，所以在那时已经毫无意义了。”
+据警官称，他们支付了 150 美元并获取了车辆的位置时，车辆已经通过其他方式被找到。 "大约过了 30 分钟，"太阳报写道，“我们已经找到了两岁的孩子和车辆的位置，甚至在他们提供信息之前，所以在那时已经毫无意义了。”
 
 ## 大众汽车承认存在“严重违规”。
 
-大众表示，在湖县事件中，其与执法部门合作的流程存在“严重违规”。该公司使用第三方供应商提供Car-Net服务。
+大众表示，在湖县事件中，其与执法部门合作的流程存在“严重违规”。该公司使用第三方供应商提供 Car-Net 服务。
 
 “大众汽车已经与第三方供应商建立了一套涉及执法紧急请求的 Car-Net 支持服务程序。他们在以前的事件中成功执行了这个流程。不幸的是，在这种情况下，流程出现了严重的违规行为。我们正在与相关方解决这个问题，”该公司在提供给 Ars 和其他媒体的一份声明中表示。
 

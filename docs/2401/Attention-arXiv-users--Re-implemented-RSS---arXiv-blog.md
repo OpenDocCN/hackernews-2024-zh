@@ -8,7 +8,7 @@
 
 # 注意 arXiv 用户：重新实现的 RSS – arXiv 博客
 
-> 来源：[https://blog.arxiv.org/2024/01/31/attention-arxiv-users-re-implemented-rss/](https://blog.arxiv.org/2024/01/31/attention-arxiv-users-re-implemented-rss/)
+> 来源：[`blog.arxiv.org/2024/01/31/attention-arxiv-users-re-implemented-rss/`](https://blog.arxiv.org/2024/01/31/attention-arxiv-users-re-implemented-rss/)
 
 arXiv 已重新实现我们的 RSS 订阅以改善用户的结果。这是 arXiv 的 RSS 订阅的完全重写版本，运行在云端。它应该创建一个更准确的每天文章列表。有关技术细节，请参阅 [RSS Feeds – arXiv info](https://info.arxiv.org/help/rss.html)。
 

@@ -6,9 +6,9 @@ date: 2024-05-27 14:30:01
 
 -->
 
-# GitHub - mikepapadim/llama-shepherd-cli：用于管理在多种语言中实现的大羊推理的CLI
+# GitHub - mikepapadim/llama-shepherd-cli：用于管理在多种语言中实现的大羊推理的 CLI
 
-> 来源：[https://github.com/mikepapadim/llama-shepherd-cli](https://github.com/mikepapadim/llama-shepherd-cli)
+> 来源：[`github.com/mikepapadim/llama-shepherd-cli`](https://github.com/mikepapadim/llama-shepherd-cli)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

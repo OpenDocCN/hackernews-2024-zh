@@ -8,7 +8,7 @@ category: 未分类
 
 # 引入一个新的 Copilot 密钥，开启人工智能 Windows PC 的一年 | Windows Experience 博客
 
-> 来源：[https://blogs.windows.com/windowsexperience/2024/01/04/introducing-a-new-copilot-key-to-kick-off-the-year-of-ai-powered-windows-pcs/](https://blogs.windows.com/windowsexperience/2024/01/04/introducing-a-new-copilot-key-to-kick-off-the-year-of-ai-powered-windows-pcs/)
+> 来源：[`blogs.windows.com/windowsexperience/2024/01/04/introducing-a-new-copilot-key-to-kick-off-the-year-of-ai-powered-windows-pcs/`](https://blogs.windows.com/windowsexperience/2024/01/04/introducing-a-new-copilot-key-to-kick-off-the-year-of-ai-powered-windows-pcs/)
 
 今天，我们很高兴迈出下一个重要的步骤，并向 Windows 11 PC 引入一个新的 Copilot 密钥。 在这个新的一年里，我们将迈向一个更个人化和智能化的计算未来的重大转变，其中人工智能将被无缝地融入 Windows，从系统到硅再到硬件。 这不仅会简化人们的计算体验，还会增强它，使 2024 年成为人工智能 PC 的年份。
 

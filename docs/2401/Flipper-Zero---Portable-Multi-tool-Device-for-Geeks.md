@@ -8,7 +8,7 @@
 
 # Flipper Zero — 为极客设计的便携式多功能设备
 
-> 来源：[https://flipperzero.one](https://flipperzero.one)
+> 来源：[`flipperzero.one`](https://flipperzero.one)
 
 MCU（微控制器单元）
 

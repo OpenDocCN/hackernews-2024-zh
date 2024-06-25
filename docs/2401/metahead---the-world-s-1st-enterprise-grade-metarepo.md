@@ -8,6 +8,6 @@ date: 2024-05-27 14:39:07
 
 # metahead | 世界上第一个企业级元仓库
 
-> 来源：[https://www.metahead.dev/](https://www.metahead.dev/)
+> 来源：[`www.metahead.dev/`](https://www.metahead.dev/)
 
 如果你正在使用 git 子模块，metahead 可以极大改善你的工作流程。通常使用子模块的循环是在子模块中进行提交，然后更新包含子模块的存储库。通过用 metahead 替换子模块，你可以将代码真正成为使用该模块的所有存储库的一部分，并且对模块存储库的提交将无缝同步到使用此模块的所有用户。通过一个 PR，更新使用此代码的所有存储库。

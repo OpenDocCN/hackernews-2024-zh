@@ -8,7 +8,7 @@
 
 # MrBeast 透露他从 X 视频中赚了 25 万美元 - BBC 新闻
 
-> 来源：[https://www.bbc.co.uk/news/technology-68061020](https://www.bbc.co.uk/news/technology-68061020)
+> 来源：[`www.bbc.co.uk/news/technology-68061020`](https://www.bbc.co.uk/news/technology-68061020)
 
 MrBeast - 本名 Jimmy Donaldson - [之前曾表示，外部链接](https://twitter.com/MrBeast/status/1741179335325728794)，即使有 "十亿次观看"，他也不会因在 X 上发布视频而值得。
 
@@ -52,6 +52,6 @@ Nebula 的首席执行官 Dave Wiskus 表示，在 X 上，什么算作印象还
 
 但他表示，他不认为不那么有名的人能够带来相当数量的资金。
 
-"这是地球上最大的YouTuber的一次性事件，引起了国际媒体的关注," Wiskus先生补充道。
+"这是地球上最大的 YouTuber 的一次性事件，引起了国际媒体的关注," Wiskus 先生补充道。
 
 "我不认为另一个只能带来这些印象的创作者会投入相同比例的资金。"

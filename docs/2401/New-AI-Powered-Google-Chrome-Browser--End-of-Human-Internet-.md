@@ -2,21 +2,21 @@
 
 类别：未分类
 
-日期：2024年05月27日 15:11:02
+日期：2024 年 05 月 27 日 15:11:02
 
 -->
 
-# 新的AI驱动的Google Chrome浏览器：人类互联网的终结？
+# 新的 AI 驱动的 Google Chrome 浏览器：人类互联网的终结？
 
-> 来源：[https://nymag.com/intelligencer/2024/01/new-ai-powered-google-chrome-browser-end-of-human-internet.html](https://nymag.com/intelligencer/2024/01/new-ai-powered-google-chrome-browser-end-of-human-internet.html)
+> 来源：[`nymag.com/intelligencer/2024/01/new-ai-powered-google-chrome-browser-end-of-human-internet.html`](https://nymag.com/intelligencer/2024/01/new-ai-powered-google-chrome-browser-end-of-human-internet.html)
 
 图片插图：Intelligencer；照片：Getty Images
 
-下个月开始，谷歌将在全球最流行的浏览器Chrome中推出一个新的实验性功能，这是一个估计有[30亿人](https://arstechnica.com/gadgets/2022/05/safari-has-1-billion-users-but-it-still-cant-touch-chrome/)阅读和贡献网络的门户：[AI写作助手](https://blog.google/products/chrome/google-chrome-generative-ai-features-january-2024/)。“在网络上写作可能会令人生畏，特别是如果您想在公共场所或论坛上表达您的想法时，”该公司表示。Chrome的新工具将帮助用户“更加自信地写作”，无论他们是想“为餐厅留下一篇写得好的评论，为聚会起草友好的回复，还是对公寓出租进行正式询问。”
+下个月开始，谷歌将在全球最流行的浏览器 Chrome 中推出一个新的实验性功能，这是一个估计有[30 亿人](https://arstechnica.com/gadgets/2022/05/safari-has-1-billion-users-but-it-still-cant-touch-chrome/)阅读和贡献网络的门户：[AI 写作助手](https://blog.google/products/chrome/google-chrome-generative-ai-features-january-2024/)。“在网络上写作可能会令人生畏，特别是如果您想在公共场所或论坛上表达您的想法时，”该公司表示。Chrome 的新工具将帮助用户“更加自信地写作”，无论他们是想“为餐厅留下一篇写得好的评论，为聚会起草友好的回复，还是对公寓出租进行正式询问。”
 
-AI助手以几乎与开发者编写它们一样快的速度出现在流行软件中。谷歌已经在Gmail、Android消息和文档中测试了生成式AI数月；微软已经在Office、其Edge浏览器和[Windows本身](https://nymag.com/intelligencer/2023/09/the-ai-chatbot-assistants-are-here-do-we-want-them.html)中添加了类似的功能。换句话说，这基本上是不可避免的：作为界面中的新功能，“帮我写”按钮和功能是对[建议回复](https://www.nytimes.com/2018/11/07/magazine/you-already-email-like-a-robot-why-not-automate-it.html)甚至拼写检查的自然延伸；谷歌有技术构建这样的东西的能力，并有理由相信至少一些Chrome用户会很高兴使用它。数百万人已经使用像ChatGPT和Anthropic这样的软件来生成文本，然后在几乎所有可想象的情境中部署它。谷歌将类似的东西构建到Chrome中只是个时间问题——只要能做到，它就会。  
+AI 助手以几乎与开发者编写它们一样快的速度出现在流行软件中。谷歌已经在 Gmail、Android 消息和文档中测试了生成式 AI 数月；微软已经在 Office、其 Edge 浏览器和[Windows 本身](https://nymag.com/intelligencer/2023/09/the-ai-chatbot-assistants-are-here-do-we-want-them.html)中添加了类似的功能。换句话说，这基本上是不可避免的：作为界面中的新功能，“帮我写”按钮和功能是对[建议回复](https://www.nytimes.com/2018/11/07/magazine/you-already-email-like-a-robot-why-not-automate-it.html)甚至拼写检查的自然延伸；谷歌有技术构建这样的东西的能力，并有理由相信至少一些 Chrome 用户会很高兴使用它。数百万人已经使用像 ChatGPT 和 Anthropic 这样的软件来生成文本，然后在几乎所有可想象的情境中部署它。谷歌将类似的东西构建到 Chrome 中只是个时间问题——只要能做到，它就会。  
 
-在推出时，这将是一个右键点击功能进行有限测试。如果最终结果与谷歌在文档中构建的生成式AI工具一样，那么它将像使用一样容易被忽视。
+在推出时，这将是一个右键点击功能进行有限测试。如果最终结果与谷歌在文档中构建的生成式 AI 工具一样，那么它将像使用一样容易被忽视。
 
 作为生成式人工智能的推出，这是一个重要的一步。首次，可能有数十亿的人将面临一个选项：让软件代表他们在几乎所有在线环境中进行写作，不仅限于电子邮件或文档，还包括社交媒体网站、评论区、论坛、产品评论、反馈论坛、求职申请和聊天平台。谷歌将提供给用户统计上可能的响应，以及缩短或延长响应的选项，或调整其语气。我们所知的网络基本上是数十亿人在数十亿浏览器文本框中输入文字，目的是与其他人，或至少是另一个人进行交流所形成的。搜索、阅读、购物和在网络上漫游的经历在很大程度上依赖于其他用户为之贡献的文本和媒体，这些贡献者通常是免费提供的，并在人类中心系统的参与下进行 —— 也就是说，他们以自己的身份，或某种版本的自己，考虑其他人的利益。当文本框可以自动填充时会发生什么？
 

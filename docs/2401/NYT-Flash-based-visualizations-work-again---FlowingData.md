@@ -8,7 +8,7 @@ date: 2024-05-27 14:55:19
 
 # 纽约时报基于 Flash 的可视化再次启用 | FlowingData
 
-> 来源：[https://flowingdata.com/2024/01/10/nyt-flash-based-visualizations-work-again/](https://flowingdata.com/2024/01/10/nyt-flash-based-visualizations-work-again/)
+> 来源：[`flowingdata.com/2024/01/10/nyt-flash-based-visualizations-work-again/`](https://flowingdata.com/2024/01/10/nyt-flash-based-visualizations-work-again/)
 
 在 2000 年代，如果你想为网络制作交互式或动画可视化，Flash 是主要选择。当 Flash 失去支持并退出互联网时，十年的出色可视化不再起作用了。
 

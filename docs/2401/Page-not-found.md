@@ -8,7 +8,7 @@ date: 2024-05-27 14:59:16
 
 # 页面未找到
 
-> 来源：[https://shunyaekam.com/essays/god-is-the-mean-opinion-of-your-tribe](https://shunyaekam.com/essays/god-is-the-mean-opinion-of-your-tribe)
+> 来源：[`shunyaekam.com/essays/god-is-the-mean-opinion-of-your-tribe`](https://shunyaekam.com/essays/god-is-the-mean-opinion-of-your-tribe)
 
 # 404
 

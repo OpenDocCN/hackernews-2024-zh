@@ -8,7 +8,7 @@
 
 # GitHub - facebookresearch/audio2photoreal：从音频驱动的逼真编码头像的代码和数据集
 
-> 来源：[https://github.com/facebookresearch/audio2photoreal](https://github.com/facebookresearch/audio2photoreal)
+> 来源：[`github.com/facebookresearch/audio2photoreal`](https://github.com/facebookresearch/audio2photoreal)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

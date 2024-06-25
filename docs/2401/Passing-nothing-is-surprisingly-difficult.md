@@ -8,11 +8,11 @@
 
 # 什么也不传递出奇地困难
 
-> 来源：[https://davidben.net/2024/01/15/empty-slices.html](https://davidben.net/2024/01/15/empty-slices.html)
+> 来源：[`davidben.net/2024/01/15/empty-slices.html`](https://davidben.net/2024/01/15/empty-slices.html)
 
 # 什么也不传递出奇地困难
 
-[David Benjamin](/)（2024-01-15）
+David Benjamin（2024-01-15）
 
 我的日常工作是在[浏览器](https://www.chromium.org/)和[加密](https://boringssl.googlesource.com/boringssl/)方面，而不是编译器，然而我经常发现我需要花更多的时间来解决编程语言的语义问题而不是使用它们。本文讨论了 C、C++ 和 Rust 之间的一个棘手的跨语言问题。简而言之：
 
@@ -157,17 +157,17 @@ Rust 中的指针算术用方法 `[add](https://doc.rust-lang.org/std/primitive.
 
 +   如果两个具有相同地址的 `@empty` 追溯的指针，它们可以相减为零。
 
-但有一个微妙之处，`cast_ival_to_ptrval`如果该地址上有对象，则可能不会返回`@empty`。 返回具体的来源意味着采用[指针清除](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2443.pdf)语义，这在这里是不可取的。 对于`alignof(T)`，如果最大对齐小于一页且底部页面从未被分配，则不应发生这种情况。 但是Rust不仅允许`alignof(T)`而且允许[任何非零整数字面量](https://doc.rust-lang.org/std/ptr/index.html#safety)，*即使该地址上存在某些分配*。（也许我们可以利用“用户消歧义”方面，并说所有整数到指针的转换可能额外消除歧义为`@empty`？那会影响编译器的别名分析吗？）
+但有一个微妙之处，`cast_ival_to_ptrval`如果该地址上有对象，则可能不会返回`@empty`。 返回具体的来源意味着采用[指针清除](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2443.pdf)语义，这在这里是不可取的。 对于`alignof(T)`，如果最大对齐小于一页且底部页面从未被分配，则不应发生这种情况。 但是 Rust 不仅允许`alignof(T)`而且允许[任何非零整数字面量](https://doc.rust-lang.org/std/ptr/index.html#safety)，*即使该地址上存在某些分配*。（也许我们可以利用“用户消歧义”方面，并说所有整数到指针的转换可能额外消除歧义为`@empty`？那会影响编译器的别名分析吗？）
 
 我认为这种复杂性说明了为什么`nullptr`比悬空指针更好地选择为空切片。 使用`nullptr`进行指针算术很容易定义，并且`nullptr`不能与真实分配别名。
 
-如果Rust（和LLVM）接受无效指针，它将修复Rust内部的完整性问题，但不包括FFI。 如果C和C++标准*也*采用了这一点，那么这将*部分*修复FFI。 然后我们可以直接将Rust切片传递给C和C++，但反之则不行。 直接将C和C++切片传递给Rust只能通过改变Rust以接受`(nullptr, 0)`形式来修复。
+如果 Rust（和 LLVM）接受无效指针，它将修复 Rust 内部的完整性问题，但不包括 FFI。 如果 C 和 C++标准*也*采用了这一点，那么这将*部分*修复 FFI。 然后我们可以直接将 Rust 切片传递给 C 和 C++，但反之则不行。 直接将 C 和 C++切片传递给 Rust 只能通过改变 Rust 以接受`(nullptr, 0)`形式来修复。
 
-~~（除了Rust FFI之外，在C/C++中使用`alignof(T)`作为指针没有理由，所以我不知道C/C++接受这一点的可能性有多大。）~~ 更新2024-01-16：Nelson Elhage提醒我，有时会使用非空标记指针来[分配零字节](https://github.com/torvalds/linux/blob/ffc253263a1375a65fa6c9f62a893e9767fbebfa/include/linux/slab.h#L167-L178)。 虽然C禁止`malloc`这样做（`malloc(0)`必须返回`nullptr`或*唯一*非空指针），但其他分配器可能合理地选择此选项。 这样做可以使错误检查更加统一，而不必实际保留地址空间。 因此，存在一个非Rust的原因可以允许这些指针在C和C++中使用。
+~~（除了 Rust FFI 之外，在 C/C++中使用`alignof(T)`作为指针没有理由，所以我不知道 C/C++接受这一点的可能性有多大。）~~ 更新 2024-01-16：Nelson Elhage 提醒我，有时会使用非空标记指针来[分配零字节](https://github.com/torvalds/linux/blob/ffc253263a1375a65fa6c9f62a893e9767fbebfa/include/linux/slab.h#L167-L178)。 虽然 C 禁止`malloc`这样做（`malloc(0)`必须返回`nullptr`或*唯一*非空指针），但其他分配器可能合理地选择此选项。 这样做可以使错误检查更加统一，而不必实际保留地址空间。 因此，存在一个非 Rust 的原因可以允许这些指针在 C 和 C++中使用。
 
-### Rust标准库中的FFI辅助工具
+### Rust 标准库中的 FFI 辅助工具
 
-如果语言的切片表示不能兼容，那么我们仍然会在Rust FFI中留下安全隐患。 在这种情况下，Rust的标准库应该更多地帮助程序员选择正确的操作：添加类似于`slice::from_raw_parts`、`slice::as_ptr`等的模拟，使用C和C++表示法，根据需要进行内部转换。 对于无法用于FFI的现有函数，文档中应清楚警告。 最后，在crates.io中审计所有现有的调用，因为现有调用的大多数可能是为了FFI。
+如果语言的切片表示不能兼容，那么我们仍然会在 Rust FFI 中留下安全隐患。 在这种情况下，Rust 的标准库应该更多地帮助程序员选择正确的操作：添加类似于`slice::from_raw_parts`、`slice::as_ptr`等的模拟，使用 C 和 C++表示法，根据需要进行内部转换。 对于无法用于 FFI 的现有函数，文档中应清楚警告。 最后，在 crates.io 中审计所有现有的调用，因为现有调用的大多数可能是为了 FFI。
 
 对于`slice::from_raw_parts`，我们可以进一步修复现有的函数本身。这将是向后兼容的，但会向非 FFI 用途添加不必要的转换。也就是说，如果 crates.io 的审核显示主要是 FFI 用途，那么这种转换可能是必要的。对于非 FFI 用途，一个包含`[std::ptr::NonNull](https://doc.rust-lang.org/std/ptr/struct.NonNull.html)`的类型签名本来更合适。
 

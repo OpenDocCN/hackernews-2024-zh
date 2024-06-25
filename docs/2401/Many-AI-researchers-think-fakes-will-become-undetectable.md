@@ -8,7 +8,7 @@
 
 # 许多人工智能研究人员认为伪造品将变得难以检测
 
-> 来源：[https://www.economist.com/science-and-technology/2024/01/17/many-ai-researchers-think-fakes-will-become-undetectable](https://www.economist.com/science-and-technology/2024/01/17/many-ai-researchers-think-fakes-will-become-undetectable)
+> 来源：[`www.economist.com/science-and-technology/2024/01/17/many-ai-researchers-think-fakes-will-become-undetectable`](https://www.economist.com/science-and-technology/2024/01/17/many-ai-researchers-think-fakes-will-become-undetectable)
 
 Rishi Sunak 是[英国的首相](https://www.economist.com/britain/2023/11/23/what-kind-of-legacy-does-rishi-sunak-want-to-leave-behind)。如果某些[Facebook 上的广告](https://www.economist.com/business/2023/02/22/facebook-sells-subscriptions-as-the-ad-business-stumbles)可信（实际上不行），他似乎也在兜售快速致富的计划。其中一则广告显示 Sunak 先生为一款据说由[Elon Musk](https://www.economist.com/business/2023/12/05/elon-musks-messiah-complex-may-bring-him-down)开发的应用背书，观众可以在其中定期“存款”。
 

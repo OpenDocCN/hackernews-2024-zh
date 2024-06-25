@@ -8,7 +8,7 @@
 
 # 以五千种方式看玫瑰
 
-> 来源：[https://cs.stanford.edu/~yzzhang/projects/rose/](https://cs.stanford.edu/~yzzhang/projects/rose/)
+> 来源：[`cs.stanford.edu/~yzzhang/projects/rose/`](https://cs.stanford.edu/~yzzhang/projects/rose/)
 
 <main class="main">
 

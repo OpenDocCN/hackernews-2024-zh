@@ -2,13 +2,13 @@
 
 类别：未分类
 
-日期：2024年05月27日 14:36:29
+日期：2024 年 05 月 27 日 14:36:29
 
 -->
 
 # 最高性能的炉灶。
 
-> 来源：[https://www.impulselabs.com/](https://www.impulselabs.com/)
+> 来源：[`www.impulselabs.com/`](https://www.impulselabs.com/)
 
 ## 给你更多的力量。
 

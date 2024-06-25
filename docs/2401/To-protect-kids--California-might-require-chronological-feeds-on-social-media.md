@@ -2,17 +2,17 @@
 
 类别：未分类
 
-日期：2024年05月27日15:22:24
+日期：2024 年 05 月 27 日 15:22:24
 
 -->
 
 # 为了保护孩子，加利福尼亚可能要求社交媒体上采用时间排序信息流
 
-> 来源：[https://finance.yahoo.com/news/protect-kids-california-might-require-193211085.html](https://finance.yahoo.com/news/protect-kids-california-might-require-193211085.html)
+> 来源：[`finance.yahoo.com/news/protect-kids-california-might-require-193211085.html`](https://finance.yahoo.com/news/protect-kids-california-might-require-193211085.html)
 
 社交媒体公司设计他们的信息流，让其尽可能引人入胜，复杂的算法将帖子和广告置入一个永不停息的娱乐流中。
 
-一项加州新法将要求公司默认关闭这些算法，适用于18岁以下的用户，并实施其他强制性调整，立法者表示这将减少社交媒体对孩子的负面心理健康影响。
+一项加州新法将要求公司默认关闭这些算法，适用于 18 岁以下的用户，并实施其他强制性调整，立法者表示这将减少社交媒体对孩子的负面心理健康影响。
 
 这项法案由其作者，加州国会参议员南希·斯金纳（D-伯克利）称为“保护孩子免受社交媒体上瘾法案”，在周一与加利福尼亚总检察长[罗布·邦塔](https://search.yahoo.com/search?p=Rob%20Bonta)共同宣布，同时还有另一项旨在加强未成年人隐私保护的法案。
 
@@ -22,7 +22,7 @@
 
 这项改变将向年轻用户展示“他们想看到的东西，而不是目前正被喂给我们孩子的令人上瘾的算法信息流”，邦塔说。
 
-这项法案还要求社交媒体应用的默认设置在午夜至早上6点之间将通知静音，每日使用时间限制为1小时，并取消“喜欢”数的显示。家长 —— 实际上，很可能是使用这些应用的孩子 —— 有能力更改这些默认设置。
+这项法案还要求社交媒体应用的默认设置在午夜至早上 6 点之间将通知静音，每日使用时间限制为 1 小时，并取消“喜欢”数的显示。家长 —— 实际上，很可能是使用这些应用的孩子 —— 有能力更改这些默认设置。
 
 **阅读更多：** [罢工的酒店工人被金属弹丸击中，工会称](https://www.latimes.com/business/story/2024-01-27/los-angeles-hotel-strike-union-alleges-picket-line-pellet-gun?utm_source=yahoo&utm_medium=promo_module&utm_campaign=rss_feed)
 

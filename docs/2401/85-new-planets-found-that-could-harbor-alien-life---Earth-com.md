@@ -8,7 +8,7 @@ date: 2024-05-27 15:16:33
 
 # 发现了 85 个可能容纳外星生命的新行星 • Earth.com
 
-> 来源：[https://www.earth.com/news/scientists-have-identified-85-new-exoplanets-that-could-harbor-life/](https://www.earth.com/news/scientists-have-identified-85-new-exoplanets-that-could-harbor-life/)
+> 来源：[`www.earth.com/news/scientists-have-identified-85-new-exoplanets-that-could-harbor-life/`](https://www.earth.com/news/scientists-have-identified-85-new-exoplanets-that-could-harbor-life/)
 
 科学家们已经发现了 85 个新的[系外行星](https://www.earth.com/news/nasa-finds-17-exoplanets-that-have-oceans-and-possibly-alien-life/)，这是对外星生命搜索的一项重大进展。
 
@@ -46,15 +46,15 @@ TESS 任务的方法涉及寻找“过境事件”，即由行星在恒星前面
 
 该研究对我们理解系外行星及在我们太阳系之外寻找生命的[探索](https://www.earth.com/news/next-generation-telescopes-could-detect-signs-of-life-on-exoplanets/)做出了重大贡献。
 
-这项研究发表在[*皇家天文学会月报*](https://academic.oup.com/mnras) *(MNRAS)* 上，进一步补充了已确认的超过5500颗系外行星的日益增长的目录，并强调了我们银河系及其之外的发现潜力。
+这项研究发表在[*皇家天文学会月报*](https://academic.oup.com/mnras) *(MNRAS)* 上，进一步补充了已确认的超过 5500 颗系外行星的日益增长的目录，并强调了我们银河系及其之外的发现潜力。
 
 ## 关于 TESS 任务的更多信息
 
-过境系外行星调查卫星（TESS）是美国宇航局“探索者”计划的太空望远镜，旨在使用凌日法搜索系外行星。 TESS于2018年4月18日发射，旨在调查地球附近最亮的恒星，以便发现由行星凌日引起的周期性亮度下降。
+过境系外行星调查卫星（TESS）是美国宇航局“探索者”计划的太空望远镜，旨在使用凌日法搜索系外行星。 TESS 于 2018 年 4 月 18 日发射，旨在调查地球附近最亮的恒星，以便发现由行星凌日引起的周期性亮度下降。
 
 ### 视野
 
-TESS 使用四个广角摄像头观察比开普勒任务覆盖范围大400倍的天空区域。它每次观测天空的不同区域约27天，覆盖了两年内85%的天空。
+TESS 使用四个广角摄像头观察比开普勒任务覆盖范围大 400 倍的天空区域。它每次观测天空的不同区域约 27 天，覆盖了两年内 85%的天空。
 
 ### 主要目标
 

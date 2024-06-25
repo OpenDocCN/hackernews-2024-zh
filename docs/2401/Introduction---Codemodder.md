@@ -8,7 +8,7 @@ date: 2024-05-27 15:02:24
 
 # 介绍 | Codemodder
 
-> 来源：[https://codemodder.io/](https://codemodder.io/)
+> 来源：[`codemodder.io/`](https://codemodder.io/)
 
 ```
  @Codemod(  id =  "pixee:java/secure-random",  reviewGuidance =  ReviewGuidance.MERGE_WITHOUT_REVIEW)  public  final  class  SecureRandomCodemod  extends  SarifPluginJavaParserChanger<ObjectCreationExpr>  {  private  static  final  String  DETECTION_RULE  =  """ rules: - id: secure-random 

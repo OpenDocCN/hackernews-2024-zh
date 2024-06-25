@@ -8,7 +8,7 @@
 
 # Python3 移除了 crypt.crypt，而且没有用任何东西来代替 ¯\_(ツ)_/¯（八二新闻）
 
-> 来源：[https://eighty-twenty.org/2024/01/13/python-crypt-shacrypt](https://eighty-twenty.org/2024/01/13/python-crypt-shacrypt)
+> 来源：[`eighty-twenty.org/2024/01/13/python-crypt-shacrypt`](https://eighty-twenty.org/2024/01/13/python-crypt-shacrypt)
 
 分别。
 

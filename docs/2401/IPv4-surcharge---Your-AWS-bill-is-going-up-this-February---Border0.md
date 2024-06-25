@@ -8,7 +8,7 @@ date: 2024-05-27 15:23:01
 
 # IPv4 surcharge - Your AWS bill is going up this February | Border0
 
-> 来源：[https://www.border0.com/blogs/ipv4-surcharge---your-aws-bill-is-going-up-this-february](https://www.border0.com/blogs/ipv4-surcharge---your-aws-bill-is-going-up-this-february)
+> 来源：[`www.border0.com/blogs/ipv4-surcharge---your-aws-bill-is-going-up-this-february`](https://www.border0.com/blogs/ipv4-surcharge---your-aws-bill-is-going-up-this-february)
 
 从明天开始，您的 AWS 账单将会上涨！自 2024 年 2 月 1 日起，每个公共 IPv4 地址每小时将收取 0.005 美元的费用，无论是否连接到服务。这总共是每年 43.80 美元，一个相当可观的数字！其原因在 [AWS 公告](https://aws.amazon.com/blogs/aws/new-aws-public-ipv4-address-charge-public-ip-insights/) 中已经概述：
 
@@ -46,7 +46,7 @@ date: 2024-05-27 15:23:01
 
 IPv4 地址就像数字房地产一样。这些 32 位整数具有实际货币价值，可以买卖。事实上，IPv4 地址的价格在过去十年里显著上涨，如果您早早介入，它们将是一项很好的投资！
 
-[https://auctions.ipv4.global/prior-sales](https://auctions.ipv4.global/prior-sales)
+[`auctions.ipv4.global/prior-sales`](https://auctions.ipv4.global/prior-sales)
 
 ‍
 
@@ -112,7 +112,7 @@ IPv4 地址就像数字房地产一样。这些 32 位整数具有实际货币�
 
 在可能的情况下，我们建议在私有子网中运行您的 AWS 基础设施，只使用 NAT 网关进行出站互联网连接。这样，它们就不会暴露在互联网上，极大地降低了被攻击的风险。作为额外的好处，你还能省下 AWS 的 IPv4 费用！（注意：这个费用仅适用于公共 IP 地址）。
 
-[https://www.youtube.com/embed/NHR3Do4WhVU](https://www.youtube.com/embed/NHR3Do4WhVU)
+[`www.youtube.com/embed/NHR3Do4WhVU`](https://www.youtube.com/embed/NHR3Do4WhVU)
 
 视频
 

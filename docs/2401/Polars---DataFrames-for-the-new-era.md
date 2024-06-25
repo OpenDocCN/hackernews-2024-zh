@@ -8,7 +8,7 @@ date: 2024-05-27 14:35:37
 
 # Polars — 新时代的数据框架
 
-> 来源：[https://pola.rs/](https://pola.rs/)
+> 来源：[`pola.rs/`](https://pola.rs/)
 
 01
 

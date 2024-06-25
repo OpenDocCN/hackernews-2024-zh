@@ -6,11 +6,11 @@ date: 2024-05-27 15:21:59
 
 -->
 
-# 对尖端JavaScript框架的不懈追求无意中导致了一个不太可访问的Web | Easy Laptop Finder
+# 对尖端 JavaScript 框架的不懈追求无意中导致了一个不太可访问的 Web | Easy Laptop Finder
 
-> 来源：[https://www.easylaptopfinder.com/blog/posts/cutting-edge-js-framework-accessibility](https://www.easylaptopfinder.com/blog/posts/cutting-edge-js-framework-accessibility)
+> 来源：[`www.easylaptopfinder.com/blog/posts/cutting-edge-js-framework-accessibility`](https://www.easylaptopfinder.com/blog/posts/cutting-edge-js-framework-accessibility)
 
-对“尖端”JavaScript框架的不懈追求无意中导致了一个不太可访问的网络，对于无法（1）下载与这些框架相关的庞大负载和（2）处理浏览器中执行框架代码所需的内存的设备和网络条件的用户影响更大。强调创建“灵活”和高度交互式的Web应用程序可能对一些消费者来说很好，但却完全切断了其他人的访问。
+对“尖端”JavaScript 框架的不懈追求无意中导致了一个不太可访问的网络，对于无法（1）下载与这些框架相关的庞大负载和（2）处理浏览器中执行框架代码所需的内存的设备和网络条件的用户影响更大。强调创建“灵活”和高度交互式的 Web 应用程序可能对一些消费者来说很好，但却完全切断了其他人的访问。
 
 更糟糕的是，那些倾向于拥有低功率设备和生活在网络连接较慢地区的人往往是最需要良好网络支持的人群（例如，用于访问政府服务）。
 

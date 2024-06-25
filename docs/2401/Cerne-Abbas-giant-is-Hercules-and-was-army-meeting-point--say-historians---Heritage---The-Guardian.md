@@ -8,7 +8,7 @@ category: 未分类
 
 # Cerne Abbas 巨人被历史学家称为 Hercules 并成为军队集结点 | 文化遗产 | 卫报
 
-> 来源：[https://www.theguardian.com/culture/2024/jan/01/cerne-abbas-giant-is-hercules-and-was-army-meeting-point-say-historians](https://www.theguardian.com/culture/2024/jan/01/cerne-abbas-giant-is-hercules-and-was-army-meeting-point-say-historians)
+> 来源：[`www.theguardian.com/culture/2024/jan/01/cerne-abbas-giant-is-hercules-and-was-army-meeting-point-say-historians`](https://www.theguardian.com/culture/2024/jan/01/cerne-abbas-giant-is-hercules-and-was-army-meeting-point-say-historians)
 
 几个世纪以来，历史学家和考古学家一直对英国西部地区一座刻在白色山坡上的巨大、裸体、持棍的人物——[Cerne Abbas 巨人](https://www.theguardian.com/culture/2019/aug/29/volunteers-restore-cerne-abbas-giant-to-former-glory)的起源感到困惑。他是凯尔特神，某种古代生育象征，还是说，他是对奥利弗·克伦威尔的一种更近代的讽刺？
 
@@ -18,15 +18,15 @@ category: 未分类
 
 周一发表的一份报告得出结论，巨人是海格力斯，力量和勇气的象征，他的威严存在可能为聚集在那里的军队提供了背景，以应对维京人的进攻。
 
-直到2021年，人们一直认为这个巨人是在史前或早期现代时期创造的，而不是早中世纪。然后由国家信托基金会领导的[研究，对沉积物和蜗牛壳进行了检验](https://www.theguardian.com/science/2021/may/12/cerne-giant-in-dorset-dates-from-anglo-saxon-times-analysis-suggests)，得出了一个令人惊讶的结论，即这个巨人是晚期撒克逊人创造的，可能是10世纪。
+直到 2021 年，人们一直认为这个巨人是在史前或早期现代时期创造的，而不是早中世纪。然后由国家信托基金会领导的[研究，对沉积物和蜗牛壳进行了检验](https://www.theguardian.com/science/2021/may/12/cerne-giant-in-dorset-dates-from-anglo-saxon-times-analysis-suggests)，得出了一个令人惊讶的结论，即这个巨人是晚期撒克逊人创造的，可能是 10 世纪。
 
 牛津大学的学者海伦·吉特斯和汤姆·莫尔科姆开始研究该地区中世纪的情况，并重新审视当地的地形，试图弄清为什么会创造出这个形象。
 
 早期中世纪历史副教授吉特斯说：“已经很明显，塞恩巨人只是景观中一整个早期中世纪特征的最显眼的一个。”
 
-他们在他们的论文中写道，[发表在美国中世纪学会的期刊Speculum上](https://www.journals.uchicago.edu/journals/spc/forthcoming)，“似乎很清楚”塞恩巨人是被切割成海格力斯的形象，独自站立，手持他的大棒在头顶上方，他的左手伸出，可能曾经挂着一块披风。
+他们在他们的论文中写道，[发表在美国中世纪学会的期刊 Speculum 上](https://www.journals.uchicago.edu/journals/spc/forthcoming)，“似乎很清楚”塞恩巨人是被切割成海格力斯的形象，独自站立，手持他的大棒在头顶上方，他的左手伸出，可能曾经挂着一块披风。
 
-西萨克森王室在10世纪拥有该地区的大量土地，他们写道。塞恩庄园本身是埃塞尔梅尔所有的，他是埃塞尔雷德一世的后裔，也是英国法院中最有权势的人之一。
+西萨克森王室在 10 世纪拥有该地区的大量土地，他们写道。塞恩庄园本身是埃塞尔梅尔所有的，他是埃塞尔雷德一世的后裔，也是英国法院中最有权势的人之一。
 
 从巨人的山丘上，可以俯瞰多塞特，并且它靠近但不在主要的中世纪通道上。它位于一条山脊上突出的支脉上，但略低于山脊。
 
@@ -36,7 +36,7 @@ category: 未分类
 
 “适合集结的地方需要大量的后勤支持，例如一个重要的贵族庄园所能提供的：水源、庇护所，以及供马匹和人员使用的粮食。它们被选址在可以利用主要通道和有岗哨的地方。
 
-“它们还需要以某种明显的方式标记。考虑到长期以来海格力斯被描述为阳刚之美的典范，尤其是在战士中间以及在9和10世纪，他在景观中的标志性形象会使集结地成为理想的背景。这个地方位于主要通道上，可以轻易获得充足的淡水以及伊尔德曼庄园的供应，因此非常合适。”
+“它们还需要以某种明显的方式标记。考虑到长期以来海格力斯被描述为阳刚之美的典范，尤其是在战士中间以及在 9 和 10 世纪，他在景观中的标志性形象会使集结地成为理想的背景。这个地方位于主要通道上，可以轻易获得充足的淡水以及伊尔德曼庄园的供应，因此非常合适。”
 
 他们补充说，值得记住的是，第一次记录的盎格鲁-撒克逊人和维京人劫掠队之间的相遇是在波特兰，距离这里只有 16 英里。
 

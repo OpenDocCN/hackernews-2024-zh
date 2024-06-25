@@ -8,7 +8,7 @@
 
 # Linux 中的文件描述符是什么
 
-> 来源：[https://linuxtldr.com/file-descriptors-linux/](https://linuxtldr.com/file-descriptors-linux/)
+> 来源：[`linuxtldr.com/file-descriptors-linux/`](https://linuxtldr.com/file-descriptors-linux/)
 
 在本文中，你将学习关于文件描述符的一切，比如它们在 Linux 中的用途、文件描述符表是什么、如何在特定进程下查看文件描述符，以及如何在 Linux 中更改文件描述符的限制。
 
@@ -125,7 +125,7 @@ $ ulimit -n
 $ ulimit -n 3276800
 ```
 
-注意，非root用户也可以使用上述命令来更改进程级限制（<Kernel 2.4.x），但您需要在“`/etc/security/limits.conf`”中添加以下行以分配用户修改权限：
+注意，非 root 用户也可以使用上述命令来更改进程级限制（<Kernel 2.4.x），但您需要在“`/etc/security/limits.conf`”中添加以下行以分配用户修改权限：
 
 ```
 soft nofile 2048

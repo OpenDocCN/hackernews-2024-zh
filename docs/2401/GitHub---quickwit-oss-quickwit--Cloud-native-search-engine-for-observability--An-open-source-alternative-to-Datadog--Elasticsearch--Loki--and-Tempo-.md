@@ -8,7 +8,7 @@
 
 # GitHub - quickwit-oss/quickwit: 云原生可观测性搜索引擎。 Datadog、Elasticsearch、Loki 和 Tempo 的开源替代品。
 
-> 来源：[https://github.com/quickwit-oss/quickwit](https://github.com/quickwit-oss/quickwit)
+> 来源：[`github.com/quickwit-oss/quickwit`](https://github.com/quickwit-oss/quickwit)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

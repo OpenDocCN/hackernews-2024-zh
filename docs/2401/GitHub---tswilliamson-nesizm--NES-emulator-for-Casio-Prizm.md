@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - tswilliamson/nesizm: Casio Prizm 的 NES 模拟器
 
-> 来源：[https://github.com/tswilliamson/nesizm](https://github.com/tswilliamson/nesizm)
+> 来源：[`github.com/tswilliamson/nesizm`](https://github.com/tswilliamson/nesizm)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

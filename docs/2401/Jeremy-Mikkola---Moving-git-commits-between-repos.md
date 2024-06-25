@@ -8,7 +8,7 @@
 
 # Jeremy Mikkola - 将 git 提交移动到不相关的仓库
 
-> 来源：[https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html](https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html)
+> 来源：[`jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html`](https://jeremymikkola.com/posts/2017_07_15_move_commits_between_git_repos.html)
 
 # 将 git 提交移动到不同的仓库
 

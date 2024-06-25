@@ -8,7 +8,7 @@ date: 2024-05-27 14:25:00
 
 # Kadoa · AI 网页抓取器
 
-> 来源：[https://www.kadoa.com/](https://www.kadoa.com/)
+> 来源：[`www.kadoa.com/`](https://www.kadoa.com/)
 
 为每个网站定制抓取器
 

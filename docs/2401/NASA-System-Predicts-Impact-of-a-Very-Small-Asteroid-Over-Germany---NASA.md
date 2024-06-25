@@ -8,9 +8,9 @@
 
 # 美国国家航空航天局预测一颗非常小的小行星在德国上空撞击的影响 - 美国国家航空航天局
 
-> 来源：[https://www.nasa.gov/solar-system/asteroids/nasa-system-predicts-impact-of-a-very-small-asteroid-over-germany/](https://www.nasa.gov/solar-system/asteroids/nasa-system-predicts-impact-of-a-very-small-asteroid-over-germany/)
+> 来源：[`www.nasa.gov/solar-system/asteroids/nasa-system-predicts-impact-of-a-very-small-asteroid-over-germany/`](https://www.nasa.gov/solar-system/asteroids/nasa-system-predicts-impact-of-a-very-small-asteroid-over-germany/)
 
-*斥候影响评估系统*计算了小行星2024 BX1将在何地何时撞击地球大气层，这提供了行星防御能力的有用演示。
+*斥候影响评估系统*计算了小行星 2024 BX1 将在何地何时撞击地球大气层，这提供了行星防御能力的有用演示。
 
 一颗直径约为 3 英尺（1 米）的小行星于当地时间 1 月 21 日上午 1:32 在德国上空无害地解体。在它进入地球大气层之前的 95 分钟，[NASA 的斥候](https://cneos.jpl.nasa.gov/scout/intro.html)撞击危险评估系统，该系统监视潜在小行星发现的数据，提前警告了这颗小行星将在何处何时撞击。这是历史上第八次在小行星进入并在我们的大气层中解体之前，在太空中探测到的小行星。
 
@@ -22,7 +22,7 @@
 
 **是如何预测的**
 
-小行星2024 BX1在其撞击不到三小时前由匈牙利布达佩斯附近 Konkoly 天文台 Piszkéstető 山站的 Krisztián Sárneczky 首次观察到。这些早期观测[已报告](https://www.minorplanetcenter.net/mpec/K24/K24B76.html)给了[小行星中心](https://minorplanetcenter.net/) - 这是国际公认的小型太阳系天体位置测量的集散地 - 并自动发布到中心的[近地天体确认页面](https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html)，以便其他天文学家可以进行额外观测。
+小行星 2024 BX1 在其撞击不到三小时前由匈牙利布达佩斯附近 Konkoly 天文台 Piszkéstető 山站的 Krisztián Sárneczky 首次观察到。这些早期观测[已报告](https://www.minorplanetcenter.net/mpec/K24/K24B76.html)给了[小行星中心](https://minorplanetcenter.net/) - 这是国际公认的小型太阳系天体位置测量的集散地 - 并自动发布到中心的[近地天体确认页面](https://www.minorplanetcenter.net/iau/NEO/toconfirm_tabular.html)，以便其他天文学家可以进行额外观测。
 
 Scout 是由位于加利福尼亚州南部的 NASA 喷气推进实验室的近地天体研究中心（[CNEOS](https://cneos.jpl.nasa.gov/)）开发和运行的，它自动从该页面获取新数据，推测物体可能的轨迹和撞击地球的机会。CNEOS 计算每个已知近地天体的轨道，为华盛顿特区 NASA 总部的行星防御协调办公室（[PDCO](https://science.nasa.gov/planetary-defense)）提供潜在撞击危险的评估。
 
@@ -40,7 +40,7 @@ Scout 是由位于加利福尼亚州南部的 NASA 喷气推进实验室的近�
 
 关于小行星、近地天体和 NASA 行星防御的更多信息，请访问：
 
-[https://science.nasa.gov/planetary-defense](https://science.nasa.gov/planetary-defense)
+[`science.nasa.gov/planetary-defense`](https://science.nasa.gov/planetary-defense)
 
 **新闻媒体联系方式**
 
@@ -50,12 +50,12 @@ Ian J. O’Neill
 
 818-354-2649
 
-[ian.j.oneill@jpl.nasa.gov](mailto:ian.j.oneill@jpl.nasa.gov)
+ian.j.oneill@jpl.nasa.gov
 
 Karen Fox / Charles Blue
 
 NASA 总部
 
-[karen.c.fox@nasa.gov](mailto:karen.c.fox@nasa.gov) / [charles.e.blue@nasa.gov](mailto:charles.e.blue@nasa.gov)
+karen.c.fox@nasa.gov / charles.e.blue@nasa.gov
 
 2024-006

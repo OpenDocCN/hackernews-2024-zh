@@ -8,7 +8,7 @@
 
 # 更新日志 — Sentry 法律声明 | Sentry
 
-> 来源：[https://sentry.io/legal/changelog/](https://sentry.io/legal/changelog/)
+> 来源：[`sentry.io/legal/changelog/`](https://sentry.io/legal/changelog/)
 
 我们收集有关浏览我们网站的人、Sentry 服务的用户、潜在客户以及与我们进行其他交互的人的个人身份信息（PII）。
 

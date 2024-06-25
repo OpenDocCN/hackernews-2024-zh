@@ -2,23 +2,23 @@
 
 分类：未分类
 
-日期：2024年05月27日 14:29:33
+日期：2024 年 05 月 27 日 14:29:33
 
 -->
 
 # 游戏奖项引发了一个老问题：独立游戏是什么意思？
 
-> 来源：[https://www.engadget.com/the-game-awards-raises-an-old-question-what-does-indie-mean-205211035.html](https://www.engadget.com/the-game-awards-raises-an-old-question-what-does-indie-mean-205211035.html)
+> 来源：[`www.engadget.com/the-game-awards-raises-an-old-question-what-does-indie-mean-205211035.html`](https://www.engadget.com/the-game-awards-raises-an-old-question-what-does-indie-mean-205211035.html)
 
-今年游戏奖项弄错了。入围最佳独立游戏奖的一个标题*Dave the Diver*是由韩国最大的视频游戏工作室之一Nexon制作的。无论你用多大的力气眯着眼睛看，它都不是独立游戏。*Dave the Diver*是一款关于深海捕鱼和餐厅管理的出色像素艺术游戏，但它是由Nexon子公司Mintrocket委托和资助的，拥有数十亿美元和数十年的经验支持。
+今年游戏奖项弄错了。入围最佳独立游戏奖的一个标题*Dave the Diver*是由韩国最大的视频游戏工作室之一 Nexon 制作的。无论你用多大的力气眯着眼睛看，它都不是独立游戏。*Dave the Diver*是一款关于深海捕鱼和餐厅管理的出色像素艺术游戏，但它是由 Nexon 子公司 Mintrocket 委托和资助的，拥有数十亿美元和数十年的经验支持。
 
-当游戏奖项提名 [于11月13日宣布](https://www.engadget.com/baldurs-gate-3-and-alan-wake-2-lead-the-2023-game-awards-nominees-185729344.html)时，粉丝们迅速指出了错误，并且关于“独立游戏”意味着什么的辩论再次引发。Nexon的Mintrocket监督者Taehwan Kim于11月14日发表了看法，表示*Dave the Diver*“可能看起来像一款独立游戏，但情况并非一定如此。” [列出了最佳独立游戏的提名名单](https://twitter.com/thegameawards/status/1724120590062358978) 现在带有一个读者生成的上下文标签，上面写着，“*Dave the Diver*不是一款独立游戏。该游戏的开发者Mintrocket是韩国最大的游戏公司Nexon的子公司。从任何意义上来说，它们都不是独立的。”
+当游戏奖项提名 [于 11 月 13 日宣布](https://www.engadget.com/baldurs-gate-3-and-alan-wake-2-lead-the-2023-game-awards-nominees-185729344.html)时，粉丝们迅速指出了错误，并且关于“独立游戏”意味着什么的辩论再次引发。Nexon 的 Mintrocket 监督者 Taehwan Kim 于 11 月 14 日发表了看法，表示*Dave the Diver*“可能看起来像一款独立游戏，但情况并非一定如此。” [列出了最佳独立游戏的提名名单](https://twitter.com/thegameawards/status/1724120590062358978) 现在带有一个读者生成的上下文标签，上面写着，“*Dave the Diver*不是一款独立游戏。该游戏的开发者 Mintrocket 是韩国最大的游戏公司 Nexon 的子公司。从任何意义上来说，它们都不是独立的。”
 
 Nexon
 
-11月期间围绕“独立游戏”定义的讨论引发了热议，但更多的是提出了问题而非得到了答案。一个普遍的结论是，投票将*Dave the Diver*列入独立类别的媒体被其像素风格所愚弄，这种风格与独立游戏相关联。在11月26日的[Twitch上的直播问答](https://www.twitch.tv/videos/1988267110)中，游戏奖项主办者Geoff Keighley认为“独立”是一个宽泛的术语，其定义不可知，然后基本上表示*Dave the Diver*被列入独立类别是评审团的错。
+11 月期间围绕“独立游戏”定义的讨论引发了热议，但更多的是提出了问题而非得到了答案。一个普遍的结论是，投票将*Dave the Diver*列入独立类别的媒体被其像素风格所愚弄，这种风格与独立游戏相关联。在 11 月 26 日的[Twitch 上的直播问答](https://www.twitch.tv/videos/1988267110)中，游戏奖项主办者 Geoff Keighley 认为“独立”是一个宽泛的术语，其定义不可知，然后基本上表示*Dave the Diver*被列入独立类别是评审团的错。
 
-具体来说，Keighley说：“它在精神上是独立的，[它是]一款小游戏，我不知道预算是多少，但它可能是一款相对小预算的游戏。但它来自一个较大的实体，而在那个名单上还有其他游戏来自更小的工作室。就像*Dredge*我认为是由Team17出版的，所以那算不算独立，因为你有一个出版商？弄清楚并制定严格的规则是一件非常复杂的事情，所以我们让人们用自己的最佳判断力。你可以同意或不同意这些选择，但事实上*Dave the Diver*被列入那个名单意味着，在评审团看来，或者说他们认为是独立游戏中，今年他们看过的所有独立游戏中，这是其中之一。”
+具体来说，Keighley 说：“它在精神上是独立的，[它是]一款小游戏，我不知道预算是多少，但它可能是一款相对小预算的游戏。但它来自一个较大的实体，而在那个名单上还有其他游戏来自更小的工作室。就像*Dredge*我认为是由 Team17 出版的，所以那算不算独立，因为你有一个出版商？弄清楚并制定严格的规则是一件非常复杂的事情，所以我们让人们用自己的最佳判断力。你可以同意或不同意这些选择，但事实上*Dave the Diver*被列入那个名单意味着，在评审团看来，或者说他们认为是独立游戏中，今年他们看过的所有独立游戏中，这是其中之一。”
 
 由 120 家媒体机构组成的评委团（Engadget 一直是其中之一，但今年我们没有参与投票*看看结果如何*），因此 Keighley 将这个错误归因于群体歇斯底里，并继续前进。与此同时，在游戏奖项大赛或其他地方，对于什么构成独立游戏仍然没有达成一致意见。
 
@@ -40,13 +40,13 @@ Nexon
 
 第一个问题是识别工作室的资金来源以及游戏在销售之外有什么样的支持。如果一个团队完全由任何规模的另一家公司全资拥有，那就不算是独立的。我们不是在谈论出版协议；这个开放性问题是关于更大工作室的收购或子公司。*Dave the Diver* 在这里是一个典型的例子 — 它是由 Nexon 的子公司 Mintrocket 开发的，后者专门为该出版商开发更为独立、实验性更强的游戏。*Dave the Diver* 绝对不是独立的，我们只是问了第一个问题。
 
-第二个查询输入到第一个中，对于存在于灰色地带的游戏进行精细区分很有帮助。*《赛博朋克2077》*怎么样呢？这是一个由CD Projekt RED（CDPR）打造的大型预算游戏，乍一看，它似乎可以是独立游戏。然而，有两个因素让我认为它不是。首先，CD Projekt，支持CDPR游戏制作的总公司，是一家公开交易的公司，有股东和需要负责的董事会。其次，CD Projekt是GOG的所有者，这是一个分销中心，允许该工作室在Steam和Epic Games Store之外销售自己的游戏和DLC。这种能够大规模直接销售给玩家的能力使CD Projekt摆脱了独立游戏的范畴。一般来说，具有最大影响力和资金的公司是像Valve、Xbox、PlayStation、Epic Games、育碧、EA，以及是的，CD Projekt这样的主机制造商和平台持有者。它们构成了AAA体系，它们拥有的任何东西都不是独立的。
+第二个查询输入到第一个中，对于存在于灰色地带的游戏进行精细区分很有帮助。*《赛博朋克 2077》*怎么样呢？这是一个由 CD Projekt RED（CDPR）打造的大型预算游戏，乍一看，它似乎可以是独立游戏。然而，有两个因素让我认为它不是。首先，CD Projekt，支持 CDPR 游戏制作的总公司，是一家公开交易的公司，有股东和需要负责的董事会。其次，CD Projekt 是 GOG 的所有者，这是一个分销中心，允许该工作室在 Steam 和 Epic Games Store 之外销售自己的游戏和 DLC。这种能够大规模直接销售给玩家的能力使 CD Projekt 摆脱了独立游戏的范畴。一般来说，具有最大影响力和资金的公司是像 Valve、Xbox、PlayStation、Epic Games、育碧、EA，以及是的，CD Projekt 这样的主机制造商和平台持有者。它们构成了 AAA 体系，它们拥有的任何东西都不是独立的。
 
 Nexon
 
-最后，再说说出版商。抱歉，Keighley，但是如今，是否能够得到一个出版商与游戏是否独立几乎没有关系。在2023年，我们有幸拥有一个蓬勃发展的独立游戏行业，不断地与AAA体系抗衡，具有不同的目标、更多样化的声音和更广泛的创新，而出版是这一体系的重要组成部分。如今，以独立游戏为重点的出版商（ [](https://www.engadget.com/indie-games-have-entered-the-era-of-bespoke-publishing-170639414.html) ）往往包含保护开发者创意愿景的条款，防止大公司干涉艺术决策，保持游戏的独立核心。曾经，只考虑自行出版的游戏是独立的，但那个时代早已过去。
+最后，再说说出版商。抱歉，Keighley，但是如今，是否能够得到一个出版商与游戏是否独立几乎没有关系。在 2023 年，我们有幸拥有一个蓬勃发展的独立游戏行业，不断地与 AAA 体系抗衡，具有不同的目标、更多样化的声音和更广泛的创新，而出版是这一体系的重要组成部分。如今，以独立游戏为重点的出版商（ [](https://www.engadget.com/indie-games-have-entered-the-era-of-bespoke-publishing-170639414.html) ）往往包含保护开发者创意愿景的条款，防止大公司干涉艺术决策，保持游戏的独立核心。曾经，只考虑自行出版的游戏是独立的，但那个时代早已过去。
 
-自2010年代初以来，独立游戏界已经发生了巨大变化，当时的游戏，比如《Braid》、《超级肉块》和《Fez》正在塑造市场的现代形态。当时，自我出版是独立开发者的唯一选择，因此AAA、AA和独立游戏之间有着更明显的界限。Devolver Digital于2012年以独立出版商身份找到了其首个爆款作品*《热线迈阿密》*，那是大门打开的时候。2014年，随着该行业最大的公司开始为他们提供资金和出版计划，独立游戏在包括Steam（还记得 [](https://www.engadget.com/2012-10-09-not-getting-noticed-on-steam-greenlight-incredipedes-story.html) 吗？）、App Store、Xbox、PlayStation和Ouya（已故）等平台上迅速增加。
+自 2010 年代初以来，独立游戏界已经发生了巨大变化，当时的游戏，比如《Braid》、《超级肉块》和《Fez》正在塑造市场的现代形态。当时，自我出版是独立开发者的唯一选择，因此 AAA、AA 和独立游戏之间有着更明显的界限。Devolver Digital 于 2012 年以独立出版商身份找到了其首个爆款作品*《热线迈阿密》*，那是大门打开的时候。2014 年，随着该行业最大的公司开始为他们提供资金和出版计划，独立游戏在包括 Steam（还记得 [](https://www.engadget.com/2012-10-09-not-getting-noticed-on-steam-greenlight-incredipedes-story.html) 吗？）、App Store、Xbox、PlayStation 和 Ouya（已故）等平台上迅速增加。
 
 今天，独立游戏已成为每个游戏主机的标配。有多家以独立游戏为重点的发行商，包括 Devolver、Annapurna Interactive、Panic、Raw Fury、Team17 和 Netflix，其中大多数都将完全的创作自由作为主要卖点。与此同时，索尼和 Xbox 等平台持有者渴望与各种规模的开发者签订发行协议，以获取独占权并充实其流媒体库。这是独立游戏界最稳定（也最拥挤）的时候。拥有一个发行商并不影响游戏是否是独立游戏。
 

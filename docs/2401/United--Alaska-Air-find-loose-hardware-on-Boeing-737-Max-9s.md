@@ -6,25 +6,25 @@ date: 2024-05-27 14:35:44
 
 -->
 
-# 美国联合航空公司和阿拉斯加航空公司发现波音737 Max 9飞机上的松动硬件
+# 美国联合航空公司和阿拉斯加航空公司发现波音 737 Max 9 飞机上的松动硬件
 
-> 来源：[https://www.cnbc.com/2024/01/08/united-airlines-737-max-9-inspections-turn-up-loose-bolts.html](https://www.cnbc.com/2024/01/08/united-airlines-737-max-9-inspections-turn-up-loose-bolts.html)
+> 来源：[`www.cnbc.com/2024/01/08/united-airlines-737-max-9-inspections-turn-up-loose-bolts.html`](https://www.cnbc.com/2024/01/08/united-airlines-737-max-9-inspections-turn-up-loose-bolts.html)
 
-[美国联合航空公司](/quotes/UAL/)周一表示，在对多架[波音](/quotes/BA/)737 Max 9飞机进行检查时发现了门插销上的松动螺栓，这是在上周一架同型号飞机的一个[面板爆炸](https://www.cnbc.com/2024/01/06/boeing-737-max-9-grounding-after-alaska-airlines-door-blows-midflight.html)的激发下进行的检查。
+美国联合航空公司周一表示，在对多架波音 737 Max 9 飞机进行检查时发现了门插销上的松动螺栓，这是在上周一架同型号飞机的一个[面板爆炸](https://www.cnbc.com/2024/01/06/boeing-737-max-9-grounding-after-alaska-airlines-door-blows-midflight.html)的激发下进行的检查。
 
 阿拉斯加航空公司周一晚些时候表示，其对这些喷气机的初步检查已经发现了"松动的硬件"，并且"在正式审查完成之前，不会将任何飞机交付使用"。
 
-"这些飞机的安全是我们的首要任务，我们将采取必要的时间和步骤，与FAA密切合作，确保它们的适航性，" 阿拉斯加航空公司在[一份声明中说。](https://news.alaskaair.com/alaska-airlines/operations/as-1282/)
+"这些飞机的安全是我们的首要任务，我们将采取必要的时间和步骤，与 FAA 密切合作，确保它们的适航性，" 阿拉斯加航空公司在[一份声明中说。](https://news.alaskaair.com/alaska-airlines/operations/as-1282/)
 
-在面板在阿拉斯加1282航班上空爆炸后，美国联邦航空局在周六停飞了数十架737 Max 9。
+在面板在阿拉斯加 1282 航班上空爆炸后，美国联邦航空局在周六停飞了数十架 737 Max 9。
 
-阿拉斯加航空公司在其机队中拥有65架Max 9飞机。美国联合航空公司拥有79架，使其成为该机型的最大运营商。
+阿拉斯加航空公司在其机队中拥有 65 架 Max 9 飞机。美国联合航空公司拥有 79 架，使其成为该机型的最大运营商。
 
 "自从我们在周六开始初步检查以来，我们发现了一些似乎与门插销的安装问题有关的情况 —— 例如，需要额外拧紧的螺栓，" 联合航空公司在一份声明中表示。"我们的技术运营团队将解决这些发现，以确保安全地恢复飞机的运行。"
 
-FAA周一早些时候拒绝就航空公司的发现发表评论。
+FAA 周一早些时候拒绝就航空公司的发现发表评论。
 
-飞机制造商波音周一早些时候表示，已向航空公司发布了指令，要求对其机队中的Max 9进行检查。美国联合航空公司在过去几天已开始进行一些初步检查工作。
+飞机制造商波音周一早些时候表示，已向航空公司发布了指令，要求对其机队中的 Max 9 进行检查。美国联合航空公司在过去几天已开始进行一些初步检查工作。
 
 "我们致力于确保每架波音飞机符合设计规范和最高的安全和质量标准，" 波音周一晚间在一份声明中表示。"我们对此对我们的客户及其乘客产生的影响感到遗憾。"
 

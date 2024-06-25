@@ -8,7 +8,7 @@
 
 # GitHub - SrMordred/reloaded: 一个简单的 DLang 实时代码重新加载工具。
 
-> 来源：[https://github.com/SrMordred/reloaded](https://github.com/SrMordred/reloaded)
+> 来源：[`github.com/SrMordred/reloaded`](https://github.com/SrMordred/reloaded)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

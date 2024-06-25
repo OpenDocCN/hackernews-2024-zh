@@ -2,15 +2,15 @@
 
 category: 未分类
 
-日期：2024年5月27日15:03:39
+日期：2024 年 5 月 27 日 15:03:39
 
 -->
 
-# 完全关闭Rust的借用检查器
+# 完全关闭 Rust 的借用检查器
 
-> 来源：[https://iter.ca/post/rust-skip-borrowck/](https://iter.ca/post/rust-skip-borrowck/)
+> 来源：[`iter.ca/post/rust-skip-borrowck/`](https://iter.ca/post/rust-skip-borrowck/)
 
-我最近遇到了[`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html)，这是一个Rust宏，使得借用检查器对于一个函数“关闭”。它将函数的代码转换为不使用借用检查器的不安全代码来进行引用操作。
+我最近遇到了[`#[you_can::turn_off_the_borrow_checker]`](https://docs.rs/you-can/latest/you_can/attr.turn_off_the_borrow_checker.html)，这是一个 Rust 宏，使得借用检查器对于一个函数“关闭”。它将函数的代码转换为不使用借用检查器的不安全代码来进行引用操作。
 
 当然，这不是您想要在生产中使用的东西，或者真的只能用于教育和实验。然而，这让我好奇是否可以在更低的级别实现它：我们可以修补编译器以删除借用检查器吗？可以。
 
@@ -22,7 +22,7 @@ fn analysis(tcx: TyCtxt<'_>, (): ()) -> Result<()> {  return Ok(()); // don't ac
 
 这导致函数的其余部分不会运行，并在编译编译器时引发`unreachable statement`警告。
 
-这有点奏效。大多数有效的Rust代码仍然可以使用这个修补过的编译器。偶尔会出现内部编译器错误（ICEs），有时你会因为编译器的某些部分假设分析部分已经执行而得到一些额外的✨*奖励错误*✨。但遗憾的是，移除了分析传递仍然会导致一些借用检查。我们需要使用核心选项：完全忽略错误。在编译器发出错误的一部分，有一个`HandlerInner::emit_diagnostic`，它会发出一个错误诊断。该函数的一部分会检查是否正在发出错误，如果是，则递增一个计数器：
+这有点奏效。大多数有效的 Rust 代码仍然可以使用这个修补过的编译器。偶尔会出现内部编译器错误（ICEs），有时你会因为编译器的某些部分假设分析部分已经执行而得到一些额外的✨*奖励错误*✨。但遗憾的是，移除了分析传递仍然会导致一些借用检查。我们需要使用核心选项：完全忽略错误。在编译器发出错误的一部分，有一个`HandlerInner::emit_diagnostic`，它会发出一个错误诊断。该函数的一部分会检查是否正在发出错误，如果是，则递增一个计数器：
 
 ```
 if matches!(diagnostic.level, Level::Error { lint: true }) {  self.bump_lint_err_count(); } 
@@ -32,9 +32,9 @@ if matches!(diagnostic.level, Level::Error { lint: true }) {  self.bump_lint_err
 
 这意味着会生成和显示错误，但修补的编译器无视了错误的存在，并尝试生成代码。
 
-这不能捕获一些立即停止编译的致命错误，但幸运的是大多数错误会让编译器继续进行，直到某个未来的停止点（但由于错误计数始终为0，所以现在不会发生）。
+这不能捕获一些立即停止编译的致命错误，但幸运的是大多数错误会让编译器继续进行，直到某个未来的停止点（但由于错误计数始终为 0，所以现在不会发生）。
 
-此时，我相当确信这实际上不会起作用。但它确实可以。这里是[一个借用检查器不喜欢的Rust代码示例](https://blog.logrocket.com/introducing-the-rust-borrow-checker/#inpractice)：
+此时，我相当确信这实际上不会起作用。但它确实可以。这里是[一个借用检查器不喜欢的 Rust 代码示例](https://blog.logrocket.com/introducing-the-rust-borrow-checker/#inpractice)：
 
 ```
 fn hold_my_vec<T>(_: Vec<T>) {}   fn main() {  let v = vec![2, 3, 5, 7, 11, 13, 17]; hold_my_vec(v); let element = v.get(3);   println!("I got this element from the vector: {:?}", element); } 

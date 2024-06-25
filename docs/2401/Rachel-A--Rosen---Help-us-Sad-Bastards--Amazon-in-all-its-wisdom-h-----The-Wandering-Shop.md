@@ -8,7 +8,7 @@
 
 # Rachel A. Rosen：“Help us Sad Bastards！Amazon 凭借其无上的智慧……” - The Wandering Shop
 
-> 来源：[https://wandering.shop/@youseeatortoise/111782434593735690](https://wandering.shop/@youseeatortoise/111782434593735690)
+> 来源：[`wandering.shop/@youseeatortoise/111782434593735690`](https://wandering.shop/@youseeatortoise/111782434593735690)
 
 若要使用 Mastodon Web 应用程序，请启用 JavaScript。或者，尝试其中一个
 

@@ -8,7 +8,7 @@
 
 # imgsrc
 
-> 来源：[https://imgsrc.io/](https://imgsrc.io/)
+> 来源：[`imgsrc.io/`](https://imgsrc.io/)
 
 ### 模板属性
 

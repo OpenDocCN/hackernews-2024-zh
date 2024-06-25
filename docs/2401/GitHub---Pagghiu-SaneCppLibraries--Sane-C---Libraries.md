@@ -8,7 +8,7 @@ date: 2024-05-27 15:13:21
 
 # GitHub - Pagghiu/SaneCppLibraries: Sane C++ Libraries
 
-> 来源：[https://github.com/Pagghiu/SaneCppLibraries](https://github.com/Pagghiu/SaneCppLibraries)
+> 来源：[`github.com/Pagghiu/SaneCppLibraries`](https://github.com/Pagghiu/SaneCppLibraries)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

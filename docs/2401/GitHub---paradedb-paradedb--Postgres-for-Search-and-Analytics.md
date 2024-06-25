@@ -8,7 +8,7 @@
 
 # GitHub - paradedb/paradedb: Postgres for Search and Analytics
 
-> 来源：[https://github.com/paradedb/paradedb](https://github.com/paradedb/paradedb)
+> 来源：[`github.com/paradedb/paradedb`](https://github.com/paradedb/paradedb)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 

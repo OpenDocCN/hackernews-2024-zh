@@ -8,7 +8,7 @@ category: 未分类
 
 # GitHub - derrickburns/generalized-kmeans-clustering: Spark library for generalized K-Means clustering. Supports general Bregman divergences. Suitable for clustering probabilistic data, time series data, high dimensional data, and very large data.
 
-> 来源：[https://github.com/derrickburns/generalized-kmeans-clustering](https://github.com/derrickburns/generalized-kmeans-clustering)
+> 来源：[`github.com/derrickburns/generalized-kmeans-clustering`](https://github.com/derrickburns/generalized-kmeans-clustering)
 
 <include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
 
