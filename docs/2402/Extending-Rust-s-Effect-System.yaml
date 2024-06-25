@@ -2,88 +2,106 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:44:47'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:44:47
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Extending Rust's Effect System
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 扩展 Rust 的效果系统
 - en: 来源：[https://blog.yoshuawuyts.com/extending-rusts-effect-system/](https://blog.yoshuawuyts.com/extending-rusts-effect-system/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.yoshuawuyts.com/extending-rusts-effect-system/](https://blog.yoshuawuyts.com/extending-rusts-effect-system/)
 - en: Extending Rust's Effect System
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 扩展 Rust 的效果系统
 - en: — 2024-02-09
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: — 2024-02-09
 - en: '[introduction](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#introduction)'
   id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[介绍](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#introduction)'
 - en: '[rust without generics](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#rust-without-generics)'
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[没有泛型的 Rust](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#rust-without-generics)'
 - en: '[why effect generics?](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#why-effect-generics)'
   id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[为什么要使用效果泛型？](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#why-effect-generics)'
 - en: '[stage i: effect-generic trait definitions](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-i-effect-generic-trait-definitions)'
   id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[第一阶段：效果泛型 trait 定义](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-i-effect-generic-trait-definitions)'
 - en: '[stage ii: effect-generic bounds, impls, and types](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-ii-effect-generic-bounds-impls-and-types)'
   id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[第二阶段：效果泛型的边界、实现和类型](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-ii-effect-generic-bounds-impls-and-types)'
 - en: '[what are effects?](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#what-are-effects)'
   id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[什么是效果？](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#what-are-effects)'
 - en: '[stage iii: more effects](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-iii-more-effects)'
   id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[第三阶段：更多效果](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#stage-iii-more-effects)'
 - en: '[outro](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#outro)'
   id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[结束语](https://blog.yoshuawuyts.com/extending-rusts-effect-system/#outro)'
 - en: '*This is the transcript of my RustConf 2023 talk: "Extending Rust''s Effect
     System", presented on September 13th 2023 in Albuquerque, New Mexico and streamed
     online.*'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这是我在 RustConf 2023 的演讲《扩展 Rust 的效果系统》的文字记录，演讲于 2023 年 9 月 13 日在新墨西哥州阿尔伯克基举行，并通过网络直播。*'
 - en: Introduction
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Introduction
 - en: 'Rust has continuously evolved since version 1.0 was released in 2015\. We''ve
     added major features such as the try operator (`?`), const generics, generic associated
     types (GATs), and of course: `async/.await`. Out of those four features, three
@@ -92,12 +110,16 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 自 2015 年发布版本 1.0 以来，Rust 不断发展。我们添加了诸如尝试操作符 (`?`)、常量泛型、泛型关联类型（GATs）和当然：`async/.await`
+    等重要功能。在这四个特性中，有三个可以被视为“效果”。尽管我们已经花了很长时间在这些特性上，但它们仍然在积极进行中。
 - en: Hello, my name is Yosh and I work as a Developer Advocate for Rust at Microsoft.
     I've been working on Rust itself for the past five years, and I'm among other
     things a member of the Rust Async WG, and the co-lead of the Rust Effects Initiative.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 你好，我叫 Yosh，在 Microsoft 担任 Rust 的开发者倡导者。在过去的五年里，我一直在 Rust 自身工作，此外还是 Rust Async
+    工作组的成员，并且是 Rust Effects Initiative 的联合负责人之一。
 - en: The thesis of this talk is that we've unknowingly shipped an effect system as
     part of the language in since Rust 1.0\. We've since begun adding a number of
     new effects, and in order to finish integrating them into the language we need
@@ -105,16 +127,19 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 本次演讲的论点是，我们在 Rust 1.0 中无意中包含了一个效果系统作为语言的一部分。自那以来，我们已经开始添加许多新效果，为了将它们完全整合到语言中，我们需要支持*效果泛型*。
 - en: In this talk I'll explain what effects are, what makes them challenging to integrate
     into the language, and how we can overcome those challenges.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次演讲中，我将解释效果是什么，以及什么使它们难以集成到语言中，以及我们如何克服这些挑战。
 - en: Rust Without Generics
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Rust Without Generics
 - en: When I was new to Rust it took me a minute to figure out how to use generics.
     I was used to writing JavaScript, and we don’t have generics there. So I found
     myself mostly writing functions which operated on *concrete types*. I remember
@@ -123,6 +148,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我刚接触 Rust 时，我花了一些时间弄清楚如何使用泛型。我习惯于编写 JavaScript，而在那里我们没有泛型。所以我发现自己大部分时间都在编写针对*具体类型*的函数。我记得我的代码感觉相当笨拙，这并不是一次很好的经历。与标准库提供的代码相比，更是如此。
 - en: An example of a generic stdlib function is the `io::copy` function. It reads
     bytes from a reader, and copies them into a writer. We can give it a file, a socket,
     or any combination of the two, and it will happily copy bytes from one into the
