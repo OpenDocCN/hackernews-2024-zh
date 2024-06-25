@@ -130,6 +130,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个泛型标准库函数的例子是 `io::copy` 函数。它从读取器中读取字节，并将它们复制到写入器中。我们可以给它一个文件，一个套接字，或者两者的任何组合，它都会愉快地将字节从一个复制到另一个。只要我们给它正确的类型，这一切都会正常工作。
 - en: But what if Rust actually didn't have generics? What if the Rust I used to write
     at the beginning was actually all we had? How would we write this `io::copy` function?
     Well, given we're trying to copy bytes between sockets and file types, we could
@@ -138,6 +139,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是如果 Rust 实际上没有泛型呢？如果我一开始使用的 Rust 实际上是我们全部拥有的呢？我们会如何编写这个 `io::copy` 函数呢？好吧，考虑到我们试图在套接字和文件类型之间复制字节，我们可能会手动编写这些函数。对于我们这里的两种类型，我们可以编写四个独特的函数。
 - en: But unfortunately for us that would only solve the problem right in front of
     us. But the stdlib doesn’t just have two types which implement read and write.
     It has 18 types which implement read, and 27 types which implement write. So if
@@ -147,6 +149,8 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是对我们来说，不幸的是，这只能解决我们面前的问题。但是标准库不仅仅有两种实现读写的类型。它有 18 种实现读取的类型，以及 27 种实现写入的类型。因此，如果我们想要覆盖整个标准库的
+    API 空间，我们总共需要 486 个函数。如果这是我们实现 `io::copy` 的唯一方式，那将会导致一种相当糟糕的语言。
 - en: Now luckily Rust does have generics, and all we ever need is the one `copy`
     function. This means we're free to keep adding more types into the stdlib without
     having to worry about implementing more functions. We just have the one `copy`
@@ -155,11 +159,14 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在幸运的是，Rust 确实具有泛型，并且我们所需的只是一个 `copy` 函数。这意味着我们可以自由地继续向标准库中添加更多类型，而无需担心需要实现更多函数。我们只需要一个
+    `copy` 函数，编译器会为我们提供任何我们给它的类型生成正确的代码。
 - en: Why effect generics?
   id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么要使用泛型？
 - en: Types are not the only things in Rust we want to be generic over. We also have
     "const generics" which allow functions to be generic over constant values. As
     well as "value generics" which allow functions to be generic over different values.
@@ -168,6 +175,8 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Rust 中，我们希望泛型的不仅仅是类型。我们还有 "const 泛型"，允许函数在常量值上泛型化。以及 "值泛型"，允许函数在不同值上泛型化。这就是我们可以编写可以接受不同值的函数的方式
+    - 这是大多数编程语言中存在的一个特性。
 - en: '[PRE0]'
   id: totrans-split-30
   prefs: []
@@ -182,6 +191,8 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，并非导致 API 重复的所有因素都可以泛型化。例如，根据我们是以拥有的方式、引用的方式，还是可变引用的方式来获取值，创建不同方法或类型是非常常见的。我们还经常为常量值和运行时值创建重复的
+    API，以及根据 API 是否需要线程安全性创建重复的结构。
 - en: But out of everything which can lead to API duplication, effects are probably
     one of the biggest ones. When I talk about effects in Rust, what I mean is certain
     keywords such as `async/.await` and `const`; but also `?`, and types such as `Result`,
@@ -190,6 +201,8 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，在导致 API 重复的所有因素中，效果可能是最大的之一。当我谈论 Rust 中的效果时，我的意思是诸如 `async/.await` 和 `const`
+    这样的关键字；还有 `?`，以及诸如 `Result` 和 `Option` 这样的类型。所有这些都与语言有深刻的语义连接，并以其他关键字和类型所不具备的方式改变了我们代码的含义。
 - en: Sometimes we'll write code which doesn't have the right effects, leading to
     *effect mismatches*. This is also known as the *function coloring problem*, as
     described by Robert Nystrom. Once you become aware of *effect mismatches* you
@@ -197,6 +210,8 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时我们会写出效果不对的代码，导致*效果不匹配*。这也被称为*函数着色问题*，由罗伯特·奈斯特罗姆描述过。一旦你意识到*效果不匹配*，你会发现它们到处都有，不仅仅是在
+    Rust 中。
 - en: The result of these effect mismatches is that using effects in Rust essentially
     drops you into a second-rate experience. Whether you're using const, async, Result,
     or Error - almost certainly somewhere along the line you'll run into a compatibility
@@ -204,6 +219,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些效果不匹配的结果是，在Rust中使用效果基本上会让您陷入二流的体验中。无论您使用const、async、Result还是Error - 几乎肯定会在某个地方遇到兼容性问题。
 - en: '[PRE1]'
   id: totrans-split-35
   prefs: []
@@ -216,12 +232,14 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 以`Option::filter` API为例。它接受一个引用类型并返回一个布尔值。如果我们尝试在其中使用`?`操作符，我们会得到一个错误，因为该函数不返回`Result`或`Option`。无法在任意闭包内部使用`?`是效果不匹配的一个例子。
 - en: But simple functions like that only scratch the surface. Effect mismatches are
     present in almost every single trait in the stdlib too. Take for example something
     common like the `Debug` trait which is implemented on almost every type in Rust.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是像这样的简单函数只是表面上的。标准库中几乎每个特性都存在效果不匹配的问题。以常见的`Debug`特性为例，几乎每种Rust类型都实现了它。
 - en: We could implement the `Debug` trait for our made-up type `Cat`. The parameter
     `f` here implements `io::Write` and represents a stream of bytes. And using the
     `write!` macro we can write bytes into that stream. But if for some reason we
@@ -231,12 +249,15 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以为我们虚构的类型`Cat`实现`Debug`特性。这里的参数`f`实现了`io::Write`并代表字节流。使用`write!`宏，我们可以将字节写入该流中。但如果由于某种原因，我们希望将字节异步地写入，比如说异步套接字。哦，我们做不到。`fn
+    fmt`不是异步函数，这意味着我们无法在其中等待。
 - en: One way out of this could be to create some kind of intermediate buffer, and
     synchronously write data into it. We could then write data out of that buffer
     asynchronously. But that would involve extra copies we didn't have before.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种解决方法可能是创建某种中间缓冲区，并同步地将数据写入其中。然后我们可以异步地从该缓冲区中写出数据。但这会涉及到我们之前没有的额外复制。
 - en: If we wanted to make it identical to what we did before, the solution would
     be to create a *new* `AsyncDebug` trait which *can* write data asynchronously
     into the stream. But we now have duplicate traits, and that's exactly the problem
@@ -244,6 +265,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要与以前完全相同，解决方案就是创建一个*新的*`AsyncDebug`特性，它*可以*异步地将数据写入流中。但现在我们有了重复的特性，这正是我们试图避免的问题。
 - en: It's tempting to say that maybe we should just add the `AsyncDebug` trait and
     call it a day. We can then also add async versions of `Read`, `Write`, and `Iterator`
     too. And perhaps `Hash` as well, since it too writes to an output stream. And
@@ -255,6 +277,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许我们应该只是添加一个`AsyncDebug`特性然后结束。然后我们也可以添加`Read`、`Write`和`Iterator`的异步版本。也许还有`Hash`，因为它也会写入输出流。那`From`和`Into`呢？或许还有`Fn`、`FnOnce`、`FnMut`和`Drop`，因为它们是内置的？等等。事实上，效果不匹配是结构性的，为每个效果不匹配复制API界面会导致API的指数增长。这与我们之前看到的数据类型泛型类似。
 - en: 'Let me try and illustrate this for a second. Say we took the existing family
     of `Fn` traits and introduced effectful versions of them. That is: versions which
     work with `unsafe` , `async`, `try`, `const`, and generators. With one effect
@@ -263,6 +286,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我试着举个例子来说明这一点。假设我们取现有的`Fn`特性系列，并引入它们的效果版本。也就是说：与`unsafe`、`async`、`try`、`const`和生成器一起工作的版本。一个效果就有六个独特的特性。两个效果就有十二个。所有五个效果，我们突然看到有96个不同的特性。
 - en: The problem space in the stdlib is really broad. From analyzing the Rust 1.70
     stdlib, by my estimate about 75% of the stdlib would interact with the const effect.
     Around 65% would interact with the async effect. And around 30% would interact
@@ -272,6 +296,8 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准库中的问题空间非常广泛。从分析 Rust 1.70 标准库，据我估计约有 75% 的标准库将与 const 效果交互。大约 65% 将与 async
+    效果交互。大约 30% 将与 try 效果交互。确切的数字不精确，因为各种效果的部分仍在进行中。这在实践中将产生多大影响，很大程度上取决于我们最终如何设计语言。
 - en: If you compare the numbers then it appears that close to 100% of the stdlib
     would interact with one or more effect. And about 50% would interact with two
     or more effects. If we consider that whenever effects interact with each other
@@ -281,11 +307,14 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你比较这些数字，那么接近 100% 的标准库将与一种或多种效果交互。约 50% 将与两种或更多效果交互。如果考虑到效果之间相互作用可能导致指数级增长，这应该提醒我们，聪明的一次性解决方案行不通。我认为处理这个问题的最佳方式是允许
+    Rust 使项目能够对效果进行通用化。
 - en: 'Stage I: Effect-Generic Trait Definitions'
   id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第一阶段：效果通用特征定义
 - en: 'Now that we''ve taken a good look at what happens when we can''t be generic
     over effects, it''s time we start talking about what we can do about it. The answer,
     unsurprisingly, is to introduce effect generics into the language. To cover all
@@ -294,12 +323,14 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经仔细看了当我们无法对效果进行通用化时会发生什么，是时候开始讨论我们可以采取的措施了。不出所料的答案是将效果通用性引入语言中。为了涵盖所有用途，需要采取几个步骤，所以让我们从第一个、可能也是最重要的一步开始：效果通用特征定义。
 - en: This is important because it would allow us to introduce effectful traits as
     part of the stdlib. Which would among other things would help standardize the
     various async ecosystems around the stdlib.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很重要，因为它将允许我们将效果特征引入作为标准库的一部分。这将在其他方面有所帮助，帮助标准化围绕标准库的各种异步生态系统。
 - en: '[PRE2]'
   id: totrans-split-48
   prefs: []
@@ -318,6 +349,9 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用一个简单的例子来说明：`Into` 特征。`Into` 特征用于将一种类型转换为另一种类型。它对类型 `T` 进行泛型化，并具有一个函数 "into"，它消耗
+    `Self` 并返回类型 `T`。假设我们有一个类型 `Cat`，当它打盹时会变成一个可爱的小面包。我们可以通过在函数体中调用 `self.nap` 来为
+    `Cat` 实现 `Into<Loaf>`。
 - en: '[PRE4]'
   id: totrans-split-51
   prefs: []
@@ -335,6 +369,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 但如果猫不立即打盹怎么办？也许`nap`实际上应该是一个异步函数。为了在特征实现内部等待`nap`，`into`方法必须是异步的。如果我们从头开始编写一个异步特征，我们可以通过公开一个新的具有异步`into`方法的`AsyncInto`特征来实现这一点。
 - en: But we don't just want to add a new trait to the stdlib, instead we want to
     *extend* the existing `Into` trait to work with the async effect. The way we could
     extend the `Into` trait with the `async` effect is by making the async effect
@@ -343,6 +378,8 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们不仅仅想向标准库中添加一个新特征，而是想要*扩展*现有的 `Into` 特征以支持异步效果。我们可以通过使异步效果*可选*来扩展带有 `async`
+    效果的 `Into` 特征。与其要求特征总是同步或异步，实现者应该能够选择要实现的特征版本。
 - en: '[PRE6]'
   id: totrans-split-55
   prefs: []
@@ -356,6 +393,8 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将通过在特征上添加一个新的符号来实现："maybe async"。我们还不知道我们想要为"maybe async"使用什么语法，所以在本次讨论中我们将使用属性。"maybe
+    async"符号的工作原理是，我们将所有希望成为"maybe async"的方法标记为这样。然后也将我们的特征本身标记为"maybe async"。
 - en: '[PRE7]'
   id: totrans-split-57
   prefs: []
@@ -375,6 +414,8 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后实现者可以选择他们想要实现的同步或异步版本的特性。根据选择的版本，方法最终变成同步或异步。这个系统完全向后兼容，因为实现 `Into` 的同步版本与今天保持相同。但是希望实现异步版本的人可以通过在实现中添加一些额外的
+    `async` 关键字来实现。
 - en: '[PRE9]'
   id: totrans-split-60
   prefs: []
@@ -392,26 +433,32 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在底层，实现会转换为我们今天已经能够写的普通 Rust 代码。同步实现返回类型 `T`。但是异步实现返回 `T` 的 `impl Future`。在底层，它只是一个单一的
+    const bool 和一些关联类型。
 - en: good diagnostics
   id: totrans-split-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 良好的诊断
 - en: gradual stabilization,
   id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 渐进式稳定化，
 - en: backwards-compatibility
   id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向后兼容性
 - en: clear inference rules
   id: totrans-split-66
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 清晰的推断规则
 - en: 'It would be reasonable to ask why we''re bothering with a language feature,
     if the desugaring ends up being so simple. And the reason is: effects are everywhere,
     and we want to make sure effect generics feel like part of the language. That
@@ -420,22 +467,26 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么我们要费力去研究一种语言特性，如果它的“脱糖”变得如此简单，这是一个合理的问题。原因在于：效果无处不在，我们希望确保效果泛型感觉像语言的一部分。这不仅意味着我们希望严格控制诊断。我们还希望能够逐步引入它们，有明确的语言规则，并且向后兼容。
 - en: But if you keep all that in mind, it's probably okay to think of effect generics
     as mostly syntactic sugar for const bools + associated types.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是如果你记住这些，把效果泛型视为主要是对 const bools + 关联类型的语法糖可能也是可以接受的。
 - en: 'Stage II: Effect-Generic Bounds, Impls, and Types'
   id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第二阶段：效果泛型约束、实现和类型
 - en: Being able to declare effect-generic traits is only the beginning. The stdlib
     not only exposes traits, it also exposes various types and functions. And effect-generic
     traits don't directly help with that.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 声明效果泛型特质只是一个开始。标准库不仅公开特质，还公开各种类型和函数。而效果泛型特质并不能直接帮助解决这个问题。
 - en: '[PRE11]'
   id: totrans-split-71
   prefs: []
@@ -447,6 +498,7 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再次看看我们之前的 `io::copy` 示例。正如我们所说，`copy` 接受一个读取器和写入器，然后将字节从读取器复制到写入器。我们已经看到了这一点。
 - en: '[PRE12]'
   id: totrans-split-73
   prefs: []
@@ -460,6 +512,8 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果我们尝试在标准库中添加这个的异步版本，它会是什么样子呢？好吧，我们需要从命名上给它一个不同的名称，这样它就不会与现有的 `copy` 函数冲突。对于特性约束也是一样，所以这个函数将取代
+    `Read` 和 `Write`，取而代之的是 `AsyncRead` 和 `AsyncWrite`。
 - en: '[PRE13]'
   id: totrans-split-75
   prefs: []
@@ -473,6 +527,8 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们有了效果泛型特质定义，情况会变得稍微好一些。不再需要异步版本的 `Read` 和 `Write` 特性的副本，函数可以选择现有 `Read` 和
+    `Write` 特性的异步版本。这已经好了一些，但这仍意味着我们有两个版本的 `copy` 函数。
 - en: '[PRE14]'
   id: totrans-split-77
   prefs: []
@@ -486,6 +542,7 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，理想的解决方案是允许 `copy` 本身在异步效果上泛化，并使其决定我们想要哪些 `Read` 和 `Write` 的版本。这些就是我们所说的“效果泛型约束”。函数的效果和它所带的约束的效果变得一致。在文献中，这也被称为“行多态”。
 - en: '[PRE15]'
   id: totrans-split-79
   prefs: []
@@ -503,6 +560,7 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为函数本身现在是异步效果的通用类型，我们需要在调用站点确定我们打算使用哪个变体。这个系统将利用*推断*来确定。这是一种说法高明的方式，说明编译器将对程序员意图使用的效果进行猜测。如果他们使用了`.await`，他们可能想要异步版本。否则，他们可能想要同步版本。但是就像任何猜测一样：有时我们会猜错，因此出于这个原因，我们希望提供一种逃逸通道，允许程序作者强制选择变体。我们还不知道这个的确切语法，但是我们假设这可能会使用turbofish符号。
 - en: '[PRE16]'
   id: totrans-split-81
   prefs: []
@@ -517,11 +575,14 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是效果通用并不仅仅适用于函数。如果我们希望使标准库能够很好地处理效果，那么类型也将需要效果通用。这乍看起来可能有些奇怪，因为“异步类型”可能并不直观。但是例如在
+    Windows 上的文件需要初始化为同步或异步。这意味着它们是否是异步的不仅仅是函数的属性，而是类型的属性。
 - en: 'Let''s use the stdlib''s `File` type as our example here. For simplicity let''s
     assume it has a single method: `open` which returns either an error or a file.'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们以stdlib的`File`类型作为我们的示例。为简单起见，假设它只有一个方法：`open`，它返回错误或文件。
 - en: '[PRE17]'
   id: totrans-split-84
   prefs: []
@@ -535,6 +596,7 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想提供`File`的异步版本，我们再次需要复制我们的接口。这意味着一个新类型`AsyncFile`，它有一个新的异步方法`open`，它以异步版本的`Path`作为参数。而`Path`本身需要是异步的，因为它本身在它上有异步的文件系统方法。正如我之前所说：一旦你开始寻找，你会注意到效果无处不在。
 - en: '[PRE18]'
   id: totrans-split-86
   prefs: []
@@ -546,6 +608,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其创建第二个`AsyncFile`类型，使用类型上的效果通用性，我们将能够将`File`打开为异步。这样我们可以仅保留一个`File`定义，用于同步和异步变体。
 - en: '[PRE19]'
   id: totrans-split-88
   prefs: []
@@ -560,11 +623,13 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我有点含糊地忽略了`copy`函数和`File`类型的内部实现。它们的工作方式在两者之间有些不同。就`copy`函数而言，异步和非异步变体之间的实现将是相同的。如果函数编译为异步，一切都按原样工作。但是如果函数编译为同步，那么我们只需移除`.await`，函数应该按预期编译。
 - en: As a result of this "maybe-async" functions can only call sync or other "maybe-async"
     functions. But that should be fine for most cases.
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于“可能是异步”的函数只能调用同步或其他“可能是异步”的函数。但对于大多数情况来说，这应该是可以接受的。
 - en: '[PRE20]'
   id: totrans-split-91
   prefs: []
@@ -579,6 +644,8 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 像`File`这样的具体类型就有点棘手了。它们通常希望根据拥有的效果运行不同的代码。幸运的是，像`File`这样的类型已经根据平台有条件地编译不同的代码，因此引入新的类型条件不应该是一个很大的飞跃。我们需要的关键是在函数体内检测代码是异步编译还是非异步编译
+    - 基本上是一种花哨的布尔。
 - en: We can already do this for the const effect using the `const_eval_select` intrinsic.
     It's currently unstable and a little verbose, but it works reliably. We should
     be able to easily adapt it to something similar for async and the rest of the
@@ -586,11 +653,14 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经可以对 const 效果使用 `const_eval_select` 内部函数。它目前是不稳定且有些冗长，但它可靠地工作。我们应该能够轻松地将其类似地适应到
+    async 和其他效果上。
 - en: What are effects?
   id: totrans-split-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是效果？
 - en: Systems research on effects has been a topic in computer science for nearly
     40 years. That's about as old as C++. It's become a bit of a hot topic recently
     in PL spheres with research languages such as Koka, Eff, and Frank showing how
@@ -599,16 +669,20 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关效果的系统研究在计算机科学领域已经有将近 40 年的历史了。这大约与 C++ 的年龄相当。最近在编程语言领域，像 Koka、Eff 和 Frank
+    这样的研究语言展示了效果可以有多么有用，因此它已经成为一个热门话题。而像 Scala 和较少程度上的 Swift 则采纳了效果特性。
 - en: 'When people talk about effects they will broadly refer to one of two things:'
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 当人们谈论效果时，通常会广泛提到以下两种情况之一：
 - en: '**Algebraic Effect Types:** which are semantic notations on functions and contexts
     that grant a permission to *do* something.'
   id: totrans-split-97
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**代数效果类型**：这是对函数和上下文的语义标注，授予执行某些操作的许可。'
 - en: '**Algebraic Effect Handlers:** which are a kind of typed control-flow primitive
     which allows people to define their own versions of `async/.await`, `try..catch`,
     and `yield`.'
@@ -616,12 +690,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**代数效果处理器**：这是一种类型化的控制流原语，允许人们定义自己版本的 `async/.await`、`try..catch` 和 `yield`。'
 - en: A lot of languages which have effects provide both effect types and effect handlers.
     These can be used together, but they are in fact distinct features. In this talk
     we'll only be discussing effect types.
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多具有效果的语言同时提供效果类型和效果处理器。这些可以一起使用，但实际上它们是不同的特性。在这次讲话中，我们只讨论效果类型。
 - en: '[PRE21]'
   id: totrans-split-100
   prefs: []
@@ -635,6 +711,7 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这次讲话中，我们一直称之为“效果”的东西实际上是*效果类型*。Rust 在历史上并没有这样称呼它们，我认为这可能是为什么直到最近我们才开始关注效果泛型的原因。但事实证明，将我们的某些关键词重新解释为效果类型确实是完全合理的，并为我们提供了一个强大的理论框架来进行推理。
 - en: We also have `unsafe` which allows you to call `unsafe` functions. The unstable
     try-block feature which doesn't require you to `Ok`-wrap return types. The unstable
     generator closure syntax which gives you access to the `yield` keyword. And of
@@ -642,6 +719,8 @@
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还有 `unsafe`，它允许您调用 `unsafe` 函数。不稳定的 try 块特性不要求您将返回类型包装在 `Ok` 中。不稳定的生成器闭包语法使您可以访问
+    `yield` 关键字。当然，还有 `const` 关键字，它允许您在编译时评估代码。
 - en: '[PRE22]'
   id: totrans-split-103
   prefs: []
@@ -656,12 +735,16 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Rust 中，我们目前有五种不同的效果：`async`、`unsafe`、`const`、`try` 和生成器。所有这六种效果都处于不同的完成阶段。例如：async
+    Rust 有函数和块，但没有迭代器或 drop。Const 还没有访问 trait 的权限。不安全函数不能降级为 `Fn` trait。Try 操作符 `?`
+    已经存在，但 try 块是不稳定的。生成器完全不稳定；我们只有 `Iterator` trait。
 - en: Some of these effects are what folks on the lang team have started calling "carried".
     Those are effects which will desugar to an actual type in the type system. For
     example when you write `async fn`, the return type will desugar to an `impl Future`.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些效果是语言团队开始称为“携带”的效果。这些是会被解糖成实际类型的效果。例如，当您编写 `async fn` 时，返回类型将解糖为 `impl Future`。
 - en: 'Some other effects are what we''re calling: *"uncarried"*. These effects don''t
     desugar to any types in the type system, but serve only as a way to communicate
     information back to the compiler. This is for example `const` or `unsafe`. While
@@ -670,6 +753,7 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一些效果是我们称之为：“非携带”的。这些效果在类型系统中不会解糖为任何类型，而仅仅是作为一种向编译器传递信息的方式。例如 `const` 或 `unsafe`。虽然我们确实检查这些效果的正确使用，但它们最终不会降级为实际的类型。
 - en: '[PRE23]'
   id: totrans-split-107
   prefs: []
@@ -687,6 +771,8 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 谈到承载的影响时，影响组合变得很重要。比如同时使用 "async" 和 "try"。如果一个函数同时具有这两者，结果类型应该是什么？一个 `Future`
+    的 `Result`？还是一个包含 `Future` 的 `Result`？
 - en: Effects on functions are order-independent *sets*. While Rust currently does
     require you declare effects in a specific order, carried effects themselves can
     only be composed in one way. When we stabilized `async/.await`, we decided that
@@ -696,12 +782,15 @@
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数上的影响是无序的 *集合*。虽然Rust当前确实要求你按特定顺序声明影响，但影响本身只能以一种方式组合。当我们稳定了 `async/.await`
+    时，我们决定如果一个异步函数返回一个 `Result`，那么它应该总是返回一个 `impl Future` 的 `Result`。因为影响是 *集合* 而不依赖于顺序，我们可以在语言中定义承载影响应如何组合的方式。
 - en: People can still opt-out from the built-in composition rules by manually writing
     function signatures. But this is rare, and for the overwhelming majority of uses
     the built-in composition rules will be the right choice.
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 人们仍然可以通过手动编写函数签名来选择退出内置的组合规则。但这很少见，对于绝大多数用途来说，内置的组合规则都是正确的选择。
 - en: '[PRE25]'
   id: totrans-split-112
   prefs: []
@@ -716,40 +805,49 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '`const` 影响与其他影响有些不同。`const` 块总是在编译时评估。而 `const` 函数仅在编译时 *可以* 评估。在运行时调用它们也完全没问题。这意味着当我们编写
+    `const fn` 时，我们已经在编写影响泛化。这个机制是我们逐步能够以向后兼容的方式将 `const` 引入标准库的原因。'
 - en: Const is also a bit strange in that among other things it disallows access to
     the host runtime, it can't allocate, and it can't access globals. This feels different
     from effects like say, `async`, which only allow you to do more things.
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '`const` 也有些奇怪，因为它不允许访问主机运行时，不能分配内存，也不能访问全局变量。这与像 `async` 这样的影响不同，后者只允许你做更多事情。'
 - en: '| effect set | can access | cannot access |'
   id: totrans-split-115
   prefs: []
   type: TYPE_TB
+  zh: '| 影响集 | 可访问 | 无法访问 |'
 - en: '| --- | --- | --- |'
   id: totrans-split-116
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| std rust | non-termination, unwinding, non-determinism, statics, runtime
     heap, host APIs | N/A |'
   id: totrans-split-117
   prefs: []
   type: TYPE_TB
+  zh: '| std rust | 非终止，展开，非确定性，静态变量，运行时堆，主机API | N/A |'
 - en: '| alloc | non-termination, unwinding, non-determinism, globals, runtime heap
     | host APIs |'
   id: totrans-split-118
   prefs: []
   type: TYPE_TB
+  zh: '| alloc | 非终止，展开，非确定性，全局变量，运行时堆 | 主机API |'
 - en: '| core | non-termination, unwinding, non-determinism, globals | runtime heap,
     host APIs |'
   id: totrans-split-119
   prefs: []
   type: TYPE_TB
+  zh: '| 核心 | 非终止，展开，非确定性，全局变量 | 运行时堆，主机API |'
 - en: '| const | non-termination, unwinding | non-determinism, globals, runtime heap,
     host APIs |'
   id: totrans-split-120
   prefs: []
   type: TYPE_TB
+  zh: '| const | 非终止，展开 | 非确定性，全局变量，运行时堆，主机API |'
 - en: What's missing from this picture is that all functions in Rust carry an implicit
     set of effects. Including some effects we can't directly name yet. When we write
     `const` functions, our functions have a different set of effects, than if we write
@@ -757,12 +855,15 @@
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 这幅图缺少的是，Rust 中所有函数都隐含了一组影响。其中包括一些我们尚无法直接命名的影响。当我们编写 `const` 函数时，它们的影响集不同于我们编写
+    `no_std` 函数时的影响集，而后者又不同于常规的“std” Rust 函数。
 - en: The right way of thinking about const, std, etc. is as adding a different effects
     to the empty set of effects. If we start from zero, then all effects are merely
     additive. They just add up to different numbers.
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 正确理解 `const`、`std` 等的方式是将不同的影响添加到空影响集中。如果我们从零开始，那么所有的影响只是简单的加法。它们只是相加得到不同的结果。
 - en: 'Unfortunately in Rust we can''t yet name the empty set of effects. In effect
     theory this is called the "total effect". And some languages such as Koka do support
     the "total" effect. In fact, Koka''s lead developer has estimated that around
@@ -771,11 +872,13 @@
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，在Rust中，我们尚无法命名空影响集。在影响理论中，这被称为“总体影响”。某些语言，如Koka，支持“总体”影响。实际上，Koka的主要开发人员估计，典型的Koka程序约70%可以是总体的。这引出了一个问题：如果我们能在Rust中表达总体影响，我们能看到类似的数字吗？
 - en: 'Stage III: More Effects'
   id: totrans-split-124
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第三阶段：更多效果
 - en: So far we've only talked about how we could finish the work on existing effects
     such as `const` and `async`. But one nice thing of effect generics is that they
     would not only allow us to finish our ongoing effects work. It would also lower
@@ -783,6 +886,7 @@
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们只谈到了如何完成现有效果（如`const`和`async`）的工作。但效果泛型的一个好处是，它们不仅允许我们完成正在进行的效果工作。它还将降低引入语言中*新*效果的成本。
 - en: 'Which opens up the question: if we could add more effects, which effects might
     make sense to add? The obvious ones would be to actually finish adding `try` and
     generator functions. But beyond that, there are some interesting effects we could
@@ -791,24 +895,28 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 这引出了一个问题：如果我们能够添加更多的效果，哪些效果可能是有意义的？显而易见的是，实际上完成添加`try`和生成函数。但除此之外，还有一些有趣的效果我们可以探索。为简洁起见，我将仅讨论这些特性是什么，而不展示代码示例。
 - en: '**no-divergence**: guarantees that a function cannot loop indefinitely, opening
     up the ability to perform static runtime-cost analysis.'
   id: totrans-split-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**no-divergence**：保证函数不能无限循环，从而能够进行静态运行时成本分析。'
 - en: '**no-panic**: guarantees a function will never produce a panic, causing the
     function to unwind.'
   id: totrans-split-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**no-panic**：保证函数永远不会产生恐慌，导致函数展开。'
 - en: '**parametricity**: guarantees that a function only operates on its arguments.
     That means no implicit access to statics, no global filesystem, no thread-locals.'
   id: totrans-split-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**parametricity**：保证函数仅对其参数进行操作。这意味着没有对静态变量的隐式访问，没有全局文件系统，没有线程本地变量。'
 - en: '**capability-safety**: guarantees that a function is not only parametric, but
     can''t downcast abstract types either. Say if you get an `impl Read`, you can''t
     reverse it to obtain a `File`.'
@@ -816,30 +924,35 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**capability-safety**：保证函数不仅是参数化的，而且不能向下转型抽象类型。例如，如果你得到一个`impl Read`，你不能逆转它以获取一个`File`。'
 - en: '**destructor linearity**: guarantees that `Drop` will *always* be called, making
     it a safety guarantee.'
   id: totrans-split-131
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**destructor linearity**：保证`Drop`将*始终*被调用，从而成为安全保证。'
 - en: '**pattern types**: enables functions to operate directly on variants of enums
     and numbers'
   id: totrans-split-132
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**pattern types**：使函数能够直接操作枚举和数字的变体'
 - en: '**must-not-move types**: would be a generalization of pinning and the pin-project
     system, making it a first-class language feature'
   id: totrans-split-133
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**must-not-move types**：将是固定和固定项目系统的泛化，使其成为一流语言特性'
 - en: Though there's nothing inherently stopping us from adding any of these features
     into Rust today, in order to integrate them into the stdlib without breaking backwards-compatibility
     we need effect generics first.
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然今天在Rust中添加任何这些特性都没有任何本质上的阻碍，但为了将它们集成到stdlib中而不破坏向后兼容性，我们首先需要效果泛型。
 - en: '[PRE26]'
   id: totrans-split-135
   prefs: []
@@ -851,6 +964,7 @@
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将我们带到设计空间的最后一部分：效果别名。如果我们继续添加效果，最终很容易会陷入到一个我们自己版本的“public static void main”的情况中。
 - en: In order to mitigate that it would instead be great if we could name specific
     sets of effects. In a way we've already done that, where `const` represents "may
     loop forever" and "may panic". If we actually had "may loop forever" and "may
@@ -858,6 +972,7 @@
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了缓解这一点，如果我们能够命名特定的效果集，那将是非常好的。在某种程度上，我们已经做到了，其中`const`代表“可能无限循环”和“可能发生紧急情况”。如果我们实际上将“可能无限循环”和“可能发生紧急情况”作为内置效果，那么我们可以将`const`重新定义为这些的别名。
 - en: Fundamentally this doesn't change anything we've talked about so far. It's just
     that this would syntactically be a lot more pleasant to work with. So if we ever
     reach a state where we have effect generics and we want notice we maybe have one
@@ -866,11 +981,13 @@
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 从根本上讲，这并不改变我们到目前为止所讨论的任何内容。只是从语法上讲，这样做会更加愉快。因此，如果我们达到了一个状态，其中我们具有效果泛型，并且我们希望注意到我们的函数前面可能有一种过多的符号表示，那么也许是时候更认真地开始研究这个问题了。
 - en: Outro
   id: totrans-split-139
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结尾
 - en: Rust already includes effect types such as async, const, try, and unsafe. Because
     we can't be generic over effect types yet, we usually have to choose between either
     duplicating code, or just not addressing the use case. And this makes for a language
