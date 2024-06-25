@@ -172,6 +172,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: But not everything that can lead to API duplication are things we can be generic
     over. For example, it's pretty common to create different methods or types depending
     on whether we take a value as owned, as a reference, or as a mutable reference.
@@ -207,6 +208,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Take for example the `Option::filter` API. It takes a type by reference and
     returns a bool. If we try and use the `?` operator inside of it we get an error,
     because the function doesn't return `Result` or `Option`. Not being able to use
@@ -302,10 +304,12 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Let''s use a simple example here: the `Into` trait. The `Into` trait is used
     to convert from one type into another. It is generic over a type `T`, and has
     one function "into" which consumes `Self` and returns the type `T`. Say we have
@@ -318,10 +322,12 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: But what if the cat doesn't take a nap straight away? Maybe `nap` should actually
     be an async function. In order to `await` nap inside the trait impl, the `into`
     method would need to be async. If we were writing an async trait from scratch,
@@ -341,6 +347,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The way this would work is by adding a new notation on the trait: "maybe async".
     We don''t yet know what syntax we want to use for "maybe async", so in this talk
     we''ll be using attributes. The way the "maybe async" notation works is that we
@@ -353,10 +360,12 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Implementors then get to choose whether they want to implement the sync or async
     versions of the trait. And depending on which version they choose, the methods
     then ends up being either sync or async. This system would be entirely backwards-compatible,
@@ -370,10 +379,12 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Under the hood the implementations desugars to regular Rust code we can already
     write today. The sync implementation of the type returns a type `T`. But the async
     impl returns an `impl Future` of `T`. Under the hood it is just a single const
@@ -429,6 +440,7 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Let's take our earlier `io::copy` example again. As we've said `copy` takes
     a reader and writer, and then copies bytes from the reader to the writer. We've
     seen this.
@@ -439,6 +451,7 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Now what would it look like if we tried adding an async version of this to the
     stdlib today. Well, we'd need to start by giving it a different name so it doesn't
     conflict with the existing `copy` function. The same goes for the trait bounds
@@ -451,6 +464,7 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Now things get a little better once we have effect-generic trait definitions.
     Rather than needing to take async duplicates of the `Read` and `Write` traits,
     the function can instead choose the async versions of the existing `Read` and
@@ -463,6 +477,7 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Instead the ideal solution would be to allow `copy` itself to be generic over
     the async effect, and make that determine which versions of `Read` and `Write`
     we want. These are what we call "effect-generic bounds". The effect of the function
@@ -475,6 +490,7 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Because the function itself is now generic over the async effect, we need to
     figure out at the call-site which variant we intended to use. This system will
     make use of *inference* to figure it out. That''s a fancy way of saying that the
@@ -491,6 +507,7 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: But effect-generics aren't just needed for functions. If we want to make the
     stdlib work well with effects, then types will need effect-generics too. This
     might seem strange at first, since an "async type" might not be very intuitive.
@@ -509,6 +526,7 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'If we wanted to provide an async version of `File`, we again would need to
     duplicate our interfaces. That means a new type `AsyncFile`, which has a new async
     method `open`, which takes an async version of `Path` as an argument. And `Path`
@@ -521,6 +539,7 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Instead of creating a second `AsyncFile` type, with effect generics on types
     we'd be able to open `File` as async instead. Allowing us to keep just the one
     `File` definition for both sync and async variants.
@@ -531,6 +550,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Now I've sort of hand-waved away the internal implementations of both the `copy`
     function and the `File` type. The way they work is a little different for the
     two. In the case of the `copy` function, the implementation between the async
@@ -549,6 +569,7 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: Concrete types like `File` are a little trickier. They often want to run different
     code depending on which effects it has. Luckily types like `File` already conditionally
     compile different code depending on the platform, so introducing new types conditions
@@ -605,6 +626,7 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: What we've been calling "effects" in this talk so far have in fact been *effect
     types*. Rust hasn't historically called them this, and I believe that's probably
     why effect generics weren't on our radar until recently. But it turns out that
@@ -624,6 +646,7 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'In Rust we currently have five different effects: `async`, `unsafe`, `const`,
     `try`, and generators. All six of these are in various stages of completion. For
     example: async Rust has functions and blocks, but no iterators or drop. Const
@@ -651,10 +674,12 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '[PRE24]'
   id: totrans-split-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: When we talk about carried effects, effect composition becomes important. Take
     for example "async" and "try" together. If we have a function which has both?
     What should the resulting type be? A future of Result? Or a Result containing
@@ -681,6 +706,7 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: The `const` effect is a bit different from the other effects. `const` blocks
     are *always* evaluated during compilation. While `const` functions merely *can*
     be evaluated during during compilation. It's perfectly fine to call them at runtime
@@ -818,6 +844,7 @@
   id: totrans-split-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'This brings us to the final part of the design space: effect aliases. If we
     keep adding effects it''s very easy to eventually reach into a situation where
     we have our own version of "public static void main".'
@@ -853,6 +880,8 @@
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 已经包含了诸如 async、const、try 和 unsafe 等效应类型。因为我们还不能泛化效应类型，通常我们必须在复制代码和不解决用例之间做出选择。一旦开始使用效应，这种选择会让语言感觉非常粗糙。效应泛型为我们提供了一种可以泛化效应的方式，并且我们已经展示它们可以今天就实现，主要是作为
+    const 泛型的语法糖。
 - en: We're currently in the process of formalizing the effect generic work via the
     A-Mir-Formality. MIR Formality is an in-progress formal model of Rust's type system.
     Because effect generics are relatively straight forward but have far-reaching
@@ -861,6 +890,7 @@
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们目前正在通过 A-Mir-Formality 正式化效应泛型工作。MIR Formality 是 Rust 类型系统的正在进行中的正式模型。由于效应泛型相对直接但对类型系统有深远影响，它是测试正式模型的理想候选项之一。
 - en: In parallel the const WG has also begun refactoring the way const functions
     are checked in the compiler. In the past const-checking happened right before
     borrow checking at the MIR level. In the new system const-checking will happen
@@ -869,39 +899,48 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，const 工作组也已经开始重构编译器中 const 函数检查的方式。过去，const 检查发生在 MIR 级别的借用检查之前。在新系统中，const
+    检查将会更早地发生，在 HIR 级别。这不仅会使代码更易维护，如果需要，还可以泛化到更多的效应。
 - en: Once both the formal modeling and compiler refactorings conclude, we'll begin
     drafting an RFC for effect-generic trait definitions. We expect this to happen
     sometime in 2024.
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦正式建模和编译器重构完成，我们将开始起草效应泛型 trait 定义的 RFC。我们预计这将在 2024 年某个时候发生。
 - en: 'And that''s the end of this talk. Thank you so much for being with me all the
     way to the end. None of the work in this talk would have been possible without
     the following people:'
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 至此，本次讲话结束。非常感谢您始终陪伴我到最后。本次讲话中的所有工作，没有以下人员的支持是不可能的：
 - en: Oliver Scherer (AWS)
   id: totrans-split-145
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Oliver Scherer（AWS）
 - en: Eric Holk (Microsoft)
   id: totrans-split-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Eric Holk（微软）
 - en: Niko Matsakis (AWS)
   id: totrans-split-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Niko Matsakis（AWS）
 - en: Daan Leijen (Microsoft)
   id: totrans-split-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Daan Leijen（微软）
 - en: Thank you!
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 谢谢！
