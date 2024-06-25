@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:44:00'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:44:00'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: debugging tokio instrumentation - hēg denu - Hayden Stainsby
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 调试tokio仪表化 - hēg denu - 海登·斯坦斯比
 - en: 来源：[https://hegdenu.net/posts/debugging-tokio-instrumentation/](https://hegdenu.net/posts/debugging-tokio-instrumentation/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://hegdenu.net/posts/debugging-tokio-instrumentation/](https://hegdenu.net/posts/debugging-tokio-instrumentation/)
 - en: I contribute to [`tokio-console`](https://github.com/tokio-rs/console). One
     of the things that I often find myself doing is matching what is shown in the
     console with the "raw" [`tracing`](https://docs.rs/tracing) output that comes
@@ -32,6 +38,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我为[`tokio-console`](https://github.com/tokio-rs/console)做贡献。我经常发现自己在与来自Tokio的“原始”[`tracing`](https://docs.rs/tracing)输出中显示的内容匹配。然而，这很难阅读，实际上并不包含我需要的所有信息。
 - en: There are a couple of things that I'd like to have. Firstly (and most importantly),
     I need to see Tracing's internal [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)
     for the spans that are emitted. This is something which the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
@@ -41,23 +48,27 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几件事情我想要。首先（也是最重要的），我需要看到Tracing的内部[`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)用于发出的spans。这是Tokio中的仪表化中非常重要的一部分，用于调试，我确实需要它可用。
 - en: Normally, to get this information I use a patched version of the `tracing-subscriber`
     crate. But this is something that can't be checked into the console project, and
     setting it up each time is a bit tedious.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，要获取这些信息，我使用`tracing-subscriber` crate的修补版本。但这不是可以提交到控制台项目的东西，每次设置都有点繁琐。
 - en: Secondly, I'd like to be able to visually differentiate the specific spans and
     events used in Tokio's instrumentation. Unlike the internal span ID, this is entirely
     domain specific, and has no use outside of this specific use case.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次，我希望能够视觉上区分Tokio仪表化中使用的特定spans和events。与内部span ID不同，这完全是领域特定的，在这个特定用例之外没有用途。
 - en: Here's a snippet of output from the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     outputting some of Tokio's instrumentation.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是从[`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)输出的一小段Tokio的仪表输出。
 - en: '[PRE0]'
   id: totrans-split-11
   prefs: []
@@ -70,12 +81,14 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有很多信息，区分不同的span类型可能很复杂（特别是当你浏览几十甚至数百行时）。此外，完全缺少[`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)。
 - en: Compare this to the output of the same section of logs coloured and including
     the [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html) right
     after the span name.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 与相同部分日志的输出进行比较，带颜色并包括[`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)位于span名称之后。
 - en: '[PRE1]'
   id: totrans-split-14
   prefs: []
@@ -86,20 +99,24 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在已经证明了我想做的事情，让我们构建自己的定制追踪订阅者！
 - en: (actually, it's going to mostly be a `Layer`)
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: （实际上，这将主要是一个`Layer`）
 - en: 'aside: tracing subscribers and layers'
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 旁注：追踪订阅者和层
 - en: If you're already familiar with `tracing`, you may wish to skip this section
     and go straight to [ari-subscriber](https://hegdenu.net/posts/debugging-tokio-instrumentation/#ari-subscriber).
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您已经熟悉`tracing`，您可能希望跳过本节，直接进入[ari-subscriber](https://hegdenu.net/posts/debugging-tokio-instrumentation/#ari-subscriber)。
 - en: In the tracing ecosystem, you need a subscriber to actually do anything other
     than send your traces into the void. Specifically something that implements the
     [`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html) trait.
@@ -109,6 +126,8 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 在tracing生态系统中，除了将跟踪数据发送到虚空之外，实际上需要一个订阅者来执行其他操作。具体来说，需要实现[`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html)
+    trait的东西。订阅者可以获取跟踪数据并执行它希望执行的操作。可以将它们写入`stdout`、写入文件、收集并执行聚合操作，或通过Open Telemetry发送到另一个服务。
 - en: The [`tracing-subscriber`](https://docs.rs/tracing-subscriber) crate provides
     a number of subscriber implementations. From the outside, this mostly looks like
     different ways to write traces to a file handle. However, the real heart of [`tracing-subscriber`](https://docs.rs/tracing-subscriber)
@@ -118,6 +137,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`tracing-subscriber`](https://docs.rs/tracing-subscriber) crate提供了许多订阅者实现。从外部看，这主要是将跟踪数据写入文件句柄的不同方式。然而，[`tracing-subscriber`](https://docs.rs/tracing-subscriber)的真正核心是[注册表](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html)。注册表是一个订阅者，实现了一个跨度存储，并允许多个层连接到它。'
 - en: What is a [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)?
     For the longest time I had real trouble understanding conceptually what a layer
     is. From the documentation, a layer is *"a composable abstraction for building
@@ -128,6 +148,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么是[`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)？长时间以来，我真的很难理解层的概念。从文档中可以看出，层是一个用于构建订阅者的可组合抽象。然而，我很难理解我可能希望如何组合层。这也令人困惑，因为层不像[`tower`](https://docs.rs/tower)层那样相互影响（`tower`层类似中间件，一个层所做的影响下一个层接收到的内容）。
 - en: Instead, think of layers as mini-subscribers. They can take action on some methods
     on the [`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)
     trait, but can fall back to the default implementation for things that they're
@@ -136,17 +157,22 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以将层（layer）看作是迷你订阅者。它们可以对[`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)
+    trait的某些方法采取行动，但对于它们不感兴趣的事物可以回退到默认实现。而[`Layer`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/layer/trait.Layer.html)对于所有事物都有一个默认实现。
 - en: Most layers need to store information about spans, this is where the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html)
     comes in (specifically via the [`LookupSpan`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.LookupSpan.html)
     trait). Layers can store their own data in the registry in the form of span [extensions](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.SpanData.html#tymethod.extensions).
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数层需要存储有关跨度的信息，这就是[注册表](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html)的作用（特别是通过[`LookupSpan`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/trait.LookupSpan.html)
+    trait）。层可以将自己的数据存储在注册表中，以跨度扩展的形式。
 - en: The reason why storing this data in the registry is important may not be immediately
     obvious.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么将这些数据存储在注册表中的重要性可能不是立即显而易见的。
 - en: It's because [`tracing`](https://docs.rs/tracing) itself **doesn't** store this
     data. This allows [`tracing`](https://docs.rs/tracing) to not allocate for the
     data and therefore be used in [`no_std`](https://docs.rust-embedded.org/book/intro/no-std.html)
@@ -155,6 +181,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`tracing`](https://docs.rs/tracing)本身**不会**存储这些数据。这使得[`tracing`](https://docs.rs/tracing)不需要为数据分配内存，因此可以在[`no_std`](https://docs.rust-embedded.org/book/intro/no-std.html)环境中使用，也可以在我们习惯的大型服务器和开发机器上使用。'
 - en: Here's an example for clarity. When a span is created, a [`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html)
     receives a call to [`new_span()`](https://docs.rs/tracing/0.1.40/tracing/trait.Subscriber.html#tymethod.new_span).
     This includes the span [`Attributes`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Attributes.html)
@@ -164,10 +191,12 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更清楚地说明，这里有一个例子。当创建一个跨度时，[`Subscriber`](https://docs.rs/tracing/latest/tracing/trait.Subscriber.html)会接收到对[`new_span()`](https://docs.rs/tracing/0.1.40/tracing/trait.Subscriber.html#tymethod.new_span)的调用。这包括跨度[`Attributes`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Attributes.html)，使订阅者可以访问有关该跨度的所有信息。它的元数据、字段名称，以及在创建时设置的任何字段的值。
 - en: This is great, it's everything we could need!
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这太棒了，这是我们所需要的一切！
 - en: Now let's look at the method that gets called when a span is entered (becomes
     active), this is called [`enter()`] and all it comes with is... a [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html).
     No metadata, no field names, and certainly no field values. And this pattern repeats
@@ -175,22 +204,26 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们看看当一个跨度进入（变为活动状态）时调用的方法，这称为[`enter()`]，它所带来的只是...一个[`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)。没有元数据，没有字段名称，当然也没有字段值。这种模式重复出现在调用跨度退出或关闭时的trait方法中。
 - en: Using the registry to store whatever data a layer might need about a span later
     on is the solution. This allows the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     to print out the full data for each span in an event's ancestry.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用注册表存储层可能稍后需要的任何数据是解决方案。这使得[`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)能够打印出事件祖先中每个跨度的完整数据。
 - en: Now that we understand a bit about what subscribers and layers are, let’s get
     into implementing some of it!
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经了解了订阅者和层是什么，让我们来实现其中的一些内容吧！
 - en: ari-subscriber
   id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ari-subscriber
 - en: To meet the needs of my use-case, as described above, I've written the [`ari-subscriber`](https://docs.rs/ari-subscriber/0.0.1/ari_subscriber/index.html)
     crate. It's currently at version 0.0.1, which indicates that it's probably a bit
     rough, but so far it's already helped me quickly narrow down the version of Tokio
@@ -198,14 +231,17 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了满足我上述使用案例的需求，我编写了[`ari-subscriber`](https://docs.rs/ari-subscriber/0.0.1/ari_subscriber/index.html)包。当前版本为0.0.1，这表明它可能有点粗糙，但到目前为止，它已经帮助我快速确定了Tokio的版本，之后的`yield_now()`[在Tokio控制台中不被检测为自我唤醒](https://github.com/tokio-rs/console/issues/512)。
 - en: The “ari” in ari-subscriber is for “async runtime instrumentation”.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: “ari-subscriber”中的“ari”代表“异步运行时工具”。
 - en: 'The interface is simple, you pass an `ari-subscriber` layer to the [registry](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html):'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 界面简单，你需要将`ari-subscriber`层传递给[注册表](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/registry/index.html)：
 - en: '[PRE2]'
   id: totrans-split-35
   prefs: []
@@ -216,11 +252,13 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出到`stdout`（目前不可配置）。输出将具有漂亮的颜色！
 - en: 'Let''s look at a simple example of how we can use `ari-subscriber`. Here''s
     the Rust code we''ll be using:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一个简单的例子，展示如何使用`ari-subscriber`。以下是我们将使用的Rust代码：
 - en: '[PRE3]'
   id: totrans-split-38
   prefs: []
@@ -234,6 +272,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在异步上下文中开始（使用`#[tokio::main]`属性）。首先，我们使用注册表设置`ari-subscriber`层。然后，我们生成一个任务并等待其完成。任务发出跟踪事件，然后通过调用来自Tokio的[`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)函数将控制返回给运行时。之后结束。
 - en: If you've been watching closely (and following all the links I've been sprinkling
     around), you may have realised that I'm looking at the case described in the issue
     [console#512](https://github.com/tokio-rs/console/issues/512). What we want to
@@ -241,12 +280,15 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你仔细观察（并且关注我随处散播的所有链接），你可能已经意识到我在看[问题console#512](https://github.com/tokio-rs/console/issues/512)中描述的情况。我们要看的是唤醒操作发生的地方。
 - en: 'We''re going to fix our version of Tokio to an old one, where we know that
     Tokio Console detects awaiting on [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
     as a self-wake. So let''s specify the following in our `Cargo.toml`:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将修复我们的 Tokio 版本到一个旧版本，在这个版本中，我们知道 Tokio Console 检测到对 [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
+    的等待作为自唤醒。因此，让我们在 `Cargo.toml` 中指定以下内容：
 - en: '[PRE4]'
   id: totrans-split-42
   prefs: []
@@ -258,11 +300,14 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将 Tokio 的版本设置为 `=1.22.0`，这表明我们想要确切这个版本。默认情况下，`cargo` 将使用任何 `1.x` 版本，其中 `x`
+    大于或等于 22。
 - en: Now let's look at the output (truncated a little bit to remove things that we
     won't be focusing on).
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们看一下输出（稍作截断以删除我们不关注的内容）。
 - en: '[PRE5]'
   id: totrans-split-45
   prefs: []
@@ -273,70 +318,85 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是它在这个网站上显示得太宽了。但让我们逐步讲解一下。
 - en: The date and time and log level is pretty straight forward. I took the log level
     colours from the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html),
     so those should be familiar.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期和时间以及日志级别非常直观。我从 [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
+    中获取了日志级别的颜色，所以这些应该很熟悉。
 - en: trace types
   id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 跟踪类型
 - en: All the lines in the output are prefixed with a span named `runtime.spawn`.
     Spans with this name instrument tasks, `ari-subscriber` colours them green. There
     are district types of instrumentation in Tokio, and they each get their own colour.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出中所有行都以名为 `runtime.spawn` 的 span 为前缀。具有此名称的 spans 仪表化任务，`ari-subscriber` 以绿色标记它们。Tokio
+    中有不同类型的仪表化，它们各自有自己的颜色。
 - en: runtime.spawn spans (green) instrument tasks
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime.spawn spans（绿色）仪表化任务
 - en: runtime.resource spans (red) instrument resources
   id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime.resource spans（红色）仪表化资源
 - en: runtime.resource.async_op spans (blue) instrument async operations
   id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime.resource.async_op spans（蓝色）仪表化异步操作
 - en: runtime.resource.async_op.poll spans (yellow) instrument the individual polls
     on async operations
   id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime.resource.async_op.poll spans（黄色）仪表化异步操作的单个轮询
 - en: tokio::task::waker events (purple) represent discrete waker operations
   id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: tokio::task::waker events（紫色）表示离散唤醒操作
 - en: runtime::resource::poll_op events (orange) represent poll state changes
   id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime::resource::poll_op events（橙色）表示轮询状态变化。
 - en: runtime::resource::state_update events (pink) represent resource state changes
   id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime::resource::state_update events（粉色）表示资源状态变化
 - en: runtime::resource::async_op::state_update events (turquoise) represent async
     operation state changes
   id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: runtime::resource::async_op::state_update events（青绿色）表示异步操作状态变化
 - en: In the case of spans, the value given above is the span name, for events it
     is the target.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 spans 的情况下，上面给出的值是 span 名称，对于 events 则是目标。
 - en: Describing how each of these traces is used within Tokio and how to interpret
     them would fill several more posts and I won't go into that topic in more detail
     here. I already wrote a post on the instrumentation for tasks, which covers the
@@ -345,11 +405,15 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 描述如何在 Tokio 中使用每个跟踪信息以及如何解释它们将填充更多帖子，我在这里不会详细介绍该主题。我已经写了一篇关于任务仪表化的帖子，其中涵盖了 `runtime.spawn`
+    spans 和 `tokio::task::waker` events。去阅读 [tracing tokio tasks](https://hegdenu.net/posts/tracing-tokio-tasks/)
+    以了解更多！
 - en: span events
   id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: span events
 - en: Now let's get back to the output of `ari-subscriber` for our test program. The
     first line ends in **new**, this is an event representing the creation of a new
     span. There are equivalent lines for `enter`, `exit`, and `close`; all parts of
@@ -358,6 +422,9 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们回到 `ari-subscriber` 对我们的测试程序的输出。第一行以 **new** 结束，这是表示创建新 span 的事件。`enter`、`exit`
+    和 `close` 都有对应的行，它们是 span 生命周期的组成部分。参见我上面链接的帖子中的 [span lifecycle](https://hegdenu.net/posts/tracing-tokio-tasks/#span-lifecycle)
+    部分，以便再次了解生命周期。
 - en: By default, the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     doesn't output these "span events", but it can be configured to do so with the
     [`with_span_events()`](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.SubscriberBuilder.html#method.with_span_events)
@@ -367,17 +434,22 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，[`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
+    不会输出这些 "span events"，但可以通过构建器上的 [`with_span_events()`](https://docs.rs/tracing-subscriber/latest/tracing_subscriber/fmt/struct.SubscriberBuilder.html#method.with_span_events)
+    方法配置它来输出。目前 `ari-subscriber` 总是发出这些 span 事件，但将来可能希望将其配置为减少输出量。
 - en: analysing wakes
   id: totrans-split-63
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 分析唤醒
 - en: Let's find our wake operation. You'll notice that there is exactly one line
     at INFO level. This is the one that we added to our spawned task ourselves. After
     the `runtime.spawn` span we see the text
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们找到我们的唤醒操作。你会注意到在 INFO 级别上正好有一行。这是我们自己添加到生成任务的那一行。在 `runtime.spawn` span 之后，我们看到文本
 - en: '[PRE6]'
   id: totrans-split-65
   prefs: []
@@ -392,12 +464,16 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一部分（`debugging_tokio_instrumentation`）是目标，其默认情况下与模块路径相同，因此是我们示例应用程序的名称。冒号后是字段（只有一个字段：`fun=true`），最后是消息（`pre-yield`）。一个事件的消息实际上仅是一个特殊处理的字段，名称为
+    `message`。这个事件没有着色，因为它不是 `ari-subscriber` 知道的 instrumentation 的一部分。
 - en: The next line is the wake operation (it's purple!). We can see that its target
     is `tokio::task::waker` and then it has 2 fields and no message. The fields are
     `op="waker.wake_by_ref"` and `task.id=1`.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一行是唤醒操作（它是紫色的！）。我们可以看到其目标是 `tokio::task::waker`，然后它有 2 个字段和没有消息。字段是 `op="waker.wake_by_ref"`
+    和 `task.id=1`。
 - en: Let's start with the second field, `task.id=1`. This gives the **instrumentation
     ID** of the task being woken. The instrumentation ID of a task is not the Tokio
     [`task::Id`](https://docs.rs/tokio/1.35.1/tokio/task/struct.Id.html), but rather
@@ -411,6 +487,11 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从第二个字段开始，`task.id=1`。这给出了被唤醒任务的**instrumentation ID**。任务的 instrumentation
+    ID 不是 Tokio 的 [`task::Id`](https://docs.rs/tokio/1.35.1/tokio/task/struct.Id.html)，而是跟踪的
+    [`span::Id`](https://docs.rs/tracing/0.1.40/tracing/span/struct.Id.html)，它是仪器化该任务的
+    span 的标识。该值出现在 span 名称 `runtime.spawn` 后面的括号中（例如 `[1]`）。这有点令人困惑，因为 `runtime.spawn`
+    span 还有一个名为 `task.id` 的字段，但那个是指 Tokio 任务 ID。这里的重要点是我们的 span ID 匹配（都是 1），因此这个操作是从受影响的任务内部执行的。
 - en: The operation `wake_by_ref` indicates that the task is being woken using a reference
     to the waker. This operation doesn't consume the waker - which is important when
     Tokio Console counts the number of wakers for a given task to make sure that it
@@ -418,20 +499,24 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作`wake_by_ref`表示使用对 waker 的引用来唤醒任务。这个操作不会消耗 waker - 这在 Tokio Console 计算给定任务的唤醒次数时很重要，以确保它没有失去所有的唤醒者。
 - en: With this information, we can now manually ascertain that this is a self-wake
     operation. We are waking a task while running within that task.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些信息，我们现在可以手动确定这是一个自唤醒操作。我们在运行该任务时唤醒了一个任务。
 - en: what happens next
   id: totrans-split-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 接下来会发生什么
 - en: Let's change our version of Tokio to the latest (at the time of writing), 1.35.1.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们将 Tokio 的版本更改为最新版本（在撰写时），1.35.1。
 - en: '[PRE7]'
   id: totrans-split-73
   prefs: []
@@ -442,6 +527,7 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后运行完全相同的示例。输出如下（像之前一样被截断）。
 - en: '[PRE8]'
   id: totrans-split-75
   prefs: []
@@ -453,6 +539,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能不是立即明显的，但该输出比以前的输出多出一行。可能首先引起注意的是，现在我们可以看到唤醒操作而无需向右滚动。但首先，让我们检查在那之上发生了什么。
 - en: Directly below our own `fun=true pre-yield` event line, we see that there is
     still a `tokio::task::waker` event and it is still operating on the same task
     (and the same task that we are currently inside), the one with the task instrumentation
@@ -461,6 +548,8 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 就在我们自己的`fun=true pre-yield`事件行的正下方，我们看到仍然有一个`tokio::task::waker`事件，并且它仍在同一个任务上操作（也是我们当前所在的任务），具有任务仪表
+    ID 为 1。然而，这不是一个唤醒操作，相反它具有字段值`op=waker.clone`。某处，该任务的唤醒器正在被克隆。
 - en: Straight afterwards we see that the span exits - which means that the call to
     poll on that task has returned. After that, the task **is** woken. We see that
     the operation is `waker.wake` instead of `waker.wake_by_ref`, which means that
@@ -471,16 +560,19 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 直接之后我们可以看到跨度退出 - 这意味着对该任务的轮询调用已返回。在此之后，任务**被唤醒**。我们看到操作是`waker.wake`而不是`waker.wake_by_ref`，这意味着唤醒器被消耗了（这是有道理的，因为之前它被克隆了）。比所有这些更重要的是，这次唤醒操作不在该任务的`runtime.spawn`跨度内，事实上它根本不在任何跨度内，无论是`runtime.spawn`还是其他的。
 - en: This confirms what could be observed in Tokio Console, the instrumentation indicates
     that this is not a self wake!
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这证实了在 Tokio Console 中可以观察到的情况，仪表表明这不是自唤醒！
 - en: what changed?
   id: totrans-split-80
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 发生了什么变化？
 - en: The reason for this change is the PR [`tokio#5223`](https://github.com/tokio-rs/tokio/pull/5223)
     (in Tokio itself). This PR changes the behaviour of [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
     to defer the wake. When a task yields to the runtime in this way, it is immediately
@@ -492,11 +584,16 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种改变的原因是 PR [`tokio#5223`](https://github.com/tokio-rs/tokio/pull/5223)（在 Tokio
+    本身）。这个 PR 改变了 [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
+    的行为以推迟唤醒。当一个任务以这种方式向运行时让步时，它立即准备好再次轮询（这就是全部意义）。任何其他准备好的任务都会优先被轮询（除非涉及 LIFO 插槽的特定条件）。然而调度程序不一定会轮询资源驱动程序，这意味着一个始终准备好的任务可能会使资源驱动程序挨饿，尽管它尽最大努力定期向运行时让步。
 - en: The PR changes the behaviour to defer waking tasks which call [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
     until after polling the resource drivers, avoiding the starvation issue.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个 PR 改变了行为，推迟唤醒通过 [`yield_now()`](https://docs.rs/tokio/1.35.1/tokio/task/fn.yield_now.html)
+    调用的任务，直到轮询资源驱动程序后，避免了饥饿问题。
 - en: After some discussion on [console#512](https://github.com/tokio-rs/console/issues/512),
     we decided that it's OK that Tokio Console can't detect this specific case of
     self wakes, since the PR on Tokio made them much less likely to result in some
@@ -504,25 +601,31 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[console#512](https://github.com/tokio-rs/console/issues/512)的一些讨论之后，我们决定 Tokio
+    Console 无法检测到这种特定的自唤醒情况是可以接受的，因为 Tokio 上的 PR 大大减少了由其他 futures 的自唤醒可能导致的某些性能问题。
 - en: And that's how I managed to use my very basic subscriber crate to answer a question
     quicker thanks to pretty colours.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我如何使用我非常基本的订阅器 crate 以更快的速度回答问题，多亏了漂亮的颜色。
 - en: should I use `ari-subscriber`?
   id: totrans-split-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我应该使用`ari-subscriber`吗？
 - en: Now that we've had a bit of a look at `ari-subscriber`, the big question is,
     should anyone be using it?
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经稍微看了一下`ari-subscriber`，最重要的问题是，应该有人在使用它吗？
 - en: The answer is **no**.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是**不**。
 - en: Aside from missing a bunch of useful features, `ari-subscriber` currently does
     a lot of things "the easy way", which is not very performant. I know how to make
     it more performant, but I promised myself I'd write this post before doing any
@@ -530,6 +633,8 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了缺少一堆有用的功能外，`ari-subscriber`当前以“简单方式”执行许多操作，这并不高效。我知道如何使其更高效，但我承诺在对这个 crate
+    进行更多工作之前要先写这篇文章。
 - en: Unless you too are trying to debug the instrumentation built into Tokio, you're
     much better off using the [`fmt::Subscriber`](https://docs.rs/tracing-subscriber/0.3.18/tracing_subscriber/fmt/struct.Subscriber.html)
     from the `tracing-subscriber` crate.
