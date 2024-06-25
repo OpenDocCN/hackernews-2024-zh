@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:58:21'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:58:21'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: FuturesUnordered and the order of futures
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: FuturesUnordered 和 futures 的顺序
 - en: 来源：[https://without.boats/blog/futures-unordered/](https://without.boats/blog/futures-unordered/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://without.boats/blog/futures-unordered/](https://without.boats/blog/futures-unordered/)
 - en: In my [previous post](/blog/let-futures-be-futures), I wrote about the distinction
     between “multi-task” and “intra-task” concurrency in async Rust. I want to open
     this post by considering a common pattern that users encounter, and how they might
@@ -31,6 +37,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的 [上一篇文章](/blog/let-futures-be-futures) 中，我写了关于异步 Rust 中“多任务”和“任务内”并发之间区别的内容。我想通过考虑用户遇到的常见模式及如何使用每种技术实现解决方案来开启本文。
 - en: 'Let’s call this “sub-tasking.” You have a unit of work that you need to perform,
     and you want to divide that unit into many smaller units of work, each of which
     can be run concurrently. This is intentionally extremely abstract: basically every
@@ -40,6 +47,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们称之为“子任务”。你有一个需要执行的工作单元，你希望将该单元分成许多较小的工作单元，每个都可以并发运行。这故意非常抽象：基本上任何有意义的程序至少包含一次（通常是多次）这种模式的实例，最佳解决方案将取决于正在执行的工作类型、工作量大小、并发性的度量等。
 - en: Using **multi-task concurrency**, each smaller of work would be its own task.
     The user would spawn each of these tasks onto an executor. The results of the
     task would be collected with a synchronization primitive like a [channel](https://tokio.rs/tokio/tutorial/channels),
@@ -48,6 +56,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 **多任务并发**，每个较小的工作将成为其自己的任务。用户将每个任务都生成到一个执行器上。任务的结果将使用像 [channel](https://tokio.rs/tokio/tutorial/channels)
+    这样的同步原语进行收集，或者任务将与 [JoinSet](https://docs.rs/tokio/latest/tokio/task/struct.JoinSet.html)
+    一起等待。
 - en: Using **intra-task concurrency**, each smaller unit will be a future run concurrently
     within the same task. The user would construct all of the futures and then use
     a concurrency primitive like [join!](https://docs.rs/tokio/latest/tokio/macro.join.html)
@@ -57,6 +68,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 **任务内并发**，每个较小的单元将在同一任务中并发运行。用户将构建所有的 futures，然后使用类似于 [join!](https://docs.rs/tokio/latest/tokio/macro.join.html)
+    或者 [select!](https://docs.rs/tokio/latest/tokio/macro.select.html) 的并发原语将它们组合成一个单一的
+    future，具体取决于精确的访问模式。
 - en: Each of these approaches has its advantages and disadvantages. Spawning multiple
     tasks requires that each task be `'static`, which means they cannot borrow data
     from their parent task. This is often a very annoying limitation, not only because
@@ -68,6 +82,9 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 每种方法都有其优缺点。生成多个任务要求每个任务都是 `'static`，这意味着它们不能从其父任务中借用数据。这通常是一个非常令人恼火的限制，不仅因为使用共享所有权可能会很昂贵（意味着
+    `Arc` 和可能的 `Mutex`），而且因为即使在这种情况下使用共享所有权也不会成为问题，（我希望看到这一点的改变！便宜的共享所有权构造如 `Arc`
+    和 `Rc` 应该具有非仿射语义，这样你就不必调用它们的克隆方法。）
 - en: When you join multiple futures, they *can* borrow from state outside of them
     within the same task, but as I wrote in the previous post, you can only join a
     static number of futures. Users that don’t want to deal with shared ownership
@@ -76,6 +93,9 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你合并多个 futures 时，它们*可以*从同一任务中外部的状态中借用，但正如我在上一篇文章中写的那样，你只能合并一个静态数量的 futures。不希望处理共享所有权但需要执行动态数量的子任务的用户将不得不寻找另一种解决方案。这就是
+    [FuturesUnordered](https://docs.rs/futures/latest/futures/stream/struct.FuturesUnordered.html)
+    的作用。
 - en: '`FuturesUnordered` is an odd duck of an abstraction from the futures library,
     which represents a collection of futures as a `Stream` (in std parlance, an `AsyncIterator`).
     This makes it a lot like tokio’s `JoinSet` in surface appearance, but unlike `JoinSet`
@@ -89,6 +109,11 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '`FuturesUnordered` 是 futures 库中一个奇特的抽象，它将一组 futures 表示为一个 `Stream`（在标准库中被称为
+    `AsyncIterator`）。这使得它在表面上看起来很像 tokio 的 `JoinSet`，但与 `JoinSet` 不同的是，你推送到其中的 futures
+    并不会单独在执行器上被生成，而是在 `FuturesUnordered` 被轮询时被轮询。就像生成任务一样，每个推送到 `FuturesUnordered`
+    中的 future 都是单独分配的，因此在表现上非常类似于多任务并发。但由于 `FuturesUnordered` 是轮询这些 futures 的对象，它们不会独立执行，并且它们不需要
+    `''static`。它们可以借用周围的状态，只要 `FuturesUnordered` 不会比那个状态存在时间更长。'
 - en: 'In a sense, `FuturesUnordered` is a sort of hybrid between intra-task concurrency
     and multi-task concurrency: you can borrow state from the same task like intra-task,
     but you can execute arbitrarily many concurrent futures like multi-task. So it
@@ -100,15 +125,20 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某种意义上，`FuturesUnordered` 是一种介于任务内并发和多任务并发之间的混合体：您可以从同一任务中借用状态，就像任务内部一样，但您可以执行任意数量的并发
+    futures，就像多任务一样。因此，当用户希望获得这些功能的确切组合时，它似乎是一个自然的选择。但是，`FuturesUnordered` 也曾是用户在编写异步
+    Rust 时遇到一些最令人沮丧的错误的罪魁祸首之一。在本文的其余部分，我将探讨其中的原因。
 - en: Two patterns with `FuturesUnordered`
   id: totrans-split-14
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '`FuturesUnordered` 有两种模式'
 - en: The kind of bugs you can get with `FuturesUnordered` depend on how you use it.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过使用 `FuturesUnordered` 的方式来获取哪些附加额外的便利。
 - en: 'The simplest way to use `FuturesUnordered` is to fill the collection with futures
     and then collect all of their results and process them then. This is usually not
     a problematic usage. However, often you want to be able to do one of two things
@@ -118,11 +148,14 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `FuturesUnordered` 的最简单方法是用 futures 填充集合，然后收集它们的所有结果并进行处理。这通常不是一个有问题的用法。然而，通常情况下，您希望在等待所有这些
+    futures 时能够做两件事中的其中一件：一方面，您希望能够将更多的工作推送到 `FuturesUnordered` 中，另一方面，您希望在每个结果到达时处理它们，而不是等待所有结果完成。
 - en: 'There are two main patterns for providing those additional affordances on top
     of `FuturesUnordered`:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两种主要模式可以在 `FuturesUnordered` 上提供额外的便利：
 - en: '**The “buffered stream” pattern:** Here, you represent your work to be done
     as a stream of futures, and then buffer them using something like the [buffered](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.buffered)
     adapter on `StreamExt`. More work can get pushed into the `FuturesUnordered` as
@@ -132,6 +165,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**“缓冲流”模式：** 在这里，你将待完成的工作表示为一系列 futures 流，然后使用类似于 [buffered](https://docs.rs/futures/latest/futures/stream/trait.StreamExt.html#method.buffered)
+    适配器在 `StreamExt` 上进行缓冲。更多的工作可以被推送到 `FuturesUnordered` 中，因为还有更多的工作要完成，同时空间也变得可用，并且每个结果都可以在准备好时进行处理。'
 - en: '**The “scoped task” pattern:** Here, you represent your work to be done as
     tasks “spawned” onto the `FuturesUnordered` using some kind of handle; an example
     of this sort of API is Niko Matsakis’s [moro](https://crates.io/crates/moro) library.
@@ -142,6 +177,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**“作用范围”模式：** 在这里，你将待完成的工作表示为使用某种句柄“生成”到 `FuturesUnordered` 上的任务；这种 API 的例子是
+    Niko Matsakis 的 [moro](https://crates.io/crates/moro) 库。你可以从任何这些生成的任务中自由生成更多的任务。如果你想处理其中任何任务的结果，你可以等待其加入句柄或使用同步原语将数据传输到另一个任务。'
 - en: There are several differences between these two approaches. One is how each
     of them approach backpressure. It is important when designing systems to have
     some way of applying backpressure if another component of the system produces
@@ -150,6 +187,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两种方法之间存在几个区别。其中之一是它们如何处理背压。在设计系统时，如果系统的另一个组件产生的工作超过了这个组件可以处理的能力，有一种方式来施加背压是很重要的。否则，工作将继续增加，直到这个组件变得无望或者不堪重负而崩溃。
 - en: 'The buffered stream API enables backpressure by encouraging the user to limiting
     the number of futures that will be buffered at once; this applies pressure on
     the underlying stream generating the futures, as it will no longer be polled when
@@ -164,6 +202,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 缓冲流API通过鼓励用户一次限制缓冲的未来数量来实现背压；这对生成未来的底层流施加压力，因为当并发未来的最大数量正在运行时，它将不再被轮询。相比之下，moro中实现的作用域任务模式没有施加背压的方式：用户被允许生成尽可能多的任务。可以想象作用域任务模式的一个版本可以通过这种方式施加背压：`spawn`方法本身将是异步的，并且只有当它能够生成任务时才返回就绪。但我不知道有哪个库这样做了；当使用类似`spawn`的API时，用户预期通过其他机制引入背压，比如限制通道的长度。
 - en: 'Another difference is how each pattern handles processing the results of the
     concurrent sub-tasks. Buffered streams transform a stream of futures into a stream
     of those futures’ outputs: they are processed by looping over the stream. Scoped
@@ -173,6 +212,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个区别在于每种模式如何处理并发子任务的处理结果。缓冲流将未来的流转换为这些未来的输出流：它们通过循环遍历流来处理。另一方面，作用域任务在处理子任务的结果时没有特定的组织：用户需要通过等待它们的`JoinHandle`来“链接”子任务。
 - en: 'The result of this is that the buffered stream approach imposes a particular
     kind of sequential order of events. The underlying stream is only polled when
     the `Buffered` stream has space for more work & and the `Buffered` stream is only
@@ -186,16 +226,20 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致缓冲流方法施加了一种特定的顺序事件。只有在`Buffered`流有空间处理更多工作时才会轮询底层流，而在处理缓冲流的循环准备处理另一个结果时才会轮询`Buffered`流。`poll_progress`
+    API变更的目的是使`Buffered`流能够与循环并行执行；这将消除第二个顺序点。但第一个顺序点无法改变：该顺序点的整个目的是施加背压。没有`poll_progress`变更，缓冲流的顺序看起来像这样：
 - en: '[PRE0]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Each phase of this process is interspersed with the others, but they are not
     fully concurrent. When one phase is executing, even if it has no more work to
     do, the other phases cannot proceed.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个过程的每个阶段都与其他阶段交织在一起，但它们并非完全并发。当一个阶段正在执行时，即使它没有更多工作要做，其他阶段也无法继续进行。
 - en: 'The scoped task approach on the other hand does not in itself introduce any
     sequencing points. All of the futures spawned as “scoped tasks” are executed concurrently.
     The user must apply sequencing themselves by awaiting the results of other tasks.
@@ -205,10 +249,12 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，范围任务方法本身不会引入任何排序点。所有作为“范围任务”生成的未来都是并发执行的。用户必须通过等待其他任务的结果来自行应用排序。例如，想象一个场景，用户使用范围任务模式生成了两个子任务并加入它们，其中一个还生成了另一个子任务并等待它。这看起来像这样：
 - en: '[PRE1]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Tasks within the scoped task set can proceed independently by default. The ordering
     is imposed by the user in how they relate them to one another using the same concurrency
     primitives they would use with other parts of async Rust. Another usage pattern
@@ -216,6 +262,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 范围内的任务集合默认可以独立进行。用户通过使用与异步 Rust 的其他部分相同的并发原语来确定它们之间的关系，来规定它们的顺序。另一种使用模式将会有一组完全不同的任务之间的关系。
 - en: 'Some users report experiencing achieving less concurrency than they expected
     when using buffered streams because they don’t realize the sequencing that occurs:
     they conceptualize these phases as occurring concurrently, even when they aren’t.
@@ -225,11 +272,13 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些用户报告称，在使用缓冲流时，他们达到的并发性比他们预期的要少，因为他们没有意识到发生的排序：他们在概念上将这些阶段视为同时发生，即使它们并非如此。由于这种排序引起的最糟糕的问题是死锁，在这种情况下，任务中的任何未来都无法取得进展，因为它们都在互相等待。
 - en: Deadlocks
   id: totrans-split-30
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 死锁
 - en: 'Deadlocks can occur only when a set of four conditions are met. These are known
     as the “Coffman conditions,” after Edward G. Coffman, who wrote a definitive [article](https://people.cs.umass.edu/~mcorner/courses/691J/papers/TS/coffman_deadlocks/coffman_deadlocks.pdf)
     on deadlock in 1971. The original paper expressed the requirements more crisply
@@ -237,6 +286,8 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有当满足四个条件集时，死锁才会发生。这些条件被称为“Coffman条件”，取自于在1971年撰写有关死锁的一篇[文章](https://people.cs.umass.edu/~mcorner/courses/691J/papers/TS/coffman_deadlocks/coffman_deadlocks.pdf)的
+    Edward G. Coffman。原始论文比我能表达的更加明确地阐述了这些要求（强调是我的）：
 - en: Tasks claim exclusive control of the resources they require (**“mutual exclusion”**
     condition).
   id: totrans-split-32
@@ -244,6 +295,7 @@
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 任务声称对它们需要的资源拥有独占控制（**“互斥”** 条件）。
 - en: Tasks hold resources already allocated to them while waiting for additional
     resources (**“wait for”** condition).
   id: totrans-split-33
@@ -251,6 +303,7 @@
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 任务持有已分配给它们的资源，同时等待额外的资源（**“等待”** 条件）。
 - en: Resources cannot be forcibly removed from the tasks holding them until the resources
     are used to completion (**“no preemption”** condition).
   id: totrans-split-34
@@ -258,6 +311,7 @@
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在资源被使用完之前，不能强制从持有它们的任务中移除资源（**“无抢占”** 条件）。
 - en: A circular chain of tasks exists, such that each task holds one or more resources
     that are being requested by the next task in the chain (**“circular wait”** condition).
   id: totrans-split-35
@@ -265,6 +319,7 @@
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 存在一种循环链的任务，每个任务持有一个或多个下一个任务在链中请求的资源（**“循环等待”** 条件）。
 - en: To further explore this topic, I want to demonstrate a deadlocks using a much
     simpler example of an async iterator, which doesn’t use buffered streams or `FuturesUnordered`
     at all. I’m going to use async generator syntax to define my iterator, but this
@@ -272,6 +327,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了进一步探索这个主题，我想用一个更简单的异步迭代器的例子来演示死锁，这个例子完全不使用缓冲流或`FuturesUnordered`。我将使用异步生成器语法来定义我的迭代器，但这只是为了方便，与死锁无关。
 - en: We shall have one unit of work (the async generator) which yields two values
     `x` and `y` while holding a lock on a shared resource. Another unit of work (the
     for await loop) will consume those values and print them, also taking the lock
@@ -282,10 +338,12 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将有一个工作单元（异步生成器），它在持有共享资源的锁的同时生成两个值 `x` 和 `y`。另一个工作单元（`for await`循环）将消耗这些值并打印它们，同时为每个值获取锁。在这个伪代码中，持有锁是不必要的；想象一个更复杂的例子，其中生产和消费这些值的算法都需要对由`Mutex`保护的资源进行独占访问。
 - en: '[PRE2]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This code will result in a deadlock. First, the generator will take a lock
     on the mutex, then it will yield its first value while holding that lock. The
     `for` loop when then attempt to take the lock while processing that value, but
@@ -298,6 +356,8 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码将导致死锁。首先，生成器将在互斥锁上取得锁定，然后在持有该锁的同时生成其第一个值。`for` 循环在处理该值时会尝试获取锁定，但它无法在生成器放弃之前获取锁定。但生成器在产生其第二个值之前不会放弃锁定，因为`for`循环在处理第一个值后才准备好处理第二个值。请注意，`poll_progress`
+    在这里没有帮助：生成器除了通过产生第二个值外无法取得进展，但在`for`循环完成消耗第一个值之前无法这样做。
 - en: This is a classic “circular wait” scenario in which the iterator is waiting
     on the `for` loop and the `for` loop is waiting on the iterator. What’s perhaps
     interesting about this scenario is that there is only one lock. We are left to
@@ -306,6 +366,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是经典的“循环等待”场景，其中迭代器在等待`for`循环，而`for`循环在等待迭代器。这个场景的有趣之处或许在于只有一个锁定。我们不禁要问，这个死锁场景中的第二个共享资源是什么？迭代器持有`Mutex`，但`for`循环持有什么？
 - en: The second resource is control of the execution of code itself. In a single
     task, only one part of the task can be executing at any one time. That control
     itself is an implicit shared resource that different sub-units of the task need
@@ -314,10 +375,12 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个资源是代码执行本身的控制权。在单个任务中，任一时刻只能执行任务的一部分。这种控制本身是一个隐式共享资源，任务的不同子单元需要独占访问以取得进展。在我们的示例中，迭代器持有`Mutex`的锁定，而`for`循环则持有任务的锁定。
 - en: '[PRE3]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'A note before we proceed: this problem is not the result of anything particular
     to async Rust, but is inherent in any imperative procedural language. If you were
     to write the same code with a blocking `Mutex` and eliminate all the async and
@@ -329,6 +392,8 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在继续之前，有一点需要注意：这个问题不是异步 Rust 特有的问题，而是任何命令式过程语言固有的问题。如果您使用阻塞的`Mutex`编写相同的代码，并消除所有异步和等待关键字，您将得到相同的行为：迭代器将获取锁并产生其第一个项目，然后`for`循环将阻塞等待获取锁以处理该项目，系统将进入死锁状态。无论您将计算时间片段表示为
+    futures 还是线程，如果代码执行按照“一切顺序进行”的方式进行，这种算法都会导致死锁。
 - en: 'The only way to prevent this deadlock would be able to preempt the exclusive
     access to one of the two resources involved: either to preempt the `Mutex` or
     preempt the code holding control of the compute. The second is not possible in
@@ -342,6 +407,9 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 避免这种死锁的唯一方法是能够抢占这两个资源中的一个的独占访问：要么抢占`Mutex`，要么抢占控制计算的代码。在命令式语言中，当您明确声明了两个组件之间的顺序时，后者是不可能的。避免这个问题是研究
+    Haskell 等具有较少严格顺序语义的语言的主要动机之一。在具有严格顺序的语言中，唯一的解决方案是明确声明这些操作之间的顺序无关紧要；换句话说，它们是并发的。异步
+    Rust 提供了几种工具来实现这一点，但此代码并未利用这些工具。
 - en: 'On the other hand, it is also possible to preempt the `Mutex` with a lock that
     is “re-entrant.” With re-entrant lock, either because the `for` loop is in the
     same thread or same task, it is given access to the lock even while the iterator
@@ -357,11 +425,13 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，还可以使用可“重新进入”的`Mutex`来抢先锁定。通过可重新进入锁，无论是因为`for`循环在同一线程或同一任务中，它都可以访问锁，即使迭代器仍然持有它。这不会导致数据竞争，*因为*顺序已由底层顺序编程模型提供。换句话说，可重新进入的`Mutex`通过依赖已提供的计算顺序，打破了死锁。然而，在这种情况下使用可重新进入的`Mutex`是有风险的：如果您的程序逻辑依赖于保证共享资源的状态在迭代器的yield之间不会改变，那么使用可重新进入的`Mutex`将把那个死锁升级为潜在灾难性的逻辑错误。换句话说，在大多数情况下，这根本不是解决方案。
 - en: Buffer data, not code?
   id: totrans-split-46
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 缓冲数据，而不是代码？
 - en: 'The code sample above didn’t involve `FuturesUnordered`, but the deadlocks
     and performance issues that result from using the buffered stream pattern arise
     from the same underlying dynamics. Without `poll_progress`, if a future being
@@ -373,6 +443,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码示例并未涉及`FuturesUnordered`，但由于使用缓冲流模式导致的死锁和性能问题源于相同的基本动态。如果被缓冲的未来获取了锁，然后`for`循环尝试获取同一个锁，整个过程将会死锁。`poll_progress`消除了这个序列点，但仍保留了应用背压的另一个序列点：如果底层未来流获取了锁，然后被缓冲的未来也尝试获取同一个锁（或`for`循环尝试获取），类似的死锁将会发生。
 - en: One user reported just such a [bug](https://blog.polybdenum.com/2022/07/24/fixing-the-next-thousand-deadlocks-why-buffered-streams-are-broken-and-how-to-make-them-safer.html)
     in their program in 2022\. This user proposes changing the signature of `FuturesUnordered`
     so that it can only await join handles of independently executing tasks as a way
@@ -385,6 +456,7 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 2022年，有用户报告了类似的[错误](https://blog.polybdenum.com/2022/07/24/fixing-the-next-thousand-deadlocks-why-buffered-streams-are-broken-and-how-to-make-them-safer.html)。该用户建议更改`FuturesUnordered`的签名，以便它只能等待独立执行任务的联合句柄，作为避免死锁的一种方法。我认为这不是一个推荐的方法，因为它在语义上相当于具有较不优化实现的`JoinSet`。记住使用`FuturesUnordered`的原因是同时执行一组动态数量的来自周围作用域的未来。功能上等效的建议是完全避免使用`FuturesUnordered`，但我认为这既不必要也不足以防止死锁。
 - en: I want to consider another deadlock, this time using the scoped task pattern
     instead of the buffered stream pattern. This deadlock could also be achieved with
     ordinary tasks on an executor - it doesn’t depend on anything particular to the
@@ -393,6 +465,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们考虑另一种死锁情况，这次使用了作用域任务模式而不是缓冲流模式。这种死锁也可以通过在执行器上使用普通任务来实现，它并不依赖于`FuturesUnordered`的语义特性。我们将基本上实现与之前相同的算法，出现死锁的原因也基本相同。
 - en: This code will spawn two sub-tasks which communicate via a channel. The first
     sub task will send `x` and `y` through the channel while holding onto a lock.
     The second will receive all values from the channel, await to take the lock, and
@@ -404,10 +477,13 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码将生成两个子任务，它们通过一个通道进行通信。第一个子任务将在持有锁的同时通过通道发送`x`和`y`。第二个任务将从通道接收所有值，等待获取锁，并打印每个值。为了表明我的观点，这个通道将是长度为`0`的有界通道。这意味着在实际被另一侧的接收端接收之前，发送并不算完成，就像std的[sync_channel](https://doc.rust-lang.org/std/sync/mpsc/fn.sync_channel.html)
+    API一样。（tokio通道不支持此行为，因为它们认为在取消方面存在风险。）
 - en: '[PRE4]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Here, exactly the same deadlock emerges again because the channel does not
     have enough capacity to hold the data being sent into the channel while waiting
     for the other task to process it. It is the same circular wait pattern, but control
@@ -415,14 +491,17 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，同样的死锁问题再次出现，因为通道没有足够的容量来容纳发送到通道中等待另一个任务处理的数据。这是同样的循环等待模式，但是任务的控制已被通道中的空间所替代：
 - en: '[PRE5]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: There are two conclusions we could reach from this consideration.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这些考虑中，我们可以得出两个结论。
 - en: 'The first, and more appealing, would be to say that circular dependencies with
     locks and channels are easier to spot. Users *know* they’re sharing resources
     when they use synchronization primitives. Therefore, spawning tasks (whether scoped
@@ -434,6 +513,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个更有吸引力的结论是说，具有锁和通道的循环依赖更容易被发现。当用户使用同步原语时，他们*知道*它们在共享资源。因此，生成任务（无论是作用域任务还是独立任务），或者使用不引入隐含的子序列点的任务内并发原语，都不太可能导致死锁，因为用户可以更容易地分析代码。这是因为并发单元之间没有隐含的共享资源：通过使用同步原语，所有依赖关系都更加明显。
 - en: 'In other words, **buffer data, not code**. The practical implication of this
     would be to reject the buffered stream pattern as a risky and confusing practice,
     and prefer the scoped task pattern. As I said this is appealing: it results in
@@ -442,6 +522,7 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，**缓冲数据，而不是代码**。这意味着拒绝缓冲流模式作为一种风险和混乱的做法，并倾向于使用作用域任务模式。正如我所说的那样，这很有吸引力：它导致了一个简单明了的实用规则，用户可以应用以减少死锁的风险。
 - en: The alternative conclusion is not as nice, but should be taken seriously. Consider
     that ultimately in both cases the deadlock results from a limit on the number
     of units that can be buffered. Users either limit the number of concurrent futures
@@ -452,6 +533,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种结论并不那么美好，但应该认真对待。请考虑，无论在哪种情况下，死锁都是由于可以缓冲的单位数量有限制造成的。用户要么限制缓冲流中并发 future 的数量，要么限制通道中对象的数量。这是实现系统反压的必要条件。但是，如果您的系统中有一个双向有界的循环依赖，如果所有这些队列都完全填满，就会发生死锁。
 - en: 'If its *impossible* for a queue to fill up, deadlock can be prevented. For
     example, in the code above just setting the channel to a length above `0` would
     have prevented the deadlock. But if the amount of items that the sender could
@@ -462,6 +544,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果队列不可能填满，死锁可以被防止。例如，在上述代码中，只要将通道长度设置为大于`0`，就可以防止死锁。但是，如果发送者可以生成的项目数量大于队列的界限，并且存在循环依赖关系，无论队列大小如何，都可能导致死锁。这就变成了它们发生的频率问题：如果队列很少满，那么死锁将是非常不可能但不是不可能的。
 - en: In my experience, users usually set the bound on their channel to a relatively
     large but ultimately arbitrary figure. A value in the hundreds or low thousands
     is something I commonly see, for reasons that are not usually very good. On the
@@ -475,6 +558,7 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据我的经验，用户通常会将他们的通道界限设置为一个相对较大但最终是任意的数字。我通常看到的是数百或数千的值，原因通常不是很好。另一方面，我认为缓冲流的限制通常设置得更低，单个数字的限制很常见。换句话说，通道的使用方式可能会使死锁变得不太可能，但并不会使其不可能发生，因此用户在测试中可能不会遇到它们，尽管它们仍然潜伏在您的代码中等待在生产中遇到。也许缓冲流和通道之间真的没有区别，除了用户倾向于选择的队列大小？
 - en: For some use cases, highly improbably deadlocks are fine; the service degradation
     and data loss that results from a deadlock that occurs very infrequently may be
     tolerable for your system. If it isn’t, though, by setting queues to arbitrary
@@ -487,11 +571,13 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于某些用例，发生概率极低的死锁是可以接受的；因为非常偶发的死锁导致的服务降级和数据丢失可能对您的系统是可以容忍的。但如果不行，通过设置队列到任意大的大小，您可能会隐藏潜在的死锁，特别是如果您的系统中组件之间的流动对程序员来说并不明显，因为应用程序的规模和复杂性。缓解这个问题的一种方法是使用非缓冲通道进行测试（以确保即使性能降低，系统仍能持续进展），同时在生产中使用缓冲通道作为性能增强，使您能够在相同的计算时间内完成更多工作。
 - en: Synchronization & the borrow checker
   id: totrans-split-61
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 同步和借用检查器
 - en: 'One important fact to consider is that deadlocks like the above are only possible
     if the user is using a synchronization primitive. Buffered streams alone without
     something like locks or channels cannot result in a circular wait condition. This
@@ -504,6 +590,7 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 只要用户使用同步原语，如上述的死锁才可能发生。单独的缓冲流，没有像锁或通道这样的东西，不会导致循环等待条件。这是因为所有权和借用会防止“等待”条件的发生：由于互斥属性在静态确定，代码永远不需要等待对共享资源的独占访问。代码唯一可能等待的“资源”是当前任务的控制，而没有多个资源就不可能进入“循环等待”状态。与死锁不同，你会得到一个借用检查器错误。
 - en: This doesn’t mean users should avoid synchronization primitives entirely, just
     that they should be alert that they carry additional risks. When using these primitives,
     users must be aware of the shape of their synchronization dependency graph to
@@ -514,6 +601,7 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不意味着用户完全应避免同步原语，只是他们应该警惕它们带来的额外风险。在使用这些原语时，用户必须意识到他们的同步依赖图的形状，以识别潜在的死锁。但用户还必须注意到控制流也是一个共享资源，并警惕在单个任务的非并发组件中多次使用同步原语。如果缓冲流使得非并发控制流过于不透明，那么应该不鼓励这种特定模式。
 - en: Enabling users to often avoid synchronization and shared ownership - and therefore
     potential deadlocks - is the entire reason users reach for `FuturesUnordered`.
     That the Rust type system can enable this is one of the most interesting and important
@@ -527,3 +615,5 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 允许用户经常避免同步和共享所有权 - 因此避免潜在的死锁 - 是用户寻求`FuturesUnordered`的全部原因。Rust类型系统能够实现这一点是Rust最有趣和重要的事情之一。最终，应该倾向于使用所有权和借用的这种方式的模式，因为这符合Rust的优势。如果能够在所使用的运行时中集成作用域任务模式，而不需要单独的抽象
+    - 也就是说，如果`JoinSet`能够生成不是`'static`的任务，而是允许从周围上下文中借用。要实现这一点需要解决一些与[作用域任务三难问题](/blog/the-scoped-task-trilemma)相关的问题。
