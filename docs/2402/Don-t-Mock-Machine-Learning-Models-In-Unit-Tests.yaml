@@ -86,16 +86,19 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '**机器学习/语言模型可能会很大且难以处理。** 一些神经网络可能有数十亿个参数，超出了笔记本电脑或标准开发环境可以加载的范围。即使我们有足够小型模型的内存，它们加载和推断速度也很慢，在编码过程中进行单元测试时会考验我们的耐心。'
 - en: Some guidelines for unit testing ML code & models
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一些机器学习代码和模型单元测试的指导方针
 - en: (These are a work in progress and my thinking’s still evolving—all feedback
     welcome!)
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: （这些仍在进行中，我的思路仍在演变中——欢迎所有反馈！）
 - en: '**Use small, simple data samples.** Avoid loading CSVs or Parquet files as
     sample data. (It’s fine for integration tests and evals but not unit tests.) Define
     sample data directly in unit test code—so that the test is self-contained—to test
@@ -103,31 +106,37 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '**使用小型、简单的数据样本。** 避免加载CSV或Parquet文件作为样本数据。（对于集成测试和评估是可以的，但不适合单元测试。）直接在单元测试代码中定义样本数据，使测试自包含，以测试关键功能，如：'
 - en: Splitting into train/test tests when you have custom logic
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当存在自定义逻辑时进行训练/测试集分割
 - en: Custom implementations, such as Cosine or Euclidean distance in Java
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 自定义实现，例如Java中的余弦或欧几里得距离
 - en: Preprocessing such as data augmentation or encoding
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 预处理，例如数据增强或编码
 - en: Postprocessing such as diversification or filtering recommendations
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 后处理，例如多样化或筛选推荐
 - en: Error handling for empty or malformed input
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 处理空或格式错误输入的错误处理
 - en: '**When viable, test against random or empty weights.** For example, we can
     initialize a model configuration with random weights to test output shape and
     device movement (from CPU to GPU and back). Here’s an example of how to initialize
@@ -135,60 +144,72 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在可行时，对随机或空权重进行测试。** 例如，我们可以使用随机权重初始化模型配置，以测试输出形状和设备移动（从CPU到GPU再回来）。以下是初始化模型而不必下载权重并断言输出形状的示例：'
 - en: '[PRE0]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The accelerate library also has [an example of initializing a model with empty
     weights](https://github.com/huggingface/accelerate/blob/main/tests/test_big_modeling.py#L955):'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 加速库还展示了[初始化空权重模型的示例](https://github.com/huggingface/accelerate/blob/main/tests/test_big_modeling.py#L955)：
 - en: '[PRE1]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '**Write critical tests against the actual model.** If they take a while to
     run, [mark them as slow](https://docs.pytest.org/en/latest/how-to/mark.html#registering-marks)
     and run only when needed (e.g., pre-commit and pre-merge). Some essentials include:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '**对实际模型编写关键测试。** 如果运行时间较长，[标记为慢速](https://docs.pytest.org/en/latest/how-to/mark.html#registering-marks)，仅在需要时运行（例如，预提交和预合并）。一些要点包括：'
 - en: Verify training is done correctly, such as loss going down, model overfitting,
     and training till convergence on a small sample of data
   id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 验证训练是否正确完成，例如损失减少、模型过拟合和在少量数据上训练到收敛
 - en: Verify model outputs match expectation, such as 0.99 = unsafe instead of safe
   id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 验证模型输出是否符合期望，例如0.99 = 不安全而非安全
 - en: Verify model server can start, take batch input, and return the expected output
   id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 验证模型服务器能够启动，接受批量输入，并返回预期输出
 - en: '**Don’t test external libraries.** We can assume that external libraries work.
     Thus, no need to test data loaders, tokenizers, optimizers, etc.'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '**不要测试外部库。** 我们可以假设外部库正常工作。因此，无需测试数据加载器、分词器、优化器等。'
 - en: • • •
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: • • •
 - en: What are your best practices for unit testing machine learning code and models?
     I would love to hear from you. [Please reach out!](https://twitter.com/eugeneyan)
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 您在机器学习代码和模型单元测试中的最佳实践是什么？我很乐意听听您的意见。[请联系我！](https://twitter.com/eugeneyan)
 - en: Further reading
   id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: The problem when mocks happen when all your unit test passes and the program
     fails on integration. The mocks are a pristine place where your library unit test
     works like a champ. Bad mocks or bad library? Or both. Developers are then sent
@@ -197,6 +218,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 当所有单元测试通过而程序在集成中失败时，模拟发生的问题。模拟是一个理想的地方，其中你的库单元测试表现得像个冠军。是糟糕的模拟还是糟糕的库？还是两者都有问题。然后开发者们被派去调试单元测试…
+    有点过头。
 - en: 'Probablistic tests create an impossible problem: if you tighten your assertions
     you struggle with meaningless failing tests and normalize ignoring test failures,
     while if you loosen your assertions your tests aren’t really asserting anything
@@ -206,12 +229,14 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 概率测试创建了一个棘手的问题：如果你严格定义你的断言，你会苦于无意义的失败测试，而习惯性地忽略测试失败；但如果你放松定义，你的测试实际上就不再有所断言了。而且没有一个愉快的平衡点：如果你选择中间某个位置，你最终会遇到两个问题。
 - en: How does it matter whether I inline my test data inside the unit test code,
     or have my unit test code load that same data from a checked-in file instead?
   id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 为什么我将我的测试数据内联到单元测试代码中，或者让我的单元测试代码从一个已检入的文件中加载同样的数据，这有什么关系呢？
 - en: It makes tests self-contained and easier to reason about. As a side-effect,
     random tests won’t accidentally break whenever you change some seemingly unrelated
     csv file. As a rule of thumb, I also only assert on input/output values that are
@@ -222,31 +247,38 @@
   - PREF_BQ
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这样做使得测试变得自包含且更易推理。作为副作用，随机测试在你改变看似无关的 csv 文件时不会意外地出错。按照经验法则，我也只在测试主体中显式定义的输入/输出值上进行断言。这样做节省了大量时间，不必追踪装置定义。
 - en: I was expecting an article about side effects of hurting an LLM’s feelings in
     tests.
   id: totrans-split-38
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我原以为会有一篇关于在测试中伤害 LLM 感情副作用的文章。
 - en: 'If you found this useful, please cite this write-up as:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您觉得这篇文章有用，请引用此文：
 - en: Yan, Ziyou. (Feb 2024). Don't Mock Machine Learning Models In Unit Tests. eugeneyan.com.
     https://eugeneyan.com/writing/unit-testing-ml/.
   id: totrans-split-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Yan, Ziyou. (2024年2月). 不要在单元测试中模拟机器学习模型。eugeneyan.com。https://eugeneyan.com/writing/unit-testing-ml/。
 - en: or
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者
 - en: '[PRE2]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Share on:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 分享至：
