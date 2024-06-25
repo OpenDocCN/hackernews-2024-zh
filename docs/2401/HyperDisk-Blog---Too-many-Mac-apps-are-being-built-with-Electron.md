@@ -1,0 +1,27 @@
+<!--yml
+
+分类：未分类
+
+日期：2024-05-27 15:13:18
+
+-->
+
+# HyperDisk 博客 - 有太多的 Mac 应用程序是用 Electron 构建的
+
+> 来源：[https://hyperdiskapp.com/blog/too-many-mac-apps-are-being-built-with-electron/](https://hyperdiskapp.com/blog/too-many-mac-apps-are-being-built-with-electron/)
+
+这个测试涉及“感觉”的概念，就是当你运行应用程序时的感觉。写得效率高的应用程序感觉就像没有任何东西阻碍你与计算机之间的联系，没有任何粘性的层来阻碍工作并减慢速度。
+
+过度臃肿或者编程不良的应用程序往往在启动时间上表现不佳。在这个测试中，BBEdit 的启动时间仅为 1 秒，而 WhatsApp 在 2021 年 MacBook Pro 上的启动时间为 16 秒，两者不相上下。
+
+#### 测试 2：内存
+
+将“内存”和“磁盘空间”混为一谈是一个常见的错误，但它们是不同的东西。内存是 RAM——它与你一次可以运行多少东西有关。磁盘空间与你的计算机上可以存储多少东西有关。
+
+BBEdit 在典型的工作场景中打开时，使用了 173 MB 的内存。这并不算小，但对于如今大多数 Mac 上安装的 8-32 GB 而言，只是一小部分。
+
+另一方面，WhatsApp 使用了 110 MB。等等，什么？那比 BBEdit 还少……这完全颠覆了我的整个……哦等等。算了，WhatsApp 正在运行 5 个奇怪的“辅助进程”，总共使用了约 1.4 GB。这比我预期的还要糟糕。
+
+让我们再次退后一步，思考一下一个文本应用程序正在消耗像 Photoshop 一样的内存，*仅用来显示你的文本消息*。这就是 Electron 应用程序，它们必须停止。
+
+顺便说一下，让我们谈谈那些辅助进程。它们的名字分别是 WhatsApp Helper、WhatsApp Helper、WhatsApp Helper（GPU）、WhatsApp Helper（Renderer）和 WhatsApp Helper（Renderer）。一个 Mac 应用程序不应该需要 *任何* 这些。它们可能在使用套接字、端口或者共享文件进行通信。这真的不是你构建 Mac 应用程序的正确方式。这不应该成为常态。正如《星际迷航 III》中的 Scotty 所说，“他们越是过分地思考管道问题，堵塞排水口就越容易”。
