@@ -95,11 +95,14 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 任务清单按时发货，尽管会有比预期更多的错误。 不幸的是，你的工作还没有完成。 你对 SQLite 和虚拟化的精彩运用让任务清单在不降低性能的情况下存储数百万元素，但产品却向你抛出了一个曲线球。
+    根据用户反馈，下一个进化需要将清单同步到云端。 是时候放弃你的 SQLite 实现了——此外，你还需要重构代码中散乱的 ORM 调用。 这是可行的，但需要一些时间…
 - en: '**Building the todo list faster**[](/blog/keeping-code-simple#building-the-todo-list-faster)'
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**更快地构建待办事项清单**[](/blog/keeping-code-simple#building-the-todo-list-faster)'
 - en: I’ll end the story here, as it's all too familiar. I see this trapping constantly
     and still occasionally fall for it myself — delivering sloppy architecture while
     at the same time over-engineering performance, scalability, and security. This
@@ -109,6 +112,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我会在这里结束故事，因为这一切都太熟悉了。 我经常陷入这种陷阱，甚至偶尔自己也会上当——在交付松散的架构的同时，过度工程化性能、可扩展性和安全性。 这不可避免地会降低质量，因为更多时间用于调试和迭代更改的慢估计成本，而过度工程化的规范往往永远不会被使用。
 - en: The fallacy is the assumption that the product needs will not significantly
     change in the future, and even if they change, the assumption is that they’ll
     change in a way you've predicted. Over-engineering is an attempt to predict the
@@ -116,6 +120,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设产品需求在未来不会发生显著变化，并且即使变化，你也预测到了这些变化。 过度工程化试图预测未来，而质量工程化则是最大化可扩展性。
 - en: I firmly believe writing clean code is just as fast as writing messy code -
     though it may take more experience and wisdom. Quality software is *soft* - easy
     to remold. Let’s take another look at our to-do list from earlier, but implement
@@ -123,6 +128,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我坚信编写干净的代码和编写混乱的代码一样快——尽管这可能需要更多的经验和智慧。 质量软件是*柔软的*——易于重塑。 让我们再次看看我们之前的待办事项清单，但这次实现得更加干净，使其更具可塑性。
 - en: The bare minimum spec needs a data store that can read and write thousands of
     text records. In the future, it may need to be faster, bigger, more secure, or
     backed by the network. But you don’t know yet, so the best thing you can do is
@@ -132,6 +138,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 最低规范的数据存储需要能够读写数千条文本记录。 未来可能需要更快、更大、更安全或由网络支持的存储。 但你现在还不知道，所以你能做的最好的事情就是推迟决定，并将数据存储放在一个窄接口后面。
+    编写一个具有简单通用读写接口的模块，并为你的 MVP，最初将整个数据存储实现为写入磁盘的 JSON blob。
 - en: You’ve just saved yourself a day of fiddling with a database and reading docs
     on an ORM someone else built. Moreover, you’ve pulled off the wise dependency
     inversion pattern. All data calls route through an interface you own, while the
@@ -142,32 +150,39 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 你刚刚节省了一天的时间，在数据库上摸索和阅读别人建立的 ORM 文档。 此外，你成功地实现了明智的依赖反转模式。 所有数据调用都通过你拥有的接口路由，而简单的
+    JSON 存储可能足够快速，可以永远持续。 此外，你始终可以通过简单更新数据模块，未来将其切换到云存储。 无需调整任何应用逻辑，通过保持代码清晰和灵活，你使未来的改进*更快*和更安全。
 - en: Why over-engineering is slow[](/blog/keeping-code-simple#why-over-engineering-is-slow)
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么过度工程化很慢[](/blog/keeping-code-simple#why-over-engineering-is-slow)
 - en: 'Over-engineering is inefficient for two fundamental reasons:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 过度工程化之所以低效，有两个根本原因：
 - en: 'Wasted time: Any feature that isn’t necessary costs time to implement that
     could have been spent implementing other necessary features.'
   id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 浪费的时间：任何不必要的功能都会耗费实现时间，这些时间本可以用来实现其他必要的功能。
 - en: 'Slowing development: Extra features result in extra complexity. Codebase complexity
     slows down future development.'
   id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 开发放慢：额外的特性导致额外的复杂性。代码库的复杂性减缓了未来的开发速度。
 - en: 'The first point is obvious, the second is best explained by this quote from
     the book [“A Philosophy of Software Design”](https://www.goodreads.com/en/book/show/39996759):'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个观点是显而易见的，第二个最好通过这本书的引用来解释 [“软件设计哲学”](https://www.goodreads.com/en/book/show/39996759)：
 - en: As a program evolves and acquires more features, it becomes complicated, with
     subtle dependencies between its components. Over time, complexity accumulates,
     and it becomes harder and harder for programmers to keep all of the relevant factors
@@ -179,23 +194,27 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 随着程序的演变和功能的增加，它变得复杂起来，其组件之间存在微妙的依赖关系。随着时间的推移，复杂性累积，程序员在修改系统时难以记住所有相关因素。这减慢了开发速度，导致错误，进而减慢了开发并增加了成本。程序越大，参与开发的人数越多，管理复杂性就越困难。
 - en: By keeping the core architecture as simple as possible, you avoid adding unnecessary
     complexity. You write net-less code, and each necessary feature is easier to slot
     in.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过保持核心架构尽可能简单，您避免增加不必要的复杂性。您编写的代码净额外，并且每个必要的特性更容易插入。
 - en: Punt complexity as long as possible[](/blog/keeping-code-simple#punt-complexity-as-long-as-possible)
   id: totrans-split-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 尽可能推迟复杂性[](/blog/keeping-code-simple#punt-complexity-as-long-as-possible)
 - en: Consider this excerpt about the development of the test-automation web server
     [FitNesse](https://en.wikipedia.org/wiki/FitNesse), from the wonderful engineering
     book “Clean Architecture:”
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑这段关于测试自动化Web服务器 [FitNesse](https://en.wikipedia.org/wiki/FitNesse) 开发的摘录，出自优秀的工程书籍“清洁架构”：
 - en: Another early decision was to avoid thinking about a database. We had MySQL
     in the back of our minds, but we purposely delayed that decision by employing
     a design that made the decision irrelevant. That design was simply to put an interface
@@ -204,6 +223,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 另一个早期决策是避免考虑数据库。我们有MySQL在脑海中，但我们故意通过采用一个使这个决策变得无关紧要的设计来推迟决策。这个设计只是在所有数据访问和数据仓库之间放置一个接口。
 - en: We put the data access methods into an interface named `WikiPage`. Those methods
     provided all the functionality we needed to find, fetch, and save pages. Of course,
     we didn’t implement those methods at first; we simply stubbed them out while we
@@ -212,6 +232,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我们将数据访问方法放入一个名为`WikiPage`的接口中。这些方法提供了我们需要的所有查找、获取和保存页面的功能。当然，最初我们没有实现这些方法；在我们工作于不涉及获取和保存数据的特性时，我们只是对它们进行了存根处理。
 - en: Indeed, for three months we simply worked on translating wiki text into HTML.
     This didn’t require any kind of data storage, so we created a class named `MockWikiPage`
     that simply left the data access methods stubbed.
@@ -219,6 +240,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 的确，三个月来我们只是专注于将维基文本翻译为HTML。这并不需要任何形式的数据存储，因此我们创建了一个名为`MockWikiPage`的类，它只是留下了存根数据访问方法。
 - en: Eventually, those stubs became insufficient for the features we wanted to write.
     We needed real data access, not stubs. So we created a new derivative of `WikiPage`
     named `InMemoryPage`. This derivative implemented the data access method to manage
@@ -227,6 +249,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 最终，这些存根对于我们想要编写的特性变得不够。我们需要真正的数据访问，而不是存根。因此，我们创建了一个名为`InMemoryPage`的`WikiPage`衍生类。这个衍生类实现了管理wiki页面哈希表的数据访问方法，我们将其保存在RAM中。
 - en: This allowed us to write feature after feature for a full year. In fact, we
     got the whole first version of the `FitNesse` program working this way. We could
     create pages, link to other pages, do all the fancy wiki formatting, and even
@@ -235,6 +258,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这使我们能够连续一整年地编写特性。事实上，我们完全通过这种方式让`FitNesse`程序的第一个版本运行起来了。我们可以创建页面，链接到其他页面，进行所有花哨的维基格式化，甚至用FIT运行测试。但我们做不到的是保存我们的任何工作。
 - en: When it came time to implement persistence, we thought again about MySQL, but
     decided that wasn’t necessary in the short term, because it would be really easy
     to write the hash tables out to flat files. So we implemented `FileSystemWikiPage`,
@@ -244,6 +268,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 到了实现持久化的时候，我们重新考虑了MySQL，但决定短期内不必要，因为把哈希表写成平面文件真的很容易。因此，我们实现了`FileSystemWikiPage`，只是把功能移到了平面文件上，然后我们继续开发更多功能。
 - en: Three months later, we reached the conclusion that the flat file solution was
     good enough; we decided to abandon the idea of MySQL altogether. We deferred that
     decision into nonexistence and never looked back.
@@ -251,6 +276,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 三个月后，我们得出结论认为平面文件解决方案已经足够好；我们决定完全放弃MySQL的想法。我们将那个决定推迟到不存在，并且再也没有回头看过。
 - en: That would be the end of the story if it weren’t for one of our customers who
     decided that he needed to put the wiki into MySQL for his own purposes. We showed
     him the architecture of `WikiPages` that had allowed us to defer the decision.
@@ -260,6 +286,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果不是一个客户决定将wiki放入MySQL以满足自己的目的，故事就结束了。我们向他展示了能够让我们推迟决策的`WikiPages`架构。他一天后用MySQL完全搞定了整个系统。他只是编写了一个`MySqlWikiPage`的衍生版本并让它运行起来。
 - en: We used to bundle that option with `FitNesse`, but nobody else ever used it,
     so eventually we dropped it. Even the customer who wrote the derivative eventually
     dropped it.
@@ -267,6 +294,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我们过去会将这个选项与`FitNesse`捆绑在一起，但其他人从来没有使用过，所以最终我们放弃了。甚至是编写衍生产品的客户最终也放弃了。
 - en: Early in the development of `FitNesse`, we drew a *boundary line* between business
     rules and databases. That line prevented the business rules from knowing anything
     at all about the database, other than the simple data access methods. That decision
@@ -278,6 +306,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在`FitNesse`的早期开发阶段，我们在业务规则和数据库之间划定了一个*边界线*。这条线不允许业务规则了解除了简单数据访问方法之外的数据库任何信息。这个决定使我们能够推迟选择和实现数据库超过一年。它让我们可以尝试文件系统选项，并且在发现更好的解决方案时改变方向。然而，它并没有阻止或甚至妨碍想要使用原始方向（MySQL）的人。
 - en: The fact that we did not have a database running for 18 months of development
     meant that, for 18 months, we did not have schema issues, query issues, database
     server issues, password issues, connection time issues, and all the other nasty
@@ -287,6 +316,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我们在18个月的开发过程中没有运行数据库的事实意味着在这18个月里，我们没有模式问题、查询问题、数据库服务器问题、密码问题、连接时间问题以及其他任何在启动数据库时显现的麻烦。这也意味着我们所有的测试运行得很快，因为没有数据库来拖慢它们。
 - en: In short, drawing the boundary lines helped us delay and defer decisions, and
     it ultimately saved us an enormous amount of time and headaches. And that’s what
     a good architecture should do.
@@ -294,6 +324,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 简而言之，划定边界线帮助我们延迟决策，最终节省了大量时间和头疼。而这正是一个良好架构应该做到的。
 - en: The main takeaway here is to always satisfy the core functionality of product
     requirements in the simplest way possible, without locking yourself into one particular
     implementation. This way, you can easily add or modify functionality modularly,
@@ -301,66 +332,79 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的主要教训是始终以最简单的方式满足产品需求的核心功能，而不将自己锁定在特定的实现方式上。这样，您可以轻松地模块化添加或修改功能，而无需从头开始重建。
 - en: '**Core principle**[](/blog/keeping-code-simple#core-principle)'
   id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**核心原则**[](/blog/keeping-code-simple#core-principle)'
 - en: 'Engineers should build to the minimum product specifications needed at the
     time while holding to high-quality engineering standards. In order to follow the
     best practices for simple, clean coding prioritize:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 工程师们应该按时建立到需要的最低产品规格，同时坚持高质量的工程标准。为了遵循简单、清晰编码的最佳实践，优先考虑：
 - en: unit tests
   id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单元测试
 - en: linters
   id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 代码检查工具
 - en: narrow interfaces
   id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 窄接口
 - en: low coupling
   id: totrans-split-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 低耦合
 - en: clean variable names
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 清晰的变量名
 - en: 'Punt on:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 暂时放弃：
 - en: powerful data stores
   id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 强大的数据存储
 - en: complicated APIs
   id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 复杂的API
 - en: unnecessary frameworks
   id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 无必要的框架
 - en: The fastest way to engineer is to punt as much as possible - often by separating
     the core application logic from dependencies that you might change in the future.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 工程化的最快方法是尽可能地推迟决策——通常是通过将核心应用逻辑与未来可能更改的依赖项分离。
 - en: Working on Graphite, I’ve sometimes gotten this right and sometimes wrong. Our
     business logic originally made calls to GitHub and TypeORM flagrantly across [over
     a thousand callsites](https://graphite.dev/blog/call-site-attribution). This made
@@ -369,6 +413,7 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Graphite项目中，有时我做得对，有时我做得不对。我们的业务逻辑最初在[超过一千个调用点](https://graphite.dev/blog/call-site-attribution)中显然调用了GitHub和TypeORM。这使得库升级变得不可测试且灾难性。最终，我们偿清了这笔债务，并将它们迁移到我们拥有的接口后面，具有可测试的接口。
 - en: In another instance, I designed transactional emails cleanly on the first pass.
     Despite temptations to over-engineer, I wrote an email module with one method,
     `sendEmail`, which hid details about email clients and logging from the application.
@@ -377,8 +422,10 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一次，我在首次尝试中干净地设计了事务性电子邮件。尽管有过度工程化的诱惑，我编写了一个只有一个方法`sendEmail`的电子邮件模块，它隐藏了关于电子邮件客户端和日志记录的细节。最终，我们迁移了电子邮件发送器，但是只用了一个PR且没有bug。
 - en: Please learn from my scars. Move fast, code cleanly, and avoid over-engineering
     at all costs — simple, quality coding is almost always the fastest path.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 请从我的伤疤中学习。快速行动，编写干净的代码，并且无论如何都要避免过度工程化——简单而高质量的编码几乎总是最快的路径。
