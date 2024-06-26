@@ -115,10 +115,13 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用上述规则后，只剩下一件事情 - 因为我们可能会意外包含两次头文件（即 A 依赖于 B 和 C，而 B 又依赖于 C，因此 C 被重复包含到 A 中），我们需要一些保护措施来防止这种情况发生。因此，每个文件都应包含防止多次包含的守卫。有两种方法可以做到这一点
+    - 要么使用 `#pragma once`，要么使用头文件守卫。`#pragma once` 是一种非标准技术，明确告诉预处理器：“不要在单个翻译单元中多次包含此文件”。头文件守卫可以使用预处理器定义来模拟此行为：
 - en: '[PRE0]'
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Many people don’t know this, but #pragma once is widely supported in modern
     compilers. It’s superior to header guards in two ways: it can be faster than header
     guards (i.e. MSVC does not read the file with #pragma once more than once, but
@@ -138,6 +141,11 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多人不知道，但是`#pragma once` 在现代编译器中得到了广泛支持。它比头文件守卫有两个优势：它可能比头文件守卫更快（例如，MSVC 不会多次读取带有
+    `#pragma once` 的文件，但会多次读取带有头文件守卫的文件），并且它是绝对可靠的 - 你不必为头文件发明标识符，因此不会出错。所以**如果可以，请使用
+    `#pragma once`，如果必须使用头文件守卫**。如果您使用的某些编译器不支持 `#pragma once`，并且无法说服供应商添加此功能，请**确保使用确定性生成算法使头文件守卫唯一**。例如，您可以使用“采用项目名称列表和相对文件路径的所有组件；将所有元素转换为大写并用下划线连接”的方法生成标识符，例如
+    `THEGAME_RENDER_LIGHTING_POINTLIGHT_H`。不要仅使用短文件名，它们**不**是唯一的！（除非您的编码标准要求如此）。噢，如果不使用自动生成的宏，请不要在
+    `#endif` 后面放置注释（例如 `#endif // THEGAME_RENDER_LIGHTING_POINTLIGHT_H`） - 这样的注释只有作为复制粘贴历史时才有用。
 - en: 'While using header guards allows you to have the same file included several
     times in a single translation unit, it also allows you to test whether the file
     was already included, i.e. #ifdef THEGAME_RENDER_LIGHTING_POINTLIGHT_H. **You
@@ -151,6 +159,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用头文件守卫可以让你在单个翻译单元中多次包含同一文件，还可以测试文件是否已经包含，例如 `#ifdef THEGAME_RENDER_LIGHTING_POINTLIGHT_H`。**永远不要基于某个文件是否已包含而有条件地排除头文件的某一部分！**
+    这样做会引入不自然的包含顺序依赖关系，并且在没有预处理器输出的情况下很难调试。如果你在考虑像“噢，如果包含了渲染器接口，我可能应该提供一个光照渲染器类，但如果没有，那只会增加不必要的混乱”，那么你应该将头文件分成两部分，第二部分应明确包含渲染器接口，因为它依赖于它。
 - en: At least in game development, the language is frequently extended with some
     generally useful primitives that are used throughout the whole codebase. The most
     used one is probably an assertion macro (since the standard one sucks, you should
@@ -167,6 +177,9 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 至少在游戏开发中，语言经常通过一些在整个代码库中使用的一般有用的基元扩展。最常用的可能是一个断言宏（因为标准的不好用，你应该有自己的），但还有其他例子
+    - 日志工具，固定大小类型，最小/最大函数，各种平台/配置定义（“我们在大端平台上吗？”），内存管理相关的宏。把所有这些放在一个单独的公共头文件中是常见做法；你应该控制这个文件的大小（我说的大小是它包含的所有头文件的累积大小，当然），并**确保每个源文件在任何其他东西之前都包含了公共头文件**
+    - 否则你会陷入麻烦（有时你会花几个小时查找原因 - 比如如果你在包含检查平台字节顺序的头文件之前，你会陷入困境）。
 - en: 'Well, I think that’s all about header files; there are also the include paths
     though. In order to include the file, you have to specify the path to it - either
     a “relative to the current file” path, or “relative to one of the include directories”
@@ -174,6 +187,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，我觉得这就是关于头文件的全部内容；当然还有包含路径。为了包含这个文件，你必须指定路径 - 要么是“相对于当前文件”的路径，要么是“相对于其中一个包含目录”的路径。这里有两个重要的目标：
 - en: '**If you’re writing a library** - a relatively small one, i.e. not a platform
     like Unreal Engine - the header files should require minimal configuration, so
     ideally the user does not have to add include directories to compile or use your
@@ -182,6 +196,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**如果你在写一个库** - 一个相对较小的库，比如不像虚幻引擎这样的平台 - 头文件应该需要最小的配置，所以理想情况下用户不需要添加包含目录来编译或使用你的库。对于这样的项目，**考虑使所有的包含路径都是相对于当前文件的**。'
 - en: Otherwise, include paths should be easily greppable - the path to the same file
     should ideally be the same in all other files. So **make all include paths include
     directory-relative**; moreover, try to make sure that **include paths are unambiguous**
@@ -191,6 +206,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 否则，包含路径应该容易被 grep 到 - 相同文件的路径在所有其他文件中理想情况下应该是一致的。所以**确保所有的包含路径都是相对于目录的**；此外，尽量确保**包含路径是明确的**
+    - 即你不会有同一个文件路径的两种不同表示，比如在渲染项目内外。
 - en: Whatever rule you use, try to **make sure it’s consistent between different
     projects**, as much as necessary. Ideally even the include directories should
     be the same, i.e. include directories for the engine project should be a strict
@@ -199,6 +216,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 无论你使用哪种规则，都要尽可能地**确保在不同项目之间保持一致**。理想情况下，甚至包含目录也应该相同，即引擎项目的包含目录应该是游戏项目包含目录的严格子集。
 - en: And as a final advice - learn to use the preprocessor output (cl /E, gcc -E),
     learn to use the include output (cl /showIncludes, gcc -M), gather the codebase
     statistics (average size after preprocessing, most included header files, header
@@ -207,7 +225,9 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后的建议是 - 学会使用预处理器的输出（cl /E, gcc -E），学会使用包含输出（cl /showIncludes, gcc -M），收集代码库统计信息（预处理后的平均大小，最常包含的头文件，具有最大负载的头文件等），并通过消除依赖项和传播信息来优化你的代码库。没有什么比次秒级的迭代时间更好的了。
 - en: Oh, did I mention that good header dependencies decrease the linking time?
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，我提到了好的头文件依赖可以减少链接时间吗？
