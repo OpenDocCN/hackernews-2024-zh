@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:35:41'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:35:41'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'zeux.io - #include'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'zeux.io - #include'
 - en: 来源：[https://zeux.io/2010/11/15/include-rules/](https://zeux.io/2010/11/15/include-rules/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://zeux.io/2010/11/15/include-rules/](https://zeux.io/2010/11/15/include-rules/)
 - en: '#include <rules>'
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '#include <rules>'
 - en: 15 Nov 2010
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 15 Nov 2010
 - en: We’re stuck with C++, at least for another console generation. C++ has many
     quirks that I wish were not there, but there is no real alternative as of today.
     While modern languages tend to adopt the bulk compilation and/or smart linkers
@@ -45,6 +53,9 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们被迫使用 C++，至少还有另一个控制台世代。C++ 有很多我希望没有的怪癖，但今天没有真正的替代品。虽然现代语言倾向于采用批量编译和/或智能链接器，因此可以拥有适当的模块系统并吃着蛋糕，但
+    C++ 仍然停留在头文件上（另一方面，C++ 构建是增量的，几乎是令人尴尬地并行的）。尽管处理头文件并保持理智的策略似乎显而易见，但我对于有多少人仍然搞错了感到惊讶。我希望这篇文章在某种程度上有助于消除困惑。这篇文章也适用于
+    C，但对于那些有幸使用其他语言的人来说则无用。
 - en: The problem with include files is that the preprocessor is usually quite dumb
     - you tell it to include the file, it includes the entire contents of the file,
     recursively. If you don’t tell it to include the file but try to use the symbol
@@ -53,6 +64,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 包含文件的问题在于预处理器通常相当愚蠢——你告诉它包含文件，它就递归地包含文件的整个内容。如果你不告诉它包含文件但试图使用该文件中的符号，就会得到编译错误。如果你告诉它包含太多文件，它就会包含所有这些文件，编译时间就会变长。
 - en: 'In general, the more a header is included in other files (including transitive
     inclusion, i.e. A includes B includes C means that A indirectly includes C), the
     more files you’ll need to recompile once the header changes. Iteration time is
@@ -63,6 +75,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 总体而言，头文件被其他文件包含得越多（包括传递包含，即 A 包含 B，B 包含 C 意味着 A 间接包含 C），头文件一旦更改就需要重新编译的文件就越多。迭代时间非常重要——这是另一个话题——所以我们希望尽量减少头文件的包含量。这就引出了第一个重要规则：**每个文件应包含最少的文件**。该规则有助于确保您的代码构建速度快。
 - en: Now, let’s suppose that the header file contains a class declaration. By the
     nature of C++, a class declaration won’t compile without some other declarations
     - for example if a class A inherits from a class B and contains a field of type
@@ -84,6 +97,9 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们假设头文件包含一个类声明。由于C++的性质，类声明如果没有其他声明就不能被编译 - 例如，如果类A继承自类B并包含类型为C的字段，则必须在同一翻译单元（即您正在编译的cpp文件
+    - 在预处理器完成其工作后）中给编译器提供B和C的声明 - 在A的声明之前。现在，这里有两个选择 - 您可以在包含A声明的头文件中包含相关的头文件，或者强制用户在A之前始终手动包含B和C头文件。问题在于，有时用户并不了解这些依赖关系（例如，类型为B的字段可以是私有的），有时依赖关系会发生变化，因此每次添加一些声明依赖关系到您的类型时，都会破坏用户的代码，而且由于声明依赖关系是传递的，通常需要包含一次标题就需要十几个或更多看似无关的标题。出于这些原因，让所有标题都是自包含的非常重要
+    - 任何人都应该能够在任何cpp文件中包含任何标题而不会出现编译错误。这引出了第二个重要规则 - **每个文件都应该包含所有依赖头文件**，即对于编译器所需的每个声明都应该有相应的包含。这个规则有助于确保程序员保持理智。
 - en: 'These two rules together define the algorithm for proper header file authoring:
     for each required declaration, include a corresponding header in your header file;
     don’t include more headers than that. In order to guarantee that you did not forget
@@ -93,6 +109,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两条规则共同定义了正确头文件撰写的算法：对于每个需要的声明，在头文件中包含相应的标题;不要包含更多的标题。为了确保您没有忘记必需的标题，请**确保您的头文件是相应源文件中的第一个#include**，除非公共头文件，如果您的代码库有一个。
 - en: Do not include a header for a dependency declaration where a forward declaration
     will suffice; **use forward declarations when possible** (if you’re not familiar
     with forward declarations, google it). Sometimes it pays off to go to extra lengths
@@ -104,6 +121,8 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 不要为可以用前向声明满足的依赖声明包含头文件; **尽可能使用前向声明**（如果您不熟悉前向声明，请搜索）。有时候，通过使用技巧如pimpl去除头文件的依赖性是值得的
+    - 这取决于具体情况，但**避免将庞大的平台文件，如windows.h或d3d9.h，包含到通用头文件中**（我曾在一篇[博客文章](/2009/03/22/miscellanea/)中介绍了一种去除d3d9.h的精简版本的方法，请向下滚动到最后一节）。
 - en: 'With the rules above, there is only one thing left - since we can include a
     header twice accidentally (i.e. A depends on B and C, and B depends on C, so C
     is included twice into A), we’ll need some protection against that. So each file
