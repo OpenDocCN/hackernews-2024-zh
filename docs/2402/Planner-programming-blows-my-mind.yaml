@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:01:06'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:01:06
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Planner programming blows my mind
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 规划编程让我震惊
 - en: 来源：[https://www.hillelwayne.com/post/picat/](https://www.hillelwayne.com/post/picat/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.hillelwayne.com/post/picat/](https://www.hillelwayne.com/post/picat/)
 - en: '[Picat](http://picat-lang.org/) is a research language intended to combine
     logic programming, imperative programming, and [constraint solving](https://www.hillelwayne.com/post/minizinc/).
     I originally learned it to help with vacation scheduling but soon discovered its
@@ -32,6 +38,8 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Picat](http://picat-lang.org/) 是一种研究语言，旨在结合逻辑编程、命令式编程和[约束求解](https://www.hillelwayne.com/post/minizinc/)。我最初学习它是为了帮助安排假期，但很快就发现了它的
+    `planner` 模块，这是我见过的最迷人的编程模型之一。'
 - en: 'First, a brief explanation of <dfn>logic programming</dfn> (LP). In imperative
     and functional programming, we take inputs and write algorithms that produce outputs.
     In LP and constraint solving, we instead provide a set of equations and find assignments
@@ -39,6 +47,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，简要解释一下 <dfn>逻辑编程</dfn> (LP)。在命令式和函数式编程中，我们接受输入并编写算法以产生输出。在逻辑编程和约束求解中，我们提供一组方程，并找到满足这些关系的赋值。例如：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
@@ -51,6 +60,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 以小写字母开头的非函数标识符是“原子”，或者说是唯一标记。以大写字母开头的标识符是变量。所以 `[a, b, c, a]` 是一个包含四个原子的列表，而
+    `Arr` 和 `X` 是变量。因此 `Member(X, Arr)` 会如预期地返回真。
 - en: The interesting thing is `Member(Y, Arr)`. Y wasn’t defined yet! So Picat finds
     a value for Y that *makes* the equation true. Y could be any of `a`, `b`, or `c`.
     Then the line after that makes it impossible for `Y` to be `a`, so this prints
@@ -59,21 +70,26 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是 `Member(Y, Arr)`。Y 还没有定义！所以 Picat 找到一个值让方程成立。Y 可以是 `a`、`b` 或 `c` 中的任意一个。然后，之后的行使得
+    Y 不可能是 `a`，所以这将打印出 `ab` 或 `ac`。Picat 甚至可以处理像 `member(a, Z)` 这样的表达式，实例化 Z 为一个列表！
 - en: '<dfn>Planning</dfn> pushes this all one step further: instead of finding variable
     assignments that satisfy equations, we find variable *mutations* that reach a
     certain end state. And this opens up some really cool possibilities.'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: <dfn>计划</dfn> 将所有这些推进了一步：与其找到满足方程的变量赋值，我们找到达到某个最终状态的变量 *变异*。这开启了一些非常酷的可能性。
 - en: To showcase this, we’ll use Picat to solve a pathing problem.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了展示这一点，我们将使用 Picat 来解决路径问题。
 - en: The problem
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题
 - en: 'We place a marker on the grid, starting at the *origin* (0, 0), and pick another
     coordinate as the *goal*. At each step we can move one step in any cardinal direction,
     but cannot go off the boundaries of the grid. The program is successful when the
@@ -81,6 +97,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在网格上放置一个标记，从 *起点* (0, 0) 开始，并选择另一个坐标作为 *目标*。每一步我们可以朝任意基本方向移动一步，但不能超出网格边界。当标记位于目标坐标时，程序成功。举个小例子：
 - en: '[PRE1]'
   id: totrans-split-15
   prefs: []
@@ -90,15 +107,18 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个解决方案是先移动到 (1, 0)，然后到 (1, 1)。
 - en: 'To solve this with planning, we need to provide three things:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 要用计划解决这个问题，我们需要提供三样东西：
 - en: A starting state `Start`, which contains both the origin and goal coordinates.
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 初始状态 `Start`，包含起始和目标坐标。
 - en: 'A set of <dfn>action</dfn> functions that represent state transitions. In Picat
     these functions *must* all be named `action` and take four parameters: a current
     state, a next state, an action name, and a cost. We’ll see that all below.'
@@ -106,22 +126,26 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一组表示状态转换的 <dfn>动作</dfn> 函数。在 Picat 中，这些函数 *必须* 全部命名为 `action`，并接受四个参数：当前状态、下一个状态、动作名称和成本。我们将在下文看到这一切。
 - en: A function named `final(S)` that determines if S is a final state.
   id: totrans-split-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个名为 `final(S)` 的函数，用于确定 S 是否为最终状态。
 - en: Once we define all of these, we can call the builtin `best_plan(Start, Plan)`
     which will assign `Plan` to the shortest sequence of steps needed to reach a final
     state.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们定义了所有这些内容，我们就可以调用内置的 `best_plan(Start, Plan)`，它将把 `Plan` 赋值为达到最终状态所需的最短步骤序列。
 - en: Our first implementation
   id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 我们的第一个实现
 - en: '[PRE2]'
   id: totrans-split-23
   prefs: []
@@ -131,6 +155,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: <details><summary>解释</summary>
 - en: '`main` is the default entry point into a Picat program. Here we’re just setting
     up the initial state, calling `best_plan`, and printing `Plan`. `{a, b}` is the
     syntax for a Picat array, which is basically a tuple.'
