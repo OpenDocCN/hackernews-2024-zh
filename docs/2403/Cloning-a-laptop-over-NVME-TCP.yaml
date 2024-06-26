@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:52:46'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日 14:52:46
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Cloning a laptop over NVME TCP
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 通过NVME TCP克隆笔记本电脑
 - en: 来源：[https://copyninja.in/blog/clone_laptop_nvmet.html](https://copyninja.in/blog/clone_laptop_nvmet.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://copyninja.in/blog/clone_laptop_nvmet.html](https://copyninja.in/blog/clone_laptop_nvmet.html)
 - en: Posted on Mar 10, 2024 By copyninja under devops
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 发布于2024年3月10日，由devops下的copyninja发布
 - en: Recently, I got a new laptop and had to set it up so I could start using it.
     But I wasn't really in the mood to go through the same old steps which I had explained
     in this [post earlier](https://copyninja.in/blog/live_install_debian.html). I
@@ -37,54 +44,64 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我买了一台新笔记本电脑，需要设置它才能使用。但我真的不想重复我之前在这篇[帖子中解释的同样的旧步骤](https://copyninja.in/blog/live_install_debian.html)。我向我的同事抱怨了这一点，他建议为何不将整个硬盘复制到新笔记本电脑上。虽然这对我来说听起来像一个有趣的点子，但我有我的疑虑，所以这就是我回答他的内容。
 - en: I don't have the tools to open my old laptop and connect the new disk over USB
     to my new laptop.
   id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我没有工具可以打开我的旧笔记本电脑，并通过USB将新硬盘连接到我的新笔记本电脑上。
 - en: I use full disk encryption, and my old laptop has a 512GB disk, whereas the
     new laptop has a 1TB NVME, and I'm not so familiar with resizing LUKS.
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我使用的是完整的磁盘加密，我的旧笔记本电脑有一个512GB的硬盘，而新笔记本电脑有一个1TB的NVME，我不太熟悉调整LUKS。
 - en: 'He promptly suggested both could be done. For step 1, just expose the disk
     using NVME over TCP and connect it over the network and do a full disk copy, and
     the rest is pretty simple to achieve. In short, he suggested the following:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 他迅速建议可以通过两步完成。第1步，只需使用NVME通过TCP公开硬盘并通过网络连接并进行全硬盘复制，其余的都很容易实现。简而言之，他建议如下：
 - en: Export the disk using nvmet-tcp from the old laptop.
   id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从旧笔记本电脑使用nvmet-tcp导出磁盘。
 - en: Do a disk copy to the new laptop.
   id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将磁盘复制到新笔记本电脑。
 - en: Resize the partition to use the full 1TB.
   id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 调整分区以使用完整的1TB。
 - en: Resize LUKS.
   id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 调整LUKS
 - en: Finally, resize the BTRFS root disk.
   id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，调整BTRFS根磁盘。
 - en: Exporting Disk over NVME TCP
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 通过NVME TCP导出磁盘
 - en: The easiest way suggested by my colleague to do this is using [systemd-storagetm.service](https://www.freedesktop.org/software/systemd/man/latest/systemd-storagetm.service.html).
     This service can be invoked by simply booting into *storage-target-mode.target*
     by specifying *rd.systemd.unit=storage-target-mode.target*. But he suggested not
@@ -93,35 +110,43 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我同事建议我做这个最简单的方法是使用[systemd-storagetm.service](https://www.freedesktop.org/software/systemd/man/latest/systemd-storagetm.service.html)。可以通过简单地引导到*storage-target-mode.target*并指定*rd.systemd.unit=storage-target-mode.target*来调用此服务。但他建议不要使用这个，因为我需要调整dracut
+    initrd映像以涉及网络服务以及在此模式下配置WiFi是一件痛苦的事情。
 - en: 'So alternatively, I simply booted both my laptops with GRML rescue CD. And
     the following step was done to export the NVME disk on my current laptop using
     the nvmet-tcp module of Linux:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者，我简单地用GRML rescue CD启动了我的两台笔记本电脑。然后在我的当前笔记本电脑上，使用Linux的nvmet-tcp模块导出NVME硬盘完成了以下步骤：
 - en: '[PRE0]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'These steps ensure that the device is now exported using NVME over TCP. The
     next step is to detect this on the new laptop and connect the device:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些步骤确保设备现在通过NVME通过TCP导出。下一步是在新笔记本电脑上检测此设备并连接该设备：
 - en: '[PRE1]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Finally, `nvme list` shows the device which is connected to the new laptop,
     and we can proceed with the next step, which is to do the disk copy.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，`nvme list`显示了连接到新笔记本电脑的设备，并且我们可以继续下一步，即进行磁盘复制。
 - en: Copying the Disk
   id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 复制磁盘
 - en: I simply used the `dd` command to copy the root disk to my new laptop. Since
     the new laptop didn't have an Ethernet port, I had to rely only on WiFi, and it
     took about 7 and a half hours to copy the entire 512GB to the new laptop. The
@@ -131,15 +156,18 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我只是使用`dd`命令将根磁盘复制到我的新笔记本电脑上。由于新笔记本电脑没有以太网端口，我只能依赖WiFi，花了大约7个半小时将整个512GB复制到新笔记本电脑上。我复制的速度约为18-20MB/s。另一种选择是创建一个初始分区和文件系统并对根磁盘进行rsync复制，或者使用BTRFS本身进行文件系统传输。
 - en: '[PRE2]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Resizing Partition and LUKS Container
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 调整分区和LUKS容器
 - en: 'The final part was very easy. When I launched `parted`, it detected that the
     partition table does not match the disk size and asked if it can fix it, and I
     said yes. Next, I had to install `cloud-guest-utils` to get `growpart` to fix
@@ -148,29 +176,35 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一部分非常简单。当我启动`parted`时，它检测到分区表与磁盘大小不匹配，并询问是否可以修复，我选择了是。接下来，我必须安装`cloud-guest-utils`来获取`growpart`以修复第二个分区，然后以下命令将分区扩展到完整的1TB：
 - en: Next, I used `cryptsetup-resize` to increase the LUKS container size.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我使用`cryptsetup-resize`来增加LUKS容器的大小。
 - en: '[PRE3]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Finally, I rebooted into the disk, and everything worked fine. After logging
     into the system, I resized the BTRFS file system. BTRFS requires the system to
     be mounted for resize, so I could not attempt it in live boot.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我重新启动进入磁盘，一切正常。登录系统后，我调整了BTRFS文件系统的大小。BTRFS要求系统被挂载才能调整大小，所以我无法在实时启动中尝试。
 - en: '[PRE4]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Conclussion
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: The only benefit of this entire process is that I have a new laptop, but I still
     feel like I'm using my existing laptop. Typically, setting up a new laptop takes
     about a week or two to completely get adjusted, but in this case, that entire
@@ -178,8 +212,10 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 整个过程唯一的好处是我有了一台新笔记本，但我仍然觉得自己在使用现有的笔记本。通常，设置新笔记本需要一到两周的时间才能完全适应，但在这种情况下，整个过程的时间都被节省了。
 - en: An added benefit is that I learned how to export disks using NVME over TCP,
     thanks to my colleague. This new knowledge adds to the value of the experience.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 一项额外的好处是，由于我的同事的帮助，我学会了如何使用NVME通过TCP导出磁盘。这些新知识增加了经验的价值。
