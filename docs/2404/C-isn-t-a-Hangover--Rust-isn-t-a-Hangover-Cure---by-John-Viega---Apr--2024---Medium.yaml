@@ -1,0 +1,2945 @@
+- en: <!--yml
+  id: totrans-split-0
+  prefs: []
+  type: TYPE_NORMAL
+  zh: <!--yml
+- en: 'category: 未分类'
+  id: totrans-split-1
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'category: 未分类'
+- en: 'date: 2024-05-27 13:28:33'
+  id: totrans-split-2
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:28:33'
+- en: -->
+  id: totrans-split-3
+  prefs: []
+  type: TYPE_NORMAL
+  zh: -->
+- en: C isn’t a Hangover; Rust isn’t a Hangover Cure | by John Viega | Apr, 2024 |
+    Medium
+  id: totrans-split-4
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: C并不是一种宿醉；Rust也不是宿醉的解药 | 作者 John Viega | 2024年4月 | Medium
+- en: 来源：[https://medium.com/@john_25313/c-isnt-a-hangover-rust-isn-t-a-hangover-cure-580c9b35b5ce](https://medium.com/@john_25313/c-isnt-a-hangover-rust-isn-t-a-hangover-cure-580c9b35b5ce)
+  id: totrans-split-5
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@john_25313/c-isnt-a-hangover-rust-isnt-a-hangover-cure-580c9b35b5ce](https://medium.com/@john_25313/c-isnt-a-hangover-rust-isnt-a-hangover-cure-580c9b35b5ce)
+- en: C isn’t a Hangover; Rust isn’t a Hangover Cure
+  id: totrans-split-6
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: C并不是宿醉；Rust也不是宿醉的解药
+- en: A few weeks ago, I got a bit miffed reading yet another article that was too
+    dismissive about memory safety, basically being mostly dismissive about the need
+    for change. The following weekend, I started seeing flippant responses from security
+    luminaries, saying essentially that you’re irresponsible and dangerous unless
+    you drop C and C++ faster than I dropped my 8 am classes my first year in college.
+  id: totrans-split-7
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几周前，我因为又读到一篇对内存安全过于轻率的文章而有些恼火，基本上是对变革的需求过于轻率。随后的周末，我开始看到安全专家的轻率回应，本质上是说，除非你像我大学第一年放弃早上8点课一样快速放弃C和C++，否则你是不负责任和危险的。
+- en: I’m going to start with the tl;dr, but then, I’m going to drill down into the
+    issue in detail. I’m going to start by trying to present all sides at a level
+    where most people in the software industry would be able to understand.
+  id: totrans-split-8
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我将从tl;dr开始，然后详细讨论问题。我将尝试在大多数软件行业人士能够理解的水平上呈现各方观点。
+- en: That means, I am definitely going to (intentionally) oversimplify some of the
+    more technical bits. This article is already way too long, and the thesis isn’t
+    about the tech per se, it’s that the economics are incredibly complicated on all
+    sides, and we need to find a way to accept other people making decisions we don’t
+    like, and still help the world to a better place.
+  id: totrans-split-9
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着，我肯定会（有意地）过度简化一些更技术性的内容。这篇文章已经太长了，论点也不是关于技术本身，而是关于各方面经济上的极度复杂性，我们需要找到一种方法来接受其他人做出我们不喜欢的决定，同时帮助世界走向更好的方向。
+- en: There is a lot to consider, so I hope you’ll stick with me, and think through
+    the nuance.
+  id: totrans-split-10
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有很多事情需要考虑，所以希望你能跟着我，并且仔细思考其中的细微差别。
+- en: The tl;dr version
+  id: totrans-split-11
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: tl;dr版本
+- en: The security problem *is indeed* more significant than many people seem to believe,
+    and many people would absolutely be much better served abandoning C/C++ right
+    away for new projects, and not just from a security perspective. But!
+  id: totrans-split-12
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '*确实*，安全问题比许多人所认为的要严重得多，许多人完全可以立即放弃使用C/C++来进行新项目开发，而不仅仅是出于安全考虑。但是！'
+- en: It’s far more costly and risky to get rid of all the C our applications are
+    already using than many people might think; creating replacements to some key
+    pieces of software will take a decade or more to be effective as a replacement,
+    with no clear overall benefit.
+  id: totrans-split-13
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 摆脱我们应用程序中现有的所有C将是更昂贵和风险更高的，这一点很多人可能没有意识到；替换一些关键软件的过程将需要十年甚至更长时间才能有效替代，并且没有明确的总体利益。
+- en: There is a lot of hidden complexity just when we consider security that complicates
+    the equation to the point where saying “Rust is safer than C” might be true, but
+    actually isn’t a total slam dunk at all.
+  id: totrans-split-14
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 当我们考虑安全性时，隐藏的复杂性很多，这使得情况变得非常复杂，“Rust比C更安全”这样的说法可能是正确的，但实际上并不是完全正确的解决方案。
+- en: The economics of something as simple as choice of programming language are actually
+    very intricate. Not only is security not the only non-functional consideration,
+    no matter what you do, there will always be memory unsafe code somewhere (as long
+    as the underlying architectures themselves are unsafe), and there would be many
+    negative consequences to trying to get rid of C quickly.
+  id: totrans-split-15
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 选择编程语言的经济学实际上非常复杂。安全性不仅仅是唯一的非功能性考虑因素，无论你做什么，总会有一些内存不安全的代码存在（只要底层架构本身是不安全的），试图迅速摆脱C将会带来许多负面后果。
+- en: Systems languages are overused; C vs Rust is a false choice, because compiled
+    languages like Go are often a much better all-around answer economically. Go in
+    particular has decent enough performance that is sufficient for the vast majority
+    of use cases, will be safe, and has good access to low-level systems APIs.
+  id: totrans-split-16
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 系统语言被过度使用；C与Rust是一个虚假的选择，因为像Go这样的编译语言经常是更好的经济全能答案。尤其是Go的性能足够良好，对于绝大多数用例来说已经足够安全，并且可以良好地访问低级系统API。
+- en: Some Security People are Already Bristling
+  id: totrans-split-17
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 一些安全专家已经开始不满
+- en: I know from experience, simply suggesting that security might not be an absolute
+    higher priority than anything else will feel like a personal attack to some people
+    in the field, as if I am arguing against the security industry’s very existence.
+  id: totrans-split-18
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 凭借经验，仅仅建议安全可能不是比其他任何事情都重要的绝对优先事项，对于某些领域的人来说可能会感觉像是一种人身攻击，仿佛我在反对安全行业的存在本身。
+- en: On the contrary, I think the security industry would be thriving even more than
+    it is if we were more well-rounded, and better understood tradeoffs outside of
+    our domain. Some people might have to be dragged into caring about security, but
+    non-security people are the majority, and many of them have a balanced view, where
+    they care about security, but want to avoid throwing excessive time and money
+    at it.
+  id: totrans-split-19
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 相反，我认为如果我们更全面地理解并在领域之外更好地理解权衡，安全行业可能会比现在更加兴旺。有些人可能不得不被迫关注安全问题，但非安全人员占多数，其中许多人持有一个平衡的观点，他们关心安全，但不想把过多时间和金钱投入其中。
+- en: 'Once, long ago, I was watching a security person arguing with the business,
+    and as the security person dug in, I kind of got it, and asked:'
+  id: totrans-split-20
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很久以前，我曾看到一位安全专家与业务人员争论，当安全专家坚持己见时，我有点明白了，并问道：
+- en: If you think security is the primary concern, then why are you using a computer
+    at all?
+  id: totrans-split-21
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 如果你认为安全是首要问题，那你为什么还要使用电脑呢？
+- en: People are willing to accept risks every day. We know we can “catch” a virus
+    any time we go out in public. We know we can get into an accident and die any
+    time we step in the car.
+  id: totrans-split-22
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 人们每天都愿意接受风险。我们知道每次出门在外，都可能“感染”病毒。我们知道每次上车都可能发生事故而丧命。
+- en: But it’s well known that humans in general are horrible at modern risk assessment.
+    We have a tendency to either overestimate or underestimate our risk levels *dramatically*.
+  id: totrans-split-23
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但众所周知，人类在现代风险评估方面表现得非常糟糕。我们有过高或者过低估计我们风险水平的倾向。
+- en: Generally, the security industry probably assumes the average person greatly
+    underestimates risks. And to some extent, that is true. When I was first doing
+    code audits for security in ’98, it was definitely true that engineers were underestimating
+    risks of memory issues. Back then, if you handed me C or C++ code that wasn’t
+    written by Dan J. Bernstein (often refered to simple as djb), it was safe to assume
+    there were going to be **exploitable** memory errors, period. I even saw them
+    in the code of people I looked up to in the security field.
+  id: totrans-split-24
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 通常，安全行业可能认为普通人严重低估了风险。在某种程度上，这是真的。当我首次在'98年进行安全代码审计时，工程师显然低估了内存问题的风险。那时，如果你给我一段不是由Dan
+    J. Bernstein（通常简称为djb）编写的C或C++代码，可以肯定地认为会存在可利用的内存错误。我甚至在我敬重的安全领域人士的代码中见过这些问题。
+- en: But the world is a different place now. Back then, most of the industry massively
+    underestimated risks and were happy in a world with network connections that could
+    be easily tampered with and code that could be easily exploited, because they
+    either didn’t think about it at all, or else didn’t think it was going to end
+    up being a big factor.
+  id: totrans-split-25
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但现在世界已经不同了。那时，大多数行业严重低估了风险，并且乐于接受网络连接和易于利用的代码，因为他们根本没有考虑这些问题，或者认为这不会成为一个重要因素。
+- en: There was no patch Tuesday, nor was there widespread compartmentalization or
+    other effective compensating controls.
+  id: totrans-split-26
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 没有补丁星期二，也没有广泛的隔离措施或其他有效的补偿控制措施。
+- en: The rest of the tech world was eventually willing to acknowledge they were wrong,
+    due to the hard work of the security industry as a whole. As Greg Hoglund often
+    said back in the day, the combination of connectivity, extensibility and complexity
+    created a perfect storm. Nobody could deny it, and as a result, the security industry
+    has had a huge influence, from hardware architectures to network protocols, to
+    programming language design.
+  id: totrans-split-27
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 技术界的其他人最终愿意承认他们错了，这要归功于整个安全行业的辛勤工作。正如Greg Hoglund过去经常说的那样，连接性、可扩展性和复杂性的结合造成了一场完美的风暴。没人能否认这一点，因此安全行业从硬件架构到网络协议，再到编程语言设计都产生了巨大影响。
+- en: But it wasn’t as easy as it should have been, because we (as an industry) have
+    often been unable to truly understand the perspective of people outside the industry.
+  id: totrans-split-28
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但这并不像应有的那么简单，因为我们（作为一个行业）经常无法真正理解行业外人士的观点。
+- en: If we can keep that in mind, the industry can improve its credibility, and make
+    progress even faster. And we need that, because, as we’ll see, we not only have
+    a lot left to accomplish, but there are many important changes that *simply cannot
+    happen quickly*.
+  id: totrans-split-29
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果我们能记住这一点，行业可以提高其可信度，甚至更快地取得进展。我们需要这样做，因为正如我们将看到的，我们不仅有很多尚未完成的工作，而且有许多重要的变化*根本无法快速实现*。
+- en: How Big a Problem Is Memory Safety?
+  id: totrans-split-30
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 内存安全到底是多大的问题？
+- en: I’m 100% going to start off by acknowledging the problem. Taking the problem
+    seriously early on has been good for my career — almost 25 years ago, I co-authored
+    the first book on security for developers, before even basic web security issues
+    like cross-site scripting (XSS) were a thing. Not too long after, I also co-authored
+    the *Secure Programming Cookbook for C and C++*.
+  id: totrans-split-31
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我百分之百将从承认问题开始。早期认真对待这个问题对我的职业发展非常有利——将近25年前，我与人合著了第一本面向开发人员的安全书籍，甚至在像跨站脚本（XSS）这样的基本Web安全问题出现之前。不久之后，我还共同编写了*C和C++安全编程手册*。
+- en: Those books did well and helped put me on the map, and I worked on those because
+    I do take memory safety quite seriously. Back then, even more of the software
+    out there was written in C/C++ than today, and it was almost universally more
+    prone not just to having memory safety issues, but far more exploitable.
+  id: totrans-split-32
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那些书做得很好，帮助我打开了局面，我之所以在那些书上工作，是因为我非常重视内存安全。当时，与今天相比，更多的软件是用C/C++编写的，几乎普遍存在更多的内存安全问题，而且更容易被利用。
+- en: I’ve produced research tools and libraries to help mitigate the problem, and
+    seen many other people do the same over the years. But! Generally, developers
+    don’t care about security anywhere as much as security people do. Despite plenty
+    of tools, C programmers have tended not to use them.
+  id: totrans-split-33
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多年来，我开发了研究工具和库以帮助减轻这个问题，也看到其他许多人也在这方面做同样的事情。但是！一般来说，开发人员对安全性的关注远不及安全人员。尽管有大量工具，C程序员通常不倾向于使用它们。
+- en: Memory safety is often considered the most egregious class of vulnerability,
+    because when such problems are exploitable, they generally enable full execution.
+    Often, problems can be exploited remotely, and sometimes without any authentication
+    at all.
+  id: totrans-split-34
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 内存安全通常被认为是最严重的漏洞类型，因为当这些问题能够被利用时，它们通常会导致完全执行权。通常情况下，这些问题可以远程利用，有时甚至不需要任何身份验证。
+- en: But, the reputation that memory safety problems currently have of being plentiful
+    and trivial for sophisticated attackers to find and exploit is *wrong*.
+  id: totrans-split-35
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，当前内存安全问题容易被认为是普遍存在且对于复杂攻击者来说是易于发现和利用的声誉是*错误的*。
+- en: It was certainly true at the turn of the millennium, but it isn’t any more.
+    The impact of memory unsafe code from a security perspective is definitely still
+    incredibly high, but not so high that, when you consider strong economic reasons
+    why you might NOT move away from memory safe languages, it might be reasonable
+    to conclude that you’re making a good decision, even risk adjusted.
+  id: totrans-split-36
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在千禧年之交肯定是真的，但现在不再是这样了。从安全角度看，内存不安全代码的影响仍然非常严重，但考虑到你可能由于强有力的经济原因而不采用内存安全语言，这可能是一个合理的决定，即使考虑了风险调整。
+- en: The Risks Have Changed
+  id: totrans-split-37
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 风险已经发生了变化。
+- en: I’m going to focus on why memory safety in C and C++ code isn’t likely to be
+    quite as risky as many people believe. Nothing in this section should be interpreted
+    as a reason to choose these languages — we’ll explore the circumstances where
+    the tradeoffs might make sense later in this article. Here, I will firmly acknowledge
+    other languages are inherently safer; I’ll just be questioning “how much safer,
+    especially if we have the right controls and are vigilant?”
+  id: totrans-split-38
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我将专注于解释为什么在C和C++代码中的内存安全性可能并不像许多人认为的那么危险。本节中的任何内容都不应被解释为选择这些语言的理由——我们将在本文的后面探讨可能使得权衡成立的情况。在这里，我会坚定地承认其他语言在本质上更安全；我只是在质疑“有了正确的控制和警惕性后，它们有多安全？”
+- en: 'There are a lot of ways in which the world has changed that directly impacts
+    the risk level (in both directions), including:'
+  id: totrans-split-39
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 世界发生了许多直接影响风险水平的变化（双向），包括：
+- en: Both the hardware architectures and operating systems we all use have done a
+    good job helping thwart exploitability without sacrificing much on performance,
+    starting with StackGuard in 1998, all the way up to Intel’s recent work on control-flow
+    enforcement and ARM’s memory tagging.
+  id: totrans-split-40
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 我们所有人使用的硬件架构和操作系统在防止利用方面做得非常出色，而又不会在性能上牺牲太多，从1998年的StackGuard开始，一直到英特尔最近在控制流强制执行和ARM的内存标记方面的工作。
+- en: C++ has focused on user interface around its standard libraries, trying to ensure
+    that the average C++ user is not likely to ever use an API where memory safety
+    is a concern. On the other hand, while C has evolved as a language, it has been
+    much more conservative in this regard.
+  id: totrans-split-41
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: C++在其标准库周围专注于用户界面，试图确保普通C++用户不太可能使用存在内存安全问题的API。另一方面，虽然C语言作为一种语言已经发展，但在这方面却更加保守。
+- en: The full disclosure movement happened, and vulnerability research became a career
+    field, leading to the most common C components getting a fair deal of scrutiny,
+    and helping to dramatically raise awareness of these kinds of issues with C programmers.
+  id: totrans-split-42
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 全面披露运动发生了，漏洞研究成为一个职业领域，导致最常见的C组件受到了相当大的关注，并帮助显著提高了这些问题在C程序员中的意识。
+- en: Academia stopped teaching C++, moving to Java and then to Python.
+  id: totrans-split-43
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 学术界停止教授C++，转向Java，然后转向Python。
+- en: There’s been a big spike in newer languages that are proper systems languages,
+    but with attention paid to memory safety, most notably Rust, but also Zig, Nim
+    and several others.
+  id: totrans-split-44
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 出现了新一代适当的系统语言，但注意到了内存安全性，尤其是Rust，但也包括Zig、Nim和其他几种语言。
+- en: The move to the cloud and other niceties of the modern tech stack are great
+    abstractions, but they do tend to increase attack surface. On the other hand,
+    they promote compartmentalization that can limit impact, and oddly enough, since
+    we don’t put as much reversible binary code into people’s hands anymore, proprietary
+    code tends to benefit from what is essentially *security by obscurity*, as much
+    as it pains me to admit that (though the fault tolerant design does often help
+    give attackers the ability to automate as many “at bats” as they wish).
+  id: totrans-split-45
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 转向云和现代技术堆栈的其他便利是很好的抽象，但它们确实增加了攻击面。另一方面，它们促进了可以限制影响的分区化，并且令人意外的是，因为我们不再将可逆的二进制代码放入人们的手中，专有代码往往受益于本质上的*安全性通过混淆*，尽管这让我很痛苦承认（尽管容错设计确实经常帮助攻击者能够自动化他们希望的许多“机会”）。
+- en: 'Some consequences of the above the above to consider:'
+  id: totrans-split-46
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以上是需要考虑的一些后果：
+- en: Many memory issues in C and C++ code are reported as if they are exploitable,
+    even though there are definitely cases where issues may be impossible to exploit
+    in practice. Way back when I was doing vulnerability research, if I saw a clear
+    memory error, there was not only a good chance it was exploitable, it was going
+    to be really easy for me to build a working exploit. I agree it’s better for us
+    as an industry to just assume any memory issue found is exploitable, because often
+    one can find other bugs to chain to make it so. However, it has become incredibly
+    **hard** to build working exploits, and has gone from a skill that was easy to
+    develop to one that is pretty rare. So true zero-day exploits tend to be strategically
+    used, most often by governments.
+  id: totrans-split-47
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 许多C和C++代码中的内存问题被报告为可能被利用，即使有些问题在实践中可能是不可能被利用的。很久以前，当我进行漏洞研究时，如果我看到一个明显的内存错误，不仅有很大的可能性它是可以被利用的，而且我能够很容易地构建一个可工作的利用程序。我同意作为行业，我们最好假设任何发现的内存问题都是可利用的，因为通常可以找到其他缺陷进行链式连接使其成为可能。然而，构建可工作的利用程序已经变得非常**困难**，从一个容易开发的技能变成了相当罕见的技能。因此，真正的零日漏洞利用倾向于被战略性地使用，最常见的是由政府使用。
+- en: The economics of the vulnerability research world tends to skew risk perceptions.
+    That’s because such errors are the most *valuable* in the economy, as I’ll discuss
+    below. However, that means comparing CVEs across languages is suspect. But it
+    also means that, valuable exploits are either sitting places where they’re not
+    likely to get burned, or they go through a “responsible disclosure” cycle, which
+    means that it makes sense if people conclude that a good patching program can
+    mitigate the risk.
+  id: totrans-split-48
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 漏洞研究领域的经济学倾向于扭曲风险感知。这是因为这些错误在经济中是最*有价值*的，我将在下文讨论。然而，这意味着跨语言比较CVE存在怀疑。但这也意味着，有价值的利用程序要么位于不太可能被攻击的地方，要么通过“负责任披露”周期，这使得人们得出结论，一个良好的修补程序可以减轻风险。
+- en: Sometimes, people who do write in C have a very good reason for writing in C.
+    These reasons will be important to understand. Far fewer newbies think they have
+    to learn C to be effective programmers, but there are still places like embedded
+    systems where C is often far and away a more practical choice.
+  id: totrans-split-49
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 有时，写C语言的人有很好的理由选择这样做。理解这些理由很重要。很少有新手认为他们必须学习C语言才能成为有效的程序员，但在嵌入式系统等地方，C语言仍然是更为实际的选择。
+- en: As an example of why comparing CVE numbers by language is generally misleading
+    — the Linux kernel recently officially gained the capacity to issue CVEs for its
+    own code base. But in their view, any bug under the sun could have security implications
+    they don’t understand, so every single bug found in the Linux kernel now gets
+    its own CVE, even though mostly they’re not going to be exploitable memory problems.
+  id: totrans-split-50
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 举例来说，通常通过语言比较CVE编号是具有误导性的——Linux内核最近正式获得了为其自身代码库发布CVE的能力。但从他们的观点来看，太阳下的任何一个漏洞可能都具有安全问题，因此现在Linux内核中发现的每一个bug都会获得自己的CVE编号，尽管大多数情况下它们不会是可利用的内存问题。
+- en: Understanding reduced exploitability
+  id: totrans-split-51
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 理解降低的漏洞利用能力
+- en: Here, understanding the evolution of memory errors can help understand exploitability.
+    I’ll try to keep away from deeply technical explanations, because I think the
+    people that most need to understand this are the ones that will (quite rightly)
+    never work at a low enough level where they should even need to understand any
+    of those details. This will, again, oversimplify things.
+  id: totrans-split-52
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，理解内存错误演变可以帮助理解漏洞利用能力。我将尽量避免深入的技术解释，因为我认为最需要理解这一点的人是那些（完全正确地）永远不会在需要理解这些细节的低级别工作上工作的人。这将再次简化问题。
+- en: And in some sense, this maybe is gratuitous detail. On one hand, the fact that
+    it’s gotten harder to find good exploits by a LOT doesn’t matter, because if you
+    switch away from C, this whole class of issues become non-issues.
+  id: totrans-split-53
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在某种程度上，这可能是多余的细节。一方面，即使在寻找良好的漏洞利用方面变得更加困难时，这并不重要，因为如果您放弃C语言，这一类问题就不再是问题。
+- en: On the other hand, the fact that vulnerability researchers work tremendously
+    harder than 20 years ago, to find far fewer bugs, is a signal that practical risks
+    are lower than they used to be (especially in the face of good compensating controls).
+    I would have assumed 20 years ago that any program written in C had easily exploitable
+    holes somewhere, and probably would have been right.
+  id: totrans-split-54
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，漏洞研究人员比20年前工作得更加艰苦，却找到的漏洞更少，这表明实际风险比过去要低（特别是在有良好的补偿控制措施的情况下）。20年前，我本来以为任何用C编写的程序都可能在某处存在容易被利用的漏洞，而且这可能是正确的。
+- en: Today, I’m prone to think there are good odds of issues in many C programs,
+    but, if you do your design right and pay for the right people to review your code,
+    the economic costs of finding the next bug are high enough that it’s no longer
+    a slam dunk to me that any C code will result in you being owned.
+  id: totrans-split-55
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 今天，我倾向于认为许多C程序中存在问题的几率很高，但是，如果您正确设计并支付合适的人员来审查您的代码，找到下一个bug的经济成本已经高到我不再认为任何C代码都会导致您被拥有的程度。
+- en: Back when I was getting started in the field, it was often very simple. If you
+    could find a local variable that was an array, there was a pretty good chance
+    you could trick the program into writing outside the array. And, memory layout
+    was so predictable, it was relatively easy to figure out how to exploit such conditions.
+  id: totrans-split-56
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当我刚开始进入这个领域时，通常情况很简单。如果您能找到一个本地变量是数组，那么您很可能会欺骗程序写入数组之外的位置。而且，内存布局是如此可预测，相对容易找出如何利用这种情况。
+- en: Specifically, local variables are generally kept on the *program stack*. When
+    you enter a function, data gets pushed onto the stack, and when you exit, data
+    gets popped from it (kind of). This is different from long-term memory allocations
+    that survive function calls (heap storage).
+  id: totrans-split-57
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 具体来说，局部变量通常保存在*程序栈*上。当您进入函数时，数据被推送到堆栈上，退出时从堆栈上弹出数据（有点像）。这与在函数调用之间保留的长期内存分配（堆存储）不同。
+- en: 'For instance, it wasn’t uncommon to see code like:'
+  id: totrans-split-58
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，看到这样的代码并不少见：
+- en: '[PRE0]'
+  id: totrans-split-59
+  prefs: []
+  type: TYPE_PRE
+  zh: '[PRE0]'
+- en: To the uninitiated, the above code might seem innocent. It creates an array
+    that is zero-initialized of the maximum size the OS supports for a path, whatever
+    that is. Then, it copies into that array, some base directory name, then finally
+    the file name gets appended to the end of that.
+  id: totrans-split-60
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于未接触过编程的人来说，上述代码可能看起来无害。它创建了一个数组，其大小为操作系统支持的最大路径大小，初始化为零。然后，将一些基本目录名称复制到该数组中，最后将文件名附加到数组末尾。
+- en: But even on today’s system, if the attacker can control either the input to
+    this function, or to `base_path`, it is easy to crash this program.
+  id: totrans-split-61
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但即使在今天的系统中，如果攻击者可以控制此函数的输入或`base_path`的输入，这个程序很容易崩溃。
+- en: Part of the reason is that C doesn’t keep track of how long things are. In C,
+    `strcpy` copies byte-by-byte, until it encounters a byte that is valued 0 (the
+    so-called `NULL`byte). Similarly, `strcat` works by scanning forward to the first
+    null byte in `full_path,` and copies from `filename` until it finds a `NULL`.
+    In no world do either of these functions check what they’re doing against the
+    length of `fullpath`. So if you can pass in more than `PATH_MAX — len(base_path)`characters,
+    you will write past the end of the buffer.
+  id: totrans-split-62
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中一部分原因是 C 不跟踪事物的长度。在 C 中，`strcpy` 逐字节复制，直到遇到值为 0 的字节（所谓的 `NULL` 字节）。类似地，`strcat`
+    通过向前扫描 `full_path` 直到第一个空字节，并从 `filename` 复制，直到找到 `NULL`。在任何情况下，这两个函数都不会检查它们所做的事情与
+    `fullpath` 的长度。因此，如果你可以传入超过 `PATH_MAX - len(base_path)` 字符，你将写入缓冲区末端之外。
+- en: In the “bad old days”, this was a slam-dunk, and it would be trivial to exploit.
+  id: totrans-split-63
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在“不好的旧日子”中，这是一个绝佳的机会，利用这种漏洞将变得非常简单。
+- en: Traditionally, the program stack intermixes its own runtime data with the user’s
+    data, which is what made the traditional *stack overflow* such low hanging fruit.
+  id: totrans-split-64
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 传统上，程序堆栈将自己的运行时数据与用户数据混合在一起，这就是传统*堆栈溢出*如此容易被利用的原因。
+- en: Every time a new function gets called, the stack would get the memory address
+    for the place in code the program should return. So all you had to do once you
+    found one of these conditions, was make sure to craft a exploit *payload* (the
+    malicious data you send at whatever point) in such a way that it overwrites that
+    return address, replacing it with a pointer back into your own payload… which
+    also generally includes executable instructions that will do whatever. The executable
+    part of the payload is usually called the shell code, though getting an interactive
+    login (i.e., a shell) doesn’t need to be the goal. Either way, when the exploit
+    succeeds, the attacker generally is able to run any code they desire from thereon
+    out.
+  id: totrans-split-65
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 每次调用新函数时，堆栈将获取程序应返回的代码位置的内存地址。因此，一旦找到这些条件之一，你只需确保精心设计一个攻击*负载*（发送到任意点的恶意数据），以便覆盖该返回地址，并替换为指向自己负载的指针……通常也包括可执行指令，将执行任何操作。负载的可执行部分通常称为
+    shell code，尽管获取交互式登录（即 shell）不一定是目标。无论如何，当利用成功时，攻击者通常能够从那时起运行任何所需的代码。
+- en: From a technical perspective, the most complicated thing back then was the shell
+    code itself, as it generally requires at least assembly-level knowledge.
+  id: totrans-split-66
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 从技术角度看，那时最复杂的东西是 shell code 本身，因为它通常需要至少汇编级别的知识。
+- en: However, you didn’t have to write your own shell code, there have always been
+    plenty of off-the-shelf payloads.
+  id: totrans-split-67
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，你并不需要编写自己的 shell code，总是有很多现成的有效载荷。
+- en: Why not just always bounds-check?
+  id: totrans-split-68
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为什么不总是进行边界检查？
+- en: Great question. One might think we could just have programming languages always
+    generate code to check bounds for any accesses, and be done with it.
+  id: totrans-split-69
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 很好的问题。有人可能会认为我们可以让编程语言始终生成代码以检查任何访问的边界，并完成工作。
+- en: I’m personally sympathetic. I would point at the massive success of Python to
+    show that, in most cases, performance is even less important than security is.
+    So it’s no surprise that all languages (attempt) to guarantee no out-of-bounds
+    writes, usually with dynamic code.
+  id: totrans-split-70
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我个人深有同感。我会指出 Python 的巨大成功，以表明在大多数情况下，性能甚至比安全性更不重要。因此，毫不奇怪，所有编程语言（尝试）通常会使用动态代码来保证无越界写入。
+- en: But, that checking code, if done everywhere, WILL absolutely have a notable
+    impact on performance, and there are definitely domains where that matters.
+  id: totrans-split-71
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，如果在每个地方都进行检查，那么检查代码肯定会对性能产生显著影响，而且确实存在性能至关重要的领域。
+- en: For instance, if you’re a CDN and are trying to cost-effectively handle massive
+    connection volumes, it’s easy to believe that the additional hardware costs could
+    make the business not worth being in, unless the running software manages to skip
+    bounds checks that are low risk.
+  id: totrans-split-72
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 例如，如果你是 CDN，并且试图以成本效益的方式处理大规模连接量，很容易相信额外的硬件成本可能使业务不值得从事，除非运行软件成功跳过低风险的边界检查。
+- en: And, individual applications written in Python generally are “fast enough” (even
+    if many would disagree, as evidenced by multiple rewrites and a new experimental
+    JIT compiler in the official Python), but would Python be fast enough if every
+    bit of code possible that it runs upon was fully bounds checked?
+  id: totrans-split-73
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 而且，通常在 Python 编写的个别应用程序中，“足够快”（即使许多人可能不同意，正如官方 Python 中的多次重写和新的实验性 JIT 编译器所证明的那样），但如果
+    Python 运行的每一段可能的代码都进行了完全的边界检查，Python 是否足够快呢？
+- en: Most of the software we use makes heavy use of low-level systems code written
+    in C or C++, even if it’s indirect. Not only will the operating system be written
+    in such a language, but also many of the libraries a typical programming language
+    leverages in its runtime will be low-level.
+  id: totrans-split-74
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们使用的大多数软件都大量使用用C或C++编写的低级系统代码，即使是间接的。操作系统不仅会用这种语言编写，许多典型编程语言在运行时使用的库也是低级的。
+- en: Sure, you *could* “rewrite it in Rust”. But, even if we should do that (see
+    below), it clearly would be a long, arduous journey to get there.
+  id: totrans-split-75
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，你*可以*“用Rust重写它”。但是，即使我们应该这样做（见下文），显然这将是一个漫长而艰难的旅程才能到达那里。
+- en: Note that Rust is able to approach C’s speed in part because the compiler can
+    essentially ‘prove’ when it can skip most bounds checks at compile time.
+  id: totrans-split-76
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 注意，Rust能够接近C的速度部分原因在于编译器可以在编译时‘证明’可以跳过大多数边界检查。
+- en: But it’s not actually all that hard to design APIs on top of C that similarly
+    can avoid memory errors if strictly used, while minimizing the generation of runtime
+    code. For instance, in our example above, it’s not hard to provide a different
+    C API for strings that always tracks the length, and fully checks. We could provide
+    similar APIs around arrays and other data types. We could even provide such austerity
+    to pointers.
+  id: totrans-split-77
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但实际上，在C的顶层设计API以便在严格使用时避免内存错误，同时最大限度地减少运行时代码的生成，这并不是什么难事。例如，在上面的示例中，为字符串提供一个不断跟踪长度并进行完全检查的不同C
+    API并不难。我们可以为数组和其他数据类型提供类似的API。我们甚至可以为指针提供这样的节俭。
+- en: That is effectively what C++ has done quite successfully, and why Bjarne Stroustrup
+    seems to have taken great offense to the government telling people not to use
+    his language due to memory safety issues. I don’t write modern C++, but it does
+    seem pretty easy from the API docs to never come anywhere near a memory issue.
+  id: totrans-split-78
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这实际上就是C++已经相当成功地做到的事情，这也是为什么Bjarne Stroustrup似乎对政府因内存安全问题告诉人们不要使用他的语言感到非常愤怒的原因。我不写现代C++，但从API文档来看，要远离内存问题似乎相当容易。
+- en: But, to the question asked above, the more scale we reach for, the more the
+    little things make a big difference. If your whole OS and every library Python
+    used were fully checked, it’s conceivable that Python would simply be too slow.
+  id: totrans-split-79
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，回答上面的问题，我们越扩展，小事情就越重要。如果整个操作系统和Python使用的每个库都经过充分检查，Python可能会变得过于缓慢是可以想象的。
+- en: But in reality, it probably would just make a lot of software even less cost
+    effective. And really, economics is usually the **most** important consideration
+    when it comes to software, and those economics have to revolve heavily around
+    the experience of the people using software (and, for example, generally only
+    care about performance if things are slower than expected).
+  id: totrans-split-80
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但实际上，这可能会使很多软件甚至更不划算。而实际上，经济通常是涉及软件时最**重要**的考虑因素，这些经济必须在很大程度上围绕使用软件的人的体验（例如，通常只关心性能是否低于预期）展开。
+- en: So if you’re writing low-level systems code, and you want it to get used, it’s
+    got to be widely applicable, and it needs to be cost-effective at the scale of
+    a CDN or any other big tech company.
+  id: totrans-split-81
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，如果你在编写低级系统代码，并希望它被使用，它必须具有广泛适用性，并且在CDN或任何其他大型科技公司的规模上都需要具有成本效益。
+- en: There’s little reason why pretty much anyone should actually *want* their compiler
+    to generate bound checks *when they are unnecessary*. Ideally, we’d want to be
+    able to prove when it’s safe to skip, and make sure to produce machine code (whether
+    manually or via compiler) whenever it is safe to skip checks.
+  id: totrans-split-82
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几乎没有什么理由真正希望他们的编译器在*不必要*的情况下生成边界检查。理想情况下，我们希望能够证明何时可以安全跳过，并确保在安全跳过检查时生成机器代码（无论是手动还是通过编译器）。
+- en: Unfortunately, it’s pretty much impossible to get absolute assurance in most
+    cases. We need to decide what level of risk of exploitation we even find acceptable.
+  id: totrans-split-83
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不幸的是，在大多数情况下，要获得绝对保证几乎是不可能的。我们需要决定哪种程度的利用风险我们认为是可以接受的。
+- en: And, as I will discuss, anyone who claims the risk should ever be absolute 0
+    is way too unrealistic… even ignoring economic arguments.
+  id: totrans-split-84
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如我将要讨论的那样，任何声称风险应该完全为0的人都太不现实了...即使忽略经济论证。
+- en: 'Out-of-Bounds memory errors: a history of mitigations'
+  id: totrans-split-85
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 内存越界错误：缓解历史
+- en: The question of how much risk should we be willing to accept, leads us to the
+    question, “how much risk are we currently accepting?”
+  id: totrans-split-86
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们愿意承担多少风险的问题，导致我们要问：“我们目前承担了多少风险？”
+- en: Because if the answer is, “not much”, then we need to think about whether it’s
+    worth the cost to add bounds checking.
+  id: totrans-split-87
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因为如果答案是“不多”，那么我们需要思考是否值得付出成本来添加边界检查。
+- en: The practical level of risk is hard to quantify precisely. The best way to do
+    it really is to talk to people who have spent their careers doing vulnerability
+    reach where they actually prove exploitation.
+  id: totrans-split-88
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际风险的水平很难准确量化。真正做到这一点的最好方法是与那些在他们的职业生涯中真正证明了利用的漏洞研究人员交流。
+- en: Anyone qualified who was there would certainly agree that C/C++ programs around
+    the turn of the millennium were an absolute cornucopia of exploitability. I was
+    there; it was easy if you had a basic low-level skill set.
+  id: totrans-split-89
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 任何有资格的人如果在场，肯定会同意在千禧年之交周围的C/C++程序绝对是一个利用性的丰富来源。我在那里；如果你有基本的低级技能集，这是很容易的。
+- en: But, there have been a quarter century of mitigations, and we live in an entirely
+    different world. It’s so tough to prove exploitability, that we often just accept
+    the possibility of exploit without any proof, any time we see a memory error we
+    show can give us enough of a foothold where exploitation *might* be possible.
+    And most of my friends still doing this kind of work would absolutely acknowledge
+    that it is no longer “like shooting fish in a barrel”, it’s much, much harder.
+  id: totrans-split-90
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，已经有了四分之一世纪的缓解措施，我们生活在一个完全不同的世界中。证明可利用性是如此困难，以至于每当我们看到一个内存错误时，我们就接受可能有利用的可能性，没有任何证据。而我大部分仍在从事此类工作的朋友绝对会承认，它不再像“轻而易举”，而是困难得多。
+- en: It may not be easy to quantify how much the bar has been raised, but it’s getting
+    pretty darn high.
+  id: totrans-split-91
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 或许很难量化提升了多少，但这已经相当高了。
+- en: To start understanding the risk today, we should go back to the beginning. In
+    this case, let’s go back to the simple stack overflow discussed above.
+  id: totrans-split-92
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 要开始理解今天的风险，我们应该回到起点。在这种情况下，让我们回到上面讨论的简单栈溢出。
+- en: In fact, while the code I showed is **definitely** a memory error, and I definitely
+    could have exploited it a quarter century ago, determining whether I could actually
+    build a practical exploit is so daunting a thought that I wouldn’t bother trying.
+  id: totrans-split-93
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，虽然我展示的代码**明显**是内存错误，我在四分之一世纪前肯定可以利用它，但确定我是否实际上能够构建一个实用的利用程序，这个想法是如此艰巨，以至于我不愿意尝试。
+- en: The code is still wrong because it doesn’t do bounds checking. And it can still
+    be used to crash the program (which in some sense is a security issue). If you’d
+    like to see, here’s me live-coding the example, and showing it still crashes (no
+    up-charge for my slow typing and silly mistakes).
+  id: totrans-split-94
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这段代码仍然是错误的，因为它没有进行边界检查。它仍然可以用来崩溃程序（从某种意义上说这是一个安全问题）。如果你想看看，这里有我现场编码的例子，并且显示它仍然会崩溃（对于我打字慢和愚蠢错误，没有额外费用）。
+- en: But, just because it’s a memory error doesn’t mean it’s easy to exploit, or
+    even possible to exploit.
+  id: totrans-split-95
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，仅仅因为它是内存错误，并不意味着它易于利用，甚至可能无法利用。
+- en: As crappy as the above code is, StackGuard addressed this problem fairly well,
+    starting all the way back in 1998\. The basic idea is that when a program starts
+    up, select a random number of at least 64 bits. Push it onto the stack every time
+    you call the function.
+  id: totrans-split-96
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管上述代码很糟糕，但StackGuard在1998年就比较好地解决了这个问题。基本的想法是，当程序启动时，选择一个至少64位的随机数。每次调用函数时将其推送到栈上。
+- en: Then, every time you return from a function, check to make sure the random canary
+    is intact. If it isn’t, crash instead of returning.
+  id: totrans-split-97
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然后，每次从函数返回时，请检查随机的 canary 是否完整。如果不完整，就崩溃而不是返回。
+- en: Whereas one used to be able to figure out deterministically what to write to
+    keep the program working up till the point it started executing your shell code,
+    a naive exploit no longer works, unless the program somehow leaks its canary.
+  id: totrans-split-98
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 曾经可以确定性地找出写什么来使程序在执行你的shell代码之前保持运行的点，一个天真的利用现在不再有效，除非程序在某种情况下泄露其 canary。
+- en: There certainly were situations where you could work around the above issue
+    (especially when you can chain another bug), but StackGuard eliminated some issues
+    completely, and certainly raised the work level of the vulnerability researcher.
+  id: totrans-split-99
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管在某些情况下你可以绕过上述问题（特别是当你能够链出另一个漏洞时），但StackGuard完全消除了某些问题，并显然提高了漏洞研究人员的工作水平。
+- en: The software exploitation community (both “bad guys” and the vulnerability research
+    community) kept having to work harder and harder on bypass techniques, but have
+    tended to at least find cases where they could work around some mitigations, if
+    circumstances are right. For instance, the above mitigation doesn’t work if the
+    memory is dynamically allocated, because that memory is kept separately, in the
+    heap.
+  id: totrans-split-100
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 软件利用社区（无论是“坏人”还是漏洞研究社区）不断努力寻找绕过技术，但往往至少能找到一些情况可以绕过某些缓解措施，如果情况合适的话。例如，上述缓解措施在内存动态分配时不起作用，因为该内存被单独保存在堆中。
+- en: And, certainly, the program doesn’t keep function return addresses in the heap.
+    However, many real programs, especially one using dynamic dispatch in C++, will
+    keep pointers to functions in the heap, and use them to dynamically select functions
+    to call.
+  id: totrans-split-101
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，程序不会在堆中保存函数返回地址。然而，许多真实程序，特别是在使用C++动态分派的情况下，会将函数指针保存在堆中，并使用它们来动态选择要调用的函数。
+- en: One of the more effective and well-known defenses has been *Address Space Layout
+    Randomization* (ALSR), which is implemented at the operating system level. Basically,
+    every time your program starts up, the OS will randomize where data lives as much
+    as it can. With ASLR, if there’s enough randomization injected, the attack would
+    succeed with such low probability, it could require as many attempts to succeed
+    as atoms in the universe.
+  id: totrans-split-102
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 其中一种更有效且著名的防御方法是*地址空间布局随机化*（ASLR），这是在操作系统层面实现的。基本上，每次程序启动时，操作系统会尽可能随机化数据存放的位置。通过ASLR，如果注入了足够的随机性，攻击的成功概率会非常低，可能需要尝试的次数与宇宙中的原子数量一样多才能成功。
+- en: In practice, it’s not *quite* that good — sometimes the distances between particular
+    bits that are valuable to the attacker might not be randomizable, because there
+    can be reasons why they need to be knowable (or, within small ranges). And, if
+    the OS is too aggressive at randomizing, it could break programs. This is particularly
+    true within operating system kernels — it’s hard to get a meaningful amount of
+    randomization inside the kernel.
+  id: totrans-split-103
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 实际上，它并不*完全*如此好 —— 有时对攻击者有价值的特定位之间的距离可能不可随机化，因为可能存在它们需要是可知的（或者在小范围内）。而且，如果操作系统过于积极地随机化，可能会破坏程序。这在操作系统内核中尤为真实
+    —— 在内核内部获得有意义的随机化量是困难的。
+- en: Still, this was an amazingly effective technique that suddenly made exploitation
+    incredibly hard.
+  id: totrans-split-104
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管如此，这是一种非常有效的技术，突然使得利用变得非常困难。
+- en: 'If you’ve never dug under the hood here, but are technical enough, you might
+    ask two important questions:'
+  id: totrans-split-105
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你从未深入了解过这里的内部机制，但技术水平足够，你可能会问两个重要的问题：
+- en: Shouldn’t the system be keeping the user’s program data far from its internal
+    state?
+  id: totrans-split-106
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 系统不应该将用户的程序数据与其内部状态分开吗？
+- en: If the payload has to live in the heap or on the stack (other memory is generally
+    non-writable), can’t we prevent those areas from running code??
+  id: totrans-split-107
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果有效负载必须存储在堆或者栈中（通常情况下其他内存是不可写的），难道我们不能防止这些区域执行代码吗？？
+- en: For question 1, not only is a single stack per thread easier to implement, it
+    is generally faster, because hardware generally will have direct support for a
+    program stack. And ultimately, while processes have virtual address spaces that
+    provide protection from other processes, within one process, any code in the process
+    can address any memory cell in the process.
+  id: totrans-split-108
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于问题1，单个线程每个栈的实现不仅更容易，而且通常更快，因为硬件通常会直接支持程序栈。而且最终，虽然进程具有提供对其他进程保护的虚拟地址空间，但在一个进程内部，该进程中的任何代码都可以访问该进程中的任何内存单元。
+- en: Though, it is still valuable to shuffle things around. For instance, in heap
+    overruns, function pointers are juicy targets. Storing all function pointers in
+    tables allocated statically or in a separate heap of memory definitely is better
+    than the typical approach of sprinkling function pointers wherever they happen
+    to go.
+  id: totrans-split-109
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管如此，调整事物位置仍然很有价值。例如，在堆溢出中，函数指针是很有吸引力的目标。将所有函数指针存储在静态分配的表中或者单独的堆内存中，绝对比典型的随处存放函数指针的方法更好。
+- en: As for the second question, it’s 100% possible to prevent code execution out
+    of the stack or the heap at the system level, and that is a mitigation totally
+    worth having. However, some environments, including some entire programming languages,
+    use one or the other to implement their own dynamic capabilities (like `lambda`
+    functions that are closures). Still, for most programs, this mitigation is basically
+    free, and raises the bar even more.
+  id: totrans-split-110
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于第二个问题，防止代码在系统级别的栈或堆之外执行是完全可能的，这是一种完全值得采用的缓解措施。然而，一些环境，包括一些整个编程语言，使用其中一种或两种来实现它们自己的动态能力（例如闭包的`lambda`函数）。尽管如此，对于大多数程序而言，这种缓解措施基本上是免费的，并且进一步提高了安全防护水平。
+- en: Today, when there’s a memory issue, attackers generally can’t expect to run
+    code directly. But, imagine that you’re attacking a program written in Python,
+    and you can somehow leverage a memory error in the underlying C implementation
+    of Python to write to arbitrary places in memory.
+  id: totrans-split-111
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 今天，当存在内存问题时，攻击者通常不能期望直接运行代码。但是，想象一下你正在攻击一个用Python编写的程序，并且你可以以某种方式利用Python底层C实现中的内存错误，写入内存中的任意位置。
+- en: Under the hood, Python implements a virtual machine. There are “instructions”
+    that can live in the heap or stack that are examined by Python’s built-in code,
+    and that code does different things depending on the instructions.
+  id: totrans-split-112
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在幕后，Python实现了一个虚拟机。有些“指令”可以存在于堆或栈中，Python的内置代码会检查这些指令，并根据指令执行不同的操作。
+- en: As it turns out, when we talk about memory being “non-executable” really only
+    refers to what executes directly on the underlying system processor, not what
+    happens in an application-level virtual machine.
+  id: totrans-split-113
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实证明，当我们谈论内存“不可执行”时，实际上只是指直接在底层系统处理器上执行的内容，而不是应用级别虚拟机中发生的情况。
+- en: So even if the program you’re attacking has its executable code segments non-writable,
+    and all the data you can write is non-executable, you can still change data that
+    controls what the executable code does.
+  id: totrans-split-114
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，即使你正在攻击的程序具有其可执行代码段为不可写，你可以写入的所有数据也是不可执行的，你仍然可以更改控制可执行代码行为的数据。
+- en: As an attacker, if there is no virtual machine, you can kind of create one yourself,
+    using a technique called *Return Oriented Programming* (aka, ROP). Basically,
+    leveraging memory errors, you try to groom the program’s data so that it will
+    jump around the program’s memory, doing bits you want it to do (usually with the
+    goal of having it spawn a login shell, where you then can legitimately run anything
+    you want again).
+  id: totrans-split-115
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 作为攻击者，如果没有虚拟机，你可以通过一种称为*返回导向编程*（即ROP）的技术来创建一个虚拟机。基本上，利用内存错误，你试图调整程序的数据，使其在程序内存中跳转，执行你希望它执行的操作（通常目的是生成登录Shell，在那里你可以合法地再次运行任何你想要的东西）。
+- en: ROP is intrinsically difficult, as it generally requires the attacker to groom
+    data both on the stack and on the heap, which itself is hard. Add in address layout
+    randomization, and you’ll find that most memory errors involving out-of-bounds
+    writing are incredibly difficult to actually exploit, and doing so will generally
+    require chaining together multiple bugs, and most often also applying ROP.
+  id: totrans-split-116
+  prefs: []
+  type: TYPE_NORMAL
+  zh: ROP本质上很困难，因为通常需要攻击者同时调整堆栈上的数据和堆上的数据，这本身就很困难。再加上地址布局随机化，你会发现大多数涉及越界写入的内存错误实际上是难以利用的，并且通常需要连接多个漏洞，并且大多数情况下还要应用ROP。
+- en: Recently, Intel introduced *Control Flow Integrity* (CFI) as an option that
+    explicitly is meant to thwart ROP.
+  id: totrans-split-117
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 最近，英特尔引入了*控制流完整性*（CFI）作为一种选项，专门用于防范ROP。
+- en: Remember when we said it often didn’t make sense to move return addresses off
+    the stack? Intel thought it would be too difficult to get the world to stop doing
+    that in practice, but instead, if **duplicates** the return addresses onto a *shadow
+    stack*. Then, when functions return, it ensures that the return locations are
+    consistent.
+  id: totrans-split-118
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 记得我们曾经说过将返回地址从栈上移出通常没有意义吗？英特尔认为在实践中让世界停止这样做太困难了，但是相反，它**复制**了返回地址到*影子栈*。然后，当函数返回时，它确保返回位置是一致的。
+- en: That obviously would be effective against stack overflows, but what if attacker
+    skips directly writing to the stack at all? For instance, with ROP one often will
+    just manipulate data in way that causes a jump to misfire somewhere, that will
+    run code they like. When that code hits a ‘return’ statement, it might return
+    to the place that CFI expects.
+  id: totrans-split-119
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 显然，这对栈溢出非常有效，但是如果攻击者直接跳过了写入栈的步骤呢？例如，使用ROP时，通常只需操纵数据，使其导致某处跳转错误，这将运行他们喜欢的代码。当该代码遇到‘return’语句时，它可能会返回到CFI预期的位置。
+- en: Except that CFI can also validate call sites. Often, ROP will involve jumping
+    into the middle of functions, which CFI can stop. And, it can ensure functions
+    only get called from places they should have been called from.
+  id: totrans-split-120
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了CFI还能验证调用位置。通常，ROP会涉及跳转到函数中间，而CFI可以阻止这种情况发生。而且，它可以确保函数只能从应该被调用的地方调用。
+- en: CFI wouldn’t stop our attack against Python’s virtual machine. But for programs
+    without virtual machines embedded, it is very likely to make ROP-style attacks
+    even more difficult (and thus less practical), for programs making use of CFI.
+  id: totrans-split-121
+  prefs: []
+  type: TYPE_NORMAL
+  zh: CFI对Python虚拟机的攻击无法阻止。但对于没有嵌入虚拟机的程序而言，CFI很可能会使ROP风格的攻击变得更加困难（因此不太实际），尤其是对于使用CFI的程序来说。
+- en: In summary, while we may not be able to quantify well what percent of memory
+    vulnerabilities modern mitigations thwarts, it’s likely that plenty such errors
+    are simply not exploitable when all easily available system mitigations are applied
+    (many are on for you by default in most apps, but CFI is new enough, and not widely
+    used, and there are some places where these mitigations are NOT applied; see below).
+  id: totrans-split-122
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 总之，虽然我们可能无法准确量化现代缓解措施对内存漏洞的有效性能阻挡多少，但是当所有易于获取的系统缓解措施都被应用时（大多数应用程序默认启用，但CFI还不普及，并且在某些地方这些缓解措施并未应用），许多此类错误很可能是无法被利用的。
+- en: But the space is complex, and I’ve long marveled at the ingenuity of everyone
+    around the table. While it’s been a long time since most bugs were cookie-cutter,
+    or could be exploited without chaining multiple bugs together, the exploit development
+    community has innovated in similarly impressive ways, so it *is* best to always
+    assume that memory problems are likely exploitable. Yes, the number of people
+    with the proper skill set is incredibly low compared to 20 years ago, but we shouldn’t
+    assume it will ever go to zero.
+  id: totrans-split-123
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但这个领域很复杂，我长久以来对桌上所有人的创造力都感到惊叹。虽然大多数漏洞早已不是模板式的，也不可能单个漏洞就能被利用，但是漏洞开发社区在创新方面也有了相似的进步，所以最好始终假设内存问题可能被利用。是的，具备适当技能集的人数比20年前极少，但我们不应假设这个数字会降到零。
+- en: So one might rightly conclude, “why take the risk? Surely it’s just best to
+    get rid of this whole class of issues.” And on one hand, I’d agree, because the
+    bar is high, but the best people can often find and chain together multiple bugs.
+    what they need. Yes, these things can be a problem in Rust and other languages,
+    but they will always be a big problem in C, as long as it exists.
+  id: totrans-split-124
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，有人可能会正确地得出结论：“为什么要冒这个风险呢？毕竟最好是消除这一类问题。”从某种意义上说，我会同意，因为难度很高，但最优秀的人通常能找到并串联多个漏洞，这正是他们所需要的。是的，在Rust和其他语言中可能会出现这些问题，但只要C语言存在，这些问题就会一直存在。
+- en: But then again, most of the qualified people doing it are either supplying exploits
+    to governments, or practicing responsible disclosure, which generally should mean
+    that if you stay on top of patching, the risk can be mitigated pretty well.
+  id: totrans-split-125
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但话又说回来，大多数从事此类工作的合格人员要么向政府提供漏洞利用工具，要么进行负责任的披露，这通常意味着只要及时打补丁，风险可以得到相当有效的缓解。
+- en: And if you’re being targeted by a government, enough that they’d be willing
+    to risk exposing a 0-day to own you, they probably have other methods that will
+    work more reliably. Frankly, `xz` isn’t the only long game we’ve seen; governments
+    plant spies in places that can get them access to what they need, and that includes
+    within security companies.
+  id: totrans-split-126
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你成为政府的攻击目标，他们可能会愿意冒险暴露一个0-day来拥有你，他们可能还有其他更可靠的方法。坦白说，`xz`并不是我们见过的唯一长期游戏；政府在能获取所需信息的地方布置间谍，这当然也包括安全公司内部。
+- en: That’s mostly why plenty of of the most paranoid security people hate security
+    products that are big monoliths — no matter how intentioned, you’re going to end
+    up with a much greater attack surface, and quite likely with far more risk, especially
+    if you’re worried about nation states.
+  id: totrans-split-127
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数偏执的安全人员讨厌庞大的单体安全产品，因为不管意图多好，你最终都会面对更大的攻击面，而且很可能面临更高的风险，特别是如果你担心国家层面的问题。
+- en: I do expect over time, hardware platforms will continue to raise the bar. If
+    we’re lucky, in another decade, we may even be near the point where such mitigations
+    are just about as effective as full bounds checking, but far cheaper (at least,
+    in the environments where they’re available).
+  id: totrans-split-128
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我预计随着时间的推移，硬件平台将继续提高安全标准。如果我们幸运的话，再过十年，这些缓解措施可能会变得几乎和完全的边界检查一样有效，但成本要低得多（至少在有这些措施的环境中）。
+- en: But until then, it’s not completely unreasonable for people to believe that,
+    while these problems are a real concern, that they are making enough of an investment
+    in compensating controls to not incur all of the costs they associate with other
+    options.
+  id: totrans-split-129
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但在此之前，人们认为，虽然这些问题确实是一个真正的问题，但是他们在补偿控制方面已经投入了足够的投资，因此不会招致与其他选项相关的所有成本。
+- en: Other Memory Errors
+  id: totrans-split-130
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 其他内存错误
+- en: Out-of-bounds accesses are not the only thing that qualifies as a “memory error”
+    in C and C++.
+  id: totrans-split-131
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在 C 和 C++ 中，“内存错误”并不仅限于越界访问。
+- en: These languages are known for users manually taking on the responsibility of
+    allocating and deallocating memory. These languages do come with libraries for
+    helping with memory management, but, unlike many other languages, you are still
+    left to decide when and how to de-allocate heap memory.
+  id: totrans-split-132
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些语言以用户手动承担分配和释放内存的责任而闻名。虽然这些语言确实带有帮助内存管理的库，但与许多其他语言不同，您仍需决定何时以及如何释放堆内存。
+- en: 'There are plenty of other issues beyond pure array bounds errors, including:'
+  id: totrans-split-133
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 除了纯数组边界错误外，还存在许多其他问题：
+- en: If you de-allocate memory that’s still in use by other objects, that can leak
+    sensitive information (such as pointers to ROP targets), partially because C doesn’t
+    zero out memory or ensure that things are written before they are used. Such *Use-After-Free*
+    bugs can also easily result in arbitrary data writes too.
+  id: totrans-split-134
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果释放了其他对象仍在使用的内存，可能会泄露敏感信息（例如指向 ROP 目标的指针），部分是因为 C 没有清零内存或确保在使用之前写入的内容。这种 *使用后释放*
+    漏洞也很容易导致任意数据写入。
+- en: If you can get the program to release memory that has already been released,
+    you can corrupt the internal memory management data structures, which can also
+    have dire consequences. Simply being able to call `free()` twice on the same memory
+    before it gets allocated can be game over.
+  id: totrans-split-135
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果程序释放了已经释放的内存，可以破坏内部内存管理数据结构，这也可能造成严重后果。在分配之前两次调用 `free()` 可能会导致游戏结束。
+- en: If the program does math to figure out how much memory to allocate, and the
+    attacker can force the math to yield a result large enough, the number might “wrap
+    around”, resulting in a smaller allocation thanW needed, and forcing a buffer
+    overflow (*integer overflow* issues).
+  id: totrans-split-136
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果程序执行数学运算以确定需要分配多少内存，并且攻击者可以强制使数学运算得出足够大的结果，那么数字可能会“溢出”，导致分配比所需少的内存，并强制缓冲区溢出（*整数溢出*问题）。
+- en: Such problems have been quite common in code, because it is often very difficult
+    to reason about when to release memory, and C programmers doing it manually, often
+    get it wrong. Automatic memory management (e.g., garbage collection) does generally
+    help address most of these issues… unless you can exploit issues with that memory
+    management.
+  id: totrans-split-137
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些问题在代码中相当普遍，因为很难确定何时释放内存，C 程序员经常手动操作时会出错。自动内存管理（例如垃圾回收）通常可以解决大多数问题…… 除非你能利用这些内存管理中的问题。
+- en: Memory managers in garbage collected languages do tend to be incredibly complicated,
+    and there have been several major exploits for multiple garbage collectors, including
+    most browser JavaScript engines.
+  id: totrans-split-138
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 垃圾回收语言中的内存管理器往往非常复杂，多个垃圾收集器（包括大多数浏览器 JavaScript 引擎）都存在严重漏洞。
+- en: Modern Mitigation
+  id: totrans-split-139
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 现代化的缓解措施
+- en: 'As mentioned above, C++ has done a lot of work to help programmers sidestep
+    the above issues:'
+  id: totrans-split-140
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如上所述，C++ 已经做了很多工作，帮助程序员避开上述问题：
+- en: The standard library is written in a way that, when functions return, most resources
+    (particularly stack-allocated memory) will be automatically released, without
+    the user having to do anything.
+  id: totrans-split-141
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 标准库编写方式使得在函数返回时，大多数资源（特别是栈分配的内存）会自动释放，用户无需进行任何操作。
+- en: Similarly, C++’s libraries completely avoid raw pointers, and use wrappers that
+    provide automatic memory management via ‘reference counting’.
+  id: totrans-split-142
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 同样，C++ 的库完全避免使用原始指针，而是使用通过“引用计数”提供自动内存管理的包装器。
+- en: The APIs for C++’s standard data structures prevent array bounds errors.
+  id: totrans-split-143
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: C++ 的标准数据结构的 API 可以防止数组边界错误。
+- en: C++ has a deep type system, and it’s often possible to be quite confident in
+    the safety of the program, relative to those types. Meaning, if you stick to their
+    guard-rails, you can be sure that type errors (where data is of an unexpected
+    type) are always caught.
+  id: totrans-split-144
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: C++ 拥有深层次的类型系统，通常可以相当自信地确保程序的安全性与这些类型相关。也就是说，如果遵循它们的保护栏，可以确保类型错误（数据类型不符预期）总是会被捕捉到。
+- en: There have also long been Garbage Collectors available for C++. The Boehm Collector
+    came out in 1988, and is still maintained.
+  id: totrans-split-145
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 长期以来，C++也一直有垃圾收集器可用。Boehm收集器于1988年推出，至今仍在维护。
+- en: There are a wealth of static analysis tools for C++ that can identify when code
+    doesn’t follow the C++ core guidelines.
+  id: totrans-split-146
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于C++，有大量静态分析工具可以识别代码是否符合C++核心指南。
+- en: The great thing about the above, is that many C++ programmers are benefitting
+    from most of the above items.
+  id: totrans-split-147
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 以上的好处之一是，许多C++程序员正在从上述大多数项目中受益。
+- en: C programmers, on the other hand, tend NOT to enjoy any of the same benefits.
+    While, much like C++, the C standard is frequently updated, unlike C++, C is vastly
+    more conservative on changes, and does not add niceties the way that C++ does.
+  id: totrans-split-148
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，C程序员往往不会享受到任何相同的好处。虽然像C++一样，C标准经常更新，但不同于C++，C在变化上保守得多，不像C++那样添加细微之处。
+- en: 'C programmers can get some of the same benefits:'
+  id: totrans-split-149
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C程序员也可以获得一些相同的好处：
+- en: There are Garbage Collectors for C. In fact, the Boehm Garbage Collector for
+    C++, works just as well with C.
+  id: totrans-split-150
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于C，有垃圾收集器。事实上，Boehm垃圾收集器也适用于C++，并且表现同样出色。
+- en: There are quite good static analysis tools for C, mostly centered around the
+    CLang compiler ecosystem.
+  id: totrans-split-151
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对于C来说，有相当好的静态分析工具，主要集中在CLang编译器生态系统周围。
+- en: But, for the most part, C sees its place in the world more as a portable assembly
+    language. We’ll come back to that shortly.
+  id: totrans-split-152
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但总的来说，C在世界上的地位更像是一种可移植的汇编语言。我们马上就会回到这一点。
+- en: Why is the View So Skewed?
+  id: totrans-split-153
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 为什么观点如此偏颇？
+- en: 'To the outsider, the discussion so far might fly in the face of the “evidence”
+    you’ve heard. For instance, I’ve heard many people claim, “most CVEs are due to
+    memory safety issues”. I recently read yet [another article quoting this](https://herbsutter.com/2024/03/11/safety-in-context/),
+    which also gave an interesting statistic: at that time (in March, 2024), there
+    have been 61 CVEs in C/C++ code, but only 6 CVEs in Rust code.'
+  id: totrans-split-154
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对于外行来说，到目前为止的讨论可能与您听到的“证据”背道而驰。例如，我听到许多人声称，“大多数CVE是由于内存安全问题引起的”。我最近阅读了另一篇引用这一说法的文章，该文章还提供了一个有趣的统计数据：到2024年3月为止，在C/C++代码中有61个CVE，但在Rust代码中只有6个CVE。
+- en: 'All of this is true, of course. But none of the data is a good proxy for risk:'
+  id: totrans-split-155
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，所有这些都是真的。但这些数据都不是风险的良好代理：
+- en: We’ve already established that counting memory errors is not the same as counting
+    *exploitable* memory errors. The later is far more important, and there are good
+    reasons to at least question this.
+  id: totrans-split-156
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 我们已经确定，计算内存错误与计算*可利用的*内存错误不同。后者更为重要，至少有充分的理由质疑这一点。
+- en: C/C++ is like a cockroach infestation, in that, you may not see it day to day,
+    but if you know where to look, you’ll find it **everywhere**. While C/C++ haven’t
+    been the most popular languages by any metric in a long time, old building blocks
+    are still widely used and maintained. And both are still common for any new systems-level
+    code. So, for most software we use, no matter what language it was written in,
+    there will probably be critical hidden dependencies under the hood that were written
+    in C/C++. *So saying Rust has had 10% of the CVE total of C/C++ actually feels
+    like it’s either appallingly high for Rust, or amazingly low for C/C++,* given
+    there is actually very little production Rust code in comparison to C and C++.
+  id: totrans-split-157
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: C/C++就像是蟑螂侵扰，你可能每天都看不到它，但如果你知道在哪里找，你会发现它**无处不在**。尽管C/C++在任何度量标准上很长一段时间以来都不是最受欢迎的语言，但旧的构建块仍然被广泛使用和维护。对于我们使用的大多数软件，无论它是用哪种语言编写的，底层可能都会存在关键的隐藏依赖关系，这些依赖关系是用C/C++编写的。*因此，说Rust的CVE总数只占C/C++的10%实际上感觉要么对Rust来说是令人震惊的高比例，要么对C/C++来说是惊人地低*，因为与C和C++相比，实际上几乎没有生产级别的Rust代码。
+- en: Even if all C/C++ errors for which there are CVEs happened to be easily exploitable,
+    the data is absolutely skewed towards highlighting memory vulnerabilities, due
+    to the economics around exploitation.
+  id: totrans-split-158
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 即使所有带有CVE的C/C++错误恰好都很容易被利用，由于围绕利用的经济因素，数据绝对偏向于突出显示内存漏洞。
+- en: As I noted above, governments (and some corporations) do pay for exploits that
+    they can use “tactically” in operations. In plenty of cases, both have been known
+    to pay six figure sums per bug, and sometimes pay even into the 7 figures.
+  id: totrans-split-159
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正如我之前提到的，政府（以及一些公司）确实会支付用于其操作中可以使用的漏洞“战术性”利用。在许多情况下，双方已知每个漏洞支付六位数的金额，有时甚至支付七位数的金额。
+- en: Vulnerability researchers who play this game generally make more than a year’s
+    worth of salary for the average tech worker with just one bug. And there are absolutely
+    people who manage to sell more than one such bug every year.
+  id: totrans-split-160
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 漏洞研究人员通常通过发现一个漏洞就能赚到普通技术工作者一年收入以上。而且确实有人每年能够成功出售多个这样的漏洞。
+- en: 'Generally, were I a government buying exploits, some of the most important
+    considerations for me, when figuring out what I should buy:'
+  id: totrans-split-161
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 一般来说，如果我是一个购买漏洞利用的政府，我在决定购买什么时，最重要的考虑因素之一是：
+- en: '**Reliability**. Due to lots of things (randomness included), lots of exploits
+    work only once in a blue moon. Some exploits, however, are absolute slam dunks,
+    and work every time.'
+  id: totrans-split-162
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**可靠性**。由于各种因素（包括随机性），许多漏洞利用只有一次成功的机会。然而，有些漏洞利用确实非常成功，每次都能奏效。'
+- en: '**Ubiquity**. Particularly, I’d care about ubiquity of software among my target.
+    Meaning, if you want to target a particular foreign actor, what software are you
+    like to find?'
+  id: totrans-split-163
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**普及性**。特别是，我会关心我的目标软件在各种情况下的普及性。也就是说，如果你想瞄准特定的外国行为者，你可能会找到什么软件？'
+- en: '**Stealth**. Generally, I’d want missions to not be discovered, and to minimize
+    the risk of losing my tools. I’ve seen exploits that can remotely pop common web
+    server software, then leverage another bug to raise privileges (escaping from
+    a container), and then disable SE Linux, all without ever writing to disk, and
+    with only a single log message — one that simply says SE Linux has stopped running.
+    That’s doing pretty well on the ‘stealth’ front.'
+  id: totrans-split-164
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**隐秘性**。通常情况下，我希望任务不被发现，尽量减少失去工具的风险。我曾看到的漏洞利用可以远程攻击常见的Web服务器软件，然后利用另一个漏洞提升权限（从容器中逃逸），然后禁用SE
+    Linux，而且完全没有写入磁盘的痕迹，仅有一个简单的日志消息——只是说SE Linux已停止运行。在“隐秘性”方面表现非常出色。'
+- en: '**Execution**. Generally, I want to be able to bring tools to help with my
+    activities. So full execution is a must-have. Though, data-driven attacks a pretty
+    big thing even in low-level exploitation these days. But I think a lot of the
+    “big actors” also like data driven attacks in higher-level cloud exploitation
+    because so much can be achieved with creds or data on users. Still, if I have
+    full execution, I can do those things, and far more.'
+  id: totrans-split-165
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**执行能力**。一般来说，我希望能够带来有助于我的活动的工具。因此，全面执行是必须的。尽管如今在低级利用中数据驱动攻击也很重要，但我认为许多“大角色”在高级云利用中也喜欢数据驱动攻击，因为这样可以通过凭证或用户数据实现很多目标。不过，如果我有全面执行能力，我可以做这些事情，以及更多。'
+- en: '**Longevity.** Ideally, the bug isn’t likely to be found and fixed as a matter
+    of course.'
+  id: totrans-split-166
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: '**持久性**。理想情况下，这个漏洞不太可能被发现和修复。'
+- en: There are classes of bugs, like command injection attacks, that can affect most
+    programming languages, that can score pretty well on many of the above fronts.
+    But a really good memory error generally will score even better.
+  id: totrans-split-167
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有些类型的漏洞，比如命令注入攻击，可以影响大多数编程语言，在多个方面都能取得相当好的分数。但是一个真正好的内存错误通常会得分更高。
+- en: Due both to the innate value of memory errors, as well as the technical challenges
+    involved in actually finding and exploiting such bugs, memory errors are the most
+    prestigious type of bug in the vulnerability research community.
+  id: totrans-split-168
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 由于内存错误的固有价值以及实际发现和利用此类漏洞所涉及的技术挑战，内存错误是漏洞研究社区中最负盛名的漏洞类型。
+- en: As a result, they get far more attention and press than more mundane issues.
+    That means that there could easily be plenty of reasonably low hanging fruit in
+    code written in other languages, but it also does mean that you’re much more likely
+    to see this kind of vulnerability show up in code you’re using, putting you at
+    more risk.
+  id: totrans-split-169
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 结果是，它们比更普通的问题更受关注和报道。这意味着代码中可能存在许多相对简单的低 hanging fruit，但也意味着您更有可能在使用的代码中看到这种类型的漏洞，从而增加您的风险。
+- en: On the other hand, as time has gone on, exploitation has become harder and less
+    reliable overall as a way to infiltrate, so it’s no surprise to see nation state
+    actors diversifying to other approaches, which we will discuss later.
+  id: totrans-split-170
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，随着时间的推移，利用变得更加困难和不可靠，因此看到国家行为者正在采取其他方法进行多样化，这并不奇怪，我们稍后会讨论。
+- en: Why don’t people switch?
+  id: totrans-split-171
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为什么人们不会转换？
+- en: So far, we’ve seen that C is indeed far more susceptible to memory errors than
+    any higher level language.
+  id: totrans-split-172
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 到目前为止，我们已经看到，相比任何高级语言，C语言确实更容易出现内存错误。
+- en: And while mitigations are reasonably effective, they are not good enough to
+    be the only reason why people don’t switch (well, in the case of C. In the case
+    of C++, they’ve got a better case).
+  id: totrans-split-173
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 虽然应对措施相对有效，但它们并不足以成为人们不转换的唯一原因（嗯，在 C 语言的情况下。在 C++ 的情况下，情况就不同了）。
+- en: So what are the key factors that keep people from switching?
+  id: totrans-split-174
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那么，是什么关键因素阻止了人们的转换？
+- en: For the sake of discussion, we’ll act like Economists, and assume that people
+    are rational (acting irrationality would tend to favor C anyway).
+  id: totrans-split-175
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 为了讨论的方便，我们将表现得像经济学家一样，假设人们是理性的（表现得非理性会倾向于支持 C 语言）。
+- en: First, it shouldn’t surprise anyone that, even if everyone agreed that C should
+    die, it would take an awfully long time, considering I cannot name a single person
+    who believes it’s a travesty COBOL isn’t a common language anymore. Still, there
+    are plenty of COBOL applications out there that aren’t going away any time soon.
+  id: totrans-split-176
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 首先，即使所有人都同意 C 语言应该被淘汰，也不应该让人感到惊讶，考虑到我不认识一个认为 COBOL 不再是常见语言是个悲剧的人。不过，仍然有许多 COBOL
+    应用程序，它们还不会很快消失。
+- en: Those COBOL applications are still there, because it’s been impossible to rip
+    them out. For every such application I’ve heard of (most of them long-running
+    services in the financial space), the company who owns the application has, at
+    multiple points, tried to migrate away from COBOL, but ultimately failed.
+  id: totrans-split-177
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 那些 COBOL 应用程序仍然存在，因为它们无法被彻底剔除。对于我听说过的每一个这样的应用程序（它们大多数是金融领域的长期服务），拥有该应用程序的公司在多个时间点都试图迁移到其他语言，但最终都失败了。
+- en: Such are always large applications that are incredibly important to the business’s
+    core economics, and quite complicated. But they have been working robustly for
+    a very long time.
+  id: totrans-split-178
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些应用程序总是非常重要于企业核心经济的大型应用程序，并且非常复杂。但它们长期以来一直表现出色。
+- en: Most people have, over the years, tried building something brand new from scratch,
+    but then have realized it would cost vastly more money to get both feature parity,
+    and to achieve the same level of robustness. Fifty years of insights and bug fixes
+    are encoded, but usually without adequate documentation.
+  id: totrans-split-179
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多年来，大多数人都尝试过从头开始构建全新的东西，但后来意识到要达到功能的平等，以及达到同样的鲁棒性将会花费更多的金钱。五十年的见解和错误修复已被编码，但通常缺乏足够的文档。
+- en: And then, how do you get confidence to swap things out? For instance, let’s
+    imagine you’ve got a system clearing north of $1 Trillion in transactions a day,
+    as it has been doing for many decades. What would it take before you would be
+    willing to cut more than a tiny sliver of that over to a new system, knowing that,
+    if you mess it up, the entire business will likely die?
+  id: totrans-split-180
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 接下来，你如何确信可以替换掉这些东西？例如，假设你的系统每天清算超过 1 万亿美元的交易，就像它已经做了几十年一样。在你愿意将其中一小部分切换到新系统之前，你需要做什么准备？要知道，如果搞砸了，整个业务很可能会倒闭。
+- en: The monolithic lift-and-shift is too impractical. But even on those old COBOL
+    systems, people have tried swapping out small pieces over time, too. That can
+    eventually work, but it can also lead to pretty catastrophic failure, and several
+    companies have deemed it not worth the cost and risk. So, even though they pay
+    to keep around good talent willing to maintain a code base in COBOL, the economics
+    are keeping the language around.
+  id: totrans-split-181
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 单块式的搬移和转移太不现实了。但即便是在那些老旧的 COBOL 系统上，人们也尝试过逐步替换小部分。这样最终可能有效，但也可能导致相当灾难性的失败，有几家公司认为这样做不值得成本和风险。因此，尽管他们付出了保留在
+    COBOL 代码基础上进行维护的人才的代价，但经济因素仍然支持着这种语言的存在。
+- en: C (along w/ C++) is far more ubiquitous than COBOL ever was, and it has been
+    the bedrock of most important software technology for pretty close to 50 years.
+  id: totrans-split-182
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C 语言（以及 C++）比 COBOL 要普及得多，几乎已经成为了几乎所有重要软件技术的基础，持续了将近 50 年。
+- en: You might think that’s hyperbole, but it absolutely is not. Currently, Python
+    has been the world’s most popular programming language for several years. The
+    dominant implementation has always been written in C, and much of the core libraries
+    are backed by C code.
+  id: totrans-split-183
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 你可能会认为这是言过其实，但这绝对不是。目前，Python 已经成为世界上最流行的编程语言数年。主要实现始终是用 C 语言编写的，核心库的大部分也是由
+    C 语言支持的。
+- en: JavaScript is the other popular high level language. Yes, it generally runs
+    in browsers, which themselves are typically incredibly large C++ projects.
+  id: totrans-split-184
+  prefs: []
+  type: TYPE_NORMAL
+  zh: JavaScript 是另一种流行的高级语言。是的，它通常在浏览器中运行，而这些浏览器本身通常是极其庞大的 C++ 项目。
+- en: Even programming languages that intentionally were NOT written in a C-like language
+    are generally going to be dependent on C code. Typically, fairly low-level services
+    like DNS will be offloaded to C code, often in the “standard” libraries.
+  id: totrans-split-185
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使是那些有意不使用类似C的编程语言编写的编程语言，通常也会依赖C代码。通常像DNS这样的低级服务会被委托给C代码，通常是在“标准”库中。
+- en: But at the end of the day, *every major operating system* is primarily written
+    in C, along with some assembly. Most of the network services we use every day
+    are primarily implemented in C or C++. In embedded systems, it’s STILL almost
+    unheard of to use a language other than C or C++. Even in Rust-land you will find
+    some C.
+  id: totrans-split-186
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但归根结底，*每个主要操作系统*主要是用C编写的，还有一些汇编。我们每天使用的大多数网络服务主要是用C或C++实现的。在嵌入式系统中，几乎没有人会使用除C或C++之外的语言。即使在Rust领域，你也会发现一些C。
+- en: '*There are reasons for that*. Here’s a non-comprehensive list:'
+  id: totrans-split-187
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '*这其中有原因*。以下是一个非全面的列表：'
+- en: A lot of C code has become incredibly widely used and trusted over many years,
+    and the world would have to take on a *lot* of pain to migrate.
+  id: totrans-split-188
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 多年来，许多C代码已经被广泛使用和信任，世界将不得不承担很多痛苦才能迁移。
+- en: Plenty of low-level tasks require significantly more gymnastics than necessary
+    in more safe languages, particularly because they are more defensive.
+  id: totrans-split-189
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 许多低级任务在更安全的语言中需要比必要的更多的技巧，特别是因为它们更具防御性。
+- en: Many embedded environments are constrained enough that bringing more compiled
+    systems languages to the table with lots of dependencies is not feasible. C is
+    incredibly compact and simple in comparison to Rust.
+  id: totrans-split-190
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 许多嵌入式环境受到限制，以至于在这些环境中引入更多依赖项的编译系统语言是不可行的。与Rust相比，C非常紧凑和简单。
+- en: When it comes to developers in the market qualified to do low-level programming,
+    you will find vastly more C and C++ programmers than any other alternative.
+  id: totrans-split-191
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 当谈到市场上合格的低级编程开发人员时，你会发现比其他任何替代品更多的是C和C++程序员。
+- en: Rust is not particularly easy to read or easy to write, and there is not really
+    any other game in town worth mentioning… yet (Zig is getting there). It particularly
+    makes it a huge lift to ask people who have spent 20–30 years honing their craft
+    in C or C++ to basically throw away that institutional knowledge. Nobody wants
+    to experience the feeling of swimming through molasses. More on this below.
+  id: totrans-split-192
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Rust既不易阅读也不易编写，实际上没有其他值得一提的选择...尽管（Zig正在逐步接近）。这尤其使得要求那些在C或C++上磨练了20-30年的人们基本上抛弃那些机构知识成为了一个巨大的挑战。没有人希望经历穿过糖浆游泳的感觉。更多内容请见下文。
+- en: A few weeks ago, I was talking about this topic, and I brought up the tremendous
+    level of effort companies running core services would be incurring by migrating
+    from well-designed C code to Rust. The person I was talking to, indicated that
+    would be easy, because there are IETF RFCs around all the pieces, like SMTP and
+    IMAP.
+  id: totrans-split-193
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 几周前，我谈论了这个话题，并提到了运行核心服务的公司将从设计良好的C代码迁移到Rust所需的巨大努力。我谈话的对象表示这很容易，因为像SMTP和IMAP这样的所有部件都有IETF
+    RFCs。
+- en: I wish that were good enough. RFCs leave plenty of “SHOULDs” and “COULDs”, and
+    often take time to catch up to evolutions in technology, instead of always defining
+    things before they get built. About 30 years ago, I wrote the first version of
+    Mailman, which by no means needed to implement a full-fledged SMTP server, and
+    I still have the mental scars from new non-conformant use cases leading to subtle
+    bugs around interoperability, coming out of the woodwork at a steady pace.
+  id: totrans-split-194
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我希望那是足够好的。RFCs留下了很多“应该”和“可能”，并且通常需要时间来赶上技术的进步，而不总是在建造之前定义事物。大约30年前，我写了Mailman的第一个版本，它绝对不需要实现一个完整的SMTP服务器，但我仍然记得由于新的不符合使用案例导致的互操作性周围的微妙错误。
+- en: People have been writing mail clients and mail servers around these core protocols
+    for more than 50 years, and the world is full of things that really should be
+    supported, but are undefined or non-compliant behavior. And some of those issues
+    will come up incredibly infrequently, and be hard to reproduce.
+  id: totrans-split-195
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 人们已经围绕这些核心协议写了邮件客户端和邮件服务器超过50年了，世界上充斥着真正应该支持但未定义或不符合规范的问题。而且其中一些问题极少发生，很难重现。
+- en: If you’re Google or Microsoft (who run a very large percentage of email these
+    days), how willing are you going to be to jettison code that’s been robust for
+    decades, and is trusted to cover all of those corner cases from the last few decades,
+    especially KNOWING that there’s not a good knowledge base around it?
+  id: totrans-split-196
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果你是Google或Microsoft（如今运行着非常大比例的电子邮件），你有多愿意抛弃几十年来一直可靠的代码，而且被信任覆盖了这些几十年中所有边缘案例，尤其是知道周围没有一个良好的知识库？
+- en: Now consider that the software here that we run today has built up some trust.
+    Sure, in the bad-old-days, Sendmail was popular and was peppered with holes, because
+    it wasn’t defensively written.
+  id: totrans-split-197
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 现在考虑一下，我们今天运行的软件已经积累了一些信任。当然，在过去，Sendmail很流行，而且充满了漏洞，因为它没有进行防御性编写。
+- en: On the Unix side, Postfix has been in active development for 25 years, and is
+    written in C. And while its security track record isn’t perfect, it has been very
+    good, and was designed from the beginning heavily leveraging the least privilege
+    principal.
+  id: totrans-split-198
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在Unix方面，Postfix已经处于活跃开发状态25年，用C语言编写。虽然其安全记录并非完美，但非常良好，并且从一开始就大量利用最小权限原则设计。
+- en: And even though Postfix was more security conscious from the beginning, and,
+    frankly, easier to configure and use, it took at least a decade (probably longer)
+    before it had mostly displaced Sendmail, mainly because of interoperability. It
+    took time not just to re-discover important anomalies that might disrupt the business,
+    but to prove to people worried about business disruption that it was mature enough
+    to not be a risk on that dimension.
+  id: totrans-split-199
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 即使Postfix从一开始就更注重安全性，而且坦率地说，配置和使用起来更容易，但至少花了一个甚至更长时间，才基本上取代了Sendmail，主要是因为互操作性。不仅需要时间重新发现可能会扰乱业务的重要异常，还需要向担心业务中断的人证明，它已经足够成熟，不会在这个维度上构成风险。
+- en: From that same era, there was a second upstart SMTP server, qmail, from Dan
+    Bernstein, which was written even more defensively (but still in C). Its only
+    known issue was an integer overflow back in 2005, when that was a new class of
+    vulnerabilities (and Dan has argued that it wasn’t even practical to exploit in
+    any real world scenario).
+  id: totrans-split-200
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 同一时期，还有第二个新兴的SMTP服务器qmail，来自丹·伯恩斯坦，它甚至更防御性地编写（但仍然是用C语言）。它唯一已知的问题是2005年的整数溢出，当时这是一种新的漏洞类别（丹认为在任何实际场景中，它甚至不可利用）。
+- en: But, qmail was not only much harder to use than Postfix and sendmail, but it
+    was not able to get to the necessary level of interoperability to get people to
+    adopt it in mass. As a result, qmail development stopped 25 years ago (although
+    there are still active descendants; they still are not widely used, and I couldn’t
+    imagine them being used anywhere where a bug could be meaningful economically).
+  id: totrans-split-201
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但是，qmail不仅比Postfix和sendmail更难使用，而且无法达到必要的互操作性水平，无法让人们大规模采用。因此，qmail的开发在25年前停止了（尽管仍有活跃的后继版本；它们仍然没有广泛使用，并且我无法想象它们在任何一个可能经济上有意义的地方被使用）。
+- en: 'So in order to “rewrite it in Rust”, and get that to the point of successfully
+    dethroning Postfix (never mind Exchange), one would have to:'
+  id: totrans-split-202
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 因此，“用Rust重写它”，并使其成功地推翻Postfix（更不用说Exchange了），一个人必须：
+- en: Build something from scratch that meets all the standards.
+  id: totrans-split-203
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从零开始构建符合所有标准的东西。
+- en: Get enough real-world usage to find and implement most of the “gotchas” that
+    mature software already will handle.
+  id: totrans-split-204
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 获得足够的实际使用情况，以找到并实施大多数“坑”，这些坑已经由成熟的软件处理。
+- en: Build in enough **usability** that people will consider it in bulk.
+  id: totrans-split-205
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 构建足够的**可用性**，以至于人们会考虑大规模使用它。
+- en: Keep up with all the new work that does get done in the mail world (there have
+    been plenty of additions over the years, especially in the security arena, and
+    nobody should expect that to stop).
+  id: totrans-split-206
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 跟上邮件界的所有新工作（多年来在安全领域尤其是有很多新增加，没有人应该期望这种情况停止）。
+- en: Slowly convince the world to move over.
+  id: totrans-split-207
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 缓慢地说服世界过渡。
+- en: In a best-case scenario, that process won’t happen quickly; it’s something where
+    we’ll see results another decade down the road. And while, on one hand I’d love
+    to see it, on the other hand, *It’s hard to get excited about a decade-long project
+    to displace something that isn’t generally considered a big risk anyway.*
+  id: totrans-split-208
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在最佳情况下，这个过程不会很快完成；我们将在未来十年看到结果。虽然一方面我希望看到这一点，但另一方面，*对于一个需要花费十年时间来取代一个并非普遍被认为是巨大风险的东西，很难感到兴奋*。
+- en: Of course, the above argument applies to a whole lot of legacy infrastructure
+    written in C. For instance, it’s great to see the Linux community start to experiment
+    with Rust in the code base. But it’s just an experiment at this stage, and if
+    it becomes more than that, it certainly will not be a quick migration.
+  id: totrans-split-209
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当然，上述论点也适用于大量使用 C 写的遗留基础设施。例如，看到 Linux 社区开始在代码库中尝试 Rust 是很好的。但目前只是一个实验阶段，如果超过这个阶段，它肯定不会是一个快速的迁移。
+- en: C’s long-term niche
+  id: totrans-split-210
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: C 的长期定位
+- en: In my view, Rust being in the kernel is an impressive accomplishment. Many people
+    have lobbied over the years for C++ to be allowed into the kernel, and it has
+    never happened. The argument against it has been simple — C++ has **too much**
+    abstraction. The kernel basically lives at the bottom of the software stack, and
+    should not incur any unnecessary costs, so the kernel team needs to be able to
+    reason about performance problems, which means they need to be able to see how
+    C code maps to the generated assembly.
+  id: totrans-split-211
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 依我看，Rust 能够进入内核是一项令人印象深刻的成就。多年来，很多人都争取让 C++ 被允许进入内核，但从未成功。反对的理由很简单——C++ 的抽象层次太高了。内核基本上生存在软件栈的最底层，不应该承担任何不必要的成本，因此内核团队需要能够理解性能问题，这意味着他们需要了解
+    C 代码如何映射到生成的汇编代码。
+- en: I can say from experience, Rust is indeed closer to C on that front. However,
+    Rust is certainly not **better** than C in that regard, and there are certain
+    tasks where Rust very much gets in the way.
+  id: totrans-split-212
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 根据我的经验，Rust 在这方面确实比较接近 C。然而，在这一点上，Rust 肯定不比 C 更好，并且在某些任务中，Rust 实际上会成为阻碍。
+- en: Many of those tasks are low-level enough that they’re true systems-level tasks,
+    like memory management, device drivers, exposing new hardware capabilities, and
+    so on.
+  id: totrans-split-213
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 许多这些任务都是足够低级的，以至于它们是真正的系统级任务，比如内存管理、设备驱动程序、暴露新的硬件功能等等。
+- en: And yes, you can do these things in Rust, but it is laborious in comparison,
+    and generally will result in leveraging Rust’s ‘unsafe’ capabilities, in which
+    case, you’re incurring the same risks, and why **not** write it in C?
+  id: totrans-split-214
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 是的，你可以用 Rust 做这些事情，但与之相比工作量大，并且通常会导致利用 Rust 的 'unsafe' 能力，这种情况下，你会承担相同的风险，那么为什么**不**用
+    C 来写呢？
+- en: Additionally, just like the Linux kernel doesn’t include the standard C APIs
+    (because they do not make sense in that context; they provide their own internal
+    APIs where needed), Rust cannot use its own APIs; they have to use the kernel’s.
+  id: totrans-split-215
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，就像 Linux 内核不包括标准的 C API（因为它们在那个上下文中没有意义；在必要时提供自己的内部 API ），Rust 也不能使用自己的 API；它们必须使用内核的
+    API。
+- en: The hardware architectures we use provide very little inbuilt safety at the
+    instruction level. Certainly, even C’s horrible, basic type system is vastly more
+    help than one gets writing directly to the architecture.
+  id: totrans-split-216
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们使用的硬件架构在指令级别上提供的安全性非常有限。当然，即使是 C 这种可怕的基本类型系统，也比直接编写到架构的好处要多得多。
+- en: In any realistic software system, if you drill down to the lowest levels, there
+    will always be code that will end up needing to be written to target these unsafe
+    platforms.
+  id: totrans-split-217
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在任何现实的软件系统中，如果你深入到最底层，总会有需要编写以针对这些不安全平台为目标的代码。
+- en: 'Additionally, as we noted above, the vast majority of embedded systems use
+    C exclusively. That’s not only because in some environments with weaker CPUs every
+    cycle might count. It’s also because other resources are limited:'
+  id: totrans-split-218
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，正如我们上面提到的，绝大多数嵌入式系统专门使用 C。这不仅仅是因为在某些弱CPU的环境中每一个周期都很重要。这还因为其他资源是有限的：
+- en: Memory might be at a huge premium, including stack space, disk space, cache,
+    registers, the works. The size of the compiled executable can be an issue, as
+    can be any unnecessary space taken up by runtime cruft or fat abstractions when
+    they’re present.
+  id: totrans-split-219
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 内存可能非常紧张，包括堆栈空间、磁盘空间、缓存、寄存器等等。编译后的可执行文件大小可能是一个问题，任何不必要的运行时废料或肥大的抽象在存在时也可能成为问题。
+- en: The tooling for such environments generally isn’t good for any other languages.
+    It might be a huge challenge just to get a compiler that produces code at all
+    for the platform, never mind one that provides tools aimed specifically at the
+    platform.
+  id: totrans-split-220
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 这种环境的工具通常对其他任何语言都不太适用。仅仅为平台获取一个能够生成代码的编译器可能就是一个巨大的挑战，更不用说提供专门针对该平台的工具了。
+- en: Due to a number of factors, including space constraints and the difficulty that
+    can be involved with test cycles, such environments often have very few external
+    dependencies. Even standard libraries for these environment may completely lack
+    basics like threading. Newer systems languages these days have been trying to
+    keep their standard libraries fairly small, but they are still too large (and
+    the build times are often way too high, particularly with Rust) to be “good enough”
+    in the embedded arena.
+  id: totrans-split-221
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 由于多种因素的影响，包括空间限制和测试周期可能涉及的困难，这些环境通常几乎没有外部依赖。即使是这些环境的标准库，可能也完全缺乏如线程等基本功能。当今的新型系统语言一直在努力保持其标准库相当小，但它们仍然过于庞大（特别是使用
+    Rust 时，构建时间通常过长），难以在嵌入式领域达到“足够好”的水平。
+- en: C has thrived in this world, and it’s one of the many reasons the C standard
+    aggressively minimizes what API *must* be present, way, way beyond what any of
+    the other systems languages do.
+  id: totrans-split-222
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C 语言在这个世界中得到了发展，这也是C 标准极力减少必须提供的 API 的众多原因之一，远远超出其他任何系统语言所做的范围。
+- en: Unfortunately, the embedded world tends to not support many (or any) of the
+    common mitigations that make C safe. They also have other disadvantages from a
+    security perspective, such as a difficult time finding the entropy needed for
+    basic cryptography. Nor do they have the investment that makes upgrading broken
+    software easier.
+  id: totrans-split-223
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不幸的是，嵌入式世界往往不支持许多（或任何）使C语言更安全的常见缓解措施。从安全角度来看，它们也有其他劣势，例如难以找到进行基本加密所需的熵。它们也没有使升级损坏的软件更容易的投资。
+- en: HOWEVER, these constraints are more business trade-offs made where cost through
+    the supply chain is a huge concern. Much of the software dealing with such constraints
+    is on low-end hardware for a reason, and the products in question often would
+    not be viable if they carried all of the baggage associated with higher-level
+    platforms.
+  id: totrans-split-224
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 然而，这些限制更多地是对成本通过供应链的重大考虑所做的商业取舍。许多处理此类限制的软件正因为某种原因运行在低端硬件上，并且所涉及的产品如果承载了与更高级平台相关的所有负担，很可能就不具备可行性了。
+- en: It’s not always just a “cost” consideration, either. Beefier hardware requires
+    more power, and if you’re looking at wearables or other devices that might need
+    to stay on battery power for long periods, those things might matter to people
+    far more than the security risks do.
+  id: totrans-split-225
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这也不总是仅仅“成本”考量。更强大的硬件需要更多的电力，如果您考虑到可能需要长时间依靠电池供电的可穿戴设备或其他设备，这些问题可能比安全风险更为重要。
+- en: Those are business trade-offs, and C is really the only non-assembly language
+    that is willing to properly service such environments (well, to a much smaller
+    extent C++, but that is the only other language that has any real traction in
+    the embedded space at all).
+  id: totrans-split-226
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这些都是商业取舍，C 语言确实是唯一愿意在这些环境中适当提供服务的非汇编语言（嗯，C++ 也算，但在嵌入式空间中它是唯一具有真正影响力的其他语言）。
+- en: People do like to call C a “portable assembler”. That’s not really true at all;
+    in my view, C is *far* more high-level than assembly. When I’m working on compiler
+    tasks and other system-level tasks, were I to be asked to not use C, but to use
+    assembly, that would seem absolutely insane. I only drop to assembly if it cannot
+    be done right in C (or cannot easily be done right), and that often is just a
+    few instructions. I also lose plenty of time when I have to drop to assembly,
+    because it is so infrequent (and each modern architecture is so complex), I have
+    to spend a lot more time in the documentation.
+  id: totrans-split-227
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 人们喜欢称C语言为“可移植的汇编语言”。这不完全正确；在我看来，C语言比汇编语言*高得多*。当我在处理编译器任务和其他系统级任务时，如果要求我不使用C而使用汇编语言，那似乎绝对是疯狂的。我只在无法正确使用C语言（或者不能轻松地正确使用）时才转向汇编语言，而这通常仅仅是几条指令。当我不得不转向汇编语言时，我也会浪费大量时间，因为这种情况如此罕见（而每种现代体系结构又如此复杂），我必须花费更多时间在文档上。
+- en: C lives in a unique space that is higher-level than assembly, but lower-level
+    than any other systems programming language (certainly C++, and Rust too). It’s
+    basically a half-step between them, abstracting away many platform portability
+    issues, but still basic enough that, if you DO know an architecture and compiler,
+    you can reliably predict what code will be generated just by looking at the C
+    source.
+  id: totrans-split-228
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C语言处于一个独特的空间中，比汇编语言更高级，但比任何其他系统编程语言（当然包括C++和Rust）更低级。它基本上是它们之间的半步，抽象了许多平台可移植性问题，但仍然足够基本，如果您了解体系结构和编译器，只需查看C源代码就可以可靠预测将生成的代码。
+- en: There are plenty of tasks that are best done at this level. Moving to Rust for
+    such tasks would be nowhere near as much extra work as dropping down to assembly,
+    but it still would be a lot of extra gymnastics, just to be writing “unsafe” blocks
+    anyway. While this would help bound areas where security bugs are likely to be,
+    the more need for such “unsafe” blocks, the more likely I’d be to expect negative
+    net benefit.
+  id: totrans-split-229
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有很多任务在这个层次上做最好。对于这些任务而言，转到Rust并不需要像降到汇编语言那样多的额外工作，但仍然需要进行大量额外的操作，仅仅是为了编写“不安全”代码块。虽然这将有助于界定安全漏洞可能存在的区域，但是需要这种“不安全”代码块的越多，我就越可能期待到负面净效益。
+- en: Some people have said to me, “does that mean you don’t consider C a real programming
+    language?” Far from it. I think that *assembly* constitutes a real programming
+    language. However, I think we are best served to think about classifying languages
+    using meaningful axises, as best as we can define them. Generally, people who
+    reach for Rust or C care a lot about performance (whether they should or not is
+    another matter). Less often (but still common), resource consumption is an important
+    issue. The axis in my mind has *performance* on one end, and *user experience*
+    on the other, because that is the primary trade-off as you move along the axis.
+  id: totrans-split-230
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 有人对我说，“这是否意味着你不认为C语言是一种真正的编程语言？” 远非如此。我认为*汇编*构成了一种真正的编程语言。然而，我认为我们最好是用有意义的轴来分类语言，尽我们所能来定义它们。通常情况下，选择Rust或者C的人们非常关心性能（不管他们是否应该这样）。更少见的情况是（但仍然很常见），资源消耗是一个重要问题。在我看来，这个轴上一端是*性能*，另一端是*用户体验*，因为这是沿着这个轴移动时的主要权衡。
+- en: 'I group things relative to that access like so:'
+  id: totrans-split-231
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我把事物相对于这个轴进行了如下分组：
+- en: '*Assembly languages*, which are so intrinsically low-level and devoid of useful
+    abstraction that I believe people should only deal with it directly in a few special
+    circumstances (including building compilers that automatically target it, unlocking
+    functionality, and very explicit optimization efforts that have a lot of data
+    suggesting the work be done, where compilers are just not in a position to come
+    anywhere near optimal).'
+  id: totrans-split-232
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*汇编语言*，它们固有地低级且缺乏有用的抽象，我认为人们只应在少数特殊情况下直接处理它（包括构建自动以其为目标的编译器、解锁功能和非常明确的优化工作，这些工作有大量数据表明应当完成，而编译器无法接近最优状态时）。'
+- en: '*Pre-assembly languages,* that try to keep everything as close to the hardware
+    as possible, while giving the programmer as much control as possible over performance.
+    Here, we might sacrifice a little bit on average on performance to make portability
+    and maintainability much better. But, we should still be writing code at a level
+    where we are providing something that should be fundamental, leveraged at scale
+    by software the author isn’t even considering. OS Kernels definitely fall in that
+    category, and perhaps some of the base low-level library facilities should too,
+    but most tasks probably don’t need to be handled at this level. Realistically,
+    C is the only language in this category. Rust may get there someday, but I don’t
+    feel it is anywhere close today. And okay, the name is horrible, but I’ve got
+    nothing better.'
+  id: totrans-split-233
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*预汇编语言*，试图尽可能靠近硬件，同时使程序员对性能拥有尽可能多的控制权。在这里，我们可能会牺牲一点平均性能，以使可移植性和可维护性大幅提升。但是，我们仍然应该在提供基础的代码水平上编写代码，这些代码在作者甚至没有考虑的情况下，通过软件规模化利用。操作系统内核肯定属于这一类别，也许一些基础的低级库设施也应该如此，但大多数任务可能不需要在这个层次上处理。实际上，C语言是这个类别中唯一的语言。Rust可能有朝一日会达到这一点，但我觉得今天离这个目标还很远。好吧，这个名字太可怕了，但我没有更好的建议。'
+- en: '*Systems languages.* To me, these are languages that focus on providing as
+    much performance as reasonable, while still providing safety in MOST cases (allowing
+    guarded access to unsafe mechanisms). Generally these languages will bend over
+    backwards to avoid traditional garbage collection (or, selectively opt out of
+    it). *That means you may have to do some manual work around memory management.*
+    This has become a “hot” category for language development, and includes C++, Rust,
+    Zig, D and Nim, among many other lesser known ones. Now, the manual memory management
+    generally is far less work and far less error prone than is typical from C. Although,
+    I’d say Rust makes memory management HARDER than best practices in C, but with
+    the benefit of much better safety guarantees. Go’s performance is now good enough
+    that it might even meet some people’s bar for a systems language, though I’ll
+    keep it out of this category due to the lack of first class support for manual
+    memory management.'
+  id: totrans-split-234
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*系统语言.* 对我来说，这些语言侧重于在大多数情况下提供尽可能多的性能，同时仍然提供安全性（允许对不安全机制进行受保护的访问）。 通常，这些语言会尽量避免传统的垃圾回收（或者有选择地选择退出）。*这意味着你可能需要在内存管理周围做一些手动工作。*
+    这已经成为语言开发的“热门”类别，并包括C++、Rust、Zig、D和Nim等许多其他不太知名的语言。 目前，手动内存管理通常比C中的典型操作要少得多，错误也少得多。尽管，我会说Rust使内存管理比C中的最佳实践更加困难，但具有更好的安全性保证。Go的性能现在已经足够好，甚至可能达到某些人对系统语言的要求，尽管由于缺乏对手动内存管理的一流支持，我会将它排除在这一类之外。'
+- en: '*Compiled languages*. In these languages, performance is still a concern, but
+    so is the overall developer experience. By this point, nobody should have to worry
+    much about memory management. And, there should be a fairly rich ecosystem. There’s
+    generally a strong emphasis on type safety too, with decent type systems. Go,
+    Java and C# are long-standing stalwarts in this category, and I’d put Typescript
+    here, since it is often fully compiled, and has a big emphasis on safety. I probably
+    stick Javascript more in the latter bucket (even though it is often compiled;
+    the naming here is definitely not perfect; it’s just that the correlation mostly
+    applies).'
+  id: totrans-split-235
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*编译语言。* 在这些语言中，性能仍然是一个问题，但整体开发者体验也同样重要。 到这个时候，没有人应该太担心内存管理了。 并且，应该有一个相当丰富的生态系统。
+    也基本上非常强调类型安全，具有相当不错的类型系统。 Go，Java和C#长期以来一直是这一类别的坚固支柱，我会将Typescript放在这里，因为它通常是完全编译的，并且非常注重安全性。
+    我可能更倾向于将Javascript更多地放在后一个桶里（尽管它经常被编译；这里的命名肯定不完美；只是相关性大多适用）。'
+- en: '*Scripting languages.* In these languages, performance is pretty low on the
+    priority list. Rapid development is highly valued, leading to very rich languages.
+    Usually people don’t want to wait for results to compile, and might even want
+    to see changes without having to re-run the program. Here, dynamic features have
+    traditionally been more highly valued than type safety, although that has started
+    to change (as evidenced by some of the ghastly bolt-on systems that are nevertheless
+    becoming fairly popular).'
+  id: totrans-split-236
+  prefs:
+  - PREF_UL
+  type: TYPE_NORMAL
+  zh: '*脚本语言.* 在这些语言中，性能并不是首要任务。 快速开发是非常重要的，导致了非常丰富的语言。 通常人们不想要等待编译结果，并且甚至可能希望在不必重新运行程序的情况下看到更改。
+    在这里，动态特性传统上比类型安全更受重视，尽管情况已经开始改变（正如一些令人震惊的补充系统的普遍流行所证明的那样）。'
+- en: On this axis, *security* doesn’t actually vary all that much. Yes, proper compiled
+    languages tend to have given it a lot of attention, and systems languages are
+    better than C. Clearly scripting languages sacrifice some safety, but these days
+    they’re usually just as willing to consider security as the compiled languages.
+  id: totrans-split-237
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这个轴上，*安全性* 实际上并没有变化那么大。 是的，适当的编译语言倾向于给予它很多关注，并且系统语言比C更好。 显然，脚本语言牺牲了一些安全性，但如今它们通常和编译语言一样愿意考虑安全性。
+- en: 'Here, C and assembly definitely are at a firm disadvantage relative to memory
+    safety, but, as we’ve been discussing, it’s not as big of a gap as one might think
+    because:'
+  id: totrans-split-238
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这里，相对于内存安全，C和汇编显然处于不利地位，但正如我们一直在讨论的那样，这个差距并没有人们想象的那么大，因为：
+- en: In desktop / server worlds where security is more likely to be a high priority,
+    there are often very effective mitigations that mitigate the risks. And if it’s
+    clear that where developers take the highest advantage of those mitigations and
+    put thought into their design and implementation, we might end up pretty reasonably
+    confident (e.g., with Postfix).
+  id: totrans-split-239
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在桌面/服务器领域，安全性往往是一个高优先级的问题，通常有非常有效的缓解措施来降低风险。如果明确开发者充分利用这些缓解措施，并在设计和实现中深思熟虑，我们可能会非常有信心（例如，使用Postfix）。
+- en: Other systems level-languages still expose unsafe features, and end up with
+    issues there.
+  id: totrans-split-240
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 其他系统级语言仍然暴露出不安全的特性，并且在那里出现问题。
+- en: Most languages have dependencies (often, including the compiler) that will be
+    written in memory-unsafe languages.
+  id: totrans-split-241
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 大多数语言都有依赖项（通常包括编译器），这些依赖项将用内存不安全的语言编写。
+- en: Plus, as we will discuss at the very end, these is at least one very important
+    way that other languages tend to be LESS secure than C.
+  id: totrans-split-242
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 此外，正如我们将在最后讨论的，其他语言通常比C语言更不安全的一种非常重要的方式。
+- en: 'Again, this is not to try to argue that C isn’t distinctly and uniquely risky.
+    We consistently see the big C targets get popped: browsers, kernels, network services.
+    While it’s more rare and harder than it used to be, there’s no shortage exploits
+    flowing. Adding new code quickly to such apps helps add attack surface. And, having
+    to rely on a large patchwork of mitigations all being in place at once isn’t awesome,
+    especially when they’re not in the most worrisome places, like embedded systems
+    that are almost never updated.'
+  id: totrans-split-243
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 再次强调，这并不是试图争论C语言不具有明显和独特的风险性。我们始终看到主要的C语言目标被攻破：浏览器、内核、网络服务。虽然这比过去更为罕见和更难，但是攻击代码仍然不乏。快速向这些应用程序添加新代码有助于增加攻击面。并且，必须依赖大量的缓解措施同时存在并不是一个好的选择，特别是当它们不在最令人担忧的地方，比如几乎不更新的嵌入式系统。
+- en: Still, the people working on OSes, browsers and so on tend to be smart people
+    who want to do the right thing. They’re clearly interested in better security,
+    and we need to understand that there are a lot of considerations we usually are
+    not considering.
+  id: totrans-split-244
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不过，从事操作系统、浏览器等工作的人往往是聪明的人，他们想要做正确的事情。他们显然对更好的安全性感兴趣，我们需要理解通常有很多考虑我们通常没有考虑到。
+- en: That is, it’s hard to imagine your OS and browser of choice being completely
+    written in Rust without unsafe blocks in the next few years, but it’s definitely
+    reasonable to expect that plenty of effort will go towards slowly shifting that
+    way. We can already see it not only in Linux’s acceptance of Rust, but also in
+    Microsoft’s, who is taking it very seriously, and using it for significant pieces.
+    But the people I’ve talked to there also understand the drawbacks, and are being
+    pragmatic.
+  id: totrans-split-245
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 换句话说，很难想象在接下来的几年内完全使用Rust编写你选择的操作系统和浏览器而不使用不安全块，但可以合理地期望大量的工作将逐步朝这个方向进行。我们已经可以看到这种趋势，不仅体现在Linux对Rust的接受上，还体现在非常认真对待Rust的Microsoft身上，并且在重要部分中使用它。但我在那里与人交谈时，他们也理解其中的缺点，并且采取了实用主义的态度。
+- en: Premature Optimization as a Language
+  id: totrans-split-246
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 早期优化作为一种语言
+- en: I’ve been arguing that, like it or not (and to be clear, I don’t like it), C
+    has a strong argument for its place in the ecosystem, and it is not going away
+    any time soon, because there is nothing appropriate ready to displace it.
+  id: totrans-split-247
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我一直在争论，不管你喜欢与否（并且明确地说，我不喜欢），C语言在生态系统中占据重要地位的论据是非常强有力的，并且它不会很快消失，因为没有任何适当的替代品。
+- en: 'I think it’s more concerning that **many** programmers systemically overestimate
+    how important performance is. My observations:'
+  id: totrans-split-248
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我认为更令人担忧的是，许多程序员系统性地高估了性能的重要性。我的观察是：
+- en: Python has been so popular for so long despite being 50–80x slower than C for
+    much of that run (when languages in the Systems and Compiled categories often
+    have been in the 2x-5x range, and rarely above 10x).
+  id: totrans-split-249
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 尽管Python在很长一段时间内比C语言慢50-80倍，它仍然如此受欢迎（当系统和编译类别的语言通常在2-5倍范围内，并且很少超过10倍时）。
+- en: Most language decisions are made long before there is any relevant performance
+    data to guide a decision.
+  id: totrans-split-250
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 大多数语言决策是在有任何相关性能数据指导决策之前做出的。
+- en: In fact, gathering performance data at all is quite rare, even though decisions
+    made in the name of performance are frequent.
+  id: totrans-split-251
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 实际上，收集性能数据本身就非常罕见，尽管以性能为名做出的决策却很频繁。
+- en: All this despite the fact that it’s oft-repeated that conventional wisdom around
+    how code interactions with the compiler and/or architecture is typically old and
+    wrong. You hear a lot that “it’s generally better to trust the compiler”, and
+    a lot of us who give that advice then turn around and ignore it.
+  id: totrans-split-252
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: I think any systems programmer being honest would themselves would say premature
+    optimization is a huge pitfall, one that they have fallen into it many times.
+  id: totrans-split-253
+  prefs: []
+  type: TYPE_NORMAL
+- en: I myself often fall prey to it. Sure, I do try to measure, especially when performance
+    is an explicit goal. For instance, when I was working on lock-free, wait-free
+    hash tables (and other data structures), I did a LOT of comparative testing, for
+    instance producing at least 15 different implementations that varied often in
+    very subtle ways, so that I could do controlled testing in a lot of different
+    workloads.
+  id: totrans-split-254
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'On the other hand, I have habits built over the decades that I can’t fully
+    shake. I still sometimes am compelled to copy function parameters that are passed
+    by reference into locals when that value is used frequently in a function to ensure
+    that it’s in a register, even though:'
+  id: totrans-split-255
+  prefs: []
+  type: TYPE_NORMAL
+- en: Were I to measure, it’d almost certainly be irrelevant in all circumstances,
+    in terms of contributing to noticeable performance problems from a user perspective.
+  id: totrans-split-256
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Often, I’m using a language where I can take advantage of link-time optimization
+    (LTO), which involves doing additional optimization once you know every single
+    module going into your executable. LTO didn’t exist for me 30 years ago (modules
+    were all separately compiled under the assumption they might be linked to anything
+    in the future), and no compiler was going to risk copying something behind a pointer
+    across modules in case there were threads. I haven’t dug deeply enough to know
+    if the compilers I use bother, but they certainly *could* do this, and if it makes
+    an impact, they probably DO. Of course, not only does it not likely matter in
+    practice, but it probably didn’t even matter in anything I ever did back then
+    either. No, it was just “conventional wisdom” I absorbed.
+  id: totrans-split-257
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: People are notoriously bad at estimating *performance* (and *risk)*, and for
+    people who are going to overestimate, they are going to end up choosing systems
+    languages (or C, especially if they are cavalier about the risk side of things)
+    when a plain old compiled language might be fine. In fact, in many, many cases,
+    even Python would be fine. Dropbox, for instance, did very well for themselves
+    with most critical things running in Python.
+  id: totrans-split-258
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Personally, I think we, as an industry should be far more concerned about people
+    making bad choices around *performance* than we should about security, because:'
+  id: totrans-split-259
+  prefs: []
+  type: TYPE_NORMAL
+- en: If you push people to not overestimate the need for performance, security does
+    tend to get meaningfully better as a matter of course.
+  id: totrans-split-260
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The indirect economic hit from overestimating on performance can easily be far
+    more impactful to businesses than the cost of underestimating on security. For
+    instance, both C and Rust programmers tend to spend significant amounts of time
+    on memory management, and find themselves spending more time trying to understand
+    low-level issues when they do arise, compared to the compiled languages, and even
+    our highest-level languages. Do you really need to forego the garbage collector?
+    Because that alone often adversely affects development time significantly, never
+    mind the benefits of having much richer abstractions available in a standard library
+    that can lower costs.
+  id: totrans-split-261
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 从性能高估所带来的间接经济损失可能远远超过对安全性低估成本的影响。例如，无论是C还是Rust程序员往往会在内存管理上花费大量时间，并发现在低级问题出现时花费更多时间，与编译语言甚至我们最高级别的语言相比。你真的需要放弃垃圾回收吗？因为这往往会显著影响开发时间，更不用说在标准库中拥有更丰富的抽象可以降低成本的好处了。
+- en: Meaning, I’d be just as inclined to push people away from Rust and toward Go
+    as I would to push them away from C and toward Go. If I take off my “security
+    guy” hat, and try to form an opinion that’s as objective as possible, I think
+    that is far more meaningful than the benefit of going from C to Rust, *even if
+    I ignore all of the hidden costs to using Rust we’ve been discussing*.
+  id: totrans-split-262
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这意味着，我会像劝退人们远离Rust并转向Go一样，也会推动他们远离C并走向Go。如果我摘下“安全专家”的帽子，尽可能客观地形成一个观点，我认为这比从C到Rust的好处要有意义得多，*即使我忽略了我们讨论过的使用Rust时的所有隐藏成本*。
+- en: 'That’s not to say there aren’t plenty of cases where systems languages, or
+    even pre-assemblers aren’t the right choice. I just think we should routinely
+    push back on this question, and try to get people to try to objectively examine
+    all aspects of why they’re really making the decision:'
+  id: totrans-split-263
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 这并不是说没有大量的情况适合使用系统语言，甚至是预装配器也不适合。我只是认为我们应该经常对这个问题提出异议，并尝试让人们客观地检查他们做出决定的所有方面的原因：
+- en: Is it really because we can demonstrate a performance need? If so, prove it.
+  id: totrans-split-264
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 我们真的需要展示性能上的需求吗？如果是这样，请证明。
+- en: Otherwise, it could be valid to consider the *switching cost,* particularly
+    when we start with access to resources seasoned in a particular language, etc.
+  id: totrans-split-265
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 否则，考虑“转换成本”可能是有效的，特别是当我们从一种语言开始获取经验丰富的资源时等等。
+- en: And if not, what would most likely help with other goals… getting the functionality
+    built faster? Or maybe quality is important (which would push me to Go or other
+    compiled languages, since scripting languages often are harder to drive up quality
+    due to the dynamic nature, and even in a systems language with a very strong type
+    system like Rust, lower-level code seems to implicitly end up with more hidden
+    “gotchas”.
+  id: totrans-split-266
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果不是，那么对于其他目标，最有帮助的可能是加快功能构建速度吗？或者质量更为重要（这将推动我选择Go或其他编译语言，因为脚本语言往往由于动态性质更难提高质量，即使在像Rust这样具有非常强类型系统的系统语言中，底层代码似乎也会自然地产生更多隐藏的“陷阱”）。
+- en: We Still Need People Learning C
+  id: totrans-split-267
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+  zh: 我们仍然需要人们学习C语言。
+- en: In most scenarios where people select a systems language, we should be urging
+    them to pick something higher-level, instead of prematurely optimizing without
+    data.
+  id: totrans-split-268
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在大多数选择系统语言的情况下，我们应该鼓励他们选择更高级别的东西，而不是在没有数据的情况下过早进行优化。
+- en: More times than not, that will be the right economic decision for individual
+    products and companies. However, the industry as a whole does need to continue
+    to cultivate C programmers somehow.
+  id: totrans-split-269
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 多数情况下，这将是个体产品和公司的正确经济决策。然而，整个行业确实需要继续培养C程序员。
+- en: 'As long as COBOL’s legs have been, C’s will be MUCH longer. Today, there are
+    incredibly few people with any practical COBOL experience, but things won’t be
+    great if, 50 years from now, there are as few people with practical C experience,
+    because:'
+  id: totrans-split-270
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 只要COBOL存在的时间足够长，C的生命力也会更加持久。如今，几乎没有多少人拥有实际的COBOL经验，但如果50年后实际使用C的人数依旧很少，情况就不容乐观了，因为：
+- en: Believe it or not, despite its age, COBOL is much higher level and more accessible
+    than C, so it will be much harder to get good people up and running to be able
+    to maintain critical systems 50 years from now, considering how insane C is compared
+    to other programming languages.
+  id: totrans-split-271
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 令人难以置信的是，尽管COBOL年龄较长，但比起C，它的抽象层次更高，更易于理解，所以在未来50年内，要想培养能够维护关键系统的合格人员将会更加困难。
+- en: There will, without any doubt at all, be far more critical C still in widespread
+    use (very likely including OS kernels).
+  id: totrans-split-272
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 毫无疑问，仍然会有更多至关重要的C语言在广泛使用中（很可能包括操作系统内核）。
+- en: It facilitates keeping system-level innovation going.
+  id: totrans-split-273
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 它有助于保持系统级创新的进行。
+- en: What I mean by that last point, is that, 50 years from now, we will still need
+    people who can become experts at the underlying architectures, AND help enable
+    software developers with any hardware improvements.
+  id: totrans-split-274
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我所说的最后一点是，50年后，我们仍然需要人们成为基础架构的专家，并帮助实现任何硬件改进的软件开发人员。
+- en: 'Over the last 30+ years, we’ve benefited tremendously as an industry by a large
+    influx of people into programming, and some of them have gone down that path.
+    But:'
+  id: totrans-split-275
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在过去的30多年里，我们作为一个行业因为大量人员涌入编程而受益良多，其中一些人已经走上了这条路。但是：
+- en: We’ve also provided people with much higher-level abstractions at the language
+    level than 30 years ago. Javascript, Python, Go and Java do such a great job of
+    abstracting away the hardware details, that only people who get incredibly interested
+    in learning systems stuff do it.
+  id: totrans-split-276
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 在语言层面上，我们也为人们提供了比30年前更高级的抽象。Javascript、Python、Go和Java在抽象硬件细节方面做得非常出色，以至于只有那些对学习系统内容非常感兴趣的人才会这样做。
+- en: If AI-assisted development becomes incredibly effective, the gap for most developers
+    from where they are to mastering systems programming could grow significantly
+    (which isn’t all bad).
+  id: totrans-split-277
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果AI辅助开发变得非常有效，大多数开发人员从当前水平到掌握系统编程的差距可能会显著增大（这并不全是坏事）。
+- en: If we do somehow stop most C development, and most people from learning it without
+    any suitable replacement (of which Rust is not, I assure you), we will be massively
+    widening the gap between systems languages and the actual hardware.
+  id: totrans-split-278
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 如果我们不知何故停止大多数C语言的开发，并且没有任何合适的替代品（我向您保证，Rust并不是），我们将极大地扩大系统语言和实际硬件之间的差距。
+- en: C, as horrid as it is, definitely is a much better stepping stone towards understanding
+    low-level architectures from the programming side, relative to any other current
+    language.
+  id: totrans-split-279
+  prefs: []
+  type: TYPE_NORMAL
+  zh: C，尽管它很可怕，相对于当前的任何其他编程语言，绝对是理解低级架构的更好的跳板。
+- en: If that stepping stone isn’t there, then the people willing to move down the
+    stack all the way to facilitate hardware improvements in software, will drop dramatically
+    due to the level of effort required to learn the basics and accomplish simple
+    tasks would end up being high enough that more people who are interested will
+    either assume they’re incapable or will not want to go through the pain, and give
+    up. People are very goal-oriented creatures, and we tend to not pursue the goals
+    that we perceive as too unachievable, for our own mental health.
+  id: totrans-split-280
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果没有这个跳板，那么愿意一直往下到硬件层面促进软件硬件改进的人数会显著减少，因为学习基础知识和完成简单任务所需的努力将足够大，以至于更多对此感兴趣的人要么认为自己无法做到，要么不愿意经历痛苦，从而放弃。人们是非常以目标为导向的生物，我们倾向于不追求我们认为不可实现的目标，这是为了我们自己的心理健康。
+- en: I’d feel much more comfortable if there were a pre-assembly language that corrected
+    some of C’s most egregious mistakes (the biggest in my view being C’s treatment
+    of arrays, but my list of issues is very long), and, during development, always
+    perform as much analysis as possible (not just the sanitizers available via the
+    clang project, but runtime safety tools like Valgrind).
+  id: totrans-split-281
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 如果有一种预汇编语言，可以纠正C语言中的一些最严重的错误（在我看来最大的错误是C语言对数组的处理，但我列出的问题非常多），并且在开发过程中尽可能多地进行分析（不仅仅是通过clang项目提供的消毒器，还包括像Valgrind这样的运行时安全工具）。
+- en: Rust currently is the closest thing to that replacement, but over-emphasizing
+    the functional paradigm currently detracts from illuminating the underlying imperative
+    Von Neumann architecture in my view.
+  id: totrans-split-282
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Rust目前是最接近替代的语言，但我认为，当前过度强调功能性编程范式会削弱对冯·诺伊曼架构的阐释。
+- en: Why One Might Not Choose Rust
+  id: totrans-split-283
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: 为什么有人可能不选择Rust
+- en: 'Some of these we’ve covered, but overall, I’ve heard people cite:'
+  id: totrans-split-284
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我们已经涵盖了其中一些，但总体而言，我听说人们引用过：
+- en: “Our applications don’t need to be written in a systems-level language; we are
+    fine with garbage collection.”
+  id: totrans-split-285
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: “我们的应用程序不需要用系统级语言编写；我们可以接受垃圾回收。”
+- en: “We’re comfortable with the language(s) and ecosystem(s) we know, and do not
+    want to lose so much time to learning a new ecosystem.”
+  id: totrans-split-286
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: “我们对已知的语言和生态系统感到满意，不想花费太多时间学习一个新的生态系统。”
+- en: “We feel Rust has a steep learning curve, and is hard to write.”
+  id: totrans-split-287
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: “我们觉得Rust的学习曲线很陡，写起来很困难。”
+- en: “We don’t have people skilled enough with it (everyone learning it together
+    seems like a waste of resources).”
+  id: totrans-split-288
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: “我们没有足够熟练的人使用它（所有人一起学习似乎是一种资源浪费）。”
+- en: “Other people’s code written in Rust tends to be hard to understand.”
+  id: totrans-split-289
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: “其他人用 Rust 写的代码往往难以理解。”
+- en: “Build times tend to be very high, often with too many external dependencies.”
+  id: totrans-split-290
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: “构建时间往往非常长，通常存在过多的外部依赖。”
+- en: I realize that Rust has become very popular with the Technorati in a very short
+    period of time, and for very good reasons. Personally, I have a great appreciation
+    of some of Rust’s accomplishments; I too masochistically enjoyed my early fights
+    with the borrow checker, because I could appreciate the raw technical accomplishment,
+    and it made me feel smart to be able to be effective at Rust.
+  id: totrans-split-291
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我意识到 Rust 在非常短的时间内已经在技术界变得非常流行，并且理由非常充分。就我个人而言，我非常欣赏 Rust 的一些成就；我也享受与借用检查器的早期斗争，因为我能够欣赏到这种原始技术成就，并且这让我觉得自己很聪明，能够有效地使用
+    Rust。
+- en: Still, I’ve experienced many of the above listed items first hand. About three
+    years ago, I was reading an academic paper that was poorly written, and decided
+    to see if anyone had implemented it yet. I found two different implementations
+    of the same paper, but only two, and they both happened to be in Rust. I’d done
+    some stuff in Rust, so I thought it’d be fine. But, both implementations were
+    both incredibly terse and challenging to comprehend themselves. And if I hadn’t
+    known they implemented the same algorithm, I never would have guessed, because
+    they used substantially different idioms, and looked nothing alike.
+  id: totrans-split-292
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 尽管如此，我亲身经历了上述许多情况。大约三年前，我在阅读一篇写得很糟糕的学术论文时，决定看看是否有人已经实现了它。我发现了两个不同的实现，但只有两个，并且它们都碰巧是用
+    Rust 写的。我之前在 Rust 中做了一些事情，所以我以为没问题。但是，这两个实现都非常简洁且具有挑战性，自身也很难理解。如果我不知道它们实现了相同的算法，我永远也不会猜到，因为它们使用了完全不同的习语，看起来一点都不像。
+- en: 'It reminded me of reading other people’s Perl in the mid ‘90’s: Rust sometimes
+    feels like a “write-only” language.'
+  id: totrans-split-293
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 它让我想起了上世纪 90 年代中期阅读其他人的 Perl 代码的情形：Rust 有时感觉像是一种“只可写不可读”的语言。
+- en: And, I’ve written enough Rust and talked to plenty of Rust developers to say
+    confidently that a significant number of people will find it difficult to adopt,
+    and will take a long time to feel as productive in it relative to their current
+    language of choice.
+  id: totrans-split-294
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 此外，我已经写了足够多的 Rust，并与足够多的 Rust 开发人员交流，可以自信地说，很多人会发现采用 Rust 很困难，并且需要很长时间才能在它上面感到像在他们当前选择的语言中一样高效。
+- en: 'I say that, even having read Google’s blog post where they attempt to debunk
+    Rust being ‘hard to learn’. I read that, but beyond them not sharing any real
+    data, there are issues with this work:'
+  id: totrans-split-295
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我说过，即使已经阅读了 Google 的博文，他们试图驳斥 Rust“难学”的说法。我看过了，但除了他们没有分享任何真实数据外，这项工作还存在问题：
+- en: The sentiment of people who found themselves “as productive in Rust” is very
+    skewed by Googlers who are used to building to their internal C++ tool stack,
+    which has enough complexity and controls built up over the years that simply being
+    freed from those constraints will make them feel productive.
+  id: totrans-split-296
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 那些发现自己“在 Rust 中很高效”的人的情绪，受到了习惯于构建其内部 C++ 工具堆栈的谷歌员工的极大偏见影响，这些工具堆栈经过多年积累已经足够复杂和控制，仅仅摆脱这些约束就会让他们感到高效。
+- en: Surveying user sentiment instead of metrics around code itself comes with implicit
+    bias that is hard to correct for (look at how much work is applied to correct
+    for such things in political polling, to still have huge misses). Google employees
+    want don’t want to look weak to the people who are surveying them about Rust.
+  id: totrans-split-297
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 对代码本身周围的度量进行用户情感调查带有难以纠正的隐性偏见（看看政治民意调查中用于纠正此类事物的工作量，仍然存在巨大的失误）。Google 员工希望不想在被调查他们关于
+    Rust 的人面前显得软弱。
+- en: Even if the data were even remotely useful, there is no direct comparison against
+    other languages. The blog post claims their results are the same as any other
+    language, but they explicitly use the word “anecdotally”.
+  id: totrans-split-298
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 即使数据稍有用处，也没有直接与其他语言进行比较。博文声称他们的结果与任何其他语言相同，但他们明确使用了“据说”的词语。
+- en: Google’s workforce also tends to be among the most skilled around. Saying, “we
+    think it’s easy at Google” doesn’t generalize in the slightest.
+  id: totrans-split-299
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: Google 的员工群体通常也是最为熟练的。说“我们觉得在 Google 很容易”根本不能概括。
+- en: In fact, from what I’ve seen, Rust primarily has only taken off among the Technorati.
+    I think anyone who has done significant work in both Python and Rust should have
+    an intuition that Python is likely far easier for the masses.
+  id: totrans-split-300
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 事实上，从我看到的情况来看，Rust主要只在技术精英中流行起来。我认为，任何既有Python又有显著工作经验的人都应该有直觉，Python可能更容易被大众接受。
+- en: Personally, this fact, that Rust is explicitly for the Technorati, people who
+    come to the table with an intuitive grasp of a mathematical function and recursion,
+    is what keeps me from embracing it.
+  id: totrans-split-301
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 就我个人而言，Rust专门面向“技术精英”，那些对数学函数和递归有直观掌握的人，这一事实让我无法接受它。
+- en: I want programming to be more egalitarian. I think there are many smart, capable
+    people in the world, outside our industry, and outside sciences, who could make
+    amazing contributions to the world if they could more easily translate ideas to
+    computer execution. Much like I don’t like seeing too high a bar for people to
+    learn systems programming, I care a lot about lowering the bar to entry for programming
+    in general (In my view, Python has done the most for the world in that regard).
+  id: totrans-split-302
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我希望编程更加平等。我认为世界上有很多聪明而有能力的人，在我们行业之外，在科学之外，如果能更轻松地将想法转化为计算机执行，他们将能够为世界做出惊人的贡献。就像我不喜欢看到人们学习系统编程的门槛太高一样，我非常关心降低编程总体入门门槛（在我看来，Python在这方面为世界做了最多的事情）。
+- en: 'But fundamentally, Rust is a great language, and people who are comfortable
+    with it should use it where it makes sense. However, I think people should try
+    to be more honest about the economics:'
+  id: totrans-split-303
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但从根本上讲，Rust是一种很棒的语言，那些熟悉它的人应该在适合的地方使用它。然而，我认为人们应该更加诚实地考虑经济因素：
+- en: We should be pushing to think more thoroughly about the economics surrounding
+    their choices, particularly pushing to prefer compiled languages over systems
+    languages whenever possible, because the overall economics are likely to be better
+    much of the time.
+  id: totrans-split-304
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 我们应该推动更深入地考虑围绕他们的选择的经济学问题，特别是在可能的情况下，推动更倾向于编译语言而不是系统语言，因为总体经济学可能大部分时间都会更好。
+- en: When pre-assembly needs are there, we should not be forcing people to avoid
+    C/C++. Challenging the choice is fine, but the world’s needs are never going to
+    be met by a single programming language, even in the systems space.
+  id: totrans-split-305
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 当需要预先汇编时，我们不应该强迫人们避免使用C/C++。挑战选择是可以的，但世界的需求永远不会被单一的编程语言满足，即使在系统领域也是如此。
+- en: We should be promoting the development, and the success of additional systems
+    languages like Zig, and even something that actually *could* replace C in its
+    niche, so that someday we might be able to put the nails in C’s coffin in a way
+    we haven’t even been able to do with COBOL (despite a forceful push to do so leading
+    up to the millennium).
+  id: totrans-split-306
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+  zh: 我们应该推动发展，并成功推广像Zig这样的其他系统语言，甚至是一些实际上*可能*在其领域取代C的东西，以便有朝一日我们可以以一种我们甚至在千禧年前的时候都没能做到的方式，将C的命运尘埃落定。
+- en: Currently, Zig and its ecosystem are well behind Rust’s in terms of readiness
+    for many system programming needs, but it takes a much more egalitarian approach
+    to the problem. Between it and Rust, Zig will be a much more accessible language
+    to the bulk of people who have written in compiled languages and even scripting
+    languages.
+  id: totrans-split-307
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 目前，Zig及其生态系统在准备好应对许多系统编程需求方面远远落后于Rust，但它对问题采取了更加平等主义的方法。在Zig和Rust之间，Zig将是对许多曾经使用过编译语言甚至脚本语言的人们更加可访问的语言。
+- en: Part of it is that Rust’s roots are firmly in the functional programming world,
+    where first principles are around mathematically pure functions. There are some
+    people in the world who intuitively understand those things, but it tends to be
+    people with a significant math background.
+  id: totrans-split-308
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Rust的部分基础牢固地扎根于函数式编程世界，其中的第一原则是数学上纯粹的函数。世界上有些人本能地理解这些东西，但往往是那些具有显著数学背景的人。
+- en: On the other hand, Zig is still a regular imperative language. First principles
+    essentially are “giving somebody detailed instructions”. Even kids understand
+    such things (even if they generally don’t want to follow them). And indeed, every
+    successful pre-programming project I’ve ever seen (such as Scratch) is imperative.
+  id: totrans-split-309
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，Zig仍然是一种常规的命令式语言。基本原则实质上是“给某人详细的指示”。即使孩子们也理解这些东西（即使他们通常不愿意遵循）。事实上，我所见过的每一个成功的预编程项目（如Scratch）都是命令式的。
+- en: The fact that functional programming has been widely acknowledged as non-accessible,
+    and difficult to adopt for the last 65 years indicates to me that every class
+    of programming language should have a strong procedural language.
+  id: totrans-split-310
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 函数式编程被广泛认为不易接触，并且在过去65年中难以采用的事实告诉我，每一类编程语言都应该有一个强大的过程化语言。
+- en: I remember that MIT used to brag about starting with Scheme as a first language,
+    when everyone else was teaching C++, touting the functional paradigm. But they
+    too, eventually moved away from functional languages as an introductory languages.
+  id: totrans-split-311
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我记得 MIT 曾经吹嘘过从 Scheme 开始作为第一门语言，当其他人都在教授 C++，宣扬函数式范式。但他们最终也放弃了函数式语言作为入门语言。
+- en: But, I mostly feel positive about the functional paradigm, and functional languages
+    too, because they do have tremendous advantages of their own, particularly, better
+    encouraging more reliable code that is easier to analyze (and, my copy of *The
+    Implementation of Functional Languages* signed by Simon Peyton Jones 30 years
+    ago remains among my prized possessions).
+  id: totrans-split-312
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 不过，我大多数时间都对函数式编程范式和函数式语言持积极态度，因为它们确实有自己的巨大优势，特别是更有利于鼓励编写更可靠、更易分析的代码（而且，我30年前由西蒙·佩顿·琼斯签名的《函数式语言实现》仍然是我最珍贵的藏品之一）。
+- en: I’d say that there’s so much value in the functional paradigm, that I believe
+    it’s worth having a good, popular functional language at every abstraction level
+    down to perhaps pre-assembly (I’m not sure there would be much utility in a functional
+    assembly language any time soon. But I’d be excited to be proved wrong!)
+  id: totrans-split-313
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我想说函数式范式有很多价值，我相信每个抽象级别下都值得有一个良好的、流行的函数式语言，甚至可以到汇编前（我不确定在短期内会有多少用途在函数式汇编语言中。但我很乐意被证明是错误的！）
+- en: On the other hand, I think the object-oriented programming paradigm has much
+    more limited utility and is better off either going away entirely, or at most,
+    being a de-emphasized feature.
+  id: totrans-split-314
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 另一方面，我认为面向对象编程范式的实用性要大大有限，最好要么完全消失，要么至多只是一个不再强调的特性。
+- en: Where Rust is probably a Bigger Security Risk than C (for now)
+  id: totrans-split-315
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+  zh: Rust 目前可能比 C 更大的安全风险
+- en: I get disappointed when well-known security thought leaders make statements
+    like, “It’s irresponsible to build critical applications in non-memory safe languages”,
+    not simply because they ignore the economic complexities and trivialize a complex
+    decision, but also because, even if we only think about security, as bad as memory
+    safety issues in C are, it isn’t clear cut that the risks are worse than in other
+    languages.
+  id: totrans-split-316
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 当著名的安全思想领袖发表像“在非内存安全语言中构建关键应用是不负责任的”这样的言论时，我感到失望，不仅仅是因为他们忽视了经济上的复杂性，淡化了一个复杂的决策，而且，即使我们仅仅考虑安全性，尽管
+    C 中的内存安全问题很糟糕，但并不清楚这些风险是否比其他语言更糟糕。
+- en: Specifically, C programs generally have a small number of external dependencies,
+    where often those dependencies are among the most used pieces of software out
+    there (such as the C standard library).
+  id: totrans-split-317
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 具体来说，C 程序通常具有少量外部依赖项，其中经常使用的依赖项是最常用的软件之一（例如 C 标准库）。
+- en: Most other languages are much better equipped to support programmers leveraging
+    the work of other programmers. In some sense, that’s a good thing from a business
+    perspective. But from a security perspective, more dependencies not only tends
+    to increase our attack surface, but it leaves us more open to supply chain attacks.
+  id: totrans-split-318
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 大多数其他语言更适合支持程序员利用其他程序员的工作。从某种意义上说，这对商业来说是件好事。但从安全的角度来看，更多的依赖不仅会增加我们的攻击面，还会使我们更容易受到供应链攻击。
+- en: 'One thing I read in the last year or so that stood out for me was a [comment
+    on Hacker News](https://arc.net/l/quote/roohdlws) about Rust, but in a thread
+    about Swift:'
+  id: totrans-split-319
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 去年左右，我读到的一件让我印象深刻的事情是在 Hacker News 上的一条关于 Rust 的评论，但是在 Swift 的一个讨论中：
+- en: My current problem with rust is the dependency hell. Hundreds of sub dependencies
+    for every top level one. Yes some of them are super common like serde or rand,
+    or oddly some crate that seems to be just to create directories on the filesystem?!
+    A blessed subset of crates is what I was counting on to save the day, but when
+    something like tonic brings in 100 or so fine grained one-off sub dependencies
+    I don’t think that can work. Right now I am just plugging my ears saying “my code
+    is memory safe and I am fearlessly concurrent!” But I am thinking “what horrible
+    thing is lurking in the depths of my dependency tree and which state actor put
+    it for later?” If that seems paranoid look at the recent issues with pypi malicious
+    packages. I know I can roll my own, but that cost money, and if tokio or tonic
+    didn’t exist, and crates wasn’t so darn easy to use, maybe google would have made
+    a monolithic grpc crate instead?
+  id: totrans-split-320
+  prefs:
+  - PREF_BQ
+  type: TYPE_NORMAL
+  zh: 我目前对 Rust 的问题是依赖地狱。每个顶级依赖项都有数百个子依赖项。是的，其中一些非常常见，比如 serde 或 rand，或者奇怪的是，似乎只是用来在文件系统上创建目录的某个
+    crate？！我曾指望一组受保护的 crate 子集来拯救局面，但是当像 tonic 这样的东西带来约 100 个精细化的一次性子依赖项时，我觉得那不可能奏效。现在我只是插上耳朵说：“我的代码是内存安全的，我无所畏惧地并发！”但我在想：“我的依赖树深处潜藏着什么可怕的东西，是哪个国家的黑客把它放在那里？”如果这听起来有些偏执，看看最近
+    pypi 恶意包的问题。我知道我可以自己动手，但这需要花费金钱，如果没有 tokio 或 tonic，以及 crates 使用起来不那么方便，也许 Google
+    会制作一个单体的 grpc crate？
+- en: The `xz` affair is the most recent and most compelling example of such a supply
+    chain attack, but that’s just one that the industry was lucky enough to find.
+  id: totrans-split-321
+  prefs: []
+  type: TYPE_NORMAL
+  zh: '`xz` 事件是最近和最引人注目的供应链攻击示例，但这只是行业幸运找到的一个案例。'
+- en: Rust makes it easy to pull in outside dependencies, and much like in the JavaScript
+    ecosystem, it seems to have encouraged lots of tiny dependencies. That makes it
+    a lot harder to monitor and manage the problem.
+  id: totrans-split-322
+  prefs: []
+  type: TYPE_NORMAL
+  zh: Rust 让引入外部依赖变得容易，与 JavaScript 生态系统类似，它似乎鼓励大量微小的依赖项。这使得监控和管理问题变得更加困难。
+- en: But Rust’s situation is even worse than in most languages, in that core Rust
+    libraries (major libraries officially maintained by the Rust project) make heavy
+    use of third party dependencies. The project needs to take ownership and provide
+    oversight for their libraries.
+  id: totrans-split-323
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 但 Rust 的情况甚至比大多数语言都要糟糕，因为核心 Rust 库（由 Rust 项目官方维护的重要库）大量使用第三方依赖。项目需要对其库进行所有权和监督。
+- en: To me, this has long been one of the biggest risks in software. I can write
+    C code that is reasonably defensive, but I have a hard time trusting any single
+    dependency I use, never mind scaling that out.
+  id: totrans-split-324
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 对我来说，这长久以来一直是软件中最大的风险之一。我可以编写相对防御性强的 C 代码，但我很难信任我使用的任何单个依赖项，更不用说扩展了。
+- en: Properly securing your dependency supply chain is a *much harder problem* than
+    writing safe C code. Personally, I only pull in dependencies beyond standard libraries
+    if the work I’d have to do in order to credibly replace the functionality is so
+    great that, if I didn’t bring in a dependency, I would choose not to do the work.
+  id: totrans-split-325
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 正确地保护您的依赖供应链比编写安全的 C 代码*要困难得多*。就我个人而言，只有在我必须做的工作足以可信地替换功能时，才会引入超出标准库的依赖项，如果我不引入依赖项，我会选择不做这项工作。
+- en: C is a lot better than Rust in this regard, but it’s not particularly great.
+    Partially, that’s because the C standard libraries (which I am always willing
+    to use; the core language implementation and runtime is a given) are not at all
+    extensive. People who write a lot of C end up building things themselves once
+    and keeping them around and adapting them for decades, including basic data structures
+    like hash tables.
+  id: totrans-split-326
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 在这方面，C 比 Rust 好得多，但并不特别出色。部分原因是 C 标准库（我总是愿意使用的；核心语言实现和运行时是一定的）并不是特别广泛。写大量 C
+    代码的人最终会自己构建东西，并在数十年中保留它们并使其适应，包括像哈希表这样的基本数据结构。
+- en: I have personally always been far more concerned about minimizing dependencies
+    than buffer overflows. There are straightforward approaches to minimizing memory
+    safety problems (discussed a bit below), and they’re not too hard to apply in
+    most applications.
+  id: totrans-split-327
+  prefs: []
+  type: TYPE_NORMAL
+  zh: 我个人始终更关心最小化依赖项而不是缓冲区溢出。有几种直接的方法来最小化内存安全问题（稍后讨论），在大多数应用程序中应用它们并不太难。
+- en: But digging into each and every dependency? Even the best efforts in supply-chain
+    security so far aren’t in a great position to help with attacks like the recent
+    `xz` affair (note to my spell checker, this is not the *xyz affair* from the history
+    books, but I am indeed trying to evoke it). Nation states are willing to play
+    the long game, and once a developer builds up trust in some downstream dependency
+    of yours, it’s not too hard to introduce backdoors in a way that’s likely to be
+    considered an accidental bug, if other people find it at all.
+  id: totrans-split-328
+  prefs: []
+  type: TYPE_NORMAL
+- en: With `xz`, the backdoor didn’t directly make it into the source tree, so it
+    was more overtly a backdoor. But, we’ve known for an awfully long time that stealthy
+    back doors are indistinguishable from bugs.
+  id: totrans-split-329
+  prefs: []
+  type: TYPE_NORMAL
+- en: I can remember from the early days of the software security industry (probably
+    about 25 years ago), discussing backdoors with Steve Bellovin, who related a story
+    from his days at Bell Labs, where he found a pretty subtle memory error, that
+    had lingered in the code of a former employee, that his instinct told him was
+    an intentional backdoor. It felt intentionally placed, and if I recall correctly,
+    there had been some bad blood. But being indistinguishable from a bug, how could
+    he ever prove it?
+  id: totrans-split-330
+  prefs: []
+  type: TYPE_NORMAL
+- en: Certainly, that was back in the day where many memory errors generally could
+    result in reliable exploits. But it’s still not too hard, especially considering,
+    even though we have more of a peer review culture than we used to, plenty of code
+    that is “reviewed” isn’t reviewed thoroughly enough by people who are looking
+    for the right things.
+  id: totrans-split-331
+  prefs: []
+  type: TYPE_NORMAL
+- en: Plus, code review is a lot harder to do well than writing code, which is part
+    of the reason I don’t expect to use LLM-based code generation in the near future
+    — it turns programmers into both “product managers” writing requirements, AND
+    code reviewers. Currently, it feels easier to me to “just” be an engineer.
+  id: totrans-split-332
+  prefs: []
+  type: TYPE_NORMAL
+- en: Anyway, the more dependencies you have, the larger your circle of implicit trust
+    is, the larger your attack surface is, and the more supply chain risk you’re taking.
+  id: totrans-split-333
+  prefs: []
+  type: TYPE_NORMAL
+- en: That makes Rust in particular a pretty large risk on the supply chain security
+    side, whereas C scores pretty well. And as far as modern risks go, this seems
+    an incredibly practical and significant risk for any code that might eventually
+    get rolled up into something that is used in organizations that nation states
+    might want to attack.
+  id: totrans-split-334
+  prefs: []
+  type: TYPE_NORMAL
+- en: C’s advantage in terms of lack of dependencies (which can come with a lower
+    attack surface in general) is large, but still doesn’t make it the right economic
+    choice in the first place. It might still be wiser to choose Rust when all economic
+    factors are considered, but the security argument is just not one I find compelling
+    enough.
+  id: totrans-split-335
+  prefs: []
+  type: TYPE_NORMAL
+- en: Generally, I think Rust (and pretty much any programming language) would be
+    served well to take ownership of their standard libraries. Pull in all the dependencies,
+    and be willing to take ownership.
+  id: totrans-split-336
+  prefs: []
+  type: TYPE_NORMAL
+- en: 'Also, I would typically argue for languages to incorporate *more functionality*
+    into their standard libraries, even though the recent trend is to move to less
+    functionality. Yes, from a security perspective, this technically increases your
+    attack surface. But not really:'
+  id: totrans-split-337
+  prefs: []
+  type: TYPE_NORMAL
+- en: If people feel like they may need to pull in a particular bit of common functionality
+    from the outside, they’re very likely going to do it, whether the standard library
+    exports it or not.
+  id: totrans-split-338
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: With link-time-optimization in particular, it’s not too hard to excise bits
+    of a language’s standard libraries that are not actually getting used, which brings
+    the attack surface down to about the same thing (though, many non-systems languages
+    don’t worry about link-time optimization).
+  id: totrans-split-339
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: The language maintainers, by taking ownership, can not only better focus on
+    properly vetting the security risks in the solutions people are likely to use,
+    they also are more likely to look for the architectural efficiencies that are
+    going to help with the attack surface.
+  id: totrans-split-340
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: You may or may not end up with fewer people touching the code, but the languages
+    should be willing to be accountable for the functionality people are likely to
+    need, especially when, like Rust, security is billed as one of the primary motivators
+    for using it at all.
+  id: totrans-split-341
+  prefs: []
+  type: TYPE_NORMAL
+- en: Languages like Go and Python that have extensive standard libraries that the
+    language maintainers take responsibility for are actually the best case scenario
+    in my opinion. Yes, more people touch the code, but the DIY economics are often
+    the wrong choice, and having organizations willing to both be accountable, and
+    provide an environment where people **can** focus on minimizing dependencies if
+    they feel its important, is a good thing.
+  id: totrans-split-342
+  prefs: []
+  type: TYPE_NORMAL
+- en: Yes, Python has become so popular, that plenty of people use outside dependencies,
+    and there are several popular package managers. However, it’s still in a vastly
+    better place from a supply chain perspective than JavaScript, which has become
+    famous among developers for hidden dependencies on trivially small packages.
+  id: totrans-split-343
+  prefs: []
+  type: TYPE_NORMAL
+- en: Recommendations
+  id: totrans-split-344
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: Frankly, while I think that today, the supply chain issue might possibly give
+    C an edge over Rust thinking strictly about security, that’s an advantage that
+    Rust can easily make disappear. And when it does, C will be left with concerns
+    about memory management. My intent here isn’t to argue for using C over Rust,
+    it’s to show that decisions around language choice are far more complex than the
+    sound bytes people fling around.
+  id: totrans-split-345
+  prefs: []
+  type: TYPE_NORMAL
+- en: I’ve covered a lot of ground (and have already excised quite a lot, including
+    a lot of example code), but let me try to focus on what’s actionable.
+  id: totrans-split-346
+  prefs: []
+  type: TYPE_NORMAL
+- en: For teams
+  id: totrans-split-347
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: '**Explore the overall economics of choices.** When selecting technologies,
+    challenge each other to think about the broader economic implications, and try
+    to get numbers to support your hypotheses. This has many facets, but in the context
+    of this discussion, it should often push you toward languages like Go and away
+    from either Rust or C, because too often, people will go with their gut on this,
+    which will generally over-estimate the importance of performance.'
+  id: totrans-split-348
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**If you don’t want to analyze up front, don’t start with systems languages.**
+    Instead, start with Go, Swift, Java, C#, or any really other good compiled language.
+    Remember here that if your gut is shouting about performance, Python has acceptable
+    performance for all sorts of things (remember Dropbox?) and compiled languages
+    are all still going to be vastly more efficient than that.'
+  id: totrans-split-349
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Do consider security.** Just because you’re going with Rust doesn’t mean
+    you’re going to get it for free. Bad things can still happen to you. Please dig
+    past the “thought leader” sound bytes on this.'
+  id: totrans-split-350
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Avoid unnecessary dependencies.** I will leave ‘unnecessary’ vaguely defined
+    here; you need to be educated and judge all the economic factors. But note that,
+    there are often other benefits to fewer dependencies, from shorter build times
+    to less surface to test, to less risk from API changes or bugs from downstream
+    dependencies.'
+  id: totrans-split-351
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Be aware of the dependencies you do have.** More than just trying to get
+    your arms around the transitive graph that dependency scanning tools provide,
+    it’s worth digging down to understand what those things aren’t finding. There’s
+    probably some C libraries linked into your runtime somewhere, and it helps when
+    the next *xz affair* surfaces to be able to more easily, more honestly assess
+    your risks.'
+  id: totrans-split-352
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Try to ensure outside security review.** For enterprise software, this is
+    almost a given these days, because large buyers will demand evidence of it. But
+    everyone should be considering how they can facilitate such review regularly,
+    and treat it as an opportunity, not just a box to tick.'
+  id: totrans-split-353
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**If you choose C, provide documentation around your decision.** I say this
+    because the security concerns are absolutely real concerns, and people deserve
+    to know you have done a good job. C++ to my view is not in the same category if
+    you stick the with official recommendations, yet plenty of people aren’t really
+    in compliance, so I would err on the side of caution, and do the same with C++.'
+  id: totrans-split-354
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**If you choose C, proactively address the memory safety concerns effectively.**
+    For instance, if at all tractable, use the Boehm collector. Or else, use best
+    of breed techniques when that isn’t possible.'
+  id: totrans-split-355
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Note, the primary reason why many C developers fall back on unsafe primitives
+    isn’t a lack of education about the security risks, its that they generally have
+    a few large dependencies (such as OpenSSL or some other crypto library), and it
+    isn’t clear how to, for instance, apply the Boehm Garbage Collector to those third
+    party libraries in an easy, portable way (although in many cases, if you compile
+    the source yourself, it’s actually easy to just redefine `malloc()`and friends
+    to call the Boehm API, and in others, there are some low-level techniques that
+    can address the issue, but they’re too low-level to recommend).
+  id: totrans-split-356
+  prefs: []
+  type: TYPE_NORMAL
+- en: Even for those building their own lightweight memory management (*arena allocation*
+    is becoming popular, which one could consider a very lightweight form of garbage
+    collection), but many of the most common dependencies like OpenSSL provide direct
+    ways to hand the library a memory allocator, if you look for them.
+  id: totrans-split-357
+  prefs: []
+  type: TYPE_NORMAL
+- en: I can cover this in detail if there’s enough interest in it (even though I’d
+    prefer you to adopt some other language instead).
+  id: totrans-split-358
+  prefs: []
+  type: TYPE_NORMAL
+- en: For The Security Industry
+  id: totrans-split-359
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: Here, I certainly mean thought leaders, but anyone who cares enough to be making
+    decisions based on security, and talk to other people about it at all.
+  id: totrans-split-360
+  prefs: []
+  type: TYPE_NORMAL
+- en: '**Most importantly, try to keep in mind that just because you think it’s a
+    bad security decision, doesn’t make it a bad decision, overall.** Try to listen
+    to non-security people, and learn about how their priorities. You probably rail
+    against “FUD” (fear, uncertainty and doubt), but oversimplifying non-trivial issues
+    to push for security at all costs is essentially you spreading FUD. The use of
+    C is just one example here. But remember, even the security implications are far
+    more complex and subtle than we might be thinking about in the moment.'
+  id: totrans-split-361
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Make sure the industry considers the broader economics.** Sure, outside the
+    industry, security is far less important than it is, inside the industry. But
+    I think it goes much deeper — if the security industry tries to push too much
+    work to the rest of the industry, we will at the very least destroy more credibly,
+    but could conceivably do a lot of economic damage, for instance, by driving up
+    the costs and liability risks to small businesses and individuals so high that
+    they just don’t bother.'
+  id: totrans-split-362
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: '**Contribute to solving our legacy software problems.** I’d love to get rid
+    of C as well, but the reality is that C will be even more pernicious than COBOL
+    has been, for good reasons. Saying, “rewrite it all in a safe language, and migrate
+    everything ASAP” is not really a solution. It’s aspirational at best, and completely
+    impractical from a risk management perspective. Like with replacing Sendmail with
+    Postifx, we can make progress, but it will need to be incremental, and we’ll have
+    to be more practical.'
+  id: totrans-split-363
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: In short, yes, let’s 100% kill C and C++, but let’s be practical about it, and
+    be good collaborators with the rest of industry. Our goal should 100% be to put
+    ourselves out of jobs (or, since we’re not at risk of that, try to work toward
+    a world where it’s a shockingly small industry… even if in the far distant future).
+  id: totrans-split-364
+  prefs: []
+  type: TYPE_NORMAL
+- en: For the rest of the industry
+  id: totrans-split-365
+  prefs:
+  - PREF_H2
+  type: TYPE_NORMAL
+- en: 'In general, the rest of the software industry should work with the security
+    industry to visualize what it takes to address risks. Specifically:'
+  id: totrans-split-366
+  prefs: []
+  type: TYPE_NORMAL
+- en: Help figure out how can we can keep a fresh pipeline of people who will be able
+    to understand the boundaries software and hardware. That means, we need to eventually
+    get skilled people effectively doing pre-assembly tasks in a way that’s far less
+    risky than doing them in C today (not, trying to keep those tasks from ever happening).
+    If the answer isn’t “another programming language”, then great, but if it needs
+    to be another language, both sides need to be serious about it to ensure success,
+    because the world is littered with languages that have no traction.
+  id: totrans-split-367
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Please push others to show their work on broader economic decisions, and don’t
+    assume the world is as simple as whatever “conventional wisdom” gets passed down.
+    That’s a swiftly moving target.
+  id: totrans-split-368
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Language designers, in addition to the ways you already consider security, please
+    also give much more thought and attention to the impact of third party dependencies,
+    realizing that balancing contribution with security is hard. We need better pragmatic
+    solutions.
+  id: totrans-split-369
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: And in all cases, try to assume you’re wrong about the things we all systemically
+    mis-estimate, like performance and security. Assume you can be wrong in either
+    direction, too! Now, try to collect some hard data to give you a better sense
+    of where the reality actually lies.
+  id: totrans-split-370
+  prefs:
+  - PREF_OL
+  type: TYPE_NORMAL
+- en: Feedback
+  id: totrans-split-371
+  prefs:
+  - PREF_H1
+  type: TYPE_NORMAL
+- en: I’m happy to discuss the topic or take any feedback. As I’ve said, I’m happy
+    to keep learning and re-evaluating my views. However, this story will be published
+    while I’m on a long vacation, so please do reach out to me, but I won’t be quick
+    to respond.
+  id: totrans-split-372
+  prefs: []
+  type: TYPE_NORMAL
