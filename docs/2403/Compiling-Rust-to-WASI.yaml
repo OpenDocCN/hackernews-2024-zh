@@ -337,11 +337,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 记得我之前写过的关于ABI不兼容性的所有文本吗？好吧，WASI预览2定义了一个[规范ABI](https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md)，以便所有编译为WASI的语言能够与其他WASI组件交流。然而，这些类型和函数如何在WebAssembly本身中由各自的语言表示取决于每种语言。因此，编译Rust和C到相同的WASI组件时仍然会有ABI不匹配的问题，但如果它们编译为不同的组件，则会有一个通用的接口语言。
 - en: Transpile it for the web with jco
   id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用jco将其转译为Web
 - en: '[jco](https://github.com/bytecodealliance/jco) can transpile the `.wasm` file
     we generated above into a JS ESM module that node.js and the browser can understand.
     Using it is actually pretty easy. Before we transpile it, jco has a command to
@@ -350,11 +352,14 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '[jco](https://github.com/bytecodealliance/jco)可以将我们上面生成的`.wasm`文件转译为Node.js和浏览器能理解的JS
+    ESM模块。实际上使用它非常容易。在我们转译之前，jco有一个命令可以查看WASI2模块的导入和导出。'
 - en: bash
   id: totrans-split-44
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: bash
 - en: '[PRE6]'
   id: totrans-split-45
   prefs:
@@ -366,11 +371,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 我的模块的输出如下。
 - en: wit
   id: totrans-split-47
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: wit
 - en: '[PRE7]'
   id: totrans-split-48
   prefs:
@@ -383,11 +390,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 看起来非常像我们的wit文件对吧？这里唯一新的东西是自动添加的所有wasi函数导入。相当酷，对吧？
 - en: bash
   id: totrans-split-50
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: bash
 - en: '[PRE8]'
   id: totrans-split-51
   prefs:
@@ -400,11 +409,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 现在它将被转换为一个包含几个wasm文件和一些js粘合剂的文件夹
 - en: bash
   id: totrans-split-53
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: bash
 - en: '[PRE9]'
   id: totrans-split-54
   prefs:
@@ -417,11 +428,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 让我们来看看JS文件，看看我们能看到什么。可能没有--minify使它更容易阅读。它非常长，所以我会在这里链接到它
 - en: JavaScript code
   id: totrans-split-56
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: JavaScript代码
 - en: '[PRE10]'
   id: totrans-split-57
   prefs:
@@ -436,6 +449,8 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '*看到JS为了匹配Wit或Rust的类型系统而跳跃的花絮绝对是有趣的。返回一个`result<htmloutput, highlighterro>`会创建大量的switch
+    case块！顶部我们可以看到一些导入，在底部是我们正在寻找的命名函数的导出！*'
 - en: Remember how WASI provides all those interfaces to common system functions?
     Well those are provided through a `@bytecodealliance/preview2-shim`. package If
     you're using Node or using a JS bundler, you can pretty easily pull in the [npm
@@ -447,11 +462,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 记得WASI如何提供所有那些常见系统函数的接口吗？那些通过`@bytecodealliance/preview2-shim`包提供。如果你使用Node或使用JS捆绑器，你可以很容易地引入[npm包](https://www.npmjs.com/package/@bytecodealliance/preview2-shim?activeTab=versions)。因为我两者都不使用，我需要从我的Web服务器上服务该库，并更改js文件中的所有路径指向一个本地的[副本](https://github.com/bytecodealliance/jco/tree/main/packages/preview2-shim)。
 - en: JavaScript code
   id: totrans-split-60
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: JavaScript代码
 - en: '[PRE11]'
   id: totrans-split-61
   prefs:
@@ -465,10 +482,12 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 这是来自缩小版本的，但你可以看到我正在设置绝对路径指向由我的服务器提供的文件夹。有了这个，我们应该准备好继续了！*
 - en: '**   Serve all the files'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '**   服务所有文件'
 - en: As previously mentioned, we need to serve the `preview2-shim/lib/browser` folder
     as well as the femark wasm and js files we generated earlier. On Leptos for SSR
     apps, this is pretty easy, just put them in your assets dir. The more interesting
@@ -477,6 +496,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 如前所述，我们需要服务`preview2-shim/lib/browser`文件夹以及我们之前生成的femark wasm和js文件。在Leptos上用于SSR应用程序，这相当简单，只需将它们放在您的资产目录中。更有趣的部分是如何使用它。
 - en: Use wasm_bindgen to generate Rust bindings to the exported J'S functions for
     Leptos
   id: totrans-split-65
@@ -484,6 +504,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用wasm_bindgen为导出的Leptos J'S函数生成Rust绑定
 - en: wasm_bindgen to the rescue! Here we see the wasm functions, exported to JS,
     and then passed into extern C blocks as required by wasm_bindgen. Since the return
     types are structs, I redefine the returned types and create helper functions to
