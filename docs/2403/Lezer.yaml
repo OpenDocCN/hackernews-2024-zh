@@ -111,10 +111,12 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种状态必须是可复制的，以便编辑器可以策略性地存储前一次运行的标记器状态，并在更改后，恢复到接近该更改的状态，以避免重新对整个文档进行标记化。因为我们通常只对可见视口中的代码感兴趣，所以这意味着重新标记的复杂性受限于更改与视口末端之间的距离。由于大多数更改发生在该视口内部，这在实践中效果很好。
 - en: '* * *'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Such tokenizers are awkward to write directly, so over the years several attempts
     have been made to build abstractions over them. The first was the [Common JavaScript
     Syntax Highlighting Specification](https://github.com/mozilla/skywriter/wiki/Common-JavaScript-Syntax-Highlighting-Specification),
@@ -130,6 +132,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的标记器直接编写起来很麻烦，因此多年来已经有几次尝试建立对它们的抽象。第一次尝试是由Mozilla Skywriter的作者（之前称为Bespin，后来合并为[ACE](https://ace.c9.io/)）提出的[Common
+    JavaScript Syntax Highlighting Specification](https://github.com/mozilla/skywriter/wiki/Common-JavaScript-Syntax-Highlighting-Specification)，旨在定义一个声明性格式，用于描述将标记器作为带有正则表达式的状态机（描述标记）的边。ACE项目最终采用了一种不兼容但相似的格式（与其内部过于交织，不幸地无法在CodeMirror中使用）。我为CodeMirror实现了原始规范，并实现了另一个不兼容的[扩展](http://cm/demo/simplemode.html)，因为基础规范过于局限。仍有一些基于该代码的CodeMirror模式，但并没有真正取得成功。
 - en: I think the reason such state machines (and the somewhat related [TextMate grammars](https://macromates.com/manual/en/language_grammars)
     which are in wide use in desktop editors) never felt like a great solution is
     that, once you get past trivial grammars (where their declarative simplicity does
@@ -143,10 +147,12 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为这样的状态机（以及在桌面编辑器中广泛使用的略有关联的[TextMate grammars](https://macromates.com/manual/en/language_grammars)），从来没有感觉像是一个很好的解决方案，原因是一旦超越了简单的语法（在那里它们的声明简单确实看起来很好），它们在抽象方面并没有真正帮助。手动设计复杂的状态机是一项苦差事。正则表达式本身已经很糟糕，当你不得不将所有边都构建成它们时，它们变得十分可怕，经常将多个标记塞入单个表达式中，以避免创建中间状态。这种“抽象”倾向于产生比将标记器编写为纯代码时更丑陋、难以维护的代码。
 - en: '* * *'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: So in 2017, I started an ambitious project to create a better way to abstractly
     define incremental tokenizers. I had concluded that classical parser generators
     based on context-free grammars were never going to work in this context (for reasons
@@ -158,6 +164,8 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，2017年，我开始了一个雄心勃勃的项目，创建一种更好的抽象定义增量标记器的方法。我得出结论，基于上下文无关文法的经典解析器生成器永远不会在这种情况下起作用（我稍后会回到原因）。但我一直在接触到[parsing
+    expression grammars](https://en.wikipedia.org/wiki/Parsing_expression_grammar)，它们不基于上下文无关文法，并且具有一些有趣的属性，例如能够组合多个语法以创建新的语法（对于混合语言文档非常有用）。
 - en: So I spent several months building a parsing system that took a PEG-like grammar,
     compiled it down to a state machine, and made it possible to run that state machine
     as a CodeMirror language mode.
@@ -545,21 +553,25 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在成功完成解析之后，最终状态的父数组指针可以用来找到组成树的所有节点，并根据它们构造出实际的树结构。
 - en: One tricky issue occurs when skipped content (whitespace and comments) produces
     nodes. If you have code like this...
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 当跳过的内容（空格和注释）产生节点时，会出现一个棘手的问题。如果您的代码像这样...
 - en: '[PRE0]'
   id: totrans-split-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '... the comment should *not* be part of the if statement''s node. Yet the parser
     only knows for sure that it can finish that node after seeing the next statement
     (there might be an `else` still coming).'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '...注释*不应*成为if语句节点的一部分。然而，解析器只有在看到下一条语句后才确定可以完成该节点（可能还有一个`else`语句即将到来）。'
 - en: In cases like this, where the output array contains skipped nodes immediately
     in front of a reduction, the parser has to move them forward and store the end
     of the node *before* them. Fortunately, this occurs relatively rarely (unless
@@ -568,11 +580,13 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，输出数组包含在减少节点的前面立即跳过的节点，解析器必须将它们向前移动，并将节点的末尾*存储在*它们之前。幸运的是，这种情况相对较少发生（除非您添加了空格节点，否则每个具有可能继续的规则的末尾都会发生这种情况）。
 - en: Buffer Trees
   id: totrans-split-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 缓冲树
 - en: A nice thing about the flat post-order tree representation is that it is compact.
     Tree structures constructed the usual way, as separately allocated nodes, incur
     a lot of extra overhead for pointers and allocation headers. They can also have
@@ -581,12 +595,14 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 平面后序树表示法的一个好处是它很紧凑。通常构建的树结构，作为单独分配的节点，会因指针和分配头部的额外开销而增加很多开销。它们还可能具有可怕的局部性，因为谁知道内存分配器会将节点放在彼此多远的地方。
 - en: Unfortunately, we can't just use a flat representation for our syntax trees.
     The incremental parser has to be able to reuse parts of it without copying those
     parts into a different buffer.
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，我们不能仅仅使用平面表示法来表示我们的语法树。增量解析器必须能够重复使用其部分，而不是将这些部分复制到不同的缓冲区中。
 - en: But we *can* use it for parts of the tree. Storing the coarse structure as a
     classical tree, but the content of smaller nodes (say less than a few thousand
     characters long) as flat arrays, gives us the best of both worlds. Since most
@@ -595,6 +611,7 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们*可以*将它用于树的部分。将粗略结构存储为经典树，但较小节点的内容（比如少于几千个字符长）存储为平面数组，可以兼顾两者的优点。由于大多数节点（按数量计算）存在于细微结构中，这样可以节省大量的开销（并有助于提高局部性）。
 - en: That does mean that we can't reuse small nodes. But since their size is limited,
     the amount of work that is involved in re-parsing them is also limited. And by
     removing them from consideration, the incremental parser can avoid quite a bit
@@ -602,6 +619,7 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着我们不能重用小节点。但由于它们的大小有限，重新解析它们涉及的工作量也有限。通过将它们排除在外，增量解析器可以避免为了准备和扫描树结构以重用而进行的大量工作。
 - en: A small node stores its content in a typed array of 16-bit unsigned integers.
     It uses 4 such numbers (64 bits) per node, storing a type, a start position, an
     end position, and a child count for each node. Contrary to the array created by
@@ -614,6 +632,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个小节点将其内容存储在16位无符号整数的类型数组中。每个节点使用4个这样的数字（64位），存储类型、开始位置、结束位置和每个节点的子节点计数。与解析器创建的数组相反，这些数组是按[前序](https://en.wikipedia.org/wiki/Tree_traversal#Pre-order_(NLR))排列的，因为这使得前向迭代（比后向迭代更常见）更便宜。子节点计数几乎已经过时（结束位置可以告诉您哪些节点是子节点），但Lezer支持零长度节点，这可能会落在其父节点的末尾，使得它们是否属于它们变得模棱两可。
 - en: Client code, of course, doesn't want to deal with this representation. Lezer
     provides an abstract interface to searching in and walking through trees that
     hides the buffer structure, allowing you to conceptually work with a uniform tree
@@ -621,6 +640,7 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，客户端代码不希望处理这种表示。Lezer提供了一个抽象接口，用于搜索和遍历树结构，隐藏了缓冲结构，使您可以概念化地处理节点的统一树。
 - en: Lezer, like tree-sitter, stores the result of repetitions in the grammar (produced
     by the `*` and `+` operators) as balanced subtrees. This means that, unless your
     input is pathological (say, a thousand applications of a single binary operator
