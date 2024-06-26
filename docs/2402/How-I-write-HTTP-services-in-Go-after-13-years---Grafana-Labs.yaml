@@ -2,34 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:43:25'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:43:25
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How I write HTTP services in Go after 13 years | Grafana Labs
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何在Go中编写HTTP服务已有13年 | Grafana Labs
 - en: 来源：[https://grafana.com/blog/2024/02/09/how-i-write-http-services-in-go-after-13-years/](https://grafana.com/blog/2024/02/09/how-i-write-http-services-in-go-after-13-years/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://grafana.com/blog/2024/02/09/how-i-write-http-services-in-go-after-13-years/](https://grafana.com/blog/2024/02/09/how-i-write-http-services-in-go-after-13-years/)
 - en: Nearly six years ago I wrote a blog post outlining [how I write HTTP services
     in Go](https://pace.dev/blog/2018/05/09/how-I-write-http-services-after-eight-years.html),
     and I’m here to tell you, once again, how I write HTTP services.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 将近六年前，我写了一篇博文概述了[我如何在Go中编写HTTP服务](https://pace.dev/blog/2018/05/09/how-I-write-http-services-after-eight-years.html)，今天我再次来告诉你，我如何编写HTTP服务。
 - en: That original post went a little viral and sparked some great discussions that
     have influenced how I do things today. And after years of hosting the [Go Time
     podcast](https://changelog.com/gotime), discussing Go on [X/Twitter](https://twitter.com/matryer),
@@ -38,45 +45,54 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 那篇原始文章有点火了，引发了一些很棒的讨论，这些讨论影响了我今天的做法。在主持了多年的[Go Time podcast](https://changelog.com/gotime)，在[Twitter](https://twitter.com/matryer)上讨论Go，并在多年来积累了更多维护这样的代码的经验后，我觉得是时候更新一下了。
 - en: (And for those pedants who notice Go isn’t exactly 13 years old, I started writing
     HTTP services in Go [version .r59](https://go.dev/doc/devel/pre_go1#r59).)
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: （对于那些注意到Go并不完全13岁的学究，我开始写Go HTTP服务是在[版本 .r59](https://go.dev/doc/devel/pre_go1#r59)。）
 - en: 'This post covers a range of topics related to building services in Go, including:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章涵盖了与在Go中构建服务相关的各种主题，包括：
 - en: Structuring servers and handlers for maximum maintainability
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了达到最大的可维护性，结构化服务器和处理程序。
 - en: Tips and tricks for optimizing for a quick startup and graceful shutdown
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 优化快速启动和优雅关闭的技巧和窍门。
 - en: How to handle common work that applies to many types of requests
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何处理适用于许多类型请求的常见工作
 - en: Going deep on properly testing your services
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 深入探讨如何正确测试您的服务
 - en: From small projects to large, these practices have stood the test of time for
     me, and I hope they will for you too.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 从小项目到大项目，这些实践方法经过时间的考验，对我来说效果显著，我也希望对你们有所帮助。
 - en: Who is this post for?
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这篇文章是为谁写的？
 - en: This post is for you. It’s for everybody who plans to write some kind of HTTP
     service in Go. You may also find this useful if you’re learning Go, as lots of
     the examples follow good practices. Experienced gophers might also pick up some
@@ -84,6 +100,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章适合你。它适合所有计划在Go中编写某种HTTP服务的人。如果你正在学习Go，你也可能会发现这篇文章有用，因为很多示例都遵循了良好的实践方法。有经验的gopher也可能会学到一些好的模式。
 - en: To find this post most useful, you’ll need to know the basics of Go. If you
     don’t feel like you’re quite there yet, I cannot recommend [Learn Go with tests](https://quii.gitbook.io/learn-go-with-tests/)
     by Chris James enough. And if you’d like to hear more from Chris, you can check
@@ -92,12 +109,15 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 要想发现这篇文章最有用，你需要了解基本的Go知识。如果你觉得自己还没有达到这个水平，我非常推荐由Chris James编写的[用测试学习Go](https://quii.gitbook.io/learn-go-with-tests/)。如果你想听更多Chris的观点，还可以查看我们与Ben
+    Johnson共同进行的Go Time节目，主题是[Go项目的文件和文件夹](https://changelog.com/gotime/278)。
 - en: If you’re familiar with the previous versions of this post, this section contains
     a quick summary of what’s different now. If you’d like to start from the beginning,
     skip to the next section.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你熟悉此前版本的这篇文章，这一节包含了现在有何不同的快速总结。如果你想从头开始阅读，请跳到下一节。
 - en: My handlers used to be methods hanging off a server struct, but I no longer
     do this. If a handler function wants a dependency, it can bloody well ask for
     it as an argument. No more surprise dependencies when you’re just trying to test
@@ -106,6 +126,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我的处理程序过去是挂在服务器结构体上的方法，但我不再这样做了。如果一个处理函数需要一个依赖，它可以直截了当地通过参数来要求。不再有意外的依赖，当你只是想测试一个单一的处理程序时。
 - en: I used to prefer `http.HandlerFunc` over `http.Handler` — enough third-party
     libraries think about `http.Handler` first that it makes sense to embrace that.
     `http.HandlerFunc` is still extremely useful, but now most things are represented
@@ -114,21 +135,25 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我过去更喜欢`http.HandlerFunc`而不是`http.Handler` — 足够多的第三方库首先考虑`http.Handler`，这是一个很好的选择。`http.HandlerFunc`仍然非常有用，但现在大多数事情都被表示为接口类型。无论选择哪个方式，都没什么大的区别。
 - en: I’ve added more about testing including some ‘opinions’.
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我增加了更多关于测试的内容，包括一些“观点”。
 - en: I’ve added more sections, so a full read through is recommended for everybody.
   id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我添加了更多的部分，所以建议每个人都进行全面阅读。
 - en: The `NewServer` constructor
   id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`NewServer` 构造函数'
 - en: 'Let’s start by looking at the backbone of any Go service: the server. The 
     `NewServer` function makes the main `http.Handler`. Usually I have one per service,
     and I rely on HTTP routes to divert traffic to the right handlers within each
@@ -136,64 +161,78 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先看看任何 Go 服务的骨干：服务器。 `NewServer` 函数生成了主要的 `http.Handler`。通常我每个服务只有一个，我依靠
+    HTTP 路由将流量引导到每个服务内部正确的处理程序，因为：
 - en: '`NewServer` is a big constructor that takes in all dependencies as arguments'
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`NewServer` 是一个大构造函数，它将所有依赖项作为参数接受'
 - en: It returns an `http.Handler` if possible, which can be a dedicated type for
     more complex situations
   id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果可能，它返回一个 `http.Handler`，对于更复杂的情况可以是一个专用类型
 - en: It usually configures its own muxer and calls out to `routes.go`
   id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它通常配置自己的 muxer 并调用 `routes.go`
 - en: 'For example, your code might look similar to this:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，你的代码可能类似于这样：
 - en: '[PRE0]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In test cases that don’t need all of the dependencies, I pass in `nil` as a
     signal that it won’t be used.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在不需要所有依赖的测试用例中，我将 `nil` 传入作为一个信号，表示它不会被使用。
 - en: 'The `NewServer` constructor is responsible for all the top-level HTTP stuff
     that applies to all endpoints, like CORS, auth middleware, and logging:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '`NewServer` 构造函数负责适用于所有端点的所有顶级 HTTP 事务，比如 CORS、认证中间件和日志记录：'
 - en: '[PRE1]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Setting up the server is usually a case of exposing it using Go’s built-in
     `http` package:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置服务器通常是通过使用 Go 的内置 `http` 包来暴露它：
 - en: '[PRE2]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Long argument lists
   id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 长参数列表
 - en: There must be a limit at which point it stops being the right thing to do, but
     most of the time I am happy adding lists of dependencies as arguments. And while
     they do sometimes get quite long, I find it’s still worth it.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 必须有一个限制，这时它停止做正确的事情，但大多数时间我很高兴添加依赖项列表作为参数。虽然有时它们会变得很长，但我发现它仍然是值得的。
 - en: Yes, it saves me from making a struct, but the real benefit is that I get slightly
     more type safety from arguments. I can make a struct skipping any fields that
     I don’t like, but a function forces my hand. I have to look up fields to know
@@ -202,29 +241,35 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，它使我免于创建一个结构体，但真正的好处是我从参数中得到了稍微更多的类型安全。我可以制作一个跳过任何我不喜欢的字段的结构体，但一个函数迫使我按我的需求去查找字段。我必须查找字段才能知道如何在结构体中设置它们，而我如果不传递正确的参数就无法调用一个函数。
 - en: 'It’s not so bad if you format it as a vertical list, like I’ve seen in modern
     frontend code:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你将它格式化为垂直列表，像我在现代前端代码中看到的那样，它并不坏：
 - en: '[PRE3]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Map the entire API surface in `routes.go`
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 `routes.go` 中映射整个 API 表面
 - en: This file is the one place in your service where all routes are listed.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个文件是你的服务中所有路由都列出的地方。
 - en: Sometimes you can’t help but have things spread around a bit, but it’s very
     helpful to be able to go to one file in every project to see its API surface.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时你不能帮助但有些东西散落在周围，但能够去一个文件中看到它的 API 表面非常有帮助。
 - en: Because of the big dependency argument lists in the `NewServer` constructor,
     you usually end up with the same list in your routes function. But again, it’s
     not so bad. And again, you soon know if you forgot something or got the order
@@ -232,10 +277,12 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为在 `NewServer` 构造函数中有大量依赖参数列表，所以你通常会在你的路由函数中得到相同的列表。但这并不坏。再说一遍，多亏了 Go 的类型检查，你很快就会知道是否忘记了某些内容或者顺序有误。
 - en: '[PRE4]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: In my example, `addRoutes` doesn’t return an error. Anything that can throw
     an error is moved to the `run` function and sorted out before it gets to this
     point leaving this function free to remain simple and flat. Of course, if any
@@ -244,26 +291,32 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的例子中，`addRoutes` 并不会返回错误。任何可能抛出错误的操作都移到了 `run` 函数中，在到达这一点之前进行了整理，使得这个函数可以保持简单和平坦。当然，如果你的任何处理程序由于任何原因返回错误，那么可以返回错误。
 - en: '`func main()` only calls `run()`'
   id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`func main()` 只调用 `run()`'
 - en: The `run` function is like the `main` function, except that it takes in operating
     system fundamentals as arguments, and returns, you guessed it, an error.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '`run` 函数类似于 `main` 函数，不同之处在于它将操作系统的基本功能作为参数，并返回，你猜对了，一个错误。'
 - en: 'I wish `func main()` was `func main() error`. Or like in C where you can return
     the exit code: `func main() int`. By having an ultra simple `main` function, you
     too can have your dreams come true:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望 `func main()` 可以是 `func main() error`。或者像在 C 语言中那样，可以返回退出码： `func main()
+    int`。通过拥有一个超级简单的 `main` 函数，你也可以实现你的梦想：
 - en: '[PRE5]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'EDIT: I used to do the `signal.NotifyContext` bit in `main` but Dave Henderson
     (and a couple of others) pointed out that `cancel` wouldn’t get called, so I’ve
     moved it into the `run` function.'
@@ -271,6 +324,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 编辑：我曾经在 `main` 函数中执行 `signal.NotifyContext` 的一部分，但是戴夫·亨德森（和其他几个人）指出 `cancel`
+    将不会被调用，因此我已将其移动到 `run` 函数中。
 - en: The code above calls straight into `run` which creates a context which is cancelled
     by `Ctrl+C` or equivalent. If `run` returns `nil`, the function exits normally.
     If it returns an error, we write it to stderr and exit with a non-zero code. If
@@ -279,6 +334,8 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的代码直接调用了 `run` 函数，该函数创建一个上下文，可以通过 `Ctrl+C` 或等效方式取消。如果 `run` 返回 `nil`，函数会正常退出。如果返回错误，我们会将其写入到
+    stderr 并以非零代码退出。如果我在写一个命令行工具，退出码很重要，我也会返回一个整数，这样我就可以编写测试来验证正确的退出码。
 - en: Operating system fundamentals are passed into run as arguments. For example,
     you might pass in `os.Args` if it has flag support, and even `os.Stdin`, `os.Stdout`,
     `os.Stderr` dependencies. This makes your programs much easier to test because
@@ -287,57 +344,71 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作系统基础知识被作为参数传递给了 `run` 函数。例如，您可以传递 `os.Args` 如果它支持标志，甚至 `os.Stdin`、`os.Stdout`、`os.Stderr`
+    依赖项。这使得您的程序更容易进行测试，因为测试代码可以调用 `run` 来执行您的程序，通过传递不同的参数来控制参数和所有流。
 - en: 'The following table shows examples of input arguments to the run function:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 下表显示了运行函数的输入参数示例：
 - en: '| **Value** | **Type** | **Description** |'
   id: totrans-split-54
   prefs: []
   type: TYPE_TB
+  zh: '| **值** | **类型** | **描述** |'
 - en: '| --- | --- | --- |'
   id: totrans-split-55
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| `os.Args` | `[]string` | The arguments passed in when executing your program.
     It’s also used for parsing flags. |'
   id: totrans-split-56
   prefs: []
   type: TYPE_TB
+  zh: '| `os.Args` | `[]string` | 在执行程序时传递的参数。也用于解析标志。 |'
 - en: '| `os.Stdin` | `io.Reader` | For reading input |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| `os.Stdin` | `io.Reader` | 用于读取输入 |'
 - en: '| `os.Stdout` | `io.Writer` | For writing output |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| `os.Stdout` | `io.Writer` | 用于写入输出 |'
 - en: '| `os.Stderr` | `io.Writer` | For writing error logs |'
   id: totrans-split-59
   prefs: []
   type: TYPE_TB
+  zh: '| `os.Stderr` | `io.Writer` | 用于写入错误日志 |'
 - en: '| `os.Getenv` | `func(string) string` | For reading environment variables |'
   id: totrans-split-60
   prefs: []
   type: TYPE_TB
+  zh: '| `os.Getenv` | `func(string) string` | 用于读取环境变量 |'
 - en: '| `os.Getwd` | `func() (string, error)` | Get the working directory |'
   id: totrans-split-61
   prefs: []
   type: TYPE_TB
+  zh: '| `os.Getwd` | `func() (string, error)` | 获取工作目录 |'
 - en: If you keep away from any global scope data, you can usually use `t.Parallel()`
     in more places, to speed up your test suites. Everything is self-contained, so
     multiple calls to `run` don’t interfere with each other.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您远离任何全局范围的数据，通常可以在更多地方使用 `t.Parallel()` 来加速您的测试套件。一切都是自包含的，因此多次调用 `run` 不会相互干扰。
 - en: 'I often end up with `run` function signatures that look like this:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常会得到像这样的 `run` 函数签名：
 - en: '[PRE6]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Now that we’re inside the `run` function, we can go back to writing normal Go
     code where we can return errors like it’s nobody’s business. We gophers just love
     returning errors, and the sooner we admit that to ourselves, the sooner those
@@ -345,17 +416,20 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们进入 `run` 函数内部，可以回到编写正常的 Go 代码，可以像没事人一样地返回错误。我们的 gopher 们真的很喜欢返回错误，早点承认这一点，网上那些人就能赢了，然后走开。
 - en: Gracefully shutting down
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 优雅地关闭
 - en: If you’re running lots of tests, it’s important for your program to stop when
     each one is finished. (Alternatively, you might decide to keep one instance running
     for all tests, but that’s up to you.)
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您正在运行大量的测试，程序在每个测试完成时停止是很重要的。（或者，您可能决定保持一个实例运行所有测试，但这取决于您。）
 - en: The context is passed through. It gets cancelled if a termination signal comes
     into the program, so it’s important to respect it at every level. At the very
     least, pass it to your dependencies. At best, check the `Err()` method in any
@@ -366,11 +440,14 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 上下文会被传递。如果终止信号进入程序，它将被取消，因此在每个层级尊重它非常重要。至少，将其传递给您的依赖项。最好，在任何长时间运行或循环代码中检查 `Err()`
+    方法，如果返回错误，停止正在进行的操作并将其返回。这将有助于服务器优雅地关闭。如果启动了其他 goroutine，也可以使用上下文来决定是否该停止它们。
 - en: Controlling the environment
   id: totrans-split-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 控制环境
 - en: 'The `args` and `getenv` parameters give us a couple of ways to control how
     our program behaves through flags and environment variables. Flags are processed
     using the args (as long as you don’t use the global space version of flags, and
@@ -379,64 +456,80 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '`args` 和 `getenv` 参数为我们提供了通过标志和环境变量控制程序行为的几种方式。通过使用 args 处理标志（只要你不使用全局空间版本的
+    flags，而是在 `run` 内部使用 `flags.NewFlagSet`），因此我们可以使用不同的值调用 run：'
 - en: '[PRE7]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: If your program uses environment variables over flags (or even both) then the
     `getenv` function allows you to plug in different values without changing the
     actual environment.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您的程序使用环境变量而不是标志（或者两者都使用），那么 `getenv` 函数允许您插入不同的值而不更改实际环境。
 - en: '[PRE8]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: For me, using this `getenv` technique beats using `t.SetEnv` for controlling
     environment variables because you can continue to run your tests in parallel by
     calling `t.Parallel()`, which `t.SetEnv` doesn’t allow.
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 对我来说，使用这种 `getenv` 技术比使用 `t.SetEnv` 控制环境变量更胜一筹，因为您可以通过调用 `t.Parallel()` 持续并行运行您的测试，而
+    `t.SetEnv` 不允许。
 - en: This technique is even more useful when writing command line tools, because
     you often want to run the program with different settings to test all of its behavior.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 写命令行工具时，这种技术甚至更加有用，因为您经常希望以不同的设置运行程序以测试其所有行为。
 - en: 'In the `main` function, we can pass in the real things:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `main` 函数中，我们可以传入真实的东西：
 - en: '[PRE9]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Maker funcs return the handler
   id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 制造函数返回处理程序
 - en: My handler functions don’t implement `http.Handler` or `http.HandlerFunc` directly,
     they return them. Specifically, they return `http.Handler` types.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的处理程序函数不直接实现 `http.Handler` 或 `http.HandlerFunc`，它们返回它们。具体来说，它们返回 `http.Handler`
+    类型。
 - en: '[PRE10]'
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: This pattern gives each handler its own closure environment. You can do initialization
     work in this space, and the data will be available to the handlers when they are
     called.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种模式为每个处理程序提供了其自己的闭包环境。您可以在此空间中进行初始化工作，并且在调用处理程序时数据将可用。
 - en: Be sure to only read the shared data. If handlers modify anything, you’ll need
     a mutex or something to protect it.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 确保只读取共享数据。如果处理程序修改任何内容，您将需要互斥锁或其他保护机制。
 - en: Storing program state here is not usually what you want. In most cloud environments,
     you can’t trust that code will continue running over long periods of time. Depending
     on your production environment, servers will often shut down to save resources,
@@ -447,16 +540,20 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里存储程序状态通常不是您想要的。在大多数云环境中，您不能信任代码会长时间运行。根据您的生产环境，服务器通常会关闭以节省资源，或者仅仅因其他原因而崩溃。可能还会有许多实例在负载均衡的情况下运行，请求会以不可预测的方式分布。在这种情况下，一个实例只能访问自己的本地数据。因此，最好使用数据库或其他存储
+    API 在真实项目中持久化数据。
 - en: Handle decoding/encoding in one place
   id: totrans-split-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在一个地方处理解码/编码
 - en: Every service will need to decode the request bodies and encode response bodies.
     This is a sensible abstraction that stands the test of time.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个服务都需要解码请求体并编码响应体。这是一个经得起时间考验的合理抽象。
 - en: I usually have a pair of helper functions called encode and decode. An example
     version using generics shows you that you really are just wrapping a few basic
     lines, which I wouldn’t usually do, however this becomes useful when you need
@@ -465,47 +562,58 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 我通常有一对名为 encode 和 decode 的辅助函数。使用泛型的示例版本向您展示，您实际上只是包装了几行基本代码，我通常不会这样做，但是在需要为所有
+    API 更改这里时，这变得非常有用。（例如，假设您的新老板困在20世纪90年代，他们想要添加 XML 支持。）
 - en: '[PRE11]'
   id: totrans-split-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Interestingly, the compiler is able to infer the type from the argument, so
     you don’t need to pass it when calling encode:'
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，编译器能够从参数推断出类型，因此在调用 encode 时不需要传递它：
 - en: '[PRE12]'
   id: totrans-split-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'But since it is a return argument in decode, you will need to specify the type
     you expect:'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 但由于它是 decode 的返回参数，你需要指定你期望的类型：
 - en: '[PRE13]'
   id: totrans-split-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: I try not to overload these functions, but in the past I was quite pleased with
     a simple validation interface that fit nicely into the decode function.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 我试图不要过度使用这些函数，但过去我对一个简单的验证接口非常满意，它很好地契合了 decode 函数。
 - en: Validating data
   id: totrans-split-93
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 验证数据
 - en: 'I like a simple interface. Love them, actually. Single method interfaces are
     so easy to implement. So when it comes to validating objects, I like to do this:'
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 我喜欢简单的接口。实际上非常喜欢。单方法接口很容易实现。所以当涉及到验证对象时，我喜欢这样做：
 - en: '[PRE14]'
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: The `Valid` method takes a context (which is optional but has been useful for
     me in the past) and returns a map. If there is a problem with a field, its name
     is used as the key, and a human-readable explanation of the issue is set as the
@@ -513,26 +621,31 @@
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Valid`方法接受一个上下文（可选，但过去对我有用），并返回一个映射。如果字段有问题，其名称用作键，并设置问题的人类可读说明作为值。'
 - en: 'The method can do whatever it needs to validate the fields of the struct. For
     example, it can check to make sure:'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 该方法可以执行任何必要的操作来验证结构体的字段。例如，它可以检查确保：
 - en: Required fields are not empty
   id: totrans-split-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 必填字段不为空。
 - en: Strings with a specific format (like email) are correct
   id: totrans-split-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 具有特定格式（如电子邮件）的字符串是正确的。
 - en: Numbers are within an acceptable range
   id: totrans-split-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数字在可接受范围内。
 - en: If you need to do anything more complicated, like check the field in a database,
     that should happen elsewhere; it’s probably too important to be considered a quick
     validation check, and you wouldn’t expect to find that kind of thing in a function
@@ -540,46 +653,55 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您需要做更复杂的事情，比如在数据库中检查字段，那应该在其他地方进行；这可能太重要了，不能被视为快速验证检查，你不会希望在这样的函数中找到这种事情，因此它很容易被隐藏起来。
 - en: I then use a type assertion to see if the object implements the interface. Or,
     in the generic world, I might choose to be more explicit about what’s going on
     by changing the decode method to insist on that interface being implemented.
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我使用类型断言来查看对象是否实现了该接口。或者在泛型世界中，我可能选择通过更改解码方法来明确说明正在发生的事情。
 - en: '[PRE15]'
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: In this code, `T` has to implement the `Validator` interface, and the `Valid`
     method must return zero problems in order for the object to be considered successfully
     decoded.
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此代码中，`T`必须实现`Validator`接口，并且`Valid`方法必须返回零问题，以便将对象视为成功解码。
 - en: It’s safe to return `nil` for problems because we are going to check `len(problems)`,
     which will be `0` for a `nil` map, but which won’t panic.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 安全地返回`nil`以表示问题，因为我们将检查`len(problems)`，对于`nil`映射，它将为`0`，但不会发生恐慌。
 - en: The adapter pattern for middleware
   id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 中间件的适配器模式
 - en: Middleware functions take an `http.Handler` and return a new one that can run
     code before and/or after calling the original handler — or it can decide not to
     call the original handler at all.
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 中间件函数接受一个`http.Handler`并返回一个可以在调用原始处理程序之前和/或之后运行代码的新处理程序 — 或者它可以决定根本不调用原始处理程序。
 - en: 'An example is a check to make sure the user is an administrator:'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个示例是检查用户是否为管理员的检查：
 - en: '[PRE16]'
   id: totrans-split-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The logic inside the handler can optionally decide whether to call the original
     handler or not. In the example above, if `IsAdmin` is false, the handler will
     return an `HTTP 404 Not Found` and return (or abort); notice that the `h` handler
@@ -588,25 +710,31 @@
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理程序内部的逻辑可以选择性地决定是否调用原始处理程序。在上面的示例中，如果`IsAdmin`为false，则处理程序将返回`HTTP 404 Not
+    Found`并返回（或中止）；注意没有调用`h`处理程序。如果`IsAdmin`为true，则允许用户访问路由，因此执行权传递给`h`处理程序。
 - en: 'Usually I have middleware listed in the `routes.go` file:'
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常我在`routes.go`文件中列出中间件：
 - en: '[PRE17]'
   id: totrans-split-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: This makes it very clear, just by looking at the map of endpoints, which middleware
     is applied to which routes. If the lists start getting bigger, try splitting them
     across many lines — I know, I know, but you get used to it.
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过查看端点映射，很清楚地显示了哪些中间件应用于哪些路由。如果列表开始变得更长，请尝试跨多行拆分它们 — 我知道，我知道，但你会习惯的。
 - en: Sometimes I return the middleware
   id: totrans-split-114
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有时我返回中间件
 - en: The above approach is great for simple cases, but if the middleware needs lots
     of dependencies (a logger, a database, some API clients, a byte array containing
     the data for “Never Gonna Give You Up” for a later prank), then I have been known
@@ -614,47 +742,57 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 以上方法适用于简单情况，但如果中间件需要大量依赖项（记录器、数据库、一些API客户端、包含“永远不会放弃你”的数据的字节数组以供稍后恶作剧使用），那么我已知道有一个返回中间件函数的函数。
 - en: 'The problem is, you end up with code that looks like this:'
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题在于，最终你会得到这样的代码：
 - en: '[PRE18]'
   id: totrans-split-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: This bloats out the code and doesn’t really provide anything useful. Instead,
     I would have the middleware function take the dependencies, but return a function
     that takes only the next handler.
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会使代码膨胀，并且实际上并没有提供任何有用的东西。相反，我会让中间件函数接受依赖项，但只返回一个接下来的处理程序函数。
 - en: '[PRE19]'
   id: totrans-split-119
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: The return type `func(h http.Handler) http.Handler` is the function that we
     will call when setting up our routes.
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 返回类型`func(h http.Handler) http.Handler`是我们设置路由时将调用的函数。
 - en: '[PRE20]'
   id: totrans-split-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Some people, but not I, like to formalize that function type like this:'
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些人，但不包括我，喜欢这样形式化函数类型：
 - en: '[PRE21]'
   id: totrans-split-123
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: This is fine. Do it if you like. I’m not going to come around to your work,
     wait outside for you, and then walk alongside you with my arm around your shoulders
     in an intimidating way, asking if you’re pleased with yourself.
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很好。如果你喜欢，可以这样做。我不会到处转悠等着你，然后一副令人害怕的姿态跟在你身边，搭着你的肩膀，问你自己满意吗。
 - en: The reason I don’t do it is because it gives an extra level of indirection.
     When you look at the `newMiddleware` function’s signature above, it’s very clear
     what’s going on. If the return type is middleware, you have a little extra work
@@ -662,99 +800,119 @@
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不这么做的原因是因为它增加了额外的间接性。当你看上面的`newMiddleware`函数签名时，很清楚发生了什么。如果返回类型是中间件，你需要做一些额外的工作。基本上，我优化于阅读代码，而不是写代码。
 - en: An opportunity to hide the request/response types away
   id: totrans-split-126
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 隐藏请求/响应类型的机会
 - en: If an endpoint has its own request and response types, usually they’re only
     useful for that particular handler.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个端点有它自己的请求和响应类型，通常它们只对特定的处理程序有用。
 - en: If that’s the case, you can define them inside the function.
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果是这样，你可以在函数内定义它们。
 - en: '[PRE22]'
   id: totrans-split-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: This keeps your global space clear and also prevents other handlers from relying
     on data you may not consider stable.
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 这保持了全局空间的清晰，并且防止其他处理程序依赖于你可能不考虑稳定的数据。
 - en: You sometimes encounter friction with this approach when your test code needs
     to use the same types. And to be fair, this is a good argument for breaking them
     out if that’s what you want to do.
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你的测试代码需要使用相同类型时，有时会遇到这种方法的摩擦。公平地说，这是打破它们的一个很好的理由。
 - en: Use inline request/response types for additional storytelling in tests
   id: totrans-split-132
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在测试中使用内联请求/响应类型来进行额外的故事讲述
 - en: If your request/response types are hidden inside the handler, you can just declare
     new types in your test code.
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您的请求/响应类型隐藏在处理程序内部，您只需在测试代码中声明新类型。
 - en: This is an opportunity to do a bit of storytelling to future generations who
     will need to understand your code.
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个向未来需要理解你的代码的人讲述一些故事的机会。
 - en: 'For example, let’s say we have a `Person` type in our code, and we reuse it
     on many endpoints. If we had a `/greet` endpoint, we might only care about their
     name, so we can express this in test code:'
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，假设我们的代码中有一个`Person`类型，并且我们在许多端点上重复使用它。如果我们有一个`/greet`端点，我们可能只关心他们的名字，所以我们可以在测试代码中表达这一点：
 - en: '[PRE23]'
   id: totrans-split-136
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: It’s clear from this test that the only field we care about is the `Name` field.
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个测试清楚地表明，我们唯一关心的是`Name`字段。
 - en: '`sync.Once` to defer setup'
   id: totrans-split-138
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`sync.Once`来推迟设置'
 - en: If I have to do anything expensive when preparing the handler, I defer it until
     that handler is first called.
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在准备处理程序时需要执行任何昂贵的工作，我会推迟到首次调用该处理程序时。
 - en: This improves application startup time.
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 这提高了应用程序的启动时间。
 - en: '[PRE24]'
   id: totrans-split-141
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: '`sync.Once` ensures the code is only executed one time, and other calls (other
     people making the same request) will block until it’s finished.'
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: '`sync.Once`确保代码只执行一次，并且其他调用（其他人发出相同请求）将阻塞，直到它完成。'
 - en: The error check is outside of the `init` function, so if something does go wrong
     we still surface the error and won’t lose it in the logs
   id: totrans-split-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 错误检查在`init`函数之外，因此如果出现问题，我们仍然会显示错误，并且不会在日志中丢失它
 - en: If the handler is not called, the expensive work is never done — this can have
     big benefits depending on how your code is deployed
   id: totrans-split-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果处理程序未被调用，则昂贵的工作永远不会完成——这可能会根据代码部署方式带来很大的好处
 - en: Remember that by doing this, you are moving the initialization time from startup
     to runtime (when the endpoint is first accessed). I use Google App Engine a lot,
     so this makes sense for me, but your case might be different, so it’s worth thinking
@@ -762,70 +920,84 @@
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，通过这样做，您将初始化时间从启动移到运行时（当首次访问端点时）。我经常使用Google App Engine，所以这对我来说是有意义的，但您的情况可能不同，因此值得考虑何时以及何地以这种方式使用`sync.Once`。
 - en: Designing for testability
   id: totrans-split-146
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设计用于可测试性
 - en: These patterns evolved partly because of how easy they are to test the code.
     The `run` function is a simple way to run your program right from test code.
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些模式的演变部分是因为测试代码的简易性。`run` 函数是从测试代码中直接运行程序的简单方法。
 - en: 'You have lots of options when it comes to testing in Go, and it’s less about
     right and wrong, and more about:'
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Go 中进行测试时，您有很多选择，这与对错无关，更多地是关于：
 - en: How easy is it to understand what your program does by looking at the tests?
   id: totrans-split-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过查看测试，了解程序的功能有多容易？
 - en: How easy is it to change your code without worrying about breaking things?
   id: totrans-split-150
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在不担心破坏事物的情况下更改代码有多容易？
 - en: If all your tests pass, can you push to production, or does it need to cover
     more things?
   id: totrans-split-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果所有测试都通过，您可以推送到生产环境，还是需要覆盖更多内容？
 - en: What is the unit when unit testing?
   id: totrans-split-152
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 单元测试时的单元是什么？
 - en: Following these patterns, the handlers themselves are also independently testable,
     but I tend not to do this, and I’ll explain why below. You have to consider what
     the best approach is for your project.
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 遵循这些模式，处理程序本身也可以独立进行测试，但我倾向于不这样做，我将在下面解释原因。您必须考虑对于您的项目来说最佳的方法是什么。
 - en: 'To test the handler only, you can:'
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 要仅测试处理程序，您可以：
 - en: Call the function to get the `http.Handler` — you have to pass in all the required
     dependencies (this is a feature).
   id: totrans-split-155
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 调用函数以获取 `http.Handler` — 您必须传入所有必需的依赖项（这是一个特性）。
 - en: Call the `ServeHTTP` method on the `http.Handler` you get back using a real
     `http.Request` and a `ResponseRecorder` from the `httptest` package (see [https://pkg.go.dev/net/http/httptest#ResponseRecorder](https://pkg.go.dev/net/http/httptest#ResponseRecorder))
   id: totrans-split-156
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在返回的 `http.Handler` 上调用 `ServeHTTP` 方法，使用真实的 `http.Request` 和 `httptest` 包中的
+    `ResponseRecorder`（参见 [https://pkg.go.dev/net/http/httptest#ResponseRecorder](https://pkg.go.dev/net/http/httptest#ResponseRecorder)）
 - en: Make assertions about the response (check the status code, decode the body and
     make sure it’s right, check any important headers, etc.)
   id: totrans-split-157
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对响应进行断言（检查状态码，解码主体并确保正确，检查任何重要的标头等）。
 - en: If you do this, you cut out any middleware like auth, and go straight to the
     handler code. This is nice if there is some specific complexity you want to build
     some test support around. However, there’s an advantage when your test code calls
@@ -834,6 +1006,8 @@
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果这样做，您可以剔除任何像身份验证这样的中间件，直接进入处理程序代码。如果有一些特定的复杂性需要构建一些测试支持，这很好。然而，当您的测试代码以与用户相同的方式调用
+    API 时，就会有一个优势。在这个层面上，我更倾向于进行端到端测试，而不是在内部对所有部分进行单元测试。
 - en: I would rather call the `run` function to execute the whole program as close
     to how it will run in production as possible. This will parse any arguments, connect
     to any dependencies, migrate the database, whatever else it will do in the wild,
@@ -843,6 +1017,8 @@
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 我更愿意调用 `run` 函数来尽可能接近在生产环境中运行程序。这将解析任何参数，连接到任何依赖项，迁移数据库，以及在实际环境中执行的其他操作，并最终启动服务器。然后当我从测试代码中调用
+    API 时，我会经过所有层，并与真实数据库进行交互。我还同时测试 `routes.go`。
 - en: I find I catch more issues earlier with this approach and I can avoid specifically
     testing boilerplate things. It also reduces the repetition in my tests. If I diligently
     test every layer, I can end up saying the same things multiple times in slightly
@@ -853,6 +1029,7 @@
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 我发现通过这种方法可以更早地发现更多问题，并且可以避免专门测试样板内容。这也减少了我的测试中的重复。如果我勤奋地测试每一层，最终可能会以稍微不同的方式多次重复相同的内容。您必须维护所有这些内容，因此如果要更改某些内容，则更新一个函数和三个测试并不会感到非常高效。通过端到端测试，您只需拥有一组描述用户与系统之间交互的主要测试。
 - en: I still use unit tests within this where appropriate. If I used TDD (which I
     often do) then I usually have a lot of tests done anyway, which I’m happy to maintain.
     But I will go back and delete tests if they’re repeating the same thing as an
@@ -860,23 +1037,27 @@
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 在适当的情况下，我仍然在其中使用单元测试。如果我使用 TDD（我经常这样做），那么通常已经完成了很多测试，我很乐意维护。但是，如果重复了与端到端测试相同的内容，我会回去删除测试。
 - en: This decision will depend on lots of things, from the opinions of those around
     you to the complexity of your project, so like all the advice in this post, don’t
     fight to do this if it just doesn’t work for you.
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个决定将取决于很多因素，从身边人的意见到项目的复杂性，所以像本文中所有建议一样，如果对你来说行不通，不要勉强去做这件事。
 - en: Testing with the run function
   id: totrans-split-163
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用`run`函数进行测试
 - en: I like to call the `run` function from each test. Each test gets its own self-contained
     instance of the program. For each test, I can pass different arguments, flag values,
     standard-in and -out pipes, and even environment variables.
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 我喜欢从每个测试中调用`run`函数。每个测试都会得到自己独立的程序实例。对于每个测试，我可以传递不同的参数、标志值、标准输入和输出管道，甚至环境变量。
 - en: 'Since the `run` function takes a `context.Context`, and since all our code
     respects the context (right, everyone? It respects the context, right?) We can
     get a cancellation function by calling `context.WithCancel`. By deferring the
@@ -888,26 +1069,32 @@
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为`run`函数接受`context.Context`，而且我们所有的代码都尊重上下文（对吧，大家？它尊重上下文，对吧？）我们可以通过调用`context.WithCancel`得到一个取消函数。通过延迟`cancel`函数，当测试函数返回（即测试完成运行时），上下文将被取消，程序将优雅地关闭。在Go
+    1.14中，他们添加了`t.Cleanup`方法，它是对自己使用`defer`关键字的替代，如果你想了解更多原因，可以查看这个问题：[https://github.com/golang/go/issues/37333](https://github.com/golang/go/issues/37333)。
 - en: 'This is all achieved in surprisingly little code. Of course, you have to keep
     checking `ctx.Err` or `ctx.Done` all over the place too:'
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些都在惊人少量的代码中实现。当然，你也必须随时检查`ctx.Err`或`ctx.Done`：
 - en: '[PRE25]'
   id: totrans-split-167
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Waiting for readiness
   id: totrans-split-168
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 等待准备就绪
 - en: Since the `run` function executes in a goroutine, we don’t really know exactly
     when it’s going to start up. If we’re going to start hitting the API like real
     users, we are going to need to know when it’s ready.
   id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为`run`函数在一个goroutine中执行，我们实际上不知道它何时启动。如果我们要像真实用户一样开始使用API，我们需要知道它何时准备就绪。
 - en: We could set up some way of signalling readiness, like a channel or something
     — but I prefer to have a `/healthz` or `/readyz` endpoint running on the server.
     As my old grandma used to say, the proof of the pudding is in the actual HTTP
@@ -915,25 +1102,30 @@
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以设置某种方式来表示就绪，比如一个通道或其他东西 —— 但我更喜欢在服务器上运行`/healthz`或`/readyz`端点。正如我年迈的祖母过去常说的，布丁的真正实力在于实际的HTTP请求（她的时代先见之明）。
 - en: This is an example where our efforts to make the code more testable gives us
     an insight into what our users will need. They probably want to know if the service
     is ready or not as well, so why not have an official way to find this out?
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个例子，我们努力使代码更具可测试性，为我们提供了了解用户需求的洞察力。他们可能也想知道服务是否就绪，那么为什么不有一个官方的方式来了解这一点呢？
 - en: 'To wait for a service to be ready, you can just write a loop:'
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 要等待服务准备就绪，你可以简单地写一个循环：
 - en: '[PRE26]'
   id: totrans-split-173
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: Putting this all into practice
   id: totrans-split-174
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将所有这些付诸实践
 - en: Rolling simple APIs using these techniques remains my favorite way to go. It
     suits my aims of achieving maintainability excellence with code that’s easy to
     read, easy to extend by copying patterns, easy for new people to work with, easy
@@ -943,6 +1135,7 @@
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这些技巧编写简单的API仍然是我最喜欢的方式。它符合我追求的代码易读、易扩展（通过复制模式）、易于新人使用、易于无需担忧地修改，并且明确地没有任何魔法。即使我使用像我们自己的[Oto包](https://github.com/pacedotdev/oto)这样的代码生成框架，根据我定制的模板为我编写样板，这仍然是正确的。
 - en: On bigger projects or in larger organizations, especially one like Grafana Labs,
     you’ll often come across specific technology choices that impact these decisions.
     gRPC is a good example. In cases where there are established patterns and experience,
@@ -952,6 +1145,7 @@
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 在更大的项目或较大的组织中，特别是像Grafana Labs这样的组织，你经常会遇到影响决策的具体技术选择。gRPC就是一个很好的例子。在有已建立的模式和经验，或者其他广泛使用的工具或抽象的情况下，你经常会发现自己做出顺其自然的选择，就像他们说的那样，尽管我怀疑（还是希望？）这篇文章对你来说仍然有用。
 - en: My day job is building out the new [Grafana IRM](/products/cloud/irm/) suite
     with a talented group within Grafana Labs. The patterns discussed in this post
     help us deliver tools that people can rely on. “Tell me more about these great
@@ -959,6 +1153,7 @@
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的日常工作是与Grafana Labs内的一组才华横溢的人员共同打造新的[Grafana IRM](/products/cloud/irm/)套件。本文讨论的模式帮助我们提供可靠的工具。“告诉我更多关于这些伟大工具的信息！”，我听见你在电脑显示器前尖叫。
 - en: Most people use Grafana to visualize the operation of their systems, and with
     Grafana Alerting they are pinged when metrics fall outside of acceptable boundaries.
     With Grafana OnCall, your schedules and escalation rules automate the process
@@ -966,6 +1161,7 @@
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数人使用Grafana来可视化其系统的运行情况，并通过Grafana警报功能在指标超出可接受范围时发出警报。使用Grafana OnCall，您的计划和升级规则会自动化联系适当的人员在事情出错时联系。
 - en: Grafana Incident lets you manage those unavoidable all-hands-on-deck moments
     that most of us are all too familiar with. It creates the Zoom room for you to
     discuss the issue, a dedicated Slack channel, and tracks the timeline of events
@@ -976,9 +1172,11 @@
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: Grafana事故处理功能让你管理那些不可避免的紧急情况，我们大多数人都太熟悉了。它为你创建Zoom会议室来讨论问题，一个专用的Slack频道，并跟踪事件时间轴，让你专注于解决问题。在Slack中，你标记为机器人面部表情符号的任何内容将被添加到时间轴中。这使得在进行事后总结或事故回顾讨论时非常容易收集关键事件。
 - en: '*[Grafana Cloud](/products/cloud/?pg=blog&plcmt=body-txt) is the easiest way
     to get started with metrics, logs, traces, dashboards, and more. We have a generous
     forever-free tier and plans for every use case. [Sign up for free now](/auth/sign-up/create-user/?pg=blog&plcmt=body-txt)!*'
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[Grafana Cloud](/products/cloud/?pg=blog&plcmt=body-txt)是开始使用度量、日志、跟踪、仪表板等功能最简单的方式。我们有一个慷慨的永久免费层和适用于各种用例的计划。[立即免费注册](/auth/sign-up/create-user/?pg=blog&plcmt=body-txt)!*'
