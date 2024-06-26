@@ -191,12 +191,15 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Go 测试可以并行运行，通过在顶层将测试声明为并行来实现。这个行为默认开启，并且只能通过在调用 `go test` 时设置 `-parallel=1`
+    标志来禁用（在调试不稳定测试时很有用）。
 - en: I’m of the opinion that tests should be parallel unless they absolutely cannot
     be, and even then, I’d rather fix the flaw behind why they can’t be run in parallel
     than force them to be run sequentially.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的观点是，除非绝对不能并行运行，否则测试应该是并行的。即使不能并行，我也更愿意修复不能并行运行的原因，而不是强制顺序运行它们。
 - en: 'Running your tests in parallel generally allows you to suss out concurrency
     bugs earlier, even if you’re not using the race detector (which you should), and
     will eventually lead to you developing concurrency-safe habits when writing code
@@ -205,6 +208,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，在并行运行测试时，即使没有使用竞态检测器（你应该使用），也可以更早地发现并发错误，并且最终会导致你在编写代码时养成编写并发安全代码的习惯。因此，通常情况下，我编写测试时的第一行就是并行声明：
 - en: '[PRE6]'
   id: totrans-split-34
   prefs: []
@@ -215,6 +219,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 子测试[⌗](#subtests)
 - en: Subtests are a feature of Go’s testing library that allow you to have smaller
     tests for specific circumstances. These allow you to get some of the benefits
     of a behavior-driven testing style, without having to invoke an external dependency.
@@ -224,6 +229,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: Go 的测试库中的子测试（Subtests）是一个特性，允许你为特定情况编写更小的测试。这些测试让你能够获得行为驱动测试风格的一些好处，而无需调用外部依赖。即使只关心一个测试用例，我通常也会编写子测试，因为这样做几乎没有额外开销，并且在被测试函数变得更复杂时，可以轻松地测试新的情况。
 - en: When I write subtests, I usually name the top-level `*testing.T` object a capitalized
     `T`, and use the conventional lower-cased `t` for subtests only. This way, the
     subtest logic always looks like an idiomatic Go test, and there’s no confusion
@@ -232,11 +238,14 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我编写子测试时，我通常会将顶层的 `*testing.T` 对象命名为大写的 `T`，并且仅在子测试中使用传统的小写 `t`。这样子测试逻辑看起来总是像
+    Go 的习惯性测试，而且不会混淆变量是哪个或者哪个变量会遮蔽哪个变量。对于大 `*T` 和小 `*T` 变量都需要调用 `.Parallel()`。
 - en: 'Here’s a demonstration that adapts our earlier example for the `addNumbers`
     function:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一个演示，调整我们之前为 `addNumbers` 函数编写的示例：
 - en: '[PRE7]'
   id: totrans-split-39
   prefs: []
@@ -247,6 +256,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果我决定添加另一个测试用例，只需复制子测试块，更改名称，然后使测试与描述匹配即可：
 - en: '[PRE8]'
   id: totrans-split-41
   prefs: []
@@ -258,28 +268,33 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，如果有与所有子测试相关的测试固件或常量，它们可以存在于调用`.Parallel()`和第一个声明的子测试之间的空间中。
 - en: Libraries[⌗](#libraries)
   id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 库[⌗](#libraries)
 - en: While the standard library testing package is pretty great, there have been
     some great contributions by the community to the ecosystem that make testing in
     Go even better.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然标准库的测试包非常出色，但社区对 Go 生态系统的贡献使得测试变得更加完善。
 - en: Fake Values[⌗](#fake-values)
   id: totrans-split-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 伪造值[⌗](#fake-values)
 - en: Typically, when I need to interact with an object in a test, I want to have
     unpredictable values to the extent possible for that object, so that I’m discouraged
     from relying on those conventions when writing tests.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，当我需要在测试中与一个对象交互时，我希望对于该对象尽可能地具有不可预测的值，这样在编写测试时就不会依赖于这些约定。
 - en: So for instance, if I need a `*User` object for a test, I want to have no idea
     what it’s username might be, as opposed to a common static value that I might
     copy/paste from place to place, which would make many tests fail if it was inadvertently
@@ -287,6 +302,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 比如说，如果我需要一个 `*User` 对象用于测试，我希望不知道它的用户名可能是什么，而不是一个常见的静态值，可能会从一个地方复制/粘贴到另一个地方，这样做如果被无意中更改会导致许多测试失败。
 - en: 'I like to use [brianvoe/gofakeit](https://pkg.go.dev/github.com/brianvoe/gofakeit/v7)
     for this. It comes with a ton of sensible functions with which to build fake instances
     of different types, and I’ve never had a problem with it. Here’s what that fake
