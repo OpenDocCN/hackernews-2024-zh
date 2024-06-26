@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 12:56:43'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 12:56:43'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: RubyGems is not vulnerable to the xz/liblzma backdoor - RubyGems Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: RubyGems 不受 xz/liblzma 后门影响 - RubyGems Blog
 - en: 来源：[https://blog.rubygems.org/2024/03/31/rubygems-and-xz.html](https://blog.rubygems.org/2024/03/31/rubygems-and-xz.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.rubygems.org/2024/03/31/rubygems-and-xz.html](https://blog.rubygems.org/2024/03/31/rubygems-and-xz.html)
 - en: The past few days have seen the security world focused on the revelation of
     the [xz/liblzma backdoor](https://xeiaso.net/notes/2024/xz-vuln/). For more background,
     see [this early writeup of the issue](https://xeiaso.net/notes/2024/xz-vuln/),
@@ -33,18 +39,22 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 过去几天，安全领域的关注点集中在[xz/liblzma后门](https://xeiaso.net/notes/2024/xz-vuln/)的揭示上。更多背景信息，请参阅[此问题的早期报告](https://xeiaso.net/notes/2024/xz-vuln/)，[这篇
+    GitHub Gist](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27)，[这个详细的时间线](https://boehs.org/node/everything-i-know-about-the-xz-backdoor)，以及[CVE-2024-3094](https://nvd.nist.gov/vuln/detail/CVE-2024-3094)的官方详细页面。
 - en: In response to the backdoor becoming public, we have done an internal audit
     not just of the software used to run RubyGems.org itself, but also every gem that
     has ever been published.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 针对此后门被公开的情况，我们不仅对运行 RubyGems.org 本身的软件进行了内部审计，还对曾经发布的每一个 gem 进行了审计。
 - en: We are happy to report that RubyGems.org is not vulnerable to this issue. Furthermore,
     we are happy to confirm that no gem currently published on RubyGems.org contains
     the vulnerable `liblzma` library.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们很高兴地宣布，RubyGems.org 并不受此问题的影响。此外，我们很高兴地确认，目前在 RubyGems.org 上发布的任何 gem 都不包含有漏洞的`liblzma`库。
 - en: I would like to thank the rest of the RubyGems.org security team for their support
     in this investigation, and for their continued dedication to the security of the
     ecosystem. I would also like to thank AWS for their continued support of RubyGems
@@ -54,17 +64,22 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我要感谢 RubyGems.org 安全团队的支持，他们在此次调查中提供了帮助，并持续致力于生态系统的安全。我还要感谢 AWS 对 RubyGems 安全的持续支持，包括他们赞助我作为[Ruby
+    Central的驻场安全工程师](https://rubycentral.org/news/ruby-central-welcomes-new-software-engineer-in-residence-sponsored-by-aws/)，以及资助[rubygems-research](https://github.com/segiddins/rubygems-research)项目。
 - en: Thanks to the data consolidated in that project (available publicly at [research.rubygems.info](https://research.rubygems.info)),
     we were able to quickly confirm that no currently published gems contain any references
     to the vulnerable `liblzma` library.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 多亏了该项目中的数据（公开可用于[research.rubygems.info](https://research.rubygems.info)），我们能够迅速确认目前已发布的
+    gem 中没有任何与有漏洞的`liblzma`库有关的内容。
 - en: Technical Details
   id: totrans-split-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 技术细节
 - en: The RubyGems.org app containers, built [via Dockerfile](https://github.com/rubygems/rubygems.org/blob/master/Dockerfile),
     do not contain vulnerable versions of `liblzma` nor `xz`. Our images are based
     on [Alpine 3.18 stable](https://github.com/rubygems/rubygems.org/blob/master/Dockerfile#L5),
@@ -74,6 +89,9 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: RubyGems.org 应用容器是通过[Dockerfile构建](https://github.com/rubygems/rubygems.org/blob/master/Dockerfile)，不包含有漏洞的`liblzma`或`xz`。我们的镜像基于[Alpine
+    3.18 stable](https://github.com/rubygems/rubygems.org/blob/master/Dockerfile#L5)，该版本从未包含或访问有漏洞的库版本。此外，Alpine
+    Linux 使用`musl` libc，不包含(glibc-only)[IFUNC机制](https://sourceware.org/glibc/wiki/GNU_IFUNC)，该机制用于激活后门。
 - en: Our process for building the containers deployed to production is public, run
     via GitHub Actions after every commit to the public RubyGems.org codebase. The
     [latest container build job logs](https://github.com/rubygems/rubygems.org/actions/runs/8498544592/job/23278360812)
@@ -81,11 +99,13 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们部署到生产环境的容器构建过程是公开的，每次提交到公共 RubyGems.org 代码库后都会通过 GitHub Actions 运行。任何感兴趣的方可以使用[最新的容器构建作业日志](https://github.com/rubygems/rubygems.org/actions/runs/8498544592/job/23278360812)来重现构建过程。
 - en: As verified by running `find / -name '*lzma*'` in our built containers, we depend
     only on version 5.4.3 and not on the vulnerable versions 5.6.0 or 5.6.1.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过在我们构建的容器中运行`find / -name '*lzma*'`验证，我们仅依赖于版本5.4.3，而不依赖于有漏洞的版本5.6.0或5.6.1。
 - en: <details><summary>Full command output</summary>
   id: totrans-split-15
   prefs: []
