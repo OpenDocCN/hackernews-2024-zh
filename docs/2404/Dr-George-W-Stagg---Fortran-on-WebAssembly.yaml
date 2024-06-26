@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 12:56:28'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 12:56:28
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Dr George W Stagg - Fortran on WebAssembly
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: George W Stagg 博士 - Fortran 在 WebAssembly 上的应用
 - en: 来源：[https://gws.phd/posts/fortran_wasm/](https://gws.phd/posts/fortran_wasm/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://gws.phd/posts/fortran_wasm/](https://gws.phd/posts/fortran_wasm/)
 - en: Introduction
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 简介
 - en: '[Fortran](https://fortran-lang.org) is one of the oldest programming languages
     around. It first appeared in 1957, making it older than the C programming language,
     the Intel 4004 CPU, and even the IBM System/360 series of mainframe computers.
@@ -37,17 +44,22 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Fortran](https://fortran-lang.org) 是最古老的编程语言之一。它首次出现于 1957 年，早于 C 编程语言、Intel
+    4004 CPU 甚至 IBM System/360 系列大型计算机。Fortran 诞生之时，字节刚刚问世，计算机仍然采用真空管，情况艰难。'
 - en: ¹ The name is derived from *Formula Translator*. Fortran was originally stylised
     in all-caps, but modern Fortran has dropped it.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: ¹ 名称来源于 *Formula Translator*。Fortran 最初是全大写风格，但现代 Fortran 已经放弃了这种写法。
 - en: ² The System/360 was released around 1965\. The 4004 around 1970\. And [K&R
     C](https://en.wikipedia.org/wiki/The_C_Programming_Language) was published in
     1978.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: ² System/360 大约在 1965 年发布。4004 则是在 1970 年左右。而 [K&R C](https://en.wikipedia.org/wiki/The_C_Programming_Language)
+    则于 1978 年出版。
 - en: ³ The argument goes that Fortran’s lack of aliasing and use of native arrays
     rather than pointer arithmetic allow the optimiser to generate more efficient
     output than an equivalent C program. However, there are also counter-arguments
@@ -55,6 +67,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: ³ 有观点认为，Fortran 的缺乏别名和使用本地数组而不是指针算术，使得优化器能够比等效的 C 程序生成更有效率的输出。不过，也有反对意见。
 - en: Over the years, Fortran has formed a rich history of use for computationally
     intensive scientific and engineering applications. It has powered the fluid dynamics
     of weather prediction and climate models, provided the condensed matter simulations
@@ -66,6 +79,9 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 多年来，Fortran 在科学和工程计算密集应用中积累了丰富的历史。它推动了天气预测和气候模型的流体动力学，为我的 [博士论文](../../docs/thesis_gws.pdf)
+    提供了凝聚态模拟，并且在某些情况下被认为比 C 更有效率，特别是在数值计算工作中。现代 Fortran 的语法也出奇地易于上手。这不是你父辈使用的 Fortran
+    77 代码；大部分限制使得固定格式的 Fortran 很难使用，在现代 Fortran 中已不再存在。
 - en: In a clash of computational eras, this blog post is about compiling existing
     Fortran code for WebAssembly so that it can run in a web browser. I’ll describe
     the method we currently use for the [webR](https://github.com/r-wasm/webr) project,
@@ -76,15 +92,20 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在计算时代的碰撞中，这篇博文讨论了将现有 Fortran 代码编译为 WebAssembly，以便在 Web 浏览器中运行的方法。我将描述我们当前在 [webR](https://github.com/r-wasm/webr)
+    项目中使用的方法，使用了 [LLVM](https://llvm.org) 的 `flang-new` 编译器的修补版本。这篇文章也是一则寻求帮助的请求。我描述的方法不幸地依赖于一种技巧，这种技巧意味着我无法在没有更有经验的编译器开发者帮助的情况下向
+    LLVM 贡献这些改动。
 - en: ⁴ “LLVM” is not an acronym, it is the full name of the project.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: ⁴ “LLVM” 不是首字母缩写，而是项目的全称。
 - en: So, what’s the problem?
   id: totrans-split-14
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 那么，问题出在哪里？
 - en: There are a surprising number of potential methods and toolchains available
     to compile Fortran to WebAssembly. Unfortunately, none of the available options
     are feature complete. Each method has its drawbacks, and none are a simple plug-and-play
@@ -92,6 +113,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多潜在的方法和工具链可以将 Fortran 编译到 WebAssembly。不幸的是，所有可用的选项都不完备。每种方法都有其缺点，没有一种是简单的即插即用的解决方案。
 - en: Back in 2020, the situation was summarised wonderfully by Christoph Honal’s
     article [FORTRAN in the Browser](https://chrz.de/2020/04/21/fortran-in-the-browser/).
     Even now, the article is worth reading and provides a nice background for this
@@ -101,6 +123,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到2020年，克里斯托夫·霍纳尔的文章[FORTRAN in the Browser](https://chrz.de/2020/04/21/fortran-in-the-browser/)精彩地总结了当时的情况。即使到现在，这篇文章仍然值得一读，并为本文提供了良好的背景。我个人对克里斯托夫的文章很感激，特别是对其对[Dragonegg](https://dragonegg.llvm.org)工具链的描述。如果没有那篇文章，我很早就会放弃将Fortran用于WebAssembly了。
 - en: Our goal by the end of this post is to be able to compile a modern Fortran routine
     to WebAssembly that takes in some numerical arguments, computes the output of
     [BLAS](http://www.netlib.org/blas/) and [LAPACK](https://netlib.org/lapack/) routines,
@@ -110,16 +133,19 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在本文结束时的目标是能够编译一个现代Fortran例程为WebAssembly，该例程接收一些数值参数，计算[BLAS](http://www.netlib.org/blas/)和[LAPACK](https://netlib.org/lapack/)例程的输出，并将结果返回或打印到控制台。据我记得，2020年时，克里斯托夫文章中概述的方法都无法令人满意地完成这个任务。Dragonegg和`f2c`虽然接近，但都有一些缺点，我将在下文描述。
 - en: ⁵ LAPACK (Linear Algebra Package) is a popular library of routines used to numerically
     solve problems in linear algebra. It’s written in Fortran 90 and itself relies
     on a BLAS (Basic Linear Algebra Subprograms) library.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: ⁵ LAPACK（线性代数包）是一个流行的例程库，用于数值解决线性代数问题。它用Fortran 90编写，并依赖于一个BLAS（基本线性代数子程序）库。
 - en: ⁶ via [Pyodide](https://pyodide.org/en/stable/) and [webR](https://github.com/r-wasm/webr).
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: ⁶ 通过[Pyodide](https://pyodide.org/en/stable/)和[webR](https://github.com/r-wasm/webr)。
 - en: Together, BLAS and LAPACK routines provide a powerful numerical platform. Running
     them in the browser opens the door for several higher-level programming environments
     that rely on them under the hood, such as SciPy or R. The beauty of this approach
@@ -128,6 +154,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: BLAS和LAPACK例程一起提供了一个强大的数值平台。在浏览器中运行它们为几个依赖于它们的高级编程环境打开了大门，例如SciPy或R。这种方法的优势在于，它允许您将现有和经过充分测试的工具和库带到Web上，而无需将它们全部重写为Rust或JavaScript。
 - en: Later, I’ll show an example of this with a machine learning demo that directly
     uses BLAS routines compiled from Fortran to WebAssembly. Rather than having to
     write fiddly linear algebra numerical algorithms in JavaScript, we can use reliable
@@ -135,17 +162,20 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 后面，我将展示一个机器学习演示示例，该示例直接使用从Fortran编译为WebAssembly的BLAS例程。我们无需在JavaScript中编写复杂的线性代数数值算法，而是直接使用可靠和高效的BLAS例程。
 - en: ⁷ Whilst running machine learning algorithms in a web browser will never be
     as efficient as using dedicated hardware, such as a GPU, I still think it’s a
     fun demo.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: ⁷ 尽管在Web浏览器中运行机器学习算法永远无法与使用专用硬件（如GPU）一样高效，但我仍然认为这是一个有趣的演示。
 - en: Compiler round-up
   id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 编译器概述
 - en: Since [FORTRAN in the Browser](https://chrz.de/2020/04/21/fortran-in-the-browser/)
     was published things have changed a little, particularly when it comes to the
     LLVM-based Fortran compilers. As far as I am aware, here’s a brief round-up of
@@ -153,11 +183,13 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 自从[FORTRAN in the Browser](https://chrz.de/2020/04/21/fortran-in-the-browser/)发布以来，一些事情有所变化，特别是当涉及到基于LLVM的Fortran编译器时。据我所知，这里是2024年的当前情况的简要概述。
 - en: The `f2c` utility
   id: totrans-split-25
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`f2c`实用程序'
 - en: The [`f2c`](https://en.wikipedia.org/wiki/F2c) program converts Fortran 77 to
     C code, which Emscripten can then compile into WebAssembly. This is the method
     that the [Pyodide](https://pyodide.org/en/stable/) project uses to compile Python
@@ -167,6 +199,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`f2c`](https://en.wikipedia.org/wiki/F2c)程序将Fortran 77转换为C代码，然后Emscripten可以将其编译成WebAssembly。这是[Pyodide](https://pyodide.org/en/stable/)项目用来编译包含Fortran代码的Python包的方法。他们说这种方法“效果不佳”（https://pyodide.org/en/0.25.0/project/roadmap.html#find-a-better-way-to-compile-fortran）。该工具无法处理现代Fortran代码，即使转换后结果仍会出现致命错误，需要大量修补。'
 - en: LFortran
   id: totrans-split-27
   prefs:
@@ -444,6 +477,7 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 既然我们无论如何都要修改 LLVM Flang 源码，我们需要从头开始编译。让我们获取 LLVM v18.1.1 的源码并从那里开始。请随时跟进；我会尽量提供所有必要的命令和信息。
 - en: ^(14) I’m going to assume you’re familiar with [Emscripten](https://emscripten.org)
     and have a version of that toolchain on your path. If not, and you want to play
     along, start with [emsdk](https://github.com/emscripten-core/emsdk) to setup Emscripten
@@ -452,121 +486,153 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(14) 我假设您熟悉 [Emscripten](https://emscripten.org)，并且在您的路径上有该工具链的版本。如果不是这样，并且您希望参与其中，请从
+    [emsdk](https://github.com/emscripten-core/emsdk) 开始，在您的机器上设置 Emscripten，熟悉为 WebAssembly
+    编译 C 代码的过程，然后再回到这里继续。
 - en: '[~/fortran]git clone --depth=1 --branch=llvmorg-18.1.1 https://github.com/llvm/llvm-project.git'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]git clone --depth=1 --branch=llvmorg-18.1.1 https://github.com/llvm/llvm-project.git'
 - en: Cloning into 'llvm-project'...
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 正在克隆到 'llvm-project'...
 - en: 'remote: Enumerating objects: 138937, done.'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 远程：正在枚举对象：138937，完成。
 - en: 'Receiving objects: 100% (138937/138937), 199.81 MiB | 11.36 MiB/s, done.'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 接收对象：100%（138937/138937），199.81 MiB | 11.36 MiB/s，完成。
 - en: 'Note: switching to ''6009708b4367171ccdbf4b5905cb6a803753fe18''.'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：切换到 '6009708b4367171ccdbf4b5905cb6a803753fe18'。
 - en: 'Updating files: 100% (132077/132077), done.'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 更新文件：100%（132077/132077），完成。
 - en: '[~/fortran]cmake -G Ninja -S llvm-project/llvm -B build \'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]cmake -G Ninja -S llvm-project/llvm -B build \'
 - en: -DCMAKE_INSTALL_PREFIX=llvm-18.1.1 \
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: -DCMAKE_INSTALL_PREFIX=llvm-18.1.1 \
 - en: -DCMAKE_BUILD_TYPE=MinSizeRel \
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: -DCMAKE_BUILD_TYPE=MinSizeRel \
 - en: -DLLVM_DEFAULT_TARGET_TRIPLE="wasm32-unknown-emscripten" \
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: -DLLVM_DEFAULT_TARGET_TRIPLE="wasm32-unknown-emscripten" \
 - en: -DLLVM_TARGETS_TO_BUILD="WebAssembly" \
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: -DLLVM_TARGETS_TO_BUILD="WebAssembly" \
 - en: -DLLVM_ENABLE_PROJECTS="clang;flang;mlir"
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: -DLLVM_ENABLE_PROJECTS="clang;flang;mlir"
 - en: -- The C compiler identification is AppleClang 15.0.0.15000100
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: -- C 编译器标识为 AppleClang 15.0.0.15000100
 - en: '-- Found assembler: /Library/Developer/CommandLineTools/usr/bin/cc'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: -- 发现汇编程序：/Library/Developer/CommandLineTools/usr/bin/cc
 - en: -- Detecting C compiler ABI info - done
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: -- 检测 C 编译器 ABI 信息 - 完成
 - en: -- Performing Test HAVE_POSIX_REGEX -- success
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: -- 测试成功 HAVE_POSIX_REGEX --
 - en: -- Configuring done (29.0s)
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: -- 配置完成（29.0秒）
 - en: -- Generating done (2.9s)
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: -- 生成完成（2.9秒）
 - en: '-- Build files have been written to: fortran/build'
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: -- 已编写构建文件：fortran/build
 - en: '[~/fortran]cmake --build build'
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]cmake --build build'
 - en: '...'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: '[6136/6136] Linking CXX executable bin/obj2yaml'
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '[6136/6136] 链接 CXX 可执行文件 bin/obj2yaml'
 - en: Grab a cuppa, this step uses a lot of resources and can take a **very** long
     time.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 拿杯茶吧，这一步会消耗大量资源，可能需要**非常**长的时间。
 - en: '^(15) **cuppa** (/ˈkʌp.ə/): noun, informal, UK. A hot drink, usually tea or
     coffee.'
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: '^(15) **cuppa** (/ˈkʌp.ə/): 名词，非正式用法，英国。一种热饮，通常是茶或咖啡。'
 - en: Interlude — Calling Fortran subroutines from C
   id: totrans-split-94
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 插曲 —— 从 C 调用 Fortran 子程序
 - en: While we wait for LLVM to build, start up a new terminal and we’ll remind ourselves
     how to compile and link a Fortran subroutine as part of a C program. The principles
     here will help us later when it comes to calling Fortran from JavaScript.
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 等待 LLVM 构建时，打开一个新的终端窗口，我们来回顾一下如何将 Fortran 子程序编译并链接到 C 程序中。这里的原理将有助于我们稍后在 JavaScript
+    中调用 Fortran 时使用。
 - en: 'First, let’s write a simple subroutine that takes in three integer arguments:
     `x`, `y`, and `z`. It will set the value of `z` to the sum of `x` and `y`. Name
     our new subroutine `foo` and save the file containing your subroutine as `foo.f08`.'
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们编写一个简单的子程序，接受三个整数参数：`x`、`y` 和 `z`。它将把 `z` 的值设为 `x` 和 `y` 的和。命名我们的新子程序为
+    `foo`，并将包含您的子程序的文件保存为 `foo.f08`。
 - en: '[PRE0]'
   id: totrans-split-97
   prefs: []
@@ -579,6 +645,8 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注意到，一般来说，Fortran 例程通过引用传递参数，并且我们可以使用 `INTENT()` 在子程序中声明参数的使用方式。假设您已经安装了类似
+    `gfortran` 的传统 Fortran 编译器，请将 Fortran 源码编译成目标文件。'
 - en: ^(16) You don’t *need* a native fortran compiler to follow along with the rest
     of the post, but if you’d like one you can get `gfortran` from your OS’s usual
     package manager as part of the GCC compiler suite. There’s also [`ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html),
@@ -586,38 +654,48 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(16) 您不*必须*有一个本地的 Fortran 编译器才能跟着本文继续进行，但如果您想要一个，可以从您操作系统的常规软件包管理器中获取 `gfortran`
+    作为 GCC 编译器套件的一部分。如果您在 Intel CPU 上，还有 [`ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html)。
 - en: '[~/fortran]gfortran -c foo.f08 -o foo.o'
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]gfortran -c foo.f08 -o foo.o'
 - en: '[~/fortran]file foo.o'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]文件 foo.o'
 - en: 'foo.o: Mach-O 64-bit object arm64'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: foo.o：Mach-O 64 位对象 arm64
 - en: '[~/fortran]nm foo.o'
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]nm foo.o'
 - en: 0000000000000038 s EH_frame1
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 0000000000000038 s EH_frame1
 - en: 0000000000000000 T _foo_
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 0000000000000000 T _foo_
 - en: 0000000000000000 t ltmp0
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 0000000000000000 t ltmp0
 - en: 0000000000000038 s ltmp1
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 0000000000000038 s ltmp1
 - en: I’m on an M1 macOS machine, so my resulting object is a Mach object for ARM.
     If you’re a Linux user, you should see something like `ELF 64-bit LSB shared object,
     x86-64`. I’ve also run `nm` to take a look at the names of the symbols in the
@@ -627,6 +705,9 @@
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用的是 M1 macOS 机器，所以我的生成对象是用于 ARM 的 Mach 对象。如果您是 Linux 用户，您应该看到类似 `ELF 64 位
+    LSB 共享对象，x86-64` 的内容。我还运行了 `nm` 命令来查看编译器生成的对象中的符号名称。请注意我们子例程的符号 —— 在我的机器上，它被命名为
+    `_foo_`。前导下划线是相当标准的，但是尾随下划线与 C 过程的通常情况不同。
 - en: Let’s write a C program that calls our Fortran subroutine. Notice again how
     we pass the arguments by reference to the external symbol. Also, if your Fortran
     compiler added the trailing underscore, we’ll need to include it when we declare
@@ -634,12 +715,16 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们编写一个调用我们 Fortran 子例程的 C 程序。再次注意我们如何通过引用将参数传递给外部符号。此外，如果您的 Fortran 编译器添加了尾随下划线，我们在
+    C 中声明符号名称时也需要包含它。
 - en: ^(17) Modern Fortran standards provide a Fortran module [`iso_c_binding`](https://fortranwiki.org/fortran/show/iso_c_binding)
     and a C header file `ISO_Fortran_binding.h` to improve C interoperability, but
     our code is going to be simple enough that we can do without those today.
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(17) 现代 Fortran 标准提供了一个 Fortran 模块 [`iso_c_binding`](https://fortranwiki.org/fortran/show/iso_c_binding)
+    和一个 C 头文件 `ISO_Fortran_binding.h`，以提高与 C 的互操作性，但我们今天的代码足够简单，可以不用这些。
 - en: '[PRE1]'
   id: totrans-split-111
   prefs: []
@@ -650,69 +735,86 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '*使用 `gcc` 或等效工具编译 C 源码，然后运行生成的二进制文件，观察令人惊叹的数值计算水平。'
 - en: '[~/fortran]gcc main.c foo.o -o main'
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]gcc main.c foo.o -o main'
 - en: '[~/fortran]./main'
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]./main'
 - en: 1 + 1 = 2**  **## Returning to LLVM Flang
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 1 + 1 = 2**  **## 返回 LLVM Flang
 - en: Once LLVM has finished compiling, the `flang-new` binary should be available
     in the directory `build/bin`. We can now run it and confirm that it has been set
     up to produce binaries for `wasm32` and Emscripten.
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦 LLVM 编译完成，`flang-new` 二进制文件应该位于目录 `build/bin` 中。现在我们可以运行它，并确认已设置为生成 `wasm32`
+    和 Emscripten 的二进制文件。
 - en: '[~/fortran]./build/bin/flang-new --version'
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]./build/bin/flang-new --version'
 - en: flang-new version 18.1.1 (https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a)
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: flang-new 版本 18.1.1（https://github.com/llvm/llvm-project.git dba2a75e9c7ef81fe84774ba5eee5e67e01d801a）
 - en: 'Target: wasm32-unknown-emscripten'
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 目标：wasm32-unknown-emscripten
 - en: 'Thread model: posix'
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 线程模型：posix
 - en: 'InstalledDir: .../fortran/build/bin'
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: InstalledDir：.../fortran/build/bin
 - en: Great! Let’s try compiling our Fortran subroutine using our freshly built compiler.
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 太棒了！让我们尝试使用我们新构建的编译器编译我们的 Fortran 子例程。
 - en: '[~/fortran]./build/bin/flang-new -c foo.f08 -o foo.o'
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]./build/bin/flang-new -c foo.f08 -o foo.o'
 - en: 'error: fortran/llvm-project/flang/lib/Optimizer/CodeGen/Target.cpp:1162:'
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 错误：fortran/llvm-project/flang/lib/Optimizer/CodeGen/Target.cpp:1162：
 - en: 'not yet implemented: target not implemented'
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 尚未实现：目标未实现
 - en: 'LLVM ERROR: aborting'
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: LLVM 错误：中止
 - en: Ah, not so great. The `wasm32-unknown-emscripten` target triple unfortunately
     hasn’t been implemented yet in the `flang-new` compiler.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 啊，不太好。`flang-new` 编译器中遗憾地尚未实现 `wasm32-unknown-emscripten` 目标三元组。
 - en: And so here comes our first patch to LLVM. We will implement the target by extending
     Flang’s list of known target specifics. The required changes, shown below as a
     diff, can be mostly deduced by looking at the other targets implemented in the
@@ -720,6 +822,8 @@
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们来为 LLVM 的第一个补丁。我们将通过扩展 Flang 的已知目标特定列表来实现目标。下面显示的所需更改可以通过查看文件 `flang/lib/Optimizer/CodeGen/Target.cpp`
+    中已实现的其他目标来推断。
 - en: '[PRE2]'
   id: totrans-split-129
   prefs: []
@@ -732,86 +836,106 @@
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: '*将上述差异内容保存为文件 `add-wasm32-target.diff`，然后使用 `git` 或 `patch` 实用程序将其应用于 `llvm-project`
+    目录。然后，重新构建 LLVM Flang。第二次构建应该会更快，因为大部分生成的对象不受此更改的影响。'
 - en: '[~/fortran]patch -p1 -d llvm-project < add-wasm32-target.diff'
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]patch -p1 -d llvm-project < add-wasm32-target.diff'
 - en: '[~/fortran]cmake --build build'
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]cmake --build build'
 - en: '...'
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: '[180/180] Generating ../../../../include/flang/ieee_arithmetic.mod'
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: '[180/180] 生成../../../../include/flang/ieee_arithmetic.mod'
 - en: Once LLVM has been recompiled, try compiling our Fortran source once again.
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦LLVM重新编译，再次尝试编译我们的Fortran源。
 - en: '[~/fortran]./build/bin/flang-new -c foo.f08 -o foo.o'
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]./build/bin/flang-new -c foo.f08 -o foo.o'
 - en: '[~/fortran]file foo.o'
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]file foo.o'
 - en: 'foo.o: WebAssembly (wasm) binary module version 0x1 (MVP)'
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 'foo.o: WebAssembly (wasm) 二进制模块版本 0x1 (MVP)'
 - en: '[~/fortran]llvm-nm foo.o'
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]llvm-nm foo.o'
 - en: 00000001 T foo_
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 00000001 T foo_
 - en: Success! We can confirm this is a real WebAssembly object using the `file` utility,
     and `llvm-nm` can see the `foo` symbol within, corresponding to our Fortran subroutine.
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 成功！我们可以确认这是一个真实的WebAssembly对象，使用`file`实用程序，`llvm-nm`可以看到其中的`foo`符号，对应我们的Fortran子程序。
 - en: ^(18) You might need to use a WebAssembly aware version of this tool from Emscripten.
     If you’re using [emsdk](https://github.com/emscripten-core/emsdk), ensure that
     `.../emsdk/upstream/bin/` is on your `$PATH`.
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(18) 您可能需要使用Emscripten提供的WebAssembly感知版本的这个工具。如果您正在使用[emsdk](https://github.com/emscripten-core/emsdk)，请确保`.../emsdk/upstream/bin/`在您的`$PATH`中。
 - en: ^(19) Here I’m using Node v18, but I think anything newer than Node v16 should
     work. Emscripten is bundled with a version of Node, but I like using [nvm](https://github.com/nvm-sh/nvm)
     to manage my Node installations.
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(19) 在这里我正在使用Node v18，但我认为比Node v16更新的版本都应该可以工作。Emscripten捆绑了一个Node的版本，但我喜欢使用[nvm](https://github.com/nvm-sh/nvm)来管理我的Node安装。
 - en: Let’s continue compiling our C function for WebAssembly using Emscripten and
     running it using Node. We should see the same output as with our native binary.
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们继续使用Emscripten编译我们的C函数为WebAssembly，并使用Node运行它。我们应该看到与我们的本机二进制相同的输出。
 - en: '[~/fortran]emcc main.c foo.o -o main.js'
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]emcc main.c foo.o -o main.js'
 - en: '[~/fortran]node main.js'
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]node main.js'
 - en: 1 + 1 = 2*  *## Interlude — Calling a Fortran routine from JavaScript
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 1 + 1 = 2*  *## 幕间 — 从JavaScript调用Fortran例程
 - en: In the previous section we used a C program to call Fortran code, but we don’t
     technically need to do that. If we tell Emscripten about the Fortran subroutine,
     we can call it directly from JavaScript without writing any C code.
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前一节中，我们使用了一个C程序调用Fortran代码，但我们技术上不需要这样做。如果我们告诉Emscripten关于Fortran子程序，我们可以直接从JavaScript调用它，而无需编写任何C代码。
 - en: First, let’s link our Fortran object with Emscripten, producing a script that
     loads our WebAssembly binary into memory but does not execute any routines. In
     addition to our symbol `_foo_`, we’ll also export `_malloc` and `_free` so that
@@ -819,6 +943,7 @@
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们将我们的Fortran对象与Emscripten链接，生成一个脚本，将我们的WebAssembly二进制加载到内存中，但不执行任何例程。除了我们的符号`_foo_`之外，我们还将导出`_malloc`和`_free`，以便我们可以从JavaScript中使用它们。
 - en: ^(20) See the [Emscripten documentation](https://emscripten.org/docs/tools_reference/settings_reference.html)
     for more details about `emcc` command line options. By the way, if you’ve not
     used Emscripten much before you might see extra `cache:INFO` lines emitted during
@@ -826,32 +951,39 @@
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(20) 请查看[Emscripten文档](https://emscripten.org/docs/tools_reference/settings_reference.html)，以获取有关`emcc`命令行选项的更多详细信息。顺便说一句，如果您之前没有使用过Emscripten，可能会在本文的各个步骤中看到额外的`cache:INFO`行。它们无需担心，可以忽略不计。
 - en: '[~/fortran]emcc foo.o -sEXPORTED_FUNCTIONS=_foo_,_malloc,_free -o foo.js'
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]emcc foo.o -sEXPORTED_FUNCTIONS=_foo_,_malloc,_free -o foo.js'
 - en: 'cache:INFO: generating system asset: symbol_lists/ae47d07bfa3321ac4dde96bd87821b4aa93f9a19.json...
     (this will be cached in ".../emsdk/upstream/emscripten/cache/symbol_lists/ae47d07bfa3321ac4dde96bd87821b4aa93f9a19.json"
     for subsequent builds)'
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 'cache:INFO: 正在生成系统资产：symbol_lists/ae47d07bfa3321ac4dde96bd87821b4aa93f9a19.json...（这将被缓存到".../emsdk/upstream/emscripten/cache/symbol_lists/ae47d07bfa3321ac4dde96bd87821b4aa93f9a19.json"以供后续构建使用）'
 - en: 'cache:INFO: - ok'
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 'cache:INFO: - 完成'
 - en: '[~/fortran]node foo.js'
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]node foo.js'
 - en: '[~/fortran]'
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]'
 - en: Notice that when we run the script `foo.js` directly… nothing happens.
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，当我们直接运行脚本`foo.js`时......什么也不会发生。
 - en: Next, we’ll write a JavaScript file that loads `foo.js` and then calls our Fortran
     subroutine. We’ll need to allocate some memory to hold our integers `x`, `y` and
     `z` using the exported `_malloc()` function. We’ll also need to set our input
@@ -860,6 +992,7 @@
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将编写一个JavaScript文件，加载`foo.js`，然后调用我们的Fortran子例程。我们需要分配一些内存来保存我们的整数`x`、`y`和`z`，使用导出的`_malloc()`函数。我们还需要将我们的输入参数`x`和`y`设置为一些整数值，我们可以通过在分配的WebAssembly内存中设置值来实现，使用`Module.HEAPU32`。
 - en: '[PRE3]'
   id: totrans-split-158
   prefs: []
@@ -869,24 +1002,30 @@
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[~/fortran]node standalone.js'
 - en: x = 123
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: x = 123
 - en: y = 456
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: y = 456
 - en: x + y = 579
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: x + y = 579
 - en: You should also be able to run the resulting WebAssembly binary in a web browser.
     Remove the line `var Module = require('./foo.js');` from `standalone.js`, and
     instead load the script `foo.js` in your HTML.
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还应该能够在 web 浏览器中运行生成的 WebAssembly 二进制文件。从 `standalone.js` 中删除 `var Module =
+    require('./foo.js');` 这一行，而是在您的 HTML 中加载脚本 `foo.js`。
 - en: '[PRE4]'
   id: totrans-split-164
   prefs: []
@@ -897,12 +1036,15 @@
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '*启动本地 web 服务器，访问页面，同样的输出应该出现在浏览器的 JavaScript 控制台中。'
 - en: '^(22) Something like `Rscript -e ''httpuv::runStaticServer()''` or `python3
     -m http.server` should work well.**  **## The Fortran runtime library: A journey
     to “Hello, World!”'
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(22) 类似 `Rscript -e 'httpuv::runStaticServer()'` 或 `python3 -m http.server`
+    应该很好用。**  **## Fortran 运行时库：通向“Hello, World!”的旅程
 - en: The ubiquitous “Hello, World!” test program is the usual way to introduce a
     programming language, but I didn’t introduce Fortran using such a program above.
     As you’ll see, that was for a good reason. Let’s see what happens when we try
@@ -912,6 +1054,9 @@
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 普遍的“Hello, World!”测试程序通常用来介绍编程语言，但我没有使用这样的程序来介绍 Fortran。正如您将看到的那样，这是有充分理由的。让我们看看当我们尝试在
+    Fortran 中构建一个“Hello, World!”子程序并从 C 调用它时会发生什么。与之前一样，我们将使用 `flang-new` 编译 Fortran
+    对象，并使用 Emscripten 编译和链接 C 代码。
 - en: '[PRE5]'
   id: totrans-split-168
   prefs: []
@@ -921,31 +1066,39 @@
   id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[PRE6]'
 - en: '*[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
 - en: '[~/fortran]emcc hello.c hello.o -o hello.js'
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]emcc hello.c hello.o -o hello.js'
 - en: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioBeginExternalListOutput'
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioBeginExternalListOutput'
 - en: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioOutputAscii'
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioOutputAscii'
 - en: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioEndIoStatement'
   id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 'wasm-ld: error: hello.o: undefined symbol: _FortranAioEndIoStatement'
 - en: 'emcc: error: ''wasm-ld -o hello.wasm [...] --no-entry --stack-first --table-base=1''
     failed (returned 1)'
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 'emcc: error: ''wasm-ld -o hello.wasm [...] --no-entry --stack-first --table-base=1''
+    失败（返回 1）'
 - en: The build failed due to some missing symbols. This is a consequence of a more
     general issue in that we have not yet compiled the LLVM Fortran runtime library
     for WebAssembly. There are a bunch of library symbols that we’re currently missing,
@@ -953,6 +1106,7 @@
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建失败，因为缺少一些符号。这是我们尚未为 WebAssembly 编译 LLVM Fortran 运行时库的结果。当前缺少一些库符号，包括打印输出所需的某些函数！
 - en: Luckily, the runtime library is written in C++ as part of the LLVM source tree
     at `llvm-project/flang/runtime`. So, in principle, all we need to do is build
     the library using Emscripten’s `em++` compiler and then link to it whenever we’re
@@ -960,16 +1114,21 @@
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，运行时库作为 LLVM 源代码树的一部分，以 C++ 编写在 `llvm-project/flang/runtime` 中。因此，原则上，我们只需使用
+    Emscripten 的 `em++` 编译器构建该库，然后在使用 Fortran 代码的 WebAssembly 程序中链接它。
 - en: Here is a `Makefile` designed to make this step easy. Save it in the current
     directory and then run `make`. It should go ahead and use the version of Emscripten
     on your path to build a static Fortran runtime library at `build/flang/runtime/libFortranRuntime.a`.
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个 `Makefile`，旨在使此步骤变得简单。将其保存在当前目录中，然后运行 `make`。它应该会使用您路径上的 Emscripten 版本，在
+    `build/flang/runtime/libFortranRuntime.a` 中构建一个静态 Fortran 运行时库。
 - en: ^(24) Be sure to indent the rules in this file using tabs, not spaces.
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(24) 确保使用制表符而不是空格来缩进此文件中的规则。
 - en: '[PRE7]'
   id: totrans-split-180
   prefs: []
@@ -979,60 +1138,76 @@
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[~/fortran]make'
 - en: em++ .../ISO_Fortran_binding.o -c .../ISO_Fortran_binding.cpp
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: em++ .../ISO_Fortran_binding.o -c .../ISO_Fortran_binding.cpp
 - en: em++ .../allocatable.o -c .../allocatable.cpp
   id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
+  zh: em++ .../allocatable.o -c .../allocatable.cpp
 - en: em++ .../array-constructor.o -c .../array-constructor.cpp
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: em++ .../array-constructor.o -c .../array-constructor.cpp
 - en: '...'
   id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: emar -rcs build/flang/runtime/libFortranRuntime.a .../binary-to-decimal.o
   id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
+  zh: emar -rcs build/flang/runtime/libFortranRuntime.a .../binary-to-decimal.o
 - en: '[~/fortran]file build/flang/runtime/libFortranRuntime.a'
   id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]file build/flang/runtime/libFortranRuntime.a'
 - en: 'build/flang/runtime/libFortranRuntime.a: current ar archive'
   id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 'build/flang/runtime/libFortranRuntime.a: 当前的 ar 存档'
 - en: Let’s try again, linking in our shiny new library as part of the Emscripten
     build step.
   id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再试一次，在 Emscripten 构建步骤中链接我们闪亮的新库。
 - en: '[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
   id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
 - en: '[~/fortran]emcc hello.c hello.o build/flang/runtime/libFortranRuntime.a -o
     hello.js'
   id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]emcc hello.c hello.o build/flang/runtime/libFortranRuntime.a -o
+    hello.js'
 - en: 'wasm-ld: warning: function signature mismatch: _FortranAioOutputAscii'
   id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 'wasm-ld: warning: 函数签名不匹配：_FortranAioOutputAscii'
 - en: '>>> defined as (i32, i32, i64) -> i32 in hello.o'
   id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
+  zh: '>>> 在 hello.o 中定义为 (i32, i32, i64) -> i32'
 - en: '>>> defined as (i32, i32, i32) -> i32 in build/flang/runtime/libFortranRuntime.a(io-api.o)'
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: '>>> 在 build/flang/runtime/libFortranRuntime.a(io-api.o) 中定义为 (i32, i32, i32)
+    -> i32'
 - en: Success? Not quite. A warning is issued, letting us know about a signature mismatch.
     Emscripten has compiled the symbol `_FortranAioOutputAscii` to take three `i32`
     arguments. However, `flang-new` has compiled `hello.f08` with the expectation
@@ -1040,11 +1215,13 @@
   id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 成功了吗？不完全。有一个警告被发出，让我们知道存在签名不匹配的问题。Emscripten已经编译了符号`_FortranAioOutputAscii`来接受三个`i32`参数。然而，`flang-new`编译了`hello.f08`，期望该符号接受两个`i32`参数和一个`i64`参数。
 - en: ^(25) This is [LLVM IR notation](https://llvm.org/docs/LangRef.html#integer-type),
     meaning an integer of size 32 bits.
   id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(25) 这是[LLVM IR标记](https://llvm.org/docs/LangRef.html#integer-type)，表示大小为32位的整数。
 - en: ^(26) This continues to crop up when compiling R packages for webR. Package
     authors or vendored libraries may have used tools such as `f2c` that declare a
     Fortran `SUBROUTINE` to return an `int`, while other libraries might declare a
@@ -1054,6 +1231,8 @@
   id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(26) 在编译webR包时，这种情况仍然会出现。软件包作者或供应的库可能使用了诸如`f2c`这样的工具，声明Fortran `SUBROUTINE`返回`int`，而其他库可能声明Fortran
+    `SUBROUTINE`返回`void`。谁是正确的？我不确定，因为据我了解，早期的Fortran没有标准的C接口。个人认为返回`void`是最有意义的。
 - en: This is unfortunate. Despite being emitted as just a warning, if you try running
     the emitted program using Node you will see that the problem is catastrophic.
     WebAssembly, unlike a lot of target systems, absolutely requires that symbols
@@ -1062,44 +1241,54 @@
   id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
+  zh: 这真是不幸。尽管只被作为警告发出，如果您尝试使用Node运行生成的程序，您会发现问题是灾难性的。与许多目标系统不同，WebAssembly绝对要求在多个编译单元中定义的符号具有一致的函数签名，包括参数和返回类型。
 - en: '[~/fortran]node hello.js'
   id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]node hello.js'
 - en: '.../fortran/hello.js:128'
   id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
+  zh: '.../fortran/hello.js:128'
 - en: throw ex;
   id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
+  zh: throw ex;
 - en: ^
   id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
+  zh: ^
 - en: 'RuntimeError: unreachable'
   id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
+  zh: 'RuntimeError: unreachable'
 - en: at wasm://wasm/001a0366:wasm-function[20]:0x15d9
   id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 wasm://wasm/001a0366:wasm-function[20]:0x15d9
 - en: at removeRunDependency (/Users/georgestagg/fortran/hello.js:630:7)
   id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 removeRunDependency (/Users/georgestagg/fortran/hello.js:630:7)
 - en: Node.js v18.18.0
   id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
+  zh: Node.js v18.18.0
 - en: 'Rather than going over the debugging process that eventually leads us to what
     is going on here, let me point you directly to the cause of the problem. Take
     a look at this comment from the LLVM source:'
   id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其详细讨论最终导致这里发生了什么的调试过程，不如直接指出问题的原因。看看LLVM源代码中的这条评论：
 - en: '[PRE8]'
   id: totrans-split-208
   prefs: []
@@ -1119,6 +1308,7 @@
   id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
+  zh: '*问题就在这里。对于我们来说，主机与目标不同，打破了LLVM源代码中的假设。令人惊讶的是，这并没有像你预期的那样造成太多混乱。据我所知，这个机制仅用于将用C++编写的Fortran运行时库函数提供给Fortran使用。使用了`sizeof()`的编译时计算，由于大多数大小匹配，它基本上运行良好。'
 - en: ^(27) The [C data model](https://en.wikipedia.org/wiki/64-bit_computing#64-bit_data_models)
     for the host and target defines how many bits certain fundamental C types are
     represented with. The specific sizes can differ based on the hardware architecture
@@ -1126,6 +1316,7 @@
   id: totrans-split-211
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(27) [主机和目标的C数据模型](https://en.wikipedia.org/wiki/64-bit_computing#64-bit_data_models)定义了特定硬件架构和操作系统上如何表示某些基本C类型的位数。具体的大小可以根据硬件架构和操作系统而异。
 - en: Unfortunately for us, assuming you’re following along on a modern 64-bit Unix-like
     system such as Linux or macOS, the sizes don’t match for the `long` data type.
     The result of `sizeof(long)` on our compiler’s host platform is 8 bytes (`i64`),
@@ -1134,6 +1325,7 @@
   id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，假设你正在一台现代的64位类Unix系统，比如Linux或者macOS上跟随，`long`数据类型的大小并不匹配。在我们编译器的主机平台上，`sizeof(long)`的结果是8字节（`i64`），但对于`wasm32-unknown-emscripten`目标平台，返回的值应该是4字节（`i32`）。
 - en: When we compile the Fortran runtime library C++ code using Emscripten, things
     are fine. The resulting symbols are compiled with signatures such that `long`
     arguments are `i32`. However, when we compile our Fortran code with `flang-new`
@@ -1143,6 +1335,8 @@
   id: totrans-split-213
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们使用 Emscripten 编译 Fortran 运行时库的 C++ 代码时，一切都很顺利。生成的符号是带有签名的，以便 `long` 参数为 `i32`。然而，当我们使用
+    `flang-new` 编译我们的 Fortran 代码时，外部库符号声明的是 `long` 参数为 `i64`。这种差异导致了不一致的函数签名警告和运行时失败。
 - en: Why did using `PRINT()` in our “Hello, World!” program invoke a function that
     takes an argument of type `long`? Well, in some implementations of Fortran there
     are so-called “hidden” arguments that are added whenever you pass a Fortran `CHARACTER`
@@ -1154,6 +1348,10 @@
   id: totrans-split-214
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么在我们的“Hello, World!”程序中使用 `PRINT()` 会调用一个带有 `long` 类型参数的函数？嗯，在一些 Fortran 实现中，当您将
+    Fortran `CHARACTER` 类型传递给函数或子程序时，会添加所谓的“隐藏”参数。这些额外的参数传递字符串的长度。在 Fortran 运行时库中，隐藏参数声明为
+    `size_t` 类型，随后通过一系列 `typedef` 最终变为 `unsigned long`。这个隐藏的隐式参数就是尺寸不一致的参数。****  ***##
+    解决问题的临时办法
 - en: Unfortunately, I don’t know enough about the LLVM or Flang internals to implement
     a real solution to this problem. Ideally, `flang-new` would emit the correct use
     of `i32` or `i64` for the target architecture and data model when cross-compiling,
@@ -1161,6 +1359,8 @@
   id: totrans-split-215
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，我对 LLVM 或 Flang 的内部了解不够，无法为这个问题实现真正的解决方案。理想情况下，当进行交叉编译时，无论编译器运行在哪个主机架构上，`flang-new`
+    都应该针对目标架构和数据模型正确地使用 `i32` 或 `i64`。
 - en: Since I can’t solve this today, let’s hack around it for now. We’ll build a
     version of `flang-new` with the size of a `long` hard-coded to what we need for
     `wasm32` and Emscripten. We’ll also make some changes so that calls to `malloc()`
@@ -1168,11 +1368,14 @@
   id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于今天我解决不了这个问题，暂时让我们绕过它。我们将构建一个版本的 `flang-new`，将 `long` 的大小硬编码为我们在 `wasm32` 和
+    Emscripten 中需要的大小。我们还会做一些更改，以便从 Fortran 中对 `malloc()` 的调用发出带有 `i32` 参数。
 - en: ^(28) This additionally fixes dynamic allocation with `ALLOCATE()`, a feature
     introduced in Fortran 90.
   id: totrans-split-217
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(28) 此外，这还修复了 Fortran 90 中引入的 `ALLOCATE()` 的动态分配功能。
 - en: The required patches are again shown as a diff below. If you’re following along,
     save it as a file named `force-4-byte-values.diff` and apply it to the `llvm-project`
     directory using `git` or the `patch` utility. Finally, recompile `flang-new` once
@@ -1180,6 +1383,8 @@
   id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
+  zh: 所需的补丁如下所示。如果您在跟进，将其保存为名为 `force-4-byte-values.diff` 的文件，并使用 `git` 或 `patch`
+    实用程序将其应用于 `llvm-project` 目录。最后，重新编译 `flang-new` 一次。
 - en: '[PRE10]'
   id: totrans-split-219
   prefs: []
@@ -1189,44 +1394,55 @@
   id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[~/fortran]patch -p1 -d llvm-project < force-4-byte-values.diff'
 - en: '[~/fortran]cmake --build build'
   id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]cmake --build build'
 - en: '[0/60] Building CXX object tools/flang/lib/Lower/Runtime.cpp.o'
   id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
+  zh: '[0/60] 正在构建 CXX 对象 tools/flang/lib/Lower/Runtime.cpp.o'
 - en: '...'
   id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: '[49/49] Generating ../../../../include/flang/ieee_arithmetic.f18.mod'
   id: totrans-split-224
   prefs: []
   type: TYPE_NORMAL
+  zh: '[49/49] 生成 ../../../../include/flang/ieee_arithmetic.f18.mod'
 - en: 'Once LLVM has been rebuilt, try compiling our program once again. This time,
     it should compile without any warnings and successfully run under Node:'
   id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦 LLVM 重新构建完成，再次尝试编译我们的程序。这次，它应该可以在 Node 下无警告地成功编译并运行了。
 - en: '[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
   id: totrans-split-226
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]./build/bin/flang-new -c hello.f08 -o hello.o'
 - en: '[~/fortran]emcc hello.c hello.o build/flang/runtime/libFortranRuntime.a -o
     hello.js'
   id: totrans-split-227
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]emcc hello.c hello.o build/flang/runtime/libFortranRuntime.a -o
+    hello.js'
 - en: '[~/fortran]node hello.js'
   id: totrans-split-228
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]node hello.js'
 - en: Hello, World!*********  ***# Compiling BLAS and LAPACK for WebAssembly
   id: totrans-split-229
   prefs: []
   type: TYPE_NORMAL
+  zh: Hello, World!*********  ***# 为 WebAssembly 编译 BLAS 和 LAPACK
 - en: Now that we have a Fortran compiler that can output WebAssembly objects, let’s
     build some Fortran projects. [BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms)
     (Basic Linear Algebra Subprograms) is a set of low-level routines that perform
@@ -1239,38 +1455,48 @@
   id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有一个可以输出 WebAssembly 对象的 Fortran 编译器，让我们构建一些 Fortran 项目。[BLAS](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms)（基本线性代数子程序）是一组低级别例程，执行线性代数中许多常见操作，包括矩阵和向量乘法的工具。它们是数值计算中的事实标准，有几种不同的
+    BLAS 例程实现可用。一些实现已经针对特定硬件进行了优化，其他的则因为存在时间较长而进行了优化 —— 最初的 BLAS 例程于 1979 年发布！
 - en: Let’s grab a copy of the latest release of the so-called “reference implementation”
     of BLAS, written in Fortran 90, and compile it using the patched LLVM we built
     above.
   id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们获取一份 BLAS 的最新版本“参考实现”，它是用 Fortran 90 编写的，并使用我们上面构建的补丁版 LLVM 进行编译。
 - en: '[~/fortran]curl -L https://www.netlib.org/blas/blas-3.12.0.tgz > blas-3.12.0.tgz'
   id: totrans-split-232
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]curl -L https://www.netlib.org/blas/blas-3.12.0.tgz > blas-3.12.0.tgz'
 - en: '% Total % Received % Xferd Average Speed Time Time Time Current'
   id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
+  zh: '% 总计 % 已下载 % 传输中 平均速度 时间 时间 时间 当前'
 - en: Dload Upload Total Spent Left Speed
   id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
+  zh: Dload Upload Total Spent Left Speed
 - en: 100 323k 100 323k 0 0 317k 0 0:00:01 0:00:01 --:--:-- 317k
   id: totrans-split-235
   prefs: []
   type: TYPE_NORMAL
+  zh: 100 323k 100 323k 0 0 317k 0 0:00:01 0:00:01 --:--:-- 317k
 - en: '[~/fortran]tar xzf blas-3.12.0.tgz'
   id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]tar xzf blas-3.12.0.tgz'
 - en: We’ll need to modify `BLAS-3.12.0/make.inc` to tell it about our version of
     `flang-new` and the Emscripten tools. Modify the following settings, leaving the
     other lines in that file as they are, then build BLAS using `make`.
   id: totrans-split-237
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要修改 `BLAS-3.12.0/make.inc`，告诉它关于我们的 `flang-new` 版本和 Emscripten 工具的信息。修改以下设置，保持该文件中的其他行不变，然后使用
+    `make` 来构建 BLAS。
 - en: '[PRE11]'
   id: totrans-split-238
   prefs: []
@@ -1280,38 +1506,47 @@
   id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[~/fortran]cd BLAS-3.12.0'
 - en: '[~/fortran/BLAS-3.12.0]make'
   id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran/BLAS-3.12.0]make'
 - en: ../build/bin/flang-new -O2 -c -o isamax.o isamax.f
   id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
+  zh: ../build/bin/flang-new -O2 -c -o isamax.o isamax.f
 - en: ../build/bin/flang-new -O2 -c -o sasum.o sasum.f
   id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
+  zh: ../build/bin/flang-new -O2 -c -o sasum.o sasum.f
 - en: '...'
   id: totrans-split-243
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: emar cr blas_LINUX.a isamax.o ... xerbla_array.o
   id: totrans-split-244
   prefs: []
   type: TYPE_NORMAL
+  zh: emar cr blas_LINUX.a isamax.o ... xerbla_array.o
 - en: emranlib blas_LINUX.a
   id: totrans-split-245
   prefs: []
   type: TYPE_NORMAL
+  zh: emranlib blas_LINUX.a
 - en: '[~/fortran/BLAS-3.12.0]cd ..'
   id: totrans-split-246
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran/BLAS-3.12.0]cd ..'
 - en: '[~/fortran]'
   id: totrans-split-247
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]'
 - en: That went pretty well! Let’s try using it in a Fortran subroutine compiled for
     WebAssembly. For fun, we’ll try working with double precision complex numbers.
     We’ll use the BLAS level 2 routine [`ZGEMV()`](https://netlib.org/lapack/explore-html-3.6.1/dc/dc1/group__complex16__blas__level2_gafaeb2abd9fffa7442b938dc384aeaf47.html#gafaeb2abd9fffa7442b938dc384aeaf47),
@@ -1319,11 +1554,15 @@
   id: totrans-split-248
   prefs: []
   type: TYPE_NORMAL
+  zh: 那进展相当顺利！让我们尝试在为 WebAssembly 编译的 Fortran 子程序中使用它。为了好玩，我们将尝试使用双精度复数。我们将使用 BLAS
+    2级例程 [`ZGEMV()`](https://netlib.org/lapack/explore-html-3.6.1/dc/dc1/group__complex16__blas__level2_gafaeb2abd9fffa7442b938dc384aeaf47.html#gafaeb2abd9fffa7442b938dc384aeaf47)，它执行矩阵-向量操作。
 - en: \[\begin{equation} \mathbf{y} \leftarrow \alpha\mathbf{A}\mathbf{x} + \beta\mathbf{y},
     \end{equation}\]
   id: totrans-split-249
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\begin{equation} \mathbf{y} \leftarrow \alpha\mathbf{A}\mathbf{x} + \beta\mathbf{y},
+    \end{equation}\]
 - en: where \(\alpha\) and \(\beta\) are scalar constants, \(\mathbf{x}\) and \(\mathbf{y}\)
     are vectors, and \(\mathbf{A}\) is a matrix. Our Fortran routine will take in
     `alpha`, `beta`, `A`, `X`, and `Y`, with a fixed parameter `N` so that \(\mathbf{A}\)
@@ -1332,6 +1571,9 @@
   id: totrans-split-250
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里 \(\alpha\) 和 \(\beta\) 是标量常数，\(\mathbf{x}\) 和 \(\mathbf{y}\) 是向量，\(\mathbf{A}\)
+    是矩阵。我们的 Fortran 程序将接收 `alpha`、`beta`、`A`、`X` 和 `Y`，并且有一个固定参数 `N`，使得 \(\mathbf{A}\)
+    是一个有三行和列的方阵。结果写回到 \(\mathbf{y}\) 中，因此我们声明 `Y` 的意图为 `INOUT`。
 - en: '[PRE12]'
   id: totrans-split-251
   prefs: []
@@ -1345,6 +1587,8 @@
   id: totrans-split-252
   prefs: []
   type: TYPE_NORMAL
+  zh: '*请注意，对于某些 BLAS 例程，长度为一的 `CHARACTER` 字符串控制配置设置。在这里，我们将 `''N''` 作为第一个参数传递。这是我们花费时间和精力在上面构建一个能处理
+    `CHARACTER` 参数及其 `wasm32` 目标的 `flang-new` 版本的原因之一。'
 - en: Next, we’ll write a C program to create some complex variables, send them to
     Fortran and BLAS for processing, and print the result. This will let us know both
     that passing double precision complex numbers to Fortran and calling BLAS routines
@@ -1352,6 +1596,7 @@
   id: totrans-split-253
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将编写一个C程序来创建一些复杂变量，将它们发送到Fortran和BLAS进行处理，并打印结果。这将让我们知道将双精度复数传递给Fortran并调用BLAS例程是否按预期工作。
 - en: '[PRE13]'
   id: totrans-split-254
   prefs: []
@@ -1361,29 +1606,37 @@
   id: totrans-split-255
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[~/fortran]./build/bin/flang-new -c bar.f08 -o bar.o'
 - en: '[~/fortran]emcc bar.c bar.o build/flang/runtime/libFortranRuntime.a BLAS-3.12.0/blas_LINUX.a
     -o bar.js'
   id: totrans-split-256
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]emcc bar.c bar.o build/flang/runtime/libFortranRuntime.a BLAS-3.12.0/blas_LINUX.a
+    -o bar.js'
 - en: '[~/fortran]node bar.js'
   id: totrans-split-257
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]node bar.js'
 - en: 'Y[0]: 23.000000 + 6.000000i, Y[1]: 18.000000 + 10.000000i, Y[2]: 6.000000 +
     16.000000i'
   id: totrans-split-258
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Y[0]: 23.000000 + 6.000000i, Y[1]: 18.000000 + 10.000000i, Y[2]: 6.000000 +
+    16.000000i'
 - en: 'And there we have it: BLAS compiled from Fortran 90 sources and running under
     WebAssembly! To finish up, let’s confirm for ourselves that this output is correct,'
   id: totrans-split-259
   prefs: []
   type: TYPE_NORMAL
+  zh: 至此，我们已经完成了从Fortran 90源代码编译的BLAS，并在WebAssembly下运行！最后，让我们亲自确认这个输出是正确的，
 - en: ^(31) Keeping in mind Fortran’s column-major array layout.
   id: totrans-split-260
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(31) 请记住Fortran的列主要数组布局。
 - en: \[\begin{equation} \begin{split} \alpha\mathbf{A}\mathbf{x} & + \beta\mathbf{y}
     \\[0.5em] & = \begin{pmatrix} i & 7 & 8\\ 4 & 2i & 9\\ 5 & 6 & 3i \end{pmatrix}
     \cdot \begin{pmatrix} 0\\1\\2 \end{pmatrix} + 2i \begin{pmatrix} 3\\4\\5 \end{pmatrix}\\[0.5em]
@@ -1391,11 +1644,16 @@
   id: totrans-split-261
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\begin{equation} \begin{split} \alpha\mathbf{A}\mathbf{x} & + \beta\mathbf{y}
+    \\[0.5em] & = \begin{pmatrix} i & 7 & 8\\ 4 & 2i & 9\\ 5 & 6 & 3i \end{pmatrix}
+    \cdot \begin{pmatrix} 0\\1\\2 \end{pmatrix} + 2i \begin{pmatrix} 3\\4\\5 \end{pmatrix}\\[0.5em]
+    & = \begin{pmatrix} 23+6i\\18+10i\\6+16i \end{pmatrix}. \end{split} \end{equation}\]
 - en: 'Example: A handwritten digit classifier'
   id: totrans-split-262
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例：手写数字分类器
 - en: The following demo uses a [multi-layer perceptron (MLP)](https://en.wikipedia.org/wiki/Multilayer_perceptron)
     artificial neural network to classify hand-drawn digits. Try it out with your
     mouse or touchscreen! Just draw a digit from 0-9 in the box, and the classifier
@@ -1404,23 +1662,27 @@
   id: totrans-split-263
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个演示使用[多层感知器（MLP）](https://en.wikipedia.org/wiki/Multilayer_perceptron)人工神经网络来对手绘数字进行分类。用鼠标或触摸屏尝试一下吧！只需在框中绘制一个0-9的数字，分类器将尝试标记您写的是什么数字。根据网络的相对概率，在右侧的图中显示。
 - en: It’s not a perfect model, but it works fairly well for me! The weights powering
     the model have been pre-trained using Python, but the classification is performed
     at runtime using JavaScript and WebAssembly, running in your browser right now.
   id: totrans-split-264
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不是一个完美的模型，但对我来说效果相当不错！这个模型的权重已经使用Python进行了预训练，但分类是在运行时使用JavaScript和WebAssembly进行的，在您的浏览器中实时运行。
 - en: With an MLP network, the classification process is essentially a repeated application
     of matrix-vector addition and multiplication. In this demo the heavy lifting is
     done by a single Fortran subroutine making use of the BLAS level 2 routine [`DGEMV()`](https://netlib.org/lapack/explore-html-3.6.1/d7/d15/group__double__blas__level2_gadd421a107a488d524859b4a64c1901a9.html).
   id: totrans-split-265
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于MLP网络，分类过程实质上是重复应用矩阵-向量加法和乘法。在这个演示中，通过一个单独的Fortran子程序来完成重活，利用了BLAS第2级例程[`DGEMV()`](https://netlib.org/lapack/explore-html-3.6.1/d7/d15/group__double__blas__level2_gadd421a107a488d524859b4a64c1901a9.html)。
 - en: Building LAPACK
   id: totrans-split-266
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建LAPACK
 - en: '[LAPACK](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms) (Linear
     Algebra Package) is a software library for solving linear algebra problems numerically.
     It’s built upon BLAS and has similarly become a standard with many reimplementations
@@ -1428,36 +1690,45 @@
   id: totrans-split-267
   prefs: []
   type: TYPE_NORMAL
+  zh: '[LAPACK](https://en.wikipedia.org/wiki/Basic_Linear_Algebra_Subprograms)（线性代数包）是用于数值解线性代数问题的软件库。它建立在BLAS之上，并且类似地已经成为许多针对特定硬件或系统设计的重新实现的标准。'
 - en: Let’s finish this post by also building the “reference implementation” of LAPACK.
   id: totrans-split-268
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过也构建LAPACK的“参考实现”来完成本文。
 - en: ^(32) Also available from [netlib](https://www.netlib.org/lapack/), released
     under a modified BSD licence.
   id: totrans-split-269
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(32) 也可从[netlib](https://www.netlib.org/lapack/)获取，发布在修改版BSD许可下。
 - en: '[~/fortran]curl -L https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.0.tar.gz
     > lapack-3.12.0.tgz'
   id: totrans-split-270
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]curl -L https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.12.0.tar.gz
+    > lapack-3.12.0.tgz'
 - en: '% Total % Received % Xferd Average Speed Time Time Time Current'
   id: totrans-split-271
   prefs: []
   type: TYPE_NORMAL
+  zh: '% 总计 % 下载 % Xferd 平均速度 时间 时间 当前'
 - en: Dload Upload Total Spent Left Speed
   id: totrans-split-272
   prefs: []
   type: TYPE_NORMAL
+  zh: Dload Upload Total Spent Left Speed
 - en: 100 7747k 0 7747k 0 0 4117k 0 --:--:-- 0:00:01 --:--:-- 6655k
   id: totrans-split-273
   prefs: []
   type: TYPE_NORMAL
+  zh: 100 7747k 0 7747k 0 0 4117k 0 --:--:-- 0:00:01 --:--:-- 6655k
 - en: '[~/fortran]tar xzf lapack-3.12.0.tgz'
   id: totrans-split-274
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]tar xzf lapack-3.12.0.tgz'
 - en: Similar to BLAS, we need to modify some configuration options to let LAPACK
     know about Emscripten and `flang-new`. Copy the file `lapack-3.12.0/make.inc.example`
     to `lapack-3.12.0/make.inc`, then make the following modifications. Be sure to
@@ -1466,11 +1737,13 @@
   id: totrans-split-275
   prefs: []
   type: TYPE_NORMAL
+  zh: 与BLAS类似，我们需要修改一些配置选项，让LAPACK了解Emscripten和`flang-new`。将文件`lapack-3.12.0/make.inc.example`复制到`lapack-3.12.0/make.inc`，然后进行以下修改。确保用您机器上构建目录的完整路径替换`[...]`，并将文件中的其他选项保持不变。
 - en: ^(33) A relative path doesn’t work here. Alternatively, simply set the option
     to read `flang-new` and make it available on your `$PATH`.
   id: totrans-split-276
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(33) 相对路径在这里不起作用。或者，简单地设置选项以读取`flang-new`并在您的`$PATH`上提供它。
 - en: '[PRE14]'
   id: totrans-split-277
   prefs: []
@@ -1481,61 +1754,75 @@
   id: totrans-split-278
   prefs: []
   type: TYPE_NORMAL
+  zh: '*然后，使用`make lib`命令构建LAPACK，以创建WebAssembly静态库`liblapack.a`。'
 - en: '[~/fortran]cd lapack-3.12.0'
   id: totrans-split-279
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]cd lapack-3.12.0'
 - en: '[~/fortran/lapack-3.12.0]make lib'
   id: totrans-split-280
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran/lapack-3.12.0]进行lib制作'
 - en: make -C SRC
   id: totrans-split-281
   prefs: []
   type: TYPE_NORMAL
+  zh: make -C SRC
 - en: '.../build/bin/flang-new -O2 -c -o sbdsvdx.o sbdsvdx.f'
   id: totrans-split-282
   prefs: []
   type: TYPE_NORMAL
+  zh: '.../build/bin/flang-new -O2 -c -o sbdsvdx.o sbdsvdx.f'
 - en: '...'
   id: totrans-split-283
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: emar cr ../../libtmglib.a slatms.o ... dlarnd.o
   id: totrans-split-284
   prefs: []
   type: TYPE_NORMAL
+  zh: emar cr ../../libtmglib.a slatms.o ... dlarnd.o
 - en: emranlib ../../libtmglib.a
   id: totrans-split-285
   prefs: []
   type: TYPE_NORMAL
+  zh: emranlib ../../libtmglib.a
 - en: '[~/fortran/lapack-3.12.0]cd ..'
   id: totrans-split-286
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran/lapack-3.12.0]cd ..'
 - en: '[~/fortran]'
   id: totrans-split-287
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]'
 - en: '[~/fortran]file lapack-3.12.0/liblapack.a'
   id: totrans-split-288
   prefs: []
   type: TYPE_NORMAL
+  zh: '[~/fortran]文件lapack-3.12.0/liblapack.a'
 - en: 'lapack-3.12.0/liblapack.a: current ar archive'
   id: totrans-split-289
   prefs: []
   type: TYPE_NORMAL
+  zh: lapack-3.12.0/liblapack.a：当前ar归档
 - en: 'With this, LAPACK routines can be called in a similar way to the BLAS routine
     example in the previous section.*  *## Example: Polynomial Interpolation with
     Linear Algebra'
   id: totrans-split-290
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个，可以像前面部分中BLAS例程示例中一样调用LAPACK例程。*  *## 例子：使用线性代数进行多项式插值
 - en: The following demo finds interpolating polynomials for a set of points, demonstrating
     LAPACK routines running in your web browser.
   id: totrans-split-291
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下演示为一组点找到插值多项式，展示在您的Web浏览器中运行的LAPACK例程。
 - en: Click the plot to add new points. An interpolating polynomial will be found
     to pass through all the points using [Vandermonde’s method](https://en.wikipedia.org/wiki/Vandermonde_matrix).
     The linear algebra equation given by this method is then solved numerically in
@@ -1544,6 +1831,7 @@
   id: totrans-split-292
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击绘图以添加新点。将使用[Vandermonde方法](https://en.wikipedia.org/wiki/Vandermonde_matrix)找到一个插值多项式，该多项式将通过所有点。然后，使用[`DGELS()`](https://netlib.org/lapack/explore-html-3.6.1/d7/d3b/group__double_g_esolve_ga1df516c81d3e902cca1fc79a7220b9cb.html#ga1df516c81d3e902cca1fc79a7220b9cb)例程在LAPACK中对此方法给出的线性代数方程进行数值求解。
 - en: ^(34)  It is always possible to find an \(n-1\) degree polynomial containing
     \(n\) data points exactly. However, when \(n\) is large the polynomial fluctuates
     wildly between successive data points. This problem is known as [Runge’s phenomenon](https://en.wikipedia.org/wiki/Runge%27s_phenomenon)
@@ -1551,3 +1839,4 @@
   id: totrans-split-293
   prefs: []
   type: TYPE_NORMAL
+  zh: ^(34) 总是可以找到一个包含\(n-1\)个数据点的\(n\)次多项式。然而，当\(n\)很大时，多项式在相邻数据点之间波动很大。这个问题被称为[Runge现象](https://en.wikipedia.org/wiki/Runge%27s_phenomenon)，可以通过使用[样条插值](https://en.wikipedia.org/wiki/Spline_interpolation)来避免。*******

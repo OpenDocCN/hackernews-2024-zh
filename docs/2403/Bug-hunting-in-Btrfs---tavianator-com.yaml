@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:31:28'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:31:28'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Bug hunting in Btrfs - tavianator.com
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Btrfs的Bug追踪 - tavianator.com
 - en: 来源：[https://tavianator.com/2024/btrfs_bug.html](https://tavianator.com/2024/btrfs_bug.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tavianator.com/2024/btrfs_bug.html](https://tavianator.com/2024/btrfs_bug.html)
 - en: <main>
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main>
 - en: 'The other day I was implementing [multi-threaded `stat()` calls](/cgit/bfs.git/commit/?id=89ecb2a08467cd8aa6ba70f8519df494652cac96)
     in [`bfs`](../projects/bfs.html). When I ran some benchmarks, I saw something
     that made my heart skip a beat:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 前几天我在 [`bfs`](../projects/bfs.html) 中实现了多线程的 `stat()` 调用。在运行了一些基准测试后，我发现了一些令人激动的事情：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
@@ -45,6 +53,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你不熟悉，"structure needs cleaning" 是 `EUCLEAN` 的人类可读描述，通常表示文件系统损坏。担心情况严重，我检查了
+    `dmesg` 并看到
 - en: '[PRE1]'
   id: totrans-split-10
   prefs: []
@@ -57,6 +67,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我立即重启进入live环境并运行了 `btrfs check`，但令我惊讶的是，并没有发现错误。`btrfs scrub` 也没有发现任何损坏的证据。事实上，错误消息中的文件完全没有问题。无论问题是什么，它似乎已经自行消失了。
 - en: 'I searched Google for that "corrupted node" message and found that it had happened
     to someone else recently too: [Linus Torvalds](https://lore.kernel.org/linux-btrfs/CAHk-=whNdMaN9ntZ47XRKP6DBes2E5w7fi-0U3H2+PS18p+Pzw@mail.gmail.com/),
     just after merging a Btrfs pull request. (This was not the first time Linus and
@@ -65,6 +76,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在Google上搜索了那个 "corrupted node" 消息，发现最近也发生在了别人身上：[Linus Torvalds](https://lore.kernel.org/linux-btrfs/CAHk-=whNdMaN9ntZ47XRKP6DBes2E5w7fi-0U3H2+PS18p+Pzw@mail.gmail.com/)，就在合并Btrfs的一个pull请求后。这不是我和Linus第一次碰到相同的bug。我们的台式机都使用相同的CPU。上次这导致了我一次
+    [最喜欢的bug修复](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f)。
 - en: But the difference between me and Linus was that I could (semi-)reliably reproduce
     the error. Not every time, but maybe 10% of the time I ran `bfs` with parallel
     `stat()` calls on a large directory tree, I would see that "structure needs cleaning"
@@ -74,6 +87,9 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我和Linus之间的不同之处在于，我可以（半）可靠地重现这个错误。虽然不是每次，但可能有10%的时间我在大型目录树上并行运行 `bfs` 的 `stat()`
+    调用时，我会看到 "structure needs cleaning" 错误。我将我的 [发现](https://lore.kernel.org/linux-btrfs/20240206033807.15498-1-tavianator@tavianator.com/)
+    报告给了Btrfs邮件列表，尽管这引发了关于潜在原因的讨论，但我们并没有找到根本原因。
 - en: Based on the logs, the Btrfs developers assumed the problem had to do allocation
     of [`struct extent_buffer`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/extent_io.h?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f#n76)
     and their memory pages. I'm not a Btrfs internals expert by any means, but I understand
@@ -86,6 +102,9 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于日志记录，Btrfs 开发人员认为问题涉及到 [`struct extent_buffer`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/extent_io.h?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f#n76)
+    的分配及其内存页面。我并不是Btrfs内部专家，但我了解 `extent_buffer` 用于元数据I/O，即读取和写入 [B-tree](https://en.wikipedia.org/wiki/B-tree)
+    节点。`extent_buffer` 关联着一个 `struct folio`/`struct page` 数组（取决于内核版本），这些页面持有读取或写入的extent的实际内容。这种抽象有助于处理与系统页面大小不同的文件系统块大小。
 - en: Allocating an `extent_buffer` and its pages is [more complicated than you might
     expect](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/extent_io.c?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f#n3681).
     Each `struct extent_buffer` holds an array of `struct folio`, and those folios
@@ -94,6 +113,8 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 分配`extent_buffer`及其页面比你想象的[更复杂](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/fs/btrfs/extent_io.c?id=a51ab63b297ce9e26e3ffb9be896018a42d5f32f#n3681)。每个`struct
+    extent_buffer`包含一个`struct folio`数组，这些folios有一个私有引用指向`extent_buffer`。对于任何特定extent，应该始终只有一个`extent_buffer`。
 - en: To reduce locking on the allocation path, the `extent_buffer` and the corresponding
     folios are allocated separately, linked together, and then inserted into a radix
     tree keyed by the start offset of the extent. Only the radix tree insertion needs
@@ -103,6 +124,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了减少分配路径上的锁定，`extent_buffer`和相应的folios是分开分配的，然后链接在一起，然后插入到以extent起始偏移量为键的基数树中。只有在插入时，如果发现其他人已经比我们提前分配了相同的extent，我们才会额外引用该`extent_buffer`并释放我们刚刚分配的（及其页面）。
 - en: This code path had undergone some churn recently, both [changing the race detection/handling
     strategy](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=09e6cef19c9fc0e10547135476865b5272aa0406)
     and [converting from `struct page` to `struct folio`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=082d5bb9b336d533b7b968f4f8712e7755a9876a),
@@ -116,6 +138,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码路径最近经历了一些变动，包括[更改了竞争检测/处理策略](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=09e6cef19c9fc0e10547135476865b5272aa0406)和[从`struct
+    page`转换为`struct folio`](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=082d5bb9b336d533b7b968f4f8712e7755a9876a)，因此有人怀疑可能潜伏了竞争或引用计数错误。但是额外的调试日志没有显示出问题。看起来`extent_buffer`和`folio`的引用计数都是正确的，但是内存本身却不是正确的磁盘内容，而是垃圾数据。Btrfs在读取这些块后会进行一些健全性检查，而这些检查失败了，导致了错误。但磁盘上的块本身是正确的，在下次读取时一切正常。
 - en: One of the best bug hunting tools for the Linux kernel is [`git bisect`](https://git-scm.com/docs/git-bisect).
     Unfortunately, bisecting bugs like this is challenging. For intermittent issues,
     it's easy enough to know when to mark a commit bad, but harder to know if a commit
@@ -126,6 +150,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Linux内核中最好的bug调试工具之一是[`git bisect`](https://git-scm.com/docs/git-bisect)。不幸的是，像这样的二分法调试bug非常具有挑战性。对于间歇性问题，很容易知道何时标记一个提交为有问题，但更难确定一个提交是否好——也许bug只是还没有触发*而已*。你还需要一个已知好的提交来开始，但这很难找到。起初我以为bug是在Linux
+    6.7中新出现的，但我仍然能在6.6和6.5上重现它。Btrfs的开发人员建议我从6.0开始。
 - en: Bisecting can also be dangerous because you are running arbitrary old mid-development-cycle
     kernel commits that may have since had bugs fixed in the official releases. It's
     safer to do it from a virtual machine, but so far I had been unable to reproduce
@@ -133,6 +159,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 二分法调试也可能很危险，因为你会运行任意旧的中间开发周期内核提交，这些提交可能在官方发布版本中已经修复了bug。从虚拟机中进行会更安全，但到目前为止我无法在虚拟机上重现这个bug。因此我开始在我的实际桌面上进行二分法调试。
 - en: Normally I would be far too scared to bisect a filesystem corruption bug on
     my actual computer that I use daily. But this seemed like it wasn't "real" corruption,
     plus I have backups, so I risked it. Unfortunately, after a couple rounds, I ran
