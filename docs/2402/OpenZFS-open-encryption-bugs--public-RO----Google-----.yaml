@@ -2,47 +2,60 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:05:06'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 13:05:06'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: OpenZFS open encryption bugs (public RO) - Google ドライブ
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: OpenZFS开放加密漏洞（公共RO）- Google ドライブ
 - en: 来源：[https://docs.google.com/spreadsheets/d/1OfRSXibZ2nIE9DGK6swwBZXgXwdCPKgp4SbPZwTexCg/htmlview](https://docs.google.com/spreadsheets/d/1OfRSXibZ2nIE9DGK6swwBZXgXwdCPKgp4SbPZwTexCg/htmlview)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://docs.google.com/spreadsheets/d/1OfRSXibZ2nIE9DGK6swwBZXgXwdCPKgp4SbPZwTexCg/htmlview](https://docs.google.com/spreadsheets/d/1OfRSXibZ2nIE9DGK6swwBZXgXwdCPKgp4SbPZwTexCg/htmlview)
 - en: 'Quick note: this was just a rapid pass over every open bug that looked like
     encryption was involved. It is not intended to be taken as authoritative or completely
     well informed, just a first pass'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Quick note: this was just a rapid pass over every open bug that looked like
+    encryption was involved. It is not intended to be taken as authoritative or completely
+    well informed, just a first pass'
 - en: 'Bug #StatusTitleBrief summarySeverityDifficulty'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Bug #StatusTitleBrief summarySeverityDifficulty'
 - en: Data loss/corruption?
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Data loss/corruption?
 - en: 'Dupe CountDomains touchedFirst ReportedComments[11679](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11679&sa=D&source=editors&ust=1716962701643370&usg=AOvVaw044Ra-17I0VznV4qjeC4PY)OpenZFS
     on Linux null pointer dereferenceThe one I understand best. '
   id: totrans-split-9
-  prefs: &id001 []
+  prefs: []
   type: TYPE_NORMAL
+  zh: 'Dupe CountDomains touchedFirst ReportedComments[11679](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11679&sa=D&source=editors&ust=1716962701643370&usg=AOvVaw044Ra-17I0VznV4qjeC4PY)OpenZFS
+    on Linux null pointer dereferenceThe one I understand best. '
 - en: 'It seems like there''s a refcount bug with dnodes when encrypted buffers are
     around, such that in some unusual case (I suspect it''s at least triggerable with
     some memory fragmentation edge case, based on seeing that happen under heavy mem
@@ -54,12 +67,23 @@
     send on encrypted datasets does not work when copying snapshots backsend -w from
     src to dst; '
   id: totrans-split-10
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: 'It seems like there''s a refcount bug with dnodes when encrypted buffers are
+    around, such that in some unusual case (I suspect it''s at least triggerable with
+    some memory fragmentation edge case, based on seeing that happen under heavy mem
+    frag on non-x86 platforms), we wind up with a buffer in a header that thinks it
+    has refcount 0 but it''s still referenced somewhere, it gets freed and reallocated,
+    and then eventually either it gets destroyed by one of the references dropping
+    it and then the other tries accessing it and a panic or corruption ensues.5Quite
+    hardSometimes6ARC, send|recv0.8.0-rc[mumble][10523](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/10523&sa=D&source=editors&ust=1716962701643919&usg=AOvVaw2HOwyi8gnmS1UwWfG025-F)ClosedRaw
+    send on encrypted datasets does not work when copying snapshots backsend -w from
+    src to dst; '
 - en: 'make changes and new snaps on dst; '
   id: totrans-split-11
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: make changes and new snaps on dst;
 - en: 'try to incrementally recv on src again, src dataset is now unmountable until
     rolled back3?Yes4send|recv???Someone tried patching it once, but found that the
     fix did not account for encryption setups that were never in stable releases,
@@ -69,8 +93,13 @@
     is destroyed2?No1send|recv0.8.0-rc5[11433](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11433&sa=D&source=editors&ust=1716962701644932&usg=AOvVaw1FpHIRCZ_iuJUBtYCzor-A)Openassertion
     failure: '
   id: totrans-split-12
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
+  zh: '尝试在源上再增量接收，现在源数据集不可卸载直到回滚3？Yes4send|recv???有人曾试图修补过一次，但发现修补未考虑到从未在稳定版本中发布的加密设置，因此被撤销。[8758](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/8758&sa=D&source=editors&ust=1716962701644428&usg=AOvVaw2xdAev2akI9Yu5hfygmyT5)Opencannot
+    send raw incremental send after creation of snapshot at remote endsend -w src@snap1
+    | recv dst;snap dst@newsnap breaks send -w -i src@snap1 src@snap2 until dst@newsnap
+    is destroyed2?No1send|recv0.8.0-rc5[11433](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11433&sa=D&source=editors&ust=1716962701644932&usg=AOvVaw1FpHIRCZ_iuJUBtYCzor-A)Openassertion
+    failure:'
 - en: 'bad sa_magic in zpl_get_file_info()Looks like somehow some bad metadata winds
     up in memory or on disk from userobj_accounting - the reporters so far have all
     also been using encryption, unclear if related2????1userobj_accounting2.0.0[8722](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/8722&sa=D&source=editors&ust=1716962701645445&usg=AOvVaw0xPx-N4Xx1GVDYXpdPmCF_)OpenNULL
@@ -80,24 +109,24 @@
     #8758dupeSee [#8758](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/8758&sa=D&source=editors&ust=1716962701646298&usg=AOvVaw0PJAml-vTbOn7PIAixrMkY)dupe0send|recv0.8.3[10603](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/10603&sa=D&source=editors&ust=1716962701646613&usg=AOvVaw3eD83bigNV1fXOkwH-yxW8)Openudev
     not creating device file for cloned zvolSeems simple. '
   id: totrans-split-13
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
 - en: 'May be fixed by #12271 already?2?No0clones0.8.4[10787](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/10787&sa=D&source=editors&ust=1716962701647034&usg=AOvVaw27HzoBFZ00W79n21HadkqO)OpenOn
     zfs recv: '
   id: totrans-split-14
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
 - en: 'ASSERT at libzfs_sendrecv.c:2798:recv_fix_encryption_hierarchy()Seems like
     a flaw in send/recv with (non-encrypted datasets, using -w, using -h)? '
   id: totrans-split-15
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
 - en: May no longer be relevant?1Probably lowNo0send|recv (userland)0.8.4[11294](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11294&sa=D&source=editors&ust=1716962701647574&usg=AOvVaw1TJiB1AEDyVIY2n_JyWYa1)ClosedHEAD
     issues mounting encrypted datasets/corrupting metadataThe reason a patch got reverted
     - encrypted dataset with odd combination of configuration never present in a shipped
     release broke a bugfix, so it got reverted and not yet fixed again.?
   id: totrans-split-16
-  prefs: *id001
+  prefs: []
   type: TYPE_NORMAL
 - en: Difficult, apparently.
   id: totrans-split-17
@@ -106,14 +135,14 @@
 - en: 'Inaccessible, not lost0git d1d47691c[11405](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11405&sa=D&source=editors&ust=1716962701648091&usg=AOvVaw21GfNV0Pe510DacT6_57Ps)OpenPANIC
     when sending encrypted dataset with the raw flagLike it says on the tin. '
   id: totrans-split-18
-  prefs: &id002 []
+  prefs: []
   type: TYPE_NORMAL
 - en: 'Appears to be TrueNAS-specific patch caused0???No02.0.0*Another TrueNAS SCALE
     report.[11490](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11490&sa=D&source=editors&ust=1716962701648587&usg=AOvVaw03lqFxN7deG42kDieGi7AQ)OpenVERIFY(zfs_refcount_count(&dck->dck_holds)
     == 0) failed PANIC at dsl_crypt.c:503:dsl_crypto_key_free()Maybe a missing lock
     that got stepped on during recv? '
   id: totrans-split-19
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
 - en: 'I don''t know this portion of the code.3????0send|recv2.0.0*It''s also on TrueNAS
     SCALE, may or may not be relevant to upstream?[11688](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11688&sa=D&source=editors&ust=1716962701649107&usg=AOvVaw0RktCTcu2IuS8XfkqGrJE7)Openpermanent
@@ -124,7 +153,7 @@
     may have a different opinion than me, but I''d probably suspect many instances
     of mysterious corruption on-disk when encryption (esp. '
   id: totrans-split-20
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
 - en: 'encrypted send/recv) is involved of being #11679 until proven otherwise[11983](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11983&sa=D&source=editors&ust=1716962701649690&usg=AOvVaw3ukUheqU3SpmqQMeaiPzxM)ClosedInput/Output
     Error when sending an encrypted incremental dataset back to it''s source#10523
@@ -132,12 +161,12 @@
     encryption hierarchy of ''send -Rw | recv -d'' datasets that do not bring their
     encryption rootSeems like #10523 in a dollar store wig, possibly; '
   id: totrans-split-21
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
 - en: 'comes with a reproducer!dupesee [#10523](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/10523&sa=D&source=editors&ust=1716962701650403&usg=AOvVaw3Y9aV1S9VMTDTJ2QCkupk_)dupe0send|recv0.8.3[12001](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12001&sa=D&source=editors&ust=1716962701650701&usg=AOvVaw1-ZJug-CBJB7DWOOnNCIEO)OpenZFS
     hangs on kernel error: '
   id: totrans-split-22
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
 - en: 'VERIFY3(0 == dmu_bonus_hold_by_dnodeSame as #12732, probably just #11679dupeSee
     [#11679](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11679&sa=D&source=editors&ust=1716962701650902&usg=AOvVaw0hfWQIMBsPpvLO8_Kb6mLQ)dupe0send|recv2.0.3[12014](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12014&sa=D&source=editors&ust=1716962701651175&usg=AOvVaw1IVDyG-MXXcXn_jJin-ZHb)OpenZFS
@@ -159,62 +188,78 @@
     the child can be manually triggered to mount later4???Sometimes0key managementgit
     1b50749ce9 (July 2021)Unclear if the original wrapping key is obliterated or what. '
   id: totrans-split-23
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
 - en: 'Presumably if the wrapping keys involved are =prompt you could just regenerate
     them after writing tools to hackily bypass checks and just rewrite the metadata.[12439](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12439&sa=D&source=editors&ust=1716962701653452&usg=AOvVaw3lnQzY9ltRCvRmxjpGuuul)OpenPANIC
     at dsl_crypt.c:2441:dsl_crypto_populate_key_nvlist()Giving send -w a whole filesystem
     not just a snapshot can make it panic for some datasets, but not always? '
   id: totrans-split-24
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
 - en: 'Sample pool which reproduces is enclosed.1???No0send|recv2.0.3Rated 1 because
     it basically only happens if you do something dumb; '
   id: totrans-split-25
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: 包含可以复制的示例池。1???No0send|recv2.0.3Rated 1 because it basically only happens if
+    you do something dumb;
 - en: 'if someone has a real use case that''s not user error where it does this, I''d
     bump it up.[12594](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12594&sa=D&source=editors&ust=1716962701654010&usg=AOvVaw12EfZ5fV76M39G9HuTt9cO)ClosedSometimes
     raw send on encrypted datasets does not work when copying snapshots back#10523
     with a fake mustache; '
   id: totrans-split-26
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: '如果有真实的使用情况不是用户错误而会出现这种情况，我会将其提升。[12594](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12594&sa=D&source=editors&ust=1716962701654010&usg=AOvVaw12EfZ5fV76M39G9HuTt9cO)ClosedSometimes
+    raw send on encrypted datasets does not work when copying snapshots back#10523
+    with a fake mustache; '
 - en: 'has a reproducer script!dupesee [#10523](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/10523&sa=D&source=editors&ust=1716962701654256&usg=AOvVaw1B5YDXAz49L5frbLHbuokJ)dupe0send|recv2.1.1[12614](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12614&sa=D&source=editors&ust=1716962701654582&usg=AOvVaw10SfAOQVcRfmDbUKNiA0HA)OpenReplicating
     encrypted child dataset + change-key + incremental receive overwrites master key
     of replica, causes permission denied on remountzfs send -Rw src/encrypted@1 |
     zfs recv dst/encrypted; '
   id: totrans-split-27
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: '有一个复制脚本！dupesee [#10523](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/10523&sa=D&source=editors&ust=1716962701654256&usg=AOvVaw1B5YDXAz49L5frbLHbuokJ)dupe0send|recv2.1.1[12614](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12614&sa=D&source=editors&ust=1716962701654582&usg=AOvVaw10SfAOQVcRfmDbUKNiA0HA)OpenReplicating
+    encrypted child dataset + change-key + incremental receive overwrites master key
+    of replica, causes permission denied on remountzfs send -Rw src/encrypted@1 |
+    zfs recv dst/encrypted; '
 - en: 'zfs change-key dst/encrypted;zfs send -iw src/encrypted/a@{1,2} | zfs recv
     dst/encrypted/a; '
   id: totrans-split-28
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: 'zfs change-key dst/encrypted;zfs send -iw src/encrypted/a@{1,2} | zfs recv
+    dst/encrypted/a; '
 - en: 'will overwrite the new wrapping key on disk with the old one, and away goes
     your data next time you unmount and the key is no longer loaded5???Sometimes0send|recv,
     key management2.0.5Attila remarked that he thought you''d need to just block recvs
     in that case, rather than handling it better/just ignoring the received wrapping
     key if it''s been change-key''d in the interim. '
   id: totrans-split-29
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: '会覆盖磁盘上的新包装密钥，并且下次卸载时，如果密钥未加载5???Sometimes0send|recv，密钥管理2.0.5Attila提到他认为在这种情况下你只需要阻塞接收，而不是更好地处理/如果在中间更改了接收包装密钥，则忽略接收的包装密钥。 '
 - en: 'Unclear if that''s a hard restriction for reasons not obvious to me. '
   id: totrans-split-30
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: '对我来说不明确是否有硬性限制不明显的原因。 '
 - en: Unclear to me why encrypted incrementals need to send that at all, ever, much
     less every time...or why the receiver can't just ignore it or handle it by actually
     doing a proper change-key.[12659](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12659&sa=D&source=editors&ust=1716962701655286&usg=AOvVaw1sfa4-bFMjzDjiDed8gjzn)OpenKernel
     panic VERIFY3(sa.sa_magic == SA_MAGIC) faileddupe of 11433dupesee [#11433](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11433&sa=D&source=editors&ust=1716962701655552&usg=AOvVaw0wem6xj6y45KDcwW9SwAyN)dupe0
   id: totrans-split-31
-  prefs: *id002
+  prefs: []
   type: TYPE_NORMAL
+  zh: 对我来说不明确为什么加密的增量需要每次发送，或者为什么接收方不能简单地忽略它或通过实际执行适当的change-key处理它。[12659](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12659&sa=D&source=editors&ust=1716962701655286&usg=AOvVaw1sfa4-bFMjzDjiDed8gjzn)OpenKernel
+    panic VERIFY3(sa.sa_magic == SA_MAGIC) faileddupe of 11433dupesee [#11433](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/11433&sa=D&source=editors&ust=1716962701655552&usg=AOvVaw0wem6xj6y45KDcwW9SwAyN)dupe0
 - en: userobj_accounting, send|recv
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: userobj_accounting, send|recv
 - en: '2.0.6[12659](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12659&sa=D&source=editors&ust=1716962701655840&usg=AOvVaw32kiKPkFvXiB-jDy9eLSp2)OpenUnable
     to receive encrypted raw sendreceiver erroring with "must upgrade kernel modules",
     but both sides are 2.0.6, so ???3???No0send|recv2.0.6[12732](https://www.google.com/url?q=https://github.com/openzfs/zfs/issues/12732&sa=D&source=editors&ust=1716962701656291&usg=AOvVaw2lXrpfZ4pfKDF8Kc2iqNaC)OpenPANIC
@@ -255,13 +300,18 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 'dupesee #13709013709Open升级后挂载加密文件系统时出现I/O错误哦，这只是再次出现了#11294dupesee #112942send|recv2.1.314083Open无法解密使用v2.1.0创建的数据集在v2.1.6下看起来像是一个macOS特定的错误，只是类似于1370910send|recv2.1.613926Openkernel:
+    PANIC <pool> blkptr at <address> has invalid CHECKSUM 013922Open[sparc64] 加密数据集出现"无法处理内核空指针解引用错误"13699Open每个数据集的大块功能检测在发送原始加密大块数据集时不可靠13634Open无法读取、写入或删除损坏的目录13561Openzpool_import_errata4
+    PANICs slow sparc64 machine14330Open另一个加密bug："在加密对象集中出现未加密块"看起来你可能会在加密数据集上出现一个embedded_data记录。'
 - en: ??? Haven't been able to reproduce it...
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: ??? 没能复现它...
 - en: no0send|recv2.1.4Easy to reproduce if you patch some conditionals out of the
     code, haven't found a reproducer that doesn't involve that...14245OpenReceiving
     incremental stream causes process to hang
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: no0send|recv2.1.4易于在代码中删除一些条件后重现，没有找到不涉及此条件的重现方法...14245Open增量接收流导致进程挂起
