@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:02:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:02:17'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: C++ exit-time destructors | MaskRay
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: C++退出时析构函数 | MaskRay
 - en: 来源：[https://maskray.me/blog/2024-03-17-c++-exit-time-destructors](https://maskray.me/blog/2024-03-17-c++-exit-time-destructors)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://maskray.me/blog/2024-03-17-c++-exit-time-destructors](https://maskray.me/blog/2024-03-17-c++-exit-time-destructors)
 - en: 'In ISO C++ standards, [basic.start.term] specifies that:'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在ISO C++标准中，[basic.start.term]指定：
 - en: Constructed objects ([dcl.init]) with static storage duration are destroyed
     and functions registered with std::atexit are called as part of a call to std::exit
     ([support.start.term]). The call to std::exit is sequenced before the destructions
@@ -37,61 +44,75 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 具有静态存储期的构造对象（[dcl.init]）将在调用std::exit ([support.start.term])时销毁，并调用注册的函数。对std::exit的调用在销毁和注册函数之前序列化。[注释1：从main返回会调用std::exit
+    ([basic.start.main])。-结束注释]
 - en: 'For example, consider the following code:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑以下代码：
 - en: The destructor for object a will be registered for execution at program termination.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 对象a的析构函数将在程序终止时注册执行。
 - en: '## `__cxa_atexit`'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '## `__cxa_atexit`'
 - en: 'The Itanium C++ ABI employs `__cxa_atexit` rather than atexit for object destructor
     registration for two primary reasons:'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Itanium C++ ABI 使用 `__cxa_atexit` 而不是 `atexit` 来注册对象析构函数的主要原因有两点：
 - en: 'Limited `atexit` guarantee: ISO C (up to C23) guarantees support for 32 registered
     functions, although most implementations support many more.'
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有限的 `atexit` 保证：ISO C（直到C23）保证支持32个注册函数，尽管大多数实现支持更多。
 - en: 'Dynamic library unloading: `__cxa_atexit` provides a mechanism for handling
     destructors when dynamic libraries are unloaded via `dlclose` before program termination.'
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 动态库卸载：`__cxa_atexit` 提供了一个机制，用于在程序终止前通过 `dlclose` 卸载动态库时处理析构函数。
 - en: Several standard libraries, including glibc, musl, and FreeBSD libc, implement
     `atexit` using `__cxa_atexit`.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 包括glibc、musl和FreeBSD libc在内的几个标准库使用`__cxa_atexit`实现`atexit`。
 - en: In glibc, `atexit` returns `__cxa_atexit ((void (*) (void *)) func, NULL, __dso_handle)`,
     where `__dso_handle` is part of libc itself.
   id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在glibc中，`atexit` 返回 `__cxa_atexit ((void (*) (void *)) func, NULL, __dso_handle)`，其中
+    `__dso_handle` 是libc本身的一部分。
 - en: musl uses 0 instead of `__dso_handle`.
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: musl使用0代替`__dso_handle`。
 - en: '[https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api](https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api)
     provides detailed documentation on object destruction mechanisms. Let''s illustrate
     this with a GCC and glibc example:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api](https://itanium-cxx-abi.github.io/cxx-abi/abi.html#dso-dtor-runtime-api)提供了关于对象销毁机制的详细文档。让我们以GCC和glibc示例来说明：'
 - en: '|'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE0]'
   id: totrans-split-19
   prefs: []
@@ -101,6 +122,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE1]'
   id: totrans-split-21
   prefs: []
@@ -110,14 +132,17 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'An invocation yields:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个调用产生：
 - en: '|'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE2]'
   id: totrans-split-25
   prefs: []
@@ -127,6 +152,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE3]'
   id: totrans-split-27
   prefs: []
@@ -136,64 +162,76 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'Key points:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要观点：
 - en: The compiler registers destructors with `__cxa_atexit` using the `__dso_handle`
     symbol as an argument.
   id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编译器使用 `__dso_handle` 符号注册析构函数与 `__cxa_atexit`。
 - en: '`crtbeginS.o` defines the `.fini_array` section (triggering `__do_global_dtors_aux`)
     and the hidden symbol `__dso_handle`.'
   id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`crtbeginS.o` 定义了 `.fini_array` 节（触发 `__do_global_dtors_aux`）和隐藏符号 `__dso_handle`。'
 - en: Since 2017, lld [defines `__dso_handle` as a hidden symbol](https://reviews.llvm.org/D33856)
     if crtbegin does not.
   id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 自2017年起，如果crtbegin没有，lld [将`__dso_handle`定义为隐藏符号](https://reviews.llvm.org/D33856)。
 - en: '`dlclose` invokes `.fini_array` functions. `__cxa_finalize(d)` iterates through
     the termination function list, calling matching destructors based on the DSO handle.'
   id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`dlclose`调用`.fini_array`函数。 `__cxa_finalize(d)`迭代终止函数列表，根据DSO句柄调用匹配的析构函数。'
 - en: '`__cxa_atexit` implementations typically allocate memory dynamically and may
     fail. The failures are simply ignored.'
   id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`__cxa_atexit`实现通常动态分配内存并可能失败。这些失败会被简单地忽略。'
 - en: 'Note: In glibc, the `DF_1_NODELETE` flag marks a shared object as unloadable.
     Additionally, symbol lookups with `STB_GNU_UNIQUE` automatically set this flag.'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：在glibc中，`DF_1_NODELETE`标志将共享对象标记为可卸载。另外，使用`STB_GNU_UNIQUE`进行符号查找会自动设置此标志。
 - en: musl provides a [no-op implementation for `dlclose` and `__cxa_finalize`](https://wiki.musl-libc.org/functional-differences-from-glibc.html#Unloading_libraries).
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: musl提供了一个[无操作的实现 `dlclose` 和 `__cxa_finalize`](https://wiki.musl-libc.org/functional-differences-from-glibc.html#Unloading_libraries)。
 - en: Thread storage duration variables
   id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 线程存储期变量
 - en: Objects with thread storage duration that have non-trivial destructors will
     register those destructors using `__cxa_thread_atexit` during construction.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 具有非平凡析构函数的线程存储期变量将在构造期间使用 `__cxa_thread_atexit` 注册这些析构函数。
 - en: When exit-time destructors are undesired
   id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 当不希望退出时析构函数
 - en: Exit-time destructors for static and thread storage duration variables can be
     undesired due to
   id: totrans-split-40
