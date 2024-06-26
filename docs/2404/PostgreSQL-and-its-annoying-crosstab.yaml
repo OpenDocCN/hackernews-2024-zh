@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 12:58:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 12:58:17
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: PostgreSQL and its annoying crosstab
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: PostgreSQL 及其令人讨厌的交叉表
 - en: 来源：[https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/](https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/](https://blog.aurelianix.com/2024/04/04/postgresql-and-its-annoying-crosstab/)
 - en: 'Today, I had to pivot (pun intended) from my usual tasks to help a colleague
     with a query. The task is deceptively simple: Collect metadata about all columns
     of a table in a single query. This was to be a function in PostgreSQL that would
@@ -31,255 +37,316 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天，我不得不从我通常的任务中转移到帮助同事解决查询的任务。任务看似简单：在单个查询中收集关于表的所有列的元数据。这是 PostgreSQL 中的一个函数，将返回具有以下列的表：
 - en: '`table_name`'
   id: totrans-split-7
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`table_name`'
 - en: '`column_name`'
   id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`column_name`'
 - en: '`data_type`'
   id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`data_type`'
 - en: '`total_tows`'
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`total_tows`'
 - en: '`not_null_count`'
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`not_null_count`'
 - en: '`unique_count`'
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`unique_count`'
 - en: '`max_value` (for integers)'
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`max_value`（用于整数）'
 - en: '`min_value` (for integers)'
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`min_value`（用于整数）'
 - en: '`avg_value` (for integers)'
   id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`avg_value`（用于整数）'
 - en: '`max_length` (for strings)'
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`max_length`（用于字符串）'
 - en: '`min_length` (for strings)'
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`min_length`（用于字符串）'
 - en: '`avg_length` (for strings)'
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`avg_length`（用于字符串）'
 - en: '`space_count_max` (for strings)'
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`space_count_max`（用于字符串）'
 - en: '`space_count_min` (for strings)'
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`space_count_min`（用于字符串）'
 - en: '`space_count_avg` (for strings)'
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`space_count_avg`（用于字符串）'
 - en: '`max_date` (for dates)'
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`max_date`（用于日期）'
 - en: '`min_date` (for dates)'
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`min_date`（用于日期）'
 - en: You can can imagine how this would be slow if you did the query for each column
     individually since it requires a full table scan if we have no index on the column.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果每列都单独查询，那么速度会很慢，因为在没有索引的情况下需要进行全表扫描。
 - en: 'Let’s create a test table:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个测试表：
 - en: '[PRE0]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Get the stats, in wide format
   id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 获取统计信息，以宽表格式呈现
 - en: 'The first part of the solution was to build a query that would return the metadata
     wide, something like (shortened for brevity):'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决方案的第一部分是构建一个查询，返回元数据的宽表，类似于（为了简洁起见缩短了）：
 - en: '[PRE1]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Get the stats, in tall format
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 获取统计信息，以高表格式呈现
 - en: 'The idea is to gather the stats of the table in a single go and then build
     some sort of pivot table from it. Since we are using dynamic SQL, it’s not too
     hard. We can use a lateral join to make the data tall:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 思路是一次性收集表的统计信息，然后从中建立某种透视表。由于我们使用动态 SQL，这并不太难。我们可以使用侧向连接将数据变成高表：
 - en: '[PRE2]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This will yield results that look like this:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将产生如下所示的结果：
 - en: '| column_name | meta_key | value |'
   id: totrans-split-34
   prefs: []
   type: TYPE_TB
+  zh: '| column_name | meta_key | value |'
 - en: '| --- | --- | --- |'
   id: totrans-split-35
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| int_col | total_rows | 1000 |'
   id: totrans-split-36
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | total_rows | 1000 |'
 - en: '| int_col | not_null_count | 904 |'
   id: totrans-split-37
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | not_null_count | 904 |'
 - en: '| int_col | unique_count | 100 |'
   id: totrans-split-38
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | unique_count | 100 |'
 - en: '| int_col | max_value | 99 |'
   id: totrans-split-39
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | max_value | 99 |'
 - en: '| int_col | min_value | 0 |'
   id: totrans-split-40
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | min_value | 0 |'
 - en: '| int_col | avg_value | 50.4115044247787611 |'
   id: totrans-split-41
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | avg_value | 50.4115044247787611 |'
 - en: '| string_col | total_rows | 1000 |'
   id: totrans-split-42
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | total_rows | 1000 |'
 - en: '| string_col | not_null_count | 915 |'
   id: totrans-split-43
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | not_null_count | 915 |'
 - en: '| string_col | unique_count | 1 |'
   id: totrans-split-44
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | unique_count | 1 |'
 - en: '| string_col | max_length | 20 |'
   id: totrans-split-45
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | max_length | 20 |'
 - en: '| string_col | min_length | 20 |'
   id: totrans-split-46
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | min_length | 20 |'
 - en: '| string_col | avg_length | 20.0000000000000000 |'
   id: totrans-split-47
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | avg_length | 20.0000000000000000 |'
 - en: '| string_col | space_count_max | 9 |'
   id: totrans-split-48
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | space_count_max | 9 |'
 - en: '| string_col | space_count_min | 9 |'
   id: totrans-split-49
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | space_count_min | 9 |'
 - en: '| string_col | space_count_avg | 9.0000000000000000 |'
   id: totrans-split-50
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | space_count_avg | 9.0000000000000000 |'
 - en: Crosstab the data into a table
   id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将数据透视为表
 - en: 'Now, we need to pivot this data. PostgreSQL’s crosstab is what we need, but
     getting it to work is a bit of a pain. The first thing we need to do is to install
     the `tablefunc` extension:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们需要将这些数据进行透视。PostgreSQL 的交叉表正是我们需要的，但是让它正常工作有点麻烦。我们首先需要安装 `tablefunc` 扩展：
 - en: '[PRE3]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '`crosstab` takes a string as argument with the query that will return the data
     to pivot. We can use behemoth of generated SQL that we had above (just 10 times
     bigger, because what table has only 2 columns?). The query will look like this:'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '`crosstab` 接受一个字符串作为参数，其中包含将要返回数据以进行透视的查询。我们可以使用上面生成的巨大 SQL，但是要大 10 倍，因为哪个表只有
+    2 列？查询将如下所示：'
 - en: '[PRE4]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Now let’s look at the results:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们来看看结果：
 - en: '| column_name | total_rows | not_null_count | unique_count | max_value | min_value
     | avg_value | max_length | min_length | avg_length | space_count_max | space_count_min
     | space_count_avg |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| column_name | total_rows | not_null_count | unique_count | max_value | min_value
+    | avg_value | max_length | min_length | avg_length | space_count_max | space_count_min
+    | space_count_avg |'
 - en: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
     |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
+    |'
 - en: '| int_col | 1000 | 904 | 100 | 99 | 0 | 50.4115044247787611 | null | null |
     null | null | null | null |'
   id: totrans-split-59
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | 1000 | 904 | 100 | 99 | 0 | 50.4115044247787611 | null | null |
+    null | null | null | null |'
 - en: '| string_col | 1000 | 915 | 1 | 20 | 20 | 20.0000000000000000 | 9 | 9 | 9.0000000000000000
     | null | null | null |'
   id: totrans-split-60
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | 1000 | 915 | 1 | 20 | 20 | 20.0000000000000000 | 9 | 9 | 9.0000000000000000
+    | null | null | null |'
 - en: Uh… WTF? THis is not what we wanted. The stats for `string_col` moved to the
     left. It didn’t pivot by name, it just filled up the columns. When using `crosstab`,
     the first column is the one that will be pivoted. If we want to pivot into a table
@@ -290,54 +357,70 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 呃……这不是我们想要的。`string_col`的统计数据向左移动了。它没有按名称旋转，而是填满了列。使用`crosstab`时，第一列将被旋转。如果我们想要将值旋转为具有更多列的表格（例如，在这里，`int_col`将旋转为6列，而`string_col`将旋转为9列），我们需要向`crosstab`提供第二个参数。建议按顺序排列行，以便每个参数都按顺序排列。
 - en: '[PRE5]'
   id: totrans-split-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Let’s have a look at the results:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看看结果：
 - en: '| column_name | avg_length | avg_value | max_length | max_value | min_length
     | min_value | not_null_count | space_count_avg | space_count_max | space_count_min
     | total_rows | unique_count |'
   id: totrans-split-64
   prefs: []
   type: TYPE_TB
+  zh: '| column_name | avg_length | avg_value | max_length | max_value | min_length
+    | min_value | not_null_count | space_count_avg | space_count_max | space_count_min
+    | total_rows | unique_count |'
 - en: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
     |'
   id: totrans-split-65
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
+    |'
 - en: '| int_col | null | 50.4115044247787611 | null | 99 | null | 0 | 904 | null
     | null | null | 1000 | 100 |'
   id: totrans-split-66
   prefs: []
   type: TYPE_TB
+  zh: '| int_col | null | 50.4115044247787611 | null | 99 | null | 0 | 904 | null
+    | null | null | 1000 | 100 |'
 - en: '| string_col | 20.0000000000000000 | null | 20 | null | 20 | null | 915 | 9.0000000000000000
     | 9 | 9 | 1000 | 1 |'
   id: totrans-split-67
   prefs: []
   type: TYPE_TB
+  zh: '| string_col | 20.0000000000000000 | null | 20 | null | 20 | null | 915 | 9.0000000000000000
+    | 9 | 9 | 1000 | 1 |'
 - en: Ahhh, this looks more like it.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 啊，看起来更像了。
 - en: 'This approach has a couple of drawbacks:'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法有一些缺点：
 - en: All data types must be converted to text because our tall format requires static
     types.
   id: totrans-split-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 所有数据类型必须转换为文本，因为我们的高格式要求静态类型。
 - en: Crosstab is really annoying and easy to get wrong
   id: totrans-split-71
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Crosstab真的很烦人，容易出错。
 - en: You can’t include more columns than you have in the list of columns to pivot
     into. The crosstab function WILL complain if there is a column in the result that
     has no value in the pivot list.
@@ -345,21 +428,26 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 你不能包含比要旋转成的列更多的列。如果结果中有一个在旋转列表中没有值的列，`crosstab`函数将会抱怨。
 - en: But, you know what? It works. It’s good enough for me at the moment. If you
     have *any* suggestion on how to improve this, PLEASE let me know.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，你知道吗？它有效。现在对我来说已经足够好了。如果您有任何建议来改进这一点，请务必告诉我。
 - en: 'PS: I learned that you can also escape multiline strings in postgres using
     dollar-quoted strings.'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: PS：我学到了在postgres中还可以使用美元引用字符串来转义多行字符串。
 - en: '[PRE6]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Ahh, feels so much better.
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 啊，感觉好多了。

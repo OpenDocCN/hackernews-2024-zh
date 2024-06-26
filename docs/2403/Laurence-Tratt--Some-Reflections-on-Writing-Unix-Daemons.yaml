@@ -1294,6 +1294,9 @@
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: snare 面临不同的问题：随着时间推移，我越来越不愿意对 snare 进行重大更改，因为我担心可能会以微妙的方式引发问题。当我决定移除 snare 使用的外部
+    HTTP 服务器时，我意识到我需要确信我的替代方案不会出问题。因此，我还添加了一个有意义的系统全面测试套件（有时称为“集成”或“黑盒”测试），现在涵盖了 snare
+    大部分的功能（https://github.com/softdevteam/snare/commit/1263ececbeb693bce5ef89111b65baf8a74fde21）。
 - en: The trick, in both extsmail and snare’s case, was to accept that while it’s
     impractical to test *everything* about a daemon, most things can be tested with
     sufficient thought. Tests can easily set-up isolated environments (e.g. in temporary
@@ -1307,6 +1310,8 @@
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 extsmail 和 snare 的情况中，关键在于接受，虽然测试守护进程的 *所有内容* 是不切实际的，但通过足够的思考，大多数事情是可以进行测试的。测试可以轻松设置隔离环境（例如在临时目录中），运行简单的
+    shell 命令，然后检查这些命令的效果。在许多情况下，产生的测试是“基于时间的” — 即，有时测试的唯一操作就是 `sleep` 一段足够长的时间，以确保可以测试到的动作已发生。基于时间的测试显然是脆弱的，因此通常不被看好。但当这是测试的唯一合理选项时，接受这是必要的，远比不测试要好！
 - en: 'In summary, even though many existing Unix daemons lack automated testing,
     I think we now know we should do better, and we know how to do so. Certainly,
     I’ve learnt my lesson: any future daemon I write will come with thorough testing
@@ -1314,15 +1319,18 @@
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结起来，尽管许多现有的 Unix 守护进程缺乏自动化测试，但我们现在知道应该做得更好，也知道如何做到这一点。毫无疑问，我已经吸取了教训：我写的任何未来守护进程从第一天起都会进行彻底测试。
 - en: Summary
   id: totrans-split-157
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: 'My high-level recommendations for writing a daemon are:'
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 写守护进程的高级建议如下：
 - en: Daemons tend to be configured once and then forgotten. Thus the more focussed
     in scope they are, and the simpler they are to configure, the more likely they
     are to keep running correctly. It’s tempting to try and make daemons super flexible,
@@ -1332,6 +1340,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 守护进程往往配置一次，然后被遗忘。因此，守护进程在范围上更加聚焦且配置起来更简单，就越有可能持续正确运行。试图使守护进程超级灵活是诱人的，但这会给用户和实施者带来很大的认知负担，这通常是不必要且常常是适得其反的。
 - en: Writing new daemons in Rust is viable and for even moderately complex daemons,
     a good trade-off. Perhaps, though, for the smallest daemons, the large size of
     Rust binaries might not be appropriate.
@@ -1339,6 +1348,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在 Rust 中编写新守护进程是可行的，甚至对于中等复杂度的守护进程来说是一个良好的权衡。不过，对于最小的守护进程来说，Rust 二进制文件的大小可能不合适。
 - en: Daemons need system-wide automated testing if we want to have confidence in
     their correctness today and after any future changes. Testing daemons can seem
     difficult or impossible, especially if one expects to test everything, but often
@@ -1347,18 +1357,21 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果我们希望今天和未来的更改后对守护进程的正确性有信心，守护进程需要系统全面的自动化测试。测试守护进程可能看起来困难或不可能，特别是如果期望测试所有内容，但通常可以相对容易地自动测试大量功能的子集。
 - en: Communicating with a daemon by signals (e.g. `SIGHUP`) is a bad idea. Unix domain
     sockets give greater flexibility and a better user experience.
   id: totrans-split-162
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过信号（例如 `SIGHUP`）与守护进程通信是个坏主意。Unix 域套接字提供更大的灵活性和更好的用户体验。
 - en: Installing one user-facing binary which has sub-command processing makes understanding,
     and later expansion, of the daemon easier.
   id: totrans-split-163
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 安装一个具有子命令处理的用户可见二进制文件可以更容易理解和扩展守护进程。
 - en: Finally, there is no better way to understand Unix than to write a daemon. There
     are many positives to doing this — surprisingly, I was able to make use of a number
     of lessons I learnt from extsmail in my research, and even one or two from snare!
@@ -1370,61 +1383,76 @@
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，了解Unix的最好方法莫过于编写一个守护程序。这样做有很多积极的方面——令人惊讶的是，我能够运用我在研究中从extsmail学到的许多经验教训，甚至还有一两个来自snare！但也有一个消极的方面。被迫面对Unix几十年的历史，从诞生时的缺陷到此后积累的缺陷，让我深信我们应该重新思考操作系统。但即使有人找到资源重新构想操作系统，我们几乎肯定希望得到类似守护程序的东西！
 - en: '[Newer](/laurie/blog/2024/what_factors_explain_the_nature_of_software.html)'
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '[更新的文章](/laurie/blog/2024/what_factors_explain_the_nature_of_software.html)'
 - en: 2024-02-28 11:00
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024-02-28 11:00
 - en: '[Older](/laurie/blog/2024/faster_shell_startup_with_shell_switching.html)'
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: '[更旧的文章](/laurie/blog/2024/faster_shell_startup_with_shell_switching.html)'
 - en: 'If you’d like updates on new blog posts: follow me on'
   id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想获取博客新文章的更新，请关注我
 - en: '[Mastodon](https://mastodon.social/@ltratt)'
   id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Mastodon](https://mastodon.social/@ltratt)'
 - en: or
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 或
 - en: '[Twitter](https://twitter.com/laurencetratt)'
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Twitter](https://twitter.com/laurencetratt)'
 - en: ; or
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: ; 或
 - en: '[subscribe to the RSS feed](../blog.rss)'
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: '[订阅RSS提要](../blog.rss)'
 - en: ; or
   id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
+  zh: ; 或
 - en: '[subscribe to email updates](/laurie/newsletter/)'
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: '[订阅电子邮件更新](/laurie/newsletter/)'
 - en: ':'
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: ':'
 - en: Footnotes
   id: totrans-split-177
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 脚注
 - en: Comments
   id: totrans-split-178
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 评论
