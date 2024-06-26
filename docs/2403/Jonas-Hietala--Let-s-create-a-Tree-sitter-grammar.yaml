@@ -55,6 +55,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '`$._close_paragraph` is handled by the external scanner, which is specified
     using the `externals` field:'
   id: totrans-split-12
@@ -64,6 +65,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Now let’s turn our attention to `src/scanner.c`. The tokens in `externals` gets
     assigned an incremented number, starting from 0… Just like an enum in C!
   id: totrans-split-14
@@ -73,6 +75,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The five functions we need to implement are these:'
   id: totrans-split-16
   prefs: []
@@ -81,6 +84,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Because we won’t use any state, we’ll only have to update the `scan` function.
   id: totrans-split-18
   prefs: []
@@ -94,6 +98,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: To decide if we’re going to close the paragraph early, we’ll look ahead for
     any `:::`, and if so we’ll close it without consuming any characters. This might
     not be the most efficient solution because we’ll have to parse the `:::` again,
@@ -109,6 +114,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Note that the resulting token will mark any symbol we advance over as owned
     by that token. So `:::` would be marked as `_close_paragraph` (which will be ignored
     by the output since it begins with an underscore), instead of `div_marker`. To
@@ -125,6 +131,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: This is almost all we can do with the lexer. We only process one character at
     a time, cannot look behind, and our only tool to look ahead is to `mark_end` at
     the correct place. (We can also query the current column position.)
@@ -139,10 +146,12 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: To automatically close other open blocks we need to add some context to our
     parser, which means we’ll need state management.
   id: totrans-split-31
@@ -163,34 +172,40 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个div可以有一个变化的数量的`:`，必须匹配。
 - en: Therefore we’ll parse colons in an external scanner and store it on a stack.
   id: totrans-split-35
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 因此，我们将在外部扫描器中解析冒号，并将其存储在堆栈上。
 - en: When we find a div marker, we’ll need to decide if it should start a new div,
     or close an existing one.
   id: totrans-split-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当我们找到一个div标记时，我们需要决定它是否应该开始一个新的div，或者关闭一个现有的div。
 - en: We’ll look at the stack of open blocks and see if we find a match.
   id: totrans-split-37
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 我们将查看打开块的堆栈，并查找是否有匹配项。
 - en: If we have need to close a nested div, that is if we want to close a div further
     down the stack, we need to close the nested div(s) first.
   id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果我们需要关闭嵌套的div，也就是说，如果我们想要关闭堆栈中更深处的div，我们需要先关闭嵌套的div（们）。
 - en: Thus we’ll introduce a `block_close` marker that ends a div, and leave the ending
     div marker as optional.
   id: totrans-split-39
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 因此，我们会引入一个`block_close`标记来结束一个div，并将结束div标记为可选的。
 - en: First we’ll ask the grammar to let the external scanner manage the begin and
     end tokens. We’ll use a `_block_close` marker to end the div, and leave the end
     marker optional. (You could probably use a `choice()` between the two, but this
@@ -198,40 +213,49 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们会要求语法让外部扫描器管理开始和结束令牌。我们将使用`_block_close`标记来结束div，并将结束标记设为可选的。（在我实现时，我觉得这样更合理，而不是在两者之间使用`choice()`。）
 - en: '[PRE9]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'And remember to update the list of external tokens in the scanner (order matters):'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 并记得更新扫描器中外部令牌的列表（顺序很重要）：
 - en: '[PRE10]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Then to our stack of blocks.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后添加到我们的块的堆栈中。
 - en: 'I used a `Block` type to keep track of the type and number of colons:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用了`Block`类型来追踪冒号的类型和数量：
 - en: '[PRE11]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'I know that `level` isn’t the best name, but I couldn’t find a very good general
     name for the number of colons, indentation level, etc. With sum types you could
     model it in a clearer way, like this:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我知道`level`不是最好的名称，但我找不到一个非常好的一般性名称来表示冒号的数量、缩进级别等。使用总和类型，您可以以更清晰的方式对其建模，例如：
 - en: '[PRE12]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: I will, in fact, claim that the difference between a bad programmer and a good
     one is whether he considers his code or his data structures more important. Bad
     programmers worry about the code. Good programmers worry about data structures
@@ -240,79 +264,96 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 实际上，我要说的是，一个糟糕的程序员和一个好的程序员之间的区别在于他是否认为他的代码或数据结构更重要。糟糕的程序员担心代码。好的程序员担心数据结构及其关系。
 - en: But I digress, I’ll go with `level` like a bad programmer.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我跑题了，我会像一个糟糕的程序员一样，使用`level`。
 - en: Another joy of programming C is that you’ll get to re-implement standard data
     structures such as a growable stack. It’s not truly difficult, but it’s annoying
     and bug-prone.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: C语言编程的另一个乐趣是，您将不得不重新实现标准数据结构，如可增长栈。这并不真正困难，但很烦人且容易出错。
 - en: Luckily, during the time I’m writing this blog post, [tree-sitter 0.22.1](https://github.com/tree-sitter/tree-sitter/releases/tag/v0.22.1)
     was released with an array implementation. So now I don’t have to show you my
     shoddy stack implementation, and we can use their array for our stack instead.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，在我撰写这篇博客文章的时候，[tree-sitter 0.22.1](https://github.com/tree-sitter/tree-sitter/releases/tag/v0.22.1)已发布了一个数组实现。因此，我不必展示我笨拙的堆栈实现，我们可以使用它们的数组作为我们的堆栈。
 - en: 'We’ll shove our `Array` of `Block*` into a `Scanner` struct, because we’ll
     need to track more data later:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将我们的`Array`的`Block*`塞进一个`Scanner`结构体中，因为我们以后需要跟踪更多的数据：
 - en: '[PRE13]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: When you manage state in tree-sitter, you need to do some data management in
     the `tree_sitter_` functions we defined earlier.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您在tree-sitter中管理状态时，需要在我们之前定义的`tree_sitter_`函数中进行一些数据管理。
 - en: 'Allocations are managed in the `_create` and `_destroy` functions. Also new
     for 0.22.1 is the recommendation to use `ts_` functions for allocations, to allow
     consumers to override the default allocator:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 分配由`_create`和`_destroy`函数管理。0.22.1的另一个新特性是建议使用`ts_`函数进行分配，以允许消费者覆盖默认分配器：
 - en: '[PRE14]'
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'I allocate the blocks in a `push_block` helper:'
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在`push_block`辅助函数中分配这些块：
 - en: '[PRE15]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: You also need to define the serialize functions. These store and retrieve the
     managed state, to allow tree-sitter to backtrack.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还需要定义序列化函数。这些函数存储和检索管理状态，以允许tree-sitter进行回溯。
 - en: '[PRE16]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: And that’s the (initial) state management taken care of!
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样，（初始的）状态管理问题就解决了！
 - en: Of course, we haven’t used our state yet. Let’s change that.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，我们还没有使用我们的状态。让我们改变这一点。
 - en: 'First, let’s add the `parse_div` entry point to our scan function:'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们在我们的扫描函数中添加`parse_div`入口点：
 - en: '[PRE17]'
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Because advancing the lexer is primitive, and we cannot “go back a char”, it’s
     important to only advance it if we really need to. Therefore we always need to
     check `valid_symbols` before we continue:'
@@ -323,6 +364,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'Next we’ll need to consume all colons we’re at, and only continue if we see
     at least three:'
   id: totrans-split-68
@@ -332,6 +374,7 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Opening a new div is simple; we push the block and register the number of colons:'
   id: totrans-split-70
   prefs: []
@@ -340,6 +383,7 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'But to the decide if we should open or close a div, we need a way to search
     through the stack. This function does that, while also returning how many blocks
     deep into the stack we found the div (which we’ll use shortly):'
@@ -350,6 +394,7 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'But we have a problem: when we want to close the div, we want to be able to
     output multiple tokens.'
   id: totrans-split-74
@@ -363,6 +408,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'We’ll have a stack of 3 divs when we see the closing `:::` marker:'
   id: totrans-split-77
   prefs: []
@@ -371,6 +417,7 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'In the code above, `from_top` will be `3` and we need to output 4 tokens: 3
     `BLOCK_CLOSE` (one for each div) and 1 `DIV_MARKER_END` (for the last `:::`).
     But the scanner can only output a single token at a time.'
@@ -387,6 +434,7 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: We need to remember to update the create and serialize functions too.
   id: totrans-split-82
   prefs: []
@@ -399,6 +447,7 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'Deserialize:'
   id: totrans-split-85
   prefs: []
@@ -407,6 +456,7 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'We’ll use `IGNORED` as the unused token, so we’ll need to reset it when we
     create the scanner:'
   id: totrans-split-87
@@ -416,6 +466,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'Now when we scan we should first check `blocks_to_close` and then `delayed_token`,
     before we scan other things:'
   id: totrans-split-89
@@ -425,6 +476,7 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'When we see `blocks_to_close > 0`, we should output a `BLOCK_CLOSE` and remove
     the top block (with some sanity checks for good measure):'
   id: totrans-split-91
@@ -434,6 +486,7 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: 'With this we can output multiple `BLOCK_CLOSE`, and now to handle delayed tokens:'
   id: totrans-split-93
   prefs: []
@@ -442,6 +495,7 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: Another way to design this is to have a stack of delayed tokens and then just
     pop that. It’s certainly more powerful, I just happened to choose this way when
     I was playing around with it because it’s more explicit and it felt a little easier
@@ -457,6 +511,7 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: '`close_blocks_with_final_token` is a general helper that sets up the number
     of blocks to close and the final token:'
   id: totrans-split-98
@@ -466,6 +521,7 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'Now we can finally try to close divs:'
   id: totrans-split-100
   prefs: []
@@ -474,10 +530,12 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: '[PRE34]'
   id: totrans-split-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: We can see that it parses without error, the last marker closes the *second*
     div correctly, and the last marker captures the final `:::`.
   id: totrans-split-103
@@ -498,6 +556,7 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: While the output seems confusing, when you know what to look for it’s very useful.
     I’ve found that a deliberate process, where I look at a single character at a
     time, helps me get through the problems I’ve encountered so far.
