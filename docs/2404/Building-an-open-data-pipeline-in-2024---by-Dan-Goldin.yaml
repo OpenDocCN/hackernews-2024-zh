@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:33:04'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:33:04'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Building an open data pipeline in 2024 - by Dan Goldin
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在2024年建立一个开放的数据管道 - 丹·戈尔丁
 - en: 来源：[https://blog.twingdata.com/p/building-an-open-data-pipeline-in](https://blog.twingdata.com/p/building-an-open-data-pipeline-in)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.twingdata.com/p/building-an-open-data-pipeline-in](https://blog.twingdata.com/p/building-an-open-data-pipeline-in)
 - en: In a previous post on the [commoditization of SQL](https://blog.twingdata.com/p/embrace-the-differences-between-development),
     I touched on the concept of building a data stack that harnesses this approach.
     One key element of this architecture involves utilizing [Iceberg](https://iceberg.apache.org/)
@@ -38,11 +44,13 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前关于[SQL通用化](https://blog.twingdata.com/p/embrace-the-differences-between-development)的文章中，我提到了构建利用这种方法的数据堆栈的概念。这种架构的一个关键元素是利用[Iceberg](https://iceberg.apache.org/)作为核心数据存储层，灵活选择最适合的计算环境，具体取决于你的用例的特定需求。例如，如果你为BI报告提供动力，通常会优先考虑速度，以便客户能快速获取他们所需的数据。相反，如果你在批处理数据管道作业上工作，成本可能是最大的因素。此外，你可能有外部数据客户，这种情况下，你希望优先考虑可用性而不是其他任何因素。虽然没有一种大小适合所有的解决方案，但了解你独特的用例和要求可以让你相应地调整你的方法。
 - en: There are a few dimensions here and I want to go through each of them separately
     although in practice it’s going to be a combination of factors.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里涉及几个维度，我希望分别讨论每一个，尽管在实践中它们通常是因素的组合。
 - en: We live in a world of “big data” but even within big data we have entirely different
     tiers. Smaller data sets can be handled using [DuckDB](https://duckdb.org/) on
     a single node instance. Larger data sets require some sort of map-reduce approach
@@ -52,6 +60,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们生活在一个“大数据”的世界中，但即使在大数据范围内，我们也有完全不同的层次。较小的数据集可以在单节点实例上使用[DuckDB](https://duckdb.org/)处理。较大的数据集则需要某种映射-减少的方法，并可以利用现代数据仓库，如[Snowflake](https://www.snowflake.com/en/)或[Databricks](https://www.databricks.com/)。如果你处理的是真正海量的数据集，你可以利用GPU来处理数据作业。
 - en: There are two types of latency to consider. The first type is data processing,
     which refers to the time required to transform and process the data. The  second
     type is the speed at which queries can be executed in interactive or reporting
@@ -65,6 +74,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两种类型的延迟需要考虑。第一种类型是数据处理延迟，指的是转换和处理数据所需的时间。第二种类型是在交互或报告用例中执行查询的速度。想象一下，你有一个服务收集电子商务交易数据，帮助客户更好地了解他们的销售情况。每笔交易都会触发一个事件，但考虑到规模，你选择每小时汇总数据，汇总过程需要10分钟才能完成。当数据汇总后，用户可以通过BI工具查询数据，95%的查询在5秒内执行。在这种情况下，你的数据处理延迟最多是70分钟，但查询延迟只有几秒钟。
 - en: You can improve data processing latency by running the jobs more frequently
     or on larger hardware. To improve query latency you can have larger hardware and
     keep as much data “hot” and in memory rather than pulling it from “cold” storage.
@@ -72,6 +82,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以通过更频繁地运行作业或使用更大的硬件来改善数据处理延迟。为了改善查询延迟，你可以使用更大的硬件，并尽量将尽可能多的数据“热”存储在内存中，而不是从“冷”存储中提取。和大多数事情一样，减少延迟会增加成本。
 - en: In general, managed tools will give you stronger governance and access controls
     compared to open source solutions. For businesses dealing with sensitive data
     that requires a robust security model, commercial solutions may be worth investing
@@ -79,6 +90,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，与开源解决方案相比，受管工具将为您提供更强大的治理和访问控制。对于需要强大安全模型的敏感数据处理业务，商业解决方案可能值得投资，因为它们可以提供额外的保证层和更强大的审计追踪。
 - en: Different types of data will often have different requirements. Typically, raw
     events often deal with personally identifiable information and have high sensitivity.
     However, as the data is rolled up and aggregated, the sensitivity level tends
@@ -87,6 +99,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同类型的数据通常具有不同的需求。通常，原始事件通常涉及个人身份信息并具有较高的敏感性。然而，随着数据被汇总和聚合，敏感性水平往往会降低，允许对数据敏感性级别进行更明确定义的角色和责任。
 - en: Cost is a function of the above but is also a key dimension on its own. Depending
     on the economics of your business cost may actually be the constraint that forces
     you to compromise on some of the other requirements. It can be useful to think
@@ -98,6 +111,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 成本是以上因素的函数，但也是一个关键维度。根据您的业务经济情况，成本实际上可能是迫使您在其他需求上做出妥协的约束因素。想象一下，如果成本不是因素，那么理想的架构是什么样子的，然后在逐渐增加成本考虑的层次时进行削减和妥协，这也会给您一个很好的了解您的优先事项和如何在它们之间进行权衡的感觉。例如，您可能会意识到实现次秒级查询延迟并不像建立强大的安全模型那样关键。
 - en: A helpful approach when thinking about cost is asking the question of what it
     would look like if you had twice the budget? What about half the budget? That
     can inspire some creative thinking and lead to solutions that weren’t obvious
@@ -105,6 +119,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在考虑成本时，一个有用的方法是问自己如果预算增加一倍会是什么样子？如果减半呢？这可能会激发一些创造性思维，并导致一些最初并不明显的解决方案。
 - en: Before starting [Twing Data](https://www.twingdata.com/), I gained valuable
     experience working at [TripleLift](https://triplelift.com/), an advertising technology
     company, where I held several engineering leadership positions over the course
@@ -115,10 +130,12 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始[Twing Data](https://www.twingdata.com/)之前，我在广告技术公司[TripleLift](https://triplelift.com/)工作，积累了宝贵的经验，在那里我在10年的时间里担任了几个工程领导职位。在那段时间里，我们经历了数据流水线的多次迭代。基于那段经历，我想利用上述提到的框架，创建一个专门满足各种要求的架构，同时利用Iceberg和不同的计算环境。
 - en: Here’s a breakdown of how it fits together.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是如何组合在一起的分解。
 - en: Log-level events are collected in [Redpanda](https://redpanda.com/) and persisted
     to [Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/) ([better
     than AWS S3](https://dansdatathoughts.substack.com/p/from-s3-to-r2-an-economic-opportunity))
@@ -130,6 +147,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 日志级别事件在[Redpanda](https://redpanda.com/)中进行收集，并持久存储到[Cloudflare R2](https://www.cloudflare.com/developer-platform/r2/)（[比AWS
+    S3更好](https://dansdatathoughts.substack.com/p/from-s3-to-r2-an-economic-opportunity)）使用[Parquet](https://parquet.apache.org/)和Iceberg。每天有数千亿事件，涉及的内容从正在进行的广告拍卖的信息，到每次拍卖的获胜者，再到收集关于广告是否被查看以及持续多久的信息。
 - en: Data modeling is done using [SQLMesh](https://sqlmesh.com/) and orchestrated
     in [dagster](https://dagster.io/). Complex transformations that require distributed
     work with large-scale joins run in Snowflake. One example is joining all the events
@@ -139,6 +158,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 数据建模使用 [SQLMesh](https://sqlmesh.com/) 进行，并在 [dagster](https://dagster.io/)
+    中编排。需要使用大规模连接进行分布式工作的复杂转换在 Snowflake 中运行。一个例子是连接第一步的所有事件，以创建一个宽表，其中每行表示我们对单个拍卖的所有了解。
 - en: DuckDB is used for simpler jobs that can run on a single node. For example,
     taking the wide and large table from the second step and coming up with smaller
     tables that have a subset of the dimensions and are highly aggregated.
@@ -146,6 +167,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: DuckDB 用于可以在单个节点上运行的更简单的作业。例如，从第二步中获取宽表和大表，并得出具有子集维度和高度聚合的较小表。
 - en: '[Cube](https://cube.dev/) is used as a semantic layer to give us a standard
     way of defining the metrics we care about and ensuring they are consistent across
     multiple access paths.'
@@ -153,6 +175,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[Cube](https://cube.dev/) 用作我们定义关心的度量标准的语义层，并确保它们在多个访问路径上保持一致的标准方式。'
 - en: One access path is [Metabase](https://www.metabase.com/) which acts as our BI
     tool. By going through Cube we can ensure we use standard definitions and take
     advantage of Cube’s pre-aggregation/caching layer.
@@ -160,12 +183,15 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个访问路径是 [Metabase](https://www.metabase.com/) ，它充当我们的 BI 工具。通过 Cube 我们可以确保使用标准定义，并利用
+    Cube 的预聚合/缓存层。
 - en: Some of our engineers use Python directly and can also take advantage of the
     semantic layer offered by Cube.
   id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们的一些工程师直接使用 Python ，并且还可以利用 Cube 提供的语义层。
 - en: We also want to allow power users, such as data scientists, the ability to query
     the data directly from R2 using whatever compute layer they want. They may want
     to use Spark or even Snowflake but they’re able to because the data is stored
@@ -174,6 +200,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们还希望允许数据科学家等高级用户直接从 R2 查询数据，使用他们想要的计算层。他们可能想要使用 Spark ，甚至 Snowflake ，但他们可以使用，因为数据使用开放存储格式
+    Iceberg 存储。
 - en: This approach is centered around Iceberg and its open nature. In the above example
     we can switch Snowflake with Databricks without any trouble. Moreover, we have
     the flexibility to adopt different orchestration, data modeling, and semantic
@@ -184,3 +212,4 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法以 Iceberg 及其开放性为中心。在上面的例子中，我们可以毫不费力地用 Databricks 替换 Snowflake 。此外，我们可以根据需要采用不同的编排、数据建模和语义层。这种灵活性的基础在于系统的核心，数据本身，不受专有格式的约束。这不仅带来了成本效益，还促进了创新，因为您和生态系统都在扩大和发展。
