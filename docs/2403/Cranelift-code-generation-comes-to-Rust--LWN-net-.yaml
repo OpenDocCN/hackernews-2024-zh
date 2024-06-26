@@ -84,6 +84,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift的开发人员选择使用更通用的架构，这意味着Cranelift可在WebAssembly之外的环境中使用。最初设计项目时，考虑了在Wasmtime、Rust和Firefox的[SpiderMonkey
+    JavaScript解释器](https://spidermonkey.dev/)中使用Cranelift。SpiderMonkey项目目前决定暂不使用Cranelift，但Cranelift项目仍具有旨在轻松融入其他程序的设计。
 - en: Cranelift takes in a [custom intermediate representation](https://github.com/bytecodealliance/wasmtime/blob/main/cranelift/docs/ir.md)
     called CLIF, and directly emits machine code for the target architecture. Unlike
     many other JIT compilers, Cranelift does not generate code that relies on being
@@ -92,11 +94,13 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift采用了称为CLIF的[自定义中间表示](https://github.com/bytecodealliance/wasmtime/blob/main/cranelift/docs/ir.md)，并直接为目标架构生成机器代码。与许多其他即时编译器不同，Cranelift不生成依赖于能够在假设失效时返回使用解释器的代码。这使其适合用于非与WebAssembly相关的项目中采用。
 - en: Cranelift's optimizations
   id: totrans-split-14
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: Cranelift的优化
 - en: Despite its focus on fast code generation, Cranelift does optimize the code
     it generates in several ways. Cranelift's optimization pipeline is based on [equality
     graphs](https://en.wikipedia.org/wiki/E-graph) (or E-graphs), a data structure
@@ -111,6 +115,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管Cranelift专注于快速代码生成，但它确实通过多种方式优化生成的代码。Cranelift的优化流水线基于[等价图](https://zh.wikipedia.org/wiki/%E7%AD%89%E4%BB%B7%E5%9B%BE)（或称E图），这是一种有效表示等价中间表示集合的数据结构。在传统编译器中，优化器通过获取解析生成的程序表示，然后对其应用一系列传递以生成优化版本。优化传递的执行顺序对生成的代码质量有很大影响，因为某些传递需要其他传递简化后的简化才能应用。选择正确的优化顺序称为[阶段排序问题](https://ieeexplore.ieee.org/document/1611550)，已成为大量学术研究的来源。
 - en: In Cranelift, the part of each optimization that recognizes a simpler or faster
     way to represent a particular construct is separated from the part that chooses
     what representation should ultimately be used. Each optimization works by finding
@@ -124,6 +129,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Cranelift中，每个优化的一部分识别特定结构的更简单或更快表示方法，与最终选择应使用的表示方法分离开来。每个优化通过在内部表示中找到特定模式，然后注释它等效于某些简化版本来工作。E图数据结构通过允许两个内部表示的副本共享它们共同拥有的节点，并允许CLIF中的节点引用其他节点的等效类，而不是特定的其他节点，有效地表示了这一点。这产生了一个密集的结构，在其中添加程序特定部分的替代形式是便宜的。
 - en: Because optimizations run on an E-graph only add information in the form of
     new annotations, the order of the optimizations does not change the result. As
     long as the compiler continues running optimizations until they no longer have
@@ -140,6 +146,9 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为优化只在 E-图上运行，以新注释的形式添加信息，所以优化的顺序不会改变结果。只要编译器继续运行优化，直到它们不再有任何新的匹配（这个过程被称为[等饱和](https://arxiv.org/abs/1012.1802)），E-图将包含等同于传统优化
+    passes 等效顺序产生的表示，以及许多不那么高效的表示。E-图比直接存储每个可能的替代方案更高效（平均占用 O(log n) 的空间），但它们仍比传统的中间表示花费更多的内存。根据所讨论的程序和所使用的优化集合，一个完全饱和的
+    E-图可能会非常大。在实践中，Cranelift 设置了对图执行多少次操作的限制，以防止它变得过大。
 - en: E-graphs pay for this simplicity and optimality when it comes time to extract
     the final representation from the E-graph to use for code generation. Extracting
     the fastest representation from an E-graph [is an NP-complete](https://effect.systems/blog/egraph-extraction.html)
@@ -147,6 +156,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 当从 E-图中提取最终表示以用于代码生成时，E-图的简单性和优化性也付出了代价。从 E-图中提取最快的表示是一个[NP完全](https://effect.systems/blog/egraph-extraction.html)问题。Cranelift
+    使用一组启发式方法快速提取一个足够好的表示。
 - en: Trading one NP-complete problem (selecting the best order for a set of passes)
     for another may not seem like a large benefit, but it does make sense for a smaller
     project. The order of optimization passes is largely set by the programmers who
@@ -159,6 +170,9 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 将一个 NP 完全问题（选择一组 passes 的最佳顺序）换成另一个可能看起来并不像是一个很大的好处，但对于一个较小的项目来说是有意义的。优化 passes
+    的顺序主要由编写优化的程序员设定，因为它需要领域知识来选择合理的顺序。另一方面，从 E-图中提取高效的表示是一个通用的搜索问题，可以根据应用程序允许的计算时间多少来进行。Cranelift
+    的启发式方法并不提取最高效的表示，但确实能快速提取一个不错的表示。
 - en: Representing optimizations in this way also makes it easier for Cranelift maintainers
     to understand and debug existing optimizations and their effects, and makes writing
     new optimizations somewhat simpler. Cranelift has a [custom domain-specific language](https://github.com/bytecodealliance/wasmtime/blob/522f9711ad57e3c00f394691fbc5cde0fdf8017d/cranelift/isle/README.md)
@@ -166,6 +180,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 以这种方式表示优化也使得 Cranelift 的维护者更容易理解和调试现有的优化及其效果，并使得编写新的优化稍微简单些。Cranelift 使用一个[定制的领域特定语言](https://github.com/bytecodealliance/wasmtime/blob/522f9711ad57e3c00f394691fbc5cde0fdf8017d/cranelift/isle/README.md)（ISLE）来内部指定优化。
 - en: While Cranelift does not organize its optimizations in phases, it does have
     ten different sets of related optimizations defined in their own ISLE files, which
     allows for a rough comparison with GCC and LLVM. LLVM [lists](https://llvm.org/docs/Passes.html)
@@ -177,6 +192,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然Cranelift没有按阶段组织其优化，但它在自己的ISLE文件中定义了十个不同的相关优化集，这允许与GCC和LLVM进行大致比较。LLVM在其文档中[列出了](https://llvm.org/docs/Passes.html)96个优化过程，而GCC有[372个](https://github.com/gcc-mirror/gcc/blob/master/gcc/passes.def)。Cranelift现有的优化包括常量传播、位操作简化、矢量化、浮点操作优化以及比较的归一化。通过从E图中提取表示来隐式地进行死代码消除。
 - en: A [paper from 2020](https://arxiv.org/pdf/2011.13127.pdf) showed that Cranelift
     was an order of magnitude faster than LLVM, while producing code that was approximately
     twice as slow on some benchmarks. Cranelift was still slower than the paper's
@@ -184,11 +200,13 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '[2020年的一篇论文](https://arxiv.org/pdf/2011.13127.pdf)显示，Cranelift比LLVM快一个数量级，但在某些基准测试中生成的代码大约慢两倍。然而，Cranelift仍然比论文作者的自定义复制和补丁JIT编译器慢。'
 - en: Cranelift for Rust
   id: totrans-split-23
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 适用于Rust的Cranelift
 - en: Cranelift may have been designed with the aim of being an alternate backend
     for Rust, but actually making it usable has taken significant effort. The Rust
     compiler has an internal representation (IR) called [mid-level IR](https://blog.rust-lang.org/2016/04/19/MIR.html)
@@ -199,6 +217,9 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift可能是为了成为Rust的备用后端而设计的，但要使其可用实际上需要付出了巨大的努力。Rust编译器有一个称为[mid-level IR](https://blog.rust-lang.org/2016/04/19/MIR.html)的内部表示(IR)，用于表示类型检查的程序。通常情况下，编译器将其转换为LLVM
+    IR，然后发送到LLVM代码生成后端。为了使用Cranelift，编译器需要[另一个库](https://github.com/rust-lang/rustc_codegen_cranelift)，该库接受mid-level
+    IR并生成CLIF。
 - en: That library was largely written by "bjorn3", a Rust compiler team member who
     contributed more than 3,000 of the approximately 4,000 commits to Rust's Cranelift
     backend. He wrote [a series of progress reports](https://bjorn3.github.io/) detailing
@@ -208,14 +229,18 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 那个库主要由Rust编译器团队成员"bjorn3"编写，他为Rust的Cranelift后端贡献了大约4000次提交中的超过3000次。他撰写了一系列详细描述其工作的[进展报告](https://bjorn3.github.io/)。开发始于2018年，并跟随Rust自身的快速发展步伐。到2023年，后端被认为足够稳定，作为Rust
+    nightly的可选工具链组件之一发布。
 - en: 'People can now try the Cranelift backend using `rustup` and `cargo`:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，人们可以使用`rustup`和`cargo`尝试Cranelift后端：
 - en: '[PRE0]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The given `rustup` command adds the Cranelift backend's dynamic library to the
     set of toolchain components to download and keep up to date locally. Setting the
     `CARGO_PROFILE_DEV_CODEGEN_BACKEND` environment variable instructs `cargo` to
@@ -227,6 +252,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定的`rustup`命令将Cranelift后端的动态库添加到要下载并在本地保持更新的工具链组件集中。设置`CARGO_PROFILE_DEV_CODEGEN_BACKEND`环境变量指示`cargo`在调试构建中使用Cranelift，并且最终的`cargo`调用构建当前目录中的任何Rust项目，使用了启用的替代代码生成后端功能。来自[bjorn3的最新进展报告](https://bjorn3.github.io/2023/10/31/progress-report-oct-2023.html)包含了有关如何配置Cargo默认使用新后端的额外细节，而无需复杂的命令行操作。
 - en: Cranelift is itself written in Rust, making it possible to use as a benchmark
     to compare itself to LLVM. A full debug build of Cranelift itself using the Cranelift
     backend took 29.6 seconds on my computer, compared to 37.5 with LLVM (a reduction
@@ -238,25 +264,34 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift 本身是用 Rust 编写的，这使得它可以作为一个基准来与 LLVM 进行比较。在我的电脑上，使用 Cranelift 后端对 Cranelift
+    本身进行完整的调试构建花费了 29.6 秒，而使用 LLVM 则需要 37.5 秒（墙钟时间减少了 20%）。然而，这些墙钟时间并未完全反映实际情况，因为构建系统中存在并行性。使用
+    Cranelift 编译花费了 125 CPU 秒，而 LLVM 则需要 211 CPU 秒，差异为 40%。增量构建 —— 仅重新构建 Cranelift
+    本身，而不重新构建其依赖项 —— 使用两种后端都更快。CPU 时间为 66ms，相比之下 LLVM 为 90ms。
 - en: Whether Cranelift will ameliorate users' concerns about slow compile times in
     Rust remains to be seen, but the initial signs are promising. In any case, Cranelift
     is an interesting showcase of a different approach to compiler design.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift 是否能改善 Rust 用户对编译时间慢的担忧尚待观察，但初步迹象是令人鼓舞的。无论如何，Cranelift 展示了一种不同的编译器设计方法的有趣案例。
 - en: '* * *'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: (
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: (
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/964735/)'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[登录](https://lwn.net/Login/?target=/Articles/964735/)'
 - en: to post comments)
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 发表评论)
