@@ -2,44 +2,54 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:41:51'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:41:51'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Chris''s Wiki :: blog/linux/TaskDelayAccountingNotes'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Chris''s Wiki :: blog/linux/TaskDelayAccountingNotes'
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/linux/TaskDelayAccountingNotes](https://utcc.utoronto.ca/~cks/space/blog/linux/TaskDelayAccountingNotes)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://utcc.utoronto.ca/~cks/space/blog/linux/TaskDelayAccountingNotes](https://utcc.utoronto.ca/~cks/space/blog/linux/TaskDelayAccountingNotes)
 - en: 'If you run a recent enough version of [iotop](https://man7.org/linux/man-pages/man8/iotop.8.html)
     on a typical Linux system, it may nag at you to the effect of:'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在典型的 Linux 系统上运行足够新的版本的 [iotop](https://man7.org/linux/man-pages/man8/iotop.8.html)，它可能会以如下方式提醒您：
 - en: CONFIG_TASK_DELAY_ACCT and [kernel.task_delayacct](https://docs.kernel.org/admin-guide/sysctl/kernel.html#task-delayacct)
     sysctl not enabled in kernel, cannot determine SWAPIN and IO %
   id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: CONFIG_TASK_DELAY_ACCT 和 [kernel.task_delayacct](https://docs.kernel.org/admin-guide/sysctl/kernel.html#task-delayacct)
+    sysctl 未在内核中启用，无法确定 SWAPIN 和 IO %。
 - en: You might wonder whether you should turn on this sysctl, how much you care,
     and why it was defaulted to being disabled in the first place.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能会想知道是否应该启用这个 sysctl，以及您关心程度如何，以及为什么它在第一次默认情况下被禁用。
 - en: This sysctl enables [(Task) Delay accounting](https://docs.kernel.org/accounting/delay-accounting.html),
     which tracks things like how long things wait for the CPU or wait for their IO
     to complete on a per-task basis (which in Linux means 'thread', more or less).
@@ -50,6 +60,10 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 此 sysctl 启用了[(Task) Delay accounting](https://docs.kernel.org/accounting/delay-accounting.html)，它会跟踪诸如进程等待
+    CPU 或等待其 IO 完成的时间，按任务计算（在 Linux 中基本上是 '线程'）。一般的系统信息会在诸如 'iowait%' 和 [pressure
+    stall information](/~cks/space/blog/linux/PSINumbersAndMeanings) 中提供整体测量，但这些是聚合数据；您可能对了解特定进程延迟或等待
+    IO 的情况感兴趣。
 - en: (Also, [overall system iowait% is a conservative measure](/~cks/space/blog/linux/LinuxMultiCPUIowait)
     and won't give you a completely accurate picture of how much processes are waiting
     for IO. You can get per-cgroup pressure stall information, which in some cases
@@ -57,6 +71,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: （另外，[整体系统 iowait% 是一种保守的测量](/~cks/space/blog/linux/LinuxMultiCPUIowait)，并不能完全准确地反映进程等待
+    IO 的情况。您可以获取每个 cgroup 的压力停滞信息，在某些情况下可以接近每个进程的数据。）
 - en: In the context of [iotop](https://man7.org/linux/man-pages/man8/iotop.8.html)
     specifically, the major thing you will miss is 'IO %', which is the percent of
     the time that a particular process is waiting for IO. Task delay accounting can
@@ -73,12 +89,18 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在特定于 [iotop](https://man7.org/linux/man-pages/man8/iotop.8.html) 的上下文中，您可能会错过的主要内容是
+    'IO %'，即特定进程等待 IO 的时间百分比。任务延迟计费可以提供关于每个进程（或任务）运行队列延迟的信息，但我不知道是否有类似 iotop 的工具能提供这样的信息。在内核源代码中有一个程序，[tools/accounting/getdelays.c](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/tools/accounting/getdelays.c)，它会一次性地转储原始信息（在某些版本中，还会为您计算平均值，这可能是有益的）。您理论上可以获取到的当前任务延迟计费信息在
+    [include/uapi/linux/taskstats.h](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/uapi/linux/taskstats.h)
+    的注释中有文档记录，或者在 [文档中的这个版本](https://docs.kernel.org/accounting/taskstats-struct.html)。您可能还想查看
+    [include/linux/delayacct.h](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/delayacct.h)，我认为它是跟踪这些信息的内核内部版本。
 - en: (You may need the version of getdelays.c from your kernel's source tree, as
     the current version may not be backward compatible to your kernel. This typically
     comes up as compile errors, which are at least obvious.)
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: （你可能需要从你的内核源树中获取 getdelays.c 的版本，因为当前版本可能与你的内核不兼容。这通常会导致编译错误，至少是显而易见的错误。）
 - en: How you can access this information yourself is sort of covered in [Per-task
     statistics interface](https://docs.kernel.org/accounting/taskstats.html), but
     in practice you'll want to read the source code of getdelays.c or the Python source
@@ -92,6 +114,11 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何自己获取这些信息，有点在 [任务统计界面](https://docs.kernel.org/accounting/taskstats.html) 中提到，但实际上，你会想要阅读
+    getdelays.c 的源代码或者 [iotop](https://repo.or.cz/iotop.git) 的 Python 源代码。如果你特别想追踪一个任务在进行IO延迟时花费了多长时间，/proc/<pid>/stat
+    中也有一个字段；参见 [proc(5)](https://man7.org/linux/man-pages/man5/proc.5.html)，第42个字段是
+    delayacct_blkio_ticks。就我从内核源码中了解的情况而言，这与 [netlink 接口](https://docs.kernel.org/accounting/taskstats.html)
+    提供的信息是一样的，尽管它只有等待“块”（文件系统）IO的总时间，并没有块IO操作的计数。
 - en: Task delay accounting can theoretically be requested on a per-cgroup basis ([as
     I saw in a previous entry on where the Linux load average comes from](/~cks/space/blog/linux/LoadAverageWhereFrom)),
     but in practice this only works for [cgroup v1](https://docs.kernel.org/admin-guide/cgroup-v1/index.html).
@@ -105,6 +132,12 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 理论上可以在每个 cgroup 基础上请求任务延迟会计（如我在关于 Linux 平均负载来自哪里的之前条目中看到的），但实际上，这仅适用于 [cgroup
+    v1](https://docs.kernel.org/admin-guide/cgroup-v1/index.html)。这种（任务）延迟会计从未添加到
+    [cgroup v2](https://docs.kernel.org/admin-guide/cgroup-v2.html)，这可能表明整个功能有些被忽视。我找不到太多关于为什么延迟会计在
+    2021 年被更改为默认关闭的原因。[做出此更改的提交](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e4042ad492357fa995921376462b04a025dd53b6)
+    似乎暗示它默认关闭的假设是因为它没有被广泛使用。还请参阅 [此内核邮件列表消息](https://lore.kernel.org/all/20210505111525.308018373@infradead.org/T/)
+    和 [此 Reddit 线程](https://old.reddit.com/r/linuxquestions/comments/1b6bijd/downsides_to_kerneltask_delayacct/)。
 - en: Now that I've discovered kernel.task_delayacct and played around with it a bit,
     I think it's useful enough for us for diagnosing issues that we're going to turn
     it on by default until and unless we see problems (performance or otherwise).
@@ -113,6 +146,8 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我已经发现了 kernel.task_delayacct 并进行了一些尝试，我认为它对于我们诊断问题是足够有用的，因此我们将默认启用它，直到我们遇到问题（无论是性能还是其他方面）。可能我会用一个
+    /etc/sysctl.d/ 的文件来完成这个操作，因为我认为这样可以在启动早期覆盖大多数感兴趣的进程。
 - en: (As covered somewhere, if you turn delay accounting on through the sysctl, it
     apparently only covers processes that were started after the sysctl was changed.
     Processes started before have no delay accounting information, or perhaps only
@@ -121,9 +156,12 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: （正如某处所述，如果通过 sysctl 打开延迟会计，显然只覆盖了在更改 sysctl 后启动的进程。在更改之前启动的进程没有延迟会计信息，或者可能只有“CPU”延迟会计信息。其中一个这样的进程是
+    init，PID 1，它将始终在设置 sysctl 之前启动。）
 - en: 'PS: The per-task IO delays do include NFS IO, [just as iowait does](/~cks/space/blog/linux/NFSIOShowsInIowait),
     which may make it more interesting if you have NFS clients. Sometimes it''s obvious
     which programs are being affected by slow NFS servers, but sometimes not.'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: PS：每个任务的IO延迟确实包括NFS IO，[就像iowait一样](/~cks/space/blog/linux/NFSIOShowsInIowait)，如果你有NFS客户端，这可能会使情况更有趣。有时候很明显哪些程序受到慢速NFS服务器的影响，但有时候却不明显。
