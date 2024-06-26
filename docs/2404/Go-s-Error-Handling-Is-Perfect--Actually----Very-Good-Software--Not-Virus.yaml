@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   <!--yml'
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   category: 未分类'
 - en: 'date: 2024-05-27 12:56:36'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   date: 2024-05-27 12:56:36'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   -->'
 - en: 'Go’s Error Handling Is Perfect, Actually :: Very Good Software, Not Virus'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '-   Go的错误处理实际上是完美的 :: Very Good Software, Not Virus'
 - en: 来源：[https://blog.verygoodsoftwarenotvirus.ru/posts/errors-in-go/](https://blog.verygoodsoftwarenotvirus.ru/posts/errors-in-go/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.verygoodsoftwarenotvirus.ru/posts/errors-in-go/](https://blog.verygoodsoftwarenotvirus.ru/posts/errors-in-go/)
 - en: Spend any amount of time in programming circles, and just as the sun rises and
     falls, you are certain to hear someone complain about error handling in Go. These
     complaints are, anecdotally, rarely well thought out suggestions on what error
@@ -32,6 +38,8 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   在编程圈子里花费任意时间，就像太阳升起和落下一样，你肯定会听到有人抱怨Go语言中的错误处理。这些抱怨，据传闻，很少有人深思熟虑地建议Go语言中的错误处理应该如何或者应该像什么，而常常仅仅
+    boil down to “我不喜欢看它”。'
 - en: You’ll mainly see people complain about having to litter their apps with `if
     err != nil`, how they feel it makes the code verbose, and how they miss just writing
     ten very consequential lines one after the other in more dynamic languages like
@@ -39,6 +47,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   大部分人抱怨不得不在他们的应用程序中添加 `if err != nil` 的代码，认为这使得代码冗长，并且想念在像Python或Javascript这样更动态的语言中可以连续写下十行非常重要的代码。'
 - en: Less often, you’ll see folks bemoan the lack of a stdlib-defined [Result type](https://doc.rust-lang.org/std/result/),
     which would have either a value or an error, like in Rust. Every now and then
     you’ll see someone bemoan how error handling works in highly concurrent Go programs,
@@ -46,11 +55,14 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   较少见的是，您会看到人们抱怨Go语言中缺少类似于Rust中的 stdlib-defined [Result type](https://doc.rust-lang.org/std/result/)，它将具有值或错误，或者如何在高度并发的Go程序中工作时错误处理，或者
+    [一些错误可以同时是nil和非nil](https://stackoverflow.com/questions/53892508/golang-returning-nil-does-not-return-nil)。'
 - en: In defense of `if err != nil`[⌗](#in-defense-of-if-err--nil)
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '-   在捍卫 `if err != nil`[⌗](#in-defense-of-if-err--nil)'
 - en: 'I have a spicy hot take on the matter: Go’s error handling is not just fine,
     not just great, but actually perfect for 99% of programs. (I will readily admit
     the last thing about error nilness is annoying, but in the nearly decade of time
@@ -60,6 +72,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   我对此有一个非常激进的看法：对于99%的程序来说，Go的错误处理不仅仅是好的，不仅仅是优秀的，而是完美的。（我很乐意承认关于错误nilness的问题很烦人，但是在我近十年的Go编程生涯中，我可以想到的情况可能仅有几次是它真正显现出来的。我也将这个问题归因于Go中的nil主题，这是一个完全不同的话题，本文是关于错误的。）'
 - en: 'I regard the matter like this: do you want to know when something bad can happen
     in your program, or don’t you? I asked ChatGPT to `Please write some python code
     for me that goes through every row of a CSV file, performs a get request for the
@@ -68,10 +81,15 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   我认为事情就是这样的：你想知道你的程序什么时候会出现问题，还是不想知道？我要求ChatGPT `Please write some python
+    code for me that goes through every row of a CSV file, performs a get request
+    for the value in the first column, and parses the responses as a JSON map of strings
+    to strings`:'
 - en: '[PRE0]'
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: There’s basically no error handling here, but there’s a ton that can go wrong.
     What happens if the file doesn’t exist, or is corrupted? What happens if you don’t
     have permissions to read it? What happens if the `GET` request fails? What happens
@@ -81,24 +99,29 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   这里基本上没有错误处理，但是可能会发生很多错误。如果文件不存在或损坏会发生什么？如果您没有权限读取它会发生什么？如果 `GET` 请求失败会发生什么？如果响应主体不是有效的JSON，或者不匹配预期的格式会发生什么？在Python的情况下，答案是会抛出一个异常，并且由于没有代码来捕获它，它将被更广泛的运行时处理，打印一个堆栈跟踪。'
 - en: '[PRE1]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Note that for any sufficiently complex program that invokes many dependencies,
     this stack trace will be so far down the chain that you may not even see where
     you’re making the call that causes it.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   注意，对于任何调用了许多依赖项的足够复杂的程序，这个堆栈跟踪将如此深入链条，以至于您甚至可能看不到您所发出的调用是什么导致了它。'
 - en: 'I asked ChatGPT to write the same code, but in Go:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   我请求ChatGPT写同样的代码，但用Go语言：'
 - en: '[PRE2]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Wouldn’t you know it, we have all the aforementioned errors handled! If there’s
     something wrong with the file, that will get surfaced. If there’s something wrong
     with the `GET` request, that will be surfaced. If the response doesn’t contain
@@ -107,6 +130,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来，我们已经处理了所有上述的错误！如果文件有问题，那就会显现出来。如果`GET`请求有问题，那也会显现出来。如果响应不包含有效的JSON，那也会显现出来。Go版本中是否有更多的错误处理代码？是的，因为Go通常是这样写的。
 - en: The Python I posted above, while it certainly could be written a better way,
     doesn’t look meaningfully different from 90%+ of the Python I’ve ever had to work
     with professionally. My only major gripe with the Go variant is that it doesn’t
@@ -114,6 +138,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我上面发布的Python代码，虽然肯定可以写得更好，但在我职业生涯中与之相比并没有明显的不同。我对Go变体唯一的主要抱怨是它在访问索引之前没有检查行的长度，但这就是ChatGPT为你展示的内容。
 - en: There are folks who will say that the Go version is less readable than the Python
     version. For me, this depends on how you measure readability. If you measure it
     from the time you first see the code to when you understand what it’s trying to
@@ -123,23 +148,27 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 有人会说Go版本比Python版本更不易阅读。对我来说，这取决于你如何衡量可读性。如果从第一次看到代码到理解其尝试完成任务所需的时间来衡量，我可以接受Python赢的建议。如果从如何迅速分辨给定代码块可能的不同执行路径或结果的角度来衡量，我认为Go胜出。
 - en: Even if you didn’t know that file reads could fail, or network requests could
     fail, you would understand that both are possible after reading the Go code, but
     not from the Python code.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使你不知道文件读取可能会失败，或者网络请求可能会失败，你读过Go代码后就会明白这两者都是可能的，但从Python代码中就不会明白。
 - en: I’d rather see a billion `if err != nil` statements in my code than have an
     error occur that I cannot quickly and effectively diagnose because it comes with
     a bunch of unrelated noise.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我宁愿在我的代码中看到十亿次`if err != nil`的语句，也不愿意因为一堆无关的噪音而不能快速有效地诊断错误。
 - en: Result types in Go[⌗](#result-types-in-go)
   id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Go中的Result类型[⌗](#result-types-in-go)
 - en: I’ve seen the [RIIR](https://transitiontech.ca/random/RIIR) crew suggest that
     one of the things that would make Go tolerable to them would be some equivalent
     of the `Result` type in Rust. The `Result` type allows for you to return one value
@@ -149,16 +178,20 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我见过[RIIR](https://transitiontech.ca/random/RIIR)团队建议，使Go对他们更可接受的一件事情之一是在Go中有类似Rust中`Result`类型的等价物。`Result`类型允许你返回一个值，可以包含预期的值，或者一个错误，但不能同时包含两者。因此，你可以将在很多Go代码中看到的标准`res,
+    err := someOperation()`模式简化为`res := someOperation()`。
 - en: 'I asked ChatGPT to `Please write some rust code that returns a Result container
     with a string, have it check the current time and return an error if the unix
     timestamp is even or a positive result if the unix timestamp is odd`:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我请求ChatGPT，请写一些Rust代码，返回一个带有字符串的Result容器，检查当前时间并在Unix时间戳为偶数时返回错误，或在Unix时间戳为奇数时返回正结果：
 - en: '[PRE3]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This is, frankly, neat, and not a bad idea. There’s an alternative universe
     where Go had generics from the jump and the `Result` type was implemented/utilized
     in the standard library, and it’s not the worst outcome I could think of. There
@@ -168,6 +201,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 坦率地说，这很整洁，而且不是一个坏主意。有一个另类的宇宙，在那里Go从一开始就有泛型，并且`Result`类型在标准库中得到了实现和利用，这并不是我能想到的最糟糕的结果。现在可以使用一些后生成泛型的库来执行此操作，这与Rust的变体具有相似性，并且[一个旧的并长期关闭的提案](https://github.com/golang/go/issues/19991)专门将其添加到Go中。
 - en: The only opposition I have to the Result type in Go is that we wouldn’t be able
     to make use of it in the standard library without either breaking backwards compatibility,
     writing `Result` variants of existing API calls (so `NewRequest`, `NewRequestWithContext`,
@@ -180,26 +214,34 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对 Go 中的 Result 类型唯一的反对意见是，如果不破坏向后兼容性，我们就不能在标准库中使用它，要么写出现有 API 调用的 `Result`
+    变体（比如 `NewRequest`、`NewRequestWithContext` 和 `NewRequestWithContextAndResult`），要么发布新的
+    `/v2` 变体的现有包（比如 [最近发布的 `math/rand/v2` 包](https://tip.golang.org/doc/go1.22#math_rand_v2)），这意味着我们将有一些库和程序使用旧风格的一个返回值，一些使用新风格的，还会有许多混淆的程序员使用错误的风格。这将是我认为我们能够管理的最接近
+    Go 等价于 Python 2/3 过渡灾难的事件。
 - en: 'I also don’t really think it meaningfully improves readability. Compare the
     above Rust code to the Go equivalent:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我也不认为这真正地提升了可读性。将上述 Rust 代码与 Go 等效代码进行比较：
 - en: '[PRE4]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Our main function is 6 lines, compared to Rust’s 4\. I suppose that adds up
     over time and with a larger project, but I still just don’t think it’s the massive
     win for readability that some folks proclaim it to be.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的主函数有 6 行，而 Rust 只有 4 行。我想随着时间和项目规模的增长，这些都会累积起来，但我仍然认为这并不像一些人宣称的那样对可读性带来巨大的提升。
 - en: Conclusion[⌗](#conclusion)
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论[⌗](#conclusion)
 - en: None of this post was meant to denigrate Python, Rust, Javascript, or any other
     language, or its fans, or indeed anything at all. I just think a lot of the criticism
     around this particular element of the Go programming language is missing the forest
@@ -207,3 +249,4 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文并不是要贬低 Python、Rust、Javascript 或任何其他语言，也不是它们的粉丝，或者实际上任何事情。我只是觉得，关于 Go 编程语言特定元素的许多批评都是把大局忘了。
