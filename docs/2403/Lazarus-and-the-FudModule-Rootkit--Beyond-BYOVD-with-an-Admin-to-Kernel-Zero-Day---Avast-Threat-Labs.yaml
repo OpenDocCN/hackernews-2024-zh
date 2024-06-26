@@ -920,6 +920,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 进程、线程和图像回调由内核几乎相同地管理，这使得 FudModule 能够使用基本相同的代码来禁用所有三者。我们发现，这段代码自上个版本以来并未有太大改动，主要区别在于新增了驱动程序列表中未被触及回调的驱动。
 - en: FudModule first finds the addresses of `nt!PspNotifyEnableMask`, `nt!PspLoadImageNotifyRoutine`,
     `nt!PspCreateThreadNotifyRoutine`, and `nt!PspCreateProcessNotifyRoutine`. These
     are once again obtained by scanning the code of exported routines, with the exact
@@ -936,6 +937,12 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: FudModule 首先查找 `nt!PspNotifyEnableMask`、`nt!PspLoadImageNotifyRoutine`、`nt!PspCreateThreadNotifyRoutine`
+    和 `nt!PspCreateProcessNotifyRoutine` 的地址。这些地址再次通过扫描导出函数的代码获取，具体的扫描方法可能会根据 Windows
+    版本号有所不同。在进行任何修改之前，rootkit 清除 `nt!PspNotifyEnableMask` 并休眠一段时间。此掩码包含当前启用的回调类型的位字段，清除它会禁用所有回调。尽管某些
+    EDR 绕过会在此停止（https://overlayhack.com/edr-bypass-evasion），但 FudModule 的目标不是不加选择地禁用所有回调，因此对
+    `nt!PspNotifyEnableMask` 的修改只是临时的，FudModule 最终会将其恢复到原始值。我们认为这个临时修改的想法是为了降低可能导致
+    bug check 的竞争条件的发生几率。
 - en: All three of the above `nt!Psp(LoadImage|CreateThread|CreateProcess)NotifyRoutine`
     globals are organized as an array of `_EX_FAST_REF` pointers to `_EX_CALLBACK_ROUTINE_BLOCK`
     structures (at least that’s the name used in [ReactOS,](https://github.com/reactos/reactos/blob/e0c17c3f462e3b62bf0c4ca2479c1e5c6b8ff496/sdk/include/ndk/extypes.h#L535)
@@ -948,28 +955,36 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述三个 `nt!Psp(LoadImage|CreateThread|CreateProcess)NotifyRoutine` 全局变量都组织为 `_EX_FAST_REF`
+    指针数组，指向 `_EX_CALLBACK_ROUTINE_BLOCK` 结构体（至少在 [ReactOS](https://github.com/reactos/reactos/blob/e0c17c3f462e3b62bf0c4ca2479c1e5c6b8ff496/sdk/include/ndk/extypes.h#L535)
+    中使用了这个名称，微软此处未公开符号名称）。FudModule 遍历所有这些结构体，并检查 `_EX_CALLBACK_ROUTINE_BLOCK.Function`（实际回调函数指针）是否实现在以下白名单模块之一。如果是，则将该指针追加到一个新数组中，用于替换原始数组。这有效地移除了除以下列出模块中实现的回调之外的所有回调。
 - en: '| `ntoskrnl.exe ` | `ahcache.sys ` | `mmcss.sys ` | `cng.sys ` |'
   id: totrans-split-91
   prefs: []
   type: TYPE_TB
+  zh: '| `ntoskrnl.exe ` | `ahcache.sys ` | `mmcss.sys ` | `cng.sys ` |'
 - en: '| `ksecdd.sys ` | `tcpip.sys ` | `iorate.sys ` | `ci.dll ` |'
   id: totrans-split-92
   prefs: []
   type: TYPE_TB
+  zh: '| `ksecdd.sys ` | `tcpip.sys ` | `iorate.sys ` | `ci.dll ` |'
 - en: '| `dxgkrnl.sys ` | `peauth.sys ` | `wtd.sys` |  |'
   id: totrans-split-93
   prefs: []
   type: TYPE_TB
+  zh: '| `dxgkrnl.sys ` | `peauth.sys ` | `wtd.sys` |  |'
 - en: Kernel modules that are allowed during the removal of process, thread, and image
     callbacks.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在移除进程、线程和图像回调期间允许的内核模块。
 - en: 0x08 – Minifilter Drivers
   id: totrans-split-95
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 0x08 – 迷你过滤器驱动程序
 - en: '[File system minifilters](https://learn.microsoft.com/en-us/windows-hardware/drivers/ifs/filter-manager-concepts)
     provide a mechanism for drivers to intercept file system operations. They are
     used in a wide range of scenarios, including encryption, compression, replication,
@@ -1527,6 +1542,8 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这种句柄设计，内核对象访问检查通常分为两个独立的逻辑步骤。第一步发生在进程尝试获取句柄时（例如使用 `CreateFile` 打开文件）。在此步骤中，当前线程的令牌通常会与目标对象的安全描述符进行检查，以确保允许线程使用所需访问掩码获取句柄。第二个检查发生在进程使用已经获取的句柄执行操作时（例如使用
+    `WriteFile` 写入文件）。这通常只涉及验证句柄是否足够强大（即具有正确的访问位）以执行请求的操作。
 - en: FudModule executes as a non-protected process, so it theoretically shouldn’t
     be able to obtain a powerful handle to a PPL-protected process such as the CrowdStrike
     Falcon Service. However, leveraging the kernel read/write primitive, FudModule
@@ -1539,6 +1556,8 @@
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: FudModule 作为非受保护进程执行，理论上不应能够获取到像 CrowdStrike Falcon 服务这样受 PPL 保护的进程的强大句柄。然而，利用内核读写原语，FudModule
+    具备直接访问句柄表的能力。这使得它可以创建一个定制的句柄表项，控制引用的对象和访问位。这样一来，它可以为任意对象创建一个任意句柄，完全绕过通常用于句柄获取的检查。更重要的是，如果设置了句柄的访问位，它还将满足执行所需操作时的后续句柄检查。
 - en: 'To prepare for the handle table entry manipulation technique, FudModule creates
     a dummy thread that just puts itself to sleep immediately. The thread itself is
     not important. What is important is that by calling `CreateThread`, the rootkit
@@ -1556,14 +1575,22 @@
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了准备句柄表项操纵技术，FudModule 创建了一个仅将自身立即置于休眠状态的虚拟线程。线程本身并不重要。重要的是，通过调用 `CreateThread`，rootkit
+    刚刚获得了一个具有 `THREAD_ALL_ACCESS` 权限的线程句柄。这个句柄将被操纵其句柄表项。由于它已经拥有非常强大的访问位，rootkit 甚至不必触及其
+    `_HANDLE_TABLE_ENTRY.GrantedAccessBits`。它只需要覆盖 `_HANDLE_TABLE_ENTRY.ObjectPointerBits`，将句柄重定向到其选择的任意对象。这将使句柄引用该对象，并使
+    rootkit 能够在其上执行特权操作。注意，`ObjectPointerBits` 不是指向对象的完整指针：它只表示 64 位指针中的 44 位。但由于由
+    `ObjectPointerBits` 指向的 `_OBJECT_HEADER` 保证对齐（即最低有效四位必须为零）并位于内核地址空间（即最高有效十六位必须为
+    `0xFFFF`），剩余的 20 位可以很容易地推断出来。
 - en: '![](img/7aecb9bb72b95e193587f2f15fec6f5e.png)'
   id: totrans-split-145
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/7aecb9bb72b95e193587f2f15fec6f5e.png)'
 - en: A dummy thread whose handle will be the subject of handle table entry manipulation.
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个虚拟线程，其句柄将成为句柄表项操纵的主题。
 - en: The specific processes targeted by this technique are `MsSense.exe`, `MsMpEng.exe`,
     `CSFalconService.exe`, and `hmpalert.exe`. FudModule first finds their respective
     `_EPROCESS` structures, employing the same algorithm as it did to find the AhnLab
@@ -1578,6 +1605,11 @@
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种技术的具体过程是针对 `MsSense.exe`, `MsMpEng.exe`, `CSFalconService.exe`, 和 `hmpalert.exe`。FudModule
+    首先找到它们各自的 `_EPROCESS` 结构体，使用与找到 AhnLab 服务相同的算法。然后，它执行一项健全性检查，以确保虚拟线程句柄不会过高，方法是将其与
+    `_EPROCESS.ObjectTable.NextHandleNeedingPool` 进行比较（该值包含当前句柄表分配大小下可能的最大句柄值信息）。健全性检查通过后，FudModule
+    访问句柄表本身 (`EPROCESS.ObjectTable.TableCode`) 并修改虚拟线程的 `_HANDLE_TABLE_ENTRY`，使其指向目标
+    `_EPROCESS` 的 `_OBJECT_HEADER`。最后，rootkit 使用重定向的句柄调用 `NtSuspendProcess`，以暂停目标进程。
 - en: It might seem odd that the manipulated handle used to be a thread handle, but
     now it’s being used as a process handle. In practice, there is nothing wrong with
     this since the handle table itself holds no object type information. The object
@@ -1588,14 +1620,19 @@
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 被操作的句柄曾经是线程句柄，但现在它被用作进程句柄似乎有些奇怪。实际上，这并没有问题，因为句柄表本身不包含对象类型信息。对象类型存储在 `_OBJECT_HEADER.TypeIndex`
+    中，因此当 rootkit 重定向句柄时，它也有效地改变了句柄的对象类型。至于访问权限位，原始的 `THREAD_ALL_ACCESS` 在新的上下文中被重新解释为
+    `PROCESS_ALL_ACCESS`，因为这两个常量共享相同的底层值。
 - en: '![](img/e8083427c88384a691a2cd4b10b47757.png)'
   id: totrans-split-149
   prefs: []
   type: TYPE_IMG
+  zh: '![](img/e8083427c88384a691a2cd4b10b47757.png)'
 - en: The manipulated dummy thread handle (`0x168`), now referencing a process object.
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 被操作的虚拟线程句柄 (`0x168`) 现在引用的是一个进程对象。
 - en: Though suspending the target process might initially appear to be a completed
     job, FudModule doesn’t stop here. After taking five seconds of sleep, it also
     attempts to iterate over all the threads in the target process, suspending them
@@ -1609,6 +1646,9 @@
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管暂停目标进程一开始可能看起来已经完成，但 FudModule 并未止步于此。在休眠五秒后，它还尝试遍历目标进程中的所有线程，逐个暂停它们。当所有线程都被暂停时，FudModule
+    使用 `NtResumeProcess` 恢复被暂停的进程。此时，虽然进程本身在技术上已经恢复，但其各个线程仍然处于暂停状态，这意味着进程仍然有效地处于暂停状态。我们只能推测
+    Lazarus 为何以这种方式实现进程暂停，但看起来是为了使技术更隐秘。毕竟，一个被暂停的进程比只有几个增加了暂停计数的线程更加显眼。
 - en: To enumerate threads, FudModule calls `NtQuerySystemInformation` with the `SystemExtendedHandleInformation`
     class. Iterating over the returned handle information, FudModule searches for
     thread handles from the target process. The owner process is checked by comparing
@@ -1625,11 +1665,13 @@
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 要枚举线程，FudModule调用`NtQuerySystemInformation`并使用`SystemExtendedHandleInformation`类。在返回的句柄信息上进行迭代，FudModule搜索来自目标进程的线程句柄。通过比较目标进程的PID与`SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX.UniqueProcessId`来检查所有者进程，并通过比较`SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX.ObjectTypeIndex`与线程类型索引来检查类型，此索引是先前使用`NtQueryObject`获取的`ObjectTypesInformation`。对于每个枚举的线程（可能会多次包括某些线程，因为同一线程可能有多个打开的句柄），FudModule操纵虚拟线程句柄，使其指向枚举的线程，并通过在操纵句柄上调用`SuspendThread`来暂停它。最后，在所有线程都被挂起并且进程恢复后，FudModule将操纵的句柄恢复到其原始状态，再次引用虚拟睡眠线程。
 - en: Conclusion
   id: totrans-split-153
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: The Lazarus Group remains among the most [prolific and long-standing](https://attack.mitre.org/groups/G0032/)
     advanced persistent threat actors. Though their signature tactics and techniques
     are well-recognized by now, they still occasionally manage to surprise us with
@@ -1641,6 +1683,8 @@
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: Lazarus Group仍然是最具[多产和悠久历史](https://attack.mitre.org/groups/G0032/)的高级持续威胁行为者之一。尽管他们的标志性战术和技术现在被广泛认可，但他们偶尔仍然能够以意想不到的技术复杂性水平给我们带来惊喜。FudModule
+    rootkit作为最新的例子，展示了Lazarus在其武器库中拥有的最复杂工具之一。在本博客中审查的最新更新显示，Lazarus致力于继续积极开发这一rootkit，专注于提升其隐秘性和功能性。
 - en: With their admin-to-kernel zero-day now burned, Lazarus is confronted with a
     significant challenge. They can either discover a new zero-day exploit or revert
     to their old BYOVD techniques. Regardless of their choice, we will continue closely
@@ -1648,12 +1692,15 @@
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于他们的admin-to-kernel零日漏洞现已被烧毁，Lazarus面临重大挑战。他们可以要么发现一个新的零日漏洞利用，要么恢复他们旧有的BYOVD技术。无论他们选择了哪种方式，我们将继续密切监控他们的活动，渴望看到他们如何应对这些新情况。
 - en: Indicators of Compromise (IoCs)
   id: totrans-split-156
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 威胁指标（IoCs）
 - en: A YARA rule for the latest FudModule variant is available at [https://github.com/avast/ioc/tree/master/FudModule#yara](https://github.com/avast/ioc/tree/master/FudModule#yara).
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 最新的FudModule变种的YARA规则可以在[https://github.com/avast/ioc/tree/master/FudModule#yara](https://github.com/avast/ioc/tree/master/FudModule#yara)找到。

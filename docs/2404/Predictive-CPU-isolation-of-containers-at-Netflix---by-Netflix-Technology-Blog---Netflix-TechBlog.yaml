@@ -2,44 +2,53 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:04:47'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:04:47
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Predictive CPU isolation of containers at Netflix | by Netflix Technology Blog
     | Netflix TechBlog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Netflix 技术博客 | Netflix Technology Blog | Netflix TechBlog
 - en: 来源：[https://netflixtechblog.com/predictive-cpu-isolation-of-containers-at-netflix-91f014d856c7?gi=c53c45dcda8b](https://netflixtechblog.com/predictive-cpu-isolation-of-containers-at-netflix-91f014d856c7?gi=c53c45dcda8b)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://netflixtechblog.com/predictive-cpu-isolation-of-containers-at-netflix-91f014d856c7?gi=c53c45dcda8b](https://netflixtechblog.com/predictive-cpu-isolation-of-containers-at-netflix-91f014d856c7?gi=c53c45dcda8b)
 - en: '**Predictive CPU isolation of containers at Netflix**'
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '**Netflix 预测性CPU容器隔离**'
 - en: By Benoit Rostykus, Gabriel Hartmann
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 作者：Benoit Rostykus，Gabriel Hartmann
 - en: Noisy Neighbors
   id: totrans-split-8
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 嘈杂的邻居
 - en: We’ve all had noisy neighbors at one point in our life. Whether it’s at a cafe
     or through a wall of an apartment, it is always disruptive. The need for good
     manners in shared spaces turns out to be important not just for people, but for
@@ -47,11 +56,13 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们都曾经历过吵闹的邻居。无论是在咖啡馆还是公寓的墙壁上，都会带来不便。在共享空间中需要良好的礼仪，这不仅对人们重要，对您的 Docker 容器也很重要。
 - en: When you’re running in the cloud your containers are in a shared space; in particular
     they share the CPU’s memory hierarchy of the host instance.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您在云中运行时，您的容器位于共享空间中；特别是它们共享主机实例的CPU内存层次结构。
 - en: Because microprocessors are so fast, computer architecture design has evolved
     towards adding various levels of caching between compute units and the main memory,
     in order to hide the latency of bringing the bits to the brains. However, the
@@ -63,11 +74,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为微处理器速度很快，计算机架构设计已向添加各种级别的缓存进展，以隐藏将数据带到大脑的延迟。然而，关键的洞察力在于这些缓存在多个CPU之间部分共享，这意味着无法完全隔离共托管容器的性能。如果紧邻您容器的核心上运行的容器突然决定从RAM中获取大量数据，这必然会导致您更多的缓存未命中（从而可能导致性能下降）。
 - en: Linux to the rescue?
   id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Linux 有救吗？
 - en: Traditionally it has been the responsibility of the operating system’s task
     scheduler to mitigate this performance isolation problem. In Linux, the current
     mainstream solution is CFS (Completely Fair Scheduler). Its goal is to assign
@@ -75,6 +88,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统上，操作系统的任务调度器负责缓解这种性能隔离问题。在 Linux 中，目前主流的解决方案是 CFS（Completely Fair Scheduler）。它的目标是以“公平”的方式分配运行进程的CPU时间片。
 - en: CFS is widely used and therefore well tested and Linux machines around the world
     run with reasonable performance. So why mess with it? As it turns out, for the
     large majority of Netflix use cases, its performance is far from optimal. [Titus](https://netflix.github.io/titus/)
@@ -87,6 +101,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: CFS被广泛使用，因此经过充分测试，全球的 Linux 机器以合理的性能运行。那么为什么要去打扰它呢？事实证明，对于 Netflix 的大多数使用情况，其性能远非最佳。[Titus](https://netflix.github.io/titus/)
+    是 Netflix 的容器平台。每个月，我们在 Titus 上运行数百万个容器，分布在数千台机器上，为数百个内部应用程序和客户提供服务。这些应用程序从支持面向客户的视频流媒体服务的关键低延迟服务，到用于编码或机器学习的批处理作业。保持这些不同应用程序之间的性能隔离对确保内部和外部客户的良好体验至关重要。
 - en: We were able to meaningfully improve both the predictability and performance
     of these containers by taking some of the CPU isolation responsibility away from
     the operating system and moving towards a data driven solution involving combinatorial
@@ -94,22 +110,26 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将一些CPU隔离责任从操作系统中移除，并转向涉及组合优化和机器学习的数据驱动解决方案，我们能够显著提高这些容器的可预测性和性能。
 - en: The idea
   id: totrans-split-16
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 这个想法
 - en: CFS operates by very frequently (every few microseconds) applying a set of heuristics
     which encapsulate a general concept of best practices around CPU hardware use.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: CFS通过非常频繁地（每几微秒）应用一组启发式方法来运行，这些方法封装了围绕CPU硬件使用的一般最佳实践概念。
 - en: Instead, what if we reduced the frequency of interventions (to every few seconds)
     but made better data-driven decisions regarding the allocation of processes to
     compute resources in order to minimize collocation noise?
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，如果我们减少干预频率（每隔几秒钟），但在分配进程到计算资源方面做出更好的数据驱动决策，以最小化共存噪声会怎样呢？
 - en: One traditional way of mitigating CFS performance issues is for application
     owners to manually cooperate through the use of core pinning or nice values. However,
     we can automatically make better global decisions by detecting collocation opportunities
@@ -122,17 +142,20 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 缓解CFS性能问题的一种传统方法是应用所有者通过核心固定或优先值来手动合作。然而，我们可以通过检测基于实际使用信息的共存机会自动做出更好的全局决策。例如，如果我们预测容器A很快会变得非常CPU密集，那么也许我们应该将其运行在与非常关注延迟的容器B不同的[NUMA](https://zh.wikipedia.org/wiki/%E9%9D%9E%E5%9D%87%E5%8C%80%E5%AD%98%E5%8F%96%E8%AE%BF%E9%97%AE)插槽上。这避免了对B的缓存过多的刷新，同时平衡了机器的[L3](https://zh.wikipedia.org/wiki/%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84)缓存的压力。
 - en: Optimizing placements through combinatorial optimization
   id: totrans-split-20
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 通过组合优化来优化放置
 - en: 'What the OS task scheduler is doing is essentially solving a resource allocation
     problem: I have X threads to run but only Y CPUs available, how do I allocate
     the threads to the CPUs to give the illusion of concurrency?'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作系统任务调度器所做的本质上是解决资源分配问题：我有X个线程要运行，但只有Y个可用的CPU，如何分配线程到CPU以给出并发的假象？
 - en: 'As an illustrative example, let’s consider a toy instance of 16 [hyperthreads](https://en.wikipedia.org/wiki/Hyper-threading).
     It has 8 physical hyperthreaded cores, split on 2 NUMA sockets. Each hyperthread
     shares its L1 and L2 caches with its neighbor, and shares its L3 cache with the
@@ -140,11 +163,13 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一个说明性的例子，让我们考虑一个16个[超线程](https://zh.wikipedia.org/wiki/%E8%B6%85%E7%BA%BF%E7%A8%8B)的玩具实例。它有8个物理的超线程核心，分布在2个NUMA插槽上。每个超线程与其邻居共享其L1和L2缓存，并与插槽上的其他7个超线程共享其L3缓存：
 - en: 'If we want to run container A on 4 threads and container B on 2 threads on
     this instance, we can look at what “bad” and “good” placement decisions look like:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要在这个实例上分别在4个线程上运行容器A和2个线程上运行容器B，我们可以看看“坏”的和“好”的放置决策是什么样子的：
 - en: The first placement is intuitively bad because we potentially create collocation
     noise between A and B on the first 2 cores through their L1/L2 caches, and on
     the socket through the L3 cache while leaving a whole socket empty. The second
@@ -153,12 +178,14 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个放置方式在直觉上是不好的，因为我们可能会通过它们的L1/L2缓存在第一个2个核心之间创建A和B之间的共存噪声，并且通过L3缓存在插槽上留下整个插槽是空的。第二个放置看起来更好，因为每个CPU都有自己的L1/L2缓存，并且我们更好地利用了两个可用的L3缓存。
 - en: Resource allocation problems can be efficiently solved through a branch of mathematics
     called combinatorial optimization, used for example for airline scheduling or
     logistics problems.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 资源分配问题可以通过称为组合优化的数学分支来有效解决，例如用于航空公司排班或物流问题。
 - en: 'We formulate the problem as a Mixed Integer Program (MIP). Given a set of K
     containers each requesting a specific number of CPUs on an instance possessing
     d threads, the goal is to find a binary assignment matrix M of size (d, K) such
@@ -168,39 +195,46 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将问题表述为混合整数程序（MIP）。给定一组K个容器，每个容器请求一个特定数量的CPU，在具有d个线程的实例上，目标是找到一个大小为（d，K）的二进制分配矩阵M，使每个容器得到其请求的CPU数量。损失函数和约束包含各种表达先验良好放置决策的术语，例如：
 - en: avoid spreading a container across multiple NUMA sockets (to avoid potentially
     slow cross-sockets memory accesses or page migrations)
   id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 避免将一个容器分布在多个NUMA插槽中（以避免潜在的跨插槽内存访问或页面迁移过慢）
 - en: don’t use hyper-threads unless you need to (to reduce L1/L2 thrashing)
   id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不要使用超线程，除非你需要（以减少L1/L2缓存刷新）
 - en: try to even out pressure on the L3 caches (based on potential measurements of
     the container’s hardware usage)
   id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尝试均衡对 L3 缓存的压力（基于对容器硬件使用情况的潜在测量）
 - en: don’t shuffle things too much between placement decisions
   id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在放置决策之间不要过多地洗牌事物
 - en: Given the low-latency and low-compute requirements of the system (we certainly
     don’t want to spend too many CPU cycles figuring out how containers should use
     CPU cycles!), can we actually make this work in practice?
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于系统对低延迟和低计算需求（我们当然不希望花费太多 CPU 周期来确定容器如何使用 CPU 周期！），我们实际上能够使这项工作吗？
 - en: Implementation
   id: totrans-split-32
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 实施
 - en: We decided to implement the strategy through Linux [cgroups](http://man7.org/linux/man-pages/man7/cgroups.7.html)
     since they are fully supported by CFS, by modifying each container’s cpuset cgroup
     based on the desired mapping of containers to hyper-threads. In this way a user-space
@@ -210,34 +244,43 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们决定通过 Linux [cgroups](http://man7.org/linux/man-pages/man7/cgroups.7.html)
+    实现这一策略，因为它们受 CFS 完全支持，通过修改每个容器的 cpuset cgroup 来基于容器到超线程的所需映射。这样，用户空间进程为每个容器定义了一个“栅栏”，在其中
+    CFS 运行。实际上，我们消除了 CFS 启发式对性能隔离的影响，同时保留其核心调度功能。
 - en: 'This user-space process is a Titus subsystem called [**titus-isolate**](https://github.com/Netflix-Skunkworks/titus-isolate)
     which works as follows. On each instance, we define three events that trigger
     a placement optimization:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个用户空间进程是一个名为 [**titus-isolate**](https://github.com/Netflix-Skunkworks/titus-isolate)
+    的 Titus 子系统，其工作方式如下。在每个实例上，我们定义了三个触发放置优化的事件：
 - en: '***add***: A new container was allocated by the Titus scheduler to this instance
     and needs to be run'
   id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '***add***: Titus 调度程序为此实例分配了一个新的容器，并需要运行它'
 - en: '***remove***: A running container just finished'
   id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '***remove***: 运行中的容器刚刚完成'
 - en: '***rebalance***: CPU usage may have changed in the containers so we should
     reevaluate our placement decisions'
   id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '***rebalance***: 容器的 CPU 使用率可能已在变化，因此我们应重新评估我们的放置决策'
 - en: We periodically enqueue rebalance events when no other event has recently triggered
     a placement decision.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 当最近没有其他事件触发放置决策时，我们定期将重新平衡事件入队。
 - en: Every time a placement event is triggered, **titus-isolate** queries a remote
     optimization service (running as a Titus service, hence also isolating itself…
     [turtles all the way down](https://en.wikipedia.org/wiki/Turtles_all_the_way_down))
@@ -245,6 +288,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 每次触发放置事件时，**titus-isolate** 都会查询一个远程优化服务（作为 Titus 服务运行，因此也在隔离中…… [无底深渊](https://en.wikipedia.org/wiki/Turtles_all_the_way_down)）来解决容器到线程的放置问题。
 - en: 'This service then queries a local [GBRT](https://en.wikipedia.org/wiki/Gradient_boosting)
     model (retrained every couple of hours on weeks of data collected from the whole
     Titus platform) predicting the P95 CPU usage of each container in the coming 10
@@ -256,6 +300,10 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，此服务会查询本地的 [GBRT](https://en.wikipedia.org/wiki/Gradient_boosting) 模型（每隔几小时在整个
+    Titus 平台收集的数据中重新训练，预测每个容器未来 10 分钟内的 P95 CPU 使用率（条件分位数回归）。该模型包含上下文特征（与容器关联的元数据：谁启动了它，镜像，内存和网络配置，应用程序名称……）以及从容器的最后一个小时的历史
+    CPU 使用率中定期由主机从内核 [CPU 会计控制器](https://www.kernel.org/doc/Documentation/cgroup-v1/cpuacct.txt)
+    中提取的时间序列特征。
 - en: The predictions are then fed into a MIP which is solved on the fly. We’re using
     [cvxpy](https://www.cvxpy.org/) as a nice generic symbolic front-end to represent
     the problem which can then be fed into various open-source or proprietary MIP
@@ -266,21 +314,27 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 预测结果随后被输入到一个即时解决的 MIP 中。我们使用 [cvxpy](https://www.cvxpy.org/) 作为一个很好的通用符号前端来表示问题，然后可以输入到各种开源或专有的
+    MIP 求解器后端中。由于 MIP 是 NP 难问题，需要谨慎处理。我们给求解器施加了一个严格的时间预算，以将分支-切割策略驱动到低延迟的模式，同时在 MIP
+    间隙周围设置了防护栏以控制所找到的解决方案的整体质量。
 - en: The service then returns the placement decision to the host, which executes
     it by modifying the cpusets of the containers.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后服务将放置决策返回给主机，通过修改容器的cpusets来执行它。
 - en: 'For example, at any moment in time, an r4.16xlarge with 64 logical CPUs might
     look like this (the color scale represents CPU usage):'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，随时一个具有64个逻辑CPU的r4.16xlarge可能如下图所示（颜色刻度表示CPU使用情况）：
 - en: Results
   id: totrans-split-44
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结果
 - en: 'The first version of the system led to surprisingly good results. We reduced
     overall runtime of batch jobs by multiple percent on average while most importantly
     reducing job runtime variance (a reasonable proxy for isolation), as illustrated
@@ -289,11 +343,13 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 系统的第一个版本带来了令人惊讶的良好结果。我们平均减少了批处理作业的总运行时间，同时最重要的是减少了作业运行时间的变化（作为隔离的一个合理代理），如下图所示。这里展示了有和没有改进隔离的真实批处理作业运行时间分布：
 - en: Notice how we mostly made the problem of long-running outliers disappear. The
     right-tail of unlucky noisy-neighbors runs is now gone.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，我们大多数地解决了长时间运行的异常值问题。不幸的嘈杂邻居运行的右尾现在已经消失了。
 - en: For services, the gains were even more impressive. One specific Titus middleware
     service serving the Netflix streaming service saw a capacity reduction of 13%
     (a decrease of more than 1000 containers) needed at peak traffic to serve the
@@ -305,16 +361,19 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于服务而言，收益甚至更为显著。一个特定的Titus中间件服务，为Netflix流媒体服务提供服务，看到在需要达到相同负载的P99延迟SLA时，容量减少了13%（超过1000个容器的减少）！我们还注意到机器上CPU使用的急剧减少，因为内核在缓存失效逻辑上花费的时间大大减少了。我们的容器现在更加可预测，更快速，机器利用率更低！很少有机会既能拥有蛋糕又能吃到它。
 - en: Next Steps
   id: totrans-split-48
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 下一步
 - en: We are excited with the strides made so far in this area. We are working on
     multiple fronts to extend the solution presented here.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们对这一领域取得的进展感到非常兴奋。我们正在多个方面努力推进这里提出的解决方案。
 - en: We want to extend the system to support CPU oversubscription. Most of our users
     have challenges knowing how to properly size the numbers of CPUs their app needs.
     And in fact, this number varies during the lifetime of their containers. Since
@@ -326,6 +385,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望扩展系统以支持CPU超额分配。我们大多数用户在了解其应用程序所需CPU数量的正确方法方面存在挑战。事实上，这个数字在容器生命周期内是变化的。由于我们已经预测了容器未来的CPU使用情况，我们希望自动检测并回收未使用的资源。例如，可以决定将特定容器自动分配到少使用CPU的共享cgroup中，以更好地提高总体隔离性和机器利用率，如果我们能检测到用户在以下图的各个轴线上的敏感阈值。
 - en: We also want to leverage kernel [PMC events](http://www.brendangregg.com/blog/2017-05-04/the-pmcs-of-ec2.html)
     to more directly optimize for minimal cache noise. One possible avenue is to use
     the Intel based bare metal instances [recently introduced](https://aws.amazon.com/about-aws/whats-new/2018/05/announcing-general-availability-of-amazon-ec2-bare-metal-instances/)
@@ -339,11 +399,13 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还想利用内核[PMC事件](http://www.brendangregg.com/blog/2017-05-04/the-pmcs-of-ec2.html)更直接地优化最小缓存噪音。一个可能的途径是使用亚马逊最近推出的基于Intel的裸金属实例（https://aws.amazon.com/about-aws/whats-new/2018/05/announcing-general-availability-of-amazon-ec2-bare-metal-instances/），这些实例允许深度访问性能分析工具。然后，我们可以将这些信息直接馈送到优化引擎中，以朝着更加监督的学习方法迈进。这将需要对放置进行适当的连续随机化，以收集无偏见的反事实模型，“如果我将其线程与容器B放置在同一个核心上，知道现在同一插座上也有C正在运行，容器A的下一分钟性能会是什么？”。
 - en: Conclusion
   id: totrans-split-52
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: If any of this piques your interest, reach out to us! We’re looking for [ML
     engineers](https://jobs.netflix.com/jobs/860513) to help us push the boundary
     of containers performance and “machine learning for systems” and [systems engineers](https://jobs.netflix.com/jobs/869888)
@@ -351,3 +413,4 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对其中任何内容感兴趣，请与我们联系！我们正在寻找帮助我们推动容器性能边界和“系统机器学习”的[ML工程师](https://jobs.netflix.com/jobs/860513)，以及为我们的核心基础设施和计算平台招聘[系统工程师](https://jobs.netflix.com/jobs/869888)。
