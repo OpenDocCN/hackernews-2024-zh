@@ -302,11 +302,13 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们如何解释去噪器学到了什么，并且如何创建从扩散模型采样的过程？我们将建立扩散模型的理论，然后根据这一理论推导采样算法。
 - en: Denoising as approximate projection
   id: totrans-split-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 作为近似投影的去噪器
 - en: The diffusion training procedure learns a denoiser \(\eps_\theta(x, \sigma)\).
     In [our paper](https://arxiv.org/abs/2306.04848), we interpret the learned denoiser
     as an approximate projection to the data manifold \(\Kset\), and the goal of the
@@ -317,42 +319,52 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩散训练过程学习了一个去噪器 \(\eps_\theta(x, \sigma)\)。在[我们的论文](https://arxiv.org/abs/2306.04848)，我们将学习到的去噪器解释为数据流形
+    \(\Kset\) 的近似投影，并且扩散过程的目标是将到 \(\Kset\) 的距离最小化。这激励我们引入相对误差逼近模型来分析扩散采样算法的收敛性。首先，我们介绍一些距离和投影函数的基本性质。
 - en: Distance and projection functions
   id: totrans-split-48
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: 距离和投影函数
 - en: The *distance function* to a set \(\Kset \subseteq \R^n\) is defined as
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 到集合 \(\Kset \subseteq \R^n\) 的*距离函数*定义为
 - en: '\[\distK(x) := \min \{ \norm{x-x_0} : x_0 \in \Kset \}.\]'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '\[\distK(x) := \min \{ \norm{x-x_0} : x_0 \in \Kset \}.\]'
 - en: 'The *projection* of \(x \in \R^n\), denoted \(\projK(x)\), is the set of points
     that attain this distance:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: \(x \in \R^n\) 的*投影*，表示为 \(\projK(x)\)，是达到这个距离的点集合：
 - en: '\[\projK(x) := \{ x_0 \in \Kset : \distK(x) = \norm{x-x_0} \}\]'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '\[\projK(x) := \{ x_0 \in \Kset : \distK(x) = \norm{x-x_0} \}\]'
 - en: 'If \(\projK(x)\) is unique, the gradient of \(\distK(x)\), the direction of
     steepest descent of the distance function, points towards this unique projection:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 \(\projK(x)\) 是唯一的，则 \(\distK(x)\) 的梯度，即距离函数的最速下降方向，指向这个唯一的投影点：
 - en: '**Proposition** Suppose \(\Kset\) is closed and \(x \not \in \Kset\). If \(\projK(x)\)
     is unique, then'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '**命题** 假设 \(\Kset\) 是闭集且 \(x \not \in \Kset\)。如果 \(\projK(x)\) 是唯一的，那么'
 - en: \[\nabla \frac{1}{2} \distK(x)^2 = \distK(x) \nabla \distK(x) = x-\projK(x).\]
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\nabla \frac{1}{2} \distK(x)^2 = \distK(x) \nabla \distK(x) = x-\projK(x).\]
 - en: This tells us that if we can learn \(\nabla \distK(x)\) for every \(x\), we
     can simply move in this direction to find the projection of \(x\) onto \(\Kset\).
     One issue with learning this gradient is that \(\distK\) is not differentiable
@@ -362,32 +374,43 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这告诉我们，如果我们可以学习每个 \(x\) 的 \(\nabla \distK(x)\)，我们可以简单地沿着这个方向移动，找到 \(x\) 在 \(\Kset\)
+    上的投影。学习这个梯度的一个问题是 \(\distK\) 并非在每处都可微，因此 \(\nabla \distK\) 不是一个连续函数。为了解决这个问题，我们引入一个由参数
+    \(\sigma\) 平滑的平方距离函数，使用 \(\softmin\) 操作符而不是 \(\min\)。
 - en: \[\distop^2_\Kset(x, \sigma) := \substack{\softmin_{\sigma^2} \\ x_0 \in \Kset}
     \norm{x_0 - x}^2 = {\textstyle -\sigma^2 \log\left(\sum_{x_0 \in \Kset} \exp\left(-\frac{\norm{x_0
     - x}^2}{2\sigma^2}\right)\right)}\]
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\distop^2_\Kset(x, \sigma) := \substack{\softmin_{\sigma^2} \\ x_0 \in \Kset}
+    \norm{x_0 - x}^2 = {\textstyle -\sigma^2 \log\left(\sum_{x_0 \in \Kset} \exp\left(-\frac{\norm{x_0
+    - x}^2}{2\sigma^2}\right)\right)}\]
 - en: The following picture from [[Madan and Levin 2022]](https://arxiv.org/pdf/2108.10480.pdf)
     shows the contours of both the distance function and its smoothed version.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自[[Madan and Levin 2022]](https://arxiv.org/pdf/2108.10480.pdf)的以下图片显示了距离函数及其平滑版本的等高线。
 - en: Smoothed distance function has continuous gradients
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 平滑距离函数具有连续梯度
 - en: From this picture we can see that \(\nabla \distK(x)\) points toward the closest
     point to \(x\) in \(\Kset\), and \(\nabla \distop^2(x, \sigma)\) points toward
     a weighted average of points in \(\Kset\) determined by \(x\).
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这张图片中，我们可以看到 \(\nabla \distK(x)\) 指向 \(\Kset\) 中离 \(x\) 最近的点，而 \(\nabla \distop^2(x,
+    \sigma)\) 则指向由 \(x\) 决定的 \(\Kset\) 中点的加权平均。
 - en: Ideal denoiser
   id: totrans-split-61
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: 理想的去噪器
 - en: 'The ideal or optimal denoiser \(\epsilon^*\) for a particular noise level \(\sigma\)
     is an exact minimizer of the training loss function. When the data is a discrete
     uniform distribution over a finite set \(\Kset\), the ideal denoiser has an exact
@@ -395,6 +418,8 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 特定噪声水平 \(\sigma\) 的理想或最优去噪器 \(\epsilon^*\) 是训练损失函数的精确最小化器。当数据是有限集合 \(\Kset\)
+    上的离散均匀分布时，理想的去噪器有一个精确的闭式表达式，如下：
 - en: \[\eps^*(x_\sigma, \sigma) = \frac{\sum_{x_0 \in \Kset} (x_\sigma-x_0) \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}
     {\sigma \sum_{x_0 \in \Kset} \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}\]
   id: totrans-split-63
