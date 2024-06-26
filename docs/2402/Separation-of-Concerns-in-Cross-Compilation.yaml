@@ -148,6 +148,7 @@
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 或者项目构建系统也为我们构建它们。
 - en: As we do not have package distribution infrastructure, we typically go the static
     building route and end up also fiddling static linkage into our project build
     system.
@@ -155,52 +156,61 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于我们没有包分发基础设施，通常我们选择静态构建路径，并最终将静态链接调整到我们的项目构建系统中。
 - en: 'The result is then one of these two:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果是这两种之一：
 - en: A huge, complicated, monolithic build system that manages not only the build
     of our actual project, but also the build of the compiler and all the libraries.
   id: totrans-split-29
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个巨大、复杂的、单片式的构建系统，不仅管理我们实际项目的构建，还管理编译器和所有库的构建。
 - en: It’s painful to set up and the code takes forever to compile.
   id: totrans-split-30
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 安装起来很痛苦，而且编译代码需要很长时间。
 - en: Only senior developers are allowed to touch the fragile parts.
   id: totrans-split-31
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 只有高级开发人员被允许触及脆弱部分。
 - en: Complicated upgrading.
   id: totrans-split-32
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 复杂的升级。
 - en: A Docker image that nicely abstracts the parts away that are different from
     normal non-cross-compilation.
   id: totrans-split-33
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个Docker镜像，很好地将与普通非交叉编译不同的部分抽象出来。
 - en: Variant *B* seems to be the cleanest, but a clean execution of it seems to be
     rare in the industry. At least in my experience, development teams end up creating
     a huge pile of complexity in the form of Variant *A*.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 变体*B*看起来最清晰，但在行业中很少见到其干净的执行。至少在我的经验中，开发团队最终会创建大量的复杂性，形成变体*A*的形式。
 - en: Especially in combination with static linking, developers often decide that
     the build system should only build static binaries, because maintaining both dynamic
     and static linking at the same time makes the build system too complex.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是在与静态链接结合使用时，开发人员经常决定构建系统仅构建静态二进制文件，因为同时维护动态和静态链接会使构建系统过于复杂。
 - en: '[CMake](https://cmake.org/) and [meson](https://mesonbuild.com/) can generally
     both be used correctly to keep the project description agnostic of the linking
     method and then simply select the method with command line parameters. However,
@@ -209,33 +219,39 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '[CMake](https://cmake.org/) 和 [meson](https://mesonbuild.com/) 通常都可以正确使用，使项目描述与链接方法无关，然后通过命令行参数简单选择方法。但是，我没有看到很多大型商业实际项目在不带来太多麻烦的情况下仍然可能使用这种方法。'
 - en: 'I often asked myself “Why do these build systems do everything completely differently
     than suggested in the official documentation and tutorials of the build systems?”
     With my experience of today, I think the answer is simple:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常问自己：“为什么这些构建系统完全不按照官方文档和教程中建议的方式操作？” 根据我今天的经验，我认为答案很简单：
 - en: Separation of Concerns.
   id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 关注点分离。
 - en: '**Build systems are not designed to manage dependencies.** Not knowing it better,
     developers try to do it anyway. The result is hard to change, extend, maintain,
     and upgrade.'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '**构建系统并非设计用于管理依赖关系。** 不明白情况的情况下，开发人员仍试图这样做。结果是难以更改、扩展、维护和升级。'
 - en: As promised in the introduction, we will have a look at how Nix makes it easy
     to change this for the better.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前言所述，我们将看看Nix如何使这一切变得更好。
 - en: The Example App
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例应用
 - en: Let’s build an example app that depends on [OpenSSL](https://www.openssl.org/)
     and [Boost](https://www.boost.org/) at run-time. It simply reads a character stream
     from standard input and uses OpenSSL to calculate the [SHA256](https://en.wikipedia.org/wiki/SHA-2)
@@ -245,20 +261,25 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们构建一个示例应用程序，它在运行时依赖于[OpenSSL](https://www.openssl.org/)和[Boost](https://www.boost.org/)。它简单地从标准输入读取字符流，并使用OpenSSL计算[SHA256](https://en.wikipedia.org/wiki/SHA-2)哈希值。我们使用boost依赖来停止时间
+    - [C++ STL](https://en.cppreference.com/w/cpp/chrono)也可以为我们做到这一点，但那样我们就不会对一个巨大的外部库有另一个很好的依赖。
 - en: 'The program is roughly 60 LOC short/long. I uploaded the code to this GitHub
     repository: [https://github.com/tfc/cpp-cross-compilation-example](https://github.com/tfc/cpp-cross-compilation-example)'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序大约有60行LOC（源代码行数）。我将代码上传到GitHub仓库：[https://github.com/tfc/cpp-cross-compilation-example](https://github.com/tfc/cpp-cross-compilation-example)
 - en: 'Let’s call this app `minisha256sum` and write a [`CMakeLists.txt`](https://cmake.org/)
     file for it:'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们称这个应用为`minisha256sum`，并为它编写一个[`CMakeLists.txt`](https://cmake.org/)文件：
 - en: '[PRE0]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: CMake provides good [standard facilities for finding external libraries](https://cmake.org/cmake/help/latest/command/find_package.html).
     This way, the build system may remain simple (it still looks relatively noisy
     compared to other language ecosystems because that’s how C++ build systems look
@@ -266,68 +287,82 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: CMake为查找外部库提供了很好的[标准设施](https://cmake.org/cmake/help/latest/command/find_package.html)。这种方式使得构建系统可能保持简单（它看起来仍然相对于其他语言生态系统来说有些嘈杂，因为这就是C++构建系统的外观）。
 - en: 'This project can now be built via the typical CMake dance:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在可以通过典型的CMake步骤构建此项目：
 - en: '[PRE1]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Let’s check if it works:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来检查它是否工作：
 - en: '[PRE2]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It provides the same hash as the [`sha256sum` app from GNU `coreutils`](https://www.gnu.org/software/coreutils/),
     which should be good enough. The app is not really optimized but that will not
     be a matter for the rest of this article.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 它提供与来自GNU `coreutils`的[`sha256sum`应用程序](https://www.gnu.org/software/coreutils/)相同的哈希值，这应该足够好了。该应用程序并非真正优化，但对于本文的其余部分并不重要。
 - en: Packaging it with Nix
   id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用Nix打包
 - en: 'To get a nice `nix build` and `nix run` workflow, we need to provide a few
     nix expressions. Let’s start with a `package.nix` that already reflects our dependency
     structure:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 要获得良好的`nix build`和`nix run`工作流程，我们需要提供一些Nix表达式。让我们从一个已经反映了我们依赖结构的`package.nix`开始：
 - en: '[PRE3]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'When cross-compiling this application, we need:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 当跨平台编译此应用程序时，我们需要：
 - en: A compiler that runs on the build host but compiles for the target
   id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在构建主机上运行但为目标平台编译的编译器
 - en: CMake which runs on the host
   id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在主机上运行的CMake
 - en: Boost and OpenSSL, but built for the target
   id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Boost和OpenSSL，但构建为目标
 - en: '`nativeBuildInputs` means *“compile-time dependency on the building host”*
     and `buildInputs` means *“run-time dependency on the target”*. The [`nixpkgs`
     documentation describes this in more detail](https://nixos.org/manual/nixpkgs/stable/#ssec-stdenv-dependencies).'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '`nativeBuildInputs`意味着*“在构建主机上的编译时依赖项”*，而`buildInputs`意味着*“目标运行时依赖项”*。[`nixpkgs`文档在这方面有更详细的描述](https://nixos.org/manual/nixpkgs/stable/#ssec-stdenv-dependencies)。'
 - en: 'To create a buildable, installable, and runnable package from this expression,
     we need to apply the `callPackage` function which is a [well-known pattern in
     the Nix sphere](https://nixos.org/guides/nix-pills/callpackage-design-pattern):
@@ -337,10 +372,12 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从此表达式创建可构建、可安装和可运行的软件包，我们需要应用`callPackage`函数，这是[Nix领域中的一种众所周知的模式](https://nixos.org/guides/nix-pills/callpackage-design-pattern)：它会自动从我们在`package.nix`第一行中可以看到的`pkgs`中填充所有函数参数，这些参数碰巧是我们的依赖项。
 - en: '[PRE4]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'In the project’s `flake.nix` file, we [make this call in this line](https://github.com/tfc/cpp-cross-compilation-example/blob/main/flake.nix#L14).
     With this in place, we can now run it without handling the build commands manually
     (I’m not hiding code here: `mkDerivation` generally knows how to build CMake projects
@@ -349,59 +386,72 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在项目的`flake.nix`文件中，我们[在这一行进行此调用](https://github.com/tfc/cpp-cross-compilation-example/blob/main/flake.nix#L14)。有了这个设置，我们现在可以在不手动处理构建命令的情况下运行它（我这里没有隐藏代码：`mkDerivation`通常知道如何在提到CMake作为依赖项时构建CMake项目）。将其推送到存储库后，我们甚至可以从不同的计算机上进行此操作，而无需先克隆存储库：
 - en: '[PRE5]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Cross-Compilation
   id: totrans-split-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 跨编译
 - en: 'This is a quick one:'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个快速的方法：
 - en: 'Assuming, we’re on a 64bit Intel PC, we can create multiple static/dynamic
     cross-compiled packages like this:'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们在64位英特尔PC上，我们可以像这样创建多个静态/动态交叉编译的软件包：
 - en: '[PRE6]'
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The attributes `pkgs.pkgsStatic` and `pkgs.pkgsCross.aarch64-multiplatform`
     contain their own version of `callPackage`, but they come with the whole `pkgs`
     package list adapted for the selected target platform.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 属性`pkgs.pkgsStatic`和`pkgs.pkgsCross.aarch64-multiplatform`包含它们自己版本的`callPackage`，但它们附带了针对所选目标平台调整过的整个`pkgs`软件包列表。
 - en: There’s also `pkgs.pkgsCross.mingwW64`, which compiles binaries for [Microsoft
     Windows](https://en.wikipedia.org/wiki/Microsoft_Windows) using the [minimalist
     GNU environment for Windows `mingw`](https://www.mingw-w64.org/).
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有`pkgs.pkgsCross.mingwW64`，它使用[minimalist GNU环境 for Windows `mingw`](https://www.mingw-w64.org/)为[Microsoft
+    Windows](https://en.wikipedia.org/wiki/Microsoft_Windows)编译二进制文件。
 - en: 'Whenever we use one of those specialized `callPackage` implementations to call
     our `package.nix` function, this happens:'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 每当我们使用这些专门的`callPackage`实现之一来调用我们的`package.nix`函数时，就会发生这种情况：
 - en: '![pkgs.callPackage can dissect the different kinds of dependencies](img/463b6e0a3b2c467ff9bcc92f2b2532b9.png)'
   id: totrans-split-71
   prefs: []
   type: TYPE_IMG
+  zh: '![pkgs.callPackage可以分析不同类型的依赖关系](img/463b6e0a3b2c467ff9bcc92f2b2532b9.png)'
 - en: '`pkgs.callPackage` can dissect the different kinds of dependencies'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pkgs.callPackage`可以分析不同类型的依赖项'
 - en: Because we structurally split the dependencies between compile-time dependencies
     and run-time dependencies, the cross-`callPackage` function can now fill the package
     dependencies with the right versions of each.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们在编译时依赖和运行时依赖之间进行了结构化分离，交叉`callPackage`函数现在可以填充每个包依赖项的正确版本。
 - en: 'This way, the build system does not need to be educated a lot about what happens:
     Nix creates the correct build environment for the given package variant (similar
     to the approach with the clean Docker image, but only with exactly the needed
@@ -413,47 +463,58 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样，构建系统不需要过多了解发生了什么：Nix为给定的包变体创建正确的构建环境（类似于干净的Docker镜像的方法，但只有确实需要的依赖项，并且在定义时具有更少的开销），构建系统简单地使用给定的编译器并通过CMake/meson特定的环境变量（由Nix设置）定位给定的依赖项，并构建项目。
+    （它也适用于类似于[GNU Automake/Autoconf](https://www.gnu.org/software/automake/)和[GNUMake](https://www.gnu.org/software/make/)等的构建系统组合）
 - en: 'I tested this example with the following combinations:'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用以下组合测试了这个例子：
 - en: '| `x86_64-linux` | ✅ | ✅ | ❌ | ❌ | ✅ |'
   id: totrans-split-76
   prefs: []
   type: TYPE_TB
+  zh: '| `x86_64-linux` | ✅ | ✅ | ❌ | ❌ | ✅ |'
 - en: '| `aarch64-linux` | ✅ | ✅ | ❌ | ❌ | ✅ |'
   id: totrans-split-77
   prefs: []
   type: TYPE_TB
+  zh: '| `aarch64-linux` | ✅ | ✅ | ❌ | ❌ | ✅ |'
 - en: '| `x86_64-darwin` | ✅ | ✅ | ✅ | ❌ | ✅ |'
   id: totrans-split-78
   prefs: []
   type: TYPE_TB
+  zh: '| `x86_64-darwin` | ✅ | ✅ | ✅ | ❌ | ✅ |'
 - en: '| `aarch64-darwin` | ✅ | ✅ | ✅ | ✅ | ✅ |'
   id: totrans-split-79
   prefs: []
   type: TYPE_TB
+  zh: '| `aarch64-darwin` | ✅ | ✅ | ✅ | ✅ | ✅ |'
 - en: Interestingly, if we “cross-compile” from the same architecture to the same
     architecture on Linux, we get exactly the same package like for the native `pkgs.callPackage`
     version, so Nix doesn’t even bother to rebuild it.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，如果我们在Linux上从相同架构交叉编译到相同架构，我们得到的包与本地`pkgs.callPackage`版本完全相同，所以Nix甚至不需要重新构建它。
 - en: The symbol ✅ includes static/dynamic linkage in all cases but not for Windows.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 符号 ✅ 在所有情况下包括静态/动态链接，但不适用于Windows。
 - en: The entries with the ❌ symbol in the table are not implemented in the Nixpkgs
     repository. This could be done if needed. Typically, companies either implement
     functionality and upstream it or provide funding to make it happen.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Nixpkgs存储库中未实现带有❌符号的条目。如果需要，可以实现它。通常，公司要么实现功能并上游它，要么提供资金以实现它。
 - en: Summary
   id: totrans-split-83
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'The demonstrated trick shows that we effectively separated the **Dependency
     Management** from the **Build System**. Many developers I talked to about this
     have never thought about this separation. The reason might be simple: Because
@@ -462,62 +523,73 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 展示的技巧表明，我们有效地将**依赖管理**与**构建系统**分开。我与许多开发者谈论过这个问题，他们从未考虑过这种分离。原因可能很简单：因为没有一个好的依赖管理技术，实现这种分离并不容易。我觉得Docker在部署中的作用比在开发中更大。
 - en: 'The advantages of this separation are huge:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种分离的优势是巨大的：
 - en: A simpler build system that is easy to extend even for non-seniors
   id: totrans-split-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更简单的构建系统，即使对于非高级开发者也易于扩展
 - en: Free choice between dynamic and static linking per build system parameter
   id: totrans-split-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 根据构建系统参数自由选择动态和静态链接
 - en: Wide support for compiling from/to different host architectures and operating
     systems
   id: totrans-split-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 广泛支持从不同主机架构和操作系统编译到/从的支持
 - en: 'Not managing compiler, deps, and project in one build system makes everything
     *modular*:'
   id: totrans-split-89
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不在一个构建系统中管理编译器、依赖项和项目使一切*模块化*：
 - en: Less work with updates
   id: totrans-split-90
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更新工作更少
 - en: Faster setup time per developer
   id: totrans-split-91
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每位开发者的快速设置时间
 - en: Cacheable dependencies
   id: totrans-split-92
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可缓存的依赖项
 - en: Easier reuse of individual modules in other projects
   id: totrans-split-93
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在其他项目中更轻松地重用各个模块
 - en: We only built binaries this time, no [container images](../../../../2023/09/04/nixos-multi-php-version-container/),
     [`systemd-nspawn` images](../../../../2023/08/29/nixos-nspawn/), VMs, or disk
     images. This is however simple to add on top.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次我们只构建了二进制文件，没有[容器镜像](../../../../2023/09/04/nixos-multi-php-version-container/)，[`systemd-nspawn`镜像](../../../../2023/08/29/nixos-nspawn/)，虚拟机或磁盘镜像。不过，如果需要的话，这些很容易添加。
 - en: If you want to evaluate Nix or even use it in your real projects, don’t hesitate
     to [give us a call](../../../../meet.html)! We have a lot of experience, especially
     with low-level C++ projects. Contact us and see how the complexity of your projects
@@ -525,3 +597,4 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想评估Nix，甚至在你的真实项目中使用它，请毫不犹豫地[联系我们](../../../../meet.html)！我们有丰富的经验，特别是在低级别的C++项目中。与我们联系，看看如何简化你项目的复杂性。
