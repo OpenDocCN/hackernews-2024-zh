@@ -2,39 +2,47 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:10:34'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:10:34'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Metaprogramming in Ruby: It''s All About the Self'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Ruby 元编程：一切都在于 Self
 - en: 来源：[https://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/](https://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/](https://yehudakatz.com/2009/11/15/metaprogramming-in-ruby-its-all-about-the-self/)
 - en: After writing my last post on Rails plugin idioms, I realized that Ruby metaprogramming,
     at its core, is actually quite simple.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在写完我上一篇关于 Rails 插件惯用法的文章后，我意识到 Ruby 元编程实际上非常简单。
 - en: 'It comes down to the fact that all Ruby code is executed code--there is no
     separate compile or runtime phase. In Ruby, every line of code is executed against
     a particular `self`. Consider the following five snippets:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 核心问题在于，所有的 Ruby 代码都是执行代码--没有单独的编译或运行时阶段。在 Ruby 中，每一行代码都是针对特定的 `self` 执行的。考虑以下五个片段：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
@@ -45,6 +53,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这五个片段定义了一个 `Person.species`，返回 `Homo Sapien`。现在考虑另一组片段：
 - en: '[PRE1]'
   id: totrans-split-10
   prefs: []
@@ -58,12 +67,15 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些片段都定义了一个叫做 `name` 的方法，并且在 `Person` 类上。所以 `Person.new.name` 将返回 "Matz"。对于熟悉
+    Ruby 的人来说，这不是新闻。在学习元编程时，每个片段都是单独呈现的：另一种机制来获取方法的所属位置。然而，事实上，所有这些片段之所以工作方式如此，有一个统一的原因。
 - en: 'First, it is important to understand how Ruby''s metaclass works. When you
     first learn Ruby, you learn about the concept of the class, and that each object
     in Ruby has one:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，理解 Ruby 的元类是非常重要的。当你第一次学习 Ruby 时，你会学习类的概念，以及 Ruby 中每个对象都有一个：
 - en: '[PRE2]'
   id: totrans-split-13
   prefs: []
@@ -76,6 +88,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Person` 是 `Class` 的一个实例，因此任何添加到 `Class` 上的方法也可以在 `Person` 上使用。然而，他们没有告诉你的是，Ruby
+    中的每个对象也有自己的**元类**，一个可以有方法的 `Class`，但仅附加到对象本身。'
 - en: '[PRE3]'
   id: totrans-split-15
   prefs: []
@@ -88,6 +102,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里发生的情况是，我们正在向 `matz` 的**元类**添加 `speak` 方法，而 `matz` 对象继承自其**元类**，然后继承自 `Object`。之所以不够清晰，是因为在
+    Ruby 中，元类是看不见的：
 - en: '[PRE4]'
   id: totrans-split-17
   prefs: []
@@ -98,6 +114,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，`matz` 的 "class" 就是它看不见的元类。我们甚至可以访问这个元类：
 - en: '[PRE5]'
   id: totrans-split-19
   prefs: []
@@ -109,12 +126,14 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一主题的其他文章中，你可能正在努力记住所有的细节；似乎有这么多的规则。那么 `class << matz` 到底是什么呢？
 - en: 'It turns out that all of these weird rules collapse down into a single concept:
     control over the `self` in a given part of the code. Let''s go back and take a
     look at some of the snippets we looked at earlier:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 事实证明，所有这些奇怪的规则都归结为一个概念：在代码的某个部分控制 `self`。让我们回顾一下之前看过的一些片段：
 - en: '[PRE6]'
   id: totrans-split-22
   prefs: []
@@ -125,6 +144,8 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们正在向 `Person` 类添加 `name` 方法。一旦我们说 `class Person`，直到块的结束，`self` 就是 `Person`
+    类本身。
 - en: '[PRE7]'
   id: totrans-split-24
   prefs: []
@@ -137,6 +158,8 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们正在做完全相同的事情：向 `Person` 类的实例添加 `name` 方法。在这种情况下，`class_eval` 将 `self` 设置为
+    `Person`，直到块结束。在处理类时，这一切都非常直截了当，但在处理元类时同样如此：
 - en: '[PRE8]'
   id: totrans-split-26
   prefs: []
