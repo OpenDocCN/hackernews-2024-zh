@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:41:26'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:41:26'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A simple, asymmetric AKE · Timelessness
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个简单的，非对称 AKE · 永恒性
 - en: 来源：[https://dannyvanheumen.nl/post/simple-asymmetric-ake/](https://dannyvanheumen.nl/post/simple-asymmetric-ake/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://dannyvanheumen.nl/post/simple-asymmetric-ake/](https://dannyvanheumen.nl/post/simple-asymmetric-ake/)
 - en: A simple, asymmetric AKE
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个简单的，非对称的 AKE
 - en: Thu, Mar 28, 2024 ❝A simple, (as-of-yet unidentified) asymmetric Authenticated
     Key Exchange❞ <details><summary>Contents</summary></details>
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Thu, Mar 28, 2024 ❝一个简单的，（迄今为止未确定的）非对称认证密钥交换❞ <details><summary>内容</summary></details>
 - en: In an experiment, I came across a need for a simple authenticated key exchange.
     It started as a stop-gap measure that is just a key exchange, no considerations
     for any kind of attacker. Just the minimal working solution with standard building
@@ -41,11 +49,13 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一个实验中，我遇到了对简单认证密钥交换的需求。它起初只是一个密钥交换的权宜之计，没有考虑任何攻击者。只是使用标准构建块的最小工作解决方案。从那里开始，我扩展了解决方案以保护免受攻击者的攻击。
 - en: Introduction
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 介绍
 - en: '*The use-case* is a user and a “service-provider” of some kind, in my case
     a device. The device responds to requests, performs computations in a separate
     computing environment and is, in this particular case, connected by USB port.
@@ -56,6 +66,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '*使用案例* 是某种用户和“服务提供者”，在我的情况下是一个设备。该设备响应请求，在一个单独的计算环境中执行计算，并且在这种特定情况下通过 USB 端口连接。涉及敏感信息。然而，设备本身没有存储能力。计算基于用户输入并由用户与设备进行交互而启动。主动权在用户手中；是否正确建立会话完全由用户的判断决定风险。'
 - en: '*From the device’s perspective*, it only needs to act on requests. We can assume
     that if the user is willing to interact with it, it must be safe to respond. Or
     from a different perspective: if the user is willing to send their security-sensitive
@@ -66,6 +77,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '*从设备的角度* ，它只需根据请求执行操作。我们可以假设，如果用户愿意与其交互，响应肯定是安全的。或者从另一个角度来看：如果用户愿意发送他们的安全敏感信息，那么执行计算和响应就是可以的。一个保密的会话，另外还保证（唯一）另一方是发起会话的一方，这就是所需的全部。这个另一方提供数据并接收结果。'
 - en: '*From the user’s perspective*, there are additional concerns: the user must
     be ensured that the device is the actual device that it expects, i.e. there must
     be no mistaken identity, and they must be sure that communication is secure, if
@@ -74,17 +86,21 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '*从用户的角度* ，还有额外的考虑：用户必须确保设备是他们所期望的实际设备，即不能出现误认的身份，并且在建立安全会话后，如果决定继续，必须确保通信是安全的，即完成
+    AKE。'
 - en: 'The device: TKey'
   id: totrans-split-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设备：TKey
 - en: '*Note: some of the feedback was a result of confusion on what kind of device
     is actually involved. Although I prefer to establish a solid abstract definition,
     this section should make the description and requirements more concrete.*'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注意：一些反馈是由于对实际涉及的设备类型混淆所导致的。虽然我更喜欢确立一个扎实的抽象定义，但这一节应该使描述和要求更加具体。*'
 - en: 'The specific device I have in mind for this protocol, is [tillitis TKey](https://tillitis.se/products/tkey/
     "TKey - Tillitis"). This devices contains an inaccessible device-secret (*UDS*)
     and loads any program provided. The device itself has a small firmware that is
@@ -96,6 +112,9 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我为此协议考虑的具体设备是 [tillitis TKey](https://tillitis.se/products/tkey/ "TKey - Tillitis").
+    这些设备包含一个不可访问的设备秘密（*UDS*），并加载任何提供的程序。设备本身有一个小型固件，能够初始化并接收作为程序二进制的字节。当程序加载时，会生成一个特定于设备
+    + 程序二进制 + 用户提供的秘密的派生密钥（*CDI*）。然后固件跳转到程序的入口点以启动执行，并随后将控制权交给程序。
 - en: The *TKey* does not have storage capability. Programs have a few (hardware)
     features to work with, and *CDI* as a unique secret. The *CDI* value is the [digest
     of a hash-computation](https://dev.tillitis.se/intro/#measured-boot--secrets "Introduction
@@ -110,51 +129,63 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '*TKey*没有存储能力。程序有几个（硬件）功能可用，并且*CDI*作为唯一的秘密。*CDI*的值是[*UDS*、*program-binary*和*user-supplied
+    secret*的哈希计算摘要](https://dev.tillitis.se/intro/#measured-boot--secrets "Introduction
+    - TKey Developer Handbook")。因此，程序必须是字节精确的二进制，这为防止恶意程序窃取此秘密提供了有趣的机会。使用*CDI*和哈希函数，例如固件中提供的*Blake2s*，程序可以推导出多个秘密。如协议所述的*identity*将是这样的一个秘密值。因此，*identity*极有可能证明设备、程序二进制和用户提供的秘密值是预期的值。'
 - en: Any concerns w.r.t. device security, safety of secrets, potential vulnerabilities
     in programming, etc. are all valid criticism. However, the post itself is scoped
     to the protocol itself.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于设备安全、秘密安全、编程中的潜在漏洞等方面的任何关注都是有效的批评。然而，本文的范围仅限于协议本身。
 - en: The Design
   id: totrans-split-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设计
 - en: '**requirements**:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '**要求**：'
 - en: A two-party secure session is established between client and device,
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 客户端和设备之间建立了两方安全会话，
 - en: Protected against MitM,
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 受到中间人攻击的保护，
 - en: Ephemeral session-keys,
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 临时会话密钥，
 - en: Device gets authenticated,
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 设备已经过身份验证，
 - en: Client does not require authentication,
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 客户端不需要认证，
 - en: No need for a session ID,
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不需要会话ID，
 - en: '**prerequisite: no (assumptions on) client’s identity**: The device starts
     off with only its own program state, needed for its own (internal) operation.
     Any data that device works with, is provided by client. This has the benefit that
@@ -166,17 +197,20 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '**前提条件：客户端身份（假设）不存在**：设备仅从自身的程序状态开始，这对其自身（内部）操作是必要的。设备处理的任何数据都是由客户端提供的。这有一个好处，即它不会错误地暴露敏感数据或者在建立会话时误认用户的身份。设备与发起会话的另一方提供的任何数据一起工作。客户端仅在安全会话确保仅有对方能够在建立的会话中通信时（隐含地）得到验证。'
 - en: '**prerequisite: session-scoped state**: The device’s state must be session-scoped,
     such that no data is leaked between sessions or spills over into next session,
     if applicable.'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '**前提条件：会话范围状态**：设备的状态必须是会话范围的，以确保在会话之间没有数据泄露或者在适用的情况下没有溢出到下一个会话。'
 - en: Protocol
   id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 协议
 - en: The following is built on top of a Diffie-Hellman Key Exchange, with minimal
     practical adaptations to make it work in situations with an attacker. The protocol
     is proved for a passive attacker, with an attempt to prove for an active attacker
@@ -184,49 +218,59 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 下文建立在Diffie-Hellman密钥交换基础上，对于存在攻击者的情况进行了最小的实际适应。该协议已被证明适用于被动攻击者，试图证明针对主动攻击者的尝试当前因技术问题而停滞。
 - en: 'with:'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用：
 - en: prefix `pk_` indicating public key, and
   id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 前缀`pk_`表示公钥，以及
 - en: prefix `sk_` indicating secret/private key
   id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 前缀`sk_`表示秘密/私钥
 - en: '`digest = HASH(key, content)`'
   id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`digest = HASH(key, content)`'
 - en: '`ciphertext = ENCRYPT(key, plaintext)`'
   id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ciphertext = ENCRYPT(key, plaintext)`'
 - en: '`plaintext = DECRYPT(key, ciphertext)`'
   id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`plaintext = DECRYPT(key, ciphertext)`'
 - en: '`signature = SIGN(secret_key, content)`'
   id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`signature = SIGN(secret_key, content)`'
 - en: '`VALIDATE(public_key, signature, content)`'
   id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`VALIDATE(public_key, signature, content)`'
 - en: '**Precondition** an identity `pk_identity` acquired at an earlier time.'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '**先决条件**：先前获取的身份`pk_identity`。'
 - en: '[PRE0]'
   id: totrans-split-39
   prefs: []
@@ -238,60 +282,72 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当验证成功时，执行才算成功。任何损坏都将导致无法验证签名。鉴于所有风险均由用户承担，任何验证失败都是终止的理由。
 - en: '**After successful execution**:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '**执行成功后**：'
 - en: a confidential session is established with a shared, ephemeral session-key,
   id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 建立了一个带有共享的短暂会话密钥的机密会话。
 - en: we are assured that `pk_device` is authentic,
   id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们确信 `pk_device` 是真实的。
 - en: we are assured that `pk_user` was received unchanged,
   id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们确信 `pk_user` 未经更改地收到了。
 - en: we are assured this is the authentic device, i.e. ownership over identity proved.
   id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们确信这是真实的设备，即证明了对身份的所有权。
 - en: '**Failed execution**:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**执行失败**：'
 - en: received `pk_user` is invalid/corrupted
   id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 收到的 `pk_user` 是无效的/损坏的。
 - en: received `pk_device` is invalid/corrupted
   id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 收到的 `pk_device` 是无效的/损坏的。
 - en: '`sessionkey` cannot be produced due to `pk_device`'
   id: totrans-split-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sessionkey` 由于 `pk_device` 的缘故而无法生成。'
 - en: 'validation of `pk_user` fails due to:'
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 由于验证 `pk_user` 失败：
 - en: '`proof` is not authentic `signature`:'
   id: totrans-split-51
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`proof` 不是真实的 `signature`：'
 - en: incorrect `sessionkey`
   id: totrans-split-52
   prefs:
@@ -299,6 +355,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不正确的 `sessionkey`。
 - en: due to corrupted `enc_sig`
   id: totrans-split-53
   prefs:
@@ -306,6 +363,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 由于损坏的 `enc_sig`。
 - en: signature over corrupted `pk_user`
   id: totrans-split-54
   prefs:
@@ -313,23 +371,27 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 对损坏的 `pk_user` 进行签名。
 - en: device does not own `sk_identity`
   id: totrans-split-55
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`device` 没有拥有 `sk_identity`。'
 - en: 'Note: the protocol does not reflect the use of a prefix/context to prevent
     use of signature for other than identification. This may need to be considered
     when used.'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：协议不反映使用前缀/上下文来防止签名用于除识别之外的其他目的。在使用时可能需要考虑这一点。
 - en: Insights
   id: totrans-split-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 洞察
 - en: User’s D-H public key doubles as challenge-nonce, therefore there is no opportunity
     to swap out the nonce for one with a known signature, and not freely selectable
     because that requires a corresponding private key.
@@ -337,12 +399,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用户的 D-H 公钥同时作为挑战-随机数，因此没有机会用已知签名交换出随机数，并且不是自由选择的，因为那需要相应的私钥。
 - en: The challenge-response signature is encrypted with established session-key,
     thus preventing (raw) replay of the response-message.
   id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 挑战-响应签名使用建立的会话密钥加密，从而防止响应消息的（原始）重放。
 - en: Device’s D-H public key, additionally, is used as input in keyed-hash, with
     D-H’s resulting shared secret as key. Consequently, both shared secret and device’s
     public key are fixed. In a two-party set-up, user’s public key must therefore
@@ -351,17 +415,20 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 设备的 D-H 公钥还用作键控散列的输入，D-H 的结果共享秘密作为密钥。因此，共享秘密和设备的公钥都是固定的。在两方设置中，如果希望计算相同的共享秘密，则用户的公钥必须也是固定的。
 - en: Given that there is no persistence and client is expected to initiate and provide
     data, device needs only to rely on a secure session to keep data confidential.
   id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 鉴于没有持久性且客户端预计要启动并提供数据，设备只需依赖安全会话来保持数据的保密性。
 - en: Analysis
   id: totrans-split-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分析
 - en: At this time, I have not completed a full analysis of the protocol. The following
     is, thusfar, based on intuition and informal reasoning, directed by the notions
     of the eCK security-model, and later (partially) confirmed by results of a symbolic
@@ -369,16 +436,19 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我尚未对协议进行全面分析。以下内容仅基于直觉和非正式推理，受 eCK 安全模型概念的指导，并在符号推理器的部分结果后（部分）确认。
 - en: Security properties for authenticated key exchange according to the extended
     Canetti-Krawczyk (eCK) model.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据扩展的 Canetti-Krawczyk（eCK）模型进行认证密钥交换的安全属性。
 - en: '*(Implicit) Key Agreement*'
   id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*(隐含) 密钥协定*'
 - en: '`client`/`device`: by virtue of establishing a two-party secure session using
     ephemeral key exchange.'
   id: totrans-split-66
@@ -386,39 +456,46 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`client`/`device`：通过使用短暂密钥交换建立双方安全会话。'
 - en: '*Key Confirmation*'
   id: totrans-split-67
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*密钥确认*'
 - en: '`client`: by implication of successful signature validation against `pk_user`.'
   id: totrans-split-68
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`client`：通过成功的对 `pk_user` 的签名验证的暗示。'
 - en: '`device`: by implication of client following up.'
   id: totrans-split-69
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`device`：由客户端跟进的暗示。'
 - en: '*Known Key Security*'
   id: totrans-split-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*已知密钥的安全性*'
 - en: Session keys are fully based on random data, with contributions from both parties.
   id: totrans-split-71
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 会话密钥完全基于随机数据，双方都有贡献。
 - en: '*Security against Unknown Key Share attacks*'
   id: totrans-split-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*防止未知密钥共享攻击的安全性*'
 - en: Only 2 participants in the key exchange. Proper use of D-H prevents MitM. Only
     two parties involved, therefore no need to share or otherwise relay keys.
   id: totrans-split-73
@@ -426,6 +503,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 只有两个参与者参与密钥交换。正确使用 D-H 可以防止中间人攻击。只有两个参与方，因此不需要共享或传递密钥。
 - en: '`device`: assume that any counterpart in established secure session is valid.
     Further made acceptable by the fact that all data is provided by counterpart in
     session. Proper key exchange prevents interference from any third-party.'
@@ -434,6 +512,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`device`：假设已建立安全会话的任何对应部分有效。进一步证明了所有数据都是由会话对应方提供的。适当的密钥交换可以防止任何第三方的干扰。'
 - en: '`client`: no need to share keys. Each session is freshly established. Sessions
     are always between one `device` and one `client`.'
   id: totrans-split-75
@@ -441,11 +520,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`client`：不需要共享密钥。每个会话都是在一个 `device` 和一个 `client` 之间建立的。'
 - en: '*Security against Key Compromise Impersonation (KCI) attacks*'
   id: totrans-split-76
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*防止密钥泄露身份冒充（KCI）攻击的安全性*'
 - en: The Identity keypair is only used for signing the challenge-nonce that is sent
     to the client. Therefore, there is no opportunity where a signature can be misinterpreted.
   id: totrans-split-77
@@ -453,11 +534,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 身份密钥对仅用于签署发送给客户端的挑战nonce。因此，不存在签名可能被误解的机会。
 - en: '*Forward Secrecy*'
   id: totrans-split-78
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*前向保密*'
 - en: The AKE is initiated with inputs based on random data, with the pre-shared *identity
     public key* being the only exception.
   id: totrans-split-79
@@ -465,6 +548,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: AKE是以基于随机数据的输入启动的，预共享的*身份公钥*是唯一的例外。
 - en: Granted, the eCK model is (presumably) followed in spirit rather than strictly,
     as this is an asymmetric AKE and, for example, in case of *Key Confirmation* `device`
     does not get concrete confirmation. The requirements are such that this is not
@@ -472,11 +556,13 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管eCK模型（大概率）在精神上而非严格上得到遵循，因为这是一个非对称AKE，在*密钥确认*的情况下，例如，`device`没有得到具体的确认。实际上，这些要求不会带来问题。
 - en: Symbolic prover
   id: totrans-split-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 符号证明器
 - en: 'The following [Verifpal](https://www.verifpal.com/ "Verifpal: Cryptographic
     Protocol Analysis for Students and Engineers") proof-script passes for a passive
     attacker. A session established by client with device is successful if the protocol
@@ -484,6 +570,8 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: '以下[Verifpal](https://www.verifpal.com/ "Verifpal: Cryptographic Protocol Analysis
+    for Students and Engineers")证明脚本对被动攻击者通过。如果协议在没有失败的情况下完成，则客户端与设备建立的会话是成功的。'
 - en: Note, though, that at the moment of completion, only `client` knows the results
     and whether it is safe to continue. This is okay, because `client` must be convinced
     that `device` is authentic and communication is secure, before requesting `device`’s
@@ -491,10 +579,12 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，在完成时刻，只有`client`知道结果，并且是否可以安全继续。这是可以接受的，因为`client`必须确信`device`是真实的，并且通信是安全的，然后才能请求`device`的服务并发送数据。
 - en: 'The Verifpal proof-script:'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: Verifpal证明脚本：
 - en: '[PRE1]'
   id: totrans-split-85
   prefs: []
@@ -506,6 +596,7 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 当前与“*主动攻击者*”分析的问题是，符号证明器将在成功操纵中间值（例如`ss_device`，`ss_user`等）时过早失败。论点是机密性被破坏。
 - en: The queries should be performed *after* the protocol completes (success)fully.
     `SIGNVERIF(identity, dhe_user_public, proof)?`, a checked (`?`) verification statement,
     should fail for any manipulation of `dhe_user_public` as the signature is validated
@@ -516,6 +607,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在协议完成（成功）之后应执行查询。`SIGNVERIF(identity, dhe_user_public, proof)?`是一个已检查的（`?`）验证语句，对于`dhe_user_public`的任何操作都应该失败，因为签名是针对由`client`生成的原始/真实`dhe_user_public`进行验证。然而，它没有。因此，它继续列出所有可能由于破坏传输的`dhe_user_public`而导致中间变量的机密性违规。
 - en: By my (informal) reasoning, if an attacker corrupts any data, `client`’s final
     signature validation must fail. Therefore, if final validation succeeds, authentic
     data must have been used and an attacker did not manipulate the established secure
@@ -523,11 +615,13 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过我的（非正式）推理，如果攻击者破坏了任何数据，`client`的最终签名验证必须失败。因此，如果最终验证成功，必须使用了真实数据，并且攻击者没有操纵建立的安全会话。
 - en: Open issue
   id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 开放问题
 - en: 'The [issue is reported](https://lists.symbolic.software/pipermail/verifpal/2023/000454.html
     "[Verifpal] Checked SIGNVERIF passed, but checked ASSERT fails (was: Mistake or
     missed case? SIGNVERIF with original of sent value)") to Verifpal. Unfortunately,
@@ -536,6 +630,9 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: '[问题已报告](https://lists.symbolic.software/pipermail/verifpal/2023/000454.html
+    "[Verifpal] Checked SIGNVERIF passed, but checked ASSERT fails (was: Mistake or
+    missed case? SIGNVERIF with original of sent value)")给了Verifpal。不幸的是，在写作时，还没有任何跟进。作为电子邮件对话的一部分，使用了简化的示例来进一步缩小问题范围。'
 - en: 'The protocol, when analyzed for an active attacker, produces a result that
     need never happen. The claim is: with a `nil` (corrupted) public key, a `nil`
     message, and a `nil` signature, the validation would pass. This is correct of
@@ -545,11 +642,13 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 当分析存在主动攻击者时，协议会产生一个永远不应该发生的结果。主张是：使用`nil`（损坏的）公钥，`nil`消息和`nil`签名，验证将通过。这当然是正确的。然而，由于`client`本身生成`pk_user`，因此没有必要插入任何接收到的（潜在损坏的）值。因此，失败的情况根本不会发生。
 - en: Rationale for identity-challenge
   id: totrans-split-92
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 身份挑战的理由
 - en: 'One particular design choice that I had not discussed is that of using the
     Diffie-Hellman public key for the identity-challenge. This seems to be a somewhat
     uncommon choice. The rationale behind this is as follows; let’s discuss the various
@@ -557,27 +656,32 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我没有讨论过的一个特定设计选择是使用Diffie-Hellman公钥进行身份挑战。这似乎是一个不太常见的选择。其背后的理由如下；让我们讨论一下可能发生的各种情况：
 - en: Note that the “*proof of identity*” here, is the signature over the D-H public
     key of `client`.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，这里的“*身份的证明*”是对`client`的D-H公钥的签名。
 - en: A legitimate device with its (authentic) keypair produces a proof of identity.
   id: totrans-split-95
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一个合法的设备及其（真实的）密钥对会生成身份的证明。
 - en: '*This is intended use-case where there is no malicious activity.*'
   id: totrans-split-96
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '*这是预期的使用情况，没有恶意活动。*'
 - en: An adversary (Mallory) impersonates the expected device, without having access
     to the *identity* keypair.
   id: totrans-split-97
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对手（Mallory）冒充了预期的设备，却没有访问*身份*密钥对。
 - en: '*Mallory impersonates `device`, making `client` think they’re talking to `device`.
     Given no access to the keypair, Mallory can only have access to previously produced
     signatures by `device`. Given that signatures are encrypted when transferred,
@@ -589,11 +693,13 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '*Mallory冒充`device`，使`client`以为自己在与`device`交流。由于没有访问密钥对的权限，Mallory只能访问以前在他与`device`自己的会话中生成的签名。鉴于传输时签名是加密的，Mallory只能访问到在他自己与`device`会话中生成的签名。在没有访问身份密钥对的情况下提供正确的签名，类似于拥有D-H密钥对的相应私钥，考虑到密钥空间的大小。*'
 - en: Man-in-the-Middle attack on session between `client` and `device`.
   id: totrans-split-99
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在`client`和`device`之间的会话中进行的中间人攻击。
 - en: '*If Mallory is able to perform this attack, then he possesses the same ephemeral
     keypair as `client`. Therefore he can establish his own session with `device`
     with same keypair and use the signature-proof from `device`, sent to him, to forward
@@ -604,17 +710,20 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '*如果Mallory能够执行这种攻击，那么他拥有与`client`相同的临时密钥对。因此，他可以用相同的密钥对与`device`建立自己的会话，并将从`device`收到的签名证明转发给`client`。为此，Mallory需要访问此时`client`生成的密钥对，通过解决计算Diffie-Hellman问题或侵入`client`进程的内存等类似侵入性操作来获取。*'
 - en: Identity-keypair is known/exposed; Mallory possesses `device`’s keypair.
   id: totrans-split-101
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 身份密钥对已知/暴露；Mallory拥有`device`的密钥对。
 - en: '*Mallory can fully impersonate `device`. Given it controls the keypair, Mallory
     can respond to any D-H public key challenge from client with proof-signature.*'
   id: totrans-split-102
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '*Mallory可以完全冒充`device`。由于控制了密钥对，Mallory可以响应来自`client`的任何D-H公钥挑战并提供证明签名。*'
 - en: The first case is the normal use-case, as intended. The last two cases involve
     breaking fundamental cryptographic mechanisms or active attacks, both are actions
     taken outside of the protocol. Both of these cases involve asymmetric cryptography,
@@ -623,6 +732,7 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个情况是正常的使用情况，正如预期的那样。最后两种情况涉及到破坏基础加密机制或主动攻击，这两者都是在协议之外采取的行动。这两种情况都涉及到非对称加密，因此特别容易受到量子计算攻击的影响。然而，目前这些攻击还不可能。
 - en: The remaining case, (2.), means we make proving the identity equally complicated
     as breaking the security of the key-exchange. It is true that if a legitimate
     client connects twice to `device` with the same key, we could then respond with
@@ -638,17 +748,21 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 剩下的情况（2.）意味着我们让证明身份与破解密钥交换的安全性同样复杂化。确实，如果合法客户端与`device`使用相同的密钥连接两次，我们可以用第一次会话的证明签名作为响应。然而，“*新鲜性*”的临时会话密钥也是一个要求。请注意，不保存签名对`client`是有利的，攻击者没有权限（加密）签名，没有能力窃听会话。理想情况下，我们永远不会两次使用相同的密钥对。对于攻击者来说，除非他能操纵`client`的选择，他们的公钥选择应是不可预测的，因此窃听是不可能的。他不能计算相应的私钥，也不能收集相应的签名。（请注意，这意味着临时D-H公钥对于攻击者和`device`都应该是不可预测的，这是互补的。）
 - en: Feedback
   id: totrans-split-105
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 反馈
 - en: This post is discussed on [Hacker News](https://news.ycombinator.com/item?id=39813537
     "A simple, (as-of-yet unidentified) asymmetric Authenticated Key Exchange (Hacker
     News)").
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章在[Hacker News](https://news.ycombinator.com/item?id=39813537 "一个简单的，（迄今为止未识别的）不对称认证密钥交换（Hacker
+    News）")上讨论。
 - en: Most feedback so far is rooted in initial misunderstanding of the situation.
     Consequently, topics such as *attestation*, confusion about how a device can work
     without any kind of storage, and need for authentication, arise. I have addressed
@@ -658,11 +772,13 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，大多数反馈都源于对情况的最初误解。因此，涉及*认证*、困惑于设备如何在没有任何存储的情况下工作以及对身份验证的需求等主题就会出现。我已经通过添加关于特定设备部分的内容来回应对介绍不清楚的直接评论。我期望这足以使读者对抽象描述和需求与实际用例的期望保持一致。
 - en: Following are a few comments that address this feedback for readers who finish
     with similar questions.
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是几条评论，解决了那些有类似疑问的读者的反馈。
 - en: The *identity* is used to identify a specific device instantiation, as opposed
     to a physical piece of hardware. For the same reason, even if the criticism of
     *attestation* applies, it is not valid here. The *identity* is more specific than
@@ -671,6 +787,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*身份*用于识别特定设备实例，而不是物理硬件的一部分。出于同样的原因，即使是对*认证*的批评也不适用于这里。*身份*比认证过程的目标更具体。'
 - en: Similarly, there was confusion over how unique this *identity* is, what causes
     it to change, risks and impact when this *identity* would leak. Again, so far
     rooted in confusion/lack-of-information rather than criticism of the protocol
@@ -679,6 +796,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类似地，对*身份*有多独特，什么会导致它改变，以及当这个*身份*泄露时的风险和影响，也存在困惑。同样，到目前为止，这些困惑/信息不足并不意味着对协议本身的批评。
 - en: A check for genuine hardware, which most likely is simpler than a full attestation
     process and IIUC does not apply a full certificate-chain, is already provided.
     The protocol as described, solves a problem under the assumption that the hardware
@@ -688,6 +806,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 检查真实硬件的方法，很可能比完整的认证过程更简单，并且在理解正确的情况下不适用完整的证书链，已经提供。所描述的协议解决了一个假设硬件是可信的问题。（至少在一开始。替换/移除硬件的攻击仍然被认为是有效的攻击。）
 - en: Why not use established crypto? This is a valid question. Most prevalent suggestion
     is to use TLS which is quite an elaborate protocol and assumes the PKI certificate
     infrastructure to be available. Another suggestion is Noise Protocol, which I
@@ -696,6 +815,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么不使用已建立的加密技术？这是一个合理的问题。最为普遍的建议是使用TLS，这是一个相当复杂的协议，假设PKI证书基础设施是可用的。另一个建议是Noise协议，我会再次仔细看看。
 - en: Concerns around lack of RNG. This was further clarified. There is no RNG. There
     is a “true RNG” for an entropy-source and there is a hash-function available already
     in firmware. It is possible to at least approximate a CSPRNG.
