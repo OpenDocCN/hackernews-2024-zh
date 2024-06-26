@@ -98,6 +98,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'becomes:'
   id: totrans-split-18
   prefs: []
@@ -106,6 +107,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: If the return type of a function is omitted, the correct type to add can be
     `int` or `void`, depending on whether the function returns a value or not.
   id: totrans-split-20
@@ -123,20 +125,24 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The corrected standard C source code might look like this (still disregarding
     error handling and short writes):'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 修正后的标准 C 源代码可能如下所示（仍忽略错误处理和短写）：
 - en: '[PRE3]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Implicit function declarations (`-Werror=implicit-function-declaration`)
   id: totrans-split-25
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 隐式函数声明（`-Werror=implicit-function-declaration`）
 - en: It is no longer possible to call a function that has not been declared. In general,
     the solution is to include a header file with an appropriate function prototype.
     Note that GCC will perform further type checks based on the function prototype,
@@ -144,15 +150,18 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在不再可能调用未声明的函数。通常的解决方案是包含一个带有适当函数原型的头文件。请注意，GCC 将根据函数原型执行进一步的类型检查，这可以揭示需要额外更改的进一步类型错误。
 - en: 'For well-known functions declared in standard headers, GCC provides fix-it
     hints with the appropriate `#include` directives:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于在标准头文件中声明的知名函数，GCC 提供了带有适当 `#include` 指令的修复提示：
 - en: '[PRE4]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: On GNU systems, headers described in standards (such as the C standard, or POSIX)
     may require the definition of certain macros at the start of the compilation before
     all required function declarations are made available. See [Feature Test Macros](https://sourceware.org/glibc/manual/latest/html_node/Feature-Test-Macros.html)
@@ -160,6 +169,8 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 GNU 系统上，标准描述的头文件（如 C 标准或 POSIX）可能要求在编译开始时定义某些宏，然后才能提供所需的函数声明。详见 GNU C 库手册中的
+    [Feature Test Macros](https://sourceware.org/glibc/manual/latest/html_node/Feature-Test-Macros.html)。
 - en: Some programs are built with `-std=c11` or similar `-std` options that do not
     contain the string `gnu`, but still use POSIX or other extensions in standard
     C headers such as `<stdio.h>`. The GNU C library automatically suppresses these
@@ -170,6 +181,10 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些程序使用 `-std=c11` 或类似的 `-std` 选项构建，不包含字符串 `gnu`，但仍然在标准 C 头文件（如 `<stdio.h>`）中使用
+    POSIX 或其他扩展。GNU C 库在标准 C 模式下会自动禁止这些扩展，这可能导致隐式函数声明。为了解决这个问题，可以放弃 `-std=c11` 选项，改用
+    `-std=gnu11`，或者使用 `-std=c11 -D_DEFAULT_SOURCE` 重新启用常见扩展。另外，使用 Autoconf 的项目可以启用
+    `AC_USE_SYSTEM_EXTENSIONS`。
 - en: If undeclared functions from the same project are called and there is no suitable
     shared header file yet, you should add a declaration to a header file that is
     included by both the callers and the source file containing the function definition.
@@ -180,21 +195,26 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在同一项目中调用未声明的函数且尚未存在适当的共享头文件，则应向被调用者和包含函数定义的源文件都包含的头文件中添加声明。这样可以确保 GCC 检查原型与函数定义的匹配情况。GCC
+    在使用 `-flto -Werror=lto-type-mismatch` 等选项进行构建时可以跨翻译单元执行类型检查，这有助于添加适当的原型。
 - en: 'In some rare cases, adding a prototype may change ABI in inappropriate ways.
     In these situations, it is necessary to declare a function without a prototype:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一些罕见情况下，添加原型可能会以不适当的方式改变 ABI。在这些情况下，需要声明一个没有原型的函数：
 - en: '[PRE5]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: However, this is an obsolete C feature that will change meaning in C23 (declaring
     a function with a prototype and accepting no arguments, similar to C++). Usually,
     a prototype with the default argument promotions applied can be used instead.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这是 C23 中即将改变含义的过时 C 特性（声明具有原型且不接受参数的函数，类似于 C++）。通常，可以使用应用默认参数推广的原型。
 - en: When building library code on GNU systems, [it was possible to call undefined
     (not just undeclared) functions](https://sourceware.org/binutils/docs-2.42/ld/Options.html#index---allow-shlib-undefined)
     and still run other code in the library, particularly if ELF lazy binding was
@@ -203,11 +223,14 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 GNU 系统上构建库代码时，[可能会调用未定义的（而不仅仅是未声明的）函数](https://sourceware.org/binutils/docs-2.42/ld/Options.html#index---allow-shlib-undefined)，并且仍然可以运行库中的其他代码，特别是如果使用了
+    ELF 惰性绑定。仅执行未定义函数调用将导致惰性绑定错误和程序崩溃。
 - en: Typos in function prototypes (`-Werror=declaration-missing-parameter-type`)
   id: totrans-split-36
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 函数原型中的拼写错误（`-Werror=declaration-missing-parameter-type`）
 - en: 'Incorrectly spelled type names in function declarations are treated as errors
     in more cases, under a new `-Wdeclaration-missing-parameter-type` warning. The
     second line in the following example is now treated as an error (previously this
@@ -215,34 +238,41 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数声明中拼写错误的类型名称在更多情况下被视为错误，会有新的`-Wdeclaration-missing-parameter-type`警告。下例中的第二行现在被视为错误（先前是一个不受特定`-W…`选项控制的警告）：
 - en: '[PRE6]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The fix is to correct the spelling mistake:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 修正拼写错误的方法是：
 - en: '[PRE7]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: GCC will type-check function arguments after that, potentially requiring further
     changes. (Previously, the function declaration was treated as not having a prototype.)
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此之后，GCC将对函数参数进行类型检查，可能需要进一步更改。（以前，函数声明被视为没有原型。）
 - en: Incorrect uses of the `return` statement (`-Werror=return-mismatch`)
   id: totrans-split-42
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 不正确使用`return`语句（`-Werror=return-mismatch`）
 - en: GCC no longer accepts `return` statements with expressions in functions which
     are declared to return `void`, or `return` statements without expressions for
     functions returning a non-`void` type.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: GCC不再接受在声明为返回`void`的函数中具有表达式的`return`语句，或者返回非`void`类型的函数中没有表达式的`return`语句。
 - en: To address this, remove the incorrect expression (or turn it into a statement
     expression immediately prior to the `return` statements if the expression has
     side effects), or add a dummy return value, as appropriate. If there is no suitable
@@ -251,6 +281,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决此问题，请删除不正确的表达式（或将其转换为具有副作用的语句表达式，直接在`return`语句之前），或者根据情况添加虚拟返回值。如果没有合适的虚拟返回值，可能需要进一步更改以实现适当的错误处理。
 - en: Previously, these mismatches were diagnosed as a `-Wreturn-type` warning. This
     warning still exists, and is not treated as an error by default. It now covers
     remaining potential correctness issues, such as reaching the closing brace `}`
@@ -258,23 +289,27 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 以前，这些不匹配被诊断为`-Wreturn-type`警告。此警告仍然存在，并且默认情况下不被视为错误。现在它涵盖了剩余的潜在正确性问题，例如函数的结束括号`}`达到但不返回`void`。
 - en: By default, GCC still accepts returning an expression of type `void` from within
     a function that itself returns `void`, as a GNU extension that matches standard
     C++ rules in this area.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，GCC仍接受从返回`void`类型的函数内返回表达式作为GNU扩展，该扩展与此领域的标准C++规则相匹配。
 - en: Using pointers as integers and vice versa (`-Werror=int-conversion`)
   id: totrans-split-47
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 将指针用作整数及其反向用法（`-Werror=int-conversion`）
 - en: GCC no longer treats integer types and pointer types as equivalent in assignments
     (including implied assignments of function arguments and return values), and instead
     fails the compilation with a type error.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: GCC不再将整数类型和指针类型视为在赋值中等效（包括隐式函数参数和返回值的赋值），而是以类型错误的方式进行编译失败。
 - en: It makes sense to address missing `int` types, implicit function declarations,
     and incorrect `return` statement usage prior to tackling these `int`-conversion
     issues. Some of them will be caused by missing types treated as `int`, and the
@@ -282,6 +317,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在解决这些`int`转换问题之前，解决缺少的`int`类型、隐式函数声明和不正确的`return`语句用法是有意义的。其中一些将由缺少类型而被视为`int`，以及隐式声明函数的默认`int`返回类型。
 - en: To fix the remaining `int`-conversions issues, add casts to an appropriate pointer
     or integer type. On GNU systems, the standard types `intptr_t` and `uintptr_t`
     (defined in `<stdint.h>`) are always large enough to store all pointer values.
@@ -289,28 +325,34 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决剩余的`int`转换问题，请向适当的指针或整数类型添加强制转换。在GNU系统上，标准类型`intptr_t`和`uintptr_t`（定义在`<stdint.h>`中）总是足够大以存储所有指针值。如果需要通用指针类型，请考虑使用`void
+    *`。
 - en: In some cases, it may be more appropriate to pass the address of an integer
     variable instead of a cast of the variable's value.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些情况下，传递整数变量的地址可能比传递变量值的强制转换更合适。
 - en: Type checking on pointer types (`-Werror=incompatible-pointer-types`)
   id: totrans-split-52
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 指针类型的类型检查（`-Werror=incompatible-pointer-types`）
 - en: GCC no longer allows implicitly casting all pointer types to all other pointer
     types. This behavior is now restricted to the `void *` type and its qualified
     variations.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: GCC不再允许将所有指针类型隐式转换为所有其他指针类型。此行为现在仅限于`void *`类型及其修饰变体。
 - en: To fix compilation errors resulting from that, you can add the appropriate casts,
     and maybe consider using `void *` in more places (particularly for old programs
     that predate the introduction of `void *` into the C language).
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决由此导致的编译错误，可以添加适当的转换，并考虑在更多地方使用`void *`（特别是对于在引入`void *`到C语言之前存在的旧程序）。
 - en: Programs that do not carefully track pointer types are likely to contain aliasing
     violations, so consider building with `-fno-strict-aliasing`. (Whether casts are
     written manually or performed by GCC automatically does not make a difference
@@ -318,6 +360,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果程序不仔细跟踪指针类型，则可能包含别名违规，因此请考虑使用`-fno-strict-aliasing`进行构建。（无论是手动编写转换还是由GCC自动执行，对严格别名违规都没有影响。）
 - en: 'A frequent source of incompatible function pointer types involves callback
     functions that have more specific argument types (or less specific return types)
     than the function pointer they are assigned to. For example, old code which attempts
@@ -325,45 +368,54 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 不兼容的函数指针类型经常涉及回调函数，这些函数具有比分配给它们的函数指针更具体的参数类型（或者不太具体的返回类型）。例如，试图对字符串数组进行排序的旧代码可能如下所示：
 - en: '[PRE8]'
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'To address this, the callback function should be defined with the correct type,
     and the arguments should be cast as appropriate before they are used (as calling
     a function through a function pointer of an incorrect type is undefined):'
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，回调函数应该用正确的类型定义，并且在使用之前需要适当地进行参数转换（因为通过不正确类型的函数指针调用函数是未定义的）：
 - en: '[PRE9]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'A similar issue can arise with object pointer types. Consider a function that
     is declared with an argument of type `void **`, and you want to pass the address
     of a variable of type `int *`:'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 对象指针类型可能会出现类似的问题。考虑一个声明为`void **`类型参数的函数，你想传递一个`int *`类型变量的地址：
 - en: '[PRE10]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'In these cases, it may be appropriate to make a copy of the pointer with the
     correct `void *` type:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这些情况下，可能需要使用正确的`void *`类型制作指针的副本：
 - en: '[PRE11]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: As mentioned initially, adding the cast here would not eliminate any strict
     aliasing violation in the implementation of the `operate` function. Of course
     in general, introducing such additional copies may alter program behavior.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如最初提到的，添加转换在这里不会消除`operate`函数实现中的任何严格别名违规。当然，在一般情况下，引入这样的额外副本可能会改变程序的行为。
 - en: Some programming styles rely on implicit casts between related object pointer
     types to implement C++-style `struct` inheritance. It may be possible to avoid
     writing manual casts with the `-fplan9-extensions` option and unnamed initial
@@ -371,6 +423,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些编程风格依赖于相关对象指针类型之间的隐式转换来实现类似于C++风格的`struct`继承。可以通过`-fplan9-extensions`选项和派生`struct`中基类型的未命名初始字段来避免编写手动转换。
 - en: Some programs use a concrete function pointer type such as `void (*) (void)`
     as a generic function pointer type (similar to `void *` for object pointer types),
     and rely on implicit casts to and from this type. The reason for that is that
@@ -382,11 +435,14 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些程序使用像`void (*) (void)`这样的具体函数指针类型作为通用函数指针类型（类似于对象指针类型的`void *`），并依赖于隐式转换到和从这种类型。这是因为C语言没有提供通用函数指针类型，并且标准C不允许函数指针类型和对象指针类型之间的转换。在大多数目标中，GCC支持`void
+    *`和函数指针类型之间的隐式转换。然而，为了实现可移植的解决方案，需要使用具体的函数指针类型，并配合显式转换。
 - en: Impact on Autoconf and build environment probing in general
   id: totrans-split-67
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 对Autoconf和一般构建环境探测的影响
 - en: Most [Autoconf](https://www.gnu.org/software/autoconf/) probes that check for
     build system features are written in such a way that they trigger a compiler error
     if a feature is missing. The new errors may cause GCC to fail compiling a probe
@@ -396,17 +452,20 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数[Autoconf](https://www.gnu.org/software/autoconf/)探测器检查构建系统功能的方式编写，如果某个功能缺失会触发编译器错误。新的错误可能导致GCC在之前工作正常的探测器上编译失败，与探测的实际目标无关。这些失败的探测器倾向于禁用程序功能及其测试，导致特性悄然丢失。
 - en: In cases where this is a concern, generated `config.log`, `config.h` and other
     source code files can be compared using `diff`, to ensure there are no unexpected
     differences.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，可以使用 `diff` 比较生成的 `config.log`、`config.h` 和其他源代码文件，以确保没有意外的差异。
 - en: This phenomenon also impacts similar procedures that are part of CMake, Meson,
     and various build tools for C extension modules of scripting languages.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一现象还影响了 CMake、Meson 和各种用于脚本语言的 C 扩展模块的构建工具中的类似过程。
 - en: Autoconf has supported C99 compilers since at least version 2.69 in its generic,
     core probes. (Specific functionality probes may have issues addressed in more
     recent versions.) Versions before 2.69 may have generic probes (for example for
@@ -415,11 +474,14 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: Autoconf 自至少版本 2.69 起已支持 C99 编译器的通用核心探测。（特定功能探测可能已在更近版本中解决了问题。）2.69 之前的版本可能具有依赖于
+    C99 中已删除的 C 特性的通用探测（例如标准 C 支持的探测），因此在 GCC 14 下会失败。
 - en: Turning errors back into warnings
   id: totrans-split-72
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 将错误转换为警告
 - en: Sources that cannot be ported to standard C can be compiled with `-fpermissive`,
     `-std=gnu89`, or `-std=c89`. Despite their names, the latter two options turn
     on support for pre-standard C constructs, too. With the `-fpermissive` option,
@@ -430,6 +492,9 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 无法移植到标准 C 的源代码可以使用 `-fpermissive`、`-std=gnu89` 或 `-std=c89` 进行编译。尽管名称如此，后两个选项也会打开对预标准
+    C 构造的支持。使用 `-fpermissive` 选项，程序可以使用 C99 内联语义和已从 C99 中删除的特性。或者，可以使用相关的 `-Wno-error=…`
+    选项将个别错误降级为警告，或使用 `-Wno-…` 完全禁用。例如，`-Wno-error=incompatible-pointer-types` 可关闭大多数指针赋值的类型检查。
 - en: 'Some build systems do not pass the `CFLAGS` variable to all parts of the builds,
     and may require setting `CC` to something like `gcc -fpermissive` instead. If
     the build system does not support whitespace in the `CC` variable, a wrapper script
@@ -437,35 +502,44 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些构建系统不会将 `CFLAGS` 变量传递给所有构建部分，可能需要将 `CC` 设置为类似 `gcc -fpermissive` 的内容。如果构建系统不支持
+    `CC` 变量中的空格，则可能需要类似以下的包装脚本：
 - en: '[PRE12]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Accommodating C code generators
   id: totrans-split-76
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 适应 C 代码生成器
 - en: 'C code generators that cannot be updated to generate valid standard C can emit
     [`#pragma GCC diagnostic warning`](/onlinedocs/gcc-14.1.0/gcc/Diagnostic-Pragmas.html)
     directives to turn these errors back into warnings:'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 无法更新以生成有效标准 C 代码的 C 代码生成器可以发出 [`#pragma GCC diagnostic warning`](/onlinedocs/gcc-14.1.0/gcc/Diagnostic-Pragmas.html)
+    指令，将这些错误变回警告：
 - en: '[PRE13]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Not included here are `-Wimplicit-int` and `-Wdeclaration-missing-parameter-type`
     because they should be straightforward to address in a code generator.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 不包括 `-Wimplicit-int` 和 `-Wdeclaration-missing-parameter-type`，因为它们在代码生成器中应该很容易解决。
 - en: Future directions
   id: totrans-split-80
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 未来的方向
 - en: This section concerns potential future changes related to language features
     from the C standard and other backwards compatibility hazards. These plans may
     change and are mentioned here only to give guidance which source-level changes
@@ -473,6 +547,7 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 本节涉及与 C 标准及其他向后兼容性隐患相关的语言特性的潜在未来更改。这些计划可能会改变，并且仅在此提供指导，以优先考虑未来兼容性的源代码级变更。
 - en: It is unclear at which point GCC can enable the C23 `bool` keyword by default
     (making the `bool` type available without including `#include <stdbool.h>`). Many
     programs define their own `bool` types, sometimes with a different size than the
@@ -484,23 +559,30 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前尚不清楚 GCC 何时可以默认启用 C23 的 `bool` 关键字（使 `bool` 类型可用，而无需包含 `#include <stdbool.h>`）。许多程序定义自己的
+    `bool` 类型，有时与内置的 `_Bool` 类型大小不同。进一步的复杂性在于，即使大小相同，自定义的 `bool` 通常也没有陷阱表示，而 `_Bool`
+    和新的 `bool` 类型则有。这意味着在处理不受信任、不一定格式良好的输入数据时，可能会出现微妙的兼容性问题。
 - en: GCC is unlikely to warn about function declarations that are not prototypes
     by default. This means that there is no stringent reason to turn
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: GCC 默认不太可能警告未声明为原型的函数声明。这意味着没有严格的理由来转换
 - en: '[PRE14]'
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: into
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 转变为
 - en: '[PRE15]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: except for diagnosing extraneous ignored arguments as errors. A future version
     of GCC will likely warn about calls to functions without a prototype which specify
     such extraneous arguments (`do_something (1)`, for example). Eventually, GCC will
@@ -508,16 +590,19 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了将多余的忽略参数诊断为错误外，未来版本的GCC可能会警告没有原型的函数调用，这些函数指定了这些多余的参数（例如 `do_something (1)`）。最终，GCC将因为这些在C23中的约束违反而将此类调用诊断为错误。
 - en: GCC will probably continue to support old-style function definitions even once
     C23 is used as the default language dialect.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使C23作为默认语言方言，GCC可能会继续支持旧式函数定义。
 - en: C++ language issues
   id: totrans-split-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: C++ 语言问题
 - en: Some C++ Standard Library headers have been changed to no longer include other
     headers that were being used internally by the library. As such, C++ programs
     that used standard library components without including the right headers will
@@ -525,27 +610,33 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些C++标准库头文件已更改为不再包括库内部使用的其他头文件。因此，没有正确包含正确头文件的C++程序将不再编译。
 - en: 'The following headers are used less widely in libstdc++ and may need to be
     included explicitly when compiling with GCC 14:'
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用GCC 14编译时，以下头文件在libstdc++中使用较少，可能需要显式包含：
 - en: '`<algorithm>` (for `std::copy_n`, `std::find_if`, `std::lower_bound`, `std::remove`,
     `std::reverse`, `std::sort` etc.)'
   id: totrans-split-92
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<algorithm>`（用于 `std::copy_n`、`std::find_if`、`std::lower_bound`、`std::remove`、`std::reverse`、`std::sort`
+    等）'
 - en: '`<cstdint>` (for `std::int8_t`, `std::int32_t` etc.)'
   id: totrans-split-93
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`<cstdint>`（用于 `std::int8_t`、`std::int32_t` 等）'
 - en: Pragma GCC target now affects preprocessor symbols
   id: totrans-split-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Pragma `GCC target` 现在影响预处理器符号
 - en: The behavior of pragma `GCC target` and specifically how it affects ISA macros
     has changed in GCC 14\. Before the `GCC target` pragma defined and undefined corresponding
     ISA macros in C when using the integrated preprocessor during compilation but
@@ -555,24 +646,30 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: pragma `GCC target` 的行为及其如何影响ISA宏在GCC 14中已发生变化。在使用集成预处理器进行编译时，`GCC target` pragma在C中定义和未定义相应的ISA宏，但在分开步骤调用预处理器或使用
+    `-save-temps` 选项时不会这样做。在C++中，ISA宏的定义方式并没有实际效果。
 - en: In GCC 14 C++ behaves like C with integrated preprocessing in earlier versions.
     Moreover, in both languages ISA macros are defined and undefined as expected when
     preprocessing separately from compilation.
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 在GCC 14中，C++的行为类似于早期版本中具有集成预处理的C。此外，在两种语言中，ISA宏在预处理时与编译分开时定义和未定义的方式如预期那样。
 - en: This can lead to different behavior, especially in C++. For example, a part
     of the C++ snippet below will be (silently) compiled for an incorrect instruction
     set by GCC 14.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能导致不同的行为，特别是在C++中。例如，下面的C++片段的一部分将在GCC 14中被（悄悄地）编译为错误的指令集。
 - en: '[PRE16]'
   id: totrans-split-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The fix in this case is to remember whether `pop_options` needs to be performed
     in a new user-defined macro.
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下的修复方法是记住是否需要在新的用户定义的宏中执行 `pop_options`。
