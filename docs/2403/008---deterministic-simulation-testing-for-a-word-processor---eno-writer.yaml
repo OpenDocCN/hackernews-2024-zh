@@ -2,41 +2,50 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:38:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:38:17'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 008 - deterministic simulation testing for a word processor | eno writer
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 008 - 一个文字处理器的确定性仿真测试 | eno作者
 - en: 来源：[https://www.eno-writer.com/008-deterministic-simulation-testing-for-a-word-processor/](https://www.eno-writer.com/008-deterministic-simulation-testing-for-a-word-processor/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.eno-writer.com/008-deterministic-simulation-testing-for-a-word-processor/](https://www.eno-writer.com/008-deterministic-simulation-testing-for-a-word-processor/)
 - en: <main>
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main>
 - en: 008 - deterministic simulation testing for a word processor
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 008 - 一个文字处理器的确定性仿真测试
 - en: '*15 Mar, 2024*'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*2024年3月15日*'
 - en: It's hard to overstate the cost of having bugs in your software. At best, they
     give your users little paper cuts during an otherwise positive experience, at
     worst they set your users back, leaving them wishing they had never used your
@@ -47,6 +56,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在软件中存在bug的成本难以言表。最好的情况是，在用户体验中带来小小的困扰，而在最糟糕的情况下，它们会让用户倒退，让他们后悔使用你的软件。在幕后，bug的成本还在继续。修复已经进入生产环境的bug所需的时间远远超过产生它的时间。一个团队在修复新功能中的bug上花费的时间往往比他们编写该功能的时间还要多。
 - en: I've taken a lot of inspiration over the last couple years from [TigerBeetle](https://tigerbeetle.com/).
     TigerBeetle is a startup that is building a financial accounting database from
     scratch in zig. You can imagine that avoiding bugs is top of mind for a company
@@ -57,6 +67,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 过去几年里，我从[TigerBeetle](https://tigerbeetle.com/)那里汲取了很多灵感。TigerBeetle是一家初创公司，在zig语言中从头开始构建金融会计数据库。你可以想象，对于一家正在构建数据库以存储数十亿（数万亿？）美元金融交易的公司来说，避免bug是头等大事。Joran
+    Dirk Greef，CEO/创始人，比任何人都更能体会到这项任务的困难，指出Postgres（一种极为流行的数据库）竟然在数据持久性方面有一个近20年未被发现的bug（详情见[这里](https://news.ycombinator.com/item?id=19119991)）。
 - en: Joran's team is taking a multi-prong approach to ensuring TigerBeetle is bulletproof
     by the time it enters production use. One of the most interesting prongs is something
     they call deterministic simulation testing. They have written a program called
@@ -69,6 +81,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Joran的团队正在采取多管齐下的方法，确保TigerBeetle在投入生产使用时是无懈可击的。其中最有趣的方法之一是他们称之为确定性仿真测试。他们编写了一个名为VOPR（"vopper"）的程序，模拟TigerBeetle集群的运行，并快速执行一系列确定的动作，以测试其行为是否正确。动作序列是使用随机种子生成的，这意味着该程序可以一次又一次地运行，并产生不同的序列。Joran说这是一个时间机器，可以让他们在几小时内模拟多年的使用情况。
 - en: I wanted to find a way to bring deterministic simulation testing to eno. I also
     wanted to do this early, while it was still a fairly small undertaking. I also
     knew it needed to have a pithy name like the VOPR, so I called it Lincoln. Lincoln
@@ -79,12 +92,14 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想找到一种方法，将确定性仿真测试引入到eno中。我也希望在项目还比较小的时候就尽早实现这一点。我知道它需要一个像VOPR这样简洁的名称，所以我称其为Lincoln。Lincoln是一位很棒的作者，但他很容易出错。每次他输入新内容时，总会忘记一部分并意外添加一些额外的文字。他总是最终注意到自己的错误并返回修正它们。他还在途中保存了自己的工作，保留了版本的历史记录。
 - en: Here's Lincoln writing the Gettysburg address in eno. On the left is what the
     end user would see. On the right is eno's internal representation of documents.
     It uses a tree data structure which I call the BFT (the "T" stands for tree).
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是林肯用 eno 写葛底斯堡演讲。左边是最终用户看到的内容。右边是 eno 对文档的内部表示。它使用了一种称为 BFT 的树形数据结构（“T”代表树）。
 - en: So, was writing Lincoln worth it? Absolutely yes. I am actually surprised with
     how effective this very humble script has been already. When I first got Lincoln
     working properly, it immediately uncovered two bugs which caused eno to crash.
@@ -98,6 +113,9 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，写林肯是值得的吗？绝对是的。我实际上对这个非常简单的脚本已经如此有效感到惊讶。当我第一次让林肯正常工作时，它立即揭示了导致 eno 崩溃的两个错误。我能够从这些崩溃的错误输出中创建一个单元测试，来分离
+    BFT 中特定问题。这些 bug 随后很容易修复。到目前为止，我发现 bug 的过程是运行 eno 并尝试以各种方式输入内容，看看是否会崩溃。这种方法的问题是我必须想出可能使
+    eno 出错的方法。我不够有创意的 bug，我会错过。而有了林肯，我只需运行程序，不出意外地，它做的一些随机事情就会揭示一个 bug。
 - en: Once Lincoln was able to complete the Gettysburg address with no crashes, I
     started to instrument some high level performance measurements. One of my fears
     is that the BFT will not scale well as documents receive more and more edits.
@@ -106,10 +124,13 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦林肯能够在没有崩溃的情况下完成葛底斯堡演讲，我开始进行一些高级性能测量。我的一个担忧是，随着文档接受越来越多的编辑，BFT 的扩展性可能不会很好。事实证明确实如此
+    - 我第一次运行带有仪表的林肯时产生了以下输出。
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Note how the longest edit was the last edit (483/483) and took roughly 5x the
     length of the average. I had anticipated this and knew one thing I would need
     to do is simplify the underlying data structure every time the user commits a
@@ -119,38 +140,48 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意最长的编辑是最后一次编辑（483/483），大约花了平均时间的5倍。我预料到了这一点，并且知道我需要做的一件事是简化每次用户提交新版本文档时的基础数据结构。直到现在，BFT
+    在一个独立的树节点中保存了所有的编辑历史。我继续实施了这一点，然后再次运行了 Lincoln：
 - en: '[PRE1]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Well, the max time is still fairly near the end and it's still about 4x the
     average. The good news is that all the numbers are about 90% lower than the previous
     benchmark. I can live with that for now.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，最大时间仍然接近结尾，并且仍然是平均时间的约4倍。好消息是，所有数字都比以前的基准低约90%。我可以暂时接受这一点。
 - en: I've just scratched the surface of what is possible but I am quite excited about
     what the future holds for Lincoln!
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我只是探索了可能性的一小部分，但我对林肯未来能做到什么感到非常兴奋！
 - en: '* * *'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: If you liked this post, please consider sharing it with a friend.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您喜欢这篇文章，请考虑与朋友分享。
 - en: We also have an [RSS feed](/feed/)
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还有一个[ RSS feed](/feed/)
 - en: '[#software](/blog/?q=software) [#startups](/blog/?q=startups) [#zig](/blog/?q=zig)'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '[#软件](/blog/?q=software) [#创业公司](/blog/?q=startups) [#zig](/blog/?q=zig)'
 - en: </main>
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
