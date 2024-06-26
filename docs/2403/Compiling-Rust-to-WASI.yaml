@@ -145,6 +145,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: and it'd spit out a wasm file right? Wrong! Instead you get this
   id: totrans-split-21
   prefs:
@@ -160,6 +161,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Turns out the Rust compiler does not know how to handle the C/C++ in the parsers
     for this target. So I went and downloaded the [wasi-sdk](https://github.com/WebAssembly/wasi-sdk)
     and install the released binaries to `/opt/wasi-sdk-21.0`. And then set some RUSTFLAGs
@@ -175,17 +177,20 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We use a special version of clang and other c libs they provide to make wasi/C
     interop easier. Messing with C/C++ compilers is definitely not my forte, so I
     was very thankful to have help figuring that out. Thankfully this builds.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们使用他们提供的特殊版本的 clang 和其他 C 库，使 wasi/C 互操作更容易。弄清楚 C/C++ 编译器并不是我的强项，所以我非常感谢有人帮助弄清楚这一点。幸运的是这次编译成功了。
 - en: Convert a WASI preview 1 file to a WASI preview 2 file
   id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将 WASI 预览 1 文件转换为 WASI 预览 2 文件
 - en: If you've been following the development of WASI, you'd know that fairly recently
     we saw the release of [WASI preview 2](https://component-model.bytecodealliance.org/).
     WASI preview 2 provides a component model for WASI components, allowing them to
@@ -197,6 +202,10 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你一直在关注 WASI 的发展，你就会知道最近我们看到了 [WASI 预览 2 的发布](https://component-model.bytecodealliance.org/)。WASI
+    预览 2 为 WASI 组件提供了一个组件模型，允许它们相互通信。目前，Rust 的 `wasm32-wasi` 目标针对的是 WASI 预览 1。我们希望预览
+    2 能够让 WASI 在浏览器中运行，配合新发布的 [jco](https://bytecodealliance.org/articles/jco-1.0)
+    转换器。链接的文章提到允许 WASI 预览 2 组件在 node.js 中运行，但它还有更多实验性支持在浏览器中运行它们。
 - en: The easiest way to convert a wasi preview 1 module to a wasi preview 2 component
     is to use [cargo-component](https://github.com/bytecodealliance/cargo-component),
     which basically replaces the command above. You do still need all the RUSTFLAGS
@@ -206,14 +215,19 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 WASI 预览 1 模块转换为 WASI 预览 2 组件的最简单方法是使用 [cargo-component](https://github.com/bytecodealliance/cargo-component)，基本上替换了上面的命令。你仍然需要所有的
+    RUSTFLAGS 和其他环境变量。如果你不使用 `cargo component new` 来处理这些问题，我发现通过将以下内容添加到你的 Cargo.toml
+    文件中也能运行。关键在于冒号后面的部分要与你在 wit 文件中定义的世界匹配。
 - en: TOML markup
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: TOML 标记
 - en: '[PRE3]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'and then setting up the wit bindings. WASI2 defines functions and types that
     are exported and imported from other components using the [WIT language](https://component-model.bytecodealliance.org/design/wit.html).
     Cargo component will take those bindings, and then match them to Rust functions
@@ -222,14 +236,19 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后设置 wit 绑定。WASI2 定义了使用 [WIT 语言](https://component-model.bytecodealliance.org/design/wit.html)
+    从其他组件导出和导入的函数和类型。Cargo component 将使用这些绑定，并将它们与 `Guest` trait 中定义的 Rust 函数匹配。对于这个
+    crate，我们只想导出两个 Rust 函数：
 - en: wit
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 机智
 - en: '[PRE4]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: I won't get too far into the WIT language here, but it's fairly Rust like, and
     I found it functional and fairly easy to pick up. The part that threw me while
     writing this is that while the functions are mapped to Rust functions, the types
@@ -239,24 +258,32 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不会在这里深入讨论 WIT 语言，但它相当于 Rust，并且我发现它功能强大且易于掌握。在写这篇文章时让我感到困惑的部分是，虽然函数映射到 Rust
+    函数，但在这里定义的类型将自动转换为 Rust 类型。因此，需要删除 Rust 中现有版本的 `HighlightError`、`HtmlOutput` 等，并用自动生成的
+    bindings.rs 文件中的生成版本替换它们。
 - en: To map the functions, we define a `Component` struct and implement the `Guest`
     trait for it in `src/lib.rs`.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了映射这些函数，我们在 `src/lib.rs` 中定义了一个 `Component` 结构体，并为其实现了 `Guest` trait。
 - en: Rust code
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 代码
 - en: '[PRE5]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: With all that done, we can run `cargo component build` and get a WASI preview
     2 component `.wasm` file with these exported functions and types built in.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成所有这些后，我们可以运行 `cargo component build` 并获得一个包含这些导出函数和类型的 WASI 预览 2 组件 `.wasm`
+    文件。
 - en: Remember all that text I wrote about ABI incompatibility earlier? Well, WASI
     preview 2 defines a [Canonical ABI](https://github.com/WebAssembly/component-model/blob/main/design/mvp/CanonicalABI.md)
     so that all the languages compiled to WASI can talk to eother WASI components.
@@ -291,6 +318,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The output for my module is seen below.
   id: totrans-split-46
   prefs:
@@ -306,6 +334,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Looks very similar to our wit file right? The only new stuff here we can see
     is all of the wasi function imports automatically added by wasi. Pretty neat huh?
   id: totrans-split-49
@@ -322,6 +351,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: So now it'll get transpiled into a folder containing a few wasm files and some
     js glue
   id: totrans-split-52
@@ -338,6 +368,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Let's take a peek in the JS file and see what we see. Probably without the --minify
     to make it a bit easier to read. It's quite long, so I'll link to it here
   id: totrans-split-55
@@ -354,6 +385,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '*It''s definitely interesting to see the shenanigans JS has to jump through
     to match the type system of Wit or Rust. Returning a `result<htmloutput, highlighterro>`
     creates a ton of switch cases blocks! At the top we can see a number of imports
@@ -383,6 +415,7 @@
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: This is from the minified version, but you can see I'm setting absolute paths
     to the folder served by my server. With this in place, we should be ready to move
     on!*
@@ -419,22 +452,26 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: wasm_bindgen 来拯救！在这里我们看到了导出到JS的wasm函数，并按照wasm_bindgen的要求将其传递到extern C块中。由于返回类型是结构体，我重新定义了返回类型，并创建了帮助函数来从`JsValue`中解析它们。可能有更好的方法来做这个，但是类型是在一个无法编译到wasm32_unknown_unknown的crate中定义的，我想这比定义一个单独的类型crate要容易些。
 - en: Rust code
   id: totrans-split-67
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: Rust 代码
 - en: '[PRE12]'
   id: totrans-split-68
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Use it in a Leptos component
   id: totrans-split-69
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Leptos组件中使用它
 - en: Finally, the moment of truth! We've compiled our library to WASI preview 2,
     transpiled it with JCO to generate JS bindings, and shimmed the wasi calls with
     a locally served copy of the preview2-shim package. The good news is that since
@@ -443,6 +480,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 最终，决定时刻到了！我们已经将我们的库编译成了WASI预览2版，用JCO进行了转译以生成JS绑定，并用本地提供的preview2-shim包来衬接wasi调用。好消息是，因为这些现在是普通的Rust函数，我们可以像调用普通函数一样调用它。
 - en: Because I'm using it in wasm_bindgen to process the returned values, you can
     see I've gated the function imports for our markdown processing functions behind
     a feature flag
@@ -450,16 +488,19 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 因为我在wasm_bindgen中使用它来处理返回的值，你可以看到我已经将我们的markdown处理函数的函数导入放在了一个特性标志后面。
 - en: Rust code
   id: totrans-split-72
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: Rust 代码
 - en: '[PRE13]*'
   id: totrans-split-73
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '[PRE13]*'
 - en: '*If you''ll notice, we crate an `on:input` event handler that will read the
     value of the textarea, and calls our `process_markdown_to_html_with_frontmatter()`
     function that we imported from WASI, but only on the client, because it''s only
@@ -467,6 +508,7 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '*如果你注意到的话，我们创建了一个`on:input`事件处理程序，它将读取文本区域的值，并调用我们从WASI导入的`process_markdown_to_html_with_frontmatter()`函数，但只在客户端上，因为它只在那里定义。'
 - en: Success! You can even try it yourself by adding `/edit` to the end of this post
     url like [so](https://benw.is/posts/compiling-rust-to-wasi/edit). If I setup auth
     right, you won't be able to actually commit changes, and if I didn't I'm sure
@@ -474,6 +516,8 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 成功！你甚至可以尝试自己添加`/edit`到这篇文章URL的末尾，像这样[so](https://benw.is/posts/compiling-rust-to-wasi/edit)。如果我设置了正确的认证，你将无法提交更改，如果我没有，我相信会有人告诉我的
+    :）。
 - en: On this journey I learned a lot about webassembly, wasi, and wasi tooling in
     the Rust ecosystem. I have to say I'm excited, both for what's possible now and
     what's coming in the future. There idea that we could write programs in our own
@@ -484,6 +528,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个旅程中，我对WebAssembly、WASI和Rust生态系统中的WASI工具有了很多了解。我不得不说我很兴奋，既为现在可能的事情，也为未来即将到来的事情。我们能够用自己喜欢的编程语言编写程序，并将其编译成几乎任何平台都可以执行的通用格式，这种想法确实是革命性的。我想起了DestroyAllSoftware的这个[演讲](https://www.destroyallsoftware.com/talks/the-birth-and-death-of-javascript)，他在其中提出这些虚拟化环境可能会主导世界，看来他们有点先见之明。
 - en: The tooling itself is a bit wonky and experimental, but I expect that'll be
     resolved in time. If you happen to have a Rust only project, I expect compiling
     to WASI preview 2 would be somewhat smoother.The Rust project and the people behind
@@ -491,6 +536,8 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 工具本身有点奇怪和实验性，但我预计随着时间的推移会解决这个问题。如果你碰巧有一个纯Rust项目，我预计编译到WASI预览2会顺利些。Rust项目和Bytecode
+    Alliance背后的人似乎正在努力使其尽可能简单。
 - en: For those who want to take a deeper look at the generated wasi or the Leptos
     app that uses it, feel free to check out the github repo [here](https://github.com/benwis/benwis_spin).
     In theory there should be a place where I can post the WASI file as a module for
@@ -501,3 +548,5 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于那些想深入了解生成的wasi或使用它的Leptos应用程序的人，欢迎查看GitHub仓库[这里](https://github.com/benwis/benwis_spin)。理论上应该有一个地方可以发布WASI文件作为模块供其他人使用，就像crates.io一样，如果我找到了，我也会在那里发布。如果你正在做一个酷炫的WASI项目，我很乐意听到。请随时通过我的Mastodon
+    @benwis@hachyderm.io或其他社交媒体联系方式来联系我。
