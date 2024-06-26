@@ -257,6 +257,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 从系统角度来看，组装后的编码视频是主要关注的内容，而内部分块和单独的分块编码存在是为了满足某些延迟和弹性需求。此外，正如上文所述，视频质量计算与编码服务提供的功能完全分离。
 - en: 'Thus, in Cosmos, we created two independent microservices: Video Encoding Service
     (VES) and [Video Quality Service (VQS)](/netflix-video-quality-at-scale-with-cosmos-microservices-552be631c113),
     each of which serves a clear, decoupled function. As implementation details, the
@@ -264,17 +265,20 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在Cosmos中，我们创建了两个独立的微服务：视频编码服务（VES）和[视频质量服务（VQS）](/netflix-video-quality-at-scale-with-cosmos-microservices-552be631c113)，每个服务都提供清晰的、解耦的功能。在实施细节上，分块编码和组装被抽象为VES中的一部分。
 - en: Video Services
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 视频服务
 - en: The approach outlined above was applied to the rest of the video processing
     pipeline to identify functionalities and hence service boundaries, leading to
     the creation of the following video services².
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述方法被应用于视频处理管道的其余部分，以识别功能，并因此创建以下视频服务²。
 - en: 'Video Inspection Service (VIS): This service takes a mezzanine as the input
     and performs various inspections. It extracts metadata from different layers of
     the mezzanine for downstream services. In addition, the inspection service flags
@@ -284,6 +288,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 'Video Inspection Service (VIS): 此服务以中间介质作为输入，并执行各种检查。它从中间介质的不同层提取元数据，以供下游服务使用。此外，检查服务在观察到无效或意外元数据时标记问题，并向上游团队提供可操作的反馈。'
 - en: 'Complexity Analysis Service (CAS): The optimal encoding recipe is highly content-dependent.
     This service takes a mezzanine as the input and performs analysis to understand
     the content complexity. It calls Video Encoding Service for [pre-encoding](/dynamic-optimizer-a-perceptual-video-encoding-optimization-framework-e19f1e3a277f)
@@ -293,6 +298,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 'Complexity Analysis Service (CAS): 最佳编码配方高度依赖于内容。此服务以中间介质为输入，并执行分析以了解内容复杂性。它调用视频编码服务进行[预编码](/dynamic-optimizer-a-perceptual-video-encoding-optimization-framework-e19f1e3a277f)，并调用视频质量服务进行质量评估。结果保存到数据库中以便重复使用。'
 - en: 'Ladder Generation Service (LGS): This service creates an entire bitrate ladder
     for a given encoding family (H.264, AV1, etc.). It fetches the complexity data
     from CAS and runs the optimization algorithm to create encoding recipes. The CAS
@@ -309,6 +315,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 'Ladder Generation Service (LGS): 此服务为给定的编码家族（H.264、AV1等）创建整个比特率阶梯。它从CAS获取复杂性数据，并运行优化算法以创建编码配方。CAS和LGS涵盖了我们先前在技术博客中提出的大部分创新（[按标题](http://techblog.netflix.com/2015/12/per-title-encode-optimization.html)，[移动编码](http://techblog.netflix.com/2016/12/more-efficient-mobile-encodes-for.html)，[按镜头](/optimized-shot-based-encodes-now-streaming-4b9464204830)，[优化的4K编码](/optimized-shot-based-encodes-for-4k-now-streaming-47b516b10bbb)等）。通过将阶梯生成封装到一个独立的微服务（LGS）中，我们将阶梯优化算法与复杂性分析数据的创建和管理（驻留在CAS中）解耦。我们期望这将为我们提供更大的实验自由度和更快的创新速度。'
 - en: 'Video Encoding Service (VES): This service takes a mezzanine and an encoding
     recipe and creates an encoded video. The recipe includes the desired encoding
     format and properties of the output, such as resolution, bitrate, etc. The service
@@ -318,6 +325,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 'Video Encoding Service (VES): 此服务以中间介质和编码配方作为输入，并创建编码视频。配方包括所需的编码格式和输出属性，如分辨率、比特率等。该服务还提供选项，允许根据使用情况进行延迟、吞吐量等的微调。'
 - en: 'Video Validation Service (VVS): This service takes an encoded video and a list
     of expectations about the encode. These expectations include attributes specified
     in the encoding recipe as well as conformance requirements from the codec specification.
@@ -327,6 +335,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 视频验证服务（VVS）：该服务接收编码视频和编码预期清单作为输入。这些预期包括编码配方中指定的属性以及编解码器规范中的一致性要求。VVS 分析编码视频，并将结果与指定的预期进行比较。任何差异都会在响应中标记，以提醒调用方。
 - en: '[Video Quality Service (VQS)](/netflix-video-quality-at-scale-with-cosmos-microservices-552be631c113):
     This service takes the mezzanine and the encoded video as input, and calculates
     the quality score (VMAF) of the encoded video.'
@@ -334,11 +343,13 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[视频质量服务（VQS）](/netflix-video-quality-at-scale-with-cosmos-microservices-552be631c113)：该服务以中介格式和编码视频作为输入，计算编码视频的质量分数（VMAF）。'
 - en: Service Orchestration
   id: totrans-split-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 服务编排
 - en: Each video service provides a dedicated functionality and they work together
     to generate the needed video assets. Currently, the two main use cases of the
     Netflix video pipeline are producing assets for member streaming and for studio
@@ -348,6 +359,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个视频服务都提供专门的功能，并且它们协同工作以生成所需的视频资产。目前，Netflix 视频流水线的两个主要用例是为会员流媒体和制片厂运营生成资产。针对每个用例，我们创建了专用的工作流编排器，以便可以根据对应的业务需求进行定制化的服务编排。
 - en: For the streaming use case, the generated videos are deployed to our content
     delivery network (CDN) for Netflix members to consume. These videos can easily
     be watched millions of times. The Streaming Workflow Orchestrator utilizes almost
@@ -361,6 +373,9 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于流媒体用例，生成的视频部署到我们的内容传输网络（CDN），供 Netflix 会员消费。这些视频可能会被观看数百万次。流媒体工作流编排器利用几乎所有视频服务，为会员提供卓越的观看体验。它利用
+    VIS 检测和拒绝不符合规范或低质量的中介格式，调用 LGS 进行编码配方优化，使用 VES 编码视频，并调用 VQS 进行质量测量，质量数据进一步用于 Netflix
+    的数据管道进行分析和监控。除视频服务外，流媒体工作流编排器还使用音频和定时文本服务生成音频和文本资产，以及使用打包服务将资产“容器化”供流媒体使用。
 - en: For the studio use case, some example video assets are marketing clips and daily
     production editorial proxies. The requests from the studio side are generally
     latency-sensitive. For example, someone from the production team may be waiting
@@ -375,3 +390,5 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于制片厂用例，一些示例视频资产包括营销片段和每日制作编辑代理。来自制片方的请求通常对延迟敏感。例如，制作团队的某人可能正在等待视频进行审阅，以便决定第二天的拍摄计划。因此，制片工作流编排器优化以实现快速周转，并专注于核心媒体处理服务。此时，制片工作流编排器调用
+    VIS 提取摄入资产的元数据，并使用预定义的配方调用 VES。与会员流媒体相比，制片运营对视频处理有不同且独特的需求。因此，制片工作流编排器独占一些编码功能，如取证水印和时间码/文本烧录。
