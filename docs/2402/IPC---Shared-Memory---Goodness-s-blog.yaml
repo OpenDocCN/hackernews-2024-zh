@@ -87,11 +87,13 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果进程只能使用无法共享的虚拟内存，它们如何使用共享内存进行通信呢？让我们来看看这个问题。
 - en: Shared Memory
   id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 共享内存
 - en: Shared memory is a segment of memory shared between processes. The segment of
     physical memory is mapped to each process’s virtual memory via their page tables.
     Once this is done, the process can read and write to this segment just like with
@@ -101,12 +103,15 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 共享内存是在进程之间共享的一段内存。物理内存段通过它们各自的页表映射到每个进程的虚拟内存中。一旦完成映射，进程就可以像处理其他段一样读写这一段。写入此段的任何数据对其他参与进程可见。虚拟地址可能因参与进程的不同而不同，尽管只有一个物理地址。
 - en: As with [Message Queues](https://goodyduru.github.io/os/2023/11/13/ipc-message-queues.html#message-queues),
     there are two kinds of Shared Memory - System V and POSIX. This article will focus
     on System V.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 与[消息队列](https://goodyduru.github.io/os/2023/11/13/ipc-message-queues.html#message-queues)一样，共享内存分为两种
+    - System V 和 POSIX。本文将重点介绍 System V。
 - en: Creating or accessing a Shared Memory segment requires a unique integer key.
     If a unique key isn’t used, an outsider process might communicate with your processes,
     which could be annoying or, even worse, damaging. This key can be hardcoded in
@@ -124,6 +129,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建或访问共享内存段需要一个唯一的整数键。如果没有使用唯一键，外部进程可能与您的进程进行通信，这可能很烦人，甚至更糟糕。此键可以在每个参与进程中硬编码，或者可以生成。硬编码键会降低唯一性的机会，因为外部进程可能在其中也硬编码相同的键。键的生成应该确保所有参与进程都能生成相同的键。幸运的是，有一个（几乎）保证唯一性且是确定性的函数存在。此函数称为[`ftok`](https://man7.org/linux/man-pages/man3/ftok.3.html)。它接受一个现有文件路径和一个整数作为参数。只要路径指向的文件未被重新创建，`ftok`
+    就会返回相同的结果。所有参与进程只需要使用相同的文件路径和整数调用 `ftok` 函数，就会生成相同的键。额外的安全步骤可以包括确保文件仅对参与进程可访问。
 - en: 'Once a key is generated, a process can use it to get or create a shared memory
     segment by calling the [`shmget`](https://man7.org/linux/man-pages/man3/shmget.3p.html)
     function. This function accepts 3 parameters: the key, the size of the shared
@@ -137,6 +144,9 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦生成了一个键，进程可以使用它来通过调用[`shmget`](https://man7.org/linux/man-pages/man3/shmget.3p.html)函数获取或创建一个共享内存段。此函数接受三个参数：键、共享内存的大小和一个标志。如果键未与共享内存段关联，并且标志中设置了**IPC_CREAT**位，将创建一个大小为
+    size 参数的共享内存段。在创建段时，函数返回一个 id。如果键具有现有的共享内存段，则返回该现有段的 id，即使标志设置了**IPC_CREAT**位也是如此。有多种原因可能导致错误，这些在
+    man 手册中有所涵盖。权限可以通过与[file permissions](https://www.multacom.com/faq/password_protection/file_permissions.htm)相同的格式在标志中定义。
 - en: 'After successfully getting the shared memory id, the virtual memory address
     of the shared memory segment is returned by the [`shmat`](https://man7.org/linux/man-pages/man3/shmat.3p.html)
     function. This function accepts 3 parameters: the shared memory id obtained from
@@ -207,6 +217,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: A temp file is (optionally) created to ensure that it exists. The ftok function
     is called with the file path and an integer. The shared memory segment is (optionally)
     created and accessed. This returns a shared memory object. A loop is run where
@@ -233,6 +244,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The server code sets up the shared memory segment similarly to the client code.
     Because `ftok` is called with the exact same parameters as the one in the client
     code, the generated key value will be the same. A message is sent and a while
