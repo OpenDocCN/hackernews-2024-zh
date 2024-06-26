@@ -2,50 +2,60 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-28 18:11:19'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-28 18:11:19
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Maybe possible bug in std::shared_mutex on Windows : cpp'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 可能是`std::shared_mutex`在Windows上的潜在bug：cpp
 - en: 来源：[https://old.reddit.com/r/cpp/comments/1b55686/maybe_possible_bug_in_stdshared_mutex_on_windows/](https://old.reddit.com/r/cpp/comments/1b55686/maybe_possible_bug_in_stdshared_mutex_on_windows/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://old.reddit.com/r/cpp/comments/1b55686/maybe_possible_bug_in_stdshared_mutex_on_windows/](https://old.reddit.com/r/cpp/comments/1b55686/maybe_possible_bug_in_stdshared_mutex_on_windows/)
 - en: A team at my company ran into a peculiar and unexpected behavior with `std::shared_mutex`.
     This behavior only occurs on Windows w/ MSVC. It does not occur with MinGW or
     on other platforms.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我公司的一个团队遇到了`std::shared_mutex`的一种奇特且意外的行为。这种行为仅在使用Windows的MSVC时发生，而在MinGW或其他平台上则不会发生。
 - en: 'At this point the behavior is pretty well understood. The question isn''t "how
     to work around this". The questions are:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 到了这一点，行为已经非常清楚。问题不是"如何解决这个问题"。问题是：
 - en: Is this a bug in `std::shared_mutex`?
   id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这是`std::shared_mutex`的bug吗？
 - en: Is this a bug in the [Windows SlimReaderWriter](https://learn.microsoft.com/en-us/windows/win32/sync/slim-reader-writer--srw--locks)
     implementation?
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这是[Windows SlimReaderWriter](https://learn.microsoft.com/en-us/windows/win32/sync/slim-reader-writer--srw--locks)实现中的bug吗？
 - en: I'm going to boldly claim "definitely yes" and "yes, or the SRW behavior needs
     to be documented". Your reaction is surely "it's never a bug, it's always user
     error". I appreciate that sentiment. Please hold that thought for just a minute
@@ -53,48 +63,57 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我大胆地声称"肯定是"和"是的，或者SRW的行为需要被记录下来"。你的反应肯定是"这绝对不是bug，这总是用户的错误"。我理解这种观点。请暂时保持这种看法，并继续阅读。
 - en: 'Here''s the scenario:'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是情景：
 - en: Main thread acquires **exclusive** lock
   id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 主线程获取了**排他**锁
 - en: Main thread creates N child threads
   id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 主线程创建了N个子线程。
 - en: 'Each child thread:'
   id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每个子线程：
 - en: Acquires a **shared** lock
   id: totrans-split-15
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 获取了**共享**锁
 - en: Yields until all children have acquired a shared lock
   id: totrans-split-16
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 直到所有子进程都获取了共享锁之后，才会产生结果。
 - en: Releases the **shared** lock
   id: totrans-split-17
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 释放了**共享**锁
 - en: Main thread releases the **exclusive** lock
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 主线程释放了**排他**锁。
 - en: This works ***most*** of the time. However 1 out of ~1000 times it "deadlocks".
     When it deadlocks exactly 1 child successfully acquires a shared lock and all
     other children block forever in `lock_shared()`. This behavior can be observed
@@ -103,6 +122,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这通常***大部分***时间都有效。然而，大约1次/1000次会发生"死锁"。当它发生时，确实有一个子进程成功获取了共享锁，而所有其他子进程则永远阻塞在`lock_shared()`中。无论是使用`std::shared_mutex`、`std::shared_lock`/`std::unique_lock`，还是直接调用`SRW`函数，都可以观察到这种行为。
 - en: If the single child that succeeds calls `unlock_shared()` then the other children
     will wake up. However if we're waiting for all readers to acquire their shared
     lock then we will wait forever. Yes, we could achieve this behavior in other ways,
@@ -110,6 +130,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果唯一成功调用`unlock_shared()`的子进程，则其他子进程将会唤醒。然而，如果我们正在等待所有读者获取他们的共享锁，那么我们将永远等待下去。是的，我们可以通过其他方式实现这种行为，但这不是问题的关键。
 - en: I made a [StackOverflow post](https://stackoverflow.com/questions/78090862/stdshared-mutexunlock-shared-blocks-even-though-there-are-no-active-exclus)
     that has had some good discussion. The behavior has been confirmed. However at
     this point we need a language lawyer, [u/STL](/u/STL), or quite honestly Raymond
@@ -117,10 +138,13 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在[StackOverflow上发表了一个帖子](https://stackoverflow.com/questions/78090862/stdshared-mutexunlock-shared-blocks-even-though-there-are-no-active-exclus)，得到了一些很好的讨论。行为已被确认。然而，现在我们需要一个语言专家，[u/STL](/u/STL)，或者坦率地说是Raymond
+    Chen，来宣布这是"设计缺陷"还是一个bug。
 - en: Here is code that can be trivially compiled to repro the error.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一段代码，可以轻松编译以重现这个错误。
 - en: '[PRE0]'
   id: totrans-split-23
   prefs: []
@@ -133,6 +157,8 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 就我个人而言，我认为在没有排他锁的情况下，函数`lock_shared()`不应该被允许永远阻塞。对我来说，这是一个bug。这种情况只出现在基于`SRW`的Windows
+    MSVC实现中的`std::shared_mutex`中。也许这在语言规范上是允许的？我不是一个语言专家。
 - en: I'm also inclined to call the `SRW` behavior either a bug or something that
     should be documented. There's a [2017 Raymond Chen](https://devblogs.microsoft.com/oldnewthing/20170301-00/?p=95615)
     post that discusses EXACTLY this behavior. He implies it is user error. Therefore
