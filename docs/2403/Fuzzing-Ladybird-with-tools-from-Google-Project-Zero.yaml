@@ -189,32 +189,38 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 事情出错的原因是因为`<body>`元素上的`onfoo`事件处理程序属性的特殊行为。为了与古老的网络内容兼容，对`document.body.onfoo`的赋值必须转发到`window.onfoo`。然而，通过`DOMParser`创建的文档*没有window对象！*
 - en: It turns out we’ve misunderstood this detail in our implementation, and structured
     our internal object model as if every document always has a window. Oops!
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果证明，我们在我们的实现中误解了这个细节，并构造了一个内部对象模型，就好像每个文档总是有一个窗口。糟糕！
 - en: The fix is to make `Document::window()` return a nullable value, and then handle
     null in a bajillion places. When assigning `document.body.onblur` in a window-less
     document, we now simply do nothing, same as other browsers.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 修复方法是使`Document::window()`返回一个可空值，然后在几百个地方处理null。在无窗口的文档中分配`document.body.onblur`时，我们现在像其他浏览器一样不执行任何操作。
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/b98a2be96bf03562ec21e80b48d4b3b97ad74cd6)'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '[(在此提交了修复。)](https://github.com/SerenityOS/serenity/commit/b98a2be96bf03562ec21e80b48d4b3b97ad74cd6)'
 - en: Modern browsers have to support SVG both inline in HTML, and also as an external
     image format. This adds a whole host of new edge cases and interesting interactions.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现代浏览器必须同时支持SVG在HTML中内联和作为外部图像格式。这增加了一系列新的边界情况和有趣的交互。
 - en: 'For example, SVG allows declaring gradients that reference other gradients
     to inherit their colors. As it turns out, we hadn’t considered the case where
     a gradient references itself:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，SVG允许声明引用其他渐变以继承其颜色的渐变。事实证明，我们没有考虑渐变引用自身的情况：
 - en: '[PRE7]'
   id: totrans-split-37
   prefs: []
@@ -225,12 +231,14 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的SVG会导致我们的实现永远循环，因为它试图跟随引用渐变的链。真是糟糕！
 - en: 'The obvious fix is to stop following the chain of linked gradients if the current
     gradient references itself. However, that doesn’t cover reference cycles that
     span multiple steps like so:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 显而易见的修复方法是：如果当前渐变引用自身，则停止跟随链接渐变的链。然而，这并不包括跨多个步骤的引用循环，就像这样：
 - en: '[PRE8]'
   id: totrans-split-40
   prefs: []
@@ -242,19 +250,23 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了正确处理循环引用，我们必须追踪我们访问过的所有渐变，并在遇到我们之前访问过的渐变时停止跟随链。
 - en: 'Curiously, Firefox actually complains about these kind of gradients in their
     developer console:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，Firefox实际上在他们的开发者控制台中抱怨这种渐变：
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/2e0297d7035a807d4a18c89c8b310ec06bef005d)'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '[(在此提交了修复。)](https://github.com/SerenityOS/serenity/commit/2e0297d7035a807d4a18c89c8b310ec06bef005d)'
 - en: 'This one is interesting:'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个很有趣：
 - en: '[PRE9]'
   id: totrans-split-45
   prefs: []
@@ -264,6 +276,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的测试会导致崩溃，如下所示：
 - en: '[PRE10]'
   id: totrans-split-47
   prefs: []
@@ -279,25 +292,30 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果事实证明，这实际上是HTML规范中的一个bug！当iframe从DOM中删除时，其内容文档将与其浏览上下文分离。然而，在获取或设置窗口对象的属性时，我们运行一个名为**“检查是否应报告两个浏览上下文之间的访问”**的规范算法，该算法检查“访问者”和“被访问者”窗口的浏览上下文。规格错误地假定在属性访问时，两个窗口都具有关联的浏览上下文。
 - en: '[I’ve opened an issue against the HTML spec](https://github.com/whatwg/html/issues/10192),
     and patched this in Ladybird in the meantime by adding a null check.'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[我已经在HTML规范](https://github.com/whatwg/html/issues/10192)上提出了一个问题，并在此期间通过添加了一个空检查来修复了Ladybird。'
 - en: Finding spec bugs is actually one of my favorite things while working on Ladybird.
     It allows us to improve the specs for everyone by submitting a bug report or fix.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Ladybird工作时，发现规范bug实际上是我最喜欢的事情之一。通过提交bug报告或修复，这使我们能够改进规范，造福每个人。
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/ad843b6e4a4404a4897b587711f9ce97a4504ed0)'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[(在此提交了修复。)](https://github.com/SerenityOS/serenity/commit/ad843b6e4a4404a4897b587711f9ce97a4504ed0)'
 - en: When opening the next page, it just wouldn’t finish loading. It just sat there
     chewing 100% CPU.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 打开下一页时，它就停在那里，占用100%的CPU，加载不完毕。
 - en: 'Here’s the reduction:'
   id: totrans-split-53
   prefs: []
