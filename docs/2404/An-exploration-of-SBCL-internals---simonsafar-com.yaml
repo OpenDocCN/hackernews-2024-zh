@@ -130,6 +130,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Then, we can invoke the disassembler by
   id: totrans-split-24
   prefs: []
@@ -138,6 +139,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: What we get is along the lines of
   id: totrans-split-26
   prefs: []
@@ -146,6 +148,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The interesting part to look for is "MOV EDI, 66". Apparently, RDX and RDI are
     the two parameters to "GENERIC-+", so what is happening is we take the two parameters,
     add them, we then fill EDI with a third parameter, and add that one, too. For
@@ -173,6 +176,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'indicating the origin, with helpful starting points for each instruction. Thus,
     our "0x42" byte is located at **0x100244024d** (... since ...4C is the first byte,
     ...4D is the second). SBCL provides a way for creating pointer values from integers:
@@ -185,6 +189,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '(the zero value being the offset compared to the memory address). It is exactly
     what we expected. Then, we can *setf* the same byte to something we want:'
   id: totrans-split-34
@@ -194,6 +199,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'If we disassemble our function now, we can see that the modification was indeed
     done:'
   id: totrans-split-36
@@ -203,6 +209,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '... and indeed, trying out our function again:'
   id: totrans-split-38
   prefs: []
@@ -211,6 +218,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Well, Lisp is not magic after all!
   id: totrans-split-40
   prefs: []
@@ -233,6 +241,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '... it can''t get much simpler than this. What we get is...'
   id: totrans-split-45
   prefs: []
@@ -241,6 +250,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: So... um... that string "hello world" is supposed to be associated with... [RIP-122]?
     OK this is confusing. Let's try something else; we'll return here again towards
     the end of this article.
@@ -266,6 +276,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: We just turn the (numeric) address into a System Area Pointer, then iterate
     over offsets while printing hex numbers, inserting newlines at every 16th one.
     I'm sure you can come up with more elegant / featureful versions; this was very
@@ -273,22 +284,27 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只需将（数值）地址转换为系统区域指针，然后在打印十六进制数时遍历偏移量，并在每16个数后插入换行符。我相信您可以想出更加优雅/功能丰富的版本；尽管这样编写非常快速。
 - en: 'So: let''s construct a string:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此：让我们构造一个字符串：
 - en: '[PRE11]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'and try finding its address:'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 并尝试找到它的地址：
 - en: '[PRE12]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Well, we''re clearly onto something: 0x61 is the ASCII code for the letter
     "a", and this is clearly something repeating, just like the many identical letters
     in our test string. Also, we seem to be using 4 bytes for each character (...
@@ -297,10 +313,13 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，显然我们已经找到了点什么：0x61是字母"a"的ASCII码，这显然是一些重复的东西，就像我们测试字符串中许多相同的字母一样。此外，我们似乎为每个字符使用了4个字节（...
+    [UTF-32](https://en.wikipedia.org/wiki/UTF-32) 我猜？）然而... 只是看着这个十六进制指针...
 - en: '[PRE13]'
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '... who in their right mind would allocate a string starting at such a weird
     address? Sure, x86 (unlike e.g. ARM) is more tolerant to unaligned access, but...
     it''s just plain ugly! And then what''s up with the nonzero bytes occurring at
@@ -308,11 +327,13 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 谁会理智地分配一个以如此奇怪的地址开头的字符串？当然，x86（与例如ARM不同）对非对齐访问更加宽容，但这... 简直是纯粹的丑陋！然后在偏移量为1、5、9等处出现非零字节是怎么回事？这明显不像4字节整数应该看起来的样子。'
 - en: The answer to all of this is that 0x100614CBFF is not really a pointer. It's
     not *just* a pointer. It's a *tagged* pointer.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些的答案是0x100614CBFF实际上并不是一个指针。它不仅仅是一个指针。它是一个*标记化*指针。
 - en: In C, the compiler knows the type of arguments to functions ahead of time. If
     parameter 1, coming in a register as per the relevant calling convention, is a
     64-bit integer, we can treat it as such; if it's a pointer to a struct, different
@@ -322,6 +343,7 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在C语言中，编译器提前知道函数参数的类型。如果参数1按照相关调用约定以64位整数的形式传入寄存器，我们可以将其视为这样；如果它是一个指向结构体的指针，则会生成不同的代码。然而，在Lisp函数中，您可以传递*任何类型的对象*；我们如何生成可以确定并处理这两种类型的代码呢？
 - en: If speed is not a concern, we can just take the "everything is an object" approach.
     That is, all our parameters arriving in registers are assumed to be pointers to
     the Generic Object Type, which has a well-defined layout, stating somewhere what
@@ -330,6 +352,7 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果速度不是问题，我们可以采取“一切都是对象”的方法。也就是说，我们假设所有通过寄存器传入的参数都是指向通用对象类型的指针，该类型具有明确定义的布局，指出实际类型对象的位置。我们生成的代码读取此值，并根据实际类型执行不同的操作。
 - en: 'But then... how about *numbers*? This is where *boxing* comes in: in order
     to treat the number 42 as an object, we need to put it into an object that says
     "this is an object of type ''number'', whose value is 42". This is then stored
@@ -337,6 +360,7 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是... 数字怎么办？这就是*装箱*的地方：为了将数字42视为对象处理，我们需要将其放入一个对象中，该对象说明“这是一个类型为'number'的对象，其值为42”。然后将其存储在堆上的某个位置。
 - en: 'Of course, this is not overly quick: instead of passing around numbers by value,
     we need a pointer dereference to just figure out what the actual value is... and
     then pack the return value into a similar box (if it''s a number), allocating
@@ -345,6 +369,7 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这并不是特别快：我们不能像通过值传递数字那样简单，我们需要一个指针解引用来确定实际值是什么... 然后将返回值打包到类似的盒子中（如果是一个数字），在需要时分配内存，并返回一个指针指向它。即使有了实际的编译代码，这仍然比C语言中简单返回一个数字慢得多。
 - en: 'Tagged pointers to the rescue. Instead of using an entire 64-bit register to
     store a pointer (... which will usually point to a well-aligned memory area, so
     it''ll end with zero bits anyway), we can use the last few bits to specify what
@@ -354,14 +379,17 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 标记指针来解救我们。与其使用整个64位寄存器来存储指针（... 通常指向对齐良好的内存区域，因此最终会以零位结尾），我们可以使用最后几位来指定这个*值*是什么类型。对于我的SBCL来说，标记是4位长，在值的末尾：只是一个单一的十六进制数字。其余的指针，嗯，就是一个真正的指针。
 - en: 'So, if we just zero out that last hex digit on our pointer:'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果我们只将指针的最后一个十六进制数位清零：
 - en: '[PRE14]'
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '... the result now looks a lot more reasonable. This looks like a bunch of
     well-aligned, smallish integers (remember that we''re on x86 here, which is a
     little-endian architecture: **little** bits at the **end** you start with, so
@@ -372,36 +400,45 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 现在的结果看起来更合理了。这看起来像一堆对齐良好、相对较小的整数（记住我们在x86上，这是一个小端架构：**小**位于你**开始**的**末尾**，所以如果我们按照增加顺序列出内存地址，数字会反过来）。第一个字节是...
+    嗯... 某事，然后还有一件看起来可疑地像是长度加倍的东西（还记得第1部分中关于数字的一位移位吗？很快就会解释！）...'
 - en: '[PRE15]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '... and then just a bunch of 0x61s for the "a"-s.'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 然后一堆0x61来代表“a”。'
 - en: 'We can even poke around in the memory area, replacing the first "a" at offset
     16 with a "c":'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们甚至可以在内存区域中查找，将偏移为16的第一个“a”替换为“c”：
 - en: '[PRE16]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '... or making it shorter by editing the length at offset 8:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 或通过编辑偏移量8处的长度来缩短它：'
 - en: '[PRE17]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: (... with which we might or might have broken the memory allocator if it ever
     tries to free this, but we do not particularly care at this point.)
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: （...这可能会破坏内存分配器，如果它尝试释放这部分内存的话，但在这一点上我们并不特别关心。）
 - en: 'This is the point where having compiled SBCL for yourself becomes fairly useful.
     (It''s really just a git clone followed by running make.sh, if you already have
     SBCL installed; it took me 4 minutes to run on a decidedly-not-recent laptop.)
@@ -412,10 +449,12 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是编译SBCL对自己变得相当有用的时候。（如果你已经安装了SBCL，实际上只是git克隆，然后运行make.sh；在一台明显不是最新的笔记本上，这个过程花了我4分钟。）具体来说，在编译后，让我们看看SBCL源代码中的**src/runtime/genesis/constants.h**。这是一个生成的代码片段，基本上解释了即将构建的SBCL运行时（用C编写）中Lisp对象的外观。如果你手头没有，这里是一些相关部分：
 - en: '[PRE18]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: This describes fairly well what we've seen so far. The "lowtag" is those 4 bytes
     at the end of Lisp objects; also, we're clearly on a 64-bit architecture here,
     with N_WORD_BITS being 64, 8 of them reserved for the lowtag. It also details
@@ -423,31 +462,38 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这相当好地描述了我们到目前为止看到的内容。"lowtag"是Lisp对象末尾的那4个字节；另外，我们在这里显然是64位架构，N_WORD_BITS为64，其中8位保留给lowtag。它还详细介绍了lowtag的各种值，其中重要的一个是...
 - en: '[PRE19]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '... which is exactly that 0xF we''ve been seeing at the end of our string pointers.
     Apparently, a lot of things are "other pointer"-s.'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 这正是我们在字符串指针末尾看到的`0xF`。显然，“其他指针”有很多。'
 - en: 'One exception is function pointers (0xB):'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数指针的一个例外是（0xB）：
 - en: '[PRE20]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'which, again, matches well with the values in the header. Same for lists (0x7):'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，这与头部的值非常匹配。列表（0x7）也是如此：
 - en: '[PRE21]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Also, here comes the explanation for numbers. SBCL stores fixnums in the exact
     same registers as pointers; to keep the most precision possible, we just interpret
     anything ending with a 0 bit as a number (... shifting the actual number bits
@@ -456,13 +502,18 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有关于数字的解释。SBCL将fixnums存储在与指针完全相同的寄存器中；为了保持尽可能精确的精度，我们只需将以0位结尾的任何内容解释为数字（...
+    将实际数字位向左移动一次）。同时，如果最后一位是1，我们可以查看最后4位的其余部分，以确定我们正在处理的指针的类型。
 - en: '**Update 2024/04/22:** there is a [discussion on Hacker News](https://news.ycombinator.com/item?id=40115083)!
     (Also, if you''re looking for related articles, you might also like [Common Lisp
     for shell scripting](/2021/lisp_scripting/)).'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '**2024/04/22 更新：** 在[Hacker News上有一场讨论](https://news.ycombinator.com/item?id=40115083)!（此外，如果你在找相关文章，你可能也会喜欢[用于shell脚本的Common
+    Lisp](/2021/lisp_scripting/)。）'
 - en: (also, maybe this should have a "part 2 at some point.)
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: （另外，也许这应该在某个时候有一个“第2部分”。）
