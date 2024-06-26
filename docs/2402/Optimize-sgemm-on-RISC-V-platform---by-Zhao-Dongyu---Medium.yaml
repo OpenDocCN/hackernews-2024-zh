@@ -2,135 +2,166 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:26:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 13:26:17'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Optimize sgemm on RISC-V platform | by Zhao Dongyu | Medium
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 RISC-V 平台上优化 sgemm | 作者：赵东宇 | Medium
 - en: 来源：[https://medium.com/@zhaodongyu/optimize-sgemm-on-risc-v-platform-b0098630b444](https://medium.com/@zhaodongyu/optimize-sgemm-on-risc-v-platform-b0098630b444)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@zhaodongyu/optimize-sgemm-on-risc-v-platform-b0098630b444](https://medium.com/@zhaodongyu/optimize-sgemm-on-risc-v-platform-b0098630b444)
 - en: '**Prepare**'
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '**准备**'
 - en: The related code is located in [./prepare/](https://github.com/Zhao-Dongyu/sgemm_riscv/tree/main/prepare)
     .
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 相关代码位于[./prepare/](https://github.com/Zhao-Dongyu/sgemm_riscv/tree/main/prepare)
+    。
 - en: '**Test Cross-Compilation**'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**测试交叉编译**'
 - en: I use the **Allwinner Nezha D1** development board, and downloaded the cross-compilation
     link from [here](https://xuantie.t-head.cn/community/download?id=4090445921563774976).
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用**全志麒麟 D1**开发板，并从[这里](https://xuantie.t-head.cn/community/download?id=4090445921563774976)下载了交叉编译链接。
 - en: For detailed instructions, please refer to the [readme](https://github.com/Zhao-Dongyu/sgemm_riscv/blob/main/prepare/README.md).
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 有关详细说明，请参阅[readme](https://github.com/Zhao-Dongyu/sgemm_riscv/blob/main/prepare/README.md)。
 - en: '**Memory Bandwidth Test**'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '**内存带宽测试**'
 - en: 'I conducted memory bandwidth tests on the development board using the following
     projects:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在开发板上进行了内存带宽测试，使用了以下项目：
 - en: '**Roofline Model**'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Roofline 模型**'
 - en: '[Roofline](https://en.wikipedia.org/wiki/Roofline_model) proposes a method
     for quantitative analysis using “**Operational Intensity**” and provides a formula
     for the theoretical performance limit achievable on computational platforms.'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Roofline](https://en.wikipedia.org/wiki/Roofline_model) 提出了一种使用“**操作强度**”进行量化分析的方法，并提供了一个公式，用于计算计算平台上可达到的理论性能极限。'
 - en: 'According to [OpenPPL Public Course | RISC-V Technical Analysis](https://zhuanlan.zhihu.com/p/474684731):'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据[OpenPPL 公开课 | RISC-V 技术分析](https://zhuanlan.zhihu.com/p/474684731)：
 - en: The computing power of D1 can reach **4 GFlops** (@ 1GHz).
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: D1 的计算能力可达**4 GFlops**（@ 1GHz）。
 - en: 'Memory: **2.727 GB/s** (DDR3 792 MHz).'
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 内存速度：**2.727 GB/s**（DDR3 792 MHz）。
 - en: Although I measured the highest as **2.592 GB/s**, there may be some problems
     somewhere? Let’s trust Sensetime for now, temporarily accept its value.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我测得的最高速度为**2.592 GB/s**，但可能某处存在问题？暂且相信商汤，暂时接受其值。
 - en: '**SGEMM Optimization**'
   id: totrans-split-19
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '**SGEMM 优化**'
 - en: Related code is located in [./sgemm/](https://github.com/Zhao-Dongyu/sgemm_riscv/tree/main/sgemm)
     .
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 相关代码位于[./sgemm/](https://github.com/Zhao-Dongyu/sgemm_riscv/tree/main/sgemm)
+    。
 - en: '**Usage**'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用法**'
 - en: Take *step0* as an example, you need to edit the **Makefile** first to configure
     your cross-compilation chain.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 以*step0*为例，您需要首先编辑**Makefile**来配置您的交叉编译链。
 - en: '[PRE0]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**Version 0: Naive Version**'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本 0: 初始版本**'
 - en: 'This version seems to be **the most intuitive** to me, after all, this is how
     I learned, understood, and computed matrix multiplication:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 对我来说，这个版本似乎是**最直观的**，毕竟这是我学习、理解和计算矩阵乘法的方式：
 - en: Multiply one row of A by one column of B to get one element of C.
   id: totrans-split-26
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 将 A 的一行与 B 的一列相乘，得到 C 的一个元素。
 - en: '[PRE1]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: I think *version 0* very well explains the formula $C_{mn} = \sum_{k=1}^{K}
     A_{mk}B_{kn}$.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为*版本 0*很好地解释了公式 $C_{mn} = \sum_{k=1}^{K} A_{mk}B_{kn}$。
 - en: 'However, this version has obvious shortcomings: on a platform with a theoretical
     computing power of **4 GFLOPS**, it only achieves a maximum computational performance
     of **0.03 GFLOPS**. This is because **the access to matrix B has a very low cache
@@ -139,12 +170,15 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这个版本显然存在明显的缺陷：在理论计算能力为**4 GFLOPS**的平台上，它仅实现了最大计算性能为**0.03 GFLOPS**。这是因为**对矩阵
+    B 的访问具有非常低的缓存命中率，即“内存访问的空间局部性差”**。在整个计算过程中，相当于多次访问矩阵 B。
 - en: It is advisable to access the elements of multi-dimensional arrays in sequential
     order. This can improve the spatial locality of memory access and make it more
     friendly to the cache.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 建议按顺序访问多维数组的元素。这可以改善内存访问的空间局部性，并使其对缓存更友好。
 - en: Furthermore, it can be observed that with the increase in size, the performance
     fluctuates significantly. Analysis of the data shows that when *m=n=k* is 128
     164 192 228 256 288 320 352 384, the performance is poor. These numbers differ
@@ -152,16 +186,20 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，可以观察到随着尺寸增加，性能波动显著。数据分析显示，当*m=n=k*为128 164 192 228 256 288 320 352 384时，性能较差。这些数字相差32，32
+    * 4（sizeof(float)) = 128 B。
 - en: It is speculated that the performance fluctuation is related to **cacheline**
     and **hardware prefetching** — cacheline = 64B, after cache miss, hardware prefetching,
     i.e., HWPrefetcher, reads one more cacheline.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 推测性能波动与**缓存行**和**硬件预取**有关——缓存行 = 64B，在缓存未命中后，硬件预取，即HWPrefetcher，读取一个额外的缓存行。
 - en: '**Version 1: Loop Interchange Version**'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本1：循环互换版本**'
 - en: Reusing data in the cache is the most basic and efficient use of cache. For
     nested loops, *loop interchange*, *loop reversal*, *loop fusion*, *loop distribution*,
     *loop tiling*, *loop unrolling and jam*, etc., can be used to improve program
@@ -169,50 +207,60 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在缓存中重复使用数据是对缓存的最基本和有效利用。对于嵌套循环，可以使用*循环互换*、*循环反转*、*循环融合*、*循环分布*、*循环切片*、*循环展开与合并*等方法来提高程序性能。
 - en: Selecting an appropriate loop transformation method can both maintain the semantics
     of the program and improve its performance.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择适当的循环转换方法既可以保持程序的语义，又可以提高其性能。
 - en: '[PRE2]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Compared with *version 0*, *version 1* has better spatial locality for the operation
     on matrix B, and the performance has been greatly improved (especially for larger
     sizes, while for m = n = k <= 68, the efficiency of *version 0* is higher).
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 与*版本0*相比，*版本1*对矩阵B的操作具有更好的空间局部性，并且性能得到了大幅提升（尤其是对于更大的尺寸，而对于 m=n=k <= 68，*版本0*的效率更高）。
 - en: Adjusting the order of m, n, and k does **not** affect the **result** (i.e.,
     maintaining the semantics of the program), but it can affect the **performance**.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 调整m、n和k的顺序**不会**影响**结果**（即保持程序的语义），但会影响**性能**。
 - en: Testing the performance of different loop orders (using the Allwinner Nezha
     D1 platform, with m=n=k=512 as an example)
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试不同的循环顺序的性能（以全志 摩尔 Nezha D1平台，m=n=k=512为例）
 - en: However, the hardware utilization of *version 1* is still very low, and further
     optimizations are needed.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，*版本1*的硬件利用率仍然很低，需要进一步优化。
 - en: '**Version 2: Blocking Version**'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本2：阻塞版本**'
 - en: '[PRE3]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: To avoid unnecessary cache swapping, blocking processing is performed. [Discussing
     Why Blocking Matrix Optimization Works](https://zhuanlan.zhihu.com/p/342923482)
     is a good read, I recommend learning from it.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了避免不必要的缓存交换，进行阻塞处理。[讨论为什么阻塞矩阵优化有效](https://zhuanlan.zhihu.com/p/342923482)是一篇很棒的文章，我建议从中学习。
 - en: After performing block operations in *version 2*, the performance is still not
     satisfactory. This is because, although this version superficially implements
     blocking logic, there are still some small tricks in the calculation within the
@@ -220,34 +268,41 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在*版本2*中进行块操作后，性能仍然不尽人意。这是因为，虽然这个版本表面上实现了阻塞逻辑，但在块内的计算中仍然有一些小技巧尚未应用。
 - en: '**Version 3: Blocked Optimization Version**'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本3：阻塞优化版本**'
 - en: '**AddDot_4x4_opt** has been added.'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 已添加**AddDot_4x4_opt**。
 - en: 'Several tricks are mentioned in [**BLISlab-tutorial**](https://github.com/flame/blislab/blob/master/tutorial.pdf):'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[**BLISlab-tutorial**](https://github.com/flame/blislab/blob/master/tutorial.pdf)中提到了几个技巧：'
 - en: 2.4.2 Loop unrolling
   id: totrans-split-48
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 2.4.2 循环展开
 - en: Updating loop index i and the pointer cp every time through the inner loop creates
     considerable overhead. For this reason, a compiler will perform loop unrolling.
   id: totrans-split-49
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 每次通过内部循环更新循环索引i和指针cp会造成相当大的开销。因此，编译器会执行循环展开。
 - en: 2.4.3 Register variables
   id: totrans-split-50
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 2.4.3 寄存器变量
 - en: Notice that computation can only happen if data is stored in registers. A compiler
     will automatically transform code so that the intermediate steps that place certain
     data in registers is inserted.
@@ -255,10 +310,12 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 请注意，只有在数据存储在寄存器中时才能进行计算。编译器会自动转换代码，以便插入放置某些数据在寄存器中的中间步骤。
 - en: After using these tricks, this version has significantly improved performance!
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这些技巧后，这个版本的性能显著提高了！
 - en: However, for larger matrix sizes, the performance of this version is still relatively
     low. Upon investigation, for example, after accessing B[0,0], B[0,1], B[0,2],
     B[0,3], when accessing B[1,0], when the size is large, there must be a **cache
@@ -266,15 +323,18 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，对于更大的矩阵大小，这个版本的性能仍然相对较低。经过调查，例如，在访问B[0,0]、B[0,1]、B[0,2]、B[0,3]之后，在访问B[1,0]时，当大小很大时，必定会发生**缓存未命中**。因此，提前重新排列数据将是很好的。
 - en: '**Version 4: B prepack Version**'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本4：B预打包版本**'
 - en: I assume matrix B is **parameter**, so we can perform the *pack* operation in
     advance. Version 4 **prepack** matrix B, leading to further performance improvement!
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设矩阵B是**参数**，所以我们可以提前进行*打包*操作。*版本4*提前打包矩阵B，从而进一步提高了性能！
 - en: 'The reason for the performance improvement is evident: there is a significant
     reduction in **cache misses** when accessing matrix B. This is the first time
     I deeply realized the importance of **prepacking neural network weights** before
@@ -282,74 +342,89 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 性能改善的原因显而易见：访问矩阵B时缓存未命中显著减少。这是我第一次深刻意识到在模型推断之前**预打包神经网络权重**的重要性。
 - en: It can be seen that when the size is relatively large, the performance still
     declines. This should be due to a high number of cache misses when accessing matrix
     A. Should we pack A?
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 当大小较大时，可以看出性能仍然下降。这可能是由于访问矩阵A时高缓存未命中率造成的。我们是否应该对A进行打包？
 - en: I assume matrix A is **input**, so packing A cannot be done in advance and must
     be included in the overall timing. Is it necessary?
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我假设矩阵A是**输入**，因此无法提前对A进行打包，必须包含在总体计时中。这是必要的吗？
 - en: '**Version 5: A pack & B prepack Version**'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**第五版：A包 & B预包版**'
 - en: Based on *Version 4*, *Version 5* performs packing on matrix A.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于*第四版*，*第五版*在矩阵A上执行打包。
 - en: Here, since matrix A is assumed to be an input, packing A needs to be performed
     during computation, and this time consumption needs to be included in the timing.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，由于矩阵A被假设为输入，因此在计算过程中需要对A进行打包，并且这种时间消耗需要计入计时中。
 - en: The results are still pleasing, especially with large matrix sizes, achieving
     further performance improvements.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果仍然令人满意，尤其是在大矩阵尺寸下，进一步实现了性能提升。
 - en: I initially approached this experiment with a trial-and-error mindset, considering
     **the additional read of A** and **writing of packA**. It seems the main challenge
     ahead lies in combating cache misses.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我最初以试错的心态接近这个实验，考虑**额外读取A**和**写入packA**。看起来未来的主要挑战在于对抗缓存未命中。
 - en: The current optimization direction has reached its limit. It’s worth trying
     to do some **preload** during the calculation process.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 当前的优化方向已经达到了极限。值得尝试在计算过程中进行一些**预加载**。
 - en: Next, we’ll move to assembly, work on vector calculations, and implement **preload**
     in assembly.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们将转向汇编，进行向量计算，并在汇编中实现**预加载**。
 - en: '**Version 6: Assembly Version**'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '**第六版：汇编版**'
 - en: 'Brief explanation: A is **not packed**, but B is **prepacked** with 16 numbers.'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 简要解释：A**未打包**，但B预先使用了16个数字**预打包**。
 - en: '[PRE4]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Regarding the use of rvv instructions, I believe **vsetvli** is essential, and
     **vfmacc.vf** is the mainstay.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于使用rvv指令，我认为**vsetvli**至关重要，**vfmacc.vf**是主要支柱。
 - en: I have learned a lot from [OpenPPL Course | RISC-V Technical Analysis](https://zhuanlan.zhihu.com/p/474684731).
     They are truly professional! I recommend learning theoretical guidance and knowledge
     points from them, paying tribute to OpenPPL!
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我从[OpenPPL课程 | RISC-V技术分析](https://zhuanlan.zhihu.com/p/474684731)中学到了很多。他们真的很专业！我推荐从他们那里学习理论指导和知识点，向OpenPPL致敬！
 - en: 'As for assembly operators, there are many details in assembly, and I strongly
     complain: **writing assembly is really annoying! Especially the debugging process,
     it’s torturous.** The last time I wrote assembly was during my undergraduate classes.
@@ -358,33 +433,40 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于汇编操作符，在汇编中有许多细节，我强烈抱怨：**写汇编真的很烦人！特别是调试过程，简直是折磨。**我上次写汇编是在本科课程期间。再次拾起它带来了一些新奇和兴奋感，能够在非常精细的粒度上控制操作符的执行给人一种巨大的成就感。
 - en: Regarding how the assembly files are implemented specifically, I believe the
     fastest way is to look at the assembly code. I won’t explain it further here.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于如何具体实现汇编文件，我认为最快的方法是查看汇编代码。这里不再详细解释。
 - en: It should be noted that this version’s performance is very poor. Why is that?
     It’s another issue of **loop order**.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要注意的是，这个版本的性能非常差。为什么？这是另一个**循环顺序**的问题。
 - en: '**Version 7: Assembly Version with Loop Order Swapped**'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '**第七版：循环顺序交换的汇编版**'
 - en: 'Brief explanation: A is **not packed**, but B is **prepacked** with 16 numbers.'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 简要解释：A**未打包**，但B预先使用了16个数字**预打包**。
 - en: '[PRE5]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Reversing the order of loops, starting with the **n-direction** followed by
     the **m-direction**, significantly improves performance.
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 将循环顺序颠倒，从**n方向**开始，然后是**m方向**，显著改善了性能。
 - en: However, the performance of large-sized matrices is still not very good. The
     root cause remains in **memory access**. The computation of large-sized matrices
     in the roofline model is considered **compute-bound**, where ideally the **compute
@@ -394,33 +476,40 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，大尺寸矩阵的性能仍然不是很好。根本原因仍在于**内存访问**。在屋顶线模型中，大尺寸矩阵的计算被认为是**计算受限**的，理想情况下，**计算时间**和**内存访问时间**应尽可能重叠。目前，大量时间花费在内存访问上（主要是由于**缓存未命中**！）。
 - en: '**Version 8: Assembly Version with Preload**'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本 8：带有预载入的汇编版本**'
 - en: 'Brief Explanation: Matrix A is **not packed**, while Matrix B undergoes **prepackaging**
     of 16 elements and includes a **preload** operation.'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 简要解释：矩阵 A **未打包**，而矩阵 B 经历了包含 16 个元素的**预打包**，并包括**预载入**操作。
 - en: The performance is explosive! It reaches a maximum of **2.212 GFLOPS**.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 性能爆炸性增长！达到最大**2.212 GFLOPS**。
 - en: 'Core operations:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 核心操作：
 - en: '[PRE6]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Inserting some **load** operations between **vfmacc.vf** instructions preloads
     the data that will be used later into the **cache**, significantly reducing **cache
     miss**.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 在**vfmacc.vf**指令之间插入一些**load**操作，将稍后将使用的数据预先加载到**缓存**中，显著减少**缓存未命中**。
 - en: Initially, I was puzzled — how can the **compute time** and **memory access
     time** overlap when the code seems to execute sequentially? It wasn’t until later
     that I understood the essence here, which lies in the principle of **cacheline**.
@@ -428,18 +517,22 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初，我感到困惑 —— 当代码似乎按顺序执行时，**计算时间**和**内存访问时间**如何重叠？直到后来我才理解这里的实质，这在**缓存行**的原理中。的确，基础知识至关重要！
 - en: '**Version 9: Assembly Version with A Packed**'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '**版本 9：带有 A Packed 的汇编版本**'
 - en: Based on previous experience, an attempt was made to **pack** Matrix A, but
     surprisingly, the results were not very good. A brief analysis suggests that the
     preload for Matrix A in this version of the assembly code might not be optimized.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于之前的经验，尝试对矩阵 A 进行**打包**，但令人惊讶的是，结果并不理想。简要分析表明，这个版本的汇编代码中矩阵 A 的预载入可能并未优化。
 - en: In the previous version, although A wasn’t packed, there was preload for A’s
     4 rows, which also addressed the pain point of cache miss for Matrix A.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前一个版本中，虽然 A 没有打包，但 A 的 4 行进行了预载入，这也解决了矩阵 A 缓存未命中的痛点。
