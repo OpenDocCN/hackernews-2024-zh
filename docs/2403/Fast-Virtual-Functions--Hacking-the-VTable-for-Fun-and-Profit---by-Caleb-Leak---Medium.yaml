@@ -273,22 +273,26 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到了如何直接调用虚函数，现在让我们看看为什么你可能想要这样做。
 - en: Virtual functions are slow when you have a cache miss looking them up. As we’ll
     see through benchmarks, they can be *very* slow. They can also be very fast when
     used carefully — to the point where it’s impossible to measure the overhead.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你因为缓存未命中而查找虚函数时，虚函数是很慢的。正如我们将在基准测试中看到的那样，它们可能非常*慢*。当小心使用时，它们也可以非常快速，甚至快到无法测量开销的程度。
 - en: 'Let’s setup some tests and see for ourselves. We’ll test several things:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们设置一些测试，亲自看看。我们将测试几个方面：
 - en: '**Repeatedly calling a non-virtual member function with caching allowed.**
     This will give us a good performance baseline.'
   id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**允许缓存的重复调用非虚成员函数。** 这将为我们提供一个良好的性能基准。'
 - en: '**Repeatedly calling a virtual member function with caching allowed.** This
     will demonstrate the best, albeit unlikely, case with virtual functions. The same
     virtual function is called repeatedly in a tight loop, so we’d expect the VTable
@@ -297,6 +301,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**允许缓存的重复调用虚成员函数。** 这将展示虚函数的最佳（尽管不太可能的）情况。同一个虚函数在紧密循环中被重复调用，因此我们期望 VTable 指针、VTable
+    和函数代码本身都保持在缓存中。'
 - en: '**Repeatedly calling a non-virtual member function without caching.** We’ll
     explicitly flush the cache to achieve another performance baseline. This will
     be our target performance for non-cached virtual functions.'
@@ -304,6 +310,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**不允许缓存的重复调用非虚成员函数。** 我们将显式刷新缓存以达到另一个性能基准。这将是我们非缓存虚函数的目标性能。'
 - en: '**Repeatedly calling a virtual member function without caching.** This is the
     worst case performance scenario for a virtual function. The VTable pointer, VTable,
     and function code will not be in the cache.'
@@ -311,6 +318,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**重复调用虚成员函数而不进行缓存。** 这是虚函数性能的最坏情况。VTable 指针、VTable 和函数代码都不会在缓存中。'
 - en: '**Repeatedly calling a virtual member function directly without caching.**
     The hope here is that we’ll gain back some of the performance lost by virtual
     functions and be close to that of non-virtual functions.'
@@ -318,6 +326,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**直接重复调用虚成员函数而不进行缓存。** 这里的希望是，我们将通过虚函数恢复一些性能损失，并接近非虚函数的性能。'
 - en: To test this this, we’ll use a small hierarchy of incrementers. Each will add
     its value (a randomly initialized int) to a global variable repeatedly via an
     increment function. Adding from a member variable ensures that the object is loaded
@@ -326,6 +335,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试这一点，我们将使用一个增量器的小层次结构。每个增量器将通过增量函数将其值（随机初始化的 int）重复添加到全局变量中。通过从成员变量添加来确保对象加载到内存中，所以我们公平地进行比较，而由于是随机数，将防止编译器优化掉成员变量。
 - en: 'We’re now set to run some tests and see just how slow virtual functions are.
     To do this, we’ll create many objects of each type and call their increment functions
     repeatedly. Below are the results, with number of objects (or calls, since each
@@ -333,6 +343,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在已经准备好运行一些测试，看看虚函数有多慢。为了做到这一点，我们将创建每种类型的许多对象，并重复调用它们的增量函数。以下是结果，包括对象数量（或调用次数，因为每个对象的函数只调用一次）与运行时间（秒）：
 - en: Amazingly, calling virtual functions directly is the fastest method, though
     it only marginally beats non-virtual functions. Without the direct calls, and
     when these functions aren’t cached, there’s 3x more overhead to the virtual call
@@ -341,16 +352,19 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 令人惊讶的是，直接调用虚函数是最快的方法，尽管它仅略胜非虚函数。如果没有直接调用，并且这些函数没有被缓存，虚调用的开销将是非虚调用的3倍。请记住，我们只比较了开销。对于运行时间很长的函数来说，开销成本将是无关紧要的。
 - en: Avoiding the performance hit of virtual functions
   id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 避免虚函数的性能损失
 - en: As seen in the previous section, virtual function calls can be quite slow. To
     guarantee speed, we’ll want to call virtual functions directly.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如在前面的部分中所见，虚函数调用可能非常慢。为了保证速度，我们将希望直接调用虚函数。
 - en: To call a virtual function directly, we’ll go to the VTable and grab a pointer
     directly to the function we want to call. “But wait,” you say, “won’t that incur
     the same penalty as a regular virtual function call?” And you’re right, it will.
