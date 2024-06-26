@@ -119,20 +119,24 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦指令被提取到指令队列中，保留控制部分按程序顺序处理它们，并确保满足它们的需求。保留控制单元中的分数板跟踪哪些功能单元正在忙碌，哪些寄存器正在等待由正在飞行中的指令写入。一旦这些依赖关系得到满足，指令就可以执行。寄存器文件直接寻址，不需要寄存器重命名。
 - en: '[![](img/8c00ed48334ed298595f7c6c3a120e9d.png)](https://chipsandcheese.com/?attachment_id=27353)'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](img/8c00ed48334ed298595f7c6c3a120e9d.png)](https://chipsandcheese.com/?attachment_id=27353)'
 - en: Detecting read-after-write conflicts
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 检测读后写冲突
 - en: Because the CDC 6600 doesn’t do register renaming, it has to resolve WAR (write-after-read)
     hazards too. Each writeback is therefore checked against all registers waiting
     to be read.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为CDC 6600不进行寄存器重命名，所以它也必须解决WAR（写后读）冲突。因此，每次写回都会检查所有等待被读取的寄存器。
 - en: Once an instruction is issued, it reads its inputs from the register files.
     To simplify wiring, some functional units share input and result buses. The CDC
     6600’s instruction set features 24 registers. Eight of these are 60-bit operand
@@ -146,10 +150,12 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 指令一旦发布，便从寄存器文件读取其输入。为了简化布线，一些功能单元共享输入和结果总线。CDC 6600的指令集包含24个寄存器。其中八个是用于高精度数学的60位操作寄存器，编号为X0到X7。这些不是通用寄存器。为了简化寄存器文件设计，从中央存储加载的数据只能放入X0到X5，并且中央存储的写入必须来自X6或X7。另外的16个寄存器分为八个地址寄存器（A0-A7）和八个增量寄存器（B0-B7）。为了节省晶体管，地址和增量寄存器长度为18位。毕竟，没有人应该需要更大的地址空间。
 - en: '[![](img/1ab4224c978e5a87c1a542a4fc859cd7.png)](https://chipsandcheese.com/?attachment_id=27377)'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](img/1ab4224c978e5a87c1a542a4fc859cd7.png)](https://chipsandcheese.com/?attachment_id=27377)'
 - en: The CDC 6600 features ten independent functional units that can theoretically
     all be active in parallel. These functional units are not pipelined and have multi-cycle
     latencies, so programs need a mix of instructions to avoid slowdowns due to oversubscribed
@@ -157,6 +163,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: CDC 6600具有十个独立的功能单元，理论上可以全部并行活动。这些功能单元没有流水线化，具有多周期延迟，因此程序需要混合指令以避免由于超订阅执行单元而导致的减速。
 - en: To increase performance, the increment and floating point multiply units are
     duplicated. That allows, for example, a FP multiply instruction to start executing
     while a prior FP multiply is still in progress. The CDC 6600 can achieve 4.5 MFLOPs
@@ -165,20 +172,25 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了提高性能，增量和浮点乘法单元被复制。例如，一个浮点乘法指令可以在先前的浮点乘法仍在进行时开始执行。CDC 6600在完美的浮点乘法和加法混合下可以达到4.5
+    MFLOPs的吞吐量。实现如此高的吞吐量可能会很困难，因为浮点乘法受到非常高的10周期延迟的影响。
 - en: '[![](img/c8869b3b80edbbab5f247689657dd280.png)](https://chipsandcheese.com/?attachment_id=27383)'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](img/c8869b3b80edbbab5f247689657dd280.png)](https://chipsandcheese.com/?attachment_id=27383)'
 - en: From the 6600 Central Processor training manual, volume II. “Third order conflicts”
     refer to WAR hazards
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自6600中央处理器培训手册第二卷。“第三阶段冲突”是指**WAR**（写后读）危险。
 - en: Memory Protection
   id: totrans-split-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 内存保护
 - en: An access starts within the core when a program places a value into an address
     register and executes the appropriate Increment instruction. Because the CDC 6600
     is a powerful system capable of multitasking, it uses a memory protection scheme
@@ -186,6 +198,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 当程序将一个值放入地址寄存器并执行适当的增量指令时，访问在核心内部开始。因为CDC 6600是一个能够进行多任务处理的强大系统，它使用内存保护方案来防止不同程序之间的干扰。
 - en: To make every transistor go as far as possible, CDC avoids unreasonably expensive
     techniques like paging and virtual memory. Instead, it uses a more resource efficient
     segmentation scheme. Each program has a Reference Address (RA) that defines its
@@ -194,6 +207,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了让每个晶体管发挥最大作用，CDC避免了像分页和虚拟内存这样不合理昂贵的技术。相反，它使用了更具资源效率的分段方案。每个程序都有一个参考地址（RA），定义其段基址，以及一个字段长度（FL），指示程序在60位单词中使用多少内存。
 - en: Memory accesses outside of the bounds denoted by RA and RA+FL causes a halt.
     Delivering precise exceptions that the operating system can resume from would
     be a ludicrous waste of precious logic. Instead, programmers should be honest
@@ -201,11 +215,16 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Memory accesses outside of the bounds denoted by RA and RA+FL causes a halt.
+    Delivering precise exceptions that the operating system can resume from would
+    be a ludicrous waste of precious logic. Instead, programmers should be honest
+    about the storage their programs need, and get good at their job.
 - en: Memory Access
   id: totrans-split-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 内存访问
 - en: The CDC 6600’s Central Memory has a capacity of up to 960 KB, or 131072 60-bit
     words. It’s further subdivided into 4096 word banks, selected by the low bits
     of the memory address. A 960 KB configuration thus has 32 banks. Programs use
@@ -214,6 +233,8 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: CDC 6600的中央存储器容量高达960 KB，或131072个60位单词。它进一步细分为4096个字的银行，由内存地址的低位选择。因此，960 KB配置具有32个银行。程序使用CDC
+    6600的八个18位地址寄存器访问内存，尽管只需要17位。第18位简单地未使用。
 - en: Each bank operates independently to provide high performance. Under ideal conditions,
     the Central Processor can read one 60-bit word per cycle, for 75 MB/s of bandwidth.
     Achieving such high bandwidth requires the programmer to avoid bank conflicts,
@@ -222,6 +243,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个存储银行都能独立运行，以提供高性能。在理想条件下，中央处理器每个周期可以读取一个60位单词，带宽为75 MB/s。要实现如此高的带宽，程序员需要避免银行冲突，因为每个银行在服务请求时需要多个周期。当然，中央内存的仲裁逻辑（“hopper”）必须检测到银行冲突。
 - en: Instead of using transistors to compare an incoming address with that of in-flight
     requests, the hopper simply issues the address and assumes there was a conflict
     if the destination bank doesn’t accept the address within 175 ns. In that case,
@@ -230,19 +252,24 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 而不是使用晶体管比较一个传入地址与正在飞行的请求的地址，仲裁器只是简单地发出地址，并假设如果目标银行在175 ns内不接受地址，则存在冲突。在这种情况下，访问将进入一个300
+    ns的重试循环，直到成功。没有经历银行冲突的负载可以在300 ns或三个周期内完成。
 - en: '[![](img/e07d4a3383295a880002a0c0701415a2.png)](https://chipsandcheese.com/?attachment_id=27381)'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](img/e07d4a3383295a880002a0c0701415a2.png)](https://chipsandcheese.com/?attachment_id=27381)'
 - en: The CDC 6600’s memory subystem is both fast and simple
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: CDC 6600的内存子系统既快速又简单
 - en: Extended Core Storage
   id: totrans-split-40
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 扩展核心存储
 - en: Control Data Corporation offers Extended Core Storage (ECS) for customers with
     very high memory requirements. Specifically, ECS can store up to two million 60-bit
     words, or over 14 MB. ECS uses magnetic core storage like Central Memory and can
@@ -251,14 +278,18 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 控制数据公司为有极高内存需求的客户提供了扩展核心存储（ECS）。具体来说，ECS可以存储高达两百万个60位单词，或超过14 MB。ECS像中央存储一样使用磁心存储，并且也可以在10
+    MHz时实现每秒一个60位单词的最大吞吐量。然而，这样高容量的存储需求需要不同的设计。
 - en: '[![](img/574ce1883802da9ac64705b7881e3093.png)](https://chipsandcheese.com/cdc_6600_ecs/)'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](img/574ce1883802da9ac64705b7881e3093.png)](https://chipsandcheese.com/cdc_6600_ecs/)'
 - en: From the ECS reference manual
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自ECS参考手册
 - en: Instead of being word-addressable like Central Memory, ECS stores words in 488-bit
     (61 byte) lines. ECS also runs at a lower 312.5 KHz clock frequency, relying on
     banks to achieve high bandwidth. Each ECS bank has 125,952 60-bit words, or 944.6
@@ -270,6 +301,8 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 与中央存储器一样，ECS不是字寻址的，而是将字存储在488位（61字节）行中。ECS还以较低的312.5 KHz时钟频率运行，依赖于银行来实现高带宽。每个ECS银行都有125,952个60位字，或944.6
+    KB的存储量，至少需要四个银行才能以10 MHz维持一个60位字。由于ECS的容量非常大，CDC 6600的地址寄存器宽度不足以直接寻址它。因此，ECS访问指令使用60位X0寄存器提供地址，相对于ECS中程序段的基址地址。
 - en: Despite its lower clock speed, the ECS can maintain high performance because
     both a read and a write can happen over the same cycle. A read takes place over
     800 ns, followed by 1600 ns for a write. All of this happens within a 3200 ns
@@ -277,6 +310,8 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管ECS的时钟速度较低，但由于在同一个周期内可以进行读取和写入，因此ECS可以保持高性能。读取需要800 ns，然后写入需要1600 ns。所有这些都发生在3200
+    ns周期内。
 - en: Control Data Corporation understands that reliability is important for any computer
     user, so ECS features 5K words (38.4 KB) of “reserve memory” to tolerate failures.
     If part of ECS memory fails, the user can bring reserve memory into operation
@@ -285,26 +320,31 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 控制数据公司知道可靠性对任何计算机用户都很重要，因此ECS具有5K字（38.4 KB）的“备用内存”来容忍故障。如果ECS存储器的一部分出现故障，用户只需通过交换两根导线即可将备用内存分成1K字的存储。ECS存储器也具有奇偶校验保护。
 - en: Physical Design
   id: totrans-split-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 物理设计
 - en: Despite offering an impressive amount of compute power, the CDC 6600 can be
     easily handled by any computer enthusiast. Because it aggressively economizes
     transistor and core storage use, the entire computer can fit within a single room.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管CDC 6600提供了令人印象深刻的计算能力，但任何计算机爱好者都可以轻松处理。因为它积极地节省晶体管和核心存储的使用，整个计算机都可以放在一个房间里。
 - en: Cooling is easily handled by a refrigeration unit at the end of each wing.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 冷却可由每个机翼末端的制冷装置轻松处理。
 - en: Final Words
   id: totrans-split-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 最后的话
 - en: Control Data Corporation has designed a powerful computer that efficiently puts
     all available transistors (or not transistors) to use in maximizing performance.
     Its simple instruction set is closely tied to the hardware and directly executed.
@@ -314,14 +354,18 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 控制数据公司设计了一台功能强大的计算机，有效地利用了所有可用的晶体管（或非晶体管），以最大限度地提高性能。其简单的指令集与硬件紧密相连，并直接执行。没有浪费逻辑将指令从一种格式翻译成另一种格式。系统中的任何部分都不猜测和恢复，这使得CDC
+    6600完全不受假设执行漏洞的影响。
 - en: '[![](img/78a9edeaa479f8ffddde9557d4945553.png)](https://chipsandcheese.com/?attachment_id=27380)'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '[![](img/78a9edeaa479f8ffddde9557d4945553.png)](https://chipsandcheese.com/?attachment_id=27380)'
 - en: From CDC’s advertisement
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自CDC的广告
 - en: Furthermore, the CDC 6600 avoids wasting transistors on cache by using fast
     magnetic core storage in conjunction with an instruction fetch queue. With something
     as powerful as the CDC 6600, I don’t think the world will need more than maybe
@@ -332,10 +376,13 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，CDC 6600通过使用快速磁芯存储结合指令获取队列，避免在缓存上浪费晶体管。有了像CDC 6600这样强大的东西，我认为世界上可能永远不需要超过十台计算机。CDC
+    6600的优雅而强大的设计进一步证明了永远不需要使用乱序执行，在荒谬的5GHz以上时钟速度运行的巨型机器。这样的处理器是不可能构造出来的。
 - en: Wait, what year is it again?
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 等等，现在是哪一年了？
 - en: If you like our articles and journalism, and you want to support us in our endeavors,
     then consider heading over to our [Patreon](https://www.patreon.com/ChipsandCheese) or
     our [PayPal](https://www.paypal.com/donate/?hosted_button_id=4EMPH66SBGVSQ) if
@@ -344,8 +391,12 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你喜欢我们的文章和新闻，并且希望支持我们的努力，可以考虑访问我们的 [Patreon](https://www.patreon.com/ChipsandCheese)
+    或者 [PayPal](https://www.paypal.com/donate/?hosted_button_id=4EMPH66SBGVSQ)，如果你想支持我们一点点。如果你想与
+    Chips and Cheese 的工作人员以及幕后人员交流，那么考虑加入我们的 [Discord](https://discord.gg/TwVnRhxgY2)。
 - en: '*Related Posts*'
   id: totrans-split-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*相关文章*'
