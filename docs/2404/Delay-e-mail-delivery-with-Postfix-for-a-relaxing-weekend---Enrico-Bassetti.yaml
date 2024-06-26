@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:25:18'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:25:18'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Delay e-mail delivery with Postfix for a relaxing weekend | Enrico Bassetti
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用Postfix延迟电子邮件传递以获得轻松的周末 | Enrico Bassetti
 - en: 来源：[https://www.enricobassetti.it/2024/04/delay-e-mail-delivery-with-postfix-for-a-relaxing-weekend/](https://www.enricobassetti.it/2024/04/delay-e-mail-delivery-with-postfix-for-a-relaxing-weekend/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.enricobassetti.it/2024/04/delay-e-mail-delivery-with-postfix-for-a-relaxing-weekend/](https://www.enricobassetti.it/2024/04/delay-e-mail-delivery-with-postfix-for-a-relaxing-weekend/)
 - en: 'One good piece of advice is never to read e-mails if you want to have a pleasant
     and relaxing weekend. Unfortunately, it is not so easy: open-source projects you
     are contributing to, friends, hobbies, and newsletters are all good reasons to
@@ -31,28 +37,33 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个很好的建议是，如果您想度过愉快放松的周末，永远不要阅读电子邮件。不幸的是，这并不容易：您为开源项目做贡献，朋友、爱好和新闻通讯等都是不错的理由偶尔读电子邮件。
 - en: But we all have that friend, the one that sends many e-mails, and you don’t
     want to read them on the weekend. Let’s implement some “delay-until-Monday” feature
     in Postfix!
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们都有那位朋友，那个经常发送电子邮件的人，你不想在周末读他们的邮件。让我们在Postfix中实现一些“延迟到周一”的功能！
 - en: Postfix queues
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Postfix队列
 - en: 'Did you know that [Postfix has different *queues*](https://www.postfix.org/QSHAPE_README.html#queues)?
     In fact, Postfix has:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 您知道吗，[Postfix有不同的*队列*](https://www.postfix.org/QSHAPE_README.html#queues)吗？实际上，Postfix有：
 - en: '**maildrop** is the queue for e-mails sent locally using `sendmail`. This is
     the only queue that is actually usable even when Postfix is not running;'
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**maildrop**是用`sendmail`发送到本地的电子邮件的队列。即使Postfix未运行，这也是唯一可用的队列；'
 - en: '**incoming**, used by the `cleanup` Postfix process to store e-mail that just
     arrived. It exists because the `active` queue (see below) can accommodate only
     a fixed number of active e-mails;'
@@ -60,6 +71,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**incoming**由`cleanup` Postfix进程使用，用于存储刚到达的电子邮件。它的存在是因为`active`队列（见下文）只能容纳固定数量的活动电子邮件；'
 - en: '**active** is the queue containing e-mail scheduled to be sent. This queue
     has a fixed capacity to avoid overloading Postfix, as these e-mails are the next
     to be sent (you don’t want your system to try to send more than 200k e-mails at
@@ -68,18 +80,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**active**是包含预定发送电子邮件的队列。为了避免过载Postfix，此队列具有固定容量（您不希望系统尝试同时发送超过200k封电子邮件，对吧？）；'
 - en: '**deferred** is used when there is a **transient** error (i.e., temporary problems),
     so e-mails are queued here and picked up later for retry;'
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**deferred**用于临时错误（即临时问题），因此电子邮件被排队在此处，并稍后重试；'
 - en: Finally, the **hold** is a special queue where messages go if some administrative
     ACL says so, and they are moved to other queues using the `postsuper` command.
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最后，**hold**是一个特殊队列，如果某个管理ACL如此指定，消息将进入该队列，并使用`postsuper`命令移动到其他队列。
 - en: Theoretically, we may just need to keep the e-mail in the *incoming* queue until
     the right moment or move it to the *active* queue and schedule the delivery later.
     However, neither approaches are really in line with the description of those queues,
@@ -87,15 +102,18 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 从理论上讲，我们可能只需将电子邮件保留在*incoming*队列中，直到合适的时机或将其移至*active*队列并稍后安排投递。然而，这两种方法都不太符合这些队列的描述，据我所知，没有简单的方法可以做到这一点。
 - en: We will use the **hold** queue instead!
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用**hold**队列！
 - en: Postfix lookup tables
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Postfix查找表
 - en: 'Here is the plan: we will match the incoming e-mail with some ACL using the
     `HOLD` action so that Postfix will move incoming e-mails in the *hold* queue.
     Then, we can use some bash script and crontab to release them when the moment
@@ -103,10 +121,12 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 计划如下：我们将使用ACL将传入的电子邮件与`HOLD`操作匹配，以便Postfix将传入的电子邮件移动到*hold*队列。然后，我们可以使用一些bash脚本和crontab在适当时释放它们。
 - en: Enters the [Postfix lookup *tables*](https://www.postfix.org/DATABASE_README.html)!
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 进入[Postfix查找*表*](https://www.postfix.org/DATABASE_README.html)！
 - en: Postfix can look up information in *tables* by matching specific parts of the
     e-mail (or the envelope) in them to get back other information, such as actions,
     alias destinations, allowed hosts, and many more. These tables can be stored in
@@ -116,16 +136,19 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Postfix可以通过在*表格*中匹配电子邮件的特定部分（或信封）来查找信息，以获取其他信息，例如操作、别名目的地、允许的主机等等。这些表可以存储在本地文件或某些网络服务中。这非常方便，因为你基本上可以[将Postfix连接到数据库服务器以查询电子邮件等内容](https://www.postfix.org/pgsql_table.5.html)，这基本上是每个（具有大量地址的人）都在做的事情。
 - en: 'In our case, we need to use [an `access` table](https://www.postfix.org/access.5.html).
     `access` tables return actions for a match. Specifically, we are looking for the
     `HOLD` action. In theory, a file like this should suffice:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的情况下，我们需要使用[一个`access`表](https://www.postfix.org/access.5.html)。`access`表返回匹配的操作。具体来说，我们正在寻找`HOLD`操作。理论上，像这样的文件应该足够了：
 - en: '[PRE0]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: If you save a file like this, and you use the `file:` table type in a specific
     parameter in the Postfix configuration (as we see later), all e-mails coming from
     `[[email protected]](/cdn-cgi/l/email-protection)` will be moved to the *hold*
@@ -133,12 +156,14 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你保存一个像这样的文件，并且在Postfix配置中的特定参数中使用`file:`表类型（如我们后面所看到的），那么所有来自`[[email protected]](/cdn-cgi/l/email-protection)`的电子邮件都将被移动到*hold*队列中，太好了！
 - en: The problem is that there doesn’t seem to be any way to assign a time period
     to this rule. This means that the rule will always match, even if you use `postsuper`
     to remove it from the queue! It does not work that well. What else can we use?
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题在于似乎没有办法为此规则指定时间段。这意味着无论你是否使用`postsuper`将其从队列中删除，该规则都会始终匹配！效果不是很好。我们还能用什么？
 - en: It turns out we can use a database for that. If you are already using a database,
     that’s completely fine. However, I don’t have it, as my Postfix setup is very
     minimal. In this case, we can just use `sqlite` as a database and query a local
@@ -146,40 +171,48 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果证明我们可以使用数据库来实现这一点。如果你已经在使用数据库，那完全没有问题。但是，由于我的Postfix设置非常简单，我没有它。在这种情况下，我们可以简单地将`sqlite`作为数据库，并使用一些SQL魔法查询本地文件。
 - en: 'First, we need a SQLite database. Make sure that Postfix is compiled with the
     `sqlite` table type (it is by default) and that you have the `sqlite3` executable
     in your path. Then:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要一个SQLite数据库。确保Postfix编译时使用了`sqlite`表类型（默认情况下是这样），并且你的路径中有`sqlite3`可执行文件。然后：
 - en: '[PRE1]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Perfect! Now, let’s create the database table that we will use in order to
     store information for the Postfix table:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 太好了！现在，让我们创建数据库表，用于存储Postfix表的信息：
 - en: '[PRE2]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Now we can close the database file, and we can create the file that holds the
     “database connection information”. Let’s say, `/etc/postfix/time_based_access`:'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以关闭数据库文件，并创建包含“数据库连接信息”的文件。比如说，`/etc/postfix/time_based_access`：
 - en: '[PRE3]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'As you can see, I am using the “day of the week” (0-6, where 0 is Sunday).
     We can hold e-mails from `[[email protected]](/cdn-cgi/l/email-protection)` on
     Sunday by inserting the following:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所见，我正在使用“星期几”（0-6，其中0表示星期日）。我们可以通过插入以下内容在星期日暂停来自`[[email protected]](/cdn-cgi/l/email-protection)`的电子邮件：
 - en: But we are not finished yet. We need to tell Postfix to query this. We will
     modify the `/etc/postfix/main.cf`. Specifically, you want to alter the `smtpd_sender_restrictions`
     parameter to add your table. Keep in mind that the configured actions are executed
@@ -189,51 +222,62 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们还没有完成。我们需要告诉Postfix查询这个。我们将修改`/etc/postfix/main.cf`。具体来说，你要修改`smtpd_sender_restrictions`参数以添加你的表。请记住，配置的操作是按照你在配置中指定的确切顺序执行的。因此，你希望你的查询最后执行，或者至少在常规的检查（如黑名单、未知收件人域等）之后执行。
 - en: '[PRE4]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Restart Postfix to apply. Now, e-mails from `[[email protected]](/cdn-cgi/l/email-protection)`
     on Sundays will be on hold!
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 重新启动Postfix以应用更改。现在，来自`[[email protected]](/cdn-cgi/l/email-protection)`的邮件在星期日将会暂停！
 - en: Release e-mails on hold
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 释放暂停的电子邮件
 - en: 'Let’s create a script to release them (create the file, then +x it):'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个脚本来释放它们（创建文件，然后+执行权限）：
 - en: '[PRE5]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Now we can schedule this command to run, say, every morning at 5am:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以安排这个命令每天早上5点运行：
 - en: '[PRE6]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Unfortunately, `postsuper` must run as a super-user. However, as good practice,
     you should already know how to configure a user with the necessary permissions
     to use `sudo` and AppArmor.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，`postsuper`必须以超级用户身份运行。但作为良好的实践，你应该已经知道如何为用户配置必要权限以使用`sudo`和AppArmor。
 - en: That’s all. You have your own Postfix-powered system to delay e-mail delivery!
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是全部。你拥有了自己的基于后缀的系统来延迟电子邮件的投递！
 - en: Caveats
   id: totrans-split-43
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 注意事项
 - en: As you might have noticed, the SQL query only checks for weekdays. So, if the
     person sends you an e-mail at 00:01 on Monday, that e-mail will be delivered to
     your account (also, before the others that will be released at 5am). If your friend
@@ -242,11 +286,13 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你可能注意到的，SQL查询仅检查工作日。因此，如果某人在周一凌晨00:01发送电子邮件，该邮件将被传送到你的账户（还有其他在早上5点发布的邮件之前）。如果你的朋友是夜猫子，你可能需要调整数据库结构来存储一些时间信息。
 - en: Future improvements
   id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 未来的改进
 - en: The next improvement will be querying my calendar for holidays and time off.
     I have a CalDAV server, so it should not be so challenging to work with (I see
     you laughing, stop!). Maybe next weekend I can work on th… wait, wasn’t I looking
@@ -254,3 +300,4 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个改进将是查询我的日历以获取假期和休息时间。我有一个CalDAV服务器，所以应该不难处理（我看见你在笑，别笑了！）。也许下个周末我可以处理一下...等等，我不是期待一个愉快的周末吗？！？

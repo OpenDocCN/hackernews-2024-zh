@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:27:04'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:27:04'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Deep Diving Into the Erlang Scheduler | AppSignal Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 深入探索 Erlang 调度器 | AppSignal 博客
 - en: 来源：[https://blog.appsignal.com/2024/04/23/deep-diving-into-the-erlang-scheduler.html](https://blog.appsignal.com/2024/04/23/deep-diving-into-the-erlang-scheduler.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.appsignal.com/2024/04/23/deep-diving-into-the-erlang-scheduler.html](https://blog.appsignal.com/2024/04/23/deep-diving-into-the-erlang-scheduler.html)
 - en: Erlang is renowned for its remarkable fault tolerance and high concurrency.
     Erlang's scheduler efficiently handles many lightweight processes. The scheduler
     plays a crucial role in managing processes, concurrency, and system resources,
@@ -32,20 +38,25 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang 以其出色的容错性和高并发性而闻名。Erlang 的调度器高效地处理许多轻量级进程。调度器在管理进程、并发性和系统资源方面发挥着关键作用，有效地协调这些元素，帮助
+    Erlang 在其应用程序中保持容错性并支持高水平的并发。
 - en: This post will dissect some of the scheduler's key components and shed light
     on how it works internally.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将剖析调度器的一些关键组成部分，并揭示其内部工作原理。
 - en: Let's get started!
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们开始吧！
 - en: Processes in Erlang
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Erlang 中的进程
 - en: Erlang processes are lightweight, independent units of execution managed by
     the Erlang runtime system. They are created and scheduled by the Erlang virtual
     machine (BEAM), and each Erlang process has its own memory space. These should
@@ -53,6 +64,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang 进程是由 Erlang 运行时系统管理的轻量级、独立的执行单元。它们由 Erlang 虚拟机（BEAM）创建和调度，每个 Erlang 进程都有自己的内存空间。这些不应与操作系统进程或线程混淆。
 - en: OS processes are entities managed by the OS and typically have more overhead
     in terms of memory and resources, as well as inter-process communication. While
     threads are lighter than OS processes, they are still heavier than a typical Erlang
@@ -62,6 +74,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作系统进程是由操作系统管理的实体，通常在内存和资源方面具有更多开销，以及进程间通信。而线程比操作系统进程轻量级，但仍比典型的 Erlang 进程更重，并且在进程内共享一个公共内存空间。线程间通常更容易进行同一进程的同步，但仍需同步机制。
 - en: On the other hand, the Erlang VM (BEAM) is capable of spawning several lightweight
     processes with independent memory space and can communicate easily using message
     passing. The scheduler inside the VM manages processes, allocates resources to
@@ -69,11 +82,13 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，Erlang 虚拟机（BEAM）能够生成多个轻量级进程，具有独立的内存空间，并能够通过消息传递轻松通信。虚拟机内的调度程序管理进程，为进程分配资源，并在它们之间进行上下文切换。
 - en: Erlang Scheduler Architecture — Preemptive Scheduling
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Erlang 调度器架构 — 抢占式调度
 - en: In a single-core setup, only one process can occupy the CPU core at any given
     time. To emulate a concurrent system, the scheduler employs a preemptive, priority-based
     scheduling mechanism (don't worry, we will explore what this means soon) that
@@ -88,6 +103,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在单核设置中，每次只能有一个进程占用CPU核心。为了模拟并发系统，调度程序采用了一种抢占式的、基于优先级的调度机制（别担心，我们很快会探讨这意味着什么），快速在可用进程之间切换，从而产生所有进程都在同时执行的假象。艾伦虚拟机（BEAM）按顺序调度进程运行，一个进程运行一段时间后被挂起，然后允许另一个进程接替其执行。这种进程管理策略是并发的特征，并不涉及真正的并行（这在单核系统上是不可能的）。由于快速的上下文切换，任务看起来是并发运行的，尽管它们实际上是在单个核心上顺序执行。
 - en: To identify processes for potential swapping, Erlang introduces the concept
     of "reductions". In Erlang, a reduction represents a unit of work performed by
     BEAM, encompassing fundamental operations such as function application, arithmetic
@@ -97,17 +113,20 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了识别可能进行交换的进程，Erlang 引入了“减少”概念。在 Erlang 中，减少表示 BEAM 执行的工作单位，包括基本操作，如函数应用、算术计算或消息传递。调度程序跟踪每个进程执行的减少，并在达到一定减少计数时抢占进程，从而允许其他进程运行。
 - en: Reductions
   id: totrans-split-16
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 减少
 - en: The idea of "reduction" in Erlang is inherited from its Prolog ancestry. In
     Prolog, every execution step is termed a goal-reduction, involving breaking down
     a logic problem into individual components and solving each part accordingly.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang 中的“减少”概念源于其 Prolog 祖先。在 Prolog 中，每个执行步骤称为目标减少，涉及将逻辑问题分解为各个组件并依次解决每个部分。
 - en: To promote fairness among processes, Erlang's preemptive scheduling relies on
     reductions rather than time slices. If a process exhausts its allocated reductions,
     it can be preempted, even if its execution isn't complete. This approach prevents
@@ -118,6 +137,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了促进进程间的公平性，Erlang 的抢占式调度依赖于减少而不是时间片。如果一个进程耗尽其分配的减少，即使其执行尚未完成，也可以被抢占。这种方法防止单个进程长时间独占
+    CPU，促进并发进程之间的公平性。通过以减少作为抢占的基础，Erlang 减少了进程因 CPU 时间而饿死的风险。这种设计确保每个进程，无论其工作负载如何，都能定期获得执行机会。
 - en: Moreover, reductions are flexibly applied based on the type of operation a process
     is performing. For example, certain operations, such as I/O operations, may consume
     various reductions. This adaptability allows the scheduler to effectively handle
@@ -125,6 +146,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，根据进程执行的操作类型，灵活应用减少。例如，某些操作（如 I/O 操作）可能会消耗不同数量的减少。这种适应性允许调度程序有效地处理不同类型的操作。
 - en: In other languages, traditional blocking I/O operations can lead to inefficient
     resource utilization, as threads might be blocked while waiting for I/O to complete.
     Erlang's asynchronous and non-blocking I/O model allows processes to continue
@@ -133,11 +155,14 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在其他语言中，传统的阻塞式 I/O 操作可能导致资源利用效率低下，因为线程可能会因为等待 I/O 完成而被阻塞。Erlang 的异步和非阻塞 I/O 模型允许进程在等待
+    I/O 操作完成时继续执行其他任务。这最大程度地减少了阻塞操作对整体系统性能的影响。
 - en: Priority
   id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 优先级
 - en: 'Each process in Erlang can have a `priority` value that decides how often the
     scheduler will execute that process. A process priority can be set using the `Process.flag/2`
     (or [process_flag/2](https://www.erlang.org/doc/man/erlang.html#process_flag-2)
@@ -145,6 +170,8 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang 中的每个进程都可以有一个决定调度程序执行频率的`优先级`值。可以使用`Process.flag/2`（或 Erlang 中的 [process_flag/2](https://www.erlang.org/doc/man/erlang.html#process_flag-2)
+    函数调用来设置进程优先级：
 - en: 'There are 4 priority levels: `low`, `normal`, `high`, and `max`. `max` is reserved
     for internal use in Erlang and should not be used in application code. Processes
     on each priority level get a separate run queue and are scheduled in the normal
@@ -152,6 +179,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 有 4 个优先级级别：`低`、`正常`、`高`和`最大`。`最大`保留供 Erlang 内部使用，不应在应用代码中使用。每个优先级级别的进程都有单独的运行队列，并按照上述正常的轮转方式进行调度。
 - en: Except `low` and `normal`, Erlang executes the processes of each priority queue
     exclusively. This means that if there is a process in the `max` priority queue,
     only `max` priority processes will be executed, and all other processes will be
@@ -164,6 +192,8 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了`low`和`normal`外，Erlang会独占每个优先级队列中的进程。这意味着如果在`max`优先级队列中有一个进程，那么只有`max`优先级的进程会被执行，所有其他进程都会被阻塞。类似地，如果在`high`优先级队列中有一个进程，直到所有`high`优先级队列中的进程被执行完（或不可运行），`low`和`normal`进程都不会被执行。`low`和`normal`队列的行为略有不同
+    — 这两个队列中的进程交错执行，以便`normal`优先级进程比`low`优先级进程更频繁地执行，但`normal`进程不会阻塞`low`优先级进程的执行。
 - en: Due to the blocking behavior of `high` priority processes, they should be used
     very rarely and only for short-lived tasks. Overusing `high` priority processes
     is bound to lead to outages and affect the responsiveness of an application, as
@@ -171,6 +201,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于`high`优先级进程的阻塞行为，它们应该非常少见，且仅用于短期任务。过度使用`high`优先级进程必定会导致系统故障，并影响应用程序的响应性，因为所有其他常规OTP进程都在`normal`优先级上运行。
 - en: Another point that's important here is that Erlang places no restrictions on
     communication between different priority levels of processes. So a high-priority
     process can wait for a message from a lower-priority process. This is allowed,
@@ -178,11 +209,13 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个重要的点在于，Erlang对不同优先级进程之间的通信没有限制。因此，高优先级进程可以等待来自低优先级进程的消息。虽然允许这样做，但实际上会降低高优先级进程的优先级。
 - en: Running on Multiple Cores
   id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在多核上运行
 - en: Up to this point, we've explored how the scheduler orchestrates processes within
     a single-core system. However, in a multi-core environment, where additional resources
     are available for parallel processing, the Erlang VM creates a dedicated "run
@@ -192,6 +225,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经探讨了调度程序如何在单核系统中编排进程。然而，在多核环境中，即使有额外资源进行并行处理，Erlang VM也会为每个可用核心创建专用的“运行队列”。这样一来，多个进程可以同时运行（每个核心一个进程），实现真正的并行处理。在每个运行队列中，所有进程都遵循我们之前讨论过的抢占式调度机制。
 - en: Typically, Erlang processes share the same run queue as their parent process,
     and a work-stealing algorithm may come into play to ensure load balancing. For
     instance, if there are two cores in the system and one consistently handles busy
@@ -202,6 +236,7 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，Erlang进程与其父进程共享相同的运行队列，并且可能会使用工作窃取算法来确保负载平衡。例如，如果系统中有两个核心，其中一个始终处理繁忙进程，而另一个相对空闲，那么两个核心上的Erlang调度程序会定期进行通信。这种通信促进了将进程从负载重的核心转移到负载较轻的核心，从而确保在两个核心之间更均衡地分配工作负载。
 - en: In the broader context, beyond Erlang's internal run queues, the operating system
     plays a role in managing the scheduling of threads onto OS-level cores. This implies
     that processes not only experience swapping within the Erlang run queue but also
@@ -210,6 +245,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在更广泛的背景下，除了Erlang的内部运行队列外，操作系统还负责管理将线程调度到操作系统级别的核心上。这意味着进程不仅会在Erlang运行队列内进行交换，还可能进行完整的上下文切换或被移动到另一个核心。
 - en: Note that, because of the concept of work-stealing inside the Erlang VM, it
     is usually beneficial to run a single Erlang application instance on multiple
     cores rather than running separate instances of the same application on different
@@ -220,11 +256,13 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，由于Erlang VM内部的工作窃取概念，通常更有利于在多个核心上运行单个Erlang应用程序实例，而不是在同一台机器的不同核心上运行同一应用程序的单独实例。在单个实例中，专用于每个核心的调度器可以更好地在它们之间进行通信，以公平地共享负载，而在多节点群集中，调度程序无法分享进程负载（即使该群集的所有节点都在同一物理机上）。
 - en: Performance and Optimization
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 性能和优化
 - en: Erlang's scheduler takes out most of the complexities involved in building a
     concurrent system. It automatically frees the developer from having to think about
     things like lock contention, thread overhead, and load balancing by handling these
@@ -232,6 +270,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang的调度器消除了构建并发系统所涉及的大部分复杂性。它通过其抢占式调度算法自动处理锁竞争、线程开销和负载平衡等问题，使开发人员不再需要考虑这些问题。
 - en: Erlang provides various scheduler-related parameters that can be tuned for optimal
     performance. Parameters like [+S](https://www.erlang.org/doc/man/erl#+S) (scheduler
     count) and [+P](https://www.erlang.org/doc/man/erl#+P) (maximum number of processes)
@@ -239,6 +278,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang提供了各种可调整以实现最佳性能的调度器相关参数。像[+S](https://www.erlang.org/doc/man/erl#+S)（调度器数量）和[+P](https://www.erlang.org/doc/man/erl#+P)（进程的最大数量）等参数允许您配置调度器线程和进程的数量。
 - en: For example, you can start Erlang with `erl +S Schedulers:SchedulerOnline` to
     control the number of scheduler threads. By default, Erlang uses the number of
     CPU cores to identify these values automatically. Note that while both `Scheduler`
@@ -247,12 +287,14 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，您可以使用`erl +S Schedulers:SchedulerOnline`启动Erlang，以控制调度器线程的数量。默认情况下，Erlang使用CPU核数自动识别这些值。请注意，虽然`Scheduler`和`SchedulerOnline`都接受高达1024的值，但在App上启动比CPU核数更多的调度器并不会对其产生任何积极的影响。
 - en: Another possible step to fine-tune performance is to control the priorities
     of processes, as we've discussed. It is indeed possible to execute certain high-priority
     tasks in Erlang.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 优化性能的另一个可能步骤是控制进程的优先级，正如我们所讨论的那样。确实可以在Erlang中执行某些高优先级任务。
 - en: Nevertheless, this comes with an inherent risk of potentially rendering a system
     unresponsive and increasing latency, as processes with a high priority may block
     all other normal/low-priority processes. Conversely, marking tasks identified
@@ -261,15 +303,18 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，这带来了潜在的风险，可能导致系统无响应和增加延迟，因为具有高优先级的进程可能会阻塞所有其他普通/低优先级的进程。相反，将被标记为故意低优先级的任务对于优先考虑其他进程可能是有利的。
 - en: So be careful and use your judgment.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以请小心谨慎，凭自己的判断。
 - en: Wrapping Up
   id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In this post, we've seen that the Erlang scheduler stands as a cornerstone in
     Erlang's architecture, fostering fault tolerance, concurrency, and adaptability.
     Its preemptive and dynamic nature equips developers to build resilient, highly
@@ -279,16 +324,20 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们已经看到Erlang调度器作为Erlang架构的基石，促进了容错性、并发性和适应性。它的抢占性和动态性能使开发人员能够构建具有弹性、高并发系统，能够处理故障并最大程度地利用资源。了解Erlang调度器的繁琐之处可以使您有能力打造可伸缩和健壮的分布式应用。
 - en: If you are interested in learning more about the scheduler, I recommend checking
     out the [Scheduling chapter in The BEAM Book](https://blog.stenmans.org/theBeamBook/#CH-Scheduling)
     and [Processes from the Erlang Efficiency Guide](https://www.erlang.org/docs/23/efficiency_guide/processes).
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '如果您对了解调度器更感兴趣，我推荐您查看《[The BEAM Book中的调度章节](https://blog.stenmans.org/theBeamBook/#CH-Scheduling)》和《[Erlang
+    Efficiency指南中的Processes](https://www.erlang.org/docs/23/efficiency_guide/processes)》。 '
 - en: Happy coding!
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 愉快编码！
 - en: '**P.S. If you''d like to read Elixir Alchemy posts as soon as they get off
     the press, [subscribe to our Elixir Alchemy newsletter and never miss a single
     post](/elixir-alchemy)!**'
