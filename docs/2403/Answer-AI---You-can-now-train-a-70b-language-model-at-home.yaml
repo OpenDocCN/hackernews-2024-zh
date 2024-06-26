@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:44:52'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:44:52'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Answer.AI - You can now train a 70b language model at home
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Answer.AI - 现在您可以在家中训练一个 70b 语言模型
 - en: 来源：[https://www.answer.ai/posts/2024-03-06-fsdp-qlora.html](https://www.answer.ai/posts/2024-03-06-fsdp-qlora.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.answer.ai/posts/2024-03-06-fsdp-qlora.html](https://www.answer.ai/posts/2024-03-06-fsdp-qlora.html)
 - en: Summary
   id: totrans-split-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: 'Today, we’re releasing Answer.AI’s first project: a fully open source system
     that, for the first time, can efficiently train a 70b large language model on
     a regular desktop computer with two or more standard gaming GPUs (RTX 3090 or
@@ -38,18 +45,23 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天，我们发布了 Answer.AI 的第一个项目：一个完全开源的系统，首次能够在普通台式电脑上，搭载两个或更多标准游戏 GPU（如 RTX 3090
+    或 4090），高效地训练一个 70b 大型语言模型。这个系统结合了 FSDP 和 QLoRA 技术，是 Answer.AI、华盛顿大学的 Tim Dettmers，以及
+    Hugging Face 的 Titus von Koeller 和 Sourab Mangrulkar 合作的成果。
 - en: 'This system will help the open source community release better models. Teknium,
     the creator of the extremely popular OpenHermes models and datasets, with over
     half a million downloads, said:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个系统将帮助开源社区发布更好的模型。Teknium，极受欢迎的 OpenHermes 模型和数据集的创建者，下载量超过 50 万次，表示：
 - en: “*With this capability we can take huge models to new heights locally, and gigantic,
     hundreds of billions of parameter models are now accessible by small labs.*”
   id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “*有了这个能力，我们可以将巨大的模型推向新的高度，并且巨大的、数百亿参数的模型现在可以被小型实验室访问了。*”
 - en: 'At Answer.AI we made this our first project because it’s a key foundation of
     our north star: helping make useful AI available to everyone. Just being able
     to use *other* people’s models is not enough. We want everyone to be able to create
@@ -57,16 +69,19 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Answer.AI，我们将这个项目作为我们的首个项目，因为这是我们的核心目标的重要基础：帮助每个人都能使用有用的人工智能。仅仅使用*他人*的模型是不够的。我们希望每个人都能够创建*自己*的个性化模型，以便他们控制自己的人工智能系统。
 - en: Background
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 背景
 - en: The big idea
   id: totrans-split-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 大胆的想法
 - en: There are two very different levels of hardware used to train deep learning
     models. There is the data center class hardware, such as H100s and A100s, costing
     [hundreds of thousands of dollars](https://shop.lambdalabs.com/deep-learning/servers/blade/customize).
@@ -77,6 +92,8 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于训练深度学习模型的硬件有两个非常不同的级别。一个是数据中心级别的硬件，如 H100 和 A100，成本高达 [几十万美元](https://shop.lambdalabs.com/deep-learning/servers/blade/customize)。另一个是包含游戏
+    GPU 的台式电脑，如双 4090，成本低于 [10000 美元](https://shop.lambdalabs.com/gpu-workstations/vector/customize)（甚至可以从二手部件组装，价格不到预装系统的一半）。
 - en: 'But here’s the key point: the gaming GPUs have similar performance to the data
     center GPUs that cost over 10x more! It would be great if we could use these 10x
     cheaper (but nearly as fast) cards to train large language models, but we can’t,
@@ -87,6 +104,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这是关键：游戏 GPU 的性能与成本超过 10 倍的数据中心 GPU 类似！如果我们能够利用这些成本仅为其 1/10 的（但几乎同样快的）卡来训练大型语言模型将是非常好的，但我们不能，因为它们的内存远远不如数据中心的卡。目前可用的最佳数据中心卡具有
+    80GB RAM，而游戏卡的最大 RAM 为 24GB。由于只有最大的模型才能产生最佳结果，因此创建最佳模型迄今大多数人都无法做到。
 - en: 'We realized that there’s actually no intrinsic reason for this. The super fast
     hardware is there, waiting to be used – we just need a way to feed it with the
     model and the data in a way that meets its memory constraints. The obvious question
@@ -96,6 +115,8 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们意识到，其实并没有固有的理由限制这样做。超快的硬件已经准备就绪，只等我们用一种满足其内存限制的方式提供模型和数据。显而易见的问题是：为什么到现在还没有这么做？所有大型行业实验室已经拥有了昂贵
+    10 倍的硬件，所以他们其实没有太大的动力去解决这个问题。
 - en: 'The big idea here is simple: figure out how to use these cheaper, lower-memory
     gaming GPUs to train the best available open source models. So the goal is this:
     train a 70 billion parameter (70b) model using only gaming GPUs, which means our
@@ -171,6 +192,9 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管学术界、大型科技公司和初创公司都有很好的理由没有解决这个问题，但这些正是[确切的理由](https://www.answer.ai/posts/2023-12-12-launch.html)为什么这个问题非常适合
+    Answer.AI。公司里的每个人都建立了我们在解决这个问题上要处理的那种系统，因此我们能够理解所有部件是如何结合在一起的。热爱深入理解软件和人工智能基础以及热衷于破解有趣和有趣的端到端系统的人是被吸引到
+    Answer.AI 的人，反之亦然。
 - en: The problems we choose to solve together are selected by the same people that
     will do the solving. So we tend to pick up projects that involve bringing together
     multiple ideas together to create practically useful solutions. And because we’re
@@ -179,17 +203,21 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们选择要共同解决的问题的人也是将要解决问题的人。因此，我们倾向于选择涉及汇聚多个想法以创建实际有用解决方案的项目。并且因为我们是一个具有通过 AI、开源软件和公共研究产生*长期*利益的公益公司，因此开源软件和公共研究直接符合我们的使命。
 - en: 'QLoRA: Train bigger models on a single GPU'
   id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: QLoRA：在单个 GPU 上训练更大的模型
 - en: 'Two projects have been released recently that took the first critical steps
     towards making this a reality: QLoRA (by [Tim Dettmers et al](https://arxiv.org/abs/2305.14314)),
     and FSDP (by Meta’s [PyTorch team](https://engineering.fb.com/2021/07/15/open-source/fsdp/)).'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近发布了两个项目，它们迈出了使这成为现实的第一关键步骤：QLoRA（由[Tim Dettmers 等人](https://arxiv.org/abs/2305.14314)）和
+    FSDP（Meta 的[PyTorch 团队](https://engineering.fb.com/2021/07/15/open-source/fsdp/)）。
 - en: 'QLoRA is a simple but brilliant combination of two critically important advances
     in modern neural networks: *quantization*, and *LoRA*. Quantization is a technique
     where, instead of using 16 or even 32 bits to store the weights of a neural network,
@@ -202,6 +230,9 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: QLoRA 是现代神经网络中两个关键进展的简单而杰出的组合：*量化*和*LoRA*。量化是一种技术，在其中，不使用 16 甚至 32 位来存储神经网络的权重，而是使用
+    4 个（甚至更少）位。4 位数的可能值仅有 16 个，但[Dettmers 和 Zettlemoyer 表明](https://arxiv.org/abs/2212.09720)这在当今流行的大型语言模型中可能足够。Tim
+    Dettmers 所作的这些 4 位“量化”模型易于创建，多亏了他的 bitsandbytes 库，最近 Hugging Face 已介入协助[维护和记录](https://huggingface.co/docs/bitsandbytes/main/en/index)
 - en: Unfortunately, once a model is quantized, it can not be trained any further
     with regular approaches – with just 16 possible values, the gradient descent method
     used for model training will observe zero gradients nearly everywhere, so it can’t
@@ -212,6 +243,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，一旦模型被量化，就无法再用普通方法进行训练 - 只有 16 个可能的值，用于模型训练的梯度下降方法几乎无法观察到零梯度，因此无法对量化的权重进行任何更新。这是一个重大问题，因为这意味着量化只能用于推断，而不能用于持续的预训练或微调。尽管推断是有用且重要的，但它真的只是*消耗*模型。但我们希望每个人都能*为*创建模型*做出*贡献！
 - en: The trick to avoiding this limitation is to use [LoRA](https://arxiv.org/abs/2106.09685)
     – “Low-Rank Adaptation of Large Language Models”. LoRA doesn’t train the whole
     large language model at all, but instead adds “adaptors”, which are very small
@@ -599,6 +631,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用FSDP，当然需要多个GPU。如果你没有这样的系统访问权限，你可以从[Runpod Community Cloud](https://www.runpod.io/)租用一台双3090的机器，大约每小时$0.60。还有许多其他供应商可以选择；[cloud-gpus](https://cloud-gpus.com/)是一个很好的地方查看提供的服务。
 - en: 'You’ll need to install the latest version of Transformers, PEFT, and bitsandbytes
     (and HQQ if you’re using that). Then, clone [our repo](https://github.com/AnswerDotAI/fsdp_qlora/tree/main)
     and follow the README there. Running `python train.py --help` will show the available
@@ -607,17 +640,22 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 你需要安装最新版本的Transformers、PEFT和bitsandbytes（如果你使用HQQ也需要）。然后，克隆[我们的仓库](https://github.com/AnswerDotAI/fsdp_qlora/tree/main)，按照那里的README进行操作。运行`python
+    train.py --help`会显示可用的选项。要在包含的alpaca数据集上用两张24GB显卡训练llama2-7b，你可能会运行：
 - en: '`python train.py --train_type qlora --dataset alpaca --batch_size 8 --gradient_accumulation_steps
     2 --output_dir qlora_output --log_to wandb`'
   id: totrans-split-69
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`python train.py --train_type qlora --dataset alpaca --batch_size 8 --gradient_accumulation_steps
+    2 --output_dir qlora_output --log_to wandb`'
 - en: We’ve crammed everything required into this single file to make it easier to
     see what is going on and modify things if necessary.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经将所有需要的东西都压缩到这一个文件中，以便更容易看到正在发生的事情并在必要时进行修改。
 - en: You should treat this script as an alpha/preview release. Whilst we’ve used
     it to successfully train a variety of practically useful models on a range of
     hardware, it’s still early days. If you’re not comfortable with testing and debugging
@@ -626,6 +664,7 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该将这个脚本视为一个α/预览版本。虽然我们已经成功地在各种硬件上使用它来训练多种实用模型，但现在还处于早期阶段。如果你不熟悉测试和调试模型，我们建议暂时等待几个月，让社区更充分地测试这种方法。
 - en: '**Update:** We’re excited to see that support is [already underway in the Hugging
     Face ecosystem](https://huggingface.co/docs/peft/main/en/accelerate/fsdp#use-peft-qlora-and-fsdp-for-finetuning-large-models-on-multiple-gpus)
     via changes to [Accelerate](https://github.com/huggingface/accelerate/pull/2544),
@@ -636,3 +675,4 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '**更新：** 我们很高兴看到在Hugging Face生态系统中已经开始支持，通过对[Accelerate](https://github.com/huggingface/accelerate/pull/2544)、[Transformers](https://github.com/huggingface/transformers/pull/29587)、[TRL](https://github.com/huggingface/trl/pull/1416)和[PEFT](https://github.com/huggingface/peft/pull/1550)的更改。我们的代码也已经并入Axolotl微调库，并被用于训练Mixtral和其他模型。'
