@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:43:14'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:43:14'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Making Friends with AttributeGraph
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 与 AttributeGraph 交朋友
 - en: 来源：[https://saagarjha.com/blog/2024/02/27/making-friends-with-attributegraph/](https://saagarjha.com/blog/2024/02/27/making-friends-with-attributegraph/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 'Source: [https://saagarjha.com/blog/2024/02/27/making-friends-with-attributegraph/](https://saagarjha.com/blog/2024/02/27/making-friends-with-attributegraph/)'
 - en: 'If you’ve used [SwiftUI](https://developer.apple.com/xcode/swiftui/) for long
     enough, you’ve probably noticed that the public Swift APIs it provides are really
     only half the story. Normally inconspicuous unless something goes *exceedingly*
@@ -38,6 +44,10 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你使用 [SwiftUI](https://developer.apple.com/xcode/swiftui/) 已经有一段时间了，你可能已经注意到它提供的公共
+    Swift API 实际上只是故事的一半。通常情况下，除非出现 *非常* 大的问题，否则不显眼的私有框架 AttributeGraph 会从幕后跟踪你应用程序的几乎每个方面，以便在需要更新时做出决策。可以毫不夸张地说，这个
+    C++ 库实际上是控制一切的核心，SwiftUI 只是在上面加了一层薄薄的外壳，用于绘制一些适合平台的控件，并提供一个稳定的编程接口。与其名字相符，AttributeGraph
+    为声明式 UI 框架提供了必要的基础：跟踪数据依赖关系的属性图。
 - en: Mastering how these dependencies work is crucial to writing advanced SwiftUI
     code. Unfortunately, being a private implementation detail of a closed-source
     framework means that searching for AttributeGraph online usually only yields results
@@ -51,6 +61,11 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 精通这些依赖关系是编写高级 SwiftUI 代码的关键。不幸的是，由于它是闭源框架的私有实现细节，因此在线搜索 AttributeGraph 通常只能找到那些在应对崩溃时急需帮助的人的结果。（尽管逆向工程相当令人不快，但是
+    [一些人](https://www.fivestars.blog/articles/lets-build-state/) [试过](https://medium.com/@kateinoigakukun/inside-swiftui-how-state-implemented-92a51c0cb5f6)
+    [试图](https://kyleye.top/posts/demystify-attributegraph-1/).）Apple [提供了](https://developer.apple.com/videos/play/wwdc2020/10040)
+    [几个](https://developer.apple.com/videos/play/wwdc2021/10022) [视频](https://developer.apple.com/videos/play/wwdc2023/10160/)，介绍了高层设计，但并不意外地回避了提及
+    AttributeGraph 的存在。其他开发人员确实提到过，但 [只是一笔带过](https://chris.eidhof.nl/presentations/day-in-the-life/)。
 - en: This puts us in a real bind! We can `Self._printChanges()` all day and still
     not understand what is going on, especially if problems we have relate to *missing*
     updates rather than too many of them. To be honest, figuring out what AttributeGraph
@@ -65,11 +80,15 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这让我们陷入了真正的困境！我们可以整天调用 `Self._printChanges()`，但仍然无法理解到底发生了什么，特别是如果我们的问题与 *丢失*
+    更新有关而不是更新过多的话。老实说，除非 AttributeGraph 工作不正常，否则了解它内部的运行机制并没有多大用处。我们不会轻易调用那些私有 API，所以探索它们没有太多意义。更重要的是理解
+    SwiftUI 的作用以及设置依赖关系以支持它的需要。我们可以借鉴生成式 AI 的方法，尝试猜测事物的实现方式。与 AI 不同的是，我们还可以测试我们的理论。我们不会知道我们的猜测是否正确，但我们肯定可以检查以确保我们没有错！
 - en: Introducing `Setting`
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 引入 `Setting`
 - en: 'As we explore how SwiftUI propagates changes, it will be very helpful to have
     an real example to work with. Say hello to `Setting`, a simple `UserDefaults`
     wrapper similar to [`AppStorage`](https://developer.apple.com/documentation/swiftui/appstorage):'

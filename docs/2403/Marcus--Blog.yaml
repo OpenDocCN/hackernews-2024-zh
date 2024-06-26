@@ -2,39 +2,47 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:59:02'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:59:02
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Marcus' Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Marcus的博客
 - en: 来源：[https://mbuffett.com/posts/compressing-chess-moves/](https://mbuffett.com/posts/compressing-chess-moves/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://mbuffett.com/posts/compressing-chess-moves/](https://mbuffett.com/posts/compressing-chess-moves/)
 - en: 'UPDATE: I’ve written a [new post](/posts/compressing-chess-moves-even-further/)
     with a new technique which is about 2.5x more efficient than this approach'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 更新：我写了一篇[新文章](/posts/compressing-chess-moves-even-further/)，介绍了一种比这种方法效率高大约2.5倍的新技术
 - en: Chess notation has come a long way since [descriptive notation](https://en.wikipedia.org/wiki/Descriptive_notation),
     now we have nice and decipherable Standard Algebraic Notation, like `Qxf7` (queen
     takes on f7) or `Nf3` (knight takes on f3).
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 国际象棋标记法自[描述性标记法](https://en.wikipedia.org/wiki/Descriptive_notation)以来发展了很多，现在我们有了非常好的和可解释的标准代数记号，比如`Qxf7`（后在f7吃子）或`Nf3`（马走到f3）。
 - en: This is a great text format, but a massive waste of space if you’re trying to
     store a lot of these. `Qxf7` takes 4 bytes, or 32 bits. Let’s do some rough back-of-the-envelope
     math of how much information is actually being transmitted though. This move affects
@@ -44,6 +52,8 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您尝试存储大量这些文本格式的内容，这是一种绝佳的文本格式，但非常浪费空间。`Qxf7`占用4字节，即32位。让我们简单计算一下实际传输的信息量。这一步影响了6种棋子之一（3位），这一步也是吃子（1位），并且指定了一个目的方格（64种可能性
+    == 6位）。把它们加起来，你得到10位。远远少于文本表示所需的32位。
 - en: Why do I care? I run a site that stores a *ton* of chess lines, something like
     100 million in total. Assume an average of 6 moves for each line, that’s 600 million
     moves. The database is growing large enough that querying it is IO-constrained.
@@ -52,95 +62,114 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我为什么在乎呢？我运营一个存储大量棋局走法的网站，总计大约有1亿个走法。假设每个走法平均6步，那就是6亿步。数据库足够大，查询时受到IO限制。在提取数千个走法时，我希望加快从数据库读取的速度。
 - en: A first pass
   id: totrans-split-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第一次尝试
 - en: 'First some general numbers:'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是一些常规数据：
 - en: Encoding a file or rank (a-h or 1-8) takes 3 bits (8 possibilities)
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编码一个文件或列（a-h或1-8）需要3位（8种可能性）
 - en: Encoding a piece (k, q, r, b, n, p) takes 3 bits (6 possibilities)
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编码一个棋子（k、q、r、b、n、p）需要3位（6种可能性）
 - en: Encoding a square takes 6 bits (64 possibilities)
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编码一个方格需要6位（64种可能性）
 - en: So let’s see the pieces we’re working with for encoding a SAN.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以让我们看看我们用于编码SAN的棋子。
 - en: So let’s go with the most naive approach.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们以最简单的方法开始。
 - en: Which piece was it? 3 bits
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是哪一种棋子？3位
 - en: Is it a capture? 1 bit
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是否是一个吃子动作？1位
 - en: Do we have to disabiguate it (ie `Ngf3`)? Maximum of 2 bits + 6 bits (this is
     explained more further down)
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们是否需要消除歧义（即`Ngf3`）？最多2位 + 6位（这将在后面进一步解释）
 - en: Where did it go? 6 bits
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它去了哪里？6位
 - en: Is it a promotion, and to which piece? 7 bits
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是否是一个晋升，并且是哪一种？7 位
 - en: Is it a check? 1 bit
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是否将其当作将军？1位
 - en: Is it a checkmate? 1 bit
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是否将其当作将军？1位
 - en: Is it a castle? Short or long? 2 bits
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是否是易位？短易位还是长易位？2位
 - en: This gives us a total of `3+1+2+6+6+7+1+1+2 = 29` bits, or about 3.5 bytes per
     move. That’s not great though. A lot of moves actually take up less bits than
     that in text format.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这给我们一个总共`3+1+2+6+6+7+1+1+2 = 29`位，或者大约每步3.5字节。虽然不算太好。实际上，很多走法在文本格式中所占的位数要少于这个。
 - en: Getting smarter
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 变得更聪明
 - en: The first few bits
   id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 最初的几位
 - en: In the first pass, we just encoded the piece that moved using 3 bits, but that
     leaves 2 unused permutations available, since there are only 6 pieces in chess.
     Luckily, there are two very common moves that fit neatly into this hole, those
@@ -148,30 +177,36 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一轮中，我们只是用3位编码了移动的棋子，但是由于国际象棋只有6种棋子，这样做留下了2个未使用的排列。幸运的是，有两个非常常见的走法恰好填补了这个空缺，分别是短易位（`O-O`）和长易位（`O-O-O`）。
 - en: 'So we can encode the first 3 bits like so:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我们可以这样编码前3位：
 - en: '[PRE0]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The destination square
   id: totrans-split-31
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 目的地方格
 - en: In all cases except castling, you need to know the square that the piece is
     moving to, to reproduce the SAN. So we’ll skip this entirely when castling, but
     otherwise always include 6 bits for the destination square.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在除了易位之外的所有情况下，为了重现标准代数记号（SAN），您需要知道棋子移动到的方格。因此，当易位时我们会完全跳过这一点，但在其他情况下，始终包括6位用于目的地方格。
 - en: Just kidding, pawn moves!
   id: totrans-split-33
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 只是开玩笑，兵的走法！
 - en: There’s another exception to the destination square rule that might not seem
     so obvious. Let’s take the move `exf6`. We know it’s a pawn move from the e-file,
     so we don’t really need to encode the file it’s capturing using 6 bits. After
@@ -180,6 +215,8 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 目的地方格规则还有一个可能不那么明显的例外。我们来看一下 `exf6` 这步棋。我们知道它是从 e 列走的兵步，因此我们不需要用 6 位来编码它所捕捉的文件。毕竟，你永远不会看到
+    `exa6`。所以在这些情况下，我们只需要 4 位（一个用于方向，一个用于行）而不是 6 位来表示目的地方格。
 - en: But we can get even more clever here. Take `hxg6` for example. You know as soon
     as you see `hx`, that the file is going to be the g-file. So we don’t even need
     the extra bit to encode direction, we can just encode the file once, and the rank
@@ -187,71 +224,84 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 但我们可以在这里变得更聪明。以 `hxg6` 为例。你一看到 `hx`，就知道文件将会是 g 文件。因此，我们甚至不需要额外的比特来编码方向，我们只需编码文件一次，行一次。
 - en: 'So here’s the setup:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，这里是设置：
 - en: 'Pawn capture from b-g files: 3 bits for the file you’re capturing from, 1 bit
     for the direction of the capture, and 3 bits for the rank'
   id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从 b-g 文件的兵捕捉：3 位用于你要捕捉的文件，1 位用于捕捉方向，3 位用于行
 - en: 'Total: 10 bits for movement'
   id: totrans-split-38
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 总计：10 比特用于移动
 - en: 'Pawn capture from a and h files: 3 bits for the file you’re capturing from,
     3 bits for rank'
   id: totrans-split-39
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从 a 和 h 文件的兵捕捉：3 位用于你要捕捉的文件，3 位用于行
 - en: 'Total: 6 bits for movement'
   id: totrans-split-40
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 总计：6 比特用于移动
 - en: “Special” moves
   id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: “特殊”走法
 - en: It’s a bit of a waste to encode for each move, whether it’s a promotion, check,
     checkmate, capture, etc. After all, the vast majority of chess moves in a game
     are not any of these.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 对每一步棋进行编码有点浪费，无论是晋升、将军、将死、捕捉等。毕竟，在一场比赛中，绝大多数的棋步都不是这些。
 - en: So we’ll devote one bit to determining whether a move is “special”. It means
     we have to use an extra bit for moves that are promotions/checks/captures, but
     it also means that we save a whole lot of bits for “regular” moves.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们将一个比特用于确定一个走法是否是“特殊”的。这意味着我们必须为促进/将军/捕捉的走法使用额外的比特，但这也意味着我们可以为“常规”走法节省大量的比特。
 - en: Promotions are nice, because even though there are 6 chess pieces, there are
     only 4 valid pieces that you can promote to (after all, you can’t promote to a
     King or Pawn). So we only need 2 bits instead of 3, to encode the promotion piece.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 晋升是很好的，因为虽然有 6 种象棋棋子，但只有 4 种有效的棋子可以晋升（毕竟，你不能晋升为国王或兵）。因此，我们只需要 2 比特来编码晋升的棋子。
 - en: '[PRE1]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Disambiguation
   id: totrans-split-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 消除歧义
 - en: Disambiguation is a bit thorny. You have to encode a surprising amount of information,
     to be able to decode the SAN exactly as you received it.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 消除歧义有点棘手。你需要编码相当多的信息，才能准确解码接收到的标准代数记法。
 - en: Take `Ngf3` for example. Besides the usual stuff you also need to encode the
     disambiguation (file=g). There are 3 different disambiguation possibilities (rank,
     file, or whole square), so we need 2 bits. One goes to waste but disambiguated
@@ -260,76 +310,93 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 以 `Ngf3` 为例。除了通常的内容，你还需要编码消除歧义（文件=g）。有 3 种不同的消除歧义可能性（行、文件或整个方格），因此我们需要 2 位。有一个位会浪费，但是消除歧义的走法并不常见，我想不出一个好办法来利用最后一个排列。
 - en: So we always use 2 bits, then either 3 bits for the rank, 3 bits for the file,
     or 6 bits for a whole square (very rare).
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我们总是使用 2 位，然后使用 3 位来表示行，3 位来表示列，或者 6 位来表示整个方格（非常罕见）。
 - en: '[PRE2]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: How does this do?
   id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这样做有何效果？
 - en: '| Move | Original bits | Encoded bits | Savings |'
   id: totrans-split-52
   prefs: []
   type: TYPE_TB
+  zh: '| Move | 原始比特 | 编码后比特 | 节省 |'
 - en: '| --- | --- | --- | --- |'
   id: totrans-split-53
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
 - en: '| e4 | 16 | 10 | 37.5% |'
   id: totrans-split-54
   prefs: []
   type: TYPE_TB
+  zh: '| e4 | 16 | 10 | 37.5% |'
 - en: '| exd5 | 32 | 12 | 62.5% |'
   id: totrans-split-55
   prefs: []
   type: TYPE_TB
+  zh: '| exd5 | 32 | 12 | 62.5% |'
 - en: '| Nf3+ | 24 | 10 | 58.33% |'
   id: totrans-split-56
   prefs: []
   type: TYPE_TB
+  zh: '| Nf3+ | 24 | 10 | 58.33% |'
 - en: '| Qxa5+ | 40 | 16 | 60% |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| Qxa5+ | 40 | 16 | 60% |'
 - en: '| cxd8=Q# | 56 | 16 | 71.43% |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| cxd8=Q# | 56 | 16 | 71.43% |'
 - en: Not bad! We’re saving anywhere from 37.5% to 71.43% of the bits.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 不错！我们节省了从 37.5% 到 71.43% 的比特数。
 - en: PGNs
   id: totrans-split-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: PGN
 - en: 'You may be thinking something like this: “Isn’t is sorta cheating to measure
     these in bits? Since you can only address one byte at a time, needing 10 bits
     for a move is virtually the same as 16 bits”'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会想到这样的问题：“以比特来衡量这些是不是有点作弊？因为你每次只能处理一个字节，需要 10 比特来表示一步棋几乎与 16 比特相同”
 - en: Well yes, that’s true and means that we get less savings when storing individual
     SANs. But they don’t account for the majority of what I’m storing, which are PGNs.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，是的，这是真的，这意味着当存储单个标准代数记法时，我们的节省就少了。但它们并不能占据我存储的大部分内容，那些是 PGN。
 - en: 'PGNs are a way to store lines or games, and they look something like this:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: PGN 是一种存储棋局或棋局线路的方式，看起来是这样的：
 - en: '[PRE3]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This PGN is 759 bytes. There’s a ton of wasted space though. One byte between
     each move (the space). Then **at least 3 bytes** between full moves ( `2.`). This
     is sort of crazy, and if we combine our SAN encoding, we can compress this to
@@ -337,17 +404,22 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个 PGN 是 759 字节。然而有大量的浪费空间。每个移动之间有一个字节的空格。然后 `2.` 之间至少有 3 个字节。这有点疯狂，如果我们结合我们的
+    SAN 编码，我们可以将其压缩到更小。
 - en: If we encode the whole PGN using our SAN encoding, with no space between moves
     because we know once we’ve reached the end of a move, we can compress this specific
     759-byte PGN down to **195 bytes**, for a savings of **74%**.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们使用我们的 SAN 编码对整个 PGN 进行编码，因为我们知道一旦达到移动的结尾，我们就可以将这个特定的 759 字节 PGN 压缩到 195
+    字节，节省 **74%**。
 - en: Impact
   id: totrans-split-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 影响
 - en: This hasn’t been deployed yet, I’m working on a ton of other performance improvements.
     But I anticipate this along with EPD compression (which I may write another at
     article on) will reduce the size of the database by about 70%. We’re almost entierly
@@ -356,11 +428,14 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个还没有部署，我正在处理大量其他性能改进。但是我预计这个以及 EPD 压缩（我可能会另写一篇文章介绍）将使数据库大小减少约 70%。我们几乎完全受到读取限制，这应该意味着我们运行的最昂贵的查询将加速
+    3 倍。
 - en: Speed
   id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 速度
 - en: Another consideration here is the speed of doing this encoding/decoding; will
     it just cancel out the gains from having a much smaller database? Turns out, computers
     are really fast at this stuff, and conversion to and from this encoding is a rounding
@@ -368,6 +443,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个考虑因素是进行此编码/解码的速度；这是否会抵消拥有更小的数据库带来的收益？事实证明，计算机在这方面非常快，从这种编码的转换几乎可以忽略不计。
 - en: I’m using Rust + the `bitvec` library. Encoding and then decoding 1000 moves
     takes about 600,000ns, or 0.6ms. I haven’t taken a performance pass at all either,
     and there’s a few places I know are very inefficient. I’m guessing I’m not even
@@ -375,3 +451,5 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我正在使用 Rust 和 `bitvec` 库。编码然后解码 1000 个移动大约需要 600,000 纳秒，或者 0.6 毫秒。我还没有完全进行性能优化，而且我知道有几个地方非常低效。我猜测我甚至没有达到最佳状态的
+    10 倍，但应该足够好。
