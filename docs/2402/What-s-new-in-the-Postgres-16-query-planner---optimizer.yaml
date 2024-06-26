@@ -127,6 +127,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: PG15 EXPLAIN output
   id: totrans-split-24
   prefs:
@@ -136,6 +137,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: PG16 EXPLAIN output
   id: totrans-split-26
   prefs:
@@ -145,6 +147,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'In the PostgreSQL 16 `EXPLAIN` output above, you can see the planner chose
     to use the `distinct_test_a_idx` index on the `a` column and then performed an
     `Incremental Sort` to sort all of the equal values of `a` by `b`. The `Presorted
@@ -180,6 +183,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: PG15 EXPLAIN output
   id: totrans-split-33
   prefs:
@@ -189,6 +193,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: PG16 EXPLAIN output
   id: totrans-split-35
   prefs:
@@ -198,6 +203,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Aside from PostgreSQL 16 executing the query over twice as fast as in PG15,
     the only indication of this change in the `EXPLAIN ANALYZE` output above is from
     the `temp read=4540 written=4560` that’s not present in the PostgreSQL 16 output.
@@ -222,6 +228,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: PG15 EXPLAIN output
   id: totrans-split-41
   prefs:
@@ -231,6 +238,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: PG16 EXPLAIN output
   id: totrans-split-43
   prefs:
@@ -240,6 +248,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: In the PostgreSQL 16 EXPLAIN output above, you can see the `Memoize` node is
     put atop of the `Append` node—which caused a reduction in the number of `loops`
     in the `Append` from 1 million in PG15 down to 10 in PG16\. Each time the `Memoize`
@@ -248,6 +257,9 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的 PostgreSQL 16 EXPLAIN 输出中，可以看到 `Memoize` 节点置于 `Append` 节点之上，导致 `Append`
+    中的 `循环次数` 从 PG15 的 100 万次减少到 PG16 的 10 次。每当 `Memoize` 节点命中缓存时，就无需执行 `Append` 来获取记录。这导致
+    **在 PostgreSQL 16 上查询运行速度大约快了 6 倍**。
 - en: When performing a `Hash Join` for an `INNER JOIN`, PostgreSQL prefers to build
     the hash table on the smaller of the two tables. Smaller hash tables are better
     as it’s less work to build them. Smaller tables are also better as they’re more
@@ -256,6 +268,8 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在执行 `INNER JOIN` 的 `Hash Join` 时，PostgreSQL 更倾向于在两个表中较小的那个上构建哈希表。较小的哈希表更好，因为构建它们的工作量更小。较小的表也更适合
+    CPU 的缓存，CPU 等待主内存中的数据到达的可能性更小。
 - en: In PostgreSQL versions before 16, an `Anti Join`—as you might see if you use
     `NOT EXISTS` in your queries—would always put the table mentioned in the `NOT
     EXISTS` part on the inner side of the join. This meant there was no flexibility
@@ -264,39 +278,49 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PostgreSQL 16 之前的版本中，如果在查询中使用 `NOT EXISTS`，`Anti Join` 会始终将 `NOT EXISTS` 部分提到连接的内侧。这意味着无法灵活地对两个表中较小的那个进行哈希，可能需要在较大的表上构建哈希表。
 - en: The PostgreSQL 16 query planner can now choose to hash the smaller of the two
     tables. This can now be done because PostgreSQL 16 supports `Right Anti Join`.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器现在可以选择对较小的两个表进行哈希。这可以在 PostgreSQL 16 支持 `Right Anti Join`
+    的情况下完成。
 - en: '[PRE9]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: PG15 EXPLAIN output
   id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 解释输出
 - en: '[PRE10]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: PG16 EXPLAIN output
   id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 解释输出
 - en: '[PRE11]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: You can see from the `EXPLAIN ANALYZE` output above that due to PG16’s planner
     opting to use a `Hash Right Anti Join`, the `Memory Usage` in PostgreSQL 16 was
     much less than in PostgreSQL 15 and the `Execution Time` was almost halved.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上面的 `EXPLAIN ANALYZE` 输出可以看出，由于 PG16 的规划器选择使用 `Hash Right Anti Join`，PostgreSQL
+    16 的 `内存使用量` 明显少于 PostgreSQL 15，并且 `执行时间` 几乎减半。
 - en: PostgreSQL 11 saw the introduction of `Parallel Hash Join`. This allows multiple
     parallel workers in a parallel query to assist in the building of a single hash
     table. In versions prior to 11, each worker would have built its own identical
@@ -304,40 +328,49 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 11 引入了 `并行哈希连接`。这允许并行查询中的多个并行工作者协助构建单个哈希表。在 11 版本之前，每个工作者都将构建自己的相同哈希表，导致额外的内存开销。
 - en: In PostgreSQL 16, `Parallel Hash Join` has been improved and now supports `FULL`
     and `RIGHT` join types. This allows queries that have a `FULL OUTER JOIN` to be
     executed in parallel and also allows `Right Joins` plans to execute in parallel.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PostgreSQL 16 中，`Parallel Hash Join` 已经改进，现在支持 `FULL` 和 `RIGHT` 连接类型。这允许并行执行具有
+    `FULL OUTER JOIN` 的查询，并且还允许执行 `Right Joins` 计划并行化。
 - en: '[PRE12]'
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: PG15 EXPLAIN output
   id: totrans-split-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 解释输出
 - en: '[PRE13]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: PG16 EXPLAIN output
   id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 解释输出
 - en: '[PRE14]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: The `EXPLAIN` output shows that PostgreSQL 16 was able to perform the join in
     parallel and this resulted in a significant reduction in the query’s `Execution
     Time`.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '`EXPLAIN` 输出显示，PostgreSQL 16 能够并行执行连接操作，这显著减少了查询的 `执行时间`。'
 - en: When a query contains a window function such as `row_number()`, `rank()`, `dense_rank()`,
     `percent_rank()`, `cume_dist()` and `ntile()`, if the [window clause](https://www.postgresql.org/docs/16/sql-expressions.html#SYNTAX-WINDOW-FUNCTIONS)
     did not specify the `ROWS`option, then PostgreSQL would always use the default
@@ -374,6 +407,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: PG15 EXPLAIN output
   id: totrans-split-68
   prefs:
@@ -383,6 +417,7 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: PG16 EXPLAIN output
   id: totrans-split-70
   prefs:
@@ -392,6 +427,7 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: The `Index Scan` node in the `EXPLAIN` output for PG15 above shows that 50410
     rows had to be read from the `scores_score_idx` index before execution stopped.
     While in PostgreSQL 16, only 11 rows were read as the executor realized that once
@@ -424,6 +460,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: PG15 EXPLAIN output
   id: totrans-split-77
   prefs:
@@ -433,6 +470,7 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: PG16 EXPLAIN output
   id: totrans-split-79
   prefs:
@@ -442,6 +480,7 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: From the PostgreSQL 16 `EXPLAIN` output above, you can see that the planner
     was able to use the `pr <= 0.01` condition as a `Run Condition`, whereas, with
     PostgreSQL 15 this clause appeared as a `Filter` on the subquery. In PG16, the
@@ -478,6 +517,7 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: PG15 EXPLAIN output
   id: totrans-split-87
   prefs:
@@ -487,6 +527,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: PG16 EXPLAIN output
   id: totrans-split-89
   prefs:
@@ -496,6 +537,7 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: The important thing to notice here is that the PostgreSQL 16 plan does not include
     a join to `part_tab` meaning all there is to do is scan `normal_table`.
   id: totrans-split-91
@@ -512,6 +554,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: PG15 EXPLAIN output
   id: totrans-split-94
   prefs:
@@ -521,6 +564,7 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: PG16 EXPLAIN output
   id: totrans-split-96
   prefs:
@@ -530,6 +574,7 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: If you look carefully at the SQL query, you’ll notice that each column in the
     `DISTINCT` clause also has an equality condition in the `WHERE` clause. This means
     that all the output rows in the query will have the same values in each column.
@@ -562,28 +607,35 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16查询规划器调整了在考虑`Merge Join`顺序时使用的规则，从“行的顺序必须完全匹配”调整为“必须至少有1个前导列正确排序”。这使得规划器可以使用`Incremental
+    Sorts`将行按正确顺序准备到上层操作。我们从本博客的早期部分知道，当可能时，增量排序比完全排序需要更少的工作，因为增量排序能够利用部分排序的输入并以较小的批次执行排序，从而导致更少的内存消耗和更少的排序比较。
 - en: '[PRE27]'
   id: totrans-split-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: PG15 EXPLAIN output
   id: totrans-split-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 EXPLAIN输出
 - en: '[PRE28]'
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: PG16 EXPLAIN output
   id: totrans-split-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 EXPLAIN输出
 - en: '[PRE29]'
   id: totrans-split-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: In the PG16 EXPLAIN output above, you can see that an `Incremental Sort` was
     used (compared to PG15 which instead used a `Sort`) and that resulted in a small
     reduction of the query’s `Execution Time` in PG16 and a large reduction in the
@@ -591,11 +643,14 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述的PG16 EXPLAIN输出中，您可以看到使用了`Incremental Sort`（与PG15使用的`Sort`相比），这导致了PG16中查询的`Execution
+    Time`略微减少以及执行排序所使用的内存大幅减少。
 - en: Conclusion
   id: totrans-split-107
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: A lot of engineering work was done in PostgreSQL 16 to improve the query planner
     by many engineers from all around the world. I’d like to thank all the people
     who helped by reviewing the pieces that I worked on and all the people who gave
@@ -603,6 +658,7 @@
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16进行了大量工程工作，以改进来自世界各地的许多工程师的查询规划器。我要感谢所有帮助审查我工作部分的人，以及对更改提供反馈的所有人。
 - en: Each of the 10 improvements to the PostgreSQL 16 planner above are enabled by
     default—and are either applied in all cases where the optimization is possible,
     or are selectively applied by the query planner when it thinks the optimization
@@ -610,6 +666,7 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述对PostgreSQL 16规划器的10个改进都是默认启用的，并且在可能的情况下，会应用于所有优化，或者由查询规划器在认为优化有助于时进行选择性应用。
 - en: If you’re running an older version of PostgreSQL, I encourage you to try your
     workload on PostgreSQL 16 to see which of your queries are faster. And as always,
     feedback about real-world usage of PostgreSQL in the wild is welcome on the [pgsql-general@postgresql.org](mailto:pgsql-general@postgresql.org?subject=PG16%20query%20planner%20feedback)
@@ -619,14 +676,18 @@
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您正在运行较旧版本的PostgreSQL，我鼓励您尝试在PostgreSQL 16上运行您的工作负载，看看哪些查询更快。如往常一样，欢迎在[pgsql-general@postgresql.org](mailto:pgsql-general@postgresql.org?subject=PG16%20query%20planner%20feedback)邮件列表上分享有关PostgreSQL在真实世界中使用的反馈，您不仅可以提交问题，还可以分享积极的使用经验。所以，请告诉我们您使用PostgreSQL
+    16规划器的体验。
 - en: Enjoy what you’re reading?
   id: totrans-split-111
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 喜欢您正在阅读的内容吗？
 - en: If you want to read more posts from our Citus database and Postgres teams, sign
     up for our monthly newsletter and get the latest content delivered straight to
     your inbox.
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想阅读更多我们Citus数据库和Postgres团队的文章，请订阅我们的月度通讯，获取最新内容直接送到您的收件箱。

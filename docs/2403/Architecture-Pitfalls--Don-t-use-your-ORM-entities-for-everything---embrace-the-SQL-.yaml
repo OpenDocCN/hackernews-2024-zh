@@ -367,19 +367,23 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，现在有一些很棒的替代方案，不会让你头疼。我可以亲自推荐的两个解决方案是：[jOOQ](https://www.jooq.org) 和 [BlazePersistence](https://persistence.blazebit.com)。
 - en: ‍
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Both give you access to a modern, fluent API that lets you build queries programmatically
     without hassle.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两者都为你提供了现代、流畅的API，让你无需麻烦地编程构建查询。
 - en: ‍
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: BlazePersistence is Hibernate-centric, but is free for all databases, whereas
     jOOQ has a much broader set of functionality but requires a modest per-developer
     fee for certain non-free enterprise databases. I think jOOQ is worth paying for,
@@ -388,28 +392,34 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: BlazePersistence是面向Hibernate的，但对所有数据库免费，而jOOQ具有更广泛的功能集，但对某些非免费企业数据库需要适度的开发者费用。我认为jOOQ是值得付费的，但你可能需要与你公司的财务人员争取批准。如果你使用常见的免费和开源数据库如Postgres，jOOQ是免费的。
 - en: ‍
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: '**Projections are your friend**'
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**投影是你的朋友**'
 - en: ‍
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: A pattern I commonly see is to always return full ORM entities in queries, and
     then copy only the fields needed to DTOs (which are then returned to the caller).
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常看到的一种模式是始终在查询中返回完整的ORM实体，然后仅复制到DTOs中所需的字段（然后返回给调用者）。
 - en: ‍
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: For simpler use-cases this is often fine, but it can have a significant performance
     impact for queries that are larger and/or more expensive. To put it another way,
     you are causing significant extra work in the database, serialisation, deserialisation
@@ -420,10 +430,12 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于更简单的用例，这通常是可以接受的，但对于更大和/或更昂贵的查询，它可能会对性能产生显著影响。换句话说，这会在数据库、序列化、反序列化和网络流量中引起显著的额外工作，只是为了丢弃大部分数据。你可能还会注意到，“真正的”ORM实体可能会有相当多的开销；这是因为你的ORM提供的关键功能需要注入代理、拦截器、包装器等。
 - en: ‍
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Instead, you should consider using projections. In essence, this is simply a
     SQL query that returns only the data you need, with the results mapped into objects
     specifically designed to hold that data. This will often be flattened and simplified
@@ -434,10 +446,13 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，你应该考虑使用投影。本质上，这只是一个SQL查询，返回你需要的数据，并将结果映射到专门设计用于保存该数据的对象中。这通常会比你的数据模型更简化和扁平化。好处是它轻量级并且消除了不必要的开销。缺点是这些通常不是“真正”的实体，因此你不能使用它们进行写操作
+    —— 通常你也不想这样做！
 - en: ‍
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: As of writing, I find JPA/Hibernate’s inbuilt way of handling projections to
     be extremely inconvenient and difficult to maintain (e.g. verbose constructor-based
     syntax). I suspect this might be the reason so many people use the inefficient
@@ -445,10 +460,12 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 就我目前的经验而言，我发现JPA/Hibernate处理投影的内置方式非常不方便和难以维护（例如冗长的基于构造函数的语法）。我怀疑这可能是为什么那么多人使用效率低下的“应用投影”方式的原因之一。
 - en: ‍
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Instead, I recommend using [BlazePersistence’s Entity View](https://persistence.blazebit.com/documentation/1.6/entity-view/manual/en_US/)
     module or [jOOQ’s DTOs/projections.](https://www.jooq.org/doc/latest/manual/sql-execution/fetching/pojos/)
     These both provide much more convenient ways of mapping, often with code generation
@@ -457,29 +474,35 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，我建议使用[BlazePersistence的Entity View](https://persistence.blazebit.com/documentation/1.6/entity-view/manual/en_US/)模块或[jOOQ的DTOs/projections。](https://www.jooq.org/doc/latest/manual/sql-execution/fetching/pojos/)这两者都提供更方便的映射方式，通常包括代码生成，以消除保持Java类与投影查询“同步”的要求。
 - en: ‍
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Experience says use of projections pays off very quickly when returning bulk
     data and complex queries, so don’t be shy!
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 经验告诉我们，在返回大量数据和复杂查询时使用投影很快就会得到回报，所以不要犹豫！
 - en: ‍
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Incidentally, if you are using a newer version of Java, you can also make use
     of [records](https://docs.oracle.com/en/java/javase/19/language/records.html)
     to further reduce boilerplate noise.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一句，如果你在使用较新版本的Java，你也可以利用[records](https://docs.oracle.com/en/java/javase/19/language/records.html)进一步减少样板噪音。
 - en: ‍
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: A potential caveat  is that if you are using a second-level cache with your
     ORM, you may need to selectively flush it to avoid staleness issues. People have
     strong opinions on second level caches in ORMs, and I’m not going into that area
