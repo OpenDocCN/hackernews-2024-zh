@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 12:48:39'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 12:48:39
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Light ELF: exploring potential size reduction | MaskRay'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 轻 ELF：探索潜在的尺寸减小 | MaskRay
 - en: 来源：[https://maskray.me/blog/2024-04-01-light-elf-exploring-potential-size-reduction](https://maskray.me/blog/2024-04-01-light-elf-exploring-potential-size-reduction)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://maskray.me/blog/2024-04-01-light-elf-exploring-potential-size-reduction](https://maskray.me/blog/2024-04-01-light-elf-exploring-potential-size-reduction)
 - en: ELF's design emphasizes [natural size and alignment guidelines for its control
     structures](https://maskray.me/blog/2024-03-09-a-compact-relocation-format-for-elf).
     While ensured efficient processing in the old days, this can lead to larger file
@@ -33,157 +39,197 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: ELF 的设计强调了 [其控制结构的自然大小和对齐指南](https://maskray.me/blog/2024-03-09-a-compact-relocation-format-for-elf)。虽然在旧日确保了高效处理，但可能导致更大的文件尺寸。我提出“轻
+    ELF”（`EV_LIGHT`，版本 2）——灵感来自托尔金的传奇中的光明精灵（他们曾在瓦林诺的两树之光下见证过光明）。
 - en: In a light ELF file, the `e_version` member of the ELF header is set to 2\.
     `EV_CURRENT` remains 1 for backward compatibility.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在轻 ELF 文件中，ELF 头的 `e_version` 成员被设为 2。`EV_CURRENT` 保持为 1 以保持向后兼容性。
 - en: '|'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '|'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE1]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: When linking a program, traditional ELF (version 1) and light ELF (version 2)
     files can be mixed together.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在链接程序时，传统 ELF（版本 1）和轻 ELF（版本 2）文件可以混合使用。
 - en: Relocations
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重定位
 - en: Light ELF utilizes [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf)
     for relocations. [REL and RELA](/blog/2024-01-14-exploring-object-file-formats#relocations)
     from traditional ELF are unused.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 轻 ELF 利用 [CREL](/blog/2024-03-09-a-compact-relocation-format-for-elf) 进行重定位。传统
+    ELF 中的 [REL 和 RELA](/blog/2024-01-14-exploring-object-file-formats#relocations)
+    未被使用。
 - en: Existing lazy binding schemes rely on random access to relocation entries within
     the `DT_JMPREL` table. Due to CREL's sequential nature, keeping lazy binding requires
     a memory allocation that holds decoded JUMP_SLOT relocations.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 现有的惰性绑定方案依赖于对 `DT_JMPREL` 表内重定位条目的随机访问。由于 CREL 的顺序性质，保持惰性绑定需要一个内存分配来保存解码的 JUMP_SLOT
+    重定位。
 - en: Traditional ELF (version 1) [section header tables](/blog/2024-01-14-exploring-object-file-formats#sections)
     can be large. Light ELF addresses this through a compact section header table
     format signaled by `e_shentsize == 0` in the ELF header.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统 ELF（版本 1）[节头表](/blog/2024-01-14-exploring-object-file-formats#sections) 可能很大。轻
+    ELF 通过 ELF 头中 `e_shentsize == 0` 信号的紧凑节头表格式解决了这个问题。
 - en: '[A compact section header table for ELF](/blog/2024-03-31-a-compact-section-header-table-for-elf)
     contains the detail. Its current version is copied below for your convenience.'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[一个用于 ELF 的紧凑节头表](/blog/2024-03-31-a-compact-section-header-table-for-elf)
+    包含详细信息。其当前版本如下供您参考。'
 - en: '`nshdr` denotes the number of sections (including `SHN_UNDEF`). The section
     header table (located at `e_shoff`) begins with `nshdr` `Elf_Word` values. These
     values specify the offset of each section header relative to `e_shoff`.'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '`nshdr` 表示节的数量（包括 `SHN_UNDEF`）。节头表（位于 `e_shoff` 处）以 `nshdr` 个 `Elf_Word` 值开头。这些值指定每个节头相对于
+    `e_shoff` 的偏移量。'
 - en: 'Following these offsets, `nshdr` section headers are encoded. Each header begins
     with a `presence` byte indicating which subsequent `Elf_Shdr` members use explicit
     values vs. defaults:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这些偏移量之后，`nshdr` 节头被编码。每个头部以一个 `presence` 字节开头，指示随后的每个 `Elf_Shdr` 成员使用显式值还是默认值：
 - en: '`sh_name`, ULEB128 encoded'
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_name`，ULEB128 编码'
 - en: '`sh_type`, ULEB128 encoded (if `presence & 1`), defaults to `SHT_PROGBITS`'
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_type`，ULEB128 编码（如果 `presence & 1`），默认为 `SHT_PROGBITS`'
 - en: '`sh_flags`, ULEB128 encoded (if `presence & 2`), defaults to 0'
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_flags`，ULEB128 编码（如果 `presence & 2`），默认为 0'
 - en: '`sh_addr`, ULEB128 encoded (if `presence & 4`), defaults to 0'
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_addr`，ULEB128 编码（如果 `presence & 4`），默认为 0'
 - en: '`sh_offset`, ULEB128 encoded'
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_offset`，ULEB128 编码'
 - en: '`sh_size`, ULEB128 encoded (if `presence & 8`), defaults to 0'
   id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_size`，ULEB128 编码（如果 `presence & 8`），默认为 0'
 - en: '`sh_link`, ULEB128 encoded (if `presence & 16`), defaults to 0'
   id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_link`，ULEB128 编码（如果 `presence & 16`），默认为 0'
 - en: '`sh_info`, ULEB128 encoded (if `presence & 32`), defaults to 0'
   id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_info`，ULEB128 编码（如果 `presence & 32`），默认为 0'
 - en: '`sh_addralign`, ULEB128 encoded as log2 value (if `presence & 64`), defaults
     to 1'
   id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_addralign`，ULEB128 编码作为对数值（如果 `presence & 64`），默认为 1'
 - en: '`sh_entsize`, ULEB128 encoded (if `presence & 128`), defaults to 0'
   id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sh_entsize`，ULEB128 编码（如果 `presence & 128`），默认为 0'
 - en: In traditional ELF, `sh_addralign` can be 0 or a positive integral power of
     two, where 0 and 1 mean the section has no alignment constraints. While the compact
     encoding cannot encode `sh_addralign` value of 0, there is no loss of generality.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在传统 ELF 中，`sh_addralign` 可以为 0 或正整数的二次幂，其中 0 和 1 表示该节段没有对齐约束。虽然紧凑编码无法编码 `sh_addralign`
+    值为 0，但这并不影响一般性。
 - en: 'Example C++ code that decodes a specific section header:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: C++ 示例代码，解码特定节段头部的示例：
 - en: '|'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE2]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE3]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '|'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: While the current format allows for O(1) in-place random access of section headers
     using offsets at the beginning of the table, this access pattern seems uncommon
     in practice. At least, I haven't encountered (or remembered) any instances within
@@ -191,17 +237,21 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管当前格式允许使用表开始处的偏移量进行节段头部的 O(1) 原地随机访问，但这种访问模式在实践中似乎不常见。至少在 llvm-project 代码库中，我没有遇到（或者记得）任何实例。因此，我考虑移除这个功能。
 - en: In a release build of llvm-project (`-O3 -ffunction-sections -fdata-sections
     -Wa,--crel`, the traditional section header tables occupy 16.4% of the `.o` file
     size while the compact section header table drastically reduces the ratio to 4.7%.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 llvm-project 的发布构建 (`-O3 -ffunction-sections -fdata-sections -Wa,--crel`)
+    中，传统节段头表占 `.o` 文件大小的 16.4%，而紧凑节段头表将这一比率显著降低至 4.7%。
 - en: Symbol table
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 符号表
 - en: Like other sections, [symbol table](/blog/2024-01-14-exploring-object-file-formats#symbols)
     and string table sections (`SHT_SYMTAB` and `SHT_STRTAB`) can be [compressed through
     `SHF_COMPRESSED`](/blog/2023-07-07-compressed-arbitrary-sections). However, compressing
@@ -210,11 +260,15 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 与其他节段类似，[符号表](/blog/2024-01-14-exploring-object-file-formats#symbols) 和字符串表节段
+    (`SHT_SYMTAB` 和 `SHT_STRTAB`) 可以通过 [`SHF_COMPRESSED`](/blog/2023-07-07-compressed-arbitrary-sections)
+    进行压缩。然而，不建议压缩动态符号表 (`.dynsym`) 及其相关的字符串表 (`.dynstr`)。
 - en: Symbol table sections have a non-zero `sh_entsize`, which remains unchanged
     after compression.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 符号表节段具有非零的 `sh_entsize`，在压缩后保持不变。
 - en: The string table, which stores symbol names (also section names in LLVM output),
     is typically much larger than the symbol table itself. To reduce its size, we
     can utilize a text compression algorithm. While compressing the string table,
@@ -223,6 +277,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 字符串表，用于存储符号名称（也包括 LLVM 输出中的节段名称），通常比符号表本身要大得多。为了减小其大小，我们可以利用文本压缩算法。虽然压缩字符串表时，同时压缩符号表可能是合理的选择，但对符号表本身使用紧凑编码并不会带来显著的好处。
 - en: Program headers, while individually large (each `Elf64_Phdr` is 56 bytes) and
     no random access is needed, typically have a limited quantity within an executable
     or shared object. Consequently, their overall size contribution is relatively
@@ -230,35 +285,44 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序头部，虽然每个 `Elf64_Phdr` 都很大（每个为 56 字节），且不需要随机访问，但在可执行文件或共享对象中的数量通常有限。因此，它们的整体大小贡献相对较小。轻量
+    ELF 保留现有格式。
 - en: Section compression
   id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 节段压缩
 - en: Compressed sections face a challenge due to header overhead especially for ELFCLASS64.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: ELFCLASS64 尤其对于头部开销，压缩节段面临挑战。
 - en: '|'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE4]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '|'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE5]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '|'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'The overhead and [alignment padding](/blog/2022-01-23-compressed-debug-sections#alignment)
     limit the effectiveness when used with features like `-ffunction-sections` and
     `-fdata-sections` that generate many smaller sections. For example, I have found
@@ -268,21 +332,26 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 当与 `-ffunction-sections` 和 `-fdata-sections` 等生成许多较小节段的特性一起使用时，开销和 [对齐填充](/blog/2022-01-23-compressed-debug-sections#alignment)
+    限制了其有效性。例如，我发现大型 `Elf64_Chdr` 使得评估压缩的 `.rela.*` 节段变得困难。轻量 ELF 通过引入更小占地面积的头部格式来解决这一挑战：
 - en: '`ch_type`, ULEB128 encoded'
   id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ch_type`，ULEB128 编码'
 - en: '`ch_size`, ULEB128 encoded'
   id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ch_size`，ULEB128 编码'
 - en: '`ch_addralign`, ULEB128 encoded as log2 value'
   id: totrans-split-55
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ch_addralign`，ULEB128 编码的对数值'
 - en: This approach allows Light ELF to represent the header information in just 3
     bytes for smaller sections, compared to the 24 bytes required by the traditional
     format. The content is no longer guaranteed to be word-aligned, a property that
@@ -290,50 +359,61 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种方法允许轻量 ELF 仅用 3 字节表示较小节段的头部信息，而传统格式则需要 24 字节。内容不再保证字对齐，这是大多数压缩库无需的属性。
 - en: Furthermore, [compressed sections with the `SHF_ALLOC` flag](https://groups.google.com/g/generic-abi/c/HUVhliUrTG0)
     are allowed. Using them outside of relocatable files needs caution, though.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，允许使用带有`SHF_ALLOC`标志的[压缩段](https://groups.google.com/g/generic-abi/c/HUVhliUrTG0)。尽管如此，在非可重定位文件中使用它们需要谨慎。
 - en: Experiments
   id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实验
 - en: I have developed a Clang/lld prototype that implements compact section header
     table and CREL ([https://github.com/MaskRay/llvm-project/tree/april-2024](https://github.com/MaskRay/llvm-project/tree/april-2024)).
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我开发了一个实现了紧凑段头表和CREL的Clang/lld原型（[https://github.com/MaskRay/llvm-project/tree/april-2024](https://github.com/MaskRay/llvm-project/tree/april-2024)）。
 - en: '| 136012504 | 18284992 | -O3 |'
   id: totrans-split-60
   prefs: []
   type: TYPE_TB
+  zh: '| 136012504 | 18284992 | -O3 |'
 - en: '| 111583312 | 18284992 | -O3 -Wa,--crel |'
   id: totrans-split-61
   prefs: []
   type: TYPE_TB
+  zh: '| 111583312 | 18284992 | -O3 -Wa,--crel |'
 - en: '| 97976973 | 4604341 | -O3 -Wa,--crel,--cshdr |'
   id: totrans-split-62
   prefs: []
   type: TYPE_TB
+  zh: '| 97976973 | 4604341 | -O3 -Wa,--crel,--cshdr |'
 - en: '| 2174179112 | 260281280 | -g |'
   id: totrans-split-63
   prefs: []
   type: TYPE_TB
+  zh: '| 2174179112 | 260281280 | -g |'
 - en: '| 1763231672 | 260281280 | -g -Wa,--crel |'
   id: totrans-split-64
   prefs: []
   type: TYPE_TB
+  zh: '| 1763231672 | 260281280 | -g -Wa,--crel |'
 - en: '| 1577187551 | 74234983 | -g -Wa,--crel,--cshdr |'
   id: totrans-split-65
   prefs: []
   type: TYPE_TB
+  zh: '| 1577187551 | 74234983 | -g -Wa,--crel,--cshdr |'
 - en: 'Light ELF: a thought experiment'
   id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 轻量级ELF：一个思想实验
 - en: By now, you might have realized that post is about a joke. While bumping `e_version`
     and modifying `Elf_Chdr` might not be feasible, it's interesting to consider the
     possibilities of compact section headers and compressed symbol/string tables.
@@ -341,3 +421,4 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，你可能已经意识到这篇文章是一个笑话。虽然提升`e_version`并修改`Elf_Chdr`可能不可行，但考虑紧凑段头和压缩符号/字符串表的可能性还是很有趣的。也许这能引发一些有趣的讨论！
