@@ -2,34 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:46:03'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:46:03'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How to Lose Control of your Shell - by Thorsten Ball
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何失去对你的 shell 控制权 - 作者：Thorsten Ball
 - en: 来源：[https://registerspill.thorstenball.com/p/how-to-lose-control-of-your-shell](https://registerspill.thorstenball.com/p/how-to-lose-control-of-your-shell)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://registerspill.thorstenball.com/p/how-to-lose-control-of-your-shell](https://registerspill.thorstenball.com/p/how-to-lose-control-of-your-shell)
 - en: A few weeks ago I was hacking on language server support in Zed, trying to get
     Zed to detect when a given language server binary, such as `gopls`, is already
     present in `$PATH`. If so, it should use that instead of downloading a new binary.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 几周前，我正在 Zed 中开发语言服务器支持，试图让 Zed 能够检测给定语言服务器二进制文件（如 `gopls`）是否已经存在于 `$PATH` 中。如果是，它应该使用该二进制文件，而不是下载一个新的二进制文件。
 - en: 'The challenge: `$PATH` is often dynamically modified by tools such as `direnv`,
     `asdf`, `mise` and others, which allow you to set a specific `$PATH` in a given
     folder. (Why do these tools do that? Because it gives you the ability to, say,
@@ -39,17 +46,22 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 挑战：`$PATH` 经常被工具如 `direnv`、`asdf`、`mise` 等动态修改，这些工具允许你在特定文件夹中设置特定的 `$PATH`。（为什么这些工具这么做呢？因为它让你有能力在你进入
+    `my-cool-project` 时，比如说在 `$PATH` 前面加上 `./my_custom_binaries`。）所以我们不能仅仅使用 Zed 进程关联的
+    `$PATH`，我们需要在你 `cd` 到项目目录时的 `$PATH`。
 - en: Easy, I thought. Just launch a `$SHELL`, `cd` into the project to trigger `direnv`
     and whathaveyou, run `env`, store the environment, pick out `$PATH`, find binaries
     in there.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单，我想。只需启动一个 `$SHELL`，`cd` 到项目目录以触发 `direnv` 和其他操作，运行 `env`，保存环境变量，提取出 `$PATH`，在其中找到二进制文件。
 - en: 'And easy it was. Here’s some of the code, the part that launches `$SHELL`,
     `cd`s and gets the `env`:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这么简单。这里是部分代码，启动 `$SHELL`，`cd` 并获取 `env` 的部分：
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
@@ -60,19 +72,23 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了一件事：在我的终端中启动一个执行此函数的 Zed 实例后，我再也无法通过按 `Ctrl-C` 来终止 Zed 了。
 - en: What?
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么？
 - en: I could spam the terminal with `^C` and nothing happened. Lines and lines of
     desperate `^C`s that never hear their own echo.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我可以用 `^C` 塞满终端，却什么也没有发生。绝望的 `^C` 行和行，从未听到它们自己的回声。
 - en: How? Why? … What?
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何？为什么？…… 什么？
 - en: After saying “What?” 20 times and hitting `Ctrl-c` even more, I asked [Piotr](https://zed.dev/team#piotr-osiewicz)
     for help, because I wasn’t 100% confident in how Rust spawns processes and he’s
     a Rust wizard. What I did know was that there would have to be `fork` and `exec`
@@ -85,36 +101,48 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 说了“什么？” 20 次，按了 `Ctrl-C` 更多次后，我向 [Piotr](https://zed.dev/team#piotr-osiewicz)
+    寻求帮助，因为我对 Rust 如何生成进程不是百分之百的信心，而他是 Rust 的高手。我知道的是，在 `std::process::Command` 内必然存在
+    `fork` 和 `exec` 系统调用，但我不确定 Rust 是否会在信号处理程序上做些聪明的事情，或者是否设置了默认的信号处理程序来干扰 `Ctrl-C`。因为
+    `Ctrl-C` *应该* 导致发送中断信号到进程，从而导致其终止，但显然这种方式停止工作了。
 - en: We started to poke at all kinds of things to test all kinds of hypotheses, as
     outlandish as they might be.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们开始探讨各种事情，测试各种可能的假设，尽管它们可能有些不可思议。
 - en: Are we *sure* that the shell is not running anymore? Yes, we are, because `.output()`
     up there only returns once the command has finished running.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们确定了吗，shell 真的不再运行了吗？是的，因为上面的 `.output()` 仅在命令运行完成后才返回。
 - en: Is this about `cd`? Do `direnv` or `asdf` or other tools fire some hooks that
     take control of the terminal? No, turns out when we just run `/usr/bin/env -0;`
     without `cd` it also takes control over the shell.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这和 `cd` 有关吗？ `direnv` 或 `asdf` 或其他工具是否触发了一些控制终端的钩子？不，结果表明，即使我们只运行 `/usr/bin/env
+    -0;` 而没有 `cd`，它也会控制住终端。
 - en: 'So is it the `-0` that we pass to `env`? It shouldn’t be, clearly, because
     that’s just formatting. But: desperate times breed desparate debugging attempts.
     So we tried it and it wasn’t `-0` either.'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以是我们传递给 `env` 的 `-0` 引起了这个问题吗？不应该，显然不是，因为那只是格式化。但：绝望的时候会引发绝望的调试尝试。所以我们尝试了一下，结果不是
+    `-0` 的问题。
 - en: Wait, is it `env`? Does it do something weird with my terminal? Huh.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 等等，是 `env` 吗？它是否对我的终端做了一些奇怪的事情？哼。
 - en: So we changed the `command` from
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我们把 `command` 从
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
@@ -124,6 +152,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: to
 - en: '[PRE2]'
   id: totrans-split-24
   prefs: []
