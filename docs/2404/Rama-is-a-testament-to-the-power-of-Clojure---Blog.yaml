@@ -77,6 +77,8 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管 Rama 包含了这种新的编程语言，实现了这种新的编程范式，它仍然是 Clojure。因此它们之间可以完美互操作。Rama 代码可以直接调用 Clojure
+    代码，反之亦然。它们之间没有任何摩擦。Rama 本身是由常规 Clojure 代码和 Rama 代码混合实现的。
 - en: Neither Rich Hickey nor John McCarthy ever envisioned this completely different
     programming paradigm being built within their abstractions, much less one that
     reformulates the basis of nearly every programming language (the function). They
@@ -89,6 +91,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 既不是 Rich Hickey，也不是 John McCarthy 曾经设想过会在他们的抽象中构建这种完全不同的编程范式，更不用说一种重新定义几乎每一种编程语言基础（函数）的范式了。他们不需要这样做。Clojure
+    以及它的 Lisp 前辈是几乎不限制你形成抽象的语言。在其他每种语言中，你至少必须符合它们的语法和基本语义，并且在编译时与运行时控制的能力有限。Lisp 在编译时有很好的控制能力，这让你可以做出令人难以置信的事情。
 - en: Lisp programmers have struggled ever since it was invented to explain why this
     is so powerful and why this has a major impact on simplifying software development.
     So I won’t try to explain how powerful this is in general and will focus on how
@@ -102,6 +106,9 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: Lisp 程序员自它发明以来一直在努力解释为什么这是如此强大，为什么这对简化软件开发有重大影响。所以我不会试图总结这种力量的普遍性，而是专注于它对 Rama
+    的重要性。我会把你引向 Paul Graham 的文章 [“Beating the Averages”](https://paulgraham.com/avg.html)，这篇文章是我大学时期第一次学习
+    Lisp 时的灵感来源。当我第一次读到这篇文章时，我并没有完全理解它，但我特别被其中的一些句子所吸引：“我们的大部分代码正在做一些在其他语言中非常难以实现的事情。由此产生的软件可以做到我们竞争对手的软件无法做到的事情。也许有某种联系。”
 - en: The new language at Rama’s core is an example of this. Other languages can only
     have multiple fundamentally different paradigms smoothly interoperating if designed
     and implemented at the language level. Otherwise, you have to resort to string
@@ -111,11 +118,14 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: Rama 核心的新语言就是一个例子。其他语言只有在语言级别设计和实现时才能顺畅地支持多种根本不同的范式。否则，你就必须借助字符串操作（如 SQL 中所做的那样），这并不顺畅，会造成复杂性的混乱。任何抽象化都无法完全隐藏这种复杂性，试图这样做通常会带来新的复杂性（例如
+    [ORMs](https://medium.com/building-the-system/dont-be-a-sucker-and-stop-using-orms-190add65add4)）。
 - en: With Clojure, you can do this at the library level. We required no special language
     support and built Rama on top of Clojure’s basic primitives.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Clojure，你可以在库级别上做到这一点。我们不需要特殊的语言支持，而是在 Clojure 的基本原语之上构建了 Rama。
 - en: Rama’s language is not our only example of mixing paradigms like this. Another
     example is [Specter](https://github.com/redplanetlabs/specter). Specter is a generically
     useful library for querying and manipulating data structures. It’s also a critical
@@ -126,6 +136,9 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 拉玛语言并非唯一一个混合这种范例的例子。另一个例子是[Specter](https://github.com/redplanetlabs/specter)。Specter
+    是一个通用的用于查询和操作数据结构的库。它也是拉玛 API 的关键部分（因为拉玛中的视图，称为[PStates](https://redplanetlabs.com/docs/~/pstates.html)，是任意组合的持久化数据结构），也是拉玛实现的关键部分。拉玛源码和测试中约
+    1% 的代码行是 Specter 的调用点。
 - en: You can define Specter’s abstractions in any language. What makes it special
     in Clojure is how performant it is. Queries and manipulations with Specter are
     faster than even hand-rolled Clojure code. The key to Specter’s performance is
@@ -139,11 +152,16 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在任何语言中定义 Specter 的抽象。在 Clojure 中使其特殊之处在于其性能。使用 Specter 进行查询和操作甚至比手工编写的 Clojure
+    代码更快。Specter 性能的关键在于其[内联缓存和编译系统](https://github.com/redplanetlabs/specter/wiki/Specter's-inline-caching-implementation)。内联缓存是一种我之前只在语言或虚拟机级别见过的技术。例如，它是
+    JVM 实现多态性的关键部分。由于 Clojure 的灵活性和在编译时为 Specter 调用点编程的能力，我们能够在库级别利用这一技术。这完全在幕后完成，Specter
+    的用户获得了一个表现力强、简洁的 API，而且速度非常快。
 - en: Power of immutability and data structure orientation
   id: totrans-split-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 不变性与数据结构取向的力量
 - en: Clojure is unique among Lisps in the degree that it [emphasizes immutability](https://clojure.org/about/state).
     It’s core API is oriented to working with immutable data structures. Additionally,
     Clojure encourages representing program state with plain data structures and having
@@ -153,6 +171,9 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Clojure 在众多 Lisp 方言中独树一帜，它[强调不变性](https://clojure.org/about/state)。其核心 API 设计用于处理不可变数据结构。此外，Clojure
+    鼓励使用普通数据结构表示程序状态，并提供了一个富有表现力的 API 用于操作这些数据结构。引言“比起让 10 个函数操作 10 个数据结构，不如让 100
+    个函数操作一个数据结构。”是[Clojure 设计理念](https://clojure.org/about/rationale)的一部分。
 - en: These philosophies have had a major impact on Rama’s development, helping a
     tremendous amount in managing complexity within Rama’s implementation. The less
     state you have to think about in a section of code, the easier it is to reason
@@ -166,6 +187,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些哲学理念对拉玛的发展产生了重大影响，在管理其实现中提供了巨大帮助。在代码段中需要考虑的状态越少，推理就越容易。当项目像拉玛这样大（19 万行源码，22
+    万行测试），具有许多层抽象和无数子系统时，想要完全“掌握住”整个系统的一部分是不可能的。我经常不得不重新阅读代码部分，以提醒自己有关特定子系统的详细信息。通过减少系统复杂性，尤其是通过不变性的方式，可以获得越来越多的回报，尤其是在代码库越大的情况下。
 - en: Clojure doesn’t force immutability for every situation, which is also important.
     Rama tracks a lot of different kinds of state, and we find it much simpler in
     some cases to use mutability rather than work with state indirectly as you would
@@ -180,6 +203,11 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: Clojure 并不是强制在每种情况下都使用不可变性，这也很重要。Rama 追踪许多不同类型的状态，在某些情况下，与其间接地通过像 Haskell 中的
+    [State Monad](https://en.wikibooks.org/wiki/Haskell/Understanding_monads/State)
+    这样的东西工作，我们发现直接使用可变性要简单得多。在某些算法中，使用内部的 [volatile](https://clojuredocs.org/clojure.core/volatile!)
+    实现要简单得多。尽管如此，Rama 中绝大部分的代码都以不可变的风格编写。当我们使用可变性时，几乎总是在单个线程内部进行隔离。与使用像 [atom](https://clojure.org/reference/atoms)
+    这样的并发可变性不同，我们使用一个 volatile 并将事件发送到拥有它的线程以与其交互。
 - en: Rama embraces and expands upon Clojure’s principles of immutability and orienting
     code around data structures. These principles are fundamental to Rama’s approach
     for expressing end-to-end backends. A lot of Rama programming revolves around
@@ -194,6 +222,9 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Rama 接纳并扩展了 Clojure 的不可变性原则，并围绕数据结构编写代码。这些原则是表达端到端后端的 Rama 方法的基础。Rama 编程的核心是实现视图（PStates），这些视图实质上只是使用与内存中数据结构相同的
+    Specter API 进行交互的数据结构。这与数据库形成鲜明对比，数据库具有固定的数据模型和专用的 API 用于与其交互。任何数据库都可以在 PState
+    中复制其表达性和 [性能](https://blog.redplanetlabs.com/2024/04/25/better-performance-rama-vs-mongodb-and-cassandra/)，因为数据模型只是数据结构的特定组合（例如，键/值是一个映射，列导向是排序映射的映射，文档是映射的映射等）。
 - en: Rama’s language extends Clojure’s immutable principles into writing distributed,
     fault-tolerant, and async code. There’s a lot of similarities with Clojure like
     anonymous operations with lexical closures, immutable local variables, and identical
@@ -207,6 +238,9 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Rama 的语言将 Clojure 的不可变原则延伸到编写分布式、容错和异步代码。与 Clojure 相似之处很多，例如使用词法闭包进行匿名操作、不可变的本地变量以及在重叠时具有相同的语义。在分布式计算方面，Rama
+    更进一步进行了一些工作，例如范围分析以确定哪些变量需要在网络边界之间传输。Rama 的循环语法类似于 Clojure，并具有额外的功能，即可以在循环迭代期间在集群中跳转进行分布式计算。在
+    Rama 中，所有这些都通过数据流的力量线性编写，切换线程/节点像任何其他操作一样（称为“分区器”）。
 - en: Clojure’s principles are just sound ideas that really do make a huge impact
     on simplifying software development. These principles are even more relevant in
     distributed systems / databases which historically have been overrun with complexity.
@@ -214,11 +248,14 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Clojure 的原则只是确实能够极大简化软件开发的良好思想。这些原则在历史上充斥着复杂性的分布式系统/数据库中尤为重要。这也是为什么这些原则对于 Rama
+    及其实现如此核心的原因。
 - en: Conclusion
   id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: There’s a seeming contradiction here – if Clojure enables such productivity
     gains, then why is it still a niche language in the industry? Why aren’t those
     using Clojure crushing their competition so thoroughly that every programmer is
@@ -226,6 +263,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里存在一个看似矛盾的地方——如果Clojure能带来如此大的生产力增益，为什么它在行业中仍然是一门小众语言？为什么那些使用Clojure的人没有彻底击败竞争对手，以至于每个程序员都在赶紧采用Clojure来平衡竞争力场？
 - en: I believe this is simply because Clojure does not address all aspects of software
     development. This is not a criticism of Clojure but a recognition of its scope.
     Things like durable data storage, deployment, monitoring, evolving an application’s
@@ -236,6 +274,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为这仅仅是因为Clojure没有涵盖软件开发的所有方面。这并不是对Clojure的批评，而是对其范围的认识。诸如持久数据存储、部署、监控、随时间演变应用程序状态和逻辑、容错性和扩展性等问题，构建端到端软件的巨大成本。通常情况下，当使用数据库时，Clojure的原则会受到损害，因为数据库会强迫你围绕其数据模型和功能来组织代码。
 - en: This is why we’re so excited about Rama and have worked so long on it, because
     Rama does address everything involved in building end-to-end backends, no matter
     the scale. Rama provides flexible data storage expressed in terms of data structures,
@@ -246,8 +285,10 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么我们对Rama如此兴奋并长时间致力于它的原因，因为Rama解决了构建端到端后端所涉及的一切问题，无论规模大小。Rama提供了灵活的数据存储，以数据结构的形式表达，内置了部署和监控功能，拥有一流的应用程序演进和更新功能，完全具备容错能力，并天生具备可扩展性。它在保持Clojure伟大原则和函数式编程根源的同时实现了所有这些。
 - en: '*If you’d like to discuss on the [Clojure Slack](https://clojurians.slack.com/),
     we’re active in the #rama channel.*'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*如果你想在[Clojure Slack](https://clojurians.slack.com/)上讨论，我们在#rama频道活跃。*'
