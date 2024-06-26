@@ -74,6 +74,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Recreatable chunks have 2 charaters indicating their status.
   id: totrans-split-14
   prefs: []
@@ -136,6 +137,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The same query executed twice:'
   id: totrans-split-26
   prefs: []
@@ -144,6 +146,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In the above output, you see how `recrUC001` turned into `recrUR001` and the
     chunk was moved below the `SEPARATOR` special marker in the LRU list.
   id: totrans-split-28
@@ -156,15 +159,18 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有几个库缓存对象句柄（KGLHD）的示例，这些句柄在分配时甚至没有包含对象名称哈希值（你可以使用`v$db_object_cache.addr`或`v$sql.address/child_address`来找到正确的对象）在堆转储中：
 - en: '[PRE3]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: For such allocations, Oracle seems to immediately mark chunks as (R) or (T)
     and not use the (C) flag at all.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这种分配，Oracle似乎立即将块标记为（R）或（T），而根本不使用（C）标志。
 - en: 'Nowadays, Oracle tries make library cache’s heap allocations use standardized/fixed
     sizes of individual chunks (*_kgl_fixed_extents* = 4096) to reduce heap fragmentation.
     Thus, you’ll see a lot of `freeable` chunks if your cursor (or PL/SQL object)
@@ -172,16 +178,19 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 如今，Oracle试图使库缓存的堆分配使用标准化/固定大小的单个块（*_kgl_fixed_extents* = 4096），以减少堆碎片化。因此，如果你的游标（或PL/SQL对象）需要超过4kB的内存来分配其堆，则会看到许多`freeable`块：
 - en: '[PRE4]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: These *freeable* chunks are not linked into the LRU list that shared pool manager
     searches through. Oracle doesn’t free random freeable chunks on their own - and
     it doesn’t see them anyway as they are not linked into the LRU list.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些*可释放*块未链接到共享池管理器搜索的LRU列表中。Oracle不会自行释放随机的可释放块 - 而且它根本看不到它们，因为它们未链接到LRU列表中。
 - en: Shared pool LRU list scan must find an unpinned *recreatable* chunk (the first
     chunk in an allocated heap) and it frees this leading recreatable chunk first
     (the `ds=0x13e3d9d48` points to the beginning of the heap). Then it goes on to
@@ -194,7 +203,10 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 共享池LRU列表扫描必须找到一个未固定的*可重建*块（分配堆中的第一个块），并首先释放这个主导的可重建块（`ds=0x13e3d9d48`指向堆的开头）。然后继续释放这个堆的其余块，它会遍历连接到主导块的任何进一步分配的链表（标记为可释放），并作为结果释放这些块。当堆管理器发现其主导的可重建块未固定时，它会释放整个子堆
+    - 没有必要仅释放100kB SQL Area堆的开头4kB并使其余部分处于部分分配的不可用状态。
 - en: </main>
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
