@@ -2,49 +2,60 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 12:48:53'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 12:48:53'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Inside the failed attempt to backdoor SSH globally — that got caught by chance
     | by Kevin Beaumont | Mar, 2024 | DoublePulsar
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Inside the failed attempt to backdoor SSH globally — that got caught by chance
+    | by Kevin Beaumont | Mar, 2024 | DoublePulsar
 - en: 来源：[https://doublepulsar.com/inside-the-failed-attempt-to-backdoor-ssh-globally-that-got-caught-by-chance-bbfe628fafdd](https://doublepulsar.com/inside-the-failed-attempt-to-backdoor-ssh-globally-that-got-caught-by-chance-bbfe628fafdd)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://doublepulsar.com/inside-the-failed-attempt-to-backdoor-ssh-globally-that-got-caught-by-chance-bbfe628fafdd](https://doublepulsar.com/inside-the-failed-attempt-to-backdoor-ssh-globally-that-got-caught-by-chance-bbfe628fafdd)
 - en: Q&A
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Q&A
 - en: '**Do I need to panic?** No. As an assurance piece, orgs can check they aren’t
     using the latest unstable releases of Debian and Fedora — but they very likely
     aren’t.'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我需要惊慌吗？** 不需要。作为保证，组织可以检查他们是否在使用Debian和Fedora的最新不稳定版本——但他们很可能没有。'
 - en: Andres caught the problem — which has allowed it to be evicted from the Linux
     distribution ecosystem before any stable releases.. released.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 安德烈斯发现了问题——这使得它在任何稳定发布之前被逐出Linux发行生态系统。
 - en: 'How did Andres find the problem? Well, let us go to Andres:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 安德烈斯是如何发现问题的？让我们去找安德烈斯：
 - en: “I was doing some micro-benchmarking at the time, needed to quiesce the system
     to reduce noise. Saw sshd processes were using a surprising amount of CPU, despite
     immediately failing because of wrong usernames etc. Profiled sshd, showing lots
@@ -55,17 +66,20 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “当时我正在进行一些微基准测试，需要平息系统以减少噪音。发现sshd进程使用了令人惊讶的CPU，尽管因为用户名错误等原因立即失败。对sshd进行了性能分析，显示在liblzma中有大量CPU时间，但是perf无法将其归因于一个符号。开始怀疑。回忆起几周前包更新后，在自动测试Postgres时看到了一个奇怪的valgrind投诉。
 - en: Really required a lot of coincidences.
   id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 真的需要很多巧合。
 - en: 'One more aspect that I think emphasizes the number of coincidences that had
     to come together to find this:'
   id: totrans-split-12
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 另一个方面，我认为强调了许多巧合，这些巧合使我们找到了这个问题：
 - en: I run a number “buildfarm” instances for automatic testing of postgres. Among
     them with valgrind. For some other test instance I had used -fno-omit-frame-pointer
     for some reason I do not remember. A year or so ago I moved all the test instances
@@ -75,47 +89,55 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我运行了一些“buildfarm”实例，用于自动测试Postgres。其中一些使用了valgrind。由于某种原因，我已经不记得了，一年多前我将所有测试实例移动到了一个共同的基础配置，而不是重复的配置。我选择让它们都使用了-fno-omit-frame-pointer。
 - en: Afaict valgrind would not have complained about the payload without -fno-omit-frame-pointer.
     It was because _get_cpuid() expected the stack frame to look a certain way.
   id: totrans-split-14
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我认为如果没有-fno-omit-frame-pointer，valgrind不会抱怨载荷。因为_get_cpuid()期望栈帧看起来应该是某种方式。
 - en: Additionally, I chose to use debian unstable to find possible portability problems
     earlier. Without that valgrind would have had nothing to complain.
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 此外，我选择使用Debian的不稳定版来更早地发现可能的可移植性问题。如果没有这个，valgrind就没有什么可抱怨的了。
 - en: Without having seen the odd complaints in valgrind, I don’t think I would have
     looked deeply enough when seeing the high cpu in sshd below _get_cpuid().”
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果没有看到valgrind中的奇怪投诉，我不认为我会深入研究看到sshd下面_get_cpuid()中高CPU的问题。”
 - en: A couple of points here. First of all, the world owes Andres unlimited free
     beer. He just saved everybody’s arse in his spare time. I am not joking.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有几点。首先，全世界都应该感谢安德烈斯，他在业余时间拯救了每个人的屁股。我不是在开玩笑。
 - en: Nobody else had raised concerns, and I don’t believe any existing security tooling
     or processes would have caught this (I realise there will be a torrent of vendors
     claiming they detect this… but they will detect this *now that somebody told them*).
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有其他人提出关注，我不认为任何现有的安全工具或流程会发现这个问题（我知道会有一堆供应商声称他们可以检测到...但是现在他们会检测到*有人告诉他们*）。
 - en: Because Andres privately researched the issue and got the Linux distributions
     to take it seriously, he averted this reaching any kind of wide (or even small)
     deployment in the real world.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为安德烈斯私下研究了这个问题，并让Linux发行版认真对待，他避免了这个问题在现实世界中的任何广泛（甚至是小范围）部署。
 - en: Also, Andres had a unique testing environment and a set of coincidental setup
     issues which allowed him to discover the issue. I don’t know of anybody else has
     this setup.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，安德烈斯拥有独特的测试环境和一系列偶然的设置问题，使他能够发现这个问题。我不知道还有谁有这样的设置。
 - en: When I installed a vulnerable Linux box, I had to double check it was actually
     vulnerable as I wouldn’t even see a speed issue. For me, it was a completely transparent
     backdoor — where sshd was running from disk as usual, with the usual file hash
@@ -123,6 +145,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我安装一个有漏洞的Linux盒子时，我不得不仔细检查它是否真的有漏洞，因为我甚至看不到速度问题。对我来说，这是一个完全透明的后门 —— sshd像往常一样从磁盘运行，具有通常的文件哈希和没有额外的网络活动。
 - en: '**How advanced was the threat actor?** The backdoor attempt was a very serious
     one, with a very high bar of knowledge, research, development and tradecraft to
     reach this far into the Linux ecosystem. Additionally, changes made by the threat
@@ -135,34 +158,41 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '**威胁行为者有多先进？** 这次后门尝试非常严重，需要极高的知识、研究、开发和技艺才能深入到Linux生态系统中。此外，威胁行为者在GitHub上的更改跨越多年，包括引入与OSS
+    Fuzzer不兼容的函数，由于2015年以来未解决的小问题，然后去年让OSS Fuzzer排除了对XZ Utils的扫描。后门本身设计非常精良，甚至包括通过kill命令远程停用和删除后门的功能。全球关注数天后，尽管没有看到任何完成对其进行逆向工程的人。'
 - en: '**Who did it?** Your mum. Just kidding, it was GCHQ in Cheltnam. Just kidding,
     it was Russia. Just kidding, it was China. Just kidding, it was America. Just
     kidding, it was definitely your mum.'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '**是谁做的？** 你妈妈。开个玩笑，是GCHQ在切尔滕纳姆。再开个玩笑，是俄罗斯。再开个玩笑，是中国。再开个玩笑，是美国。再开个玩笑，绝对是你妈妈。'
 - en: '**We should stop using open source and only buy American vendor products!**
     Yeah, good luck with that.'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我们应该停止使用开源，只购买美国供应商的产品！** 嗯，祝你好运。'
 - en: '**We should start funding every open source project!** Yeah, good luck with
     that.. I’ll start saving for my trip to Mars.'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我们应该开始资助每一个开源项目！** 嗯，祝你好运……我会开始为我去火星的旅行存钱。'
 - en: '**This is a wake up call around cybersecurity!** People will have forgotten
     about it in a week. Except for LinkedIn, who will still be talking in an echo
     chamber about supply chain in four decades.'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '**这是关于网络安全的警钟！** 人们一周后就会忘记它。除了LinkedIn，他们会在四十年后仍在闭门讨论供应链问题。'
 - en: '**So what can we do?** First of all, if you rely on *any* software, you have
     a risk of insider threat. Be it open source, closed source, or your own in house
     developers — if people add backdoors and nobody notices, that’s a problem.'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '**那么我们能做什么？** 首先，如果你依赖*任何*软件，你就有内部威胁的风险。无论是开源、闭源还是你自己的内部开发者 —— 如果人们添加后门而没有人注意到，那就是一个问题。'
 - en: Secondly, ***a core issue here is systemd in Linux***. libsystemd is linked
     to all systemd servies, which opens a rich attack surface of third party services
     to backdoor. That is what the threat actor abused here. It mean they didn’t need
@@ -172,16 +202,20 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二，***这里的核心问题是Linux中的systemd***。libsystemd链接到所有systemd服务，为第三方服务打开了丰富的后门攻击面。这就是威胁行为者在此处滥用的地方。这意味着他们不需要在systemd中设置后门，因为systemd有一个关注度很高的开发社区
+    —— 相反，他们依赖于liblzma加载XZ，这在整个链条中位于更低层次，没有人关注。
 - en: 'There’s a plot twist. This issue request in systemd was opened today:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个情节转折。今天在systemd中提出了这个问题请求：
 - en: But the fix for this was *already in train before the XZ issue was highlighted*,
     and long before the Github issue. The fix stopped the XZ backdoor into SSH, but
     hadn’t yet rolled out into a release of systemd.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在GitHub问题出现之前和XZ问题被突显之前，这个修复方案*已经在进行中*。该修复方案阻止了XZ后门进入SSH，但尚未在systemd的发布版中推出。
 - en: I believe there’s a good chance the threat actor realised this, and began rapidly
     accelerated development and deployment, hence publicly filing bug reports to try
     to get Ubuntu and such to upgrade XZ, as it was about to spoil several years of
@@ -189,6 +223,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为威胁行为者有很大可能意识到这一点，并开始快速加速开发和部署，因此公开提交错误报告，试图促使Ubuntu等更新XZ，因为它即将破坏数年的工作。看起来他们开始犯错误的时候也是这个时候。
 - en: '**We’re all doomed!!!1! The supply chain will end the world!11! I really want
     to panic!!!** No. Panic helps nobody. It’s also important we keep things in perspective,
     e.g. this one was spotted and averted.'
