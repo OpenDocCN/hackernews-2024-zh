@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-29 12:32:08'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:32:08
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How I Improved My Rust Compile Times by 75%
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我是如何将我的 Rust 编译时间提高了 75% 的。
 - en: 来源：[https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent](https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent](https://benw.is/posts/how-i-improved-my-rust-compile-times-by-seventy-five-percent)
 - en: There's now a Part 2, where I cover a couple more options. Check it out [here](https://benw.is/posts/how-i-improved-my-rust-compile-times-part2)
   id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 现在有第二部分，我将介绍更多选项。在这里可以查看 [链接](https://benw.is/posts/how-i-improved-my-rust-compile-times-part2)
 - en: One of Rust's often mentioned pain points is slow compile times. In order to
     have nice things like the borrow checker, safety, and zero cost abstractions,
     we pay in time spent compiling. Web developers, especially those that come from
@@ -43,6 +50,10 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 经常提到的一个痛点是编译时间慢。为了拥有像借用检查器、安全性和零成本抽象等好东西，我们要花费大量时间编译。Web 开发者，尤其是那些来自 JavaScript
+    框架的开发者，非常非常喜欢快速的重新加载时间。我在 Remix 的 Discord 早期非常活跃，很多人都在问关于 HMR（热模块重载）的问题[超级多](https://github.com/remix-run/remix/discussions/2384)。热模块重载是指当网页框架在现有页面上更改
+    JavaScript、HTML 和 CSS 模块时，不会丢失页面状态。而另一种方法，即实时页面重新加载，会在检测到更改时触发页面重新加载。对于 Remix，这两者之间的时间差异显著小于在
+    Rust 中的时间差异，因为在 Rust 中，我们必须重新编译。
 - en: You can imagine, as a Leptos team member, we hear a lot of the same discussion.
     Leptos, as a frontend Rust web framework, sits at the intersection of these two
     worlds We see it on the [Leptos Discord](https://discord.gg/x8NhWWYTV2) all the
@@ -50,114 +61,137 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为 Leptos 团队成员，我们经常听到相同的讨论。作为前端 Rust 网络框架，Leptos 位于这两个世界的交汇处。我们经常在 [Leptos Discord](https://discord.gg/x8NhWWYTV2)
+    上看到这种情况。
 - en: '"Now, if only rebuild was faster… 🫣"'
   id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '"现在，如果重建速度更快就好了... 🫣"'
 - en: '"Anyone have some tips to improve compile times? Leptos is amazing but having
     to wait 5-10 seconds to render an extra div is very annoying"'
   id: totrans-split-10
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '"有人有一些改善编译时间的建议吗？Leptos 真的很棒，但是等待 5-10 秒来渲染额外的 div 实在是很烦人"'
 - en: So Leptos basically has two approaches to solve this, improve Rust's compile
     time itself, and/or come up with a way to output changes to parts of the page
     without needing to recompile first. In this piece, we'll explore both.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，Leptos 基本上有两种方法来解决这个问题：改善 Rust 的编译时间本身，和/或者想出一种方法来在不需要首先重新编译的情况下输出页面的部分变化。在本文中，我们将探讨这两种方法。
 - en: In order to test different changes, we need to establish a baseline. In default
     Rust, on my machine, how long will it take to compile my web app?
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了测试不同的更改，我们需要建立一个基准。在我的机器上，默认的 Rust 环境，编译我的 Web 应用需要多长时间？
 - en: I have a quite beefy test machine on which I usually compile. On my machine
     I'll be compiling a simpler project, and my friend Alex kindly agreed to run test
     his startup Houski's [site](https://www.houski.ca/),
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我有一台非常强大的测试机器，通常用来编译。在我的机器上，我将编译一个更简单的项目，我的朋友 Alex 友好地同意测试他的创业公司 Houski 的 [网站](https://www.houski.ca/)。
 - en: AMD 5950x processor,
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: AMD 5950x 处理器，
 - en: 72GB RAM
   id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 72GB RAM
 - en: SATA SSD system drive.
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: SATA SSD 系统驱动器。
 - en: 7200RPM spinning disk storage drives
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 7200RPM 旋转硬盘存储驱动器
 - en: NVME drives
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NVME 驱动器
 - en: NixOS linux distro
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NixOS Linux 发行版
 - en: Rust 1.75 nightly
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Rust 1.75 nightly
 - en: AMD 7900x processor
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: AMD 7900x 处理器
 - en: 128GB RAM
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 128GB RAM
 - en: NVME drive
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: NVME 驱动器
 - en: Ubuntu linux distro
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Ubuntu Linux 发行版
 - en: Rust 1.75 nightly
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Rust 1.75 nightly
 - en: A Leptos web app typicallys undergoes a two stage build process.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: Leptos Web 应用通常经历两个阶段的构建过程。
 - en: Build Webassembly frontend module using cargo. Optimize and package it with
     warm-bindgen.
   id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 cargo 构建 WebAssembly 前端模块。使用 warm-bindgen 进行优化和打包。
 - en: Build the server binary with cargo.
   id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 cargo 构建服务器二进制文件。
 - en: I chose to benchmark the whole process for most of these demos, but since it's
     essentially two cargo steps, any relative changes would affect any cargo command.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我选择为大多数演示项目进行整体过程基准测试，但由于实质上是两个 cargo 步骤，任何相对变化都会影响任何 cargo 命令。
 - en: '~~Note: Discord User @PaulH(and a couple others) let me know about this [bug](https://github.com/leptos-rs/cargo-leptos/pull/203)
     that prevents the server build from using the dependencies built for the previous
     compilation of the server/webassembly frontend build due to changes in the RUSTFLAGS.
@@ -168,16 +202,21 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: ~~注意：Discord 用户 @PaulH（还有几位其他人）向我反映了关于这个 [bug](https://github.com/leptos-rs/cargo-leptos/pull/203)
+    的情况，该 bug 导致服务器构建无法使用之前编译的依赖项，因为 RUSTFLAGS 发生了变化。您可以通过将 cargo-leptos 设置为 > 0.2.1
+    并将以下内容添加到您的 Cargo.toml 文件中的 Leptos 设置块中来修复此问题。我没有启用过这个选项，但这现在是 cargo-leptos 的默认行为。该功能已被弃用。~~
 - en: TOML markup
   id: totrans-split-31
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: TOML 标记语言
 - en: '[PRE0]'
   id: totrans-split-32
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This advice comes from Bevy, which recommends setting the opt-level for development
     higher in order to possibly reduce dev compile times and improve performance.
     By default, the Rust compiler sets an opt-level of 0 for development builds. We're
@@ -186,36 +225,44 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些建议来自 Bevy，建议在开发中设置更高的 opt-level 以可能减少开发编译时间并提高性能。默认情况下，Rust 编译器为开发构建设置 opt-level
+    为 0。我们将为我们的代码设置 opt-level 为 1，并为所有代码的依赖项设置 opt-level 为 3。
 - en: This does come with the drawback of much less useful error messages if they
     come from our dependencies. So you might have to adjust the levels if you run
     into tricky bugs.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 这带来了一个缺点，如果错误消息来自我们的依赖项，它们的有用性会大大降低。因此，如果遇到棘手的 bug，您可能需要调整级别。
 - en: Since optimization takes additional time, I expect the clean compile times to
     increase, but we may see the increased optimizations make the code easier to compile
     in incremental builds. We also had some positive anecdotes on our Discord.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于优化需要额外的时间，我预计清洁编译时间会增加，但我们可能会看到增加的优化使代码在增量构建中更容易编译。我们在 Discord 上也有一些积极的案例。
 - en: '"fwiw @gbj @Alex Wilkinson i dropped my compile time from between 5-30 minutes
     to 6 seconds by putting this in my workspace Cargo.toml'
   id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '"fwiw @gbj @Alex Wilkinson 我通过将这个放入我的工作空间 Cargo.toml 中，将我的编译时间从5到30分钟缩短到了6秒。'
 - en: We can enable adding these blocks to our `Cargo.toml` file. Nice and easy.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以在我们的 `Cargo.toml` 文件中启用添加这些块。简单易行。
 - en: TOML markup
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: TOML 标记语言
 - en: '[PRE1]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: For those unfamiliar with how what goes on inside the Rust compiler, it typically
     follows a few basic steps. It reads in source code, which is converted to a variety
     of types of IR(Intermediate Representation), and optimizations are performed during
@@ -227,6 +274,9 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于那些不熟悉 Rust 编译器内部工作的人，它通常遵循几个基本步骤。它读取源代码，将其转换为各种类型的中间表示（IR），并在此转换过程中执行优化。然后将该
+    IR 提交给由 LLVM 提供的代码生成器，将 IR 转换为目标文件，然后链接器将这些目标文件及其他系统库链接成一个可执行二进制文件。关于其工作原理的更多细节可以在
+    [这里](https://rustc-dev-guide.rust-lang.org/overview.html) 找到。这是一篇引人入胜的阅读，但对我们的讨论来说有些深入。
 - en: '[Mold](https://github.com/rui314/mold) is a new linker developed by Rui Ueyama,
     with the goal of increasing linker performance by parallelizing the load as much
     as possible, and benchmarks have shown it to be signifigantly faster than Rust''s
@@ -234,6 +284,8 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Mold](https://github.com/rui314/mold) 是由 Rui Ueyama 开发的一款新链接器，旨在通过尽可能并行化加载来提高链接器的性能，基准测试显示它比
+    Rust 的默认链接器要快得多。'
 - en: For Linux and Mac, the default linker is ld, run by cc. Windows is a different
     story, using Microsoft's MVC link.exe. If you're running Linux, you can use mold
     directly. If you're on Mac, a paid version of mold called Sold is available for
@@ -244,31 +296,41 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 Linux 和 Mac，默认的链接器是 ld，由 cc 运行。Windows 则使用 Microsoft 的 MVC link.exe。如果您在运行
+    Linux，则可以直接使用 mold。如果您在 Mac 上，可以购买一个名为 Sold 的 mold 的付费版本，价格非常实惠。如果 Mold 为您带来了好处，我建议您在他的
+    Github Sponsors [页面](https://github.com/sponsors/rui314) 上购买 Sold 或赞助 Rui。目前不支持
+    Windows 用户。Sold 中对 Windows 的支持正在开发中。
 - en: A fairly signifigant amount of time is spent linking your Rust binary, especially
     during incremental builds, so this could provide some real benefits.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 在增量构建过程中，链接您的Rust二进制文件需要相当大的时间，因此这可能会带来一些真正的好处。
 - en: 'On Linux, it''s actually really easy to use, just [install Mold](https://github.com/rui314/mold)
     and then prepend you cargo commands with `mold -run`. For example, `mold -run
     cargo build`. It can also be enabled in `.cargo/config.toml`, like this:'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Linux上，实际上非常容易使用，只需[安装Mold](https://github.com/rui314/mold)，然后在cargo命令之前加上`mold
+    -run`。例如，`mold -run cargo build`。也可以像这样在`.cargo/config.toml`中启用它：
 - en: TOML markup
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: TOML标记
 - en: '[PRE2]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: where `/path/to/mold` is an absolute path to the mold executable. This is also
     how you enable Sold, just replace the mold path with the sold path and the target
     to the one for your Mac.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中`/path/to/mold`是到模具可执行文件的绝对路径。这也是您启用Sold的方法，只需将模具路径替换为Sold路径，将目标替换为您的Mac的目标。
 - en: In the previous optimization, we replaced the linker the Rust compiler uses.
     Let's try replacing the code generator, Cranelift is an alternative code generator,
     used instead of LLVM in the build step. While it's not good at doing as many optimizations
@@ -278,28 +340,35 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前面的优化中，我们替换了Rust编译器使用的链接器。让我们尝试替换代码生成器，Cranelift是一个替代代码生成器，在构建步骤中代替LLVM使用。虽然它在执行许多优化方面不如LLVM，但它能够快速生成代码。最近，在Rust
+    1.73夜间版本中，Cranelift作为x86_64 Linux目标代码生成的一个选项进行了集成。其他平台需要单独设置cranelift，请参阅它们的[README](https://github.com/rust-lang/rustc_codegen_cranelift)。
 - en: bash
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: bash
 - en: '[PRE3]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'To use it with Cargo, it can be enabled by enabling the unstable `codegen-backend`
     feature, and then setting the `codegen-backend= "cranelift"` value for a profile.
     That can be done in `.cargo/config.toml` like so:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 要在Cargo中使用它，可以通过启用不稳定的`codegen-backend`功能，然后为一个配置文件设置`codegen-backend= "cranelift"`值来启用它。可以像这样在`.cargo/config.toml`中完成：
 - en: TOML markup
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: TOML标记
 - en: '[PRE4]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: If you don't need to worry about multi-target builds, you can also enable it
     below with a target. This does conflict with the desire to not use cranelift during
     production builds, so I wouldn't recommend it. Rust doesn't support per target
@@ -307,14 +376,17 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您不需要担心多目标构建，也可以在下面使用一个目标来启用它。这与在生产构建过程中不使用Cranelift的愿望相冲突，因此我不建议这样做。Rust不支持每个目标的配置文件构建，因此创建自己的配置文件更加灵活。
 - en: TOML markup
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: TOML标记
 - en: '[PRE5]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Keep in mind that Cranelift is still in development, and may have some issues
     with missing intrinsics. So your crate may or may not work in it natively. If
     you do find missing intrinsics, I encourage you to create an issue in their repo
@@ -323,6 +395,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，Cranelift仍在开发中，可能存在一些缺少的内部函数。因此，您的crate在其中可能工作或不工作。如果您发现缺少内部函数，我建议您在它们的仓库[这里](https://github.com/rust-lang/rustc_codegen_cranelift)创建一个问题，可能会有可行的解决方法。
 - en: I'm primarily interested in optimizing build times for Rust projects in development.
     This means I'm not concerned about filesize, optimizations, or run speed, as long
     as they are not signifigantly affected. We're interested in the time it takes
@@ -330,6 +403,8 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我主要关注优化Rust项目在开发中的构建时间。这意味着我不关心文件大小、优化或运行速度，只要它们不受到显著影响即可。我们关注的是从干净状态开始构建我们的Rust
+    Leptos应用程序的时间，以及增量编译的时间。
 - en: To do that we're going to use [hyperfine](https://github.com/sharkdp/hyperfine)
     a command line benchmarking tool, to run 'cargo leptos build', which as described
     earlier does Leptos's two step compilation. For clean builds, we will run `cargo
@@ -338,6 +413,8 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 为此，我们将使用[hyperfine](https://github.com/sharkdp/hyperfine)，一个命令行基准测试工具，运行 'cargo
+    leptos build'，正如前面描述的那样，Leptos的两步编译。对于清理构建，我们将在每次构建之前运行`cargo clean`，以删除Rust缓存的任何文件。增量构建稍微困难一些。
 - en: 'For incremental builds, we''ll simulate a developer modifying a single HTML
     tag in a Leptos component. To do that, we''ll run our handy unix friend `sed`
     to insert the current date and time into an HTML tag. For this purpose, I''ve
@@ -347,14 +424,17 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于增量构建，我们将模拟开发人员在Leptos组件中修改单个HTML标记。为此，我们将运行我们便捷的Unix朋友`sed`，将当前日期和时间插入HTML标记中。为此，我选择了`<dfn>`标记，因为我从未见过它被使用过，因此我可能不必担心多次替换标记。经过一些调整，我最终得到了这个sed命令：
 - en: bash
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: bash
 - en: '[PRE6]'
   id: totrans-split-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Each configuration is tested six times, with two warmup runs to fill any caches
     and reduce variability in the output. Without the warmup runs variance was a bit
     wider, but the results were still consistent. Six runs is probably overkill for
@@ -362,11 +442,13 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个配置都经过六次测试，其中包括两次预热运行以填充任何缓存并减少输出变异性。没有预热运行时，变异性会略微加大，但结果仍然是一致的。对于这个测试来说，六次运行可能有点多余，但我能说什么呢，我有大量的CPU时间，或者更确切地说是夜间时间。
 - en: We'll measure the time it takes to complete six runs, with two warmup runs to
     setup filesystem caches, and hopefully provide consistent results.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将测量完成六次运行所需的时间，包括两次预热运行以设置文件系统缓存，并希望提供一致的结果。
 - en: I will be compiling my [site](https://benwis), and Alex will be compiling [Houski's
     site](https://houski.ca). Houski's is a lot more complicated than this blog, with
     heavy usage of Polars, Serialization/Deserialization with Serde, and plenty more
@@ -375,58 +457,72 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将编译我的[网站](https://benwis)，而Alex将编译[Houski的网站](https://houski.ca)。Houski的网站比这个博客复杂得多，大量使用Polars、Serde的序列化/反序列化以及更多的路由。我们两个都没有尝试大幅缩短这些时间，也没有进行任何特殊的优化。
 - en: For both of us, these will be the times to beat.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们两个来说，这些将是要超越的时间。
 - en: '| Clean Compilation |  |  |'
   id: totrans-split-67
   prefs: []
   type: TYPE_TB
+  zh: '| 清洁编译 |  |  |'
 - en: '| --- | --- | --- |'
   id: totrans-split-68
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) |'
   id: totrans-split-69
   prefs: []
   type: TYPE_TB
+  zh: '| 网站 | 平均(s) | 标准偏差(s) |'
 - en: '| benw.is 7200RPM | 88.387 | 1.817 |'
   id: totrans-split-70
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 88.387 | 1.817 |'
 - en: '| benw.is NVME | 80.057 | 0.268 |'
   id: totrans-split-71
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 80.057 | 0.268 |'
 - en: '| houski.ca | 124.993 | 0.483 |'
   id: totrans-split-72
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca | 124.993 | 0.483 |'
 - en: '| Incremental Compilation |  |  |'
   id: totrans-split-73
   prefs: []
   type: TYPE_TB
+  zh: '| 增量编译 |  |  |'
 - en: '| --- | --- | --- |'
   id: totrans-split-74
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) |'
   id: totrans-split-75
   prefs: []
   type: TYPE_TB
+  zh: '| 网站 | 平均(s) | 标准偏差(s) |'
 - en: '| benw.is 7200RPM | 20.461 | 0.801 |'
   id: totrans-split-76
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 20.461 | 0.801 |'
 - en: '| benw.is NVME | 19.097 | 0.078 |'
   id: totrans-split-77
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 19.097 | 0.078 |'
 - en: '| houski.ca | 40.818 | 0.252 |'
   id: totrans-split-78
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca | 40.818 | 0.252 |'
 - en: Not a bad baseline. Interesting to me was the variation in the 7200RPM build
     time for both clean and incremental builds, which might suggest that the drive
     was struggling to provide the data at the same rate consistently, or perhaps something
@@ -434,72 +530,88 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 不算太差的基线。我觉得有趣的是在7200转/分钟的构建时间变化，无论是干净构建还是增量构建，这可能表明硬盘在保持一致的数据提供速率方面可能有困难，或者可能有其他因素正在争夺IO访问的基准。
 - en: Twenty or forty seconds is a pretty substantial time to rebuild the site in
     the dev profile, hopefully we can improve that.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 20或40秒在dev配置文件中重新构建网站是一个相当大的时间，希望我们能改进。
 - en: Let's enable the Mold linker as described earlier, and see how that changes
     things!
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们按照之前描述的方式启用Mold链接器，看看这将如何改变事情！
 - en: '| Clean Compilation |  |  |  |  |'
   id: totrans-split-82
   prefs: []
   type: TYPE_TB
+  zh: '| 清洁编译 |  |  |  |  |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-83
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
   id: totrans-split-84
   prefs: []
   type: TYPE_TB
+  zh: '| 网站 | 平均(s) | 标准偏差(s) | 与基线的差异(s) | % 与基线的差异 |'
 - en: '| benw.is 7200RPM | 74.35 | 0.96 | 14.037 | 15.88129476 |'
   id: totrans-split-85
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 74.35 | 0.96 | 14.037 | 15.88129476 |'
 - en: '| benw.is NVME | 67.206 | 0.386 | 12.851 | 16.05231273 |'
   id: totrans-split-86
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 67.206 | 0.386 | 12.851 | 16.05231273 |'
 - en: '| houski.ca | 102.892 | 0.416 | 22.101 | 17.68179018 |'
   id: totrans-split-87
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca | 102.892 | 0.416 | 22.101 | 17.68179018 |'
 - en: '| Incremental Compilation |  |  |  |  |'
   id: totrans-split-88
   prefs: []
   type: TYPE_TB
+  zh: '| 增量编译 |  |  |  |  |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-89
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
   id: totrans-split-90
   prefs: []
   type: TYPE_TB
+  zh: '| 网站 | 平均(s) | 标准偏差(s) | 与基线的差异(s) | % 与基线的差异 |'
 - en: '| benw.is 7200RPM | 5.842 | 0.268 | 14.619 | 71.44812082 |'
   id: totrans-split-91
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 5.842 | 0.268 | 14.619 | 71.44812082 |'
 - en: '| benw.is NVME | 5.615 | 0.051 | 13.482 | 70.59747604 |'
   id: totrans-split-92
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 5.615 | 0.051 | 13.482 | 70.59747604 |'
 - en: '| houski.ca | 19.6 | 0.067 | 21.218 | 51.98196874 |'
   id: totrans-split-93
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca | 19.6 | 0.067 | 21.218 | 51.98196874 |'
 - en: Woah! That's quite a bit faster. For my site, clean compilation time decreased
     by 12.04s(13.6%) on spinning disk and 12.80s(16.0%) for NVME. Houski dropped 22.10s(17.7s).
     Nice boost there.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 哇！这快了不少。对于我的站点，旋转磁盘的清洁编译时间减少了12.04秒（13.6%），NVME减少了12.80秒（16.0%）。Houski减少了22.10秒（17.7秒）。这是一个不错的提升。
 - en: Incremental compilation times changed signifigantly as well. My site on spinning
     disk dropped 14.62s(71.4%) and 13.5s(70.6%). That's a radical reduction, which
     makes some sense. Incremental compilation spends a majority of it's time in the
@@ -507,71 +619,87 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 增量编译时间也发生了显著变化。我的旋转磁盘站点减少了14.62秒（71.4%），NVME减少了13.5秒（70.6%）。这是一个根本性的改进，这在某种程度上是合理的。增量编译的大部分时间都花在链接步骤上，因此在这里进行任何升级将会不成比例地影响它。
 - en: As far as Leptos users go, mold only supports compiling for x84_64_linux, so
     the webassembly compile time remained unchanged. Most of these optimizations only
     affect the server build, but I will be careful to note which ones don't.
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 至于Leptos用户，Mold仅支持x84_64_linux的编译，因此WebAssembly的编译时间保持不变。这些优化大多数只影响服务器构建，但我会注意哪些不受其影响。
 - en: With few downsides, and such a huge upside, Mold/Sold seems like a no-brainer,
     especially if you are doing a lot of incremental builds!
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了一些小缺点外，如此巨大的优势，Mold/Sold似乎是一个明智的选择，特别是如果你经常进行增量构建！
 - en: What will adding more optimization do to compile times?
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 添加更多优化将如何影响编译时间？
 - en: '| Clean Compilation |  |  |  |  |'
   id: totrans-split-99
   prefs: []
   type: TYPE_TB
+  zh: '| 清洁编译 |  |  |  |  |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-100
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
   id: totrans-split-101
   prefs: []
   type: TYPE_TB
+  zh: '| 站点 | 平均时间(s) | 标准偏差(s) | 基准时间差(s) | % 基准时间差 |'
 - en: '| benw.is 7200RPM | 174.399 | 0.488 | -86.012 | -97.31295326 |'
   id: totrans-split-102
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 174.399 | 0.488 | -86.012 | -97.31295326 |'
 - en: '| benw.is NVME | 166.847 | 0.41 | -86.79 | -108.4102577 |'
   id: totrans-split-103
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 166.847 | 0.41 | -86.79 | -108.4102577 |'
 - en: '| houski.ca | 288.562 | 0.674 | -163.569 | -130.8625283 |'
   id: totrans-split-104
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca | 288.562 | 0.674 | -163.569 | -130.8625283 |'
 - en: '| Incremental Compilation |  |  |  |  |'
   id: totrans-split-105
   prefs: []
   type: TYPE_TB
+  zh: '| 增量编译 |  |  |  |  |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-106
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
   id: totrans-split-107
   prefs: []
   type: TYPE_TB
+  zh: '| 站点 | 平均时间(s) | 标准偏差(s) | 基准时间差(s) | % 基准时间差 |'
 - en: '| benw.is 7200RPM | 16.201 | 1.303 | 4.26 | 20.82009677 |'
   id: totrans-split-108
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 16.201 | 1.303 | 4.26 | 20.82009677 |'
 - en: '| benw.is NVME | 14.334 | 0.147 | 4.763 | 24.94109022 |'
   id: totrans-split-109
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 14.334 | 0.147 | 4.763 | 24.94109022 |'
 - en: '| houski.ca | 32.489 | 0.348 | 8.329 | 20.40521339 |'
   id: totrans-split-110
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca | 32.489 | 0.348 | 8.329 | 20.40521339 |'
 - en: I did expect a clean compile to be slower, but this is quite a bit slower. Compared
     to baseline, it takes twice as long for clean builds. Incremental builds do net
     a twenty percent improvement, which is nice to see. Contained within the listed
@@ -581,56 +709,69 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 我确实预料到清洁编译会慢一些，但它确实慢了很多。与基准相比，清洁构建时间是原来的两倍。增量构建的确实获得了20%的改进，这是令人欣慰的。在列出的构建时间中，包含了WebAssembly和服务器构建时间的翻倍，这是有道理的，但应该注意到。对我来说，设定这些的好处并不值得延迟清洁编译时间。
 - en: '| Clean Compilation |  |  |  |  |'
   id: totrans-split-112
   prefs: []
   type: TYPE_TB
+  zh: '| 清洁编译 |  |  |  |  |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-113
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
   id: totrans-split-114
   prefs: []
   type: TYPE_TB
+  zh: '| 站点 | 平均时间(s) | 标准偏差(s) | 基准时间差(s) | % 基准时间差 |'
 - en: '| benw.is 7200RPM | 67.989 | 0.763 | 20.398 | 23.07805447 |'
   id: totrans-split-115
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 67.989 | 0.763 | 20.398 | 23.07805447 |'
 - en: '| benw.is NVME | 63.645 | 0.247 | 16.412 | 20.50039347 |'
   id: totrans-split-116
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 63.645 | 0.247 | 16.412 | 20.50039347 |'
 - en: '| houski.ca |  |  |  |  |'
   id: totrans-split-117
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca |  |  |  |  |'
 - en: '| Incremental Compilation |  |  |  |  |'
   id: totrans-split-118
   prefs: []
   type: TYPE_TB
+  zh: '| 增量编译 |  |  |  |  |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-119
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| Site | Mean(s) | Standard Deviation(s) | Delta from Baseline(s) | % Delta
     from Baseline |'
   id: totrans-split-120
   prefs: []
   type: TYPE_TB
+  zh: '| 站点 | 平均时间(s) | 标准偏差(s) | 基准时间差(s) | % 基准时间差 |'
 - en: '| benw.is 7200RPM | 9.201 | 0.092 | 11.26 | 55.03152339 |'
   id: totrans-split-121
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is 7200RPM | 9.201 | 0.092 | 11.26 | 55.03152339 |'
 - en: '| benw.is NVME | 9.345 | 0.212 | 9.752 | 51.0656124 |'
   id: totrans-split-122
   prefs: []
   type: TYPE_TB
+  zh: '| benw.is NVME | 9.345 | 0.212 | 9.752 | 51.0656124 |'
 - en: '| houski.ca |  |  |  |  |'
   id: totrans-split-123
   prefs: []
   type: TYPE_TB
+  zh: '| houski.ca |  |  |  |  |'
 - en: Cranelift, I had high hopes for you, and you delivered! It improved both clean
     and incremental compilations compared to the baseline. You may notice that the
     houski app lines here are blank, which are due to a failure to compile due to
@@ -638,6 +779,7 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift，我对你寄予了很高的期望，而你也没有辜负！与基准相比，它在清洁和增量编译中都有所改善。你可能会注意到这里的houski应用行是空白的，这是由于缺少llvm内置函数而无法编译。
 - en: After my testing completed, they merged this [PR](%5B#1417%5D(https://github.com/rust-lang/rustc_codegen_cranelift/pull/1417))
     which added the missing `llvm.x86.avx.ldu.dq.256` instrinsic, and @bjorn3 mentioned
     that I can avoid the missing aes intrinsics with a rust flag `RUSTFLAGS="--cfg
@@ -911,13 +1053,17 @@
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 启用Mold和Cranelift使我减少了75%的增量和25%的干净编译时间，这是相当显著的。使用Cranelift需要nightly版本，或者在rustup之外设置它，这可能会让一些项目感到不理想。由于Mold需要Linux，Sold需要Mac（并且需要支付费用），对我来说，这进一步增强了Rust
+    Web开发应该在某种Linux或Mac上进行，而不是在Windows上的论点。WSL2可能有助于改善情况，但可能会[更慢一些](https://medium.com/for-linux-users/wsl-2-why-you-should-use-real-linux-instead-4ee14364c18)。因为我有一台Mac笔记本和一台Linux工作站，所以我将为我的Mac购买Sold，并在可以使用Cranelift的项目中使用它。
 - en: If you feel like running some of these tests on your hardware or with your project,
     I have automated the process somewhat and put that repo on Github [here](https://github.com/benwis/customs).
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想在你的硬件或者你的项目上运行这些测试，我已经在Github上自动化了部分过程，并将那个仓库放在[这里](https://github.com/benwis/customs)。
 - en: Let me know what your experience was, and whether this helped you with your
     project by reaching out on mastodon at `@benwis@hachyderm.io`.
   id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我知道你的经历如何，并且这是否通过在mastodon上联系`@benwis@hachyderm.io`对你的项目有所帮助。
