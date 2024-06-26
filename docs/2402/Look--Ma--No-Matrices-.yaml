@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:26:56'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:26:56
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Look, Ma, No Matrices!
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 妈妈，没有矩阵！
 - en: 来源：[https://enkimute.github.io/LookMaNoMatrices/](https://enkimute.github.io/LookMaNoMatrices/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://enkimute.github.io/LookMaNoMatrices/](https://enkimute.github.io/LookMaNoMatrices/)
 - en: Look, Ma, No Matrices!
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 妈妈，没有矩阵！
 - en: '**Steven De Keninck**'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Steven De Keninck**'
 - en: Putting PGA ($\mathbb R_{3,0,1}$) to the test! Since the 2019 SIGGRAPH course
     [1], Geometric Algebra, and Euclidean PGA (plane-based or projective geometric
     algebra) in particular, has been gaining traction within the computer graphics
@@ -45,6 +53,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 自2019年SIGGRAPH课程[1]以来，几何代数及欧几里得PGA（基于平面或射影几何代数）在计算机图形和机器学习社区中备受关注[2, 3, 4]。尽管其应用广泛，包括高维几何和物理学，但其在传统3D图形中的采用却受到限制，通常仅将双四元数重新包装为PGA引擎。“妈妈，没有矩阵！”项目旨在通过引入一个现代化的、符合glTF标准的前向渲染3D引擎，完全整合PGA代数，拓展PGA的应用范围。
 - en: In this write up, we will go over this project, highlighting the solutions and
     techniques that are required when moving to a PGA implementation. It was at times
     tempting to start from the existing techniques and attempt an 'algebra-level'
@@ -54,11 +63,13 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我们将介绍这个项目，重点介绍在转向PGA实现时所需的解决方案和技术。有时候很诱人从现有技术开始，并尝试进行“代数级别”的转换。然而，这往往导致不令人满意的解决方案，为了使PGA真正发挥其潜力，通常需要进行更基本的重新审视。确实，没有几何的代数是盲目的。
 - en: Introduction.
   id: totrans-split-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 介绍。
 - en: Matrices are everywhere in computer graphics. In fact, there was a time when
     4x4 matrices were both baked into the GPU and a mandatory part of all graphics
     API's. This project would then simply not have been possible. Today however, pushed
@@ -70,6 +81,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算机图形中无处不在的是矩阵。事实上，有段时间，4x4矩阵既被固定在GPU中，也是所有图形API的强制部分。这个项目就简单地不可能存在。然而，今天，在AI进步的推动下，GPU变得高度可编程的标量处理器，不再受限于已经消失的固定功能流水线。然而，4x4矩阵仍然无处不在。它们可以表示所有的线性变换，而典型的前向图形管道确实涉及刚性和投影变换。看起来是一个很好的匹配。
 - en: Quaternions are also everywhere in computer graphics. Turns out, matrices have
     less than ideal interpolation properties, and modern formats like Khronos' glTF
     use quaternions for all their rotation needs. Fantastic for animations, and generally
@@ -77,6 +89,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 四元数在计算机图形中也无处不在。事实证明，矩阵具有不理想的插值特性，而现代格式如Khronos的glTF使用四元数来满足其所有旋转需求。这对动画来说非常棒，并且通常认为其值得为了不可避免的矩阵转换而付出的代价。
 - en: Out in the real world, however, the vast majority of matrices in your typical
     3D engine setup are going to be orthogonal matrices, encoding just rotations and
     translations. And this is where the motor manifold of PGA comes in. At a lower
@@ -85,12 +98,14 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在现实世界中，你典型的3D引擎设置中的绝大多数矩阵都将是正交矩阵，仅编码旋转和平移。而PGA的运动流形正是在此时派上用场。以较低的计算和内存成本，PGA运动编码了完整的欧几里得运动，此外还提供了无需转换即可包含四元数和双四元数的能力。
 - en: This of course raises the question - can we replace all matrices in a typical
     forward renderer by their PGA equivalents ? Is a true matrix free setup possible
     or even desirable ? Only one way to find out ...
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这引发了一个问题 - 我们能否用它们的PGA等价物替换典型前向渲染器中的所有矩阵？真正的无矩阵设置可能或者甚至是可取的吗？只有一种方法来找出答案……
 - en: But before we start, a short disclaimer. This project aims to replace matrices
     without compromise. That, of course, is not how one should approach any engineering
     problem. As a reference for this project we are using the Khronos glTF viewer.
