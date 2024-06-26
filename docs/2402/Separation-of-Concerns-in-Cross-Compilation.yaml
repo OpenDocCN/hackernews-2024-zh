@@ -2,45 +2,55 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:28:33'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:28:33'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Separation of Concerns in Cross-Compilation
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 分离关注点在交叉编译中的应用
 - en: 来源：[https://nixcademy.com/2024/01/30/cross-compilation-with-nix/](https://nixcademy.com/2024/01/30/cross-compilation-with-nix/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://nixcademy.com/2024/01/30/cross-compilation-with-nix/](https://nixcademy.com/2024/01/30/cross-compilation-with-nix/)
 - en: Separation of Concerns in Cross-Compilation
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 分离关注点在交叉编译中的应用
 - en: '![title image of blog post \](img/6473a66ae1d8e85f6512f9ae6f1f520d.png)'
   id: totrans-split-7
   prefs: []
   type: TYPE_IMG
+  zh: '![博客文章的标题图像 \](img/6473a66ae1d8e85f6512f9ae6f1f520d.png)'
 - en: 📆
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 📆
 - en: January 30, 2024 by Jacek Galowicz
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年1月30日，作者：Jacek Galowicz
 - en: Managing complex C++ projects across multiple platforms often ends up being
     a frustrating and time-consuming task. However, this common challenge faced also
     by the most experienced software developers doesn’t have to be an inevitable struggle.
@@ -51,6 +61,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在多平台上管理复杂的C++项目通常是令人沮丧和耗时的任务。然而，即使是经验丰富的软件开发人员也会面临这个共同挑战，这并不是一场不可避免的斗争。想象一下，交叉编译不仅可行，而且高效且不那么麻烦的世界。我注意到在与其他工程师的几次友好讨论中，许多人对Nix未必是发明，但也使用了分离关注点的类型不熟悉。
 - en: 'The earlier article [*C++ with Nix in 2023, Part 2: Package Generation and
     Cross-Compilation*](../../../../2023/11/16/cpp-with-nix-in-2023-part-2-package/)
     concentrated more on the creation of a new package from scratch and explaining
@@ -61,43 +72,51 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '早期文章[*C++ with Nix in 2023, Part 2: Package Generation and Cross-Compilation*](../../../../2023/11/16/cpp-with-nix-in-2023-part-2-package/)主要集中在从头开始创建新包和解释`mkDerivation`等内容，而在本文中，我们将稍微高层次地看待在Nix中如何优雅地处理交叉编译，这可以改善整体项目健康和开发速度，同时降低成本。'
 - en: What makes Cross-Compilation Hard?
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使得交叉编译变得困难的原因是什么？
 - en: 'Cross-compilation should in general not be hard: We just need a compiler whose
     backend generates code for the target architecture and let it link the compiled
     code against libraries that are also compiled for that target architecture.'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 总体而言，交叉编译不应该很难：我们只需要一个能为目标架构生成代码的编译器，并让它将编译后的代码链接到同样为目标架构编译的库上。
 - en: So why does it turn out to be hard whenever it’s being done for huge real-life
     projects?
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以为什么每当为巨大的现实项目执行它时，它变得困难？
 - en: 'It typically goes downhill in steps that have less to do with cross-compilation
     itself but more with managing dependencies:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 典型的困难往往不是交叉编译本身的问题，而是与管理依赖项有关的步骤逐渐走下坡路：
 - en: '**Product**: We assume a project that is already huge and has a complicated
     build system'
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**产品**：我们假设一个已经庞大并且有复杂构建系统的项目'
 - en: '**Cross-compiler**: We need one'
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**交叉编译器**：我们需要一个'
 - en: '**External libraries**: We need cross-compiled variants of them'
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**外部库**：我们需要它们的交叉编译版本'
 - en: '**Distribution**: If we use shared libraries, we will need to provide a way
     to package those along with the app. Alternatively, we use static linking to get
     one big binary that’s easier to distribute.'
@@ -105,15 +124,18 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**分发**：如果我们使用共享库，我们将需要提供一种方法将其与应用程序打包在一起。或者，我们使用静态链接来获得一个更容易分发的大型二进制文件。'
 - en: 'The steps are then:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后步骤是：
 - en: 'The cross-compiler is now obtained in one of two ways:'
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 现在可以通过两种方式获得交叉编译器：
 - en: Someone creates a compiler bootstrap script that aims to be Linux-distro independent.
     This script will go into a [Dockerfile](https://docs.docker.com/engine/reference/builder/)
     or right into the build system.
@@ -122,6 +144,7 @@
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 某人创建了一个编译器引导脚本，旨在与Linux发行版无关。这个脚本将进入一个[Dockerfile](https://docs.docker.com/engine/reference/builder/)或者直接进入构建系统。
 - en: A cross-compiler package is used. As this ties the project to a certain package
     distribution, we are now forced to this distro or use Docker.
   id: totrans-split-23
@@ -129,6 +152,7 @@
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用交叉编译器包。由于这将项目与某个包分发绑定，我们现在被迫使用该发行版或者使用Docker。
 - en: 'The package manager doesn’t let us install native and foreign-target libraries
     on the same system. And developers also use different package managers. So we
     typically end up building external libraries for the target platform ourselves:'
@@ -136,12 +160,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 包管理器不允许我们在同一系统上安装本地和外部目标库。开发人员也使用不同的包管理器。因此，我们通常会自行为目标平台构建外部库：
 - en: These go into the same Docker image.
   id: totrans-split-25
   prefs:
   - PREF_IND
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这些都进入同一个Docker镜像。
 - en: Or the project build system also builds them for us.
   id: totrans-split-26
   prefs:
