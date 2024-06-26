@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 12:49:58'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 12:49:58'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How to stream PostgreSQL CDC to Kafka and use Propel to get an instant API
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何将 PostgreSQL CDC 流式传输到 Kafka 并使用 Propel 实现即时 API
 - en: 来源：[https://www.propeldata.com/blog/postgresql-cdc-to-kafka](https://www.propeldata.com/blog/postgresql-cdc-to-kafka)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.propeldata.com/blog/postgresql-cdc-to-kafka](https://www.propeldata.com/blog/postgresql-cdc-to-kafka)
 - en: Learn how to stream PostgreSQL Change Data Capture (CDC) to a Kafka topic and
     serve the data via an API with Propel. This guide provides step-by-step instructions,
     from setting up your PostgreSQL database and Kafka broker to deploying the Debezium
@@ -31,6 +37,8 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 学习如何将 PostgreSQL 变更数据捕获（CDC）流式传输到 Kafka 主题，并使用 Propel 提供 API 服务数据。本指南提供逐步说明，从设置
+    PostgreSQL 数据库和 Kafka Broker 到部署 Debezium PostgreSQL 连接器和创建 Propel Kafka 数据池。
 - en: Change Data Capture (CDC) is the process of tracking and capturing changes to
     your data. In PostgreSQL, we can implement CDC efficiently using the transaction
     log so that, rather than running batch jobs to gather data, we can capture data
@@ -42,17 +50,22 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 变更数据捕获（CDC）是跟踪和捕获数据变更的过程。在 PostgreSQL 中，我们可以利用事务日志有效地实现 CDC，这样我们就不必运行批处理作业来收集数据，而是可以连续地捕获数据变更。这有很多好处，包括允许应用程序几乎实时地查看和响应变更，同时对源系统的影响较小。在本文中，我们将逐步介绍如何将
+    PostgreSQL 的 CDC 流式传输到 [Propel Kafka 数据池](https://www.propeldata.com/docs/connect-your-data/kafka)
+    以获取即时数据服务 API。
 - en: What are we trying to do?
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我们试图做什么？
 - en: We want to power large-scale analytics applications with data coming from PostgreSQL.
     As we all know, PostgreSQL, as an OLTP database, is notoriously slow in handling
     analytical queries that process and aggregate large amounts of data.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望使用来自 PostgreSQL 的数据来支持大规模分析应用程序。众所周知，作为 OLTP 数据库，PostgreSQL 在处理处理和聚合大量数据的分析查询时速度很慢。
 - en: First, we want to capture all changes to our PostgreSQL database table(s) and
     send them as JSON messages (see below) to a [Kafka](https://kafka.apache.org/)
     topic.
@@ -60,6 +73,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 首先，我们希望捕获我们的 PostgreSQL 数据库表的所有更改，并将它们作为 JSON 消息发送到 [Kafka](https://kafka.apache.org/)
+    主题。
 - en: Second, we’ll need to configure  [Kafka Connect](https://docs.confluent.io/platform/current/connect/userguide.html#connect-userguide)
     and the [Debezium PostgreSQL connector](https://debezium.io/documentation/reference/2.6/connectors/postgresql.html)
     to stream the CDC to a Kafka topic.
@@ -67,57 +82,72 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 其次，我们需要配置 [Kafka Connect](https://docs.confluent.io/platform/current/connect/userguide.html#connect-userguide)
+    和 [Debezium PostgreSQL connector](https://debezium.io/documentation/reference/2.6/connectors/postgresql.html)
+    来将 CDC 流式传输到 Kafka 主题。
 - en: Lastly, create a Propel Kafka Data Pool that ingests data from the Kafka topic
     and exposes it via a low latency API.
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最后，创建一个 Propel Kafka 数据池，通过低延迟 API 从 Kafka 主题摄取数据。
 - en: We will cover how to deploy how to create and deploy all services in a Kubernetes
     cluster.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将介绍如何在 Kubernetes 集群中创建和部署所有服务。
 - en: How PostgreSQL CDC with Debezium works
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: PostgreSQL CDC 与 Debezium 的工作原理
 - en: In this section, we will provide a quick overview of how PostgreSQL change data
     capture works with Debezium.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节中，我们将简要介绍 PostgreSQL 变更数据捕获与 Debezium 的工作原理。
 - en: 'Imagine you have a simple table:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象你有一个简单的表格：
 - en: '[PRE0]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'You update a row with the following SQL statement:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以使用以下 SQL 语句更新行：
 - en: '[PRE1]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The change to the column <span class="code-exp">foo</span> will result in an
     “update” to the transaction log, which Debezium then transforms into the JSON
     message below and drops into a Kafka topic.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对列 <span class="code-exp">foo</span> 的更改将导致“update”到事务日志，然后 Debezium 将其转换为下面的
+    JSON 消息，并将其放入 Kafka 主题。
 - en: 'CDC JSON with <span class="code-exp">before</span> and <span class="code-exp">after</span>:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: CDC JSON，包含 <span class="code-exp">before</span> 和 <span class="code-exp">after</span>：
 - en: '[PRE2]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The Debezium PostgreSQL connector generates a data change event for each row-level
     <span class="code-exp">INSERT</span>, <span class="code-exp">UPDATE</span>, and
     <span class="code-exp">DELETE</span> operation. The <span class="code-exp">op</span>
@@ -126,67 +156,83 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Debezium PostgreSQL 连接器为每个行级别的 <span class="code-exp">INSERT</span>、<span class="code-exp">UPDATE</span>
+    和 <span class="code-exp">DELETE</span> 操作生成数据变更事件。 <span class="code-exp">op</span>
+    键描述了导致连接器生成事件的操作。在此示例中，u 表示操作已更新行。有效值包括:'
 - en: <span class="code-exp">c</span> = create
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: <span class="code-exp">c</span> = create
 - en: <span class="code-exp">u</span> = update
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: <span class="code-exp">u</span> = update
 - en: <span class="code-exp">d</span> = delete
   id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: <span class="code-exp">d</span> = delete
 - en: <span class="code-exp">r</span> = read (applies to only snapshots)
   id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: <span class="code-exp">r</span> = read（仅适用于快照）
 - en: <span class="code-exp">t</span> = truncate
   id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: <span class="code-exp">t</span> = truncate
 - en: <span class="code-exp">m</span> = message
   id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: <span class="code-exp">m</span> = message
 - en: What is the Propel Kafka Datapool?
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是 Propel Kafka 数据池？
 - en: The Kafka [Data Pool](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools)
     lets you ingest real-time streaming data into Propel. It provides an instant low-latency
     API on top of Kafka to power real-time dashboards, streaming analytics, and workflows.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Kafka [数据池](https://www.propeldata.com/docs/connect-your-data#key-concept-2-data-pools)
+    让您将实时流数据导入 Propel。它在 Kafka 之上提供即时低延迟的 API，用于支持实时仪表板、流式分析和工作流。
 - en: 'Consider using Propel on top of Kafka when:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在以下情况考虑使用 Propel 在 Kafka 之上：
 - en: You need an API on top of a Kafka topic.
   id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您需要在 Kafka 主题之上的 API。
 - en: You need to power real-time analytics applications with streaming data from
     Kafka.
   id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您需要通过 Kafka 的流数据来支持实时分析应用。
 - en: You need to ingest Kafka messages into ClickHouse.
   id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您需要将 Kafka 消息导入 ClickHouse。
 - en: You need to ingest from [self-hosted Kafka](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=self-hosted-kafka),
     [Confluent Cloud](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=confluent),
     [AWS MSK](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=aws-msk),
@@ -196,26 +242,35 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您需要从 [自托管 Kafka](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=self-hosted-kafka)、[Confluent
+    Cloud](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=confluent)、[AWS
+    MSK](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=aws-msk)
+    或 [Redpanda](https://www.propeldata.com/docs/connect-your-data/kafka/guides/how-to-ingest-data-from-Kafka-into-propel?kafka-platform=redpanda)
+    导入 ClickHouse。
 - en: You need to transform or enrich your streaming data.
   id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您需要转换或丰富您的流数据。
 - en: You need to power real-time personalization and recommendations for use cases.
   id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您需要为实时个性化和推荐用例提供支持。
 - en: Once we have the PostgreSQL, Debezium, and Kafka set up, we’ll ingest the data
     into a Propel Kafka Data Pool to expose it via an API.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们设置好 PostgreSQL、Debezium 和 Kafka，我们将把数据导入 Propel Kafka 数据池，以便通过 API 公开。
 - en: Setting up Minikube, PostgreSQL, Kafka, Kafka Connect, and Debezium
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设置 Minikube、PostgreSQL、Kafka、Kafka Connect 和 Debezium
 - en: We will walk through setting this up in a Kubernetes cluster on a Mac. This
     can be done in other environments, but Kubernetes is a common platform for hosting
     and running data streaming services in the cloud.  For this example, we will use
@@ -226,177 +281,223 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在 Mac 上的 Kubernetes 集群中进行设置。这也可以在其他环境中完成，但 Kubernetes 是云中托管和运行数据流服务的常见平台。为了本例，我们将使用
+    [Minikube](https://minikube.sigs.k8s.io/docs/start/) 部署我们的 Kubernetes 集群，[Redpanda](https://redpanda.com/)
+    部署我们的 Kafka 集群，并使用 [Helm](https://helm.sh/) 管理像 PostgreSQL 这样的 Kubernetes 应用程序。如果您使用不同的操作系统，我将提供
+    Mac 特定的命令以及安装服务的链接。
 - en: Setting up Minikube
   id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置 Minikube
 - en: '**Step 1:** **Install** [**Docker Desktop**](https://www.docker.com/products/docker-desktop/)'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 1:** **安装** [**Docker Desktop**](https://www.docker.com/products/docker-desktop/)'
 - en: '[PRE3]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '**Step 2:** **Install** [**Kubectl**](https://kubernetes.io/docs/tasks/tools/)'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 2:** **安装** [**Kubectl**](https://kubernetes.io/docs/tasks/tools/)'
 - en: '**Step 3: Install minikube**'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 3: 安装 minikube**'
 - en: '[PRE4]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Step 4:** **Start minikube**'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 4：** **启动 minikube**'
 - en: '[PRE5]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '**Step 5: Interact with your cluster**'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 5：与您的集群交互**'
 - en: '[PRE6]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '**Step 6:** **Install helm**'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 6：** **安装 helm**'
 - en: Setting up PostgreSQL
   id: totrans-split-53
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置 PostgreSQL
 - en: '**Step 1: Install the PostgreSQL Helm Chart with extended configuration**'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 1：使用扩展配置安装 PostgreSQL Helm Chart**'
 - en: Extend the configuration to set the <span class="code-exp">wal_level</span>
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩展配置以设置 <span class="code-exp">wal_level</span>
 - en: '[PRE7]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '**Step 2:** **Connect to PostgreSQL using the PostgreSQL CLI Create the database**'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 2：** **使用 PostgreSQL CLI 连接到 PostgreSQL 创建数据库**'
 - en: '[PRE8]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '**Step 3: Create the table**'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 3：创建表**'
 - en: '[PRE9]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**Step 4: Create a PostgreSQL user**'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 4：创建一个 PostgreSQL 用户**'
 - en: 'To create a PostgreSQL user with the necessary privileges for Debezium to stream
     changes from the PostgreSQL source tables, run this statement with superuser privileges:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 要为 Debezium 从 PostgreSQL 源表中流式传输更改设置具有必要特权的 PostgreSQL 用户，请使用超级用户权限运行此语句：
 - en: '[PRE10]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Setting up Kafka (Redpanda)
   id: totrans-split-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置 Kafka（Redpanda）
 - en: '**Step 1: Add the helm repo and install dependencies**'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 1：添加 helm 仓库并安装依赖项**'
 - en: '[PRE11]'
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '**Step 2: Configure and install Redpanda**'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 2：配置和安装 Redpanda**'
 - en: '[PRE12]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '**Step 3: Install the Redpanda client <span class="code-exp">rpk</span>**'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 3：安装 Redpanda 客户端 <span class="code-exp">rpk</span>**'
 - en: '[PRE13]'
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '**Step 4:** **Create an alias to simplify the <span class="code-exp">rpk</span>
     commands**'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 4：** **创建一个别名以简化 <span class="code-exp">rpk</span> 命令**'
 - en: '[PRE14]'
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '**Step 5: Describe the Redpanda Cluster**'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 5：描述 Redpanda 集群**'
 - en: '[PRE15]'
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '**Step 6: Create a user**'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 6：创建一个用户**'
 - en: '[PRE16]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '**Step 7: Create an** [**ACL**](https://docs.redpanda.com/current/manage/security/authorization/#create-acls)
     **for the user <span class="code-exp">blog</span>**'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 7：为用户** [**ACL**](https://docs.redpanda.com/current/manage/security/authorization/#create-acls)
+    **创建一个 <span class="code-exp">blog</span>**'
 - en: '[PRE17]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Setting up Kafka Connect
   id: totrans-split-79
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置 Kafka Connect
 - en: '**Step 1:  Create a namespace**'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 1：创建一个命名空间**'
 - en: '[PRE18]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '**Step 2: Create the Service**'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 2：创建服务**'
 - en: Below is the manifest you’ll need to apply to set up the Kafka Connect service
     with your Redpanda broker (see above).  Copy the manifest below and provide the
     needed values to configure the service for your environment. In the example below,
@@ -408,50 +509,65 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是您需要应用的清单，以设置与您的 Redpanda broker 连接的 Kafka Connect 服务（见上文）。复制下面的清单并提供配置环境所需的值。在下面的示例中，我们使用
+    <span class="code-exp">SASL_PLAINTEXT</span> 和 <span class="code-exp">SCRAM-SHA-256</span>
+    进行连接，请确保 <span class="code-exp">CONNECT_SASL_JAAS_CONFIG</span> 使用 <span class="code-exp">org.apache.kafka.common.security.scram.ScramLoginModule</span>，并且已为
+    <span class="code-exp">CONNECT_</span> 和 <span class="code-exp">PRODUCER_</span>
+    键设置了用户名和密码。
 - en: '[PRE19]'
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Use <span class="code-exp">kubectl</span> to install the manifest and start
     the Kafka Connect pod in your cluster.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 <span class="code-exp">kubectl</span> 安装清单并在集群中启动 Kafka Connect pod。
 - en: '[PRE20]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: After you apply the manifest, you should get the following output.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用清单后，您应该得到以下输出。
 - en: '[PRE21]'
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Check the pod log files to ensure the service can log in to the broker. You
     should see the following in the logs if everything has been configured correctly.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查 pod 日志文件，确保服务可以登录到 broker。如果一切配置正确，您应该在日志中看到以下内容。
 - en: '[PRE22]'
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: Check that the <span class="code-exp">connect-offsets</span> topic has been
     created on the Redpanda broker.
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查 <span class="code-exp">connect-offsets</span> 主题是否已在 Redpanda broker 上创建。
 - en: '[PRE23]'
   id: totrans-split-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Setting up the Debezium PostgreSQL Connector
   id: totrans-split-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 设置 Debezium PostgreSQL 连接器
 - en: We must create a topic to store the CDC messages before deploying the Debezium
     PostgreSQL connector to the Kafka Connect service.   If you take a look at the
     config below we’ve set the property <span class="code-exp">topic.prefix</span>
@@ -465,78 +581,99 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 在部署Debezium PostgreSQL连接器到Kafka Connect服务之前，我们必须创建一个主题来存储CDC消息。如果查看下面的配置，我们已将属性<span
+    class="code-exp">topic.prefix</span>设置为“blog”，<span class="code-exp">publication.autocreate.mode</span>设置为“filtered”，并将<span
+    class="code-exp">table.include.list</span>设置为“public.simple”。这将配置连接器将CDC消息写入名为<span
+    class="code-exp">blog.public.simple</span>的主题。使用以下命令创建主题，然后使用cURL命令部署连接器。您需要提供连接到您的PostgreSQL服务器的特定环境详细信息以及您上面使用的Redpanda服务的用户名/密码。
 - en: '**Step 1:  **Create a topic in Redpanda'
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 1: 创建Redpanda中的主题**'
 - en: '[PRE24]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Install the Debezium PostgreSQL connector using cURL.  You’ll need to fetch
     the password for the PostgreSQL user and fill it in below.  We will also set up
     port forwarding from the Kafka Connect service to our local host.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用cURL安装Debezium PostgreSQL连接器。您需要获取PostgreSQL用户的密码并在下面填写它。我们还将设置从Kafka Connect服务到我们的本地主机的端口转发。
 - en: '**Step 2: Get the PostgreSQL password**'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 2: 获取PostgreSQL密码**'
 - en: '[PRE25]'
   id: totrans-split-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '**Step 3: Forward the Kafka-Connect service port (8083)**'
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 3: 转发Kafka-Connect服务端口（8083）**'
 - en: '[PRE26]'
   id: totrans-split-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: '**Step 4: Deploy the Debezium Postgres Connector with cURL**'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 4: 使用cURL部署Debezium Postgres连接器**'
 - en: '[PRE27]'
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: Insert data and validate the setup
   id: totrans-split-104
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 插入数据并验证设置
 - en: Let’s validate the CDC messages are landing in the topic we created; we’ll insert
     some data into our PostgreSQL table and then consume a message from the topic.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们验证CDC消息是否落在我们创建的主题中；我们将向PostgreSQL表中插入一些数据，然后从主题中消费一条消息。
 - en: '**Step 1: Connect to the database**'
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 1: 连接到数据库**'
 - en: '[PRE28]'
   id: totrans-split-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: '**Step 2: Insert data into the table**'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 2: 插入数据到表中**'
 - en: '[PRE29]'
   id: totrans-split-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: '**Step 3: Consume the CDC message from the topic**'
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 3: 消费来自主题的CDC消息**'
 - en: '[PRE30]'
   id: totrans-split-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: We’ve validated that the Debezium CDC messages with <span class="code-exp">before</span>-and-<span
     class="code-exp">after</span> values are landing in the topic.  Don’t be concerned
     if <span class="code-exp">before</span> is not filled out in this example; if
@@ -545,11 +682,14 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们验证了Debezium CDC消息的<span class="code-exp">before</span>和<span class="code-exp">after</span>值是否落在主题中。如果在此示例中<span
+    class="code-exp">before</span>未填写，不必担心；如果查看，“op”为<span class="code-exp">c</span>，这意味着在表中创建了新行。
 - en: Expose Redpanda to the internet
   id: totrans-split-113
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将Redpanda暴露到互联网
 - en: Deploying all of the services locally using <span class="code-exp">minikube</span>
     is a great way to do local development and get hands-on experience without paying
     a cloud provider. However, for us to use Propel and create a Kafka Data Pool,
@@ -560,6 +700,7 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本地使用<span class="code-exp">minikube</span>部署所有服务是进行本地开发和获得实际操作经验的好方法，而无需支付云服务提供商。但是，为了使用Propel并创建Kafka数据池，Propel必须连接到我们的Redpanda主题。有多种方法可以实现这一点。为了简单起见，我们将安装一个反向代理，并创建一个TCP隧道将Redpanda端口暴露到互联网。我们将使用的反向代理称为[LocalXpose](https://localxpose.io/)。
 - en: 💡 To use the LocalXpose TCP Tunnel with a [dedicated port](https://localxpose.io/docs/tunnels/tcp),
     I had to pay $6\.  Other free services also do this, but you can’t control which
     port the tunnel is on.  Redpanda has a limitation when creating the external NodePort
@@ -567,126 +708,159 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 💡 要使用LocalXpose TCP隧道及其[专用端口](https://localxpose.io/docs/tunnels/tcp)，我不得不支付$6。其他免费服务也这样做，但您无法控制隧道所在的端口。创建外部NodePort时，Redpanda存在一个限制，仅限于端口<span
+    class="code-exp">30000-32767</span>。
 - en: '**Step 1: Install LocalXpose and <span class="code-exp">kcat</span>**'
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 1: 安装LocalXpose和<span class="code-exp">kcat</span>**'
 - en: '[https://localxpose.io/docs](https://localxpose.io/docs)'
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://localxpose.io/docs](https://localxpose.io/docs)'
 - en: '[PRE31]'
   id: totrans-split-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: '**Step 2: Start the TCP Tunnel**'
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: '-   **Step 2: 启动TCP隧道**'
 - en: '[PRE32]'
   id: totrans-split-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: You can now see the running tunnels. Copy the domain name in <span class="code-exp">From</span>,
     e.g., <span class="code-exp">us.localx.io</span>. This will be used in step 3
     and later when creating the Kafka Data Pool.
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 您现在可以看到正在运行的隧道。复制 <span class="code-exp">From</span> 中的域名，例如 <span class="code-exp">us.localx.io</span>。这将在步骤
+    3 和创建 Kafka 数据池时使用。
 - en: '**Step 3: Upgrade the Redpanda install and expose an external NodePort**'
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 3：升级 Redpanda 安装并公开一个外部 NodePort**'
 - en: Save the yaml below to <span class="code-exp">external-dns.yaml</span>, and
     replace the <span class="code-exp-bracket">domain</span> with the value from step
     2.
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 将下面的 yaml 保存到 <span class="code-exp">external-dns.yaml</span>，并用步骤 2 的值替换 <span
+    class="code-exp-bracket">domain</span>。
 - en: '[PRE33]'
   id: totrans-split-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: Upgrade Redpanda.
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 升级 Redpanda。
 - en: '[PRE34]'
   id: totrans-split-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: '**Step 4: Forward the traffic to <span class="code-exp">minikube</span>**'
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 4：将流量转发到 <span class="code-exp">minikube</span>**'
 - en: '[PRE35]'
   id: totrans-split-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: '**Step 5: Validate you can connect externally using <span class="code-exp">kcat</span>**'
   id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 5：验证您可以使用 <span class="code-exp">kcat</span> 进行外部连接**'
 - en: '[PRE36]'
   id: totrans-split-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: You can now tunnel traffic to Redpanda running in <span class="code-exp">minikube</span>,
     allowing Propel’s backend to connect and consume the CDC messages from the topic.
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 您现在可以将流量隧道到运行在 <span class="code-exp">minikube</span> 上的 Redpanda，允许 Propel
+    的后端连接并消费来自主题的 CDC 消息。
 - en: Create a Propel Kafka Data Pool
   id: totrans-split-132
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建 Propel Kafka 数据池。
 - en: Login to the [Propel console](https://console.propeldata.com) or create a new
     account.  Then choose your environment and create a new Kafka Datapool, for this
     example I’m using the <span class="code-exp">development</span> environment.
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 登录到 [Propel 控制台](https://console.propeldata.com) 或创建一个新帐户。然后选择您的环境并创建一个新的 Kafka
+    数据池，例如我在 <span class="code-exp">development</span> 环境中使用。
 - en: Next, choose Add new credentials to configure the connection to our Redpanda
     cluster. (use the domain and port from the TCP Tunnel that you created above for
     the Bootstrap Servers)
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，选择添加新凭据以配置到我们的 Redpanda 集群的连接。（使用上面为 Bootstrap 服务器创建的 TCP 隧道中的域和端口）
 - en: Click Create and test Credentials
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击创建并测试凭据。
 - en: Ensure the topics are visible
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 确保主题可见。
 - en: Next, choose the topic <span class="code-exp">blog.public.simple</span> to start
     pulling in the CDC data.
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，选择主题 <span class="code-exp">blog.public.simple</span>，开始拉取 CDC 数据。
 - en: Click Next to choose the primary timestamp.
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击下一步选择主要时间戳。
 - en: Give the Data Pool a unique name.
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 给数据池一个唯一的名称。
 - en: Click Next to start syncing the data from the topic into Propel.
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击下一步开始将主题数据同步到 Propel 中。
 - en: Once you see two records in the Datapool, you can click Preview Data.
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦您在数据池中看到两条记录，您可以点击预览数据。
 - en: Query the data
   id: totrans-split-142
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 查询数据。
 - en: To query the data we have in Propel, you’ll need to create an Application. Follow
     the guide in the [docs](https://www.propeldata.com/docs/applications) to create
     an application. Once you’ve created an Application, you can get a token, as seen
@@ -694,6 +868,8 @@
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 要查询在 Propel 中拥有的数据，您需要创建一个应用程序。请按照 [文档](https://www.propeldata.com/docs/applications)
+    中的指南创建一个应用程序。创建应用程序后，您可以获取一个令牌，如下图所示。我们将在下面的后续 API 调用中使用该令牌。
 - en: Use the [Data Grid API](https://www.propeldata.com/docs/query-your-data/data-grid)
     to query the data in the newly created Kafka Data Pool.  Make sure to copy the
     token you created above and replace <span class="code-exp-bracket">TOKEN</span>
@@ -703,41 +879,54 @@
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 [Data Grid API](https://www.propeldata.com/docs/query-your-data/data-grid)
+    查询新创建的 Kafka 数据池中的数据。确保复制您创建的令牌，并用值替换 <span class="code-exp-bracket">TOKEN</span>。您还需要用新创建的
+    Kafka 数据池的 ID 替换 <span class="code-exp-bracket">DATAPOOL_ID</span>。复制下面的 <span
+    class="code-exp">curl</span> 命令，并在命令行中执行它。
 - en: '[PRE37]'
   id: totrans-split-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: This will return a Data Grid with headers and rows.
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将返回一个带有标题和行的数据网格。
 - en: '[PRE38]'
   id: totrans-split-147
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: Update the source PostgreSQL database
   id: totrans-split-148
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 更新源 PostgreSQL 数据库。
 - en: If we update the PostgreSQL database with a new value for one of the rows, we’ll
     see that change reflected in the Propel Data Pool. Let’s execute the SQL statement
     below and re-run the GraphQL query we ran above.
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们更新 PostgreSQL 数据库中某行的新值，我们将看到在 Propel 数据池中反映出这种变化。让我们执行下面的 SQL 语句，并重新运行上面运行的
+    GraphQL 查询。
 - en: '[PRE39]'
   id: totrans-split-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: When we re-run the GraphQL query, we get the following response.
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们重新运行 GraphQL 查询时，我们得到以下响应。
 - en: '[PRE40]'
   id: totrans-split-152
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: This shows that we have three rows in our Data Pool; it reflects the raw CDC
     messages that have been sent to the Kafka Data Pool. In order to use the data
     for analytics, we need to transform it to correctly represent the current state
@@ -745,11 +934,13 @@
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 这显示我们的数据池中有三行数据；它反映了已发送到 Kafka 数据池的原始 CDC 消息。为了将数据用于分析，我们需要对其进行转换，以正确表示源数据库中的当前状态。
 - en: Create a real-time transformation to unpack the CDC JSON message
   id: totrans-split-154
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建一个实时转换来解包 CDC JSON 消息
 - en: Now that we’re getting the stream of CDC messages to Propel and landing them
     in a Kafka Data Pool, we need to write some SQL to transform the messages based
     on the “op” type.  The columns we are interested in using are <span class="code-exp">id</span>,
@@ -765,23 +956,34 @@
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经将 CDC 消息流发送到 Propel 并将其落入 Kafka 数据池，我们需要编写一些 SQL 来根据“op”类型转换消息。我们感兴趣的列是
+    <span class="code-exp">id</span>、<span class="code-exp">_timestamp</span> 和 <span
+    class="code-exp">foo</span>。下面的 <span class="code-exp">SELECT</span> 语句将查询源表 <span
+    class="code-exp">blog-post</span> 并从 <span class="code-exp">_propel_payload.after</span>
+    中提取 <span class="code-exp">id</span> 和 <span class="code-exp">foo</span>。这将处理创建和更新操作。在更新操作的情况下，将插入一个重复的行，然后由
+    Propel 进行去重。这将确保在我们将 <span class="code-exp">id</span> 设置为 MaterializedView 中的
+    <span class="code-exp">uniqueId</span> 列时，只存在一个版本的 <span class="code-exp">id</span>，其值来自源表的最新值。
 - en: '[PRE41]'
   id: totrans-split-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: You should get a response like the one below.
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该得到如下的响应。
 - en: '[PRE42]'
   id: totrans-split-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: Query the Materialized View Data Pool
   id: totrans-split-159
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 查询 Materialized View 数据池
 - en: Now that we’ve created the MaterialzedView let’s query the Data Pool that was
     created along with it.  Replace <span class="code-exp-bracket">token</span> with
     the token you created earlier, and use the response from the above <span class="code-exp">curl</span>
@@ -791,24 +993,32 @@
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经创建了 MaterializedView，让我们查询与其一同创建的 Data Pool。用之前创建的令牌替换 <span class="code-exp-bracket">token</span>，并使用上述
+    <span class="code-exp">curl</span> 命令的响应来获取目标数据池 ID。这在 JSON 中可以通过 <span class="code-exp">data.createMaterializedView.materializedView.destination.id</span>
+    找到。将 <span class="code-exp">datapool_id</span> 替换为该值，然后从命令行运行 <span class="code-exp">curl</span>
+    命令。
 - en: '[PRE43]'
   id: totrans-split-161
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: The response you get should only have two rows and the updated value of <span
     class="code-exp-bracket">baz</span> for <span class="code-exp">9cb52b2a-8ef2-4987-8856-c79a1b2c2f73</span>.
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 你所得到的响应应该只有两行，并且更新了 <span class="code-exp-bracket">baz</span> 的值为 <span class="code-exp">9cb52b2a-8ef2-4987-8856-c79a1b2c2f73</span>。
 - en: '[PRE44]'
   id: totrans-split-163
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: Visualize the results
   id: totrans-split-164
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 可视化结果
 - en: Let’s write a small <span class="code-exp">node.js</span> application that combines
     all of the Propel concepts and renders a table with the results from the MaterializedView.
      Instead of providing a token, we’ll use the Propel API to mint a token using
@@ -817,57 +1027,72 @@
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们编写一个小的 <span class="code-exp">node.js</span> 应用程序，结合 Propel 的所有概念，并使用我们创建的
+    Propel 应用程序的 OAuth2 客户端凭据来呈现包含 MaterializedView 结果的表格。这些凭据可以在 Propel 控制台的应用程序部分中找到，如下所示。
 - en: '**Step 1: OAuth2 client credentials**'
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 1：OAuth2 客户端凭据**'
 - en: '**Step 2: Set environment variables**'
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 2：设置环境变量**'
 - en: Replace the tokens with the values from the console, then paste and execute
     the commands.
   id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 用控制台中的值替换令牌，然后粘贴并执行命令。
 - en: '[PRE45]'
   id: totrans-split-169
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: '**Step 3: Install the dependencies**'
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 3：安装依赖项**'
 - en: '[PRE46]'
   id: totrans-split-171
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE46]'
 - en: '**Step 4: Copy the code**‍'
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: '**步骤 4：复制代码**‍'
 - en: Copy the code below and replace <span class="code-exp-bracket">DATAPOOL_ID</span>
     with the data pool ID for the MaterializedView from above.
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 复制下面的代码，并将 <span class="code-exp-bracket">DATAPOOL_ID</span> 替换为上面 MaterializedView
+    的数据池 ID。
 - en: '[PRE47]'
   id: totrans-split-174
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE47]'
 - en: '**Step 5: Run the script**'
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: '**第五步：运行脚本**'
 - en: '[PRE48]'
   id: totrans-split-176
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE48]'
 - en: Wrap up
   id: totrans-split-177
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: In wrapping up this post, it's important to recap the key skills and knowledge
     you've acquired. You have learned how to effectively stream PostgreSQL Change
     Data Capture (CDC) to a Propel Kafka DataPool, a significant step in managing
@@ -875,6 +1100,8 @@
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 在结束本篇文章时，重点是回顾您已经掌握的关键技能和知识。您已经学会了如何有效地流式传输PostgreSQL变更数据捕获（CDC）到Propel Kafka
+    DataPool，这是管理实时数据的重要一步。
 - en: Further, you've gained the ability to query this data, which opens up a wealth
     of opportunities for analysis and insights. This guide also walked you through
     the process of updating the source PostgreSQL database, ensuring that you can
@@ -882,6 +1109,7 @@
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，您已经掌握了查询这些数据的能力，这为分析和洞察力开辟了大量机会。本指南还指导您如何更新源PostgreSQL数据库，确保您可以保持数据的准确性和相关性。
 - en: One of the highlights of this guide was teaching you how to create a real-time
     transformation to unpack the CDC JSON message. This is a fundamental skill that
     elevates your data management capabilities, enabling you to manipulate and interpret
@@ -889,12 +1117,14 @@
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 本指南的亮点之一是教您如何创建实时转换以解析CDC JSON消息。这是提升您数据管理能力的基本技能，使您能够为各种应用程序操作和解释数据。
 - en: Finally, you've learned how to visualize the results. Visualization plays a
     crucial role in data analysis, making complex data more understandable, revealing
     trends and outliers, and contributing to more effective communication.
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，您学会了如何可视化结果。可视化在数据分析中起着关键作用，使复杂数据更易理解，揭示趋势和异常值，并有助于更有效的沟通。
 - en: We hope you found the content both informative and practical and that you enjoyed
     the learning process. Propel is dedicated to empowering you with the tools and
     knowledge to transform your data into valuable insights. We look forward to supporting
@@ -903,3 +1133,4 @@
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望您觉得这些内容既具信息性又实用，并且享受学习过程。Propel致力于为您提供工具和知识，将您的数据转化为有价值的洞察力。我们期待着在您使用Propel的未来旅程中支持您。继续探索和转化您的数据！
