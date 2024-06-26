@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:44:45'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:44:45'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Kubernetes and back - Why I don't run distributed systems - davd.io
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Kubernetes and back - Why I don't run distributed systems - davd.io
 - en: 来源：[https://www.davd.io/posts/2024-03-20-kubernetes-and-back-why-i-dont-run-distributed-systems/](https://www.davd.io/posts/2024-03-20-kubernetes-and-back-why-i-dont-run-distributed-systems/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.davd.io/posts/2024-03-20-kubernetes-and-back-why-i-dont-run-distributed-systems/](https://www.davd.io/posts/2024-03-20-kubernetes-and-back-why-i-dont-run-distributed-systems/)
 - en: It’s almost outrageous to say that I don’t like distributed systems while working
     in a company that advertises as being cloud-native, headless and what not. And
     probably every SRE with some buzzword certifications may think I’m a complete
@@ -31,6 +37,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一家宣称自己是云原生、无头等等的公司工作时，说我不喜欢分布式系统几乎是令人震惊的。也许每个有一些时髦认证的SRE都会认为我是个完全的白痴，但请听我说完。
 - en: Roughly a year ago, I decided to switch to a Kubernetes based multi-node environment
     with one of my side projects. The promise of doing zero-downtime deployments and
     node maintenance, better scalability and “self healing” if a node goes down sounded
@@ -38,12 +45,14 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 大约一年前，我决定将一个我的边缘项目切换到基于Kubernetes的多节点环境。无需停机部署、节点维护，更好的可扩展性和“自愈”功能，如果一个节点宕机，听起来都太好了，不可能不跟着这个不断增长的技术营销浪潮。
 - en: I took a moment to calculate the cost of hosting my app on the K8s offerings
     of a Hyperscaler like AWS, Google or Azure just to figure out that *this* won’t
     be an option for me.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我花了一些时间计算在AWS、Google或Azure这样的超大规模云服务提供商的K8s平台上托管我的应用的成本，结果发现*这*对我来说不是一个选择。
 - en: So self-hosting it is. Set up 6 VMs (workers and control planes), which ran
     me a low three-figure price per month and set up Kubernetes. I spent an enormous
     amount of time to get the K8s specs for my application just right, migrating away
@@ -53,6 +62,9 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我选择自己托管。设置了6台虚拟机（工作节点和控制平面），每月花费不到三位数的价格，并设置了Kubernetes。我花了大量时间，精确地获取了适合我的应用的K8s规格，从单机Docker
+    Compose环境迁移，配备适当的云卷分布，一个带有三个副本的MongoDB设置，每个服务多个副本的Pod，负载均衡器等等。最终，我得到了一个 - 理论上
+    - 高可用的系统。
 - en: Not all was great, I instantly missed ZFS on my volumes, which I used before
     to snapshot my application state before backing up. I also recognized that due
     to the replication (that was a mess to set up - I’m wondering who engineered that
@@ -62,12 +74,14 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 并非一切都很好，我立即想念我的卷上的ZFS，以前用来在备份之前快照我的应用状态。我也意识到，由于复制（这是一个混乱的设置 - 我在想谁在MongoDB公司设计的），我的数据库变得相当慢（因为我希望有最高级别的数据复制安全性）。更不用说Redis和ElasticSearch集群了。
 - en: With every replication that I set up, the system became more confusing and I
     ran into multiple situation where I was facing performance problems that were
     extremely expensive and complex to debug.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我设置每次复制时，系统变得更加混乱，并且遇到了多种性能问题，这些问题非常昂贵和复杂，难以调试。
 - en: Once the application started running and was actually hit with customer traffic,
     I reran the same tests that I ran before when I set up the system to ensure the
     HA setup was working. Killing a worker node from the Cloud VM control panel took
@@ -82,6 +96,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用程序一旦开始运行并实际受到客户流量的影响，我重新运行了在设置系统时运行过的相同测试，以确保高可用设置正常运行。从云 VM 控制面板中杀死一个工作节点，集群竟然花费了很长时间才意识到节点已经消失。MongoDB
+    复制需要多秒钟才能弄清楚接下来该做什么。最终，应用程序出现了大约一分钟的停机时间，这并不是我从一个完全冗余的系统中期望的设置。我花了很多时间调整，了解不同的网络插件，添加额外的心跳和健康检查等等，使一切工作到我可以有信心撤下一个节点，甚至不在其故障之前也能如此（最终，这就是停机的情况）。最终仍然是几秒钟的停机时间。
 - en: Backing up also caused me headaches and nightmares. My MongoDB DB is so big
     that I cannot reasonably dump it anymore. Normally I’d snapshot the FS and back
     that up. But how do you do that if your CSI driver does not support btrfs or ZFS?
@@ -94,12 +110,15 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 备份也让我头疼和做噩梦。我的 MongoDB 数据库非常大，我再也不能合理地转储它了。通常我会快照文件系统并备份它。但是如果您的 CSI 驱动程序不支持
+    btrfs 或 ZFS 该怎么办呢？所以又多做了一些工作，增加了一些复杂性，最终在 CI 管道中停止了我的一个 MongoDB 复制，冷备份数据库，然后再次恢复，这导致剩余集群不必要地负载增加以重新启动复制。如果在备份期间节点崩溃会发生什么情况（我经常需要这样做）？那么我的复制就没有法定人数了，所有剩余的节点都开始尖叫，而应用程序再次下线。
 - en: Are there solutions to all of that? Probably. But by the time I got to a somewhat
     working state, everything became so complex, that it really was a pain to maintain
     this whole thing. And it got more expensive of course.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 是否有所有这些问题的解决方案？可能有。但到我达到一种工作状态的时候，一切变得如此复杂，以至于维护这一切真的很痛苦。当然，成本也越来越高了。
 - en: 'This is where I stopped and thought: “OK hey, is that really worth it”? Well,
     I guess that depends on your use case, but for me, it’s not. And by then I really
     started questioning what Kubernetes is even good for after all. I’m exaggerating
@@ -117,6 +136,9 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这时我停下来想：“好吧，这真的值得吗？”嗯，我想这取决于您的用例，但对我来说并不值得。那时我真的开始质疑 Kubernetes 到底有什么好处。当然，我有点夸张。但想想看：承诺是您拥有一个抽象平台，可以运行分布式工作负载，通常通过运行您从未仔细检查过的容器
+    - 或者您真的曾经深入研究过 certmanager 的工作原理吗？我很确定您没有，但毫无疑问，您的 Ansible playbook 中肯定有那个 Helm
+    chart。但它真的能实现吗？分布式系统早在 Kubernetes 和 Docker 以及可能所有现代技术堆栈之前就已存在。尽管云供应商的所有营销努力，但您仍然需要了解所有这些低级事物：数据库复制如何工作？存在哪些负载均衡范例？如何为内部服务设置私有网络并仅公开表面？如何正确配置防火墙？那个设置静态路由的愚蠢命令是什么来着？
 - en: And this is what everybody quietly ignores, nobody gets asked about in their
     Kubernetes certification and what everybody is overwhelmed with as soon as things
     don’t work like described in the docs. But then you are a bad SRE. You still need
