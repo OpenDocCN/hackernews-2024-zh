@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:46:28'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:46:28
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Finding memory leaks in Postgres C code
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在Postgres C代码中查找内存泄漏
 - en: 来源：[https://www.enterprisedb.com/blog/finding-memory-leaks-postgres-c-code](https://www.enterprisedb.com/blog/finding-memory-leaks-postgres-c-code)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.enterprisedb.com/blog/finding-memory-leaks-postgres-c-code](https://www.enterprisedb.com/blog/finding-memory-leaks-postgres-c-code)
 - en: I spent the last week looking for a memory leak in Postgres’s WAL Sender process.
     I spent a few days getting more acquainted with Valgrind and gcc/clang sanitizers,
     but ultimately got nowhere useful with them. Finally, I stumbled on the memleak
@@ -31,78 +37,95 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我上周一直在寻找Postgres的WAL发送进程中的内存泄漏。我花了几天时间更熟悉Valgrind和gcc/clang的sanitizers，但最终对它们没有什么有用的进展。最后，我偶然发现了bcc工具集合中的memleak程序，它直接将我引向了问题的源头。
 - en: Since I had a bit of trouble figuring this all out for the first time, I wanted
     to share the process I went through. Working with some contrived memory leaks.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 自从我第一次尝试弄清楚这一切以来，我想分享一下我经历的过程。与一些人为的内存泄漏问题共事。
 - en: Although this happened in Postgres, and this post introduces a leak into Postgres
     to set us up for an investigation, the techniques are broadly useful.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这发生在Postgres中，并且这篇文章介绍了在Postgres中引入泄漏以便我们进行调查的过程，但这些技术是广泛有用的。
 - en: Specifically, by the end of this post, we’ll be able to get a nice stack trace
     leading to a leak for a running program without any modification to the program
     required.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 具体来说，通过本文的最后部分，我们将能够获得一条很好的堆栈跟踪，指向运行中程序的泄漏，而无需对程序进行任何修改。
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Valgrind
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Valgrind
 - en: Computer Science students typically learn about Valgrind for debugging memory
     leaks in programs. But Valgrind primarily checks for leaks at the end of the program,
     not during it.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算机科学学生通常通过Valgrind来学习调试程序中的内存泄漏问题。但Valgrind主要在程序结束时检查泄漏，而不是在执行过程中。
 - en: 'For example in this simple, leaky `main.c`:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，在这个简单而有泄漏的`main.c`中：
 - en: '[PRE1]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We can build and run with Valgrind and it will tell us about the leak:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以用Valgrind构建和运行，它会告诉我们有关泄漏的信息：
 - en: '[PRE2]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'We can add in the correct call to `free(x)`:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以添加正确的调用`free(x)`：
 - en: '[PRE3]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Rebuild, and run with Valgrind again:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 重新构建，并再次用Valgrind运行：
 - en: '[PRE4]'
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: And Valgrind tells us there is indeed no leak.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 而Valgrind告诉我们确实没有泄漏。
 - en: Leaks in Arenas
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在Arenas中的泄漏
 - en: But there are various ways to manage memory. Postgres code doesn’t typically
     call malloc directly. It calls `palloc` to allocate memory in a `MemoryContext`
     (which in other codebases is sometimes called “[arenas](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator)”).
@@ -111,20 +134,24 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是有各种方法来管理内存。Postgres代码通常不直接调用malloc。它调用`palloc`在`MemoryContext`中分配内存（在其他代码库中有时称为“[arenas](https://www.rfleury.com/p/untangling-lifetimes-the-arena-allocator)”）。`MemoryContexts`是一块从中`palloc`获取内存的空闲内存。然后在某个时刻一次性释放。
 - en: The problem is that leaks can happen during the lifetime of the `MemoryContext`.
     And Valgrind can’t easily tell you about these leaks.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题在于内存上下文的生命周期内可能会发生泄漏。而Valgrind很难告诉您这些泄漏的情况。
 - en: 'Postgres does have a useful builtin method to dump memory context info. For
     example you can add this line to any function, or you can execute this from gdb:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: Postgres确实有一个有用的内置方法来转储内存上下文信息。例如，您可以将此行添加到任何函数中，或者可以从gdb中执行此操作：
 - en: '[PRE5]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: And you will get information about allocations in the memory context and all
     child memory contexts, written to stderr. By observing the increase in allocations
     printed by `MemoryContextStats` over time, and by adding additional memory contexts,
@@ -132,90 +159,110 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，您将获得关于内存上下文和所有子内存上下文中分配的信息，写入stderr。通过观察`MemoryContextStats`随时间增加的分配量，并通过添加额外的内存上下文，您可能能够发现泄漏的位置。
 - en: But adding this call explicitly or via `gdb` is pretty manual. It would be much
     more convenient if there was some system that could automatically tell us about
     growing memory allocations.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是明确添加此调用或通过`gdb`添加是相当手动的。如果有一些系统可以自动告诉我们有关内存分配增长的信息，那将更加方便。
 - en: Let’s introduce a leak into Postgres and see what we can do to discover it,
     reenacting a situation wherein we don’t know where this leak is.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在Postgres中引入一个内存泄漏，并看看我们能做些什么来发现它，重新演示我们不知道泄漏位置的情况。
 - en: Setup
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设置
 - en: 'First grab Postgres, checkout release 16.2 and build it:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先获取Postgres，检出版本16.2并构建它：
 - en: '[PRE6]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: These flags enable Valgrind, enable debug mode, and set the build up to install
     locally rather than globally.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些标志启用Valgrind，启用调试模式，并设置构建以本地安装而不是全局安装。
 - en: 'Once you’ve built it, you can create a Postgres database:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建完后，您可以创建一个Postgres数据库：
 - en: '[PRE7]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'And then start the Postgres server in the foreground:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在前台启动Postgres服务器：
 - en: '[PRE8]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'In a second terminal, connect to it with our built copy of `psql`:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第二个终端中，用我们构建的`psql`连接到它：
 - en: '[PRE9]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Great! Now let’s introduce a leak.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 太好了！现在让我们引入一个内存泄漏。
 - en: Introducing a leak
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 引入内存泄漏
 - en: The function `PostgresMain()` in `src/backend/tcop/postgres.c` has a giant loop
     that looks tempting.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '`src/backend/tcop/postgres.c`中的`PostgresMain()`函数有一个看起来很诱人的巨大循环。'
 - en: '[PRE10]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Let’s make this change:'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们进行这个改变：
 - en: '[PRE11]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Since we’re allocating in the main Postgres loop, every time a single connected
     client sends a statement on the same connection, we’ll allocate a new 4KB chunk.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们在主Postgres循环中分配内存，所以每当单个连接的客户端在同一连接上发送语句时，我们将分配一个新的4KB块。
 - en: Since we’re using `palloc`, all memory will be freed at the end of the process
     in a way Valgrind will think is valid. But during the lifetime of a single client,
     the Postgres backend process handling the connection will keep increasing in memory
@@ -223,6 +270,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们使用`palloc`，所有内存将在进程结束时以Valgrind认为有效的方式释放。但在单个客户端的生命周期内，处理连接的Postgres后端进程将随着客户端发送语句而增加内存。
 - en: This is a memory leak! In the extreme case, if a client sends 1 million statements,
     we’d allocate 4KB * 1,000,000 = 4GB in a single process and not free it until
     the process exits. This is a somewhat contrived case but this sort of situation
@@ -230,117 +278,143 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个内存泄漏！在极端情况下，如果客户端发送1百万条语句，我们将在一个进程中分配4KB * 1,000,000 = 4GB，并且在进程退出之前不会释放。虽然这是一个有些牵强的例子，但这种情况确实会发生。
 - en: Set up Valgrind wrapper
   id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 设置Valgrind包装器
 - en: Let’s rebuild with our diff, remember that Valgrind has already been enabled.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用我们的差异重建，记住Valgrind已经启用。
 - en: '[PRE12]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'We still need to wrap Postgres in Valgrind. Tom Lane [shared](https://www.postgresql.org/message-id/159904.1608307376%40sss.pgh.pa.us)
     his wrapper script for this on the Postgres mailing list, which I’ve adapted.
     Add this to `postgres.valgrind` in the root directory of the Postgres repo:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们仍然需要在Valgrind中包装Postgres。Tom Lane在Postgres邮件列表上[分享](https://www.postgresql.org/message-id/159904.1608307376%40sss.pgh.pa.us)了他用于此目的的包装器脚本，我已经进行了适应。将其添加到Postgres仓库根目录中的`postgres.valgrind`中：
 - en: '[PRE13]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Sidenote: I tried to also run this Valgrind script with the --leak-check=full
     flag, but Postgres would always crash when I had this flag. I don’t know why.'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 旁注：我也尝试使用--leak-check=full标志运行此Valgrind脚本，但是当我使用此标志时，Postgres总是崩溃。我不知道为什么。
 - en: 'Now rename the current Postgres binary to `postgres.orig`, and copy this script
     as the new Postgres binary:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在将当前的Postgres二进制文件重命名为`postgres.orig`，并将此脚本复制为新的Postgres二进制文件：
 - en: '[PRE14]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Start the server (no need to re-`initdb`):'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 启动服务器（无需重新`initdb`）：
 - en: '[PRE15]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'And connect with `psql` like before:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 并像以前一样连接`psql`：
 - en: '[PRE16]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'You’ll immediately see a log line in the Postgres server process:'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将立即在Postgres服务器进程中看到一行日志：
 - en: '[PRE17]'
   id: totrans-split-62
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'And this was the leak we introduced. If we run `SELECT 1` a number of times
     in that same `psql` process:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是我们引入的内存泄漏。如果我们在同一个`psql`进程中多次运行`SELECT 1`：
 - en: '[PRE18]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'We’ll see the same number of print statements in the server logs:'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在服务器日志中看到相同数量的打印语句：
 - en: '[PRE19]'
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Now if we Ctrl-c on the server process, we can look at Valgrind logs.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在如果我们在服务器进程上按下Ctrl-c，我们可以查看Valgrind日志。
 - en: '[PRE20]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: It only found 410 bytes definitely lost. There is no way to account for the
     accumulation of 4096*5 = 20,480 bytes lost with every client statement.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 它只找到了410字节明确丢失。无法解释每个客户端语句积累的4096 * 5 = 20,480字节的损失。
 - en: 'Moreover, Valgrind is very slow. The Valgrind [manual](https://valgrind.org/docs/manual/valgrind_manual.pdf)
     says:'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，Valgrind非常慢。Valgrind的[手册](https://valgrind.org/docs/manual/valgrind_manual.pdf)中说：
 - en: Your program will run much slower (eg. 20 to 30 times) than normal, and use
     a lot more memory.
   id: totrans-split-71
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 您的程序将比正常运行慢得多（例如，20到30倍），并且使用更多内存。
 - en: We’ll have to try something else.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要尝试其他方法。
 - en: AddressSanitizer, LeakSanitizer
   id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: AddressSanitizer、LeakSanitizer
 - en: Valgrind has been around since 2002\. But around 2013, Google contributed somewhat
     similar functionality directly into `clang` and later `gcc`. The history is a
     little difficult for me to follow. AddressSanitizer and LeakSanitizer may have
@@ -349,66 +423,81 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: Valgrind自2002年以来一直存在。但大约在2013年，Google直接在`clang`和后来的`gcc`中贡献了类似的功能。这段历史对我来说有点难以理解。AddressSanitizer和LeakSanitizer可能曾经是独立的，但现在AddressSanitizer包含了LeakSanitizer。要获取此Sanitizer，只需使用`-fsanitize=address`编译代码。
 - en: 'Let’s go back to that simple, leaky `main.c` program:'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回到那个简单的、有内存泄漏的`main.c`程序：
 - en: '[PRE21]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'And compile and run with the sanitizers on:'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 并使用 Sanitizers 编译并运行：
 - en: '[PRE22]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: Hey, that’s perfect. And even simpler than using Valgrind and requiring a wrapper.
     The leak detection is just built right into the binary.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 嘿，这太完美了。甚至比使用 Valgrind 和需要包装器更简单。泄漏检测就直接内建到二进制文件中了。
 - en: Let’s try this with Postgres.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们试试在 Postgres 上。
 - en: Postgres and AddressSanitizer
   id: totrans-split-81
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Postgres 和 AddressSanitizer
 - en: Back in the Postgres git repo we cloned earlier, remember we have this diff
     applied that will leak memory with every client statement.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到之前克隆的 Postgres git 仓库，记得我们应用了一个会在每个客户端语句中泄漏内存的差异。
 - en: '[PRE23]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Run `make clean` and autoconf again but this time with `-fsanitize=address`
     in the `CFLAGS` value. Then rebuild.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行 `make clean`，然后再次运行 autoconf，但这次在 `CFLAGS` 值中加入 `-fsanitize=address`。然后重新构建。
 - en: '[PRE24]'
   id: totrans-split-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'Now run the Postgres server again:'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在再次运行 Postgres 服务器：
 - en: '[PRE25]'
   id: totrans-split-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Ok it immediately crashed! That’s interesting.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，它立即崩溃了！这很有趣。
 - en: But looking closely, the messages are 1) not related to the 4096-byte leak we
     introduced and 2) don’t really seem like leaks that matter since these are related
     to program initialization. Since they’re not in a loop the allocations shown won’t
@@ -416,6 +505,7 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 但仔细观察，这些消息与我们引入的 4096 字节泄漏无关，而且似乎不像是重要的泄漏，因为它们与程序初始化相关，而且不在循环中，所示的分配不会随时间而增长。所以这不是个大问题。
 - en: Where was our leak? It turns out the default behavior of AddressSanitizer/LeakSanitizer
     is to crash on the first error. In this situation, and likely many production
     systems that only later introduce sanitizers, that isn’t useful. Thankfully the
@@ -423,48 +513,59 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的泄漏在哪里呢？原来 AddressSanitizer/LeakSanitizer 的默认行为是在第一个错误时崩溃。在这种情况下，以及许多只在稍后引入
+    Sanitizers 的生产系统中，这并不实用。幸运的是，Sanitizers 有一些我们可以在环境变量中设置的运行时选项。
 - en: 'Let’s set the environment variable `ASAN_OPTIONS="halt_on_error=false"` and
     re-run Postgres:'
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们设置环境变量 `ASAN_OPTIONS="halt_on_error=false"`，然后重新运行 Postgres：
 - en: '[PRE26]'
   id: totrans-split-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: Ok! It reported a leak but it kept going. Let’s trigger the leak we added by
     connecting with `psql` like before.
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧！它报告了一个泄漏，但继续运行。让我们像之前一样连接 `psql` 触发我们添加的泄漏。
 - en: '[PRE27]'
   id: totrans-split-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: And exit the connection. You may see a leak report for the `psql` process itself.
     But the leak we are looking for is in the Postgres backend process.
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后退出连接。你可能会看到 `psql` 进程本身的泄漏报告。但我们要找的泄漏在 Postgres 后端进程中。
 - en: '[PRE28]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: But nothing about our leak! I guess the sanitizers work similarly to Valgrind
     in this regard, since the memory was freed by the time the process ended. Just
     not before.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是关于我们的泄漏没有任何信息！我猜 Sanitizers 在这方面与 Valgrind 类似，因为内存在进程结束之前被释放了，而不是之前。
 - en: I got stumped for a while at this point.
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时我陷入了困境。
 - en: eBPF and bcc tools
   id: totrans-split-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: eBPF 和 bcc 工具
 - en: I’ve been reading Brendan Gregg’s [Systems Performance](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html)
     book, so I started wondering if there was a way to use [perf](https://perf.wiki.kernel.org/index.php/Main_Page)
     or [bpf profile](https://github.com/iovisor/bcc/blob/master/tools/profile.py)
@@ -475,84 +576,107 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我一直在阅读 Brendan Gregg 的《[系统性能](https://www.brendangregg.com/blog/2020-07-15/systems-performance-2nd-edition.html)》一书，所以我开始想知道是否有办法使用
+    [perf](https://perf.wiki.kernel.org/index.php/Main_Page) 或 [bpf profile](https://github.com/iovisor/bcc/blob/master/tools/profile.py)
+    来记录运行程序的内存使用情况，并查看分配来源。我已经使用 `perf` 来分析 *函数*，但没有用于 *内存使用* 的分析。我尝试找到如何记录分配和堆栈跟踪的方法，但没能搞清楚。
 - en: So I looked into `bpf profile` and noticed Brendan Gregg’s [page](https://www.brendangregg.com/FlameGraphs/memoryflamegraphs.html)
     on memory leaks. Turns out there’s a tool for identifying memory leaks directly,
     [memleak.py](https://github.com/iovisor/bcc/blob/master/tools/memleak.py)!
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我查看了 `bpf profile` 并注意到 Brendan Gregg 在内存泄漏方面的[页面](https://www.brendangregg.com/FlameGraphs/memoryflamegraphs.html)。原来有一种工具可以直接识别内存泄漏，叫做
+    [memleak.py](https://github.com/iovisor/bcc/blob/master/tools/memleak.py)！
 - en: 'To use it, [install](https://github.com/iovisor/bcc/blob/master/INSTALL.md)
     the bcc tools suite if you don’t have it already. Unfortunately each distribution
     changes the names of the programs so it may be easiest to use `find`:'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你还没有安装，可以[安装](https://github.com/iovisor/bcc/blob/master/INSTALL.md) bcc 工具套件。不幸的是，每个发行版都改变了程序的名称，所以可能最容易使用
+    `find`：
 - en: '[PRE29]'
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: Ok, so it’s at `/usr/share/bcc/tools/memleak`.
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，它位于 `/usr/share/bcc/tools/memleak`。
 - en: 'Let’s rebuild Postgres without sanitizers on:'
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们重新构建 Postgres，去掉 Sanitizers：
 - en: '[PRE30]'
   id: totrans-split-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'Run the Postgres server:'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行Postgres服务器：
 - en: '[PRE31]'
   id: totrans-split-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: 'And start `psql` and grab the associated backend process PID that is handling
     our request on the server:'
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 并启动`psql`，获取处理服务器上我们请求的相关后端进程PID：
 - en: '[PRE32]'
   id: totrans-split-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'Open a new terminal session, keeping alive that `psql` connection and the Postgres
     server process. And run the `memleak` program:'
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 打开一个新的终端会话，保持`psql`连接和Postgres服务器进程的活动状态。然后运行`memleak`程序：
 - en: '[PRE33]'
   id: totrans-split-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: It will start reporting leaks every five seconds.
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 它将每五秒钟开始报告内存泄漏。
 - en: 'Let’s trigger the leak more aggressively by continuing to run `SELECT 1` statements
     in the `psql` session:'
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过在`psql`会话中继续运行`SELECT 1`语句来更积极地触发内存泄漏：
 - en: '[PRE34]'
   id: totrans-split-115
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: 'After running this `SELECT 1` command 20-30 times or so, you should see the
     memleak program report:'
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 在运行这个`SELECT 1`命令大约20-30次之后，你应该会看到`memleak`程序报告：
 - en: '[PRE35]'
   id: totrans-split-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: And *that* is the memory leak, with a beautiful stack trace to help us find
     exactly where it is.
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 而*这*就是内存泄漏，还附带着漂亮的堆栈跟踪，帮助我们准确定位它的位置。
