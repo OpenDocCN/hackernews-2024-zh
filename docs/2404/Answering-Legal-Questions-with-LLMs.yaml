@@ -205,6 +205,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**角色扮演。** 我们把任务框架定为一位资深律师为初级律师规划工作。'
 - en: '[**Tokens to “think.”**](https://platform.openai.com/docs/guides/prompt-engineering/give-the-model-time-to-think)
     We gave the model space to produce internal notes about the task - like how it
     understands the user’s question - before asking for the plan itself.'
@@ -212,6 +213,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[**思考的关键字。**](https://platform.openai.com/docs/guides/prompt-engineering/give-the-model-time-to-think)
+    我们给模型提供了空间，让它生成关于任务的内部笔记，比如它如何理解用户的问题，然后再要求计划本身。'
 - en: We designed the output so it corresponds to a list of subquestions required
     to answer the main question. Each point is self-contained; it includes specific
     instructions and references to sections of the document. If a lawyer looked at
@@ -219,20 +222,24 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们设计输出，使其对应于回答主问题所需的子问题清单。每一点都是独立的；它包括具体的指示和对文件部分的引用。如果律师查看任何一个步骤，他们可以自己执行它。
 - en: 'Here’s what GPT-4 gave us:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是GPT-4给我们的东西：
 - en: Plan for the Junior Lawyer
   id: totrans-split-37
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 初级律师的计划
 - en: '**Identify Relevant High-Risk Categories**:'
   id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**识别相关高风险类别**：'
 - en: Analyze **Annex III** for high-risk AI systems to see if the language model
     fits under any listed categories.
   id: totrans-split-39
@@ -240,11 +247,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 分析**附件III**，查看高风险AI系统是否适合任何列出的类别。
 - en: '**Examine Requirements for High-Risk AI Systems**:'
   id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**检查高风险AI系统的要求**：'
 - en: Look at **Articles 8-15** to understand general requirements for high-risk AI
     systems.
   id: totrans-split-41
@@ -252,31 +261,37 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 查看**第8-15条**，了解高风险AI系统的一般要求。
 - en: …
   id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: …
 - en: '*(The other 7 points truncated for brevity. Full plan [here](https://gist.github.com/hugodutka/9ba6cf3e172f38b288dc1705ecde9967),
     and the prompt [here](https://gist.github.com/hugodutka/6ef19e197feec9e4ce42c3b6994a919d).)*'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '*(为简洁起见，其余7点被截断。完整计划请见[此处](https://gist.github.com/hugodutka/9ba6cf3e172f38b288dc1705ecde9967)，提示请见[此处](https://gist.github.com/hugodutka/6ef19e197feec9e4ce42c3b6994a919d)。)*'
 - en: The quality of the plans still surprises me. When we analyzed them for questions
     from actual lawyers, we found that GPT-4 generally covers all necessary subquestions.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 规划质量依然让我感到惊讶。当我们为实际律师提出的问题分析时，我们发现GPT-4通常涵盖了所有必要的子问题。
 - en: Answering Subquestions
   id: totrans-split-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 回答子问题
 - en: The plan is executed by a simple AI agent. In fact, just a single conversation
     that GPT-4 has with itself.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个计划由一个简单的AI代理执行。事实上，只是GPT-4与自己进行的一次单一对话。
 - en: GPT-4 is prompted with instructions to assume the role of a “master agent” tasked
     with answering a legal question based on the pre-generated plan. It can delegate
     subquestions to “junior lawyers” - in fact, separate GPT-4 chats - by calling
@@ -284,10 +299,12 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: GPT-4被提示要扮演一个“主代理”的角色，负责根据预生成的计划回答法律问题。它可以将子问题委托给“初级律师”——事实上，是分开的GPT-4对话——通过调用[函数](https://platform.openai.com/docs/guides/function-calling)。
 - en: 'Here’s an example function call:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一个函数调用的示例：
 - en: '[PRE0]'
   id: totrans-split-49
   prefs: []
@@ -299,12 +316,14 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将这类调用转换为包含任务、问题、法规特定部分和执行任务的指示的提示。无论GPT-4输出什么，都会作为初级律师的答案反馈给主对话。
 - en: We preprocess the regulation so that when a call contains a reference to “Annex
     III,” we know which pages to put into the “junior lawyer’s” prompt. This is the
     LLM-based RAG I mentioned in the introduction.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们预处理了法规，这样当一个通话中含有“附件III”的引用时，我们就知道要把哪些页面放入“初级律师”的提示中。这是我在介绍中提到的基于LLM的RAG。
 - en: Compared to analyzing the entire AI Act, GPT-4’s reasoning is massively boosted
     when it’s given a clear task and a short context. With a 5k-token-long prompt,
     you can even usually trust the LLM to correctly quote the source, which is useful
@@ -312,6 +331,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 与分析整个AI法案相比，当给出一个明确的任务和简短的背景时，GPT-4的推理能力得到了显著提升。通过一个5k字长的提示，你甚至可以通常信任LLM正确引用源，这对用户验证最终答案是有用的。
 - en: We implemented the master AI agent as a while loop. It goes on as long as GPT-4
     calls functions, going through the plan step by step. Eventually, after all subquestions
     are answered, it outputs the final answer in a format we can detect with a regex.
@@ -319,6 +339,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将主AI代理实现为一个while循环。只要GPT-4调用函数，就会按步骤执行计划。最终，在回答完所有子问题后，它会以我们可以通过正则表达式检测的格式输出最终答案。然后，我们中断循环并将答案返回给用户。
 - en: You can see the final answer [here](https://hotseatai.com/ans/does-the-development-and-deployment-of-q_2azysfQoPxFksVXKW8TYw2TGT79#legal-trace),
     in the “Legal trace” section.
   id: totrans-split-54
