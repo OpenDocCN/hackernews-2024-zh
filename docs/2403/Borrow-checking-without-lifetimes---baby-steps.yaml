@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:35:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:35:17'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Borrow checking without lifetimes · baby steps
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 不使用生命周期进行借用检查 · baby steps
 - en: 来源：[https://smallcultfollowing.com/babysteps/blog/2024/03/04/borrow-checking-without-lifetimes/](https://smallcultfollowing.com/babysteps/blog/2024/03/04/borrow-checking-without-lifetimes/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://smallcultfollowing.com/babysteps/blog/2024/03/04/borrow-checking-without-lifetimes/](https://smallcultfollowing.com/babysteps/blog/2024/03/04/borrow-checking-without-lifetimes/)
 - en: This blog post explores an alternative formulation of Rust’s type system that
     eschews *lifetimes* in favor of *places*. The TL;DR is that instead of having
     `'a` represent a *lifetime* in the code, it can represent a set of *loans*, like
@@ -38,11 +44,13 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文探讨了Rust类型系统的另一种表述，它放弃了生命周期而采用*位置*。简而言之，与其让`'a`在代码中代表*生命周期*，不如让它代表一组*贷款*，比如`shared(a.b.c)`或`mut(x)`。如果这听起来很熟悉，那是因为它是[polonius](https://smallcultfollowing.com/babysteps/blog/2023/09/22/polonius-part-1/)的基础，但重新定义为类型系统而不是静态分析。本文只是提供高层次的思想。在后续文章中，我将深入探讨如何利用这一点来支持内部引用和其他高级借用模式。在实现方面，我已经做了一些模拟，但我打算开始扩展[a-mir-formality](https://github.com/rust-lang/a-mir-formality)以包含这一分析。
 - en: Why would you want to replace lifetimes?
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么要替换生命周期？
 - en: Lifetimes are the best and worst part of Rust. The best in that they let you
     express very cool patterns, like returning a pointer into some data in the middle
     of your data structure. But they’ve got some serious issues. For one, the idea
@@ -53,15 +61,18 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 生命周期是Rust的优点和缺点。优点是它们能让你表达非常酷的模式，比如在数据结构中返回指向数据中间某些数据的指针。但它们也存在一些严重问题。首先，生命周期的概念相当抽象，人们难以理解（“`'a`究竟代表什么？”）。而且Rust无法表达一些重要的模式，尤其是内部引用，其中结构体的一个字段引用了另一个字段拥有的数据。
 - en: So what *is* a lifetime exactly?
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 那么生命周期究竟是什么？
 - en: 'Here is the definition of a lifetime from the RFC on non-lexical lifetimes:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是来自非词法生命周期RFC的生命周期定义：
 - en: Whenever you create a borrow, the compiler assigns the resulting reference a
     lifetime. This lifetime corresponds to the span of the code where the reference
     may be used. The compiler will infer this lifetime to be the smallest lifetime
@@ -70,15 +81,18 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 每当创建一个借用时，编译器都会为生成的引用分配一个生命周期。这个生命周期对应于引用可以使用的代码范围。编译器会推断这个生命周期，使其尽可能小，同时涵盖引用的所有使用。
 - en: '[Read the RFC for more details.](https://rust-lang.github.io/rfcs/2094-nll.html#what-is-a-lifetime)'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[阅读RFC获取更多详情。](https://rust-lang.github.io/rfcs/2094-nll.html#what-is-a-lifetime)'
 - en: Replacing a *lifetime* with an *origin*
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将*生命周期*替换为*起源*
 - en: Under this formulation, `'a` no longer represents a *lifetime* but rather an
     **origin** – i.e., it explains where the reference may have come from. We define
     an origin as a **set of loans**. Each loan captures some **place expression**
@@ -87,35 +101,42 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种表述下，`'a`不再表示*生命周期*，而是一个**起源**，即解释引用可能来自何处。我们定义一个起源为**贷款集合**。每笔贷款都捕获了一些**位置表达式**（例如`a`或`a.b.c`），以及它们被借用的模式（`shared`或`mut`）。
 - en: '[PRE0]'
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Defining types
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 定义类型
 - en: 'Using origins, we can define Rust types roughly like this (obviously I’m ignoring
     a bunch of complexity here&mldr;):'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用起源，我们可以大致定义Rust类型如下（显然我在这里忽略了一堆复杂性&mldr;）。
 - en: '[PRE1]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Here is the first interesting thing to note: there is no `''a` notation here!
     This is because I’ve not introduced generics yet. Unlike Rust proper, this formulation
     of the type system has a concrete syntax (`Origin`) for what `''a` represents.'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一件有趣的事情需要注意：这里没有`'a`标记！这是因为我还没有介绍泛型。与Rust不同，这种类型系统的具体语法(`Origin`)为`'a`代表的内容定义了一个具体的语法。
 - en: Explicit types for a simple program
   id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简单程序的显式类型
 - en: 'Having a fully explicit type system also means we can easily write out example
     programs where all types are fully specified. This used to be rather challenging
     because we had no notation for lifetimes. Let’s look at a simple example, a program
@@ -123,10 +144,12 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 拥有完全明确的类型系统意味着我们可以轻松地编写所有类型完全指定的示例程序。这曾经是相当具有挑战性的，因为我们没有生命周期的表示法。让我们看一个简单的例子，一个应该会出错的程序：
 - en: '[PRE2]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Apart from the type of `p`, this is valid Rust. Of course, it won’t compile,
     because we can’t modify `counter` while there is a live shared reference `p` ([playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a05f0a4aad12c33345ca4adc1cd9bb2)).
     As we continue, you will see how the new type system formulation arrives at the
@@ -134,11 +157,13 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了 `p` 的类型之外，这是有效的 Rust。当然，它不会编译，因为在存在活跃的共享引用 `p` 时，我们无法修改 `counter`（[playground](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a05f0a4aad12c33345ca4adc1cd9bb2)）。随着我们继续，你将看到新的类型系统形式化如何得出相同的结论。
 - en: Basic typing judgments
   id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基本的类型判断
 - en: Typing judgments are the standard way to describe a type system. We’re going
     to phase in the typing judgments for our system iteratively. We’ll start with
     a simple, fairly standard formulation that doesn’t include borrow checking, and
@@ -147,10 +172,12 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 类型判断是描述类型系统的标准方式。我们将分阶段引入我们系统的类型判断。我们将从一个不包括借用检查的简单且相当标准的形式开始，然后展示如何引入借用检查。对于这个第一个版本，我们正在定义的类型判断的形式是：
 - en: '[PRE3]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'This says, “in the environment `Env`, the expression `Expr` is legal and has
     the type `Type`”. The *environment* `Env` here defines the local variables in
     scope. The Rust expressions we are looking at for our [sample program](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a05f0a4aad12c33345ca4adc1cd9bb2)
@@ -158,35 +185,44 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个说法是，“在环境 `Env` 中，表达式 `Expr` 是合法的，且具有类型 `Type`”。这里的*环境* `Env` 定义了作用域内的局部变量。我们用于我们的[示例程序](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=1a05f0a4aad12c33345ca4adc1cd9bb2)的
+    Rust 表达式非常简单：
 - en: '[PRE4]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Since we only support one scalar type (`u32`), the typing judgment for `Expr
     + Expr` is as simple as:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们仅支持一种标量类型（`u32`），因此 `Expr + Expr` 的类型判断非常简单：
 - en: '[PRE5]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'The rule for `Place = Expr` assignments is based on subtyping:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Place = Expr` 赋值的规则基于子类型：'
 - en: '[PRE6]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The rule for `&Place` is somewhat more interesting:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '`&Place` 的规则稍微有趣一些：'
 - en: '[PRE7]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The rule just says that we figure out the type of the place `Place` being borrowed
     (here, the place is `counter` and its type will be `u32`) and then we have a resulting
     reference to that type. The origin of that reference will be `{shared(Place)}`,
@@ -194,20 +230,25 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个规则只是说明我们确定了被借用的位置 `Place` 的类型（这里，位置是 `counter`，其类型将是 `u32`），然后我们得到了对该类型的引用。该引用的起源将是
+    `{shared(Place)}`，表示该引用来自于 `Place`：
 - en: '[PRE8]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Computing liveness
   id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 计算活跃性
 - en: To introduce borrow checking, we need to phase in the idea of **liveness**.
     ^(If you’re not familiar with the concept, the NLL RFC has a [nice introduction](https://rust-lang.github.io/rfcs/2094-nll.html#liveness):)
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 要引入借用检查，我们需要逐步引入**活跃性**的概念。^(如果你对这个概念不熟悉，NLL RFC 中有一个[很好的介绍](https://rust-lang.github.io/rfcs/2094-nll.html#liveness)：)
 - en: The term “liveness” derives from compiler analysis, but it’s fairly intuitive.
     We say that a variable is live if the current value that it holds may be used
     later.
@@ -215,15 +256,18 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “活跃性”这个术语源自于编译器分析，但它相当直观。我们说一个变量是活跃的，如果它当前持有的值可能在稍后被使用。
 - en: 'Unlike with NLL, where we just computed live **variables**, we’re going to
     compute **live places**:'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 NLL 不同，我们仅计算活跃的**变量**，我们将计算**活跃的位置**：
 - en: '[PRE9]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'To compute the set of live places, we’ll introduce a helper function `LiveBefore(Env,
     LivePlaces, Expr): LivePlaces`. `LiveBefore()` returns the set of places that
     are live before `Expr` is evaluated, given the environment `Env` and the set of
@@ -232,39 +276,48 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '为了计算活跃位置集合，我们将引入一个辅助函数 `LiveBefore(Env, LivePlaces, Expr): LivePlaces`。`LiveBefore()`
+    返回在评估表达式 `Expr` 前是活跃的位置集合，给定环境 `Env` 和表达式后活跃的位置集合。我不会详细定义这个函数，但大致看起来是这样的：'
 - en: '[PRE10]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Integrating liveness into our typing judgments
   id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将活跃性整合到我们的类型判断中
 - en: 'To detect borrow check errors, we need to adjust our typing judgment to include
     liveness. The result will be as follows:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了检测借用检查错误，我们需要调整我们的类型判断以包含活跃性。结果如下：
 - en: '[PRE11]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: This judgment says, “in the environment `Env`, and given that the function will
     access `LivePlaces` in the future, `Expr` is valid and has type `Type`”. Integrating
     liveness in this way gives us some idea of what accesses will happen in the future.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个判断说，“在环境 `Env` 中，并且考虑到函数将来会访问 `LivePlaces`，`Expr` 是有效的，并且具有类型 `Type`”。这样整合活性就给我们一些关于将来会发生什么访问的想法。
 - en: 'For compound expressions, like `Expr1 + Expr2`, we have to adjust the set of
     live places to reflect control flow:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于像 `Expr1 + Expr2` 这样的复合表达式，我们必须调整活跃位置的集合以反映控制流：
 - en: '[PRE12]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'We start out with `LiveAfter2`, i.e., the places that are live after the entire
     expression. These are also the same as the places live after expression 2 is evaluated,
     since this expression doesn’t itself reference or overwrite any places. We then
@@ -276,44 +329,55 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从 `LiveAfter2` 开始，即整个表达式之后仍然活跃的位置。这些位置也是在评估表达式2之后活跃的位置，因为这个表达式本身不引用或覆盖任何位置。然后我们计算
+    `LiveAfter1` - 即在评估 `Expr1` 之后活跃的位置 - 通过查看在 `Expr2` 之前活跃的位置。这有点令人费解，我花了一些时间来理解。这里的棘手之处在于活性是*反向*计算的，但我们大多数的类型规则（和直觉）倾向于*正向*流动。如果有帮助的话，可以考虑
+    `+` 的“完全展开”版本：
 - en: '[PRE13]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Borrow checking with liveness
   id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 活性检查借贷
 - en: 'Now that we know liveness information, we can use it to do borrow checking.
     We’ll introduce a “permits” judgment:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道活性信息了，我们可以用它来进行借贷检查。我们引入一个“允许”判断：
 - en: '[PRE14]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'that indicates that “taking the loan Loan would be allowed given the environment
     and the live places”. Here is the rule for assignments, modified to include liveness
     and the new “permits” judgment:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 指示“在给定环境和活跃位置的情况下，允许采取贷款 Loan”。这是赋值规则，修改以包括活性和新的“允许”判断：
 - en: '[PRE15]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Before I dive into how we define “permits”, let’s go back to our example and
     get an intution for what is going on here. We want to declare an error on this
     assigment:'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我深入讨论如何定义“允许”之前，让我们回到我们的例子，对这里正在发生的事情有一个直觉。我们想在这个赋值上声明一个错误：
 - en: '[PRE16]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: Note that, because of the `println!` on the next line, `p` will be in our `LiveAfter`
     set. Looking at the type of `p`, we see that it includes the loan `shared(counter)`.
     The idea then is that mutating counter is illegal because there is a live loan
@@ -321,33 +385,42 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，由于下一行的 `println!`，`p` 将在我们的 `LiveAfter` 集合中。查看 `p` 的类型，我们看到它包括贷款 `shared(counter)`。因此，突变
+    `counter` 是不合法的，因为有一个活跃的贷款 `shared(counter)`，这意味着 `counter` 必须是不可变的。
 - en: 'Restating that intution:'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 重申直觉：
 - en: A set `Live` of live places *permits* a loan `Loan1` if, for every live place
     `Place` in `Live`, the loans in the type of `Place` are compatible with `Loan1`.
   id: totrans-split-61
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 集合 `Live` 中的活跃位置*允许*贷款 `Loan1`，如果对于 `Live` 中的每个活跃位置 `Place`，该位置类型中的贷款与 `Loan1`
+    兼容。
 - en: 'Written more formally:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 更正式地写出来：
 - en: '[PRE17]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'This definition makes use of two helper functions:'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个定义使用了两个辅助函数：
 - en: '`Loans(Type)` – the set of loans that appear in the type'
   id: totrans-split-65
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Loans(Type)` - 出现在类型中的贷款集合'
 - en: '`Compatible(Loan1, Loan2)` – defines if two loans are compatible. Two shared
     loans are always compatible. A mutable loan is only compatible with another loan
     if the places are disjoint.'
@@ -355,11 +428,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Compatible(Loan1, Loan2)` - 定义两个贷款是否兼容。两个共享贷款总是兼容的。仅当位置不重叠时，可变贷款才与另一个贷款兼容。'
 - en: Conclusion
   id: totrans-split-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: 'The goal of this post was to give a high-level intution. I wrote it from memory,
     so I’ve probably overlooked a thing or two. In follow-up posts though I want to
     go deeper into how the system I’ve been playing with works and what new things
@@ -367,19 +442,23 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文的目标是提供高层次的直觉。我是从记忆中写的，所以可能有一些遗漏。但是在接下来的文章中，我想更深入地探讨我正在研究的系统如何工作以及它可以支持的新事物。一些高层次的例子：
 - en: How to define subtyping, and in particular the role of liveness in subtyping
   id: totrans-split-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何定义子类型化，特别是活性在子类型化中的作用
 - en: Important borrow patterns that we use today and how they work in the new system
   id: totrans-split-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们今天使用的重要借贷模式及其在新系统中的工作方式
 - en: Interior references that point at data owned by other struct fields and how
     it can be supported
   id: totrans-split-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 指向由其他结构字段拥有的数据的内部引用及其支持方式
