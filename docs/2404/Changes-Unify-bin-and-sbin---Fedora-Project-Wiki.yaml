@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:11:43'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:11:43'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Changes/Unify bin and sbin - Fedora Project Wiki
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 更改/合并 bin 和 sbin - Fedora 项目维基
 - en: 来源：[https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin](https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin](https://fedoraproject.org/wiki/Changes/Unify_bin_and_sbin)
 - en: Unify `/usr/bin` and `/usr/sbin`
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 合并 `/usr/bin` 和 `/usr/sbin`
 - en: Summary
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: The `/usr/sbin` directory becomes a symlink to `bin`, which means paths like
     `/usr/bin/foo` and `/usr/sbin/foo` point to the same place. `/bin` and `/sbin`
     are already symlinks to `usr/bin` and `usr/sbin`, so effectively `/bin/foo` and
@@ -46,21 +54,29 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '`/usr/sbin` 目录成为 `bin` 的符号链接，这意味着像 `/usr/bin/foo` 和 `/usr/sbin/foo` 这样的路径指向同一个位置。`/bin`
+    和 `/sbin` 已经是指向 `usr/bin` 和 `usr/sbin` 的符号链接，因此 `/bin/foo` 和 `/sbin/foo` 实际上也指向同一个位置。`/usr/sbin`
+    将从默认的 `$PATH` 中移除。类似的更改也应用于将 `/usr/local/sbin` 指向 `bin`，从而使 `/usr/local/bin/foo`
+    和 `/usr/local/sbin/foo` 指向同一位置。`%_sbindir` 的定义将改为 `%_bindir`，因此包在重新构建后将开始使用新目录而无需进一步操作。维护者*可能*停止使用
+    `%_sbindir`，但无需这样做。'
 - en: Owner
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 拥有者
 - en: Current status
   id: totrans-split-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 当前状态
 - en: Detailed Description
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 详细描述
 - en: 'The split between `/bin` and `/sbin` is not useful, and also unused. The original
     split was to have "important" binaries statically linked in `/sbin` which could
     then be used for emergency and rescue operations. Obviously, we don''t do static
@@ -77,6 +93,9 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '`/bin` 和 `/sbin` 之间的分割既不实用，也未被使用。最初的分割是将在 `/sbin` 中静态链接的“重要”二进制文件用于紧急和救援操作。显然，我们现在不再进行静态链接。后来，这种分割被重新用于隔离只能由管理员使用的“重要”二进制文件。尽管这在理论上看起来很有吸引力，但在实践中，很难对此类程序进行分类，并且普通用户经常从
+    `/sbin` 调用程序。大多数需要在*某些*操作时具有根权限的程序在无特权操作时也能使用。甚至在需要特权时，通常也会动态获取特权，例如使用 `polkit`。多年来，默认的
+    `$PATH` 设置为用户包括这两个目录。随着 systemd 的出现，这变得更加系统化：systemd 为所有用户和服务设置了带有这两个目录的 `$PATH`。因此，一般来说，所有用户和程序都会找到这两组二进制文件。'
 - en: One additional use of the `/bin`—`/sbin` split is `consolehelper`. In this approach,
     the user-facing program (`/bin/foo`) is a symlink to `/bin/consolehelper`, which
     is a suid binary that elevates privileges and calls the "real" `foo` (`/sbin/foo`
@@ -88,6 +107,11 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '`/bin` 和 `/sbin` 分割的另一个用途是 `consolehelper`。在这种方法中，用户界面程序（`/bin/foo`）是指向 `/bin/consolehelper`
+    的符号链接，后者是一个 suid 二进制文件，用于提升特权并调用“真正的” `foo`（`/sbin/foo` 或 `/usr/libexec/foo`）。大多数使用
+    `consolehelper` 的情况已迁移到 polkit ([https://fedoraproject.org/wiki/Features/UsermodeMigration](https://fedoraproject.org/wiki/Features/UsermodeMigration))，但仍有一些用户在使用
+    ([https://bugzilla.redhat.com/show_bug.cgi?id=502765](https://bugzilla.redhat.com/show_bug.cgi?id=502765))。使用
+    `/sbin` 存放需要特权的程序与建议的合并不兼容；这些包需要调整以将需要特权的二进制文件移动到 `/usr/lib` 或 `/usr/libexec`（参见范围部分）。'
 - en: Since generally all user sessions and services have both directories in `$PATH`,
     this split actually isn't *used* for anything. Its main effect is confusion when
     people need to use the absolute path and guess the directory wrong. Other distributions
