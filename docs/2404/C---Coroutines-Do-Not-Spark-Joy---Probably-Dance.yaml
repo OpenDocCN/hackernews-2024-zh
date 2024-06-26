@@ -81,6 +81,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Into this code:'
   id: totrans-split-13
   prefs: []
@@ -89,6 +90,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'The “co_yield” in the first listing is a new keyword. I said that repeat calls
     to a coroutine resume after the last return statement, but they actually resume
     after the last “co_yield” statement. (and co_yield is syntactically the same as
@@ -163,6 +165,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: So here I allocate two vectors, then I loop over the results of the range()
     function (from the first listing) and also loop over the results of the range_struct()
     constructor (from the second listing), and both should give the same result. Knowing
@@ -180,6 +183,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The iterator needs operator++ to advance, operator* to get a value and operator==
     to check if we’re at the end. The implementations of each is trivial, but it might
     take some thinking to see that this does the right thing. One odd thing is that
@@ -287,6 +291,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This does not compile. The type for rest is generator_coro<int>, and it looks
     like the function returns a generator_coro<int>, but actually that’s the type
     of the coroutine wrapper, and the wrapper expects that we return ints. (as can
@@ -302,6 +307,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'OK that isn’t too bad. We just have to store the other coroutine on our stack
     and then yield all values from it. In my code I was composing coroutines like
     this a lot, which is all fine until I needed to make a change. I wanted to slightly
@@ -315,6 +321,7 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Unfortunately the code was manually inlined in various places like this: to
     completely drain and yield a generator, I was always iterating through the list,
     so when I needed to set the flag before the loop, I had to change every place.
@@ -327,6 +334,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This seems reasonable: Now I can call this function to drain a generator. But
     you can’t do this. This is a new coroutine. If I try to use this in the outer
     function, I get this:'
@@ -337,6 +345,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The function drain_and_yield_all returns a whole new coroutine, which I can’t
     return. So I’m right back at the problem where I started.
   id: totrans-split-53
@@ -354,6 +363,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Not pretty, but it’s the only way.
   id: totrans-split-56
   prefs: []
@@ -426,6 +436,7 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Each of these functions has a meaning according to the standard. But really
     what’s relevant here is that in await_suspend we’re allowed to access the promise_type.
     We’re just going to stash a pointer away, and in await_resume we’re going to return
@@ -438,6 +449,7 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: It’s kinda gross, but we know for a fact that the promise is stored right next
     to “stop” and “step” in the auto-generated struct of this coroutine. So this is
     how you yield a value directly from the stack without making a copy and without
@@ -465,6 +477,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: So I just receive the promise as one of my arguments. Alas, that wrapper is
     impossible to write, because we would have to force inlining to make it work,
     and we can’t. You can make it slightly less ugly with macros though…
@@ -487,6 +500,7 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'In this I assume that “fiber_yield()” returns true if the fiber should continue
     running, and false if the fiber should early-out. (probably because it’s being
     destructed, so we need to tear down the stack, so it’s absolutely necessary to
@@ -549,6 +563,7 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'I pulled this out into a separate line to make this clearer, but it should
     be valid to make any stack variable public, no matter how it is declared. Since
     these just become struct members, using the “public” keyword even makes sense
@@ -572,3 +587,4 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 我很好奇是否有人真的能找到这些东西有用。它们只是用于简单的生成函数吗？

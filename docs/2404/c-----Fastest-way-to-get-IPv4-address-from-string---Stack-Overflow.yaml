@@ -2,70 +2,86 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:11:16'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:11:16'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: c++ - Fastest way to get IPv4 address from string - Stack Overflow
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: c++ - 从字符串获取 IPv4 地址的最快方法 - Stack Overflow
 - en: 来源：[https://stackoverflow.com/questions/31679341/fastest-way-to-get-ipv4-address-from-string](https://stackoverflow.com/questions/31679341/fastest-way-to-get-ipv4-address-from-string)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://stackoverflow.com/questions/31679341/fastest-way-to-get-ipv4-address-from-string](https://stackoverflow.com/questions/31679341/fastest-way-to-get-ipv4-address-from-string)
 - en: Since we are speaking about maximizing throughput of IP address parsing, I suggest
     using a vectorized solution.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们正在讨论最大化 IP 地址解析的吞吐量，我建议使用矢量化解决方案。
 - en: 'Here is x86-specific fast solution (needs SSE4.1, or at least SSSE3 for poor):'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是 x86 特定的快速解决方案（需要 SSE4.1，或至少对于贫穷来说 SSSE3）：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'And here is the required precalculation for `shuffleTable`:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 'And here is the required precalculation for `shuffleTable`:'
 - en: '[PRE1]'
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Full code with testing is avaliable [here](http://pastebin.com/XSiPqHuN). On
     Ivy Bridge processor it prints:'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Full code with testing is avaliable [here](http://pastebin.com/XSiPqHuN). On
+    Ivy Bridge processor it prints:'
 - en: '[PRE2]'
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It means that the suggested solution is **7.8 times faster** in terms of throughput
     than the code by OP. It processes **336 millions of addresses per second** (single
     core of 3.4 Ghz).
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着建议的解决方案在吞吐量上比 OP 的代码快了**7.8倍**。它每秒处理**336百万个地址**（3.4 GHz 的单核）。
 - en: Now I'll try to explain how it works. Note that on each line of the listing
     you can see contents of the value just computed. All the arrays are printed in
     little-endian order (though `set` intrinsics use big-endian).
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我将尝试解释它的工作原理。请注意，列表每一行显示的是刚刚计算的值的内容。所有数组按照小端顺序打印（虽然 `set` 内置函数使用大端顺序）。
 - en: First of all, we load 16 bytes from unaligned address by `lddqu` instruction.
     Note that in 64-bit mode memory is allocated by 16-byte chunks, so this works
     well automatically. On 32-bit it may theoretically cause issues with out of range
@@ -75,12 +91,15 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们通过 `lddqu` 指令从非对齐地址加载 16 字节。请注意，在 64 位模式下，内存自动以 16 字节块分配，因此这自动有效。在 32 位模式下，理论上可能会导致超出范围的访问问题。尽管我不认为这真的可能发生。无论如何，最好确保每个
+    IP 地址至少占用 16 字节的存储空间。
 - en: Then we subtract '0' from all the chars. After that '.' turns into -2, and zero
     turns into -48, all the digits remain nonnegative. Now we take bitmask of signs
     of all the bytes with `_mm_movemask_epi8`.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们从所有字符中减去 '0'。之后，'.' 变成 -2，零变成 -48，所有数字保持非负。现在我们使用 `_mm_movemask_epi8` 获取所有字节的符号位掩码。
 - en: 'Depending on the value of this mask, we fetch a nontrivial 16-byte shuffling
     mask from lookup table `shuffleTable`. The table is quite large: 1Mb total. And
     it takes quite some time to precompute. However, it does not take precious space
@@ -91,11 +110,15 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据这个掩码的值，我们从查找表 `shuffleTable` 中获取一个非平凡的 16 字节洗牌掩码。该表总共有 1Mb，预计计算时间也相当长。然而，它并不占用
+    CPU 缓存中的宝贵空间，因为仅使用了这个表的 81 个元素。这是因为 IP 地址的每一部分都可以是一位、两位或三位数 => 因此总共有 81 种变体。请注意，字符串末尾的随机垃圾字节可能会增加查找表的内存占用量。
 - en: '*EDIT*: you can find a version modified by @IwillnotexistIdonotexist in comments,
     which uses lookup table of only 4Kb size (it is a bit slower, though).'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '*   *EDIT*: you can find a version modified by @IwillnotexistIdonotexist in
+    comments, which uses lookup table of only 4Kb size (it is a bit slower, though).'
 - en: The ingenious `_mm_shuffle_epi8` intrinsic allows us to reorder the bytes with
     our shuffle mask. As a result XMM register contains four 4-byte blocks, each block
     contains digits in little-endian order. We convert each block into a 16-bit number
@@ -104,22 +127,29 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 精巧的 `_mm_shuffle_epi8` 内在函数允许我们使用我们的洗牌掩码重新排序字节。结果是 XMM 寄存器包含四个 4 字节块，每个块按小端顺序包含数字。我们通过
+    `_mm_maddubs_epi16` 后跟 `_mm_hadd_epi16` 将每个块转换为 16 位数字。然后重新排序寄存器的字节，使整个 IP 地址占用较低的
+    4 字节。
 - en: Finally, we extract the lower 4 bytes from the XMM register to GP register.
     It is done with SSE4.1 intrinsic (`_mm_extract_epi32`). If you don't have it,
     replace it with other line using `_mm_extract_epi16`, but it will run a bit slower.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们从XMM寄存器中提取低4字节到GP寄存器。这是通过SSE4.1内置函数（`_mm_extract_epi32`）完成的。如果你没有它，可以使用`_mm_extract_epi16`替换，但运行速度会慢一些。
 - en: 'Finally, here is the generated assembly (MSVC2013), so that you can check that
     your compiler does not generate anything suspicious:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，这里是生成的汇编代码（MSVC2013），这样你可以检查你的编译器是否生成了任何可疑的内容：
 - en: '[PRE3]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: P.S. If you are still reading it, be sure to check out comments =)
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: P.S. 如果你还在阅读，请务必查看评论 =)
