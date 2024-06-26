@@ -2,45 +2,54 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:56:04'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:56:04'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: My Notes on GitLab Postgres Schema Design – Shekhar Gulati
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: My Notes on GitLab Postgres Schema Design – Shekhar Gulati
 - en: 来源：[https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/](https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/](https://shekhargulati.com/2022/07/08/my-notes-on-gitlabs-postgres-schema-design/)
 - en: I spent some time going over the Postgres schema of Gitlab. GitLab is an alternative
     to Github. You can self host GitLab since it is an open source DevOps platform.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我花了一些时间研究Gitlab的Postgres模式。GitLab是Github的一个替代品。你可以自己托管GitLab，因为它是一个开源的DevOps平台。
 - en: My motivation to understand the schema of a big project like Gitlab was to compare
     it against schemas I am designing and learn some best practices from their schema
     definition. I can surely say I learnt a lot.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我研究一个像Gitlab这样的大项目的模式的动机是为了将其与我设计的模式进行比较，并从他们的模式定义中学习一些最佳实践。我可以肯定地说我学到了很多。
 - en: I am aware that best practices are sometimes context dependent so you should
     not apply them blindly.
   id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我知道最佳实践有时是依赖于上下文的，所以不要盲目应用它们。
 - en: The Gitlab schema file `structure.sql` [1] is more than 34000 lines of code.
     Gitlab is a monolithic Ruby on Rails application. The popular way to manage schema
     migration is using the `schema.rb` file. The reason the Gitlab team decided to
@@ -49,6 +58,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Gitlab的模式文件 `structure.sql` [1] 超过34000行代码。Gitlab是一个单片式Ruby on Rails应用程序。管理模式迁移的流行方式是使用
+    `schema.rb` 文件。Gitlab团队决定采用 `structure.sql` 的原因在他们的问题追踪器中的一个问题 [2] 中有提到。
 - en: Now what keeps us from using those features is the use of `schema.rb`. This
     can only contain standard migrations (using the Rails DSL), which aim to keep
     the schema file database system neutral and abstract away from specific SQL. This
@@ -59,12 +70,14 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 现在阻止我们使用这些功能的是使用 `schema.rb`。这只能包含标准迁移（使用Rails DSL），旨在使模式文件与数据库系统中立并从特定SQL中抽象出来。这反过来意味着我们不能使用反映在模式中的扩展PostgreSQL功能。一些例子包括触发器、Postgres分区、物化视图和许多其他优秀功能。
 - en: In order to leverage those features, we should consider using a plain SQL schema
     file (`structure.sql`) instead of a ruby/rails standard schema `schema.rb`.
   id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 为了利用这些功能，我们应考虑使用纯SQL模式文件 (`structure.sql`) 而不是ruby/rails标准模式 `schema.rb`。
 - en: The change would entail switching `config.active_record.schema_format = :sql`
     and regenerate the schema in SQL. Possibly, some build steps would have to be
     adjusted, too.
@@ -72,25 +85,30 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 更改将涉及切换 `config.active_record.schema_format = :sql` 并在SQL中重新生成模式。可能还需要调整一些构建步骤。
 - en: Now, let’s go over the things I learnt from Gitlab Postgres schema.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们来看看我从Gitlab Postgres模式中学到的东西。
 - en: Below are some of the tweets from people on this article. If you find this article
     useful please share and tag me [@shekhargulati](https://twitter.com/shekhargulati)
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是一些人们在这篇文章上的推文。如果你觉得这篇文章有用，请分享并标记我 [@shekhargulati](https://twitter.com/shekhargulati)
 - en: '## 1\. Using the right primary key type for a table'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '## 1\. 为表选择合适的主键类型'
 - en: In my work I have made the mistake of standardizing on primary key types. This
     means standardizing on either `bigint` or `uuid` so all tables will have the same
     type irrespective of their structure, access patterns, and growth rate.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的工作中，我犯过标准化主键类型的错误。这意味着无论表的结构、访问模式和增长率如何，都要标准化为 `bigint` 或 `uuid`，所以所有表都将具有相同的类型。
 - en: When your database is small this does not have any visible impact but as you
     grow primary keys have a visible impact on storage space, write speed, and read
     speed. So, we should give a proper thought process on choosing the right primary
@@ -98,6 +116,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你的数据库很小时，这对性能没有明显影响，但随着增长，主键对存储空间、写入速度和读取速度有明显影响。因此，我们应该在选择表的合适主键类型时进行深思熟虑。
 - en: As I discussed in an earlier post[3] when you use Postgres native UUID v4 type
     instead of bigserial table size grows by 25% and insert rate drops to 25% of bigserial.
     This is a big difference. I also compared against ULID but it also performed poorly.
@@ -105,43 +124,56 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我在早期文章[3]中讨论的，当你使用Postgres本机UUID v4类型而不是bigserial时，表大小增长了25%，插入速率降低了25%。这是一个很大的差异。我还与ULID进行了比较，但它的性能也很差。其中一个原因可能是ULID的实现。
 - en: Given this context I was interested to learn how Gitlab chooses primary key
     types.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: Given this context I was interested to learn how Gitlab chooses primary key
+    types.
 - en: Out of the 573 tables, 380 tables have bigserial primary key type, 170 have
     serial4 primary key type, and remaining 23 had composite primary keys.They had
     no table that used uuid v4 primary key or any other esoteric key type like ULID.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Out of the 573 tables, 380 tables have bigserial primary key type, 170 have
+    serial4 primary key type, and remaining 23 had composite primary keys.They had
+    no table that used uuid v4 primary key or any other esoteric key type like ULID.
 - en: '| Name | Description | Range | Text |'
   id: totrans-split-21
   prefs: []
   type: TYPE_TB
+  zh: '| Name | Description | Range | Text |'
 - en: '| --- | --- | --- | --- |'
   id: totrans-split-22
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
 - en: '| `serial` | 4 bytes | 1 to 2147483647 | ~2.1 billion |'
   id: totrans-split-23
   prefs: []
   type: TYPE_TB
+  zh: '| `serial` | 4 bytes | 1 to 2147483647 | ~2.1 billion |'
 - en: '| `bigserial` | 8 bytes | 1 to 9223372036854775807 | ~9.2 quintillion |'
   id: totrans-split-24
   prefs: []
   type: TYPE_TB
+  zh: '| `bigserial` | 8 bytes | 1 to 9223372036854775807 | ~9.2 quintillion |'
 - en: 1 quintillion is equal to 1000000000 billions
   id: totrans-split-25
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 1 quintillion is equal to 1000000000 billions
 - en: The decision to choose serial or bigserial is dependent on the number of records
     in that table.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: The decision to choose serial or bigserial is dependent on the number of records
+    in that table.
 - en: Tables like `application_settings`, `badges`, `chat_teams`, `notification_settings`,
     `project_settings` use serial type. For some tables like `issues`, `web_hooks`,
     `merge_requests`, `projects` I was surprised to see that they had used the `serial`
@@ -149,6 +181,10 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: Tables like `application_settings`, `badges`, `chat_teams`, `notification_settings`,
+    `project_settings` use serial type. For some tables like `issues`, `web_hooks`,
+    `merge_requests`, `projects` I was surprised to see that they had used the `serial`
+    type.
 - en: The serial type might work for self-hosted community or enterprise versions
     but for Gitlab.com SaaS service this can cause issues. For example, Github had
     128 million public repositories in 2020\. Even with 20 issues per repository it
@@ -158,72 +194,98 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: The serial type might work for self-hosted community or enterprise versions
+    but for Gitlab.com SaaS service this can cause issues. For example, Github had
+    128 million public repositories in 2020\. Even with 20 issues per repository it
+    will cross the serial range. Also changing the type of the table is expensive.
+    The table has to be rewritten, and you will have to wait. This will also be a
+    problem if you have to shard the table.
 - en: I performed a quick experiment that showed that for my table with two columns
     and 10million records it takes 11 seconds to change the data type from integer
     to bigint.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: I performed a quick experiment that showed that for my table with two columns
+    and 10million records it takes 11 seconds to change the data type from integer
+    to bigint.
 - en: '[PRE0]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Insert 10million records
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Insert 10million records
 - en: '[PRE1]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Change column type from integer to bigint.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Change column type from integer to bigint.
 - en: '[PRE2]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: You will also have to alter the sequence to change its type as well. This operation
     is quick.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: You will also have to alter the sequence to change its type as well. This operation
+    is quick.
 - en: '[PRE4]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This finished in 4ms
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: This finished in 4ms
 - en: '[PRE5]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: All the bigserial sequences start from 1 and go till the max value of bigint.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: All the bigserial sequences start from 1 and go till the max value of bigint.
 - en: '[PRE6]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 2\. Use of internal and external ids
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 2\. Use of internal and external ids
 - en: It is generally a good practice to not expose your primary keys to the external
     world. This is especially important when you use sequential auto-incrementing
     identifiers with type integer or bigint since they are guessable.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: It is generally a good practice to not expose your primary keys to the external
+    world. This is especially important when you use sequential auto-incrementing
+    identifiers with type integer or bigint since they are guessable.
 - en: So, I was curious to know what happens when you create a Gitlab issue. Do we
     expose the primary key id to the external user or do we use some other id? If
     you expose the `issues` table primary key id then when you create an issue in
@@ -232,6 +294,11 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: So, I was curious to know what happens when you create a Gitlab issue. Do we
+    expose the primary key id to the external user or do we use some other id? If
+    you expose the `issues` table primary key id then when you create an issue in
+    your project it will not start with 1 and you can easily guess how many issues
+    exist in the GitLab. This is both unsafe and poor user experience.
 - en: To avoid exposing your primary keys to the end user the common solution is use
     two ids. The first is your primary key id which remains internal to the system
     and never exposed to any public context. The second id is what we share with the
@@ -241,6 +308,12 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: To avoid exposing your primary keys to the end user the common solution is use
+    two ids. The first is your primary key id which remains internal to the system
+    and never exposed to any public context. The second id is what we share with the
+    external world. In my past experience I have used UUID v4 as the external id.
+    As we discussed in the previous point there is a storage cost involved with using
+    UUID.
 - en: GitLab also uses internal and external ids in tables where ids have to be shared
     with the external world. Tables like `issues`, `ci_pipelines`, `deployments`,
     `epics`, and a few others have two ids – `id` and `iid`. Below is the part of
@@ -248,10 +321,13 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab 在需要与外部世界共享 ID 的表格中还使用了内部和外部 ID。像 `issues`、`ci_pipelines`、`deployments`、`epics`
+    等表格中有两个 ID — `id` 和 `iid`。以下是问题模式的一部分。如下所示，`iid` 具有整数数据类型。
 - en: '[PRE7]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: As you can see there are `id` and `iid` columns. The value of the `iid` column
     is shared with the end user. An issue is uniquely identified using `project_id`
     and `iid`. This is because there could be multiple issues with the same `iid`
@@ -262,192 +338,239 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 如您所见，存在 `id` 和 `iid` 列。`iid` 列的值与最终用户共享。使用 `project_id` 和 `iid` 唯一标识问题。这是因为可能存在具有相同
+    `iid` 的多个问题。为了更清楚地说明，如果您创建两个项目并在每个存储库中创建一个问题，则它们都需要如下示例所示具有可见的 id 1。`sg` 和 `sg2`
+    项目都以问题 id 1 开始。这是通过使用 `iid` 实现的。
 - en: '[PRE8]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: They have a unique index on `project_id` and `iid` to quickly and efficiently
     fetch an issue.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 他们在 `project_id` 和 `iid` 上有一个唯一索引，以快速高效地获取问题。
 - en: '[PRE9]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 3\. Using `text` character type with check constraints
   id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 3\. 使用带有检查约束的 `text` 字符类型
 - en: Postgres has three character types as described in their documentation[5].
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: Postgres 在其文档[5]中描述了三种字符类型。
 - en: '| Name | Description |'
   id: totrans-split-54
   prefs: []
   type: TYPE_TB
+  zh: '| 名称 | 描述 |'
 - en: '| --- | --- |'
   id: totrans-split-55
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| `character varying(n)`, `varchar(n)` | variable-length with limit |'
   id: totrans-split-56
   prefs: []
   type: TYPE_TB
+  zh: '| `character varying(n)`, `varchar(n)` | 可变长度带限制 |'
 - en: '| `character(n)`, `char(n)` | fixed-length, blank padded |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| `character(n)`, `char(n)` | 固定长度，空格填充 |'
 - en: '| `text` | variable unlimited length |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| `text` | 可变长度，无限制 |'
 - en: I have mostly used `character varying(n)` or `varchar(n)` to store String values.
     Gitlab schema uses both `character varying(n)` and `text` but more often they
     use `text` type. One such example table is shown below.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我主要使用 `character varying(n)` 或 `varchar(n)` 来存储字符串值。Gitlab 的模式同时使用 `character
+    varying(n)` 和 `text`，但更多地使用 `text` 类型。下面是一个示例表格。
 - en: '[PRE10]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: You can see that apart from `entity_type` all other columns have `text` type.
     They have used `CHECK` to define length constraints.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以看到，除了 `entity_type` 以外，所有其他列都是 `text` 类型。他们使用 `CHECK` 来定义长度约束。
 - en: As mentioned in multiple posts[6,7] on the web there is not much performance
     difference between the two types. They both use `varlena` type under the hood.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如多个网络帖子[6,7]中所述，两种类型之间的性能差异不大。它们在底层都使用 `varlena` 类型。
 - en: The problem with `varchar(n)` is that if n becomes more restrictive then it
     will require an exclusive lock. This can cause performance issues depending on
     the size of the table.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '`varchar(n)` 的问题在于，如果 n 变得更为严格，则将需要独占锁定。这可能会因表的大小而导致性能问题。'
 - en: The `text` column with `CHECK` constraint on the other hand does not have this
     issue. But it does cost a little during writes.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，带有 `CHECK` 约束的 `text` 列则不具有此问题。但在写入时会稍微耗时。
 - en: Let’s do a quick experiment to prove it. We will start by creating a simple
     table
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们做一个快速实验来证明这一点。我们将从创建一个简单的表格开始
 - en: '[PRE11]'
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Insert 10million records
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 插入 1000 万条记录
 - en: '[PRE12]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: If we increase the length of s from 200 to 300 then it is instantaneous
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将 s 的长度从 200 增加到 300，则是瞬间的。
 - en: '[PRE13]'
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: But if we reduce the length of `s` from 300 to 100 then it does take considerable
     time.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，如果我们将 `s` 的长度从 300 减少到 100，则确实需要相当长的时间。
 - en: '[PRE15]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '[PRE16]'
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: As you can see it took 36 seconds.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 如您所见，这花了 36 秒。
 - en: Let’s do the same with the text column.
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们对文本列做同样的操作。
 - en: '[PRE17]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Insert 10 million records
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 插入 1000 万条记录
 - en: '[PRE18]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: There is no alter constraint in Postgres. You have to drop the constraint and
     then add a new constraint.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Postgres 中没有 alter 约束。您必须先删除约束，然后再添加新约束。
 - en: '[PRE19]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Now, add again
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，再次添加
 - en: '[PRE20]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '[PRE21]'
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: So, as you can see, the `text` type with `CHECK` constraint allows you to evolve
     the schema easily compared to `character varying` or `varchar(n)` when you have
     length checks.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如您所见，与 `character varying` 或 `varchar(n)` 相比，带有 `CHECK` 约束的 `text` 类型使您在需要长度检查时更容易演变模式。
 - en: I also noticed that they used `character varying` where length checks are not
     required like as shown below.
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还注意到，它们在不需要长度检查的地方使用了 `character varying`，如下所示。
 - en: '[PRE22]'
   id: totrans-split-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 4\. Naming conventions
   id: totrans-split-88
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 4\. 命名约定
 - en: The naming follows the following convention.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 命名遵循以下约定。
 - en: All tables use plural forms. For example `issues`, `projects`, `audit_events`,
     `abuse_reports`, `approvers`, etc.
   id: totrans-split-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有表都使用复数形式。例如 `issues`、`projects`、`audit_events`、`abuse_reports`、`approvers`
+    等。
 - en: Tables use module name prefix to provide a namespace. For example, all tables
     belonging to merge request functionality start with `merge_request` prefix as
     shown in the listing below.
@@ -455,54 +578,63 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 表使用模块名称前缀来提供命名空间。例如，所有属于合并请求功能的表都以`merge_request`前缀开头，如下面的列表所示。
 - en: merge_request_assignees
   id: totrans-split-92
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: merge_request_assignees
 - en: merge_request_blocks
   id: totrans-split-93
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: merge_request_blocks
 - en: merge_request_cleanup_schedules
   id: totrans-split-94
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: merge_request_cleanup_schedules
 - en: merge_request_context_commit_diff_files
   id: totrans-split-95
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: merge_request_context_commit_diff_files
 - en: merge_request_context_commits
   id: totrans-split-96
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: merge_request_context_commits
 - en: etc..
   id: totrans-split-97
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 等等..
 - en: Names of tables and columns follow snake_case convention. The underscore is
     used to combine two or more words. For example, `title`, `created_at`, `is_active`.
   id: totrans-split-98
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 表和列的名称遵循蛇形命名约定。下划线用于组合两个或多个单词。例如，`title`，`created_at`，`is_active`。
 - en: Columns expressing boolean follow either of the three naming convention depending
     on their purpose
   id: totrans-split-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 表达布尔值的列根据其目的遵循以下三种命名约定之一
 - en: Feature toggles. For example `create_issue`, `send_email`, `packages_enabled`,
     `merge_requests_rebase_enabled`, etc
   id: totrans-split-100
@@ -510,6 +642,8 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 功能开关。例如 `create_issue`，`send_email`，`packages_enabled`，`merge_requests_rebase_enabled`
+    等。
 - en: 'Entity State: Examples, `deployed`, `onboarding_complete`, `archived`, `hidden`,
     etc.'
   id: totrans-split-101
@@ -517,6 +651,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实体状态：例如 `deployed`，`onboarding_complete`，`archived`，`hidden` 等。
 - en: Qualifiers – They start with `is_xxx` or `has_xxx`. For example, `is_active`,
     `is_sample`, `has_confluence`, etc. I think these can be expressed using the above
     two.
@@ -525,21 +660,26 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 限定词 - 它们以 `is_xxx` 或 `has_xxx` 开头。例如，`is_active`，`is_sample`，`has_confluence`
+    等。我认为这些可以用上述两种方式来表达。
 - en: Indexes follow the convention `index_#{table_name}_on_#{column_1}_and_#{column_2}_#{condition}`.
     For example, `index_services_on_type_and_id_and_template_when_active`, `index_projects_on_id_service_desk_enabled`.
   id: totrans-split-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 索引遵循约定 `index_#{table_name}_on_#{column_1}_and_#{column_2}_#{condition}`。例如，`index_services_on_type_and_id_and_template_when_active`，`index_projects_on_id_service_desk_enabled`。
 - en: 5\. Timestamp with timezone and without timezone
   id: totrans-split-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 5\. 带时区和无时区的时间戳
 - en: GitLab uses both `timestamp with timezone` and `timestamp without timezone`.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab 同时使用 `timestamp with timezone` 和 `timestamp without timezone`。
 - en: My understanding is that the data type `timestamp without timezone` is used
     when the system performs an action and data type `timestamp with time zone` is
     used for user actions. For example, in the SQL shown below `created_at` and `updated_at`
@@ -548,10 +688,14 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的理解是，当系统执行操作时使用数据类型 `timestamp without timezone`，而用户操作时使用数据类型 `timestamp with
+    time zone`。例如，在下面显示的 SQL 中，`created_at` 和 `updated_at` 使用的是 `timestamp without
+    timezone`，而 `closed_at` 使用的是 `timestamp with timezone`。
 - en: '[PRE23]'
   id: totrans-split-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Another example is `merge_request_metrics` where `latest_closed_at`, `first_comment_at`,
     `first_commit_at` , and `last_commit_at` uses `timestamp with time zone` whereas
     `latest_build_started_at` , `latest_build_finished_at`, and `merge_at` they use
@@ -561,20 +705,26 @@
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个例子是 `merge_request_metrics`，其中 `latest_closed_at`，`first_comment_at`，`first_commit_at`
+    和 `last_commit_at` 使用 `timestamp with time zone`，而 `latest_build_started_at`，`latest_build_finished_at`
+    和 `merge_at` 则使用 `timestamp without timezone`。你可能会想为什么 `merge_at` 不使用时区。我认为这是因为系统可以根据某些条件或检查合并请求。
 - en: '[PRE24]'
   id: totrans-split-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 6\. Foreign key constraints
   id: totrans-split-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 6\. 外键约束
 - en: A foreign key constraint is a logical association of rows between two tables.
     You typically use foreign keys to join tables in queries.
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 外键约束是两个表之间行的逻辑关联。通常使用外键在查询中连接表。
 - en: A **FOREIGN KEY** constraint is a database construct, an implementation that
     forces the foreign key relationship’s integrity (referential integrity). Namely,
     it ensures that a child table can only reference a parent table when the appropriate
@@ -584,12 +734,15 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**FOREIGN KEY** 约束是一个数据库构造，一个强制外键关系完整性（参考完整性）的实现。也就是说，它确保子表只能引用父表中存在的适当行。约束还通过不同方法防止了“孤立行”的存在。–
+    [链接](https://docs.planetscale.com/learn/operating-without-foreign-key-constraints)'
 - en: I have consulted in multiple projects in the last couple of years where team/architects
     decided not to use foreign key constraints. They mainly cite performance as the
     reason to not use foreign key constraints.
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 在过去几年中，我参与了多个项目，团队/架构师决定不使用外键约束。他们主要引用性能原因不使用外键约束。
 - en: One reason performance can degrade when you create foreign key is when you create
     it with `ON DELETE CASCADE` action. The way `ON DELETE CASCADE` action works is
     that if you delete a row in the parent table then any referencing row in the child
@@ -600,33 +753,39 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你创建外键时，性能可能会下降的一个原因是使用`ON DELETE CASCADE`操作。`ON DELETE CASCADE`操作的工作方式是，如果你删除父表中的一行，则在同一事务中也会删除子表中的任何引用行。你可能期望只删除一行，但最终可能会删除数百或数千乃至更多的子表行。但是，只有当一个父行与大量子表行关联时，才会出现这个问题。
 - en: 'There are two other reasons teams don’t use foreign key constraints. These
     are:'
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 团队不使用外键约束的另外两个原因是：
 - en: They don’t work well with online DDL schema migration operations especially
     in MySQL
   id: totrans-split-116
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 它们在特别是在MySQL的在线DDL模式迁移操作中表现不佳。
 - en: It is difficult to maintain foreign key constraints once you shard your data
     into multiple database servers
   id: totrans-split-117
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一旦将数据分片到多个数据库服务器中，维护外键约束就变得困难。
 - en: MySQL compatible serverless database like PlanetScale(based on open source Vitess
     database) does not support foriegn keys.
   id: totrans-split-118
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 像PlanetScale（基于开源Vitess数据库）这样的MySQL兼容无服务器数据库不支持外键。
 - en: So, I was curious to learn if GitLab uses Foreign key constraints or not.
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我很想知道GitLab是否使用外键约束。
 - en: 'GitLab uses foriegn key constraints in most tables except in a few tables like
     `audit_events` , `abuse_reports`, `web_hooks_logs`, `spam_logs`. I think there
     are two main reasons why they don’t use foreign key constraints in `audit_events`
@@ -634,28 +793,34 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab在大多数表中使用外键约束，但在少数表中如`audit_events`、`abuse_reports`、`web_hooks_logs`、`spam_logs`中不使用。我认为他们在`audit_events`、`abuse_reports`、`web_hooks_logs`、`spam_logs`表中不使用外键约束的两个主要原因是：
 - en: These tables are immutable in nature. You don’t want to change them once entries
     are written to them
   id: totrans-split-121
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这些表的特性是不可变的。一旦条目写入，你就不希望对其进行更改。
 - en: These tables can grow to millions(or more) of rows so even a small performance
     hit could have a big impact
   id: totrans-split-122
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这些表可能会增长到数百万甚至更多的行，因此即使有轻微的性能损失也会产生巨大影响。
 - en: The rest of the tables where GitLab uses foreign keys use both `ON DELETE CASCADE`
     , `ON DELETE RESTRICT` , and `ON DELETE SET NULL` actions. An example of each
     of them is shown below.
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab在其余使用外键的表中同时使用`ON DELETE CASCADE`、`ON DELETE RESTRICT`和`ON DELETE SET
+    NULL`操作。每种操作的示例如下所示。
 - en: '[PRE25]'
   id: totrans-split-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '`ON DELETE SET NULL` will set the referencing column on the child table to
     null for matching rows. It leads to orphaned rows but you can easily identify
     them because of NULL. In this action also, a single row deletion can lead to multiple
@@ -665,6 +830,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ON DELETE SET NULL`将子表中匹配行的引用列设置为null。这会导致孤立行，但由于为NULL，你可以轻松识别它们。在这种操作中，单行删除可能导致子表中多行更新。这可能导致大事务、过多锁定和复制延迟。'
 - en: '`ON DELETE RESTRICT` prevents deletion of referenced child rows. This does
     not cause orphaned childs as you can’t delete a parent row if there are child
     rows that references it. You get exceptions like as shown below.'
@@ -672,20 +838,24 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ON DELETE RESTRICT`阻止删除引用的子行。这不会导致孤立的子行，因为如果有引用它的子行，就无法删除父行。你会收到如下所示的异常。'
 - en: '[PRE26]'
   id: totrans-split-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 7\. Partitioning big tables
   id: totrans-split-128
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 7\. 分区大表
 - en: GitLab uses partitioning to partition tables that can grow to a huge size. This
     is done to improve query performance.
   id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab使用分区来对可能会增长到巨大大小的表进行分区。这样做是为了提高查询性能。
 - en: 'PARTITION BY RANGE: This partitioning strategy works by partitioning table
     data based on the chosen range. This strategy is commonly used when you need to
     partition time-series data. The tables `audit_events` and `web_hook_logs` use
@@ -694,6 +864,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 按范围分区：这种分区策略根据选择的范围对表数据进行分区。当需要对时间序列数据进行分区时，通常会使用这种策略。`audit_events`和`web_hook_logs`表使用了这种策略。
 - en: 'PARTITION BY LIST: This partitioning strategy works by partitioning table data
     based on discrete values of a column. The table `loose_foreign_keys_deleted_records`
     uses this strategy.'
@@ -701,6 +872,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 按列表分区：这种分区策略根据列的离散值对表数据进行分区。`loose_foreign_keys_deleted_records`表使用了这种策略。
 - en: 'PARTITION BY HASH: TThe table is partitioned by specifying a modulus and a
     remainder for each partition. Each partition will hold the rows for which the
     hash value of the partition key divided by the specified modulus will produce
@@ -710,19 +882,25 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: PARTITION BY HASH：指定每个分区的模数和余数来对表进行分区。每个分区将包含使得分区键的哈希值除以指定的模数产生指定余数的行。表 `product_analytics_events_experimental`
+    使用了这种策略。
 - en: You can read more about Postgres partitioning in Postgres [documentation](https://www.postgresql.org/docs/current/ddl-partitioning.html).
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在 [Postgres 文档](https://www.postgresql.org/docs/current/ddl-partitioning.html)
+    中了解更多关于 Postgres 分区的信息。
 - en: 8\. Supporting LIKE search use cases with Trigrams and `gin_trgm_ops`
   id: totrans-split-134
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 8\. 支持使用 Trigrams 和 `gin_trgm_ops` 的 LIKE 搜索用例
 - en: GitLab uses GIN(Generalized Inverted Index) indexes to perform efficient searches.
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab 使用 GIN（Generalized Inverted Index）索引来执行高效搜索。
 - en: The GIN index type was designed to deal with data types that are subdividable
     and you want to search for individual component values (array elements, lexemes
     in a text document, etc)” – [Tom Lane](https://www.postgresql.org/message-id/flat/26038.1559516834%40sss.pgh.pa.us#ccb004aefc151d913e7a274a9b30c631)
@@ -730,6 +908,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: GIN 索引类型旨在处理可分割的数据类型，并且您希望搜索各个组件值（例如数组元素、文本文档中的词元等）– [Tom Lane](https://www.postgresql.org/message-id/flat/26038.1559516834%40sss.pgh.pa.us#ccb004aefc151d913e7a274a9b30c631)
 - en: Due to the nature of the LIKE operation, which supports arbitrary wildcard expressions,
     this is fundamentally hard to index. One such example is the issues table where
     you might want to do something like search on title and description fields. So,
@@ -737,150 +916,187 @@
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 LIKE 操作的性质，它支持任意通配符表达式，这在本质上很难索引。一个例子是 issues 表，您可能希望在标题和描述字段上进行搜索。因此，我们使用
+    pg_trgm 扩展来创建一个可以在三字母组上工作的索引。
 - en: '[PRE27]'
   id: totrans-split-138
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: The GIN index makes searches performant. Let’s see that in action.
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: GIN 索引使得搜索高效。让我们看看它的实际效果。
 - en: We will create a simple table as shown below.
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将创建一个如下所示的简单表。
 - en: '[PRE28]'
   id: totrans-split-141
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: Let’s insert some data. I pulled an English word list in CSV format from this
     [link](https://www.bragitoff.com/2016/03/english-dictionary-in-csv-format/).
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们插入一些数据。我从这个 [链接](https://www.bragitoff.com/2016/03/english-dictionary-in-csv-format/)
+    下载了一个英语单词列表的 CSV 格式。
 - en: '[PRE29]'
   id: totrans-split-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: '[PRE30]'
   id: totrans-split-144
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: '[PRE31]'
   id: totrans-split-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: We will create a btree index on the word column and later we will use the gin
     index to show its efficiency.
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将在 word 列上创建一个 btree 索引，然后我们将使用 gin 索引展示其效率。
 - en: '[PRE32]'
   id: totrans-split-147
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: Let’s run the explain plan query.
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们运行解释计划查询。
 - en: '[PRE33]'
   id: totrans-split-149
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: '[PRE34]'
   id: totrans-split-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: Now, let’s drop btree index;
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们删除 btree 索引；
 - en: Install the `pg_trm` extension
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装 `pg_trm` 扩展
 - en: '[PRE35]'
   id: totrans-split-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: Create the index.
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建索引。
 - en: '[PRE36]'
   id: totrans-split-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: Now, let;s run explain
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们运行解释
 - en: '[PRE37]'
   id: totrans-split-157
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: '[PRE38]'
   id: totrans-split-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: GitLab also makes use of `tsvector` to support complete full text search.
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab 还利用 `tsvector` 来支持完整的全文搜索。
 - en: 'The advantages of doing text seach in your primary datastore are:'
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 在您的主数据存储中执行文本搜索的优点是：
 - en: Real time indexes. No lag to create index
   id: totrans-split-161
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实时索引。创建索引无需延迟
 - en: Access to the complete data
   id: totrans-split-162
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 访问完整数据
 - en: Less complexity in your architecture
   id: totrans-split-163
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在您的架构中减少复杂性
 - en: 9\. Use of `jsonb`
   id: totrans-split-164
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 9\. 使用 `jsonb`
 - en: 'As I discussed an earlier [post](https://shekhargulati.com/2022/01/08/when-to-use-json-data-type-in-database-schema-design/)
     I use json data type in schema design for following use cases:'
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 如我在早些时候的 [文章](https://shekhargulati.com/2022/01/08/when-to-use-json-data-type-in-database-schema-design/)
+    中讨论的，我在数据库模式设计中使用 json 数据类型来支持以下用例：
 - en: Dump request data that will be processed later
   id: totrans-split-166
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 转储请求数据，稍后进行处理
 - en: Support extra fields
   id: totrans-split-167
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 支持额外字段
 - en: One To Many Relationship where many side will not have to its own identity
   id: totrans-split-168
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一对多关系，其中多方不需要拥有自己的标识
 - en: Key Value use case
   id: totrans-split-169
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 键值对使用情况
 - en: Simpler EAV design
   id: totrans-split-170
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更简单的实体-属性-值（EAV）设计
 - en: GitLab schema design also uses `jsonb` data type in multiple tables. They use
     it mainly for 1 and 2 use cases in my list above. The advantage of using jsonb
     over storing in plain text is the efficient querying supported by Postgres on
@@ -888,53 +1104,65 @@
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab 的模式设计还在多个表中使用 `jsonb` 数据类型。他们主要用于我上述列表中的第1和第2个用例。与存储为纯文本相比，使用 jsonb 数据类型的优势在于
+    Postgres 对 `jsonb` 数据类型支持的高效查询。
 - en: The table `error_tracking_error_events` stores payload in jsonb data type. This
     is an example of dump request data that will be processed in a later use case.
     I covered a similar use case in my blog post so do read that for more information.
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 表 `error_tracking_error_events` 使用 jsonb 数据类型存储有效载荷。这是一个将在稍后处理的转储请求数据的示例用例。我在我的博客文章中涵盖了一个类似的用例，因此请阅读了解更多信息。
 - en: '[PRE39]'
   id: totrans-split-173
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: You can use a JSON schema to validate the structure of a JSON document.
   id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以使用 JSON 模式验证 JSON 文档的结构。
 - en: Another example is the `operations_strategies` table shown below. You don’t
     know how many parameters you might receive so you need a flexible data type like
     `jsonb`.
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个示例是下面显示的`operations_strategies`表。您不知道可能收到多少参数，因此需要像`jsonb`这样的灵活数据类型。
 - en: '[PRE40]'
   id: totrans-split-176
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: An example of supporting extra fields use cases is shown below.
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面显示了支持额外字段用例的示例。
 - en: '[PRE41]'
   id: totrans-split-178
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: They also use jsonb for storing data that is already in JSON format. For example,
     in the table `vulnerability_finding_evidences` report data is already JSON so
     they saved it as is in `jsonb` data type.
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 他们还使用jsonb来存储已经以JSON格式存在的数据。例如，在`vulnerability_finding_evidences`表中，报告数据已经是JSON格式，因此他们将其保存为`jsonb`数据类型。
 - en: '[PRE42]'
   id: totrans-split-180
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: 10\. Other tidbits
   id: totrans-split-181
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 10\. 其他小提示
 - en: Auditing fields like `updated_at` are only used in tables where records can
     be modified. For example `issues` has an `updated_at` column. For append-only
     immutable log tables like `audit_events` do not have an `updated_at` column as
@@ -943,18 +1171,22 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 像`updated_at`这样的审计字段仅在可以修改记录的表中使用。例如，`issues`有一个`updated_at`列。对于只追加不可变日志表，如代码片段中所示的`audit_events`，不具有`updated_at`列。
 - en: '[PRE43]'
   id: totrans-split-183
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: '`audit_events` table with no `updated_at` column.'
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: '`audit_events`表中没有`updated_at`列。'
 - en: '[PRE44]'
   id: totrans-split-185
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: Enums are stored as smallint rather than `character varying`. It saves space.
     The only problem is you can’t change the order of enum values. In the example
     shown below `reason` and `severity_level` are enums
@@ -962,10 +1194,12 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 枚举类型存储为smallint而不是`character varying`。它节省了空间。唯一的问题是您无法更改枚举值的顺序。在下面显示的示例中，`reason`和`severity_level`是枚举类型。
 - en: '[PRE45]'
   id: totrans-split-187
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: Optimistic locking is used in a few(8) tables like `issues` and `ci_builds`
     to protect against edits from multiple parties. Optimistic locking assumes that
     there will be minimum such conflicts of data and if it does happen then the application
@@ -978,20 +1212,25 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 乐观锁定在少数（8）个表中使用，例如`issues`和`ci_builds`，以防止多方对数据的编辑。乐观锁定假定数据冲突最小化，如果确实发生冲突，则应用程序会引发异常并忽略更新。如果存在`lock_version`字段，Active
+    Record支持乐观锁定。对记录的每次更新都会增加`lock_version`列，锁定设施确保实例化两次的记录会使最后一个保存的记录抛出`StaleObjectError`，如果第一个记录也已更新，则不会。下面显示的`ci_builds`表使用了‘lock_version`列。
 - en: '[PRE46]'
   id: totrans-split-189
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE46]'
 - en: Using inet for storing ip addresses. I was not aware of the `inet` type. They
     have used inet in `audit_events` and `authentication_events` tables
   id: totrans-split-190
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用inet存储IP地址。我以前不知道`inet`类型。他们在`audit_events`和`authentication_events`表中使用了inet
 - en: '[PRE47]'
   id: totrans-split-191
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE47]'
 - en: GitLab has not used inet in all the tables that store `ip_address`. For example,
     in tables `ci_runners` and `user_agent_details`, they have stored it as `character
     varying`. I am not sure why they have not used the same type in all the tables
@@ -999,102 +1238,126 @@
   id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
+  zh: GitLab并没有在存储`ip_address`的所有表中使用inet。例如，在`ci_runners`和`user_agent_details`表中，他们将其存储为`character
+    varying`。我不确定为什么他们没有在存储IP地址的所有表中使用相同的类型。
 - en: You should prefer `inet` over storing an ip address as a plain text type as
     these types offer input error handling and specialized functions.
   id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
+  zh: 您应该优先考虑`inet`，而不是将IP地址存储为纯文本类型，因为这些类型提供输入错误处理和专门的函数。
 - en: Let’s quickly see it in action. We will start by creating a table with two fields
     – id, and `ip_addr`
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们快速看看它的操作。我们将从创建一个包含两个字段（id和`ip_addr`）的表开始
 - en: '[PRE48]'
   id: totrans-split-195
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE48]'
 - en: We can insert a valid record like shown below.
   id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以像下面显示的那样插入一个有效记录。
 - en: '[PRE49]'
   id: totrans-split-197
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE49]'
 - en: We can also insert the record with a mask as shown below.
   id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以像下面显示的那样使用掩码插入记录。
 - en: '[PRE50]'
   id: totrans-split-199
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE50]'
 - en: Both these records will get inserted
   id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两条记录都将被插入
 - en: '[PRE51]'
   id: totrans-split-201
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE51]'
 - en: '[PRE52]'
   id: totrans-split-202
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE52]'
 - en: If we try to save invalid data then insert will fail.
   id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们尝试保存无效数据，则插入将失败。
 - en: '[PRE53]'
   id: totrans-split-204
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE53]'
 - en: '[PRE54]'
   id: totrans-split-205
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE54]'
 - en: You can inet operators supported by Postgres to check if an ip address is contained
     by subnet as shown below.
   id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以使用Postgres支持的inet运算符来检查IP地址是否包含在子网中，如下所示。
 - en: '[PRE55]'
   id: totrans-split-207
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE55]'
 - en: '[PRE56]'
   id: totrans-split-208
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE56]'
 - en: If we want to check if subnet is contained or equal then we do following
   id: totrans-split-209
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们要检查子网是否包含或等于，则执行以下操作
 - en: '[PRE57]'
   id: totrans-split-210
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE57]'
 - en: '[PRE58]'
   id: totrans-split-211
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE58]'
 - en: There are many other operators and functions supported by Postgres. You can
     read them in the Postgres [docs](https://www.postgresql.org/docs/current/functions-net.html).
   id: totrans-split-212
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多其他由Postgres支持的运算符和函数。您可以在Postgres [文档](https://www.postgresql.org/docs/current/functions-net.html)中阅读它们。
 - en: Postgres ‘bytea`data type is used to store`SHA` , encrypted tokens, encrypted
     keys, encrypted password, fingerprints, etc.
   id: totrans-split-213
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Postgres的‘bytea`数据类型用于存储`SHA`、加密令牌、加密密钥、加密密码、指纹等。
 - en: Postgres array types are used for storing columns with multiple values as shown
     below.
   id: totrans-split-214
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Postgres数组类型用于存储具有多个值的列，如下所示。
 - en: Arrays are to be used when you are absolutely sure you don’t need to create
     any relationship between the items in the array with any other table. It should
     be used for a tightly coupled one to many relationship. – [Link](https://stackoverflow.com/a/56298555)
@@ -1102,6 +1365,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 当您确定不需要将数组中的项目与任何其他表创建关系时，请使用数组。它应该用于紧密耦合的一对多关系。 – [链接](https://stackoverflow.com/a/56298555)
 - en: For example in the table shown below we are storing `*_ids` as an array rather
     than storing them in a flat manner and defining relationships with other tables.
     You don’t know how many users and projects will be mentioned so it will be wasteful
@@ -1110,67 +1374,81 @@
   id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，在下面显示的表中，我们将`*_ids`存储为数组，而不是以扁平方式存储它们，并与其他表定义关系。您不知道会提到多少用户和项目，因此使用类似`mentioned_user_id1`、`mentioned_user_id2`等列将是浪费的。
 - en: '[PRE59]'
   id: totrans-split-217
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE59]'
 - en: Another common use case of Postgres array is to store fields like hosts, tags,
     urls.
   id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
+  zh: Postgres数组的另一个常见用例是存储像主机、标签、URL等字段。
 - en: '[PRE60]'
   id: totrans-split-219
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE60]'
 - en: Conclusion
   id: totrans-split-220
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: I learnt a lot from the GitLab schema. They don’t blindly apply the same practices
     to all the table designs. Each table makes the best decision based on its purpose,
     the kind of data it stores, and its rate of growth.
   id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
+  zh: 我从GitLab架构中学到了很多。他们并不会盲目地将相同的实践应用于所有表设计。每个表都根据其目的、存储的数据类型和增长速率做出最佳决策。
 - en: References
   id: totrans-split-222
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 参考资料
 - en: Gitlab schema `structure.sql` – [Link](https://gitlab.com/gitlab-org/gitlab/-/blob/master/db/structure.sql)
   id: totrans-split-223
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: GitLab架构`structure.sql` – [链接](https://gitlab.com/gitlab-org/gitlab/-/blob/master/db/structure.sql)
 - en: 'Issue 29465: Use structure.sql instead of schema.rb – [Link](https://gitlab.com/gitlab-org/gitlab/-/issues/29465)'
   id: totrans-split-224
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 问题29465：使用structure.sql而不是schema.rb – [链接](https://gitlab.com/gitlab-org/gitlab/-/issues/29465)
 - en: Choosing Primary Key Type in Postgres – [Link](https://shekhargulati.com/2022/06/23/choosing-a-primary-key-type-in-postgres/)
   id: totrans-split-225
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在Postgres中选择主键类型 – [链接](https://shekhargulati.com/2022/06/23/choosing-a-primary-key-type-in-postgres/)
 - en: Github’s Path to 128M public repositories – [Link](https://towardsdatascience.com/githubs-path-to-128m-public-repositories-f6f656ab56b1#:~:text=There%20are%20over%20128%20million%20public%20repositories%20on%20GitHub.)
   id: totrans-split-226
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: GitHub通向128M公共存储库的路径 – [链接](https://towardsdatascience.com/githubs-path-to-128m-public-repositories-f6f656ab56b1#:~:text=There%20are%20over%20128%20million%20public%20repositories%20on%20GitHub.)
 - en: Postgres Character Types Documentation – [Link](https://www.postgresql.org/docs/current/datatype-character.html)
   id: totrans-split-227
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[Postgres字符类型文档](https://www.postgresql.org/docs/current/datatype-character.html)'
 - en: Difference between text and varchar (character varying) – [Link](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
   id: totrans-split-228
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 文本与varchar（字符变长）之间的区别 – [链接](https://stackoverflow.com/questions/4848964/difference-between-text-and-varchar-character-varying)
 - en: CHAR(x) vs. VARCHAR(x) vs. VARCHAR vs. TEXT – [Link](https://www.depesz.com/2010/03/02/charx-vs-varcharx-vs-varchar-vs-text/)
   id: totrans-split-229
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: CHAR(x) vs. VARCHAR(x) vs. VARCHAR vs. TEXT – [链接](https://www.depesz.com/2010/03/02/charx-vs-varcharx-vs-varchar-vs-text/)
