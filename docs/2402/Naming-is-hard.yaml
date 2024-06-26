@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:43:06'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:43:06'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Naming is hard
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 取名很难
 - en: 来源：[https://blog.dureuill.net/articles/too-dangerous-cpp/](https://blog.dureuill.net/articles/too-dangerous-cpp/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.dureuill.net/articles/too-dangerous-cpp/](https://blog.dureuill.net/articles/too-dangerous-cpp/)
 - en: Some patterns are only made practical thanks to Rust's memory safety, and too
     dangerous to use in C++. Here's a concrete example.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些模式仅因为Rust的内存安全而变得实用，并且在C++中使用会过于危险。这里有一个具体的例子。
 - en: '* * *'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Working on an internal library written in Rust, I had an error type for a parser
     that I wanted to be [`Clone`able](https://doc.rust-lang.org/std/clone/trait.Clone.html),
     without duplicating the data inside. In Rust, this calls for a **r**eference-**c**ounted
@@ -40,15 +48,18 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一个用Rust编写的内部库上工作时，我有一个我希望能够克隆的解析器错误类型，而不复制其中数据的需求。在Rust中，这需要使用像[Rc](https://doc.rust-lang.org/std/rc/struct.Rc.html)这样的引用计数指针。
 - en: So I wrote my error type, used it as the error variant of the fallible functions,
     and moved on with my life.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我写了我的错误类型，并将其用作易错函数的错误变体，然后继续我的生活。
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Sometimes later, we noticed that parsing would take a long time to execute on
     some inputs, so I decided I'd send the input to another thread via a [channel](https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html),
     and I'd get the response back through another channel, so that long orders wouldn't
@@ -56,18 +67,22 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候后来，我们注意到在某些输入上解析需要很长时间来执行，所以我决定通过一个[通道](https://doc.rust-lang.org/std/sync/mpsc/fn.channel.html)将输入发送到另一个线程，然后通过另一个通道获取响应，这样长时间的命令就不会阻塞主线程。
 - en: '[PRE1]'
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'However, while doing this change, I was greeted with the following error message:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在进行这种更改时，我遇到了以下错误消息：
 - en: '[PRE2]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: As the compiler nicely explained, it is because the [`Rc` type does not support
     being sent between threads](https://doc.rust-lang.org/std/rc/struct.Rc.html#impl-Send-for-Rc%3CT,+A%3E),
     as doing so would cause data races. Indeed, the reference count in `Rc` is not
@@ -76,20 +91,25 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如编译器很好地解释的那样，这是因为[`Rc`类型不支持在线程之间发送](https://doc.rust-lang.org/std/rc/struct.Rc.html#impl-Send-for-Rc%3CT,+A%3E)，这样做会导致数据竞争。确实，`Rc`中的引用计数并不是以原子方式处理的，这样使用就不是线程安全的，而是使用常规整数操作。
 - en: 'For thread-safe reference counting, Rust offers [another type called `Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html),
     that uses **a**tomic **r**eference **c**ounting. Modifying the code to use `Arc`
     is a simple matter of:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于线程安全的引用计数，Rust提供了[另一种类型称为`Arc`](https://doc.rust-lang.org/std/sync/struct.Arc.html)，它使用了**a**tomic
+    **r**eference **c**ounting。将代码修改为使用`Arc`只是一件简单的事情：
 - en: '[PRE3]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: ([Test this code online](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=b1f40129f7a6c9baf77fde13a4156889))
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: （[在线测试此代码](https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=b1f40129f7a6c9baf77fde13a4156889)）
 - en: As long as I didn't need reference counting to be atomic, I could use `Rc`.
     When I needed thread-safety, the compiler forced me to switch to `Arc` and the
     overhead of atomic reference counting. This is an illustration of the old principle
@@ -97,6 +117,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 只要我不需要引用计数是原子的，我就可以使用`Rc`。当我需要线程安全时，编译器就强制我切换到`Arc`和原子引用计数的开销。这说明了“不为你不需要的东西付费”的旧原则。
 - en: This principle is dear to the heart of C++ developers too, yet in stark contrast
     to Rust, C++ only has shared pointers with atomic reference counting in its standard
     library, that is the equivalent to `Arc`, not `Rc`. You always pay for the atomic
@@ -107,28 +128,33 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个原则对C++开发者也很重要，但与Rust形成鲜明对比的是，C++标准库中只有带有原子引用计数的共享指针，相当于`Arc`，而不是`Rc`。即使你不使用原子，你也要为它付出代价。曾考虑提供2个类，但被拒绝了，尤其是因为[被认为太危险了](https://stackoverflow.com/a/15140227/1614219)（"使用非同步的`shared_ptr`编写的代码可能最终被用于线程化代码，导致难以调试的问题，且没有警告"）。
 - en: Because Rust will catch these at compile time, it is not dangerous.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为Rust会在编译时捕捉这些问题，所以并不危险。
 - en: On some C++ standard library implementations, there are attempts to recover
     the lost performance in some limited situations (e.g. the program as a whole is
     not multi-threaded), [to hilarious effect on micro-benchmarks](http://snf.github.io/2019/02/13/shared-ptr-optimization/).
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在某些 C++ 标准库实现中，有试图在一些有限情况下恢复失去性能的尝试（例如，整个程序不是多线程的情况下），[在微基准测试中效果非常滑稽](http://snf.github.io/2019/02/13/shared-ptr-optimization/)。
 - en: Unfortunately the precaution taken by C++ of always having an atomic reference
     count is still insufficient to make `shared_ptr` safe in a multi-threaded context,
     as one should pay attention to a couple of the proverbial footguns.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，C++ 采用始终具有原子引用计数的预防措施，仍然不足以使 `shared_ptr` 在多线程环境中安全，因为人们应该注意一些惯用语境中的潜在问题。
 - en: This is a bit of a subtle issue, and honestly I don't think I ever ran into
     that one, but I include it for clarity because sometimes people mix it with the
     second one.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个比较微妙的问题，老实说我不认为我曾经遇到过这个问题，但我在这里提及它是为了清晰起见，因为有时人们会将它与第二个问题混淆。
 - en: You can take a `shared_ptr` and make a copy of it, calling its copy constructor,
     in a thread-safe way. What you cannot do, however, is share a single instance
     of a `shared_ptr` between multiple threads. Imagine having a struct containing
@@ -138,6 +164,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以拿一个 `shared_ptr` 并通过调用其拷贝构造函数来安全地进行复制。然而，你不能在多个线程之间共享一个 `shared_ptr` 的单一实例。想象一下，有一个包含共享指针的结构体，在多个线程之间共享，以及在该结构体上有一个重新分配共享指针的方法。如果多个线程未同步地调用该方法，那么这将导致未定义行为。
 - en: Apparently, this is enough of an issue that C++20 added a [partial template
     specialization to `std::atomic<std::shared_ptr>`](https://en.cppreference.com/w/cpp/memory/shared_ptr/atomic2).
     My advice, though, would be "don't do that!". Instead, keep your shared pointer
@@ -145,12 +172,14 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，这个问题足以引起关注，以至于 C++20 添加了对 `std::atomic<std::shared_ptr>` 的[部分模板特化](https://en.cppreference.com/w/cpp/memory/shared_ptr/atomic2)。然而，我的建议是“不要那样做！”。相反，保持你的共享指针在单线程中，并根据需要向其他线程发送副本。
 - en: Since assignment requires at an exclusive reference or an owned object, Rust
     statically forbids assigning to an `Arc` that is shared between multiple threads,
     avoiding the issue at compile time.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于赋值要求具有独占引用或拥有的对象，Rust 静态地禁止向多个线程共享的 `Arc` 赋值，从而在编译时避免了此问题。
 - en: In a `shared_ptr`, only the reference counting is atomic, but the pointed-to
     object needs its own synchronization for writing and reading from different threads.
     This is a bit of a pitfall because it is tempting to simplify "`shared_ptr` is
@@ -159,12 +188,16 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `shared_ptr` 中，只有引用计数是原子的，但指向的对象需要自己的同步机制，以便从不同的线程进行写入和读取。这是一个陷阱，因为把“`shared_ptr`
+    是一个线程安全的引用计数指针”简化为“`shared_ptr` 是一个线程安全的引用计数指针”是诱人的，而只有前者是真实的。
 - en: While this may seem obvious to seasoned developers, I saw a lot more of this
     issue in the wild, probably always by junior developers 🙃 never by experienced
     developers refactoring their code to introduce threads 😇
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然对经验丰富的开发者来说这可能显而易见，但我在实际情况中经常看到这个问题，很可能是由初级开发者引起的 🙃，而从未被有经验的开发者通过重构代码引入线程
+    😇。
 - en: Naturally, Rust [imposes the same requirement](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)
     on the content of `Arc`, but [thanks](https://doc.rust-lang.org/std/sync/struct.Arc.html#impl-Send-for-Arc%3CT,+A%3E)
     to [the `Send`](https://doc.rust-lang.org/std/marker/trait.Send.html) and [the
@@ -174,8 +207,12 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 自然地，Rust 对 `Arc` 的内容[施加了相同的要求](https://doc.rust-lang.org/std/sync/struct.Arc.html#thread-safety)，但[多亏了](https://doc.rust-lang.org/std/sync/struct.Arc.html#impl-Send-for-Arc%3CT,+A%3E)
+    `Send` 和 [`Sync`](https://doc.rust-lang.org/std/marker/trait.Sync.html) 特性，`Arc`
+    只提供对其内容的共享引用，对指向的对象进行未同步的写入和读取是一个编译时错误。
 - en: Rust achieves this result entirely thanks to the borrow checker and its type
     system. It is the only language I used that can statically [prevent data races](https://doc.rust-lang.org/nomicon/races.html).
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 完全依靠借用检查器和其类型系统实现这一结果。这是我使用的唯一一种静态[防止数据竞争](https://doc.rust-lang.org/nomicon/races.html)的语言。
