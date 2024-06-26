@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:00:26'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:00:26
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: ECC vs non-ECC RAM and ZFS | TrueNAS Community
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: ECC vs non-ECC RAM and ZFS | TrueNAS Community
 - en: 来源：[https://www.truenas.com/community/threads/ecc-vs-non-ecc-ram-and-zfs.15449/](https://www.truenas.com/community/threads/ecc-vs-non-ecc-ram-and-zfs.15449/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.truenas.com/community/threads/ecc-vs-non-ecc-ram-and-zfs.15449/](https://www.truenas.com/community/threads/ecc-vs-non-ecc-ram-and-zfs.15449/)
 - en: 'I''ve seen many people unfortunately lose their zpools over this topic, so
     I''m going to try to provide as much detail as possible. If you don''t want to
     read to the end then just go with ECC RAM. For those of you that want to understand
@@ -37,6 +43,8 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我看到很多人不幸因为这个问题失去了他们的zpools，所以我会尽量提供尽可能详细的信息。如果你不想读到最后，那就选择ECC RAM吧。对于那些想要了解非ECC
+    RAM可能有多破坏性的人，我鼓励你继续阅读。记住，ZFS本身完全在系统RAM内运行。通常你的硬件RAID控制器会执行与ZFS代码相同的功能。而且你使用过的每个硬件RAID控制器都有ECC缓存。简单的原因是：他们知道不要让少数位从垃圾桶中损坏整个阵列。硬件RAID控制器（就像ZFS一样）绝对需要信任RAM中的数据是正确的。
 - en: For those that don't want to read, just understand that ECC is one of the legs
     on your kitchen table, and you've removed that leg because you wanted to reuse
     old hardware that uses non-ECC RAM. Just buy ECC RAM and trust ZFS. Bad RAM is
@@ -45,10 +53,12 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于那些不想阅读的人，理解ECC就像你厨房桌子上的一条腿，你拿掉了那条腿，因为你想重新使用使用非ECC RAM的旧硬件。只需购买ECC RAM并信任ZFS。坏的RAM就像你的计算机患上了痴呆症。就像那些老人院一样，你不能去问他们忘记了什么。他们不记得，你的计算机也不会记得。
 - en: 'Here''s some assumptions I''ve made and some explanation for them:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是我做出的一些假设并对它们进行解释：
 - en: 1\. We're going to deal with a system that has a single bit error. A memory
     location is stuck at "1". Naturally more than a single bit error is going to cause
     more widespread corruption. For my examples I'm going to provide a hypothetical
@@ -57,15 +67,18 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 1\. 我们将处理一个存在单个位错误的系统。一个内存位置卡在“1”上。显然，如果存在多个位错误，将导致更广泛的损坏。在我的示例中，我将提供一个假设的8位RAM。第2位将卡在“1”上。我会正确标记它
 - en: '**underline and bold**'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**下划线和粗体**'
 - en: for bits that end up corrupted. Later I will move this location, but I will
     discuss that with you at that time.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于最终损坏的位。稍后我会移动这个位置，但那时我会和你讨论这个问题。
 - en: 2\. Most servers have very little RAM used by the system processes and large
     amounts of RAM for the cache, so we're going to assume that the system runs stable
     without problems as the errors are most likely in the cache. Even if the system
@@ -76,33 +89,40 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 2\. 大多数服务器系统进程使用的RAM非常少，而大量RAM用于缓存，因此我们假设系统运行稳定，没有问题，因为错误很可能在缓存中。即使系统偶尔在错误的RAM位置导致崩溃，你很可能会重新启动并继续，直到在短时间内多次崩溃后意识到有其他问题。在那时，你可能已经进入了“哦，糟糕”的境地。
 - en: 3\. I'm going to ignore any potential corruption of the file system for my examples.
     Clearly corrupting the file system itself is VERY serious and can be fatal for
     your data. I will cover this topic at the very end of this discussion.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 3\. 对于我的示例，我将忽略文件系统的任何潜在损坏。显然，文件系统本身的损坏非常严重，可能对数据造成致命影响。我将在讨论的最后阶段涉及这个主题。
 - en: 4\. No additional corruption from any other subsystem or data path will occur.
     Obviously any additional corruption won't make things any easier.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 4\. 不会有来自任何其他子系统或数据路径的额外损坏。显然，任何额外的损坏都不会让事情变得更容易。
 - en: 5\. What I am about to explain is a limitation of ZFS. This is
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 5\. 我将解释的内容是ZFS的一个限制。这是
 - en: not
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 不
 - en: FreeNAS specific. It is ZFS specific.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 特指FreeNAS。它是特指ZFS的。
 - en: 'Now on to some examples:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在开始一些示例：
 - en: '**What happens when non-ECC RAM goes bad in a system for file systems that
     don''t do their own parity and checksumming?**'
   id: totrans-split-19
