@@ -272,107 +272,134 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Tokens s` 是流 `s` 的“块”的类型。 *Chunk* 的概念仅出于性能原因而引入。实际上，往往可以对流的部分进行更有效的表示，该表示与令牌列表
+    `[Token s]` 是同构的。例如，类型为 `Text` 的输入流具有 `Tokens s ~ Text`：`Text` 的块就是 `Text`。尽管类型等式
+    `Tokens s ~ s` 经常成立，但对于自定义流，`Tokens s` 和 `s` 可能不同，因此我们在 `megaparsec` 中分开这些类型。'
 - en: 'We can put all the default input streams into a single table like this:'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将所有默认输入流放入一个表格中，如下所示：
 - en: '| `s` | `Token s` | `Tokens s` |'
   id: totrans-split-41
   prefs: []
   type: TYPE_TB
+  zh: '| `s` | `Token s` | `Tokens s` |'
 - en: '| --- | --- | --- |'
   id: totrans-split-42
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| `String` | `Char` | `String` |'
   id: totrans-split-43
   prefs: []
   type: TYPE_TB
+  zh: '| `String` | `Char` | `String` |'
 - en: '| strict `Text` | `Char` | strict `Text` |'
   id: totrans-split-44
   prefs: []
   type: TYPE_TB
+  zh: '| 严格 `Text` | `Char` | 严格 `Text` |'
 - en: '| lazy `Text` | `Char` | lazy `Text` |'
   id: totrans-split-45
   prefs: []
   type: TYPE_TB
+  zh: '| 惰性 `Text` | `Char` | 惰性 `Text` |'
 - en: '| strict `ByteString` | `Word8` | strict `ByteString` |'
   id: totrans-split-46
   prefs: []
   type: TYPE_TB
+  zh: '| 严格 `ByteString` | `Word8` | 严格 `ByteString` |'
 - en: '| lazy `ByteString` | `Word8` | lazy `ByteString` |'
   id: totrans-split-47
   prefs: []
   type: TYPE_TB
+  zh: '| 惰性 `ByteString` | `Text.Megaparsec.Char` | `Text.Megaparsec.Byte` |'
 - en: It is important to get used to the `Token` and `Tokens` type functions because
     they are ubiquitous in the types of `megaparsec` API.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 重要的是要习惯 `Token` 和 `Tokens` 类型函数，因为它们在 `megaparsec` API 的类型中随处可见。
 - en: 'You may have noticed that if we group all default input streams by token type,
     we will get two groups:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们按令牌类型对所有默认输入流进行分组，您可能已经注意到，我们将得到两组：
 - en: 'character streams, for which `Token s ~ Char`: `String` and strict/lazy `Text`,'
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 字符流，其中 `Token s ~ Char`：`String` 和严格/惰性 `Text`，
 - en: 'binary streams, for which `Token s ~ Word8`: strict and lazy `ByteString`s.'
   id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 二进制流，其中 `Token s ~ Word8`：严格和惰性的 `ByteString`。
 - en: 'It turns out that with `megaparsec` it is not necessary to code the same parsers
     for every type of input stream (this is the case, for example, with the `attoparsec`
     library), but still we must have different code for different token types:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果表明，使用 `megaparsec` 不需要为每种类型的输入流编写相同的解析器（例如，在 `attoparsec` 库中是这种情况），但我们仍然必须为不同的令牌类型编写不同的代码：
 - en: to get common combinators for character streams, import the `Text.Megaparsec.Char`
     module;
   id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 要获得字符流的通用组合器，请导入 `Text.Megaparsec.Char` 模块；
 - en: to get the same for binary streams, import `Text.Megaparsec.Byte`.
   id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 要获得相同的二进制流，请导入 `Text.Megaparsec.Byte`。
 - en: 'These modules contain two similar sets of helper parsers such as:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些模块包含两组类似的辅助解析器，例如：
 - en: '| Name | `Text.Megaparsec.Char` | `Text.Megaparsec.Byte` |'
   id: totrans-split-56
   prefs: []
   type: TYPE_TB
+  zh: '| 名称 | `Word8` | 惰性 `ByteString` |'
 - en: '| --- | --- | --- |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| `newline` | `(MonadParsec e s m, Token s ~ Char) => m (Token s)` | `(MonadParsec
     e s m, Token s ~ Word8) => m (Token s)` |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| `newline` | `(MonadParsec e s m, Token s ~ Char) => m (Token s)` | `(MonadParsec
+    e s m, Token s ~ Word8) => m (Token s)` |'
 - en: '| `eol` | `(MonadParsec e s m, Token s ~ Char) => m (Tokens s)` | `(MonadParsec
     e s m, Token s ~ Word8) => m (Tokens s)` |'
   id: totrans-split-59
   prefs: []
   type: TYPE_TB
+  zh: '| `eol` | `(MonadParsec e s m, Token s ~ Char) => m (Tokens s)` | `(MonadParsec
+    e s m, Token s ~ Word8) => m (Tokens s)` |'
 - en: Let’s introduce a couple of primitives on which the modules are built, so we
     understand the tools we are going to use.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们介绍一些构建模块的原语，以便了解我们即将使用的工具。
 - en: 'The first primitive is called `token`, and correspondingly it allows us to
     parse a `Token s`:'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个原语称为 `token`，因此它允许我们解析 `Token s`：
 - en: '[PRE3]'
   id: totrans-split-62
   prefs: []
@@ -385,12 +412,15 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '`token` 的第一个参数是要解析的令牌的匹配函数。如果函数返回 `Just` 中的值，则该值成为解析的结果。`Nothing` 表示解析器不接受此令牌，因此原语失败。'
 - en: The second argument is a `Set` (from the `containers` package) that contains
     all expected `ErrorItem`s to be displayed to the user in case of failure. We will
     explore the `ErrorItem` type in details when we will be discussing parse errors.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个参数是一个 `Set`（来自 `containers` 包），其中包含所有预期的 `ErrorItem`，以便在失败时向用户显示。我们将在讨论解析错误时详细探讨
+    `ErrorItem` 类型。
 - en: 'To better understand how `token` works, let’s see some definitions from the
     `Text.Megaparsec` module which contains, among other things, some combinators
     that work with all types of input stream. `satisfy` is a fairly common combinator,
@@ -399,6 +429,8 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更好地理解 `token` 的工作原理，让我们看看 `Text.Megaparsec` 模块中的一些定义，该模块包含了与所有输入流类型一起使用的一些组合子。`satisfy`
+    是一个相当常见的组合子，我们给它一个返回我们想要匹配的标记的谓词，并且它会给我们一个解析器：
 - en: '[PRE4]'
   id: totrans-split-66
   prefs: []
@@ -411,16 +443,21 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '`testToken` 的工作是将返回 `Bool` 的函数 `f` 转换为返回 `Maybe (Token s)` 的函数，这是 `token` 所期望的。对于
+    `satisfy`，我们不知道我们期望匹配的确切标记序列，因此我们将 `Set.empty` 作为第二个参数传递。'
 - en: '`satisfy` should look understandable, let’s see how it works. To play with
     a parser we need a helper function that would run it. For testing in GHCi `megaparsec`
     provides `parseTest`.'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '`satisfy` 应该看起来是可以理解的，让我们看看它是如何工作的。为了使用解析器，我们需要一个运行它的辅助函数。对于在 GHCi 中进行测试，`megaparsec`
+    提供了 `parseTest`。'
 - en: 'First, let’s start GHCi and import some modules:'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们启动 GHCi 并导入一些模块：
 - en: '[PRE5]'
   id: totrans-split-70
   prefs: []
@@ -431,6 +468,7 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们添加了 `Parser` 类型同义词，用于在解析器类型中消除歧义：
 - en: '[PRE6]'
   id: totrans-split-72
   prefs: []
@@ -441,6 +479,7 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还需要启用 `OverloadedStrings` 语言扩展，以便我们可以将字符串字面量用作 `Text` 值：
 - en: '[PRE7]'
   id: totrans-split-74
   prefs: []
@@ -454,6 +493,8 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '*`:: Parser Char` 注解是必要的，因为 `satisfy` 本身是多态的，所以 `parseTest` 无法知道在 `MonadParsec
+    e s m` 中使用什么来替换 `e` 和 `s`（假定 `m` 为 `Identity` 与这些帮助程序）。如果我们使用一个已存在的带有类型签名的解析器来工作，明确指定解析器类型的解释就是不必要的。*'
 - en: 'That seems to work all right. The problem with `satisfy` is that it does not
     say what is expected when it fails, because we cannot analyze the function which
     the caller of `satisfy` provides. There are other combinators that are less general,
@@ -463,6 +504,8 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来一切都挺好的。`satisfy` 的问题在于当它失败时没有说明期望的内容，因为我们不能分析 `satisfy` 的调用者提供的函数。有其他一些组合子不那么通用，但它们可以生成更有帮助的错误消息。例如
+    `single`（在 `Text.Megaparsec.Byte` 和 `Text.Megaparsec.Char` 中称为类型约束同义词 `char`），它匹配特定的标记值：
 - en: '[PRE8]'
   id: totrans-split-77
   prefs: []
@@ -475,6 +518,8 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Tokens` 数据类型构造函数与我们之前讨论过的类型函数 `Tokens` 没有任何共同点。实际上，`Tokens` 是 `ErrorItem`
+    的构造函数之一，用于指定我们期望匹配的具体标记序列。'
 - en: '[PRE9]'
   id: totrans-split-79
   prefs: []
@@ -484,6 +529,7 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以根据上表定义 `newline`：
 - en: '[PRE10]'
   id: totrans-split-81
   prefs: []
@@ -494,6 +540,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个基本函数称为 `tokens`，它允许我们解析 `Tokens s`，也就是说，它可以用于匹配输入的固定块：
 - en: '[PRE11]'
   id: totrans-split-83
   prefs: []
@@ -503,6 +550,7 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有两个基于 `tokens` 定义的解析器：
 - en: '[PRE12]'
   id: totrans-split-85
   prefs: []
@@ -515,10 +563,14 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 它们匹配输入的固定块，`chunk`（在 `Text.Megaparsec.Byte` 和 `Text.Megaparsec.Char` 中称为类型约束同义词
+    `string`），区分大小写，而 `string'` 则不区分大小写。对于不区分大小写的匹配，使用了 `case-insensitive` 包，因此有 `FoldCase`
+    约束。
 - en: 'Let’s try to use the new combinators:'
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试使用新的组合子：
 - en: '[PRE13]'
   id: totrans-split-88
   prefs: []
@@ -529,11 +581,13 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，我们可以匹配单个标记和输入块。下一步是学习如何组合这些构建块，以编写更有趣的解析器。
 - en: Monadic and applicative syntax
   id: totrans-split-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 单子和适用语法
 - en: 'The simplest way to combine parsers is to execute them in succession. `ParsecT`
     and `Parsec` are monads, and monadic bind is exactly what we use for sequencing
     our parsers:'
@@ -855,11 +909,15 @@
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有真正消耗输入的原语（还有那些改变现有解析器行为的原语，比如 `try` 本身）在输入消耗方面都是“原子”的。这意味着如果它们失败，它们会自动回溯，因此它们无法在半路失败后消耗部分输入。这就是为什么
+    `pScheme` 与其替代项列表能够正常工作的原因：`string` 定义在 `tokens` 之上，而 `tokens` 是一个原语。我们要么用 `string`
+    完全匹配字符串，要么完全失败而根本不消耗输入流。
 - en: 'Back to parsing URIs, `(<|>)` can be used to build a handy combinator called
     `optional`:'
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到解析 URI，可以使用 `<|>` 来构建一个方便的组合器称为 `optional`：
 - en: '[PRE33]'
   id: totrans-split-143
   prefs: []
@@ -871,6 +929,8 @@
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 `optional p` 中的 `p` 匹配成功，我们将得到它的结果为 `Just`，否则将返回 `Nothing`。正是我们想要的！不需要定义
+    `optional`，`Text.Megaparsec` 为我们重新导出了这个组合器。现在我们可以在 `pUri` 中使用它：
 - en: '[PRE34]'
   id: totrans-split-145
   prefs: []
@@ -882,22 +942,26 @@
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我擅自接受了任何字母数字字符序列作为用户名和密码，并在主机格式上做了类似的任意简化。*'
 - en: 'Some important points here:'
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有几个重要的点：
 - en: In (1) and (2) we need to wrap the argument of `optional` with `try` because
     it is a composite parser, not a primitive.
   id: totrans-split-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 (1) 和 (2) 中，我们需要用 `try` 封装 `optional` 的参数，因为它是一个复合解析器，不是原语。
 - en: '(3) `some` is just like `many`, but demands that its argument parser matches
     at least once: `some p = (:) <$> p <*> many p`.'
   id: totrans-split-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: (3) `some` 就像 `many` 一样，但要求其参数解析器至少匹配一次：`some p = (:) <$> p <*> many p`。
 - en: (4) Do not use `try` unless necessary! Here if `char ':'` succeeds (which is
     by itself built on top of `token`, so it does not need a `try`), we know for sure
     that port must follow after it, so we just demand a decimal number with `L.decimal`.
@@ -906,22 +970,27 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: (4) 除非必要，不要使用 `try`！在这里，如果 `char ':'` 成功（它本身就是建立在 `token` 之上的，所以不需要 `try`），我们可以确定端口号必须在其后，因此我们只需用
+    `L.decimal` 要求一个十进制数。在匹配 `:` 后，我们已经做出了承诺，不需要回头了。
 - en: In (5) and (6) we assemble `Authority` and `Uri` values using the `RecordWildCards`
     language extension.
   id: totrans-split-151
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在 (5) 和 (6) 中，我们使用 `RecordWildCards` 语言扩展组装 `Authority` 和 `Uri` 值。
 - en: '`void :: Functor f => f a -> f ()` is used to explicitly discard the result
     to parsing, without it we would get warnings about unused values from GHC.'
   id: totrans-split-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`void :: Functor f => f a -> f ()` 用于明确丢弃解析结果，否则我们会收到 GHC 的未使用值警告。'
 - en: 'Play with `pUri` in GHCi and see for yourself that it works:'
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 GHCi 中玩耍 `pUri` 并自己看看它的工作原理：
 - en: '[PRE35]'
   id: totrans-split-154
   prefs: []
@@ -932,10 +1001,12 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解析器调试
 - en: 'However, you may find that there is a problem:'
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，你可能会发现有一个问题：
 - en: '[PRE36]'
   id: totrans-split-157
   prefs: []
@@ -947,6 +1018,7 @@
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析错误可能会更好！怎么办？弄清楚发生了什么的最简单方法是使用 `Text.Megaparsec.Debug` 模块中的内置 `dbg` 辅助工具：
 - en: '[PRE37]'
   id: totrans-split-159
   prefs: []
@@ -957,10 +1029,12 @@
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: '`VisualStream` 类型类为可在屏幕上以可读形式打印的输入流定义。我们在这里不详细讨论它。'
 - en: 'Let’s use it in `pUri`:'
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们在 `pUri` 中使用它：
 - en: '[PRE38]'
   id: totrans-split-162
   prefs: []
@@ -970,6 +1044,7 @@
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后让我们再次尝试在不幸的输入上运行 `pUri`：
 - en: '[PRE39]'
   id: totrans-split-164
   prefs: []
@@ -979,11 +1054,13 @@
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以看到 `megaparsec` 内部到底发生了什么：
 - en: '`scheme` matches successfully.'
   id: totrans-split-166
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`scheme` 成功匹配。'
 - en: '`user` fails: although there is a username in place `mark`, there is no password
     after the column `:` (we demand that the password is not empty here). We fail
     and thanks to `try`, backtrack.'
@@ -991,23 +1068,27 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`user` 失败了：虽然有一个用户名 `mark`，但在冒号 `:` 后面没有密码（我们要求密码不为空）。我们失败了，多亏了 `try`，回溯。'
 - en: '`host` starts from the same point as `user` and tries now to interpret input
     as hostname. We can see that it succeeds and returns `mark` as host name.'
   id: totrans-split-168
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`host` 从与 `user` 相同的点开始，并试图现在将输入解释为主机名。我们可以看到它成功了，并将 `mark` 作为主机名返回。'
 - en: There may be a port number after host, so `port` gets its chance now. It sees
     `:`, but after that there is no integer, so `port` fails as well.
   id: totrans-split-169
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 主机后可能有一个端口号，所以现在轮到 `port` 了。它看到 `:`，但在那之后没有整数，所以 `port` 也失败了。
 - en: The whole `auth` parser thus fails (`port` is inside of `auth` and it has failed).
   id: totrans-split-170
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 整个 `auth` 解析器因此失败了（`port` 在 `auth` 内部，而且它失败了）。
 - en: The `auth` parser returns `Nothing` because it could not parse anything. Now
     `eof` demands that we have reached the end of input, but it is not the case, so
     we get the final error message.
@@ -1015,12 +1096,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`auth` 解析器返回 `Nothing`，因为它无法解析任何内容。现在 `eof` 要求我们已经达到了输入的结尾，但事实并非如此，所以我们得到了最终的错误消息。'
 - en: 'What to do? This is an example of a situation when using `try` enclosing large
     portions of code may make parse errors worse. Let us take another look at the
     syntax we want to parse:'
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 怎么办？这是一个使用 `try` 封装大量代码可能会使解析错误变得更糟的情况的例子。让我们再看一下我们想要解析的语法：
 - en: '[PRE40]'
   id: totrans-split-173
   prefs: []
@@ -1036,6 +1119,9 @@
   id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在寻找什么？某种允许我们承诺特定解析分支的东西。就像端口，在我们看到冒号 `:` 时，我们可以确定端口号必须跟随。如果你仔细观察，你会看到双斜杠 `//`
+    是我们 URI 中授权部分的标志。由于我们用“原子”解析器 (`string`) 匹配 `//`，一旦我们匹配上 `//`，我们可以确保要求授权部分。让我们从
+    `pUri` 中移除第一个 `try`：
 - en: '[PRE41]'
   id: totrans-split-175
   prefs: []
@@ -1045,6 +1131,7 @@
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们得到了一个更好的解析错误：
 - en: '[PRE42]'
   id: totrans-split-177
   prefs: []
@@ -1055,16 +1142,19 @@
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然这仍然有点误导，但好吧，这是我选择的一个棘手的例子。有很多 `optional`。
 - en: Labeling and hiding things
   id: totrans-split-179
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 标记和隐藏事物
 - en: Sometimes the list of expected items may get rather long. Remember what we get
     when we try to use a non-recognized scheme?
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候预期项的列表可能会变得相当长。记住，当我们尝试使用一个未被识别的方案时会得到什么？
 - en: '[PRE43]'
   id: totrans-split-181
   prefs: []
@@ -1076,6 +1166,8 @@
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: '`megaparsec` 提供了一种用自定义内容覆盖预期项的方式，通常称为 *label*。这是通过 `label` 原语来完成的（它在 `(<?>)`
+    操作符的形式中有一个同义词）：'
 - en: '[PRE44]'
   id: totrans-split-183
   prefs: []
@@ -1090,6 +1182,7 @@
   id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以继续添加更多标签，以使错误消息更容易理解：
 - en: '[PRE46]'
   id: totrans-split-186
   prefs: []
@@ -1099,6 +1192,7 @@
   id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如：
 - en: '[PRE47]'
   id: totrans-split-188
   prefs: []
@@ -1109,6 +1203,7 @@
   id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个原语被称为 `hidden`。如果 `label` 重命名事物，`hidden` 只是彻底移除它们。比较一下：
 - en: '[PRE48]'
   id: totrans-split-190
   prefs: []
@@ -1121,26 +1216,31 @@
   id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
+  zh: 当希望减少错误消息的噪音时，`hidden` 是很有用的。例如，在解析编程语言时，删除“期望空白”消息是个好主意，因为通常每个标记后面可能都有空白。
 - en: '*EXERCISE: Finishing the `pUri` parser is left as an exercise for the reader,
     now that all the tools that are necessary for this have been explained.*'
   id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
+  zh: '*练习：完成 `pUri` 解析器留给读者作为练习，现在已经解释了所有必要的工具。*'
 - en: Running a parser
   id: totrans-split-193
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 运行解析器
 - en: We explored in details how to construct parsers, but we haven’t inspected the
     functions that allow us to run them, except for `parseTest`.
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们详细探讨了如何构建解析器，但还没有检查允许我们运行它们的函数，除了 `parseTest`。
 - en: 'Traditionally, the “default” function to run a parser from your program has
     been `parse`. But `parse` is actually a synonym for `runParser`:'
   id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统上，从您的程序运行解析器的“默认”函数是 `parse`。但是 `parse` 实际上是 `runParser` 的同义词：
 - en: '[PRE49]'
   id: totrans-split-196
   prefs: []
@@ -1152,11 +1252,13 @@
   id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个参数只是一个文件名，在生成的解析错误中将包含这个文件名，`megaparsec` 不会从该文件中读取任何内容，因为实际输入作为函数的第三个参数。
 - en: '`runParser` allows us to run the `Parsec` monad which, as we already know,
     is the non-transformer version of `ParsecT`:'
   id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
+  zh: '`runParser` 允许我们运行 `Parsec` 单子，正如我们已经知道的那样，这是 `ParsecT` 的非变换器版本：'
 - en: '[PRE50]'
   id: totrans-split-199
   prefs: []
@@ -1168,28 +1270,35 @@
   id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
+  zh: '`runParser` 有三个兄弟函数：`runParser''`、`runParserT` 和 `runParserT''`。带有 `T` 后缀的版本运行
+    `ParsecT` 单子变换器，而“prime”版本则接受并返回解析器状态。让我们把所有这些函数放到一个表格中：'
 - en: '| Arguments | Runs `Parsec` | Runs `ParsecT` |'
   id: totrans-split-201
   prefs: []
   type: TYPE_TB
+  zh: '| 参数 | 运行 `Parsec` | 运行 `ParsecT` |'
 - en: '| --- | --- | --- |'
   id: totrans-split-202
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Input and file name | `runParser` | `runParserT` |'
   id: totrans-split-203
   prefs: []
   type: TYPE_TB
+  zh: '| 输入和文件名 | `runParser` | `runParserT` |'
 - en: '| Custom initial state | `runParser''` | `runParserT''` |'
   id: totrans-split-204
   prefs: []
   type: TYPE_TB
+  zh: '| 自定义初始状态 | `runParser''` | `runParserT''` |'
 - en: 'Custom initial state may be necessary if you e.g. want to set tab width to
     some non-standard value (the default value is `8`). As an example, here is the
     type signature of `runParser''`:'
   id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你需要自定义初始状态，比如想将制表符宽度设置为非标准值（默认值为 `8`），可能就需要自定义初始状态。例如，这里是 `runParser'` 的类型签名：
 - en: '[PRE51]'
   id: totrans-split-206
   prefs: []
@@ -1200,22 +1309,27 @@
   id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
+  zh: 手动修改 `State` 是库的高级用法，我们这里不打算详细描述它。
 - en: If you wonder what is `ParseErrorBundle`, we’ll discuss it in [one of the following
     sections](#parse-errors).
   id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想知道 `ParseErrorBundle` 是什么，我们将在 [以下章节之一](#parse-errors) 进行讨论。
 - en: The `MonadParsec` type class
   id: totrans-split-209
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`MonadParsec` 类型类'
 - en: All tools in `megaparsec` work with any instance of the `MonadParsec` type class.
     The type class abstracts *primitive combinators*—the elementary building blocks
     of all `megaparsec` parsers, combinators that cannot be expressed via other combinators.
   id: totrans-split-210
   prefs: []
   type: TYPE_NORMAL
+  zh: '`megaparsec` 中的所有工具都适用于 `MonadParsec` 类型类的任何实例。该类型类抽象出*原始组合子*——所有 `megaparsec`
+    解析器的基本构建块，这些组合子无法通过其他组合子表达。'
 - en: 'Having primitive combinators in a type class allows the principal concrete
     monad transformer of `megaparsec` `ParsecT` to be wrapped in the familiar transformers
     of the MTL family achieving different interactions between layers of a monadic
@@ -1224,6 +1338,8 @@
   id: totrans-split-211
   prefs: []
   type: TYPE_NORMAL
+  zh: 在类型类中拥有原始组合子允许 `megaparsec` 的主要具体单子变换器 `ParsecT` 被包装在 MTL 家族的熟悉变换器中，从而实现单子栈层之间的不同交互。为了更好地理解动机，回想一下单子栈中层的顺序很重要。如果我们像这样结合
+    `ReaderT` 和 `State`：
 - en: '[PRE52]'
   id: totrans-split-212
   prefs: []
@@ -1234,6 +1350,7 @@
   id: totrans-split-213
   prefs: []
   type: TYPE_NORMAL
+  zh: 外层的 `ReaderT` 不能检查底层 `m` 层的内部结构。`ReaderT` 的 `Monad` 实例描述了绑定策略：
 - en: '[PRE53]'
   id: totrans-split-214
   prefs: []
@@ -1245,6 +1362,8 @@
   id: totrans-split-215
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，我们唯一知道关于 `m` 的是它是 `Monad` 的一个实例，所以 `m` 的状态只能通过单子绑定传递给 `k`。这通常是我们从 `ReaderT`
+    的 `(>>=)` 中期望的。
 - en: The `(<|>)` method of the `Alternative` type class works differently—it “splits”
     state and the two branches of parsing do not contact anymore, so we get *backtracking
     state* in the sense that if the first branch is discarded changes to its state
@@ -1253,10 +1372,12 @@
   id: totrans-split-216
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Alternative` 类型类的 `(<|>)` 方法工作方式不同——它“分割”状态，两个解析的分支不再联系，因此在第一个分支被丢弃时，其状态的更改也被丢弃，并且不能影响第二个分支（我们在状态失败时“回溯”状态）。'
 - en: 'To illustrate, let us see the definition of `Alternative` for `ReaderT`:'
   id: totrans-split-217
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了说明，让我们看一下 `ReaderT` 的 `Alternative` 定义：
 - en: '[PRE54]'
   id: totrans-split-218
   prefs: []
@@ -1269,12 +1390,16 @@
   id: totrans-split-219
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一切都非常好，因为 `ReaderT` 是一个“无状态”的单子变换器，可以轻松地将实际工作委托给内部单子（这里 `m` 的 `Alternative`
+    实例非常方便），而不需要结合与 `ReaderT` 本身相关的单子状态（它没有状态）。
 - en: 'Now let’s take a look at `State`. Since `State s a` is just a type synonym
     for `StateT s Identity a`, we should look at the `Alternative` instance for `StateT
     s m` itself:'
   id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们来看看 `State`。由于 `State s a` 只是 `StateT s Identity a` 的类型同义词，我们应该查看 `StateT
+    s m` 本身的 `Alternative` 实例：
 - en: '[PRE55]'
   id: totrans-split-221
   prefs: []
@@ -1288,11 +1413,14 @@
   id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里我们可以看到状态 `s` 的分割，就像我们看到读取器上下文 `r` 的共享一样。然而，有一个区别，因为表达式 `m s` 和 `n s` 产生有状态的结果：连同单子值一起，它们以元组的形式返回新状态。在这里我们要么选择
+    `m s`，要么选择 `n s`，自然地实现回溯。
 - en: 'What about `ParsecT`? Let us consider now putting `State` inside `ParsecT`
     like this:'
   id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ParsecT` 是什么？现在我们考虑将 `State` 放入 `ParsecT` 中，像这样：'
 - en: '[PRE56]'
   id: totrans-split-224
   prefs: []
@@ -1303,26 +1431,32 @@
   id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ParsecT`比`ReaderT`更复杂，其`(<|>)`的实现需要做更多的工作：'
 - en: managing of the state of the parser itself;
   id: totrans-split-226
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 管理解析器本身的状态；
 - en: merging of parse errors (when appropriate), should they happen.
   id: totrans-split-227
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 合并解析错误（如果适用），如果它们发生。
 - en: Implementation of `(<|>)` in `ParsecT`‘s instance of `Alternative` thus cannot
     delegate its work to the `Alternative` instance of the underlying monad `State
     MyState` and so no splitting of `MyState` happens—we have no backtracking.
   id: totrans-split-228
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，`ParsecT`在`Alternative`的实例中的`(<|>)`的实现不能将其工作委托给底层单子`State MyState`的`Alternative`实例，因此不会发生`MyState`的分割
+    - 我们没有回溯。
 - en: 'Let us demonstrate this with an example:'
   id: totrans-split-229
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用一个例子来演示这一点：
 - en: '[PRE57]'
   id: totrans-split-230
   prefs: []
@@ -1332,6 +1466,7 @@
   id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是运行程序的结果：
 - en: '[PRE58]'
   id: totrans-split-232
   prefs: []
@@ -1345,11 +1480,14 @@
   id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `parser0` 我们可以看到分支 `b` 没有被尝试。然而，使用 `parser1` 可以明显看到最终的结果 —— 由 `get` 返回的值
+    —— 来自分支 `a`，尽管由于 `empty` 而失败，并且是分支 `b` 成功了（在解析的上下文中，`empty` 意味着“立即失败，并且没有任何关于发生了什么的信息”）。没有发生回溯。
 - en: 'What to do if we want backtracking custom state in our parser? We can provide
     that if we allow to wrap `ParsecT` *inside* `StateT`:'
   id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们想要在我们的解析器中提供回溯自定义状态，我们可以允许将`ParsecT`包装在`StateT`*内部*：
 - en: '[PRE59]'
   id: totrans-split-235
   prefs: []
@@ -1359,6 +1497,7 @@
   id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在如果我们在`MyStack`中使用`(<|>)`，那么所使用的实例就是`StateT`：
 - en: '[PRE60]'
   id: totrans-split-237
   prefs: []
@@ -1370,6 +1509,7 @@
   id: totrans-split-238
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样就给我们带来了回溯状态，然后将其余工作委托给其内部单子 `ParsecT` 的 `Alternative` 实例 —— 这种行为正是我们想要的：
 - en: '[PRE61]'
   id: totrans-split-239
   prefs: []
@@ -1379,6 +1519,7 @@
   id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序输出：
 - en: '[PRE62]'
   id: totrans-split-241
   prefs: []
@@ -1392,6 +1533,7 @@
   id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使这种方法可行，`StateT`应支持整套原始解析器，这样我们就可以像使用`ParsecT`一样使用它。换句话说，它应该是`MonadParsec`的一个实例，就像它不仅是`MonadState`的实例，而且例如它的内部单子是`MonadWriter`的实例（在MTL中）：
 - en: '[PRE63]'
   id: totrans-split-243
   prefs: []
@@ -1401,6 +1543,7 @@
   id: totrans-split-244
   prefs: []
   type: TYPE_NORMAL
+  zh: 的确，我们可以将内部`MonadParsec`实例的基本操作提升到`StateT`中：
 - en: '[PRE64]'
   id: totrans-split-245
   prefs: []
@@ -1413,11 +1556,13 @@
   id: totrans-split-246
   prefs: []
   type: TYPE_NORMAL
+  zh: '`megaparsec`为所有MTL单子变换器定义了`MonadParsec`的实例，以便用户可以自由地将这些变换器插入`ParsecT`中或将`ParsecT`包装在这些变换器中，在单子栈的不同层之间实现不同类型的交互。'
 - en: Lexing
   id: totrans-split-247
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 词法分析
 - en: '*Lexing* is the process of transforming the input stream into a stream of tokens:
     integers, keywords, symbols, etc. which are easier to parse than the raw input
     directly, or are expected as input to parsers created with parser generators.
@@ -1427,6 +1572,8 @@
   id: totrans-split-248
   prefs: []
   type: TYPE_NORMAL
+  zh: '*词法分析* 是将输入流转换为标记流的过程：整数、关键字、符号等。这比直接解析原始输入更容易，或者这些标记作为生成器创建的解析器的输入期望。词法分析可以在单独的通过中用外部工具（如
+    `alex`）执行，但是 `megaparsec` 也提供了函数，应该简化以无缝方式编写词法分析器作为解析器的一部分。'
 - en: There are two lexer modules `Text.Megaparsec.Char.Lexer` for character streams
     and `Text.Megaparsec.Byte.Lexer` for byte streams. We will be using `Text.Megaparsec.Char.Lexer`
     because we work with a strict `Text` as the input stream, but most functions are
@@ -1434,11 +1581,15 @@
   id: totrans-split-249
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两个词法分析器模块 `Text.Megaparsec.Char.Lexer` 用于字符流和 `Text.Megaparsec.Byte.Lexer`
+    用于字节流。我们将使用 `Text.Megaparsec.Char.Lexer`，因为我们处理的是严格的 `Text` 作为输入流，但是如果你希望使用 `ByteString`，大多数函数也在
+    `Text.Megaparsec.Byte.Lexer` 中有镜像。
 - en: White space
   id: totrans-split-250
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 空格
 - en: The first topic we need to cover is dealing with white space. It is helpful
     to consume white space in a consistent manner either before every token or after
     every token. Megaparsec’s lexer modules follow the strategy “assume no white space
@@ -1446,12 +1597,14 @@
   id: totrans-split-251
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要讨论的第一个主题是如何处理空白。在每个标记之前或之后以一致的方式消耗空白非常有帮助。Megaparsec 的词法分析器模块遵循的策略是“假定标记之前没有空白，并在标记之后消耗所有空白”。
 - en: 'To consume white space we need a special parser that we will refer to as *space
     consumer*. The `Text.Megaparsec.Char.Lexer` module provides a helper allowing
     to build a general space consumer:'
   id: totrans-split-252
   prefs: []
   type: TYPE_NORMAL
+  zh: 要消耗空白，我们需要一个特殊的解析器，我们将其称为*空白消耗器*。`Text.Megaparsec.Char.Lexer` 模块提供了一个辅助函数，允许构建一个通用的空白消耗器：
 - en: '[PRE65]'
   id: totrans-split-253
   prefs: []
@@ -1462,6 +1615,7 @@
   id: totrans-split-254
   prefs: []
   type: TYPE_NORMAL
+  zh: '`space` 函数的文档本身已经非常详尽，但让我们用一个例子来补充说明：'
 - en: '[PRE66]'
   id: totrans-split-255
   prefs: []
@@ -1471,6 +1625,7 @@
   id: totrans-split-256
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些注意事项：
 - en: The `Text.Megaparsec.Char.Lexer` is intended to be imported qualified because
     it contains names that collide with names from e.g. `Text.Megaparsec.Char`, for
     example `space`.
@@ -1478,6 +1633,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应当以限定方式导入 `Text.Megaparsec.Char.Lexer`，因为它包含与 `Text.Megaparsec.Char` 等模块中的名称冲突的名称，例如
+    `space`。
 - en: The first argument of `L.space` should be a parser that is to be used to pick
     up white space. An important detail is that it should not accept empty input because
     then `L.space` would go into an infinite loop. `space1` is a parser from `Text.Megaparsec.Char`
@@ -1486,6 +1643,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`L.space` 的第一个参数应该是一个解析器，用于提取空白。一个重要的细节是，它不应接受空输入，否则 `L.space` 将陷入无限循环。`space1`
+    是 `Text.Megaparsec.Char` 中满足要求的解析器。'
 - en: The second argument of `L.space` defines how to skip line comments, that is,
     comments that start with a given sequence of tokens and end with the end of line.
     The `skipLineComment` helper allows us to craft an auxiliary parser for line comments
@@ -1494,6 +1653,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`L.space` 的第二个参数定义了如何跳过行注释，即以特定序列开始并以行结束的注释。`skipLineComment` 辅助函数使我们能够轻松地创建一个用于行注释的辅助解析器。'
 - en: 'The third argument of `L.space` in turn defines how to pick up block comments:
     everything between starting and ending sequences of tokens. The `skipBlockComment`
     helper allows us to deal with non-nested block comments. If supporting nested
@@ -1502,6 +1662,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`L.space` 的第三个参数定义了如何处理块注释：即在起始和结束标记之间的所有内容。`skipBlockComment` 辅助函数使我们能够处理非嵌套块注释。如果需要支持嵌套块注释，则应改用
+    `skipBlockCommentNested`。'
 - en: Operationally, `L.space` tries all three parsers in turn as many times as it
     can till all of them cannot be applied anymore meaning that we have consumed all
     white space there is. Knowing this, it should make sense that if your grammar
@@ -1512,11 +1674,14 @@
   id: totrans-split-261
   prefs: []
   type: TYPE_NORMAL
+  zh: 在操作上，`L.space` 依次尝试这三个解析器，直到无法应用为止，这意味着我们已经消耗了所有的空白。了解这一点后，应该明白，如果您的语法不包括块或行注释，可以将
+    `empty` 作为 `L.space` 的第二个和/或第三个参数传递。`empty` 是 `(<|>)` 的身份元素，将导致 `L.space` 尝试下一个空白组件的解析器——这正是所需的行为。
 - en: 'Having the space consumer `sc`, we can then define various white space-related
     helpers:'
   id: totrans-split-262
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了空白消耗器 `sc`，我们可以定义各种与空白相关的辅助函数：
 - en: '[PRE67]'
   id: totrans-split-263
   prefs: []
@@ -1528,27 +1693,32 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`lexeme` 是一个包装器，用于提取所有尾随空白的词元，使用提供的空白消耗器。'
 - en: '`symbol` is a parser that matches given text using `string` internally and
     then similarly picks up all trailing white space.'
   id: totrans-split-265
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`symbol` 是一个解析器，使用 `string` 内部匹配给定文本，然后类似地提取所有尾随空白。'
 - en: We will see how it all works together in a moment, but first we need to introduce
     a couple more helpers from `Text.Megaparsec.Char.Lexer`.
   id: totrans-split-266
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将很快看到它们如何一起运行，但首先需要介绍几个来自 `Text.Megaparsec.Char.Lexer` 的辅助函数。
 - en: Char and string literals
   id: totrans-split-267
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 字符和字符串字面量
 - en: 'Parsing character and string literals can be tricky because of various escaping
     rules. To make life easier, `megaparsec` provides the `charLiteral` parser:'
   id: totrans-split-268
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析字符和字符串字面量可能会很棘手，因为涉及到各种转义规则。为了简化生活，`megaparsec` 提供了 `charLiteral` 解析器：
 - en: '[PRE68]'
   id: totrans-split-269
   prefs: []
@@ -1560,20 +1730,24 @@
   id: totrans-split-270
   prefs: []
   type: TYPE_NORMAL
+  zh: '`charLiteral` 的工作是解析单个字符，根据 Haskell 报告中字符文字的语法可能进行转义。请注意，它并不解析文字周围的引号，有两个原因：'
 - en: so the user can control how character literals are quoted,
   id: totrans-split-271
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 因此用户可以控制如何引用字符文字，
 - en: so `charLiteral` can be used to parse string literals as well.
   id: totrans-split-272
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所以 `charLiteral` 也可以用来解析字符串文字。
 - en: 'Here are some example parsers built on top of `charLiteral`:'
   id: totrans-split-273
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是一些构建在 `charLiteral` 之上的示例解析器：
 - en: '[PRE69]'
   id: totrans-split-274
   prefs: []
@@ -1587,17 +1761,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 要将 `L.charLiteral` 转换为用于解析字符文字的解析器，我们只需添加包围的引号。在这里，我们遵循 Haskell 语法并使用单引号。`between`
+    组合子简单定义为：`between open close p = open *> p <* close`。
 - en: '`stringLiteral` uses `L.charLiteral` to parse individual characters inside
     a string literal enclosed in double quotes.'
   id: totrans-split-276
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`stringLiteral` 使用 `L.charLiteral` 解析双引号括起来的字符串文字中的各个字符。'
 - en: 'The second function is also interesting because of its use of the `manyTill`
     combinator:'
   id: totrans-split-277
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个函数也很有趣，因为它使用了 `manyTill` 组合子：
 - en: '[PRE70]'
   id: totrans-split-278
   prefs: []
@@ -1608,21 +1786,25 @@
   id: totrans-split-279
   prefs: []
   type: TYPE_NORMAL
+  zh: '`manyTill` 尝试在每次迭代中应用 `end` 解析器，如果失败，则运行 `p` 解析器并在列表中累积 `p` 的结果。'
 - en: There is also `someTill` for when you want to demand that at least one item
     is present.
   id: totrans-split-280
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你希望至少有一个项目存在时，还有 `someTill`。
 - en: Numbers
   id: totrans-split-281
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 数字
 - en: 'Finally, a very common need is to parse numbers. For integral numbers, there
     are three helpers that can parse values in decimal, octal, and hexadecimal representations:'
   id: totrans-split-282
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，一个非常常见的需求是解析数字。对于整数，有三个辅助函数可以解析十进制、八进制和十六进制表示的值：
 - en: '[PRE71]'
   id: totrans-split-283
   prefs: []
@@ -1632,6 +1814,7 @@
   id: totrans-split-284
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用它们很容易：
 - en: '[PRE72]'
   id: totrans-split-285
   prefs: []
@@ -1649,6 +1832,8 @@
   id: totrans-split-287
   prefs: []
   type: TYPE_NORMAL
+  zh: '`scientific` 接受整数和分数语法，而 `float` 仅接受分数语法。`scientific` 返回 `scientific` 包的 `Scientific`
+    类型，而 `float` 在其结果类型中是多态的，可以返回 `RealFloat` 的任何实例：'
 - en: '[PRE74]'
   id: totrans-split-288
   prefs: []
@@ -1658,6 +1843,7 @@
   id: totrans-split-289
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如：
 - en: '[PRE75]'
   id: totrans-split-290
   prefs: []
@@ -1673,6 +1859,7 @@
   id: totrans-split-292
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，所有这些解析器都不解析带符号的数字。要制作带符号数字的解析器，我们需要用 `signed` 组合子包装现有解析器：
 - en: '[PRE77]'
   id: totrans-split-293
   prefs: []
@@ -1684,20 +1871,24 @@
   id: totrans-split-294
   prefs: []
   type: TYPE_NORMAL
+  zh: '`signed` 的第一个参数——空格消耗器——控制符号和实际数字之间的空白如何消耗。如果你不想在其中允许空格，只需传递 `return ()`。'
 - en: '`notFollowedBy` and `lookAhead`'
   id: totrans-split-295
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`notFollowedBy` 和 `lookAhead`。'
 - en: There are two more primitives (in addition to `try`) that can perform look ahead
     in the input stream without actually advancing the parsing position in it.
   id: totrans-split-296
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有两个原语（除了 `try`）可以在输入流中进行前瞻，而不实际推进解析位置。
 - en: 'The first one is called `notFollowedBy`:'
   id: totrans-split-297
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个被称为 `notFollowedBy`：
 - en: '[PRE78]'
   id: totrans-split-298
   prefs: []
@@ -1708,11 +1899,13 @@
   id: totrans-split-299
   prefs: []
   type: TYPE_NORMAL
+  zh: 它仅在其参数解析器失败时成功，并且从不消耗任何输入或修改解析器状态。
 - en: 'As an example when you may want to use `notFollowedBy`, consider parsing of
     keywords:'
   id: totrans-split-300
   prefs: []
   type: TYPE_NORMAL
+  zh: 举例来说，当你可能希望使用 `notFollowedBy` 时，请考虑关键字的解析：
 - en: '[PRE79]'
   id: totrans-split-301
   prefs: []
@@ -1724,6 +1917,7 @@
   id: totrans-split-302
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个解析器有一个问题：如果我们匹配的关键字只是标识符的前缀呢？在这种情况下，它绝对不是关键字。因此，我们必须通过使用 `notFollowedBy` 来消除这种情况：
 - en: '[PRE80]'
   id: totrans-split-303
   prefs: []
@@ -1733,6 +1927,7 @@
   id: totrans-split-304
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个原语是 `lookAhead`：
 - en: '[PRE81]'
   id: totrans-split-305
   prefs: []
@@ -1744,12 +1939,14 @@
   id: totrans-split-306
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 `lookAhead` 的参数 `p` 成功，那么整个结构 `lookAhead p` 也成功，但输入流（以及整个解析器状态）保持不变，即不消耗任何内容。
 - en: 'One example of where this may be useful is performing a check on an already
     parsed value and then either failing or continuing successfully. The idiom can
     be expressed in code like this:'
   id: totrans-split-307
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个例子是在已解析的值上执行检查，然后根据情况失败或继续成功。这种习惯用法可以通过如下代码表达：
 - en: '[PRE82]'
   id: totrans-split-308
   prefs: []
@@ -1761,6 +1958,7 @@
   id: totrans-split-309
   prefs: []
   type: TYPE_NORMAL
+  zh: 这演示了 `lookAhead` 的使用，但我们还应该注意，当检查成功时，我们会执行两次解析，这是不好的。这里是使用 `getOffset` 函数的另一种解决方案：
 - en: '[PRE83]'
   id: totrans-split-310
   prefs: []
@@ -1774,11 +1972,14 @@
   id: totrans-split-311
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样我们只需将输入流中的偏移设置为运行 `p` 之前的偏移，然后失败。现在剩余未消耗与偏移位置之间存在不匹配，但在这种情况下并不重要，因为我们通过调用
+    `fail` 立即结束解析。在其他情况下可能会有所不同。我们将在本章后面看到如何在这种情况下做得更好。
 - en: Parsing expressions
   id: totrans-split-312
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解析表达式
 - en: 'By “expression” we mean a structure formed from terms and operators applied
     to those terms. Operators can be prefix, infix, and postfix, left and right-associative,
     with different precedence. An example of such a construct would be arithmetic
@@ -1786,6 +1987,7 @@
   id: totrans-split-313
   prefs: []
   type: TYPE_NORMAL
+  zh: “表达式”是指由项和应用于这些项的运算符形成的结构。运算符可以是前缀、中缀和后缀的，左结合和右结合的，具有不同的优先级。这样的构造的一个例子就是从学校熟悉的算术表达式：
 - en: '[PRE84]'
   id: totrans-split-314
   prefs: []
@@ -1796,6 +1998,7 @@
   id: totrans-split-315
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里我们可以看到两种类型的项：变量（`a` 和 `b`）和整数（`2`）。还有两个运算符：`*` 和 `+`。
 - en: 'Writing an expression parser may take a while to get right. To help with that,
     the [`parser-combinators`](https://hackage.haskell.org/package/parser-combinators)
     package comes with the `Control.Monad.Combinators.Expr` module which exports only
@@ -1805,10 +2008,14 @@
   id: totrans-split-316
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写表达式解析器可能需要一段时间来正确完成。为了帮助解决这个问题，[`parser-combinators`](https://hackage.haskell.org/package/parser-combinators)
+    包提供了 `Control.Monad.Combinators.Expr` 模块，该模块仅导出两个东西：`Operator` 数据类型和 `makeExprParser`
+    辅助函数。两者都有很好的文档说明，因此在本节中我们不会重复文档，而是将编写一个简单但完全功能的表达式解析器。
 - en: 'Let’s start by defining a data type representing an expression as [AST](https://en.wikipedia.org/wiki/Abstract_syntax_tree):'
   id: totrans-split-317
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从定义一个表示表达式的数据类型开始，作为 [AST](https://zh.wikipedia.org/wiki/%E6%8A%BD%E8%B1%A1%E8%AF%AD%E6%B3%95%E6%A0%91)：
 - en: '[PRE85]'
   id: totrans-split-318
   prefs: []
@@ -1819,6 +2026,7 @@
   id: totrans-split-319
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用 `makeExprParser`，我们需要提供一个项解析器和一个运算符表：
 - en: '[PRE86]'
   id: totrans-split-320
   prefs: []
@@ -1833,6 +2041,7 @@
   id: totrans-split-321
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从项解析器开始。当处理诸如结合性和优先级等事物时，将项视为一个不可分割整体的盒子是很有帮助的。在我们的情况下，有三件事情属于这个类别：变量、整数和括号中的整个表达式。使用前面章节的定义，我们可以将项解析器定义为：
 - en: '[PRE87]'
   id: totrans-split-322
   prefs: []
@@ -1844,22 +2053,27 @@
   id: totrans-split-323
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pVariable`、`pInteger` 和 `parens` 的定义现在应该已经没有疑问了。在这里我们也很幸运，因为在 `pTerm` 中不需要使用
+    `try`，因为语法没有重叠：'
 - en: if we see an opening parenthesis `(`, we know that an expression in parentheses
     is to follow, so we commit to that branch;
   id: totrans-split-324
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果我们看到一个开括号 `(`，我们知道接下来会有一个括号中的表达式，因此我们致力于该分支；
 - en: if we see a letter, we know that it is the start of an identifier;
   id: totrans-split-325
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果我们看到一个字母，我们知道它是标识符的起始；
 - en: if we see a digit, we know that it is the start of an integer.
   id: totrans-split-326
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果我们看到一个数字，我们知道它是整数的起始。
 - en: 'Finally, to finish `pExpr` we need to define the `operatorTable`. We can see
     from the type that it is a nested list. Every inner list is a list of operators
     we want to support, they all have equal precedence. The outer list is ordered
@@ -1868,6 +2082,7 @@
   id: totrans-split-327
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，为了完成 `pExpr`，我们需要定义 `operatorTable`。从类型上我们可以看出它是一个嵌套列表。每个内部列表是我们想要支持的运算符列表，它们都具有相等的优先级。外部列表按降序排序，因此我们在其中放置运算符组时，它们绑定得更紧：
 - en: '[PRE88]'
   id: totrans-split-328
   prefs: []
@@ -1880,10 +2095,14 @@
   id: totrans-split-329
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意我们如何在 `binary` 的 `InfixL` 中放置 `Parser (Expr -> Expr -> Expr)`，以及类似地在 `prefix`
+    和 `postfix` 中放置 `Parser (Expr -> Expr)`。也就是说，我们运行 `symbol name` 并返回一个函数，以便将其应用于术语，以获得类型
+    `Expr` 的最终结果。
 - en: We can now try our parser, it is ready!
   id: totrans-split-330
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以尝试我们的解析器，它已经准备好了！
 - en: '[PRE89]'
   id: totrans-split-331
   prefs: []
@@ -1895,11 +2114,13 @@
   id: totrans-split-332
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Control.Monad.Combinators.Expr` 模块的文档包含了一些在某些非标准情况下有用的提示，因此阅读它也是一个好主意。'
 - en: Indentation-sensitive parsing
   id: totrans-split-333
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 缩进敏感解析
 - en: The `Text.Megaparsec.Char.Lexer` module contains tools that should be helpful
     when parsing indentation-sensitive grammars. We are going to review the available
     combinators first, then put them into use by writing an indentation-sensitive
@@ -1907,15 +2128,18 @@
   id: totrans-split-334
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Text.Megaparsec.Char.Lexer` 模块包含在解析缩进敏感语法时应该有用的工具。我们首先将回顾可用的组合子，然后通过编写一个缩进敏感的解析器来使用它们。'
 - en: '`nonIndented` and `indentBlock`'
   id: totrans-split-335
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`nonIndented` 和 `indentBlock`'
 - en: 'Let’s start with the simplest thing—`nonIndented`:'
   id: totrans-split-336
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从最简单的东西开始——`nonIndented`：
 - en: '[PRE90]'
   id: totrans-split-337
   prefs: []
@@ -1932,11 +2156,14 @@
   id: totrans-split-338
   prefs: []
   type: TYPE_NORMAL
+  zh: 它允许我们确保其内部解析器消耗的输入*不*是缩进的。这是高级缩进敏感输入解析背后的模型的一部分。我们声明有一些顶层项目是不缩进的，并且所有缩进的标记都是这些顶层定义的直接或间接子项。在
+    `megaparsec` 中，我们不需要额外的状态来表达这一点。由于缩进总是相对的，我们的想法是通过纯解析器的组合显式地关联参考标记和缩进标记的解析器，从而定义缩进敏感语法。
 - en: 'So, how do we define a parser for indented block? Let’s take a look at the
     signature of `indentBlock`:'
   id: totrans-split-339
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我们如何为缩进块定义解析器？让我们看一下 `indentBlock` 的签名：
 - en: '[PRE91]'
   id: totrans-split-340
   prefs: []
@@ -1949,12 +2176,14 @@
   id: totrans-split-341
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们指定如何处理缩进。这里需要注意的重要一点是，这个占用空间的解析器 *必须* 同时消耗换行符，而标记（参考标记和缩进标记）通常不应在其后消耗换行符。
 - en: 'As you can see, the second argument allows us to parse reference token and
     return a data structure that tells `indentBlock` what to do next. There are several
     options:'
   id: totrans-split-342
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你所看到的，第二个参数允许我们解析参考标记，并返回一个数据结构，告诉 `indentBlock` 下一步该做什么。有几个选项：
 - en: '[PRE92]'
   id: totrans-split-343
   prefs: []
@@ -1967,16 +2196,20 @@
   id: totrans-split-344
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以改变主意并不解析缩进标记，我们可以解析 *多个*（也就是可能是零个）缩进标记或要求 *至少一个* 这样的标记。我们可以允许 `indentBlock`
+    检测第一个缩进标记的缩进级别并使用它，或者手动指定缩进级别。
 - en: Parsing a simple indented list
   id: totrans-split-345
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 解析一个简单的缩进列表
 - en: 'Let’s parse a simple indented list of some items. We begin with the import
     section:'
   id: totrans-split-346
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们解析一些项目的简单缩进列表。我们从导入部分开始：
 - en: '[PRE93]'
   id: totrans-split-347
   prefs: []
@@ -1987,6 +2220,7 @@
   id: totrans-split-348
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将需要两种空间消耗者：一种是消耗换行符 `scn`，另一种是不消耗 `sc`（实际上只解析空格和制表符）：
 - en: '[PRE94]'
   id: totrans-split-349
   prefs: []
@@ -1996,11 +2230,13 @@
   id: totrans-split-350
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅供娱乐，我们允许以 `#` 开头的行注释。
 - en: '`pItemList` is a top-level form that itself is a combination of reference token
     (header of list) and indented tokens (list items), so:'
   id: totrans-split-351
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pItemList` 是一个顶层表单，它本身是参考标记（列表标题）和缩进标记（列表项）的组合，所以：'
 - en: '[PRE95]'
   id: totrans-split-352
   prefs: []
@@ -2010,6 +2246,7 @@
   id: totrans-split-353
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的目的，一个项目是由字母数字字符和破折号组成的序列：
 - en: '[PRE96]'
   id: totrans-split-354
   prefs: []
@@ -2019,6 +2256,7 @@
   id: totrans-split-355
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们将代码加载到 GHCi 中，并借助内置的 `parseTest` 进行尝试：
 - en: '[PRE97]'
   id: totrans-split-356
   prefs: []
@@ -2030,10 +2268,12 @@
   id: totrans-split-357
   prefs: []
   type: TYPE_NORMAL
+  zh: 请记住，我们使用了`IndentMany`选项，因此空列表是可以的，另一方面，内置组合器`space`已经从错误消息中隐藏了短语“期望更多空间”，因此这个错误消息是完全合理的。
 - en: 'Let’s continue:'
   id: totrans-split-358
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们继续：
 - en: '[PRE98]'
   id: totrans-split-359
   prefs: []
@@ -2045,6 +2285,7 @@
   id: totrans-split-360
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用`IndentSome`替换`IndentMany`，用`Just (mkPos 5)`替换`Nothing`（缩进级别从1开始计算，因此在缩进项之前需要4个空格）：
 - en: '[PRE99]'
   id: totrans-split-361
   prefs: []
@@ -2054,6 +2295,7 @@
   id: totrans-split-362
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在：
 - en: '[PRE100]'
   id: totrans-split-363
   prefs: []
@@ -2065,16 +2307,19 @@
   id: totrans-split-364
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一条消息可能有些令人惊讶，但是`megaparsec`知道列表中必须至少有一项，因此它检查缩进级别，发现是1，这是不正确的，因此报告了这一点。
 - en: Nested indented list
   id: totrans-split-365
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 嵌套缩进列表
 - en: 'Let’s allow list items to have sub-items. For this we will need a new parser,
     `pComplexItem`:'
   id: totrans-split-366
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们允许列表项具有子项。为此，我们将需要一个新的解析器，`pComplexItem`：
 - en: '[PRE101]'
   id: totrans-split-367
   prefs: []
@@ -2084,6 +2329,7 @@
   id: totrans-split-368
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们输入这样的内容：
 - en: '[PRE102]'
   id: totrans-split-369
   prefs: []
@@ -2093,6 +2339,7 @@
   id: totrans-split-370
   prefs: []
   type: TYPE_NORMAL
+  zh: 到我们的解析器中，我们会得到：
 - en: '[PRE103]'
   id: totrans-split-371
   prefs: []
@@ -2103,21 +2350,25 @@
   id: totrans-split-372
   prefs: []
   type: TYPE_NORMAL
+  zh: 这说明了这种方法如何在不需要额外状态的情况下扩展到嵌套缩进结构。
 - en: Adding line folds
   id: totrans-split-373
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 添加行折叠
 - en: A *line fold* consists of several elements that can be put on one line or on
     several lines as long as the indentation level of the subsequent items is greater
     than the indentation level of the first item.
   id: totrans-split-374
   prefs: []
   type: TYPE_NORMAL
+  zh: '*行折叠*由几个元素组成，这些元素可以放在同一行上，也可以放在几行上，只要后续项的缩进级别大于第一项的缩进级别。'
 - en: 'Let’s make use of another helper called `lineFold`:'
   id: totrans-split-375
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们使用另一个名为`lineFold`的辅助程序：
 - en: '[PRE104]'
   id: totrans-split-376
   prefs: []
@@ -2129,21 +2380,25 @@
   id: totrans-split-377
   prefs: []
   type: TYPE_NORMAL
+  zh: '`lineFold`的工作方式如下：我们给它一个接受换行符的空白消耗器`scn`，它返回一个特殊的空白消耗器`sc''`，我们可以在回调中使用它来消耗行折叠中元素之间的空白。'
 - en: 'Why use `try sc''` and `scn` on the line (1)? The situation is the following:'
   id: totrans-split-378
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么在第一行上使用`try sc'`和`scn`？情况如下：
 - en: Components of a line fold can only be more indented than its start.
   id: totrans-split-379
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 行折叠的组件只能比其开始时更缩进。
 - en: '`sc''` consumes whitespace with newlines in such a way that after consuming
     whitespace the column number is greater than initial column.'
   id: totrans-split-380
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sc''`使用换行符消耗了空白，这样在消耗空白后列号大于初始列号。'
 - en: To stop, `sc'` should encounter the opposite situation, that is, the column
     number after consumption should be less than or equal to the initial column. At
     that point it fails without consuming input (thanks to `try`) and `scn` is used
@@ -2152,6 +2407,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 要停止，`sc'`应该遇到相反的情况，也就是说，消耗后的列号应该小于或等于初始列号。此时它在不消耗输入的情况下失败（由于`try`），并且在那个新事物开始的列之前使用`scn`来提取空白。
 - en: Previously used `sc'` already probed whitespace with space consumer which consumes
     newlines. So, it is only logical to also consume newlines when picking up trailing
     whitespace. This is why `scn` is used on the line (1) and not `sc`.
@@ -2159,6 +2415,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 先前使用的`sc'`已经使用空格消耗器探测了带有换行符的空白。因此，在提取尾部空白时也消耗换行符是合理的。这就是为什么在第一行（1）上使用`scn`而不是`sc`的逻辑所在。
 - en: '*EXERCISE: Playing with the final version of our parser is left as an exercise
     for the reader. You can create “items” that consist of multiple words and as long
     as they are line-folded they will be parsed and concatenated with single space
@@ -2166,11 +2423,13 @@
   id: totrans-split-383
   prefs: []
   type: TYPE_NORMAL
+  zh: '*练习：留给读者的练习是玩转我们解析器的最终版本。你可以创建由多个单词组成的“项”，只要它们进行行折叠，它们就会被解析并用单个空格连接在一起。*'
 - en: Writing efficient parsers
   id: totrans-split-384
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 编写高效的解析器
 - en: Let’s discuss what to attempt in order to improve performance of a `megaparsec`
     parser. It should be noted right away that one should always check if there is
     any improvement through profiling and benchmarking. That is the only way to understand
@@ -2178,10 +2437,12 @@
   id: totrans-split-385
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们讨论如何尝试提高`megaparsec`解析器的性能。需要立即指出的是，我们应该始终通过分析和基准测试来检查是否有改进。这是了解在调整性能时是否在正确的路径上的唯一方法。
 - en: 'Common pieces of advice:'
   id: totrans-split-386
   prefs: []
   type: TYPE_NORMAL
+  zh: 常见的建议：
 - en: If your parser uses a monad stack instead of the plain `Parsec` monad (recall
     that it is the `ParsecT` monad transformer over `Identity`, which is quite lightweight),
     make sure you use at least version 0.5 of `transformers` library, and at least
@@ -2191,6 +2452,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果你的解析器使用的是Monad堆栈而不是普通的`Parsec`单子（请记住，它是`ParsecT`单子变换器在`Identity`上，这相当轻量），请确保你至少使用`transformers`库的0.5版本和`megaparsec`的7.0版本。这两个库在这些版本中有关键的性能改进，因此你可以免费获得更好的性能。
 - en: '`Parsec` monad will be always faster then `ParsecT`-based monad transformers.
     Avoid using `StateT`, `WriterT`, and other monad transformers unless absolutely
     necessary. The more you add to the monadic stack, the slower your parser will
@@ -2199,12 +2461,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Parsec`单子始终比基于`ParsecT`的单子变换器更快。除非绝对必要，否则避免使用`StateT`、`WriterT`和其他单子变换器。您添加到单子堆栈中的越多，解析器的速度就会越慢。'
 - en: Backtracking is an expensive operation. Avoid building long chains of alternatives
     where every alternative can go deep into input before failing.
   id: totrans-split-389
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 回溯是一种昂贵的操作。避免构建长链条的备选项，其中每个备选项在失败之前可能会深入输入。
 - en: Do not keep your parsers polymorphic unless you really have a reason to do so.
     It is best to fix the types of parsers specifying concrete types, such as `type
     Parser = Parsec Void Text` for every top-level definition. This way GHC will be
@@ -2213,6 +2477,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 除非确实有理由如此，否则不要保持解析器的多态性。最好为解析器的类型固定指定具体类型，例如每个顶层定义的`type Parser = Parsec Void
+    Text`。这样GHC就能够更好地优化。
 - en: Inline generously (when it makes sense, of course). You may not believe your
     eyes when you see how much of a difference inlining can do, especially for short
     functions. This is especially true for parsers that are defined in one module
@@ -2222,6 +2488,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在合适的情况下要慷慨地进行内联。当您看到内联可以做多大的差异时，您可能会不相信自己的眼睛，尤其是对于短函数来说。对于在一个模块中定义并在另一个模块中使用的解析器来说，这一点尤为重要，因为`INLINE`和`INLINEABLE`指令使GHC将函数定义转储到接口文件中，从而便于专门化。
 - en: Use the fast primitives such as `takeWhileP`, `takeWhile1P`, and `takeP` whenever
     you can. [This blog post](https://markkarpov.com/post/megaparsec-more-speed-more-power#there-is-hope)
     explains why they are so fast.
@@ -2229,12 +2496,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 尽可能使用快速的原语，如`takeWhileP`、`takeWhile1P`和`takeP`。[这篇博文](https://markkarpov.com/post/megaparsec-more-speed-more-power#there-is-hope)解释了它们为什么如此快速。
 - en: Avoid `oneOf` and `noneOf` preferring `satisfy` and `anySingleBut` whenever
     possible.
   id: totrans-split-393
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 避免使用`oneOf`和`noneOf`，优先使用`satisfy`和`anySingleBut`。
 - en: 'While most of the points above do not require additional comment, I think it
     would be beneficial to get into the habit of using the newer fast primitives:
     `takeWhileP`, `takeWhile1P`, and `takeP`. The first two are especially common
@@ -2244,11 +2513,14 @@
   id: totrans-split-394
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管上述大部分点不需要额外的评论，我认为养成使用更新的快速原语的习惯将会很有益处：`takeWhileP`、`takeWhile1P`和`takeP`。前两者尤为常见，因为它们允许我们替换基于`many`和`some`的构造，使它们更快，并将返回数据类型更改为输入流的块，即我们之前讨论过的`Tokens
+    s`类型。
 - en: 'For example, recall that when we parsed URIs, we had this code for parsing
     username in the authority component:'
   id: totrans-split-395
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，回想一下当我们解析URI时，我们在解析权限组件中解析用户名时有这段代码：
 - en: '[PRE105]'
   id: totrans-split-396
   prefs: []
@@ -2258,6 +2530,7 @@
   id: totrans-split-397
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以用`takeWhile1P`来替换它：
 - en: '[PRE106]'
   id: totrans-split-398
   prefs: []
@@ -2269,11 +2542,13 @@
   id: totrans-split-399
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们解析`ByteString`和`Text`时，这比原始方法快得多。还要注意，现在我们直接从`takeWhile1P`获取`Text`，因此不再需要`T.pack`。
 - en: 'These equations may be helpful for understanding the meaning of the `Maybe
     String` argument of `takeWhileP` and `takeWhile1P`:'
   id: totrans-split-400
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些方程可能有助于理解`takeWhileP`和`takeWhile1P`的`Maybe String`参数的含义：
 - en: '[PRE107]'
   id: totrans-split-401
   prefs: []
@@ -2284,21 +2559,25 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解析错误
 - en: 'Now that we have explored how to use most features of `megaparsec`, it is time
     to learn more about parse errors: how they are defined, how to signal them, and
     how to process them inside a running parser.'
   id: totrans-split-403
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经探讨了如何使用`megaparsec`的大多数功能，是时候了解更多关于解析错误的知识：它们如何定义、如何信号化以及如何在运行中的解析器内部处理它们了。
 - en: Parse error definitions
   id: totrans-split-404
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 解析错误定义
 - en: 'The `ParseError` type is defined like this:'
   id: totrans-split-405
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ParseError`类型定义如下：'
 - en: '[PRE108]'
   id: totrans-split-406
   prefs: []
@@ -2309,24 +2588,29 @@
   id: totrans-split-407
   prefs: []
   type: TYPE_NORMAL
+  zh: 在英语中：`ParseError` 是一个 `TrivialError`，最多包含一个意外项和一个（可能为空的）预期项集合，或者是一个 `FancyError`。
 - en: '`ParseError s e` is parametrized over two type variables:'
   id: totrans-split-408
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ParseError s e` 是针对两个类型变量进行参数化的：'
 - en: '`s` is the type of input stream.'
   id: totrans-split-409
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`s` 是输入流的类型。'
 - en: '`e` is the type of custom component of parse error.'
   id: totrans-split-410
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`e` 是解析错误的自定义组件的类型。'
 - en: '`ErrorItem` is defined as:'
   id: totrans-split-411
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ErrorItem` 定义如下：'
 - en: '[PRE109]'
   id: totrans-split-412
   prefs: []
@@ -2337,6 +2621,7 @@
   id: totrans-split-413
   prefs: []
   type: TYPE_NORMAL
+  zh: '`NonEmpty` 是非空列表的类型，它来自于 `Data.List.NonEmpty`。这里还有 `ErrorFancy`：'
 - en: '[PRE110]'
   id: totrans-split-414
   prefs: []
@@ -2347,12 +2632,14 @@
   id: totrans-split-415
   prefs: []
   type: TYPE_NORMAL
+  zh: '`ErrorFancy` 包括两种常见情况的数据构造函数，`megaparsec` 默认支持这些情况：'
 - en: Use of the `fail` function that causes parser to fail reporting an arbitrary
     `String`.
   id: totrans-split-416
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `fail` 函数会导致解析器失败并报告任意的 `String`。
 - en: Indentation-related issues which we have seen in a previous section. Since we
     provide tools for working with indentation-sensitive grammars out-of-the-box,
     we need a way to store well-typed information about problems with indentation.
@@ -2360,6 +2647,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 缩进相关的问题我们在前面的章节中已经见过。因为我们提供了用于处理缩进敏感语法的工具，我们需要一种方式来存储关于缩进问题的良好类型信息。
 - en: Finally, `ErrorCustom` is a sort of an “extension slot” which allows to embed
     arbitrary data into the `ErrorFancy` type. When we do not need any custom data
     in our parse errors, we parametrize `ErrorFancy` by `Void`. Since `Void` is not
@@ -2368,6 +2656,8 @@
   id: totrans-split-418
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，`ErrorCustom` 是一种“扩展插槽”，允许将任意数据嵌入 `ErrorFancy` 类型中。当我们在解析错误中不需要任何自定义数据时，我们通过
+    `Void` 参数化 `ErrorFancy`。由于 `Void` 不包含任何非底部值，`ErrorCustom` 就被“抵消”，或者如果我们遵循代数数据类型和数字之间的类比，“乘以零”。
 - en: In older version of the library, `ParseError`s were returned directly by functions
     like `parse`, but version 7 delays calculation of line and column for each error,
     as well as fetching of the relevant line on input for displaying in case of an
@@ -2378,10 +2668,12 @@
   id: totrans-split-419
   prefs: []
   type: TYPE_NORMAL
+  zh: 在库的旧版本中，`ParseError` 直接由 `parse` 等函数返回，但版本 7 延迟计算每个错误的行和列，以及在错误情况下获取输入中相关行的信息。这样做是为了加快解析速度，因为所有这些信息通常只在解析器失败时才有用。库的旧版本的另一个问题是，一次显示多个解析错误需要每次重新遍历输入以获取正确的行。
 - en: 'The problem is solved with the `ParseErrorBundle` data type:'
   id: totrans-split-420
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题可以用 `ParseErrorBundle` 数据类型来解决：
 - en: '[PRE111]'
   id: totrans-split-421
   prefs: []
@@ -2392,16 +2684,19 @@
   id: totrans-split-422
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有运行解析器的函数都返回 `ParseErrorBundle`，其中 `bundlePosState` 被正确设置，并包含一组 `ParseError`。
 - en: How to signal a parse error
   id: totrans-split-423
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 如何信号解析错误
 - en: 'Let’s discuss different ways to signal a parse error. The simplest function
     for that is `fail`:'
   id: totrans-split-424
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们讨论一下信号解析错误的不同方法。最简单的函数是 `fail`：
 - en: '[PRE112]'
   id: totrans-split-425
   prefs: []
@@ -2414,11 +2709,14 @@
   id: totrans-split-426
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于许多熟悉简单解析库（如 `parsec`）的人来说，这通常已经足够了。然而，仅仅显示解析错误给用户并不是一切，我们可能需要分析和/或操作它。这就是
+    `String` 并不是非常方便的地方。
 - en: 'Trivial parse errors are usually generated by `megaparsec`, but we can signal
     any such an error ourselves using the `failure` combinator:'
   id: totrans-split-427
   prefs: []
   type: TYPE_NORMAL
+  zh: 琐碎的解析错误通常由 `megaparsec` 生成，但我们可以使用 `failure` 组合子自行信号任何此类错误：
 - en: '[PRE113]'
   id: totrans-split-428
   prefs: []
@@ -2439,10 +2737,12 @@
   id: totrans-split-431
   prefs: []
   type: TYPE_NORMAL
+  zh: 与基于 `fail` 的方法不同，琐碎的解析错误易于模式匹配、检查和修改。
 - en: 'For fancy errors we correspondingly have the `fancyFaliure` combinator:'
   id: totrans-split-432
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于复杂的错误，我们相应地有 `fancyFailure` 组合子：
 - en: '[PRE116]'
   id: totrans-split-433
   prefs: []
@@ -2453,6 +2753,7 @@
   id: totrans-split-434
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 `fancyFailure`，通常最好定义一个类似于我们在词法分析器模块中拥有的帮助器，而不是直接调用 `fancyFailure`：
 - en: '[PRE117]'
   id: totrans-split-435
   prefs: []
@@ -2464,11 +2765,13 @@
   id: totrans-split-436
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为向您的解析器添加自定义解析错误组件的示例，让我们通过定义一个特殊的解析错误来说明，即给定的 `Text` 值不是关键字。
 - en: 'First, we need to define the data type with constructors representing scenarios
     we want to support:'
   id: totrans-split-437
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要定义数据类型，其中构造函数表示我们想要支持的场景：
 - en: '[PRE118]'
   id: totrans-split-438
   prefs: []
@@ -2478,6 +2781,7 @@
   id: totrans-split-439
   prefs: []
   type: TYPE_NORMAL
+  zh: 并告诉`megaparsec`如何在解析错误中显示它：
 - en: '[PRE119]'
   id: totrans-split-440
   prefs: []
@@ -2487,6 +2791,7 @@
   id: totrans-split-441
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来我们更新我们的`Parser`类型同义词：
 - en: '[PRE120]'
   id: totrans-split-442
   prefs: []
@@ -2496,6 +2801,7 @@
   id: totrans-split-443
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，我们可以定义`notKeyword`辅助函数：
 - en: '[PRE121]'
   id: totrans-split-444
   prefs: []
@@ -2506,6 +2812,7 @@
   id: totrans-split-445
   prefs: []
   type: TYPE_NORMAL
+  zh: '`customFailure`是一个有用的辅助函数，来自于`Text.Megaparsec`模块：'
 - en: '[PRE122]'
   id: totrans-split-446
   prefs: []
@@ -2515,6 +2822,7 @@
   id: totrans-split-447
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们试一试：
 - en: '[PRE123]'
   id: totrans-split-448
   prefs: []
@@ -2525,10 +2833,12 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 显示解析错误
 - en: 'Displaying of `ParseErrorBundle`s is done with the `errorBundlePretty` function:'
   id: totrans-split-450
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`errorBundlePretty`函数来显示`ParseErrorBundle`：
 - en: '[PRE124]'
   id: totrans-split-451
   prefs: []
@@ -2538,17 +2848,20 @@
   id: totrans-split-452
   prefs: []
   type: TYPE_NORMAL
+  zh: 在99%的情况下，你只需要这一个函数。
 - en: Catching parse errors in a running parser
   id: totrans-split-453
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 在运行解析器时捕获解析错误
 - en: 'Another useful feature of `megaparsec` is that it is possible to “catch” a
     parse error, alter it in some way, and then re-throw, [just like with exceptions](/tutorial/exceptions).
     This is enabled by the `observing` primitive:'
   id: totrans-split-454
   prefs: []
   type: TYPE_NORMAL
+  zh: '`megaparsec`的另一个有用特性是可以“捕获”解析错误，以某种方式修改它，然后重新抛出，[就像异常一样](/tutorial/exceptions)。这是通过`observing`原语实现的：'
 - en: '[PRE125]'
   id: totrans-split-455
   prefs: []
@@ -2558,6 +2871,7 @@
   id: totrans-split-456
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一个演示`observing`典型用法的完整程序：
 - en: '[PRE126]'
   id: totrans-split-457
   prefs: []
@@ -2567,10 +2881,12 @@
   id: totrans-split-458
   prefs: []
   type: TYPE_NORMAL
+  zh: '*练习：详细理解这个程序如何工作。*'
 - en: 'If I run this program, I see the following output:'
   id: totrans-split-459
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我运行这个程序，我会看到以下输出：
 - en: '[PRE127]'
   id: totrans-split-460
   prefs: []
@@ -2583,6 +2899,7 @@
   id: totrans-split-461
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，这个特性可以用来附加位置标签到解析错误中，或者确实定义*区域*，在这些区域中以某种方式处理解析错误。这种习惯用法非常有用，所以甚至有一个非原语的辅助函数叫做`region`，也是基于`observing`原语定义的：
 - en: '[PRE128]'
   id: totrans-split-462
   prefs: []
@@ -2592,15 +2909,18 @@
   id: totrans-split-463
   prefs: []
   type: TYPE_NORMAL
+  zh: '*练习：使用`region`重新编写上面程序中的`inside`函数。*'
 - en: Controlling location of parse errors
   id: totrans-split-464
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 控制解析错误的位置
 - en: 'The definition of `region` uses the `parseError` primitive:'
   id: totrans-split-465
   prefs: []
   type: TYPE_NORMAL
+  zh: '`region`的定义使用了`parseError`原语：'
 - en: '[PRE129]'
   id: totrans-split-466
   prefs: []
@@ -2611,6 +2931,7 @@
   id: totrans-split-467
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是错误报告的基本原语，到目前为止我们看到的所有其他函数都是基于`parseError`定义的：
 - en: '[PRE130]'
   id: totrans-split-468
   prefs: []
@@ -2622,6 +2943,7 @@
   id: totrans-split-469
   prefs: []
   type: TYPE_NORMAL
+  zh: '`parseError`允许你做的一件事是将错误偏移量（即位置）设置为输入流中当前位置之外的其他位置。让我们回到拒绝解析结果的示例：'
 - en: '[PRE131]'
   id: totrans-split-470
   prefs: []
@@ -2635,12 +2957,14 @@
   id: totrans-split-471
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们注意到，`setOffset o`会使错误定位正确，但会作为副作用使解析器状态无效——偏移量将不再反映实际情况。这在更复杂的解析器中可能是一个真正的问题。例如，想象一下，你用`observing`包裹`withPredicate2`，这样在`fail`后会运行一些代码。
 - en: 'With `parseError` and `region` we finally have proper solution to the problem—either
     use `region` to reset the parse error location, or use `parseError` in the first
     place:'
   id: totrans-split-472
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`parseError`和`region`，我们最终得到了解决问题的合适方案——要么使用`region`重置解析错误位置，要么一开始就使用`parseError`：
 - en: '[PRE132]'
   id: totrans-split-473
   prefs: []
@@ -2651,18 +2975,21 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 报告多个解析错误
 - en: Finally, `megaparsec` allows us to signal several parse errors in a single run.
     This may be helpful for the end users because they will be able to fix several
     issues at once and so they will need to run your parser fewer times.
   id: totrans-split-475
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，`megaparsec`允许我们在单次运行中发出多个解析错误信号。这对最终用户可能有所帮助，因为他们将能够一次性修复多个问题，从而减少运行解析器的次数。
 - en: 'One prerequisite for having a multi-error parser is that it should be possible
     to skip over a problematic part of input and resume parsing from a position that
     is known to be good. This part is accomplished by using the `withRecovery` primitive:'
   id: totrans-split-476
   prefs: []
   type: TYPE_NORMAL
+  zh: 具有多错误解析器的一个先决条件是应该能够跳过输入的有问题部分，并从已知良好的位置恢复解析。这一部分通过使用`withRecovery`原语实现：
 - en: '[PRE133]'
   id: totrans-split-477
   prefs: []
@@ -2676,10 +3003,13 @@
   id: totrans-split-478
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Megaparsec 8之前，用户必须选择类型`a`为包括成功和失败可能性的总和类型。例如，它可以是`Either (ParseError s e)
+    Result`。必须手动收集解析错误，然后在显示之前将其添加到`ParseErrorBundle`中。不用说，所有这些都是高级用法的例子，对用户不友好。
 - en: 'Megaparsec 8 supports *delayed parse errors*:'
   id: totrans-split-479
   prefs: []
   type: TYPE_NORMAL
+  zh: Megaparsec 8支持*延迟解析错误*：
 - en: '[PRE134]'
   id: totrans-split-480
   prefs: []
@@ -2692,16 +3022,19 @@
   id: totrans-split-481
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些错误可以在`withRecovery`的错误处理回调中注册，使得最终的类型为`Maybe Result`。这样可以处理包含延迟错误的最终`ParseErrorBundle`，并且在延迟错误集合不为空时使解析器最终失败。
 - en: With all this, we hope that the practice of writing multi-error parsers will
     become more common among the users.
   id: totrans-split-482
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望用户能更普遍地使用编写多错误解析器的实践。
 - en: Testing Megaparsec parsers
   id: totrans-split-483
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 测试Megaparsec解析器
 - en: Testing a parser is a practical task most people face sooner or later, so we
     are bound to cover it. The recommended way to test `megaparsec` parsers is by
     using the [`hspec-megaparsec`](https://hackage.haskell.org/package/hspec-megaparsec)
@@ -2710,10 +3043,12 @@
   id: totrans-split-484
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试解析器是大多数人迟早会面对的实际任务，因此我们有责任覆盖它。测试`megaparsec`解析器的推荐方法是使用[`hspec-megaparsec`](https://hackage.haskell.org/package/hspec-megaparsec)包。该包添加了与`hspec`测试框架配合使用的实用期望，如`shouldParse`、`parseSatisfies`等。
 - en: 'Let’s start with an example:'
   id: totrans-split-485
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从一个例子开始：
 - en: '[PRE135]'
   id: totrans-split-486
   prefs: []
@@ -2726,11 +3061,13 @@
   id: totrans-split-487
   prefs: []
   type: TYPE_NORMAL
+  zh: '`shouldParse`接受`Either (ParseErrorBundle s e) a`，即解析的结果和要比较的类型`a`。这可能是最常见的辅助函数。`parseSatisfies`非常类似，但不是通过预期结果的相等性来检查结果，而是允许通过应用任意谓词来检查结果。'
 - en: 'Other simple expectations are `shouldSucceedOn` and `shouldFailOn` (although
     they are rarely used):'
   id: totrans-split-488
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他简单的期望包括`shouldSucceedOn`和`shouldFailOn`（虽然它们很少使用）：
 - en: '[PRE136]'
   id: totrans-split-489
   prefs: []
@@ -2741,6 +3078,7 @@
   id: totrans-split-490
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`megaparsec`时，我们希望准确地处理解析器产生的解析错误。用于测试解析错误的方法是`shouldFailWith`，可以像这样使用：
 - en: '[PRE137]'
   id: totrans-split-491
   prefs: []
@@ -2754,6 +3092,7 @@
   id: totrans-split-492
   prefs: []
   type: TYPE_NORMAL
+  zh: 像这样写出`TrivialError`是令人厌烦的。`ParseError`的定义包含“不方便”的类型，如`Set`和`NonEmpty`，直接输入它们并不方便，正如我们刚刚看到的。幸运的是，`Test.Hspec.Megaparsec`还重新导出了`Text.Megaparsec.Error.Builder`模块，该模块提供了一个API，用于更轻松地构造`ParserError`。让我们改用`err`助手：
 - en: '[PRE138]'
   id: totrans-split-493
   prefs: []
@@ -2766,21 +3105,25 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`err`的第一个参数是解析错误的偏移量（在获取错误之前消耗的标记数）。在这个例子中，它简单地是0。'
 - en: '`utok` stands for “unexpected token”, similarly `etok` means “expected token”.'
   id: totrans-split-495
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`utok`代表“意外的标记”，类似地，`etok`表示“期望的标记”。'
 - en: '*EXERCISE: Familiarize yourself with `errFancy`, which is used to construct
     fancy parse errors.*'
   id: totrans-split-496
   prefs: []
   type: TYPE_NORMAL
+  zh: '*练习：熟悉`errFancy`，它用于构建精美的解析错误。*'
 - en: 'Finally, it is possible to test what part of input remains unconsumed after
     parsing using `failsLeaving` and `succeedsLeaving`:'
   id: totrans-split-497
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，可以使用`failsLeaving`和`succeedsLeaving`测试解析后剩余的输入部分：
 - en: '[PRE139]'
   id: totrans-split-498
   prefs: []
@@ -2792,6 +3135,7 @@
   id: totrans-split-499
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些应该与`runParser'`或`runParserT'`一起使用，它们接受解析器的自定义初始状态并返回其最终状态（这就是允许我们在解析后检查输入流剩余部分的方法）：
 - en: '[PRE140]'
   id: totrans-split-500
   prefs: []
@@ -2802,26 +3146,31 @@
   id: totrans-split-501
   prefs: []
   type: TYPE_NORMAL
+  zh: '`initialState` 函数接受输入流并返回带有该输入流及其他记录字段填充为其默认值的初始状态。'
 - en: 'Other sources of inspiration for using `hspec-megaparsec` are:'
   id: totrans-split-502
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `hspec-megaparsec` 的其他启发源包括：
 - en: Working with custom input streams
   id: totrans-split-503
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用自定义输入流
 - en: '`megaparsec` can be used to parse any input that is an instance of the `Stream`
     type class. This means that it may be used in conjunction with a lexing tool such
     as `alex`.'
   id: totrans-split-504
   prefs: []
   type: TYPE_NORMAL
+  zh: '`megaparsec` 可以用来解析任何是 `Stream` 类型类实例的输入。这意味着它可以与词法分析工具（如 `alex`）结合使用。'
 - en: 'Not to digress from our main topic by presenting how a stream of tokens could
     be generated with `alex`, we will assume it in the following form:'
   id: totrans-split-505
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了不偏离我们的主题，通过展示如何使用 `alex` 生成令牌流，我们将在以下形式中假设它。
 - en: '[PRE141]'
   id: totrans-split-506
   prefs: []
@@ -2832,6 +3181,7 @@
   id: totrans-split-507
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然报告解析错误，我们需要一种方法来知道标记的起始位置、结束位置和长度，所以让我们添加 `WithPos`：
 - en: '[PRE142]'
   id: totrans-split-508
   prefs: []
@@ -2841,6 +3191,7 @@
   id: totrans-split-509
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们可以为我们的流定义一个数据类型：
 - en: '[PRE143]'
   id: totrans-split-510
   prefs: []
@@ -2852,6 +3203,8 @@
   id: totrans-split-511
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要使 `MyStream` 成为 `Stream` 类型类的一个实例。这需要 `TypeFamilies` 语言扩展，因为我们想要定义关联类型函数
+    `Token` 和 `Tokens`：
 - en: '[PRE144]'
   id: totrans-split-512
   prefs: []
@@ -2862,6 +3215,7 @@
   id: totrans-split-513
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Stream`、`VisualStream` 和 `TraversableStream` 在 `Text.Megaparsec.Stream` 模块中有文档记录。在这里，我们直接定义这些方法：'
 - en: '[PRE145]'
   id: totrans-split-514
   prefs: []
@@ -2875,10 +3229,14 @@
   id: totrans-split-515
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Stream` 类型类的更多背景信息（以及它为什么是这个样子）可以在[这篇博文](https://markkarpov.com/post/megaparsec-more-speed-more-power)中找到。请注意，在
+    `megaparsec` 的第 9 版中，`Stream` 的某些方法已移动到 `VisualStream` 和 `TraversableStream` 类中，以便更轻松地为某些自定义输入流定义
+    `Stream` 的实例。'
 - en: 'Now we can define `Parser` for our custom stream:'
   id: totrans-split-516
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以为我们的自定义流定义 `Parser`：
 - en: '[PRE146]'
   id: totrans-split-517
   prefs: []
@@ -2891,6 +3249,8 @@
   id: totrans-split-518
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是在 `token` 和（如果有意义的话）`tokens` 原语的基础上定义基本解析器。对于支持的即插即用流，我们有 `Text.Megaparsec.Byte`
+    和 `Text.Megaparsec.Char` 模块，但如果我们要处理自定义标记，就需要自定义辅助程序。
 - en: '[PRE147]'
   id: totrans-split-519
   prefs: []
@@ -2900,6 +3260,7 @@
   id: totrans-split-520
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们来看一个解析求和的测试解析器：
 - en: '[PRE148]'
   id: totrans-split-521
   prefs: []
@@ -2909,6 +3270,7 @@
   id: totrans-split-522
   prefs: []
   type: TYPE_NORMAL
+  zh: 以及它的一个示例输入：
 - en: '[PRE149]'
   id: totrans-split-523
   prefs: []
@@ -2918,6 +3280,7 @@
   id: totrans-split-524
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们试一下：
 - en: '[PRE150]'
   id: totrans-split-525
   prefs: []
@@ -2928,6 +3291,7 @@
   id: totrans-split-526
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将第 (1) 行上的 `Plus` 更改为 `Div`，我们将得到正确的解析错误：
 - en: '[PRE151]'
   id: totrans-split-527
   prefs: []
@@ -2937,10 +3301,12 @@
   id: totrans-split-528
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，现在我们有一个完全功能的解析器，可以解析自定义流。
 - en: '* * *'
   id: totrans-split-529
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: There is actually the [`modern-uri`](https://hackage.haskell.org/package/modern-uri)
     package which contains a real-world Megaparsec parser which can parse URIs according
     to RFC 3986\. The parser from the package is much more complex than the one we
@@ -2949,3 +3315,5 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 实际上，[`modern-uri`](https://hackage.haskell.org/package/modern-uri) 包含一个真实的 Megaparsec
+    解析器，可以按照 RFC 3986 解析 URI。尽管包中的解析器比我们这里描述的要复杂得多。 [↩](#fnref1)
