@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:49:33'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:49:33
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Maybe Everything Is a Coroutine - Adam Nelson
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '[或许一切都是协程 - Adam Nelson](https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/)'
 - en: 来源：[https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/](https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/](https://adam.nels.onl//blog/maybe-everything-is-a-coroutine/)
 - en: 'I was inspired, after reading the excellent blog post [Let Futures Be Futures](https://without.boats/blog/let-futures-be-futures/),
     by the author''s thought experiment of a language in which all functions are coroutines
     and this is used to express asynchronicity: async functions can yield a type called
@@ -32,39 +38,48 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在阅读优秀博客文章 [让 Futures 成为 Futures](https://without.boats/blog/let-futures-be-futures/)
+    后，我受到了作者在想象一个所有函数都是协程的语言中，如何表达异步性的启发。异步函数在等待某些异步操作时可以产生称为 `Pending` 的类型，而纯同步函数可以产生
+    `Never`，表示它们根本不会产生任何输出。
 - en: 'The more I thought about this, the more I realized that a strongly-typed language
     in which *every function is a coroutine* could actually have a lot of nice properties.
     I''ve come up with a design with several cool features, including:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我越想到这个问题，越意识到在一个 *每个函数都是协程* 的强类型语言中，实际上可以有很多优点。我设计了一个带有几个很酷特性的语言：
 - en: A type system in which coroutines are basically state machines
   id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一种类型系统，其中协程基本上是状态机
 - en: A typed (algebraic) effect system based on coroutines
   id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 基于协程的类型化（代数）效果系统
 - en: Functions can be generic over effects and purity
   id: totrans-split-10
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 函数可以针对效果和纯度进行泛化
 - en: Effects can be "intercepted" by a caller and faked
   id: totrans-split-11
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调用者可以“拦截”效果并伪造它们
 - en: A powerful exception system based on simple sum types
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 基于简单和类型和的强大异常系统
 - en: An exception pass-through system that feels like a saner, generic version of
     checked exceptions
   id: totrans-split-13
@@ -72,12 +87,14 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一种感觉像是更合理的泛化检查异常的例外传递系统
 - en: Common Lisp-style resumable conditions
   id: totrans-split-14
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 类似于 Common Lisp 风格的可恢复条件
 - en: Immutable data structures and pure-by-default functions, but with the ability
     to use mutation in algorithms, by keeping all mutation in a function's scope and
     using coroutines to control state
@@ -85,39 +102,47 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不可变数据结构和默认纯函数，但可以在算法中使用突变，通过将所有突变保留在函数的作用域中并使用协程来控制状态
 - en: 'How does it work? There are three key features: *sequence types*, the *coroutine
     for loop*, and the *pass operator*.'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 它是如何工作的？有三个关键特性：*序列类型*，*协程 for 循环* 和 *传递操作符*。
 - en: Sequence Types
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 序列类型
 - en: 'Ordinary functions have *argument types* and a *return type*:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 普通函数具有 *参数类型* 和 *返回类型*：
 - en: '[PRE0]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In this everything-is-a-coroutine language, instead of a return type, every
     function has a *sequence type*. This is a sum type describing every type that
     the function can yield and every type that it can be resumed with after a yield.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种一切都是协程的语言中，每个函数没有返回类型，而是有一个 *序列类型*。这是一个代数类型，描述了函数可以产生的每种类型，以及在产生后可以继续执行的每种类型。
 - en: 'For example, a coroutine version of `fib` that, instead of returning the `n`th
     Fibonacci number, yields an infinite sequence of the Fibonacci numbers:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，`fib` 的协程版本，它不返回第 `n` 个斐波那契数，而是产生斐波那契数的无限序列：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The `()` means that, after the coroutine yields an `Int`, it can be *resumed*
     with no arguments. Because there is no base case (no branch that cannot be resumed),
     this coroutine must be infinite; it continues until the caller chooses not to
@@ -125,19 +150,23 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '`()` 表示在协程产生一个 `Int` 后，可以不带参数继续执行。因为没有基本情况（没有无法继续执行的分支），这个协程必须是无限的；它将继续执行，直到调用者选择不再继续执行它。'
 - en: 'Consider instead a coroutine that yields a *finite* sequence of `Int`s:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑代替一个产生 *有限* `Int` 序列的协程：
 - en: '[PRE2]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'This sequence type has two *cases*: either it emits an `Int` and can be resumed
     with no arguments, or it emits nothing and cannot be resumed.'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个序列类型有两个 *情形*：它要么发出一个 `Int` 并可以不带参数继续执行，要么不发出任何东西并且无法继续执行。
 - en: 'Notice the syntax of `Void`: a type with no parentheses is a valid sequence
     type. This means that the ordinary function `fib(n: Int) -> Int` is a valid coroutine
     as well—it yields `Int` once, then cannot be resumed. Pure functions are a subset
@@ -145,6 +174,8 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '注意 `Void` 的语法：没有括号的类型是有效的序列类型。这意味着普通函数 `fib(n: Int) -> Int` 也是有效的协程——它一次产生
+    `Int`，然后无法继续执行。纯函数是协程的一个子集！'
 - en: 'These strongly-typed coroutines are essentially state machines. Let''s define
     an additional piece of syntax: a *symbol* `:foo` is a unique singleton object
     whose type is also `:foo`. Using symbols, we can define a simple state machine
@@ -152,35 +183,42 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些强类型的协程本质上是状态机。让我们定义一个额外的语法片段：一个*符号* `:foo` 是一个唯一的单例对象，其类型也是 `:foo`。使用符号，我们可以为门定义一个简单的状态机：
 - en: '[PRE3]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Each state accepts only a specific set of actions. An open door can only be
     closed; a locked door can only be unlocked; a closed door can be opened or locked.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个状态只接受一组特定的动作。一扇开着的门只能关闭；一扇锁着的门只能解锁；一扇关闭的门可以打开或者锁上。
 - en: Coroutine For Loop
   id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 协程`for`循环
 - en: But how do we *use* these coroutines? The syntax for basic function calls remains
     the same; if a coroutine has only no-resume types in its sequence type, then it
     can be used directly as an argument or assigned to a variable.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们如何*使用*这些协程呢？基本函数调用的语法保持不变；如果一个协程在其序列类型中只有无恢复类型，那么它可以直接用作参数或赋值给变量。
 - en: 'For more complex coroutines, there is a for loop syntax. Consider the door
     state machine from before; this is an example of a for loop that uses it:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于更复杂的协程，有一个`for`循环语法。考虑之前的门状态机；这是一个使用它的`for`循环的示例：
 - en: '[PRE4]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This loop pattern-matches on the values yielded by `door`. The branches use
     the familiar keywords `continue` and `break`, but `continue` takes arguments now:
     it resumes `for`''s coroutine with new arguments, which must match the argument
@@ -189,6 +227,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个循环模式匹配`door`产生的值。分支使用熟悉的关键字`continue`和`break`，但现在`continue`带有参数：它使用新参数恢复`for`的协程，这些参数必须与序列类型的当前分支的参数类型匹配。直到遇到`break`，循环才结束。
 - en: We can add some conveniences for the common case of coroutines that yield a
     list of values without any resume arguments. `continue()` is inferred at the end
     of blocks whose resume type is `()`, `break` is inferred at the end of blocks
@@ -197,35 +236,42 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以为协程常见情况下产生值列表而不带任何恢复参数的情况增加一些便利。在恢复类型为`()`的块末尾推断出`continue()`，在没有恢复类型的块末尾推断出`break`，可以省略`Void`分支，假定通配符匹配不到`Void`。
 - en: '[PRE5]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The Pass Operator
   id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 传递操作符
 - en: 'Extending this coroutine syntax to support algebraic effects and error handling
     is straightforward. Errors can be yielded as ordinary values, which usually do
     not resume:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 将此协程语法扩展以支持代数效应和错误处理非常简单。错误可以作为普通值被产生，通常不会恢复：
 - en: '[PRE6]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Algebraic effects can be yielded, presumably all the way up to the main function,
     which will then resume with a response to the given effect. These get complex,
     but I'll introduce syntax sugar to deal with these huge signatures later.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 代数效应可以被产生，预计一直到主函数，然后将以对给定效应的响应恢复。这些变得复杂，但我稍后会引入语法糖来处理这些巨大的签名。
 - en: '[PRE7]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'But actually *using* effects and errors with the mechanisms we already have
     (for loops and `yield`) would be extremely cumbersome. It would look a lot like
     Go: manually checking for error states or effects everywhere, just to `yield`
@@ -233,10 +279,12 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上*使用*已经存在的机制（例如`for`循环和`yield`）与效应和错误将会非常繁琐。它看起来很像Go：到处手动检查错误状态或效应，只是为了将它们`yield`给堆栈中的下一个级别。
 - en: '[PRE8]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The common pattern here is `a -> continue(yield a)` (for branches that resume)
     and `e -> yield e` (for branches that don''t). This pattern is so common in this
     style of code that it deserves its own piece of syntax sugar: the *pass operator*,
@@ -244,6 +292,8 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的常见模式是 `a -> continue(yield a)`（对于需要恢复的分支）和 `e -> yield e`（对于不需要恢复的分支）。这种模式在这种代码风格中非常常见，它应该有自己的语法糖：*传递操作符*
+    `^`。
 - en: Placing `^` before an expression causes any value yielded by that expression
     that can be directly yielded (as `continue (yield a)` or just `yield a`) to be
     yielded. In other words, it causes any types contained in the function's sequence
@@ -251,14 +301,17 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在表达式前面加上`^`会导致该表达式产生的任何值（可以直接作为`continue (yield a)`或者仅仅`yield a`产生）被产生。换句话说，它会导致从这个表达式传递到调用者的函数序列类型中包含的任何类型。
 - en: 'This greatly simplifies the example function:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这大大简化了示例函数：
 - en: '[PRE9]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The sequence type is still a mess, though. And there''s another problem: what
     if a function yields a bunch of effect types, but also a type that you want to
     capture in a variable... that also happens to be in your function''s sequence
@@ -266,10 +319,12 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管序列类型仍然很混乱。还有另一个问题：如果一个函数产生了一堆效果类型，但同时也有一个你想在变量中捕获的类型……而且这个类型也恰好在函数的序列类型中？
 - en: 'Here are some changes that solve these problems:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是解决这些问题的一些变更：
 - en: The keyword `infer Type` can be used in any branch of the sequence type; its
     type is inferred as all subtypes of `Type` that are yielded by the function. Values
     passed through by the `^` operator are included in this inference.
@@ -277,12 +332,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 关键字`infer Type`可以在序列类型的任何分支中使用；它的类型被推断为函数产生的所有`Type`的子类型。通过`^`运算符传递的值也包括在此推断中。
 - en: '`infer Type(*)` also infers the resume arguments; this can infer multiple branches.'
   id: totrans-split-52
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`infer Type(*)`也推断恢复参数；这可以推断多个分支。'
 - en: The `^` operator can occur in front of sequence type branches. This causes `^`
     in the function body to only pass through types that also have a `^` in front
     of them in the sequence type.
@@ -290,6 +347,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`^`运算符可以出现在序列类型分支的前面。这会导致函数体中的`^`只传递具有序列类型前面也有`^`的类型。'
 - en: A block or keyword, like `nopass`, could prevent a type from being passed through;
     this would work like a catch block, ensuring the function can handle a specific
     yielded type.
@@ -297,20 +355,24 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个块或关键字，比如`nopass`，可以阻止某种类型被传递；这类似于捕获块，确保函数可以处理特定的产生类型。
 - en: With these changes, and assuming that supertypes `FileIO` and `Error` exist,
     the function becomes even simpler!
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这些变更，并假设`FileIO`和`Error`这两个超类型已存在，该函数变得更加简单！
 - en: '[PRE10]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Putting it All Together
   id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将所有内容整合起来
 - en: 'These three key features are a surprisingly solid core for a language, but
     they aren''t a full language on their own. They could fit into several different
     language designs, but, in my opinion, the ideal language built on this foundation
@@ -318,12 +380,14 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这三个关键特性构成了一个出奇稳固的语言核心，但它们本身并不是一个完整的语言。它们可以适用于几种不同的语言设计，但在我看来，建立在这个基础上的理想语言应该具有：
 - en: Strict functional purity outside of algebraic effects and mutable local variables.
     You can only perform side effects by yielding effect objects from `main`.
   id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 除了代数效应和可变局部变量外，严格的函数纯度。只能通过从`main`中产生的效果对象执行副作用。
 - en: Mutable local variables can still allow for efficient mutable data structures,
     thanks to coroutines. A mutable, resizeable array type can exist, but it cannot
     be yielded, passed as an argument, or stored in a struct. Structures of these
@@ -335,17 +399,20 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可变局部变量仍然允许有效的可变数据结构，多亏了协程。可以存在一个可变的、可调整大小的数组类型，但它不能被产生，不能作为参数传递，也不能存储在结构中。这些数组的结构可以通过将协程传递到函数中，然后使用由该协程产生的操作来操作。
 - en: Immutable, nominally-typed structs with subtyping.
   id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不可变的、名义类型的结构，带有子类型化。
 - en: A generic tuple type, allowing for tuples-with-symbols message passing a la
     Erlang, but strongly typed.
   id: totrans-split-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个通用的元组类型，允许像 Erlang 那样使用符号进行消息传递，但是是强类型的。
 - en: Full higher-order generics. This allows functions to be generic over purity
     and generic over checked exceptions, two qualities that are very rarely found
     in type systems.
@@ -353,6 +420,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 完整的高阶泛型。这允许函数在纯度和检查异常方面是泛型的，这两个特性在类型系统中非常罕见。
 - en: 'Type aliases for sequence types, which can include multiple branches. The syntax
     for this would likely use `(*)`. For example, you can define `type Ints -> Int()
     | Void`—the `->` indicates that it''s a sequence type—and then use it like this:
@@ -361,6 +429,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 序列类型的别名，可以包括多个分支。其语法可能会使用`(*)`。例如，你可以定义`type Ints -> Int() | Void` ——`->`表示它是一个序列类型——然后像这样使用：`someFunction()
+    -> Ints(*)`。
 - en: Using these types, functions can take sequence arguments. For example, `sum(seq
     -> Ints(*)) -> Int` is a sum function over a finite sequence of `Int`. It can
     be called with `sum(someFunction())`, and the *entire sequence* returned by `someFunction`
@@ -370,6 +440,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用这些类型，函数可以接受序列参数。例如，`sum(seq -> Ints(*)) -> Int`是一个对`Int`的有限序列求和函数。可以通过`sum(someFunction())`调用它，并且`someFunction`返回的*整个序列*将被传递给`sum`。
 - en: 'A syntax for standalone sequences should also exist, basically the coroutine
     equivalent of an [IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE).
     For example, `-> { yield 1 }` would be a sequence of type `-> Int` by default,
@@ -379,6 +450,8 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 应该也存在用于独立序列的语法，基本上是[IIFE](https://developer.mozilla.org/en-US/docs/Glossary/IIFE)的协程等价物。例如，`->
+    { yield 1 }` 默认是类型为 `-> Int` 的序列，但也可以显式声明类型：`-> Int() | Void { yield 1 }`。
 - en: 'Sequence literals could be written with square brackets: `[1, 2, 3]` would
     be syntax sugar for `-> Int() | Void { yield 1; yield 2; yield 3 }`.'
   id: totrans-split-67
@@ -386,9 +459,12 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 序列字面量可以用方括号写出：`[1, 2, 3]` 会被解释为 `-> Int() | Void { yield 1; yield 2; yield 3
+    }` 的语法糖。
 - en: I have no idea when I'll find the time to actually work on this, but I'd like
     to see this language come together. I feel like this everything-is-a-coroutine
     type system has a lot of potential as a new architecture for functional programming.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 我完全不知道何时能抽出时间来真正工作，但我希望能看到这种语言的发展。我觉得这种一切皆协程的系统作为函数式编程的新架构具有很大潜力。
