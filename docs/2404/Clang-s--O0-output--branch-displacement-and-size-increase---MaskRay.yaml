@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:35:53'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:35:53'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Clang''s -O0 output: branch displacement and size increase | MaskRay'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Clang的`-O0`输出：分支位移和大小增加 | MaskRay
 - en: 来源：[https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase](https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase](https://maskray.me/blog/2024-04-27-clang-o0-output-branch-displacement-and-size-increase)
 - en: tl;dr Clang 19 will remove the `-mrelax-all` default at `-O0`, significantly
     decreasing the text section size for x86.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: tl;dr Clang 19将在`-O0`时移除`-mrelax-all`的默认设置，显著减少了x86的文本段大小。
 - en: Span-dependent instructions
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 跨依赖指令
 - en: In assembly languages, some instructions with an immediate operand can be encoded
     in two (or more) forms with different sizes. On x86-64, a direct JMP/JCC can be
     encoded either in 2 bytes with a 8-bit relative offset or 6 bytes with a 32-bit
@@ -43,10 +51,12 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在汇编语言中，一些带有立即操作数的指令可以用两种（或更多）不同大小的形式编码。在x86-64上，直接的JMP/JCC指令可以用2字节编码，带有8位相对偏移量，或者用6字节编码，带有32位相对偏移量。短跳转更为常见，因为它占用的空间更小。然而，当跳转的目标太远（超出8位相对偏移的范围）时，必须使用长跳转。
 - en: '|'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
@@ -56,6 +66,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE1]'
   id: totrans-split-12
   prefs: []
@@ -65,6 +76,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: A 1978 paper by Thomas G. Szymanski ("*Assembling Code for Machines with Span-Dependent
     Instructions*") used the term "span-dependent instructions" to refer to such instructions
     with short and long forms. Assemblers grapple with the challenge of choosing the
@@ -74,10 +86,14 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 1978年Thomas G. Szymanski的一篇论文（"*Assembling Code for Machines with Span-Dependent
+    Instructions*"）使用术语“跨依赖指令”来指称这些具有短和长形式的指令。汇编器需要解决选择这些指令最佳大小的挑战，这通常被称为“分支位移问题”，因为分支是最常见的类型。理解Szymanski工作的好资源是[*Assembling
+    Span-Dependent Instructions*](https://www.complang.tuwien.ac.at/anton/assembling-span-dependent.html)。
 - en: '## Start small and grow'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '## 从小开始，逐渐增长'
 - en: Popular assemblers still used today tend to favor a "start small and grow" approach,
     typically requiring one more pass than Szymanski's "start big and shrink" method.
     This approach often results in smaller code and can handle additional complexities
@@ -85,6 +101,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天仍然流行的汇编器通常倾向于采用“从小开始，逐渐增长”的方法，通常比Szymanski的“从大开始，逐渐缩小”方法多需一次通过。这种方法通常会导致更小的代码，并且可以处理额外的复杂性，如对齐指令。
 - en: In LLVM, the [MC library](https://blog.llvm.org/2010/04/intro-to-llvm-mc-project.html)
     (Machine Code) is reponsible for assembly, disassembly, and object file formats.
     Within MC, "assembler relaxation" deals with span-dependent instructions. This
@@ -92,11 +109,13 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在LLVM中，[MC库](https://blog.llvm.org/2010/04/intro-to-llvm-mc-project.html)（机器码）负责汇编、反汇编和目标文件格式。在MC中，“汇编器放松”处理跨依赖指令。这与[链接器放松](/blog/2021-03-14-the-dark-side-of-riscv-linker-relaxation)是不同的。
 - en: 'Eli Bendersky provides a detailed explanation in a [2013 blog post](https://eli.thegreenplace.net/2013/01/03/assembler-relaxation)
     and highlights an interesting behavior:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Eli Bendersky在[2013年的博客文章](https://eli.thegreenplace.net/2013/01/03/assembler-relaxation)中详细解释并突出了一个有趣的行为：
 - en: For example, when compiling with -O0, the LLVM assembler simply relaxes all
     jumps it encounters on first sight. This allows it to put all instructions immediately
     into data fragments, which ensures there's much fewer fragments overall, so the
@@ -105,6 +124,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 例如，在使用`-O0`编译时，LLVM汇编器简单地在首次遇到的所有跳转上放松。这允许它将所有指令立即放入数据片段中，从而确保整体片段数量较少，因此汇编过程更快，消耗的内存更少。
 - en: When `-O0` is enabled and the integrated assembler is used (common by default),
     [clangDriver](/blog/2021-03-28-compiler-driver-and-cross-compilation) passes the
     `-mrelax-all` flag to the LLVM MC library. This sets the `MCRelaxAll` flag in
@@ -114,19 +134,25 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 当启用`-O0`并且使用嵌入式汇编器时（通常为默认情况），[clangDriver](/blog/2021-03-28-compiler-driver-and-cross-compilation)
+    会将`-mrelax-all`标志传递给LLVM MC库。 这将在`MCTargetOptions`中设置`MCRelaxAll`标志，指示汇编器可能仅在X86目标上以长格式（近距离）开始JMP和JCC指令。
+    ADD/SUB/CMP和非x86架构的其他指令保持不受影响。
 - en: '`-mrelax-all` tradeoff'
   id: totrans-split-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`-mrelax-all`权衡'
 - en: 'Here is an example:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是一个示例：
 - en: '|'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE2]'
   id: totrans-split-24
   prefs: []
@@ -136,6 +162,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE3]'
   id: totrans-split-26
   prefs: []
@@ -145,14 +172,17 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'The assembly (`clang -S`) looks like:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '汇编代码（`clang -S`）如下:'
 - en: '|'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE4]'
   id: totrans-split-30
   prefs: []
@@ -162,6 +192,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE5]'
   id: totrans-split-32
   prefs: []
@@ -171,15 +202,18 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: The JE instruction assembles to either a short jump (8-bit relative offset)
     or near jump (32-bit relative offset).
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: JE指令汇编后将成为短跳转（8位相对偏移）或近跳转（32位相对偏移）。
 - en: '|'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE6]'
   id: totrans-split-36
   prefs: []
@@ -189,6 +223,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE7]'
   id: totrans-split-38
   prefs: []
@@ -198,6 +233,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: The impact of `-mrelax-all` on text section size is significant, especially
     when there are many branch instructions. In an x86-64 release build of lld, `-mrelax-all`
     increased the `.text` section size by 7.9%. This translates to a 5.4% increase
@@ -208,6 +244,8 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-mrelax-all`对文本部分大小的影响非常显著，特别是当存在多个分支指令时。 在lld的x86-64 release构建中，`-mrelax-all`使`.text`部分大小增加了7.9%。这导致VM大小增加了5.4%，整体文件大小增加了4.6%。在lld的RISC-V
+    rv64gc release构建中，`-mrelax-all`使`.text`部分大小增加了13.7%。这导致VM大小增加了9.0%，整体文件大小增加了7.2%。'
 - en: Dean Michael Berris proposed to [remove the `-mrelax-all` default for `-O0`](https://reviews.llvm.org/D21830)
     in 2016, but it stalled. `-mrelax-all` caused undesired interaction issues with
     RISC-V's [conditional branch transforms](https://reviews.llvm.org/D108961), leading
@@ -216,15 +254,19 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: Dean Michael Berris在2016年提议[移除默认情况下的`-mrelax-all` for `-O0`](https://reviews.llvm.org/D21830)，但未获通过。`-mrelax-all`导致与RISC-V的[条件分支变换](https://reviews.llvm.org/D108961)产生不良交互问题，最近Craig
+    Topper移除了RISC-V的`-O0`中的`-mrelax-all`（https://github.com/llvm/llvm-project/pull/88538）。
 - en: This actually indicated a size regression when the condition branch transform
     patch landed in 2023\.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，这表明了在2023年时，条件分支变换补丁引入了大小回归。
 - en: '|'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE8]'
   id: totrans-split-44
   prefs: []
@@ -234,6 +276,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE9]'
   id: totrans-split-46
   prefs: []
@@ -243,6 +286,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: While `-mrelax-all` might have offered slight compile time benefits in the past,
     the gains are negligible today. Benchmarking using stage 2 builds of Clang showed
     no measurable difference between `-mrelax-all` and `-mno-relax-all`. On llvm-compile-time-tracker
@@ -253,12 +297,15 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然`-mrelax-all`在过去可能带来了轻微的编译时间好处，但如今收益微乎其微。使用Clang的阶段2构建进行基准测试显示，`-mrelax-all`和`-mno-relax-all`之间没有可测量的差异。
+    在llvm-compile-time-tracker上运行llvm-test-suite/CTMark基准测试，编译时间实际上[略微增加](https://llvm-compile-time-tracker.com/compare.php?from=ef2ca97f48f1aee1483f0c29de5ba52979bec454&to=18376810f359dbd39d2a0aa0ddfc0f7f50eac199&stat=instructions%3Au)了0.62%，而文本部分大小则[减小](https://llvm-compile-time-tracker.com/compare.php?from=ef2ca97f48f1aee1483f0c29de5ba52979bec454&to=18376810f359dbd39d2a0aa0ddfc0f7f50eac199&stat=size-text)了4.44%。
 - en: A difference for assembly at different optimisation levels would be quite surprising.
     GCC/GNU assembler don't exhibit similar expansion of JMP/JCC instructions even
     at `-O0`.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 惊人的是，在不同优化级别下进行汇编的差异是非常令人惊讶的。即使在`-O0`上，GCC/GNU汇编器也没有展示类似的JMP/JCC指令扩展。
 - en: 'These arguments strengthen the case for removing `-mrelax-all` as the default
     for `-O0`. [My patch](https://github.com/llvm/llvm-project/pull/90013) has landed
     and will be included in the next major release, LLVM 19.1\. I have also changed
@@ -267,11 +314,15 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些论据加强了将`-mrelax-all`作为`-O0`的默认值。[我的补丁](https://github.com/llvm/llvm-project/pull/90013)已经取得进展，并将包含在下一个主要版本，LLVM
+    19.1中。我还改变了Clang，使其对汇编输入尊重 `-mrelax-all`：`clang -c --target=x86_64 -mrelax-all
+    a.s`
 - en: Understanding the compile time difference
   id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 了解编译时间差异
 - en: I have studied a notorious huge file, `llvm/lib/Target/X86/X86ISelLowering.cpp`.
   id: totrans-split-52
   prefs: []
