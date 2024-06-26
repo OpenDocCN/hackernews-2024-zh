@@ -2,43 +2,52 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:59:35'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:59:35'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: I figured out how DMARC works, and it almost broke me | Simon Andrews
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我弄清楚了DMARC的工作原理，它几乎把我搞垮了 | Simon Andrews
 - en: 来源：[https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc](https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc](https://simonandrews.ca/articles/how-to-set-up-spf-dkim-dmarc)
 - en: I figured out how DMARC works, and it almost broke me
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我弄清楚了DMARC的工作原理，它几乎把我搞垮了
 - en: How to prevent email spoofing on your domain, using an unholy combination of
     silly standards.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何在您的域上防止电子邮件欺诈，使用一种愚蠢的标准组合。
 - en: Recently, I encountered a problem. My domain didn't correctly implement SPF,
     DKIM, or DMARC.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我遇到了一个问题。我的域名没有正确实施SPF、DKIM或DMARC。
 - en: 'Then, I encountered a second problem: I had no idea what those were, and seemingly
     *nobody* has written about SPF, DKIM, or DMARC in a way that a human can understand,
     not to mention implement. Every article I found was either highly technical, trying
@@ -46,37 +55,44 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我遇到了第二个问题：我完全不知道这些是什么，似乎*没有人*以人类可以理解的方式写过有关SPF、DKIM或DMARC的文章，更不用说实施了。我找到的每篇文章要么技术性很强，试图通过SEO来销售东西，要么水平太高以至于没有用处。
 - en: As a result, I've had to do a lot of hard work and research to understand this
     problem. Hopefully, because I had to do this, you won't.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我不得不进行大量的辛勤工作和研究来理解这个问题。希望是因为我必须这样做，您就不必了。
 - en: 'There''s two main sections here: a human explanation of what these things are,
     followed by a reasonably straightforward way to implement them.'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有两个主要部分：对这些事物是什么的人类解释，以及实施它们的相对简单的方法。
 - en: This might not be easy, but if you've landed here, it's probably not optional.
     I hope this helps.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您来到这里，这可能不容易，但这可能并非可选。希望这可以帮助到您。
 - en: '*I''m keeping this article up-to-date as I learn more, so it''ll change and
     grow. If you want to keep track of what''s changed since the last time you were
     here, [check the diffs on GitHub](https://github.com/simon360/simonandrews.ca/commits/main/pages/articles/how-to-set-up-spf-dkim-dmarc.mdx).*'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '*随着我的学习，我会不断更新本文，因此它将会变化和增长。如果您想了解自上次访问以来发生了什么变化，请[查看GitHub上的差异](https://github.com/simon360/simonandrews.ca/commits/main/pages/articles/how-to-set-up-spf-dkim-dmarc.mdx)。*'
 - en: Table of contents
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 目录
 - en: What are these weird acronyms?
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这些奇怪的首字母缩略词是什么？
 - en: 'SPF, DKIM, and DMARC are complementary systems. SPF and DKIM are used by email
     servers as indicators of whether or not an email is spam. DMARC then does two
     things: it tells email servers how *important* SPF and DKIM are, *and* what to
@@ -84,77 +100,92 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: SPF、DKIM和DMARC是互补的系统。邮件服务器使用SPF和DKIM作为邮件是否为垃圾邮件的指标。DMARC随后执行两件事情：它告诉邮件服务器SPF和DKIM的重要性，以及当电子邮件未能通过测试时该怎么做。
 - en: This probably doesn't make much sense yet - that's fine. Let's dig a little
     deeper.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前这可能还不太容易理解，但没关系。让我们深入一点。
 - en: SPF
   id: totrans-split-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: SPF
 - en: '`SPF` is a way to declare who''s allowed to send emails from your domain. It
     stands for the "sender policy framework," but you don''t need to know that. Just
     call it SPF, or "spoof." It''s meant to make it harder to send spoof emails.'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '`SPF`是声明谁可以从您的域发送电子邮件的一种方式。它代表"发件人策略框架"，但您不需要知道这一点。只需称其为SPF或"欺骗"。它旨在使发送欺骗邮件变得更加困难。'
 - en: For example, it's a way to say "emails from mycompany.com can only be sent from
     Google and Postmark." Declaring SPF makes it harder for me to send emails from
     your domain in an attempt to phish.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，它是一种表明"来自mycompany.com的电子邮件只能通过Google和Postmark发送"的方式。声明SPF使我更难以从您的域发送电子邮件以试图钓鱼。
 - en: 'Here''s how it works, for a *valid, non-phishing* email:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是它的工作方式，对于一个*有效的、非钓鱼*电子邮件：
 - en: I send an email to you from `hello@sadl.io`, using my Fastmail SMTP server.
   id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我从`hello@sadl.io`发送了一封电子邮件给你，使用了我的Fastmail SMTP服务器。
 - en: Gmail (your email service) receives the email.
   id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Gmail（您的电子邮件服务）接收到了该电子邮件。
 - en: The email is from someone at `sadl.io`, so Gmail grabs the DNS records for `sadl.io`
   id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 电子邮件来自`sadl.io`的某人，所以Gmail获取了`sadl.io`的DNS记录。
 - en: '`sadl.io` has a DNS record that declares its SPF policy. It says that emails
     can be sent from Fastmail.'
   id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`sadl.io`有一个声明其SPF策略的DNS记录。它声明电子邮件可以从Fastmail发送。'
 - en: This email was sent from Fastmail, so it passes the SPF test.
   id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这封电子邮件是从Fastmail发送的，因此它通过了SPF测试。
 - en: The email lands in your inbox.
   id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 电子邮件到达您的收件箱。
 - en: That's all great! `SPF` hasn't stopped me from sending a real email to you.
     But it seems pretty simple. So... what *would* it stop?
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 那太棒了！`SPF`没有阻止我向你发送真实的电子邮件。但它看起来相当简单。那么...它到底会阻止什么呢？
 - en: 'Emails are notoriously easy to spoof. To me, even though I haven''t written
     PHP in years, *nothing* demonstrates this more simply than this PHP script:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 众所周知，电子邮件容易被伪造。尽管我多年没有写PHP了，*没有*比这个PHP脚本更简单地证明了这一点：
 - en: '[PRE0]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This script sends an email to `employee@example.com`, which looks like it comes
     from `payroll@example.com`, and asks the employee to enter their banking details.
     It's a pretty compelling email, and could probably get a few people to, at least,
@@ -162,11 +193,14 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 此脚本向`employee@example.com`发送一封电子邮件，看起来是来自`payroll@example.com`，并要求员工输入其银行详细信息。这是一封相当有说服力的电子邮件，可能会让一些人至少点击链接
+    - 或更糟。
 - en: You could run this script *right now*, and if `example.com` hasn't set up SPF,
     an email might actually reach the inbox of `employee@example.com`.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 你现在*可以*运行这个脚本，如果`example.com`没有设置SPF，这封电子邮件可能真的会达到`employee@example.com`的收件箱。
 - en: 'Seriously, it''s that simple. We''ve all learned this at one time or another:
     emails are easy to spoof. It''s always been just a cost of doing business. "You
     can''t stop spoofers! Email is too complicated to fix!" are probably things you''ve
@@ -176,42 +210,50 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 说真的，事情就是这么简单。我们都在某个时候学过这个道理：电子邮件很容易被伪造。这一直是做生意的成本。"你不能阻止伪造者！电子邮件修复起来太复杂了！"这可能是你听过或者说过的话。我们把它放在脑后。我们知道电子邮件不安全，但我们还是在使用它们。结果证明这并非完全正确。SPF实际上可以帮助减少伪造邮件。
 - en: 'If SPF were set up, here''s what would happen when that script runs:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果设置了SPF，当该脚本运行时会发生以下情况：
 - en: An email gets sent to `employee@example.com`.
   id: totrans-split-35
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 一封电子邮件被发送到`employee@example.com`。
 - en: This email gets received by Google, who run the mail server for `example.com`
   id: totrans-split-36
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这封电子邮件被Google接收，他们运行`example.com`的邮件服务器。
 - en: Since it's an email from `example.com`, Google gets the DNS records for `example.com`
   id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于它是来自`example.com`的电子邮件，Google获取了`example.com`的DNS记录。
 - en: '`example.com` has an SPF policy declared, which states that emails can only
     be sent from Google.'
   id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`example.com`声明了一个SPF策略，指出只能从Google发送电子邮件。'
 - en: This email wasn't sent from Google; it was sent from a local mail server.
   id: totrans-split-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这封电子邮件并不是从Google发送的；它是从本地邮件服务器发送的。
 - en: Since the sending domain doesn't match a domain that's allowed by `example.com`,
     the email is marked as spam. *Maybe*.
   id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于发送域与`example.com`允许的域名不匹配，该电子邮件被标记为垃圾邮件。*也许*。
 - en: 'Wait... *maybe*? Yeah. SPF sounds great in principle. But it often has no effect
     without DMARC. We''ll get to that, but suffice to say: if you''ve just set up
     SPF, it''s mostly informational. Some email servers *might* use it, but they might
@@ -219,11 +261,13 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 等等…… *也许*？是的。SPF在原则上听起来很棒。但如果没有DMARC，它通常没有任何效果。我们会讲到这个，但可以说：如果你刚刚设置了SPF，它大部分是信息性的。一些邮件服务器*可能*会使用它，但它们可能不会给予太多重视。DMARC允许你增加其重要性。
 - en: On envelopes vs. letters
   id: totrans-split-42
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 关于信封和信函
 - en: This section gets even weirder, but bear with me. You might want to skim this
     now, read the rest of the article, and come back to it again after. It makes a
     lot more sense once you understand DMARC alignment, but we're not there yet. Alright.
@@ -231,12 +275,14 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一部分变得更加怪异，但请跟着我走。你可能现在想大致看一下这部分内容，然后阅读剩余的文章，再回来再看。一旦理解DMARC对齐，这部分就会更有意义，但我们还没到那一步。好了，让我们开始。
 - en: 'First off: shout out to Liam, who correctly pointed out an inaccuracy with
     this description of SPF. SPF *actually* checks the validity of the "envelope from",
     not "from".'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先：向正确指出这个SPF描述不准确的Liam致敬。SPF *实际上*检查的是"信封发件人"的有效性，而不是"发件人"。
 - en: 'Liam pointed me to an article that explains the difference between two things:
     an email (think of it as a letter), and the SMTP interactions that transport that
     letter (an envelope). It''s from XEAMS, and you can (and should!) [read it here](https://www.xeams.com/difference-envelope-header.htm).
@@ -244,6 +290,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Liam向我指出了一篇文章，解释了两个事物之间的区别：一封电子邮件（将其视为一封信函）和传输该信函的SMTP交互（一个信封）。这篇文章来自XEAMS，你可以（而且应该！）[在这里阅读](https://www.xeams.com/difference-envelope-header.htm)。但我会用自己的话来概括：
 - en: The **email** is what you see in your client. It includes the message body,
     and a whole bunch of headers. Those headers include the `From` header, which we
     spoofed in that PHP script, as well as the email subject, DKIM headers (we'll
@@ -255,12 +302,17 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '**电子邮件** 是你在客户端看到的东西。它包括消息正文和一堆头部信息。这些头部包括 `From` 头部，在我们那个 PHP 脚本中伪造了，以及电子邮件主题、DKIM
+    头部（我们马上会讲到！）和一堆其他头部。大多数电子邮件头部被用户的电子邮件客户端软隐藏，但你总是可以查看它们 —— 在你的电子邮件客户端中，无论是应用程序还是网站，你可能会找到一个名为
+    "查看原始" 或 "查看原始消息" 的菜单项。这将展示给你一个电子邮件的 *真实* 内容。但它不会展示给你信封。'
 - en: 'The **envelope** is what happens at the SMTP level. I''ll defer to the XEAMS
     article on what SMTP looks like, but in effect: the *envelope* can contain a *completely*
     different `MAIL FROM` email address than the email''s `From` header.'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '**信封** 是在 SMTP 层面发生的事情。我会参考 XEAMS 文章中 SMTP 的样子，但实际上：*信封* 可能包含与邮件的 `From` 头完全不同的
+    `MAIL FROM` 邮件地址。'
 - en: 'You''ll hear a few different terms thrown around to describe the SMTP `MAIL
     FROM` command: envelope from, return to, bounce address. They''re all the same
     thing. I like "envelope from" colloquially, because the analogy is clever, but
@@ -269,11 +321,14 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会听到几个术语用来描述 SMTP `MAIL FROM` 命令：信封发件人、回复地址、退信地址。它们都是同一个东西。我喜欢在口语中称之为 "信封发件人"，因为这个类比很巧妙，但我认为知道它来源于用于传递你的电子邮件的
+    SMTP 协议命令是很有用的。
 - en: 'Which brings us to this: SPF *doesn''t actually care about the From header
     in your email*. It only cares about the `MAIL FROM` value.'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就带我们来了：SPF *实际上并不关心你的电子邮件的 From 头部*。它只关心 `MAIL FROM` 的值。
 - en: 'Later on, we''ll talk about DMARC alignment. But here''s a spoiler: with DMARC
     alignment, DKIM notwithstanding, you''re saying "in order for an email to be valid,
     the FROM address has to pass SPF, and the domain in the From *header* has to be
@@ -283,6 +338,8 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 后来，我们将讨论 DMARC 对齐。但这里有个预告：通过 DMARC 对齐，尽管 DKIM 不考虑，你在说“为了使邮件有效，发件人地址必须通过 SPF，且
+    From 头中的域必须与发件人地址中的域相同”。实际上，它使得 PHP 伪造示例大致运行得如你所期望的那样，但要经过一些绕圈子的方式才能实现。
 - en: I've left this inaccuracy in the above section. Why? Well... explaining the
     difference between envelope from and the From header has taken up as much space
     on this page as the explanation of SPF itself. If I explained this *first*, you'd
@@ -293,17 +350,22 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在上述部分留下了这个不准确之处。为什么呢？嗯……解释信封发件人和 From 头之间的差异在这个页面上占用了与 SPF 本身解释一样多的空间。如果我先解释了这个，到真正的例子时你可能已经入迷了。抱歉误导了你
+    —— 但如果有帮助的话，我写这篇文章的第一个版本时也不知道这个区别，而我 *基本上* 从中对 SPF 有了一个不错的理解。
 - en: DKIM
   id: totrans-split-52
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: DKIM
 - en: '`DKIM` is a way to declare signing keys for emails from your domain. It stands
     for DomainKeys Identified Mail. Again... that doesn''t matter. It''s Dee-Kim.
     You can think of it as SPF''s cryptographic cousin.'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '`DKIM` 是声明来自你的域的邮件签名密钥的一种方式。它代表 DomainKeys Identified Mail。再说一遍……这并不重要。它读作
+    Dee-Kim。你可以将它视为 SPF 的加密表兄弟。'
 - en: 'It means that an email server that receives an email can check if that email
     was sent by a server that knows a secret. Since it''s public-key cryptography,
     there''s two keys: a private one, held by your email sending server (SMTP) and
@@ -312,6 +374,8 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 它意味着接收邮件的电子邮件服务器可以检查该邮件是否由知道一个秘密的服务器发送。由于它是公钥加密，有两个密钥：一个是私密的，由你的电子邮件发送服务器（SMTP）持有且其他人不知道，另一个是公开的，设置在你的
+    DNS 中，任何人都可以看到并用于确定是否使用那个秘密密钥进行签名。
 - en: A domain can have multiple DKIM keys, by the way. That took me a long time to
     figure out. In all likelihood, most of the email sending services you use (Gmail,
     Office 365, Fastmail, Mailchimp, Postmark, Sendgrid, Mandrill, Postmark, or whatever)
@@ -322,75 +386,90 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一句，一个域名可以有多个DKIM密钥。我花了很长时间才弄清楚这一点。很可能，你使用的大多数电子邮件发送服务（Gmail、Office 365、Fastmail、Mailchimp、Postmark、Sendgrid、Mandrill、Postmark或其他）都会提供一个DKIM密钥，你可以添加到你的DNS记录中。如果你添加了该密钥，你就授权这些服务代表你的域名发送邮件
+    - 这类似于在SPF中添加它们，但不是关于域名，而是关于知道一个秘密，
 - en: 'Here''s how it works in a happy path:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是它在顺利路径中的工作方式：
 - en: I send an email from `hello@sadl.io` to `somebody@gmail.com`.
   id: totrans-split-57
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我从`hello@sadl.io`发送电子邮件给`somebody@gmail.com`。
 - en: This email goes through my Fastmail SMTP server in order to be sent.
   id: totrans-split-58
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了发送该电子邮件，这封电子邮件经过我的Fastmail SMTP服务器。
 - en: The Fastmail SMTP server generates a signature using the secret key, and attaches
     it to the email, then sends it to `example.com`'s receiving server.
   id: totrans-split-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: Fastmail SMTP服务器使用秘密密钥生成签名，并将其附加到电子邮件，然后将其发送到`example.com`的接收服务器。
 - en: The Google email server receives this email. It's from `sadl.io`, so it gets
     the DNS records.
   id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 谷歌邮件服务器接收这封邮件。它来自`sadl.io`，所以它获取了DNS记录。
 - en: The email has a signature embedded, and the DNS records for `sadl.io` declare
     a few public DKIM keys which can be used to verify that signature.
   id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 该电子邮件嵌入了一个签名，并且`sadl.io`的DNS记录声明了几个公共DKIM密钥，这些密钥可以用来验证该签名。
 - en: One of those DKIM keys matches the one used to make this signature - specifically,
     the one that Fastmail provides. So the DKIM test passes.
   id: totrans-split-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 其中一个DKIM密钥与用于生成此签名的密钥匹配 - 具体来说，是Fastmail提供的那个。因此，DKIM测试通过。
 - en: The email lands in `somebody@gmail.com`'s inbox.
   id: totrans-split-63
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 电子邮件落入`somebody@gmail.com`的收件箱。
 - en: 'The unhappy path here is fairly straightforward. You could use the same PHP
     script from the SPF section. Here''s what would happen:'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的不幸路径非常简单。你可以使用来自SPF部分的同样PHP脚本。这是会发生的事情：
 - en: I run this script. An email gets sent to `employee@example.com`.
   id: totrans-split-65
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我运行这个脚本。邮件发送到`employee@example.com`。
 - en: This email gets received by Google, who run the mail server for `example.com`
   id: totrans-split-66
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这封电子邮件被谷歌接收，他们运行`example.com`的邮件服务器。
 - en: Since it's an email from `example.com`, Google gets the DNS records for `example.com`
   id: totrans-split-67
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于这是来自`example.com`的电子邮件，Google获取了`example.com`的DNS记录
 - en: The `SPF` test fails. But that *might* be ok, because `example.com` declares
     some DKIM keys in its DNS records.
   id: totrans-split-68
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`SPF`测试失败了。但是*可能*没关系，因为`example.com`在其DNS记录中声明了一些DKIM密钥。'
 - en: 'This email doesn''t have a signature attached. So none of those DKIM keys are
     useful. (Alternative: the email *does* have a signature attached, but it doesn''t
     match the signature that would be generated by any of the public keys on `example.com`).'
@@ -398,18 +477,21 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这封电子邮件没有附加签名。因此，这些DKIM密钥都没有用。（或者：电子邮件*确实*有附加签名，但与`example.com`上的任何公共密钥生成的签名不匹配）。
 - en: Since the email failed the SPF test *and* the DKIM test, it's marked as spam.
     *Maybe*.
   id: totrans-split-70
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于电子邮件未通过SPF测试*和*DKIM测试，它被标记为垃圾邮件。*也许*。
 - en: 'Yup. Once again: *maybe*. An email could fail *both* of these tests, and still
     land in a user''s inbox. You''ve put all this work in, and *still*, your email
     domain can be spoofed with 5 lines of *incredibly basic* PHP.'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的。再一次：*也许*。一封电子邮件可能会*同时*失败这两个测试，但仍然会落入用户的收件箱。你已经付出了这么多的努力，*仍然*，你的电子邮件域名可以用5行*非常基础的*PHP进行欺骗。
 - en: If you're me, it's taken hours to get to this point. You're dejected and demotivated.
     Everything you've tried has been hard to understand, and required a bunch of research.
     You've nervously updated DNS records, afraid that you're going to break your organisation's
@@ -418,53 +500,64 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你是我，已经花费数小时达到这一点。你感到沮丧和失去动力。你尝试过的每件事都很难理解，并且需要大量研究。你紧张地更新DNS记录，担心会破坏你组织的电子邮件服务
+    - 只是发现，相反地，你实际上什么也没做。一切都很糟糕。你短暂地重新考虑了你的职业选择。
 - en: 'There''s one acronym left on your list of things to implement: DMARC. Another
     miserable email security practice to implement, and - you expect - one more solution
     that leads to a dead end.'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在你要实现的事物清单中，还有一个缩写词：DMARC。另一个可怜的电子邮件安全实践要实施，并且 - 你预期 - 又一个导致死路的解决方案。
 - en: Alright. Fine. Screw it. Let's get into it. But if this doesn't work, I give
     up.
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧。好的。见鬼。我们就这么搞吧。但如果这不起作用，我放弃。
 - en: DMARC
   id: totrans-split-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: DMARC
 - en: I have good news for you. DMARC *will* make SPF and DKIM work better.
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我有个好消息告诉你。DMARC *会*使 SPF 和 DKIM 运行得更好。
 - en: 'But there''s some bad news, too: it''s a bit complicated, and requires some
     more infrastructure.'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 但也有一些坏消息：它有点复杂，并且需要一些更多的基础设施。
 - en: 'So, what is DMARC? At its core, it''s actually two things, packaged up into
     one DNS record:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，什么是 DMARC？在其核心，它实际上是两件事情，打包在一个 DNS 记录中：
 - en: It's a policy, which declares what email servers should do when an email fails
     SPF and DKIM tests
   id: totrans-split-79
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 它是一个政策，宣布当电子邮件未通过 SPF 和 DKIM 测试时，邮件服务器应该做什么。
 - en: It's a reporting system, so that you can figure out who is trying to spoof your
     domain
   id: totrans-split-80
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这是一个报告系统，让你可以找出谁在试图伪造你的域名。
 - en: You're probably more interested in 1, but 2 is super important. To understand
     why, let's talk about why SPF and DKIM don't do the thing you thought they did.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能更感兴趣于1，但2非常重要。要理解为什么，让我们谈谈为什么 SPF 和 DKIM 并不是你以为的那样。
 - en: Emails are complicated. If you haven't come to that conclusion by this point,
     I'd like to talk to you. It's an old system that's held together by a bazillion
     standards that have been written over decades. People do unexpected things with
@@ -473,11 +566,13 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 电子邮件很复杂。如果你到现在还没有得出这个结论，我想和你聊聊。这是一个由几十年来编写的无数标准维持的旧系统。人们对电子邮件做出了意想不到的事情。有些复杂的系统是在90年代设立的，至今仍在电子邮件之上运行，毫无阻碍。
 - en: Changing how emails works tends to break things. And that's what SPF and DKIM
     do.
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 改变邮件工作方式通常会导致一些问题。这就是 SPF 和 DKIM 所做的事情。
 - en: SPF and DKIM are used as *indicators* of whether an email is spoofed or not.
     But if you added an SPF record on your domain, and you forget to add one of your
     email systems - say, Postmark, which you use to send mission-critical notifications
@@ -488,6 +583,9 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: SPF 和 DKIM 被用作是否伪造邮件的*指标*。但如果你在你的域上添加了一个 SPF 记录，却忘记为你的邮件系统之一添加 - 比如说，Postmark，你用它向客户发送应用程序的重要通知
+    - 那么你的客户可能就收不到邮件了。如果你在你的域上添加了 DKIM 密钥，但是你的某个邮件服务不支持 DKIM - 或者你忘记为该服务添加 DKIM 密钥
+    - 那么你的客户也可能收不到邮件。
 - en: But they *don't* stop getting emails. Some emails will fail both SPF *and* DKIM,
     and still end up in users' inboxes. It's entirely at the discretion of the receiving
     email server, and they can be quite lenient. That's good for the services you
@@ -495,20 +593,24 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 但他们*并没有*停止收到邮件。有些邮件将同时失败 SPF *和* DKIM，但仍然会进入用户的收件箱。这完全取决于接收邮件服务器的自由裁量权，它们可能会相当宽松。这对于你忘记添加的服务来说是好事，但对于你试图消灭的伪造者来说是坏事。
 - en: 'You want to do two things:'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 你想做两件事：
 - en: Find out what services you misconfigured, so you can fix them.
   id: totrans-split-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 找出你配置错误的服务，这样你就可以修复它们。
 - en: Stop spoofers from abusing your domain.
   id: totrans-split-88
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 阻止伪造者滥用你的域名。
 - en: 'The "reporting" part of DMARC helps you, in the early days of your email domain
     security endeavour, figure out what services you misconfigured and need to update.
     You can enable the reporting part, *without* enforcing a strict SPF/DKIM policy.
@@ -518,6 +620,8 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: DMARC 的“报告”部分帮助你，在你的电子邮件域安全工作的早期阶段，找出你配置错误并需要更新的服务。你可以启用报告部分，*而不*强制执行严格的 SPF/DKIM
+    策略。换句话说：你可以使用 DMARC 找出从你的域发送的邮件，这些邮件*将*失败 SPF/DKIM 测试，*而不*告诉邮件服务器所有失败这些测试的邮件都应标记为垃圾邮件。
 - en: Once you're satisfied that you've configured everything, and all the reports
     you get are for spoof emails, you can update your policy to tell email servers
     that those tests are now important. It gives you a bit of time to validate and
@@ -525,32 +629,39 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你确信已配置好一切，并且所有收到的报告都是关于伪造邮件，你可以更新你的策略，告诉邮件服务器这些测试现在很重要。这给了你一些时间来验证和测试，在你切换到强制执行
+    SPF/DKIM 规则之前。
 - en: 'Implementing DMARC goes something like this:'
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 实施 DMARC 大致如下：
 - en: Read this article, bash your head against a wall, openly weep.
   id: totrans-split-92
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 阅读这篇文章，对着墙头疼，公开哭泣。
 - en: Implement a lenient DMARC record in your domain's DNS, so that you start getting
     reports.
   id: totrans-split-93
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在你域名的 DNS 中实施一个宽松的 DMARC 记录，这样你就可以开始收到报告。
 - en: Read through the reports you get over the next days and weeks. Check if any
     valid emails are getting flagged for failing DKIM or SPF. If they are, fix them.
   id: totrans-split-94
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 仔细阅读接下来几天和几周收到的报告。检查是否有任何有效的电子邮件因 DKIM 或 SPF 失败而被标记。如果有，修复它们。
 - en: Update your DMARC record to make it less lenient.
   id: totrans-split-95
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 更新您的 DMARC 记录以减少宽松性。
 - en: Unfortunately, implementing DMARC is a process. When I started investigating
     this problem, I was hoping I could copy some good SPF, DKIM, and DMARC records,
     update them to match my domains, and implement them, all within an hour or two.
@@ -559,10 +670,12 @@
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，实施 DMARC 是一个过程。当我开始调查这个问题时，我希望能够复制一些良好的 SPF、DKIM 和 DMARC 记录，更新它们以匹配我的域，并在一两个小时内实施它们。事实并非如此。这需要一些努力，您需要让一些时间过去。
 - en: 'In other words: email is complicated.'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说：电子邮件很复杂。
 - en: Luckily, as I said, I've done the hard work here, because I don't think *anybody*
     should have to figure this out on their own again. For you, this process will
     have to play out over the course of a few days or, more likely, a few weeks, but
@@ -570,11 +683,13 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，正如我所说，我在这里已经做了艰苦的工作，因为我认为 *任何人* 都不应该再自己摸索。对您来说，这个过程将在几天或更可能是几周内进行，但在几分钟内，您就可以成功地走出这一步。
 - en: Let's talk about alignment
   id: totrans-split-99
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 让我们谈谈对齐问题
 - en: 'Here''s the magic bit of DMARC, that makes all of this sing: it enforces *alignment*
     between either the *envelope from* (aka SMTP MAIL FROM) and the From header, *or*
     the domain on the DKIM signature and the From header. In both cases, the From
@@ -583,11 +698,15 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: DMARC 的魔力部分在于它使所有这些变得更加完美：它在 SMTP MAIL FROM（也称为信封发件人）和 From 头部之间强制实施 *对齐*，*或者*
+    在 DKIM 签名域和 From 头部之间实现对齐。在这两种情况下，From 头部可以被视为锚点：用户看到的是它，所以 SPF 或 DKIM 需要保证 From
+    头部是它应该是的。
 - en: 'This finally does the thing we set out to do. That PHP script at the top will,
     now, only succeed in getting an email to the inbox if one of two things is true:'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终这样做的 PHP 脚本在顶部现在只会在满足以下两个条件之一时成功地将电子邮件送入收件箱：
 - en: The PHP script is running on an IP address that is authorised to send for `example.com`
     using SPF, *and* both the SMTP MAIL FROM and the From header end in `example.com`,
     *or*
@@ -595,12 +714,16 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: PHP 脚本正在一个授权为 `example.com` 发送邮件的 IP 地址上运行，使用 SPF，*并且* SMTP MAIL FROM 和 From
+    头部都以 `example.com` 结尾，*或者*
 - en: The PHP script is hooked up to a mail server that can sign an email with DKIM,
     using a key that's valid for `example.com`, and the From header ends in `example.com`.
   id: totrans-split-103
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: PHP 脚本连接到一个可以使用 DKIM 为电子邮件签名的邮件服务器，使用适用于 `example.com` 的密钥，From 头部以 `example.com`
+    结尾。
 - en: (In both cases, assume the `mail()` function is hooked up to a mail server on
     the same IP. Otherwise, the words I have to use just become a jumble. The script
     could be hooked up to an external mail server, and as long as *that* mail server
@@ -608,53 +731,65 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: （在这两种情况下，假设 `mail()` 函数连接到同一 IP 上的邮件服务器。否则，我需要使用的词汇会变成一团乱。脚本可以连接到外部邮件服务器，只要
+    *该* 邮件服务器在 SPF 中被允许，或者可以用 DKIM 为该域签名，它就能正常工作。）
 - en: Now might be a good time to jump back to the [envelope from](#on-envelopes-vs-letters)
     section - it pairs nicely with this section.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在可能是一个回到[信封发件人](#on-envelopes-vs-letters)部分的好时机——它与本部分完美配对。
 - en: How do I use them?
   id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何使用它们？
 - en: 'Here''s the good news: you *probably* have SPF and DKIM records set up for
     your domain. These days, most email services will give you the correct DNS records
     to add, and offer tools to verify that they''re set up correctly.'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 好消息是：您的域名 *可能* 已经设置了 SPF 和 DKIM 记录。如今，大多数电子邮件服务会提供正确的 DNS 记录供您添加，并提供验证工具来确保它们设置正确。
 - en: Implement SPF
   id: totrans-split-108
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 实施 SPF
 - en: 'SPF is set up as a `TXT` record in your domain''s DNS. Here''s what mine looks
     like for simonandrews.ca:'
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: SPF 是设置为您域名的 DNS 中的 `TXT` 记录。这是我的 simonandrews.ca 的样子：
 - en: '[PRE1]'
   id: totrans-split-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: It's declared directly on `simonandrews.ca` as a `TXT` record - not on a subdomain.
     If I were sending emails from `newsletter.simonandrews.ca`, I'd need *another*
     record for that subdomain.
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 它直接在 `simonandrews.ca` 上声明为 `TXT` 记录——不是在子域上。如果我要从 `newsletter.simonandrews.ca`
+    发送电子邮件，我需要为该子域 *再* 添加另一个记录。
 - en: 'Most SPF records are going to look like this, though many will have more than
     one `include:` clause. Let''s break this down:'
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数 SPF 记录会像这样，尽管许多会有多个 `include:` 子句。让我们来详细解释一下：
 - en: '`v=spf1`: Declares this as an SPF record, as distinct from the other things
     you might declare in a TXT record. It''s SPF v1.'
   id: totrans-split-113
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`v=spf1`: 声明这是一个 SPF 记录，与你可能在 TXT 记录中声明的其他内容不同。这是 SPF v1 版本。'
 - en: '`include:spf.messagingengine.com`: Emails are allowed to be sent from anything
     `spf.messagingengine.com` (Fastmail''s SPF subdomain) allows. Normally, this means
     that `spf.messagingengine.com` has its own SPF DNS record, which will probably
@@ -666,6 +801,10 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`include:spf.messagingengine.com`: 允许从任何 `spf.messagingengine.com`（Fastmail
+    的 SPF 子域）发送邮件。通常情况下，这意味着 `spf.messagingengine.com` 有其自己的 SPF DNS 记录，其中可能会列出一些有效的
+    IP 地址，可以从这些地址发送邮件。对于 transactional emails，也有一些其他服务，比如 Mandrill。你可以有任意数量的这些声明。如果在你的域上设置了
+    SPF 后想查看 `include:` 是如何工作的，请参考 DMARC 分析器 [SPF Record Checker](https://www.dmarcanalyzer.com/spf/checker/)。'
 - en: '`-all`: This one''s confusing, so pay attention. You might think it''s an argument,
     like you''d use on a terminal command. It''s not. It''s actually saying "fail"
     (`-`) on "all others" (`all`). In other words: "if none of the previous declarations
@@ -675,6 +814,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`-all`: 这个很容易混淆，请注意。你可能会认为这是一个像在终端命令中使用的参数。但实际上不是。它实际上表示对“所有其他”的“失败” (`-`)。换句话说：“如果前面的声明都不匹配你从我们域收到的邮件，那么你收到的邮件很可能是伪造的。”'
 - en: The last one, `-all`, is especially confusing because of what many email services
     recommend - which is `~all`. That's a tilde, not a dash. It's easy to miss. The
     tilde means "this should fail, but don't do anything." Some other services suggest
@@ -685,6 +825,9 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一个 `-all`，特别令人困惑，因为许多邮件服务推荐的是 `~all`。那是一个波浪符，不是破折号。很容易忽略。波浪符表示“应该失败，但不执行任何操作”。其他一些服务可能建议使用
+    `?all`，看起来像是编码错误，但实际上表示“如果邮件不匹配这些域，那么就不要紧”。*如果你使用 `~all` 或 `?all`，你的 SPF 记录实际上没有起到多大作用，即使你设置了
+    DMARC。* 相反，应该使用 `-all`。**真的，请使用 `-all`。** 总是把它放在你的 SPF 记录的最后。
 - en: 'Like I said, most email services these days provide the SPF record you should
     set at the time you set up the service, and they will then *validate* your SPF
     record by checking your DNS from their side. You should double check with each
@@ -696,6 +839,8 @@
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我所说，大多数邮件服务现在在设置服务时提供应该设置的 SPF 记录，并会从他们的端口验证你的 DNS。你应该与每个提供商双重检查你的 SPF 当前配置是否正确。在服务的控制面板或配置中，可能会有一个“域”部分指导你并验证你的设置。如果有需要，他们的支持团队可能会提供帮助。还有一点要记住：如果他们建议使用
+    `~all` 或 `?all`，请忽略并使用 `-all`。
 - en: '**N.B.** SPF used to be its own DNS record type - instead of declaring a TXT
     record in your domain''s DNS that contains SPF information, you''d declare an
     SPF record. If your domain has SPF-type records and TXT-type records, remove the
@@ -706,11 +851,15 @@
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '**N.B.** SPF 之前曾经是其自己的 DNS 记录类型 - 你会在域的 DNS 中声明一个 SPF 记录，而不是 TXT 记录来包含 SPF
+    信息。如果你的域有 SPF 类型的记录和 TXT 类型的记录，删除 SPF 记录。如果你只有 SPF 类型的记录，将它们移动到 TXT 类型的记录中。这涉及到
+    DNS，可能会让你感到焦虑，但请相信我。SPF 类型的记录正在逐渐消失，所有遵循 SPF 记录的邮件服务都将从 TXT 类型的记录中读取它们。你应该进行这个操作。'
 - en: Main takeaway
   id: totrans-split-119
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 主要要点
 - en: You probably have SPF set up, even if you didn't know you were setting it up
     at the time. It was probably just one of a hundred small tasks you did when you
     signed up for an emailing platform. But you should check it. Use your email services'
@@ -718,11 +867,14 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能已经设置了 SPF，即使当时你并不知道自己在设置它。这可能只是你注册电子邮件平台时做的一百个小任务之一。但是你应该检查它。使用你的电子邮件服务工具来检查它们，但也要进行手动检查。而且永远不要忘记使用
+    `-all`。
 - en: Resources
   id: totrans-split-121
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 资源
 - en: dmarcian has a good overview of the [syntax for SPF records](https://dmarcian.com/spf-syntax-table/).
     There's quite a lot more available than I've described, but in my experience,
     you don't need all that detail. Regardless, now that you know the basics (congratulations,
@@ -731,17 +883,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: dmarcian 提供了 [SPF 记录语法概述](https://dmarcian.com/spf-syntax-table/)。比我描述的要多得多，但根据我的经验，你并不需要那么多细节。无论如何，现在你已经掌握了基础知识（顺便说一句，恭喜你！），这个页面应该很容易理解。
 - en: The dmarc analyser [SPF Record Checker](https://www.dmarcanalyzer.com/spf/checker/)
     is a good way to check your SPF records.
   id: totrans-split-123
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: DMARC 分析器的 [SPF 记录检查器](https://www.dmarcanalyzer.com/spf/checker/) 是检查你的 SPF
+    记录的好方法。
 - en: Implement DKIM
   id: totrans-split-124
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 实施 DKIM
 - en: With DKIM, you're even more at the whims of your email providers. They might
     provide instructions to set up DKIM, like with SPF. If they don't provide instructions,
     it probably means they don't support DKIM. If they *do* provide instructions,
@@ -749,6 +905,8 @@
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了 DKIM，你甚至更加受制于你的电子邮件提供商。他们可能会提供设置 DKIM 的说明，就像设置 SPF 一样。如果他们没有提供说明，那可能意味着他们不支持
+    DKIM。如果他们*确实*提供了说明，你应该*严格按照*它们来执行。
 - en: Normally, a DKIM public key lives in your DNS records on a subdomain of `_domainkey.yourdomain.net`
     - for example, for Fastmail, I have keys on `fm1._domainkey.simonandrews.ca`,
     `fm2._domainkey.simonandrews.ca`, and `fm3._domainkey.simonandrews.ca`, per their
@@ -757,12 +915,16 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，DKIM 公钥存储在你的 DNS 记录中的 `_domainkey.yourdomain.net` 的子域上 - 例如，对于 Fastmail，我在
+    `fm1._domainkey.simonandrews.ca`、`fm2._domainkey.simonandrews.ca` 和 `fm3._domainkey.simonandrews.ca`
+    上有按照他们的指示设置的密钥。它可能是一个 `TXT` 记录，其中直接包含密钥，或者是一个 `CNAME` 记录，指向你的电子邮件提供商托管的公钥。
 - en: When an email gets signed by the sending server using DKIM, the signature will
     include the identifier to use - for example, on my domain, it would be one of
     `fm1`, `fm2`, or `fm3`.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 当电子邮件由发送服务器使用 DKIM 签名时，签名将包含要使用的标识符 - 例如，在我的域上，可以是 `fm1`、`fm2` 或 `fm3` 中的一个。
 - en: I won't get into the structure here *at all*. It varies by provider, but *will*
     end up with a DNS record underneath `_domainkey.yourdomain.net`. Again, there's
     probably something in a service's Domains dashboard that tells you what to do,
@@ -771,22 +933,28 @@
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 我这里一点也不涉及结构*。*它会因服务提供商而异，但最终将在 `_domainkey.yourdomain.net` 的 DNS 记录下生成。同样，服务的域名面板中可能有相关信息告诉你应该做什么，并验证你的配置。你可能已经设置了
+    DKIM，并且不知道。
 - en: Main takeaway
   id: totrans-split-129
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 主要要点
 - en: Your email providers will tell you how to set up DKIM, if they support it. Trust
     them, and follow their instructions. If they don't support DKIM, it's not the
     end of the world - but make sure SPF is set up correctly.
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的电子邮件提供商支持 DKIM，他们会告诉你如何设置。相信他们，并按照他们的指示操作。如果他们不支持 DKIM，这并不是世界末日 - 但请确保 SPF
+    设置正确。
 - en: Resources
   id: totrans-split-131
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 资源
 - en: Postmark have a [very good write-up of DKIM](https://postmarkapp.com/guides/dkim).
     It's better than anything I could write - though understanding the basics, as
     you do now, will help you understand that document on your first read.
@@ -794,6 +962,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Postmark 有一个 [非常好的 DKIM 文档](https://postmarkapp.com/guides/dkim)。比我写的任何东西都要好
+    - 尽管现在你已经理解了基础知识，将帮助你在第一次阅读时理解该文档。
 - en: Once again, dmarc analyser have a good [DKIM record checker](https://www.dmarcanalyzer.com/dkim/dkim-checker/)
     you can use to validate your setup. You'll need your domain name, and the key
     (like `fm1` for Fastmail), because DKIM is declared on subdomains, not your domain
@@ -802,15 +972,19 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 再次提醒，DMARC 分析器有一个很好的 [DKIM 记录检查器](https://www.dmarcanalyzer.com/dkim/dkim-checker/)，你可以用来验证你的设置。你需要你的域名和密钥（例如
+    Fastmail 的 `fm1`），因为 DKIM 是声明在子域上，而不是你的域根目录上。
 - en: Implement DMARC
   id: totrans-split-134
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 实施 DMARC
 - en: Oh boy, you're gonna hate this part.
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，天哪，你会讨厌这一部分。
 - en: This is the part that I've found most difficult to research. There are a *bunch*
     of companies that are gaming SEO to promote their DMARC analysis service - but
     none of them explain what DMARC is, at least not publicly. They don't give you
@@ -819,11 +993,13 @@
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我发现最难研究的部分。有一*堆*公司在搞SEO以推广他们的DMARC分析服务，但他们中没有一个公开解释DMARC是什么。他们不提供让您理解正在发生的事情和需要做什么的信息——相反，他们试图向您出售可以为您解决问题的东西。
 - en: I don't trust companies that game SEO, so I didn't trust any of these articles.
     I wanted to get down to basics.
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不信任搞SEO的公司，所以我也不相信这些文章。我想回到基础。
 - en: Here's the bad news, though. I glossed over something earlier, when we talked
     about reporting. Forgive me. I didn't want to scare you away. We're *so close*
     now. You understand most of the concepts we're dealing with, and even if your
@@ -832,16 +1008,20 @@
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，这里有个坏消息。当我们讨论报告时，我稍微忽略了一些东西。请原谅我。我不想吓跑您。我们现在*如此接近*了。您已经理解了我们正在处理的大多数概念，即使您的电子邮件域名还没有完全锁定，但它们肯定已经好多了。但是...
+    DMARC报告是以XML文件的形式发送的。
 - en: I'm so, so sorry.
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 我非常非常抱歉。
 - en: DMARC reports aren't meant to be read by humans. If you have a domain that has
     any volume of emails, you'll probably get a lot of DMARC reports of spoofing.
     Those reports are meant to be interpreted and aggregated by a machine.
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: DMARC报告并不是为了人类阅读的。如果您拥有任何量级的电子邮件域，您可能会收到大量关于欺骗的DMARC报告。这些报告是用机器来解释和汇总的。
 - en: 'In other words: unless you''re willing to manually read XML reports to figure
     out what''s happening (hey, on small domains, that''s totally possible!), you''re
     either going to be setting up some software on a server, or using a third party
@@ -851,6 +1031,7 @@
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说：除非您愿意手动阅读XML报告以了解发生了什么（嘿，在小域名中，这完全可能！），否则您要么将在服务器上设置一些软件，要么使用第三方提供商。那些搞SEO并且对DMARC实际上是什么很神秘的公司？您可能会给其中一家公司一些钱。
 - en: 'Anyway. Let''s start with the basics. Pretend that I didn''t just say that.
     While the reports aren''t fun to interpret manually, it''d be good to get our
     hands on some so we can get a feel for what this is. We''re going to go through
@@ -858,30 +1039,36 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 不管怎样。让我们从基础知识开始。假装我刚才没说过。虽然手动解释报告不是什么有趣的事情，但拿到一些报告并了解一下是个好主意。我们将会经历三个阶段：
 - en: Implement a lenient DMARC policy and start collecting reports
   id: totrans-split-143
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 实施宽松的DMARC策略并开始收集报告
 - en: Wait, watch and analyze
   id: totrans-split-144
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 等等，观察和分析
 - en: Increase the strictness of your DMARC policy
   id: totrans-split-145
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 提高您的DMARC策略的严格性
 - en: That's not too bad. Let's start with a super simple DMARC policy.
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不太糟糕。让我们从一个非常简单的DMARC策略开始。
 - en: The lenient policy
   id: totrans-split-147
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 宽松策略
 - en: 'Set up an email address that can receive the reports. I used [postmaster@simonandrews.ca](mailto:postmaster@simonandrews.ca),
     which actually just forwards to my personal email address. Then, I added a `TXT`-type
     DNS record on `_dmarc.simonandrews.ca` that looks like this - yours will go on
@@ -889,62 +1076,75 @@
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置一个能接收报告的电子邮件地址。我用的是[postmaster@simonandrews.ca](mailto:postmaster@simonandrews.ca)，实际上它只是转发到我的个人电子邮件地址。然后，在`_dmarc.simonandrews.ca`上添加了一个`TXT`类型的DNS记录，看起来像这样——你的将会放在`_dmarc.mydomain.net`上：
 - en: '[PRE2]'
   id: totrans-split-149
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Whoa whoa whoa... what's that? Ok. Let's break it down.
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 哇哇哇...那是什么？好吧。让我们分解一下。
 - en: 'There''s the *policy* declarations:'
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是*策略*声明：
 - en: '`v=DMARC1` says "this is DMARC version 1"'
   id: totrans-split-152
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`v=DMARC1`表示“这是DMARC版本1”。'
 - en: '`p=none` says "if SPF or DKIM fail, you don''t need to do anything." Remember
     when I said we''d implement a lenient policy? This is it.'
   id: totrans-split-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`p=none`表示“如果SPF或DKIM失败，您不需要采取任何措施。”还记得我说过我们将实施宽松策略吗？就是这样。'
 - en: '`pct=100` says "apply this policy to *all* emails from my domain"'
   id: totrans-split-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`pct=100`表示“将此策略应用于*所有*来自我的域名的电子邮件”'
 - en: 'And then we''ve got the *reporting* declarations:'
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后是*报告*声明：
 - en: '[PRE3]'
   id: totrans-split-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This tells an email server to send **aggregate** reports of spoofed emails to
     `postmaster@simonandrews.ca`
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 这告诉邮件服务器向`postmaster@simonandrews.ca`发送**汇总**的欺骗邮件报告。
 - en: '[PRE4]'
   id: totrans-split-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This tells an email server to send **forensic** reports of spoofed emails to
     `postmaster@simonandrews.ca`
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 这告诉邮件服务器向`postmaster@simonandrews.ca`发送**法庭**的欺骗邮件报告。
 - en: This policy... works. If you set up your own postmaster email address, and use
     this DMARC record, you'll be well on your way. Go ahead and do that. Within a
     few days, you'll start getting reports.
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个策略… 有效。如果您设置自己的邮件管理员电子邮件地址，并使用此DMARC记录，您将成功迈出第一步。继续前进。几天后，您将开始收到报告。
 - en: Don't believe me? Try setting up DMARC using a configuration like this, giving
     it a bit of time to propagate (because DNS is slow), and then run the PHP script
     from earlier, using your domain and a "to" email address you own. You won't get
@@ -954,11 +1154,13 @@
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 不相信？尝试使用类似这样的配置设置DMARC，留一点时间让其传播（因为DNS很慢），然后运行之前的PHP脚本，使用您的域名和您拥有的“收件人”电子邮件地址。您不会立即收到报告，并且脚本生成的伪造电子邮件甚至可能出现在您的收件箱中。但在24小时内，您可能会收到第一份DMARC报告。
 - en: Sit back and watch
   id: totrans-split-162
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 坐下来观察
 - en: Start collecting these reports. If it's just a personal domain, you might be
     happy to look through them manually. If it's your company's domain, you might
     get a high volume of reports - you'll probably want to stand up a DMARC server
@@ -967,6 +1169,7 @@
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始收集这些报告。如果只是个人域名，您可能会很高兴手动查看它们。如果是您公司的域名，您可能会收到大量报告 - 您可能希望建立像[lafayette](https://github.com/LinkedInAttic/lafayette)这样的DMARC服务器，或者使用第三方服务来处理这些报告。
 - en: Regardless, after you've got some reports through, start analysing the reports.
     Are emails failing SPF or DKIM tests, that shouldn't be? Did you misconfigure
     a service? Are you or your company sending emails with a service you weren't aware
@@ -974,35 +1177,42 @@
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，在收到一些报告后，请开始分析这些报告。是否有未通过SPF或DKIM测试的电子邮件，而不应如此？您是否配置错误了某项服务？您或您的公司是否使用了您不知道的服务发送电子邮件？或者，是否有某个伪造者在大量滥用您的域名？
 - en: What can you expect? Well, here's a report I got, after I ran that PHP script
     from earlier and sent to a Gmail address I have. I added in some comments, to
     outline what it's telling you.
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以期待什么？好吧，这是我得到的一份报告，我之前运行了那个PHP脚本并发送到我拥有的Gmail地址。我添加了一些评论，概述了它告诉您的内容。
 - en: '[PRE5]'
   id: totrans-split-166
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: If you're running a large domain, you'll get a bunch of these reports. If you're
     running a small one, you might be able to handle it yourself.
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您运行的是大型域名，您将收到大量此类报告。如果您运行的是小型域名，您可能能够自行处理。
 - en: Regardless, with a bit of time, you'll be confident you've set the policy correctly.
   id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，稍作等待后，您将对已正确设置策略感到自信。
 - en: Increase the strictness
   id: totrans-split-169
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 提高严格性
 - en: When we first added DMARC, we set `p=none`. That says, basically, "don't *do*
     anything, just tell me about SPF and DKIM when they fail."
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们首次添加DMARC时，我们设置了 `p=none`。这基本上是说，“什么也不做，只是在SPF和DKIM失败时告诉我。”
 - en: 'If you''re comfortable with the reports you''ve been receiving - that is, all
     of the emails in the reports are from spoofers, and all of the emails *you''re*
     sending are passing the tests - you can increase this parameter. You have two
@@ -1010,6 +1220,7 @@
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您对收到的报告感到满意 - 即报告中所有电子邮件都来自伪造者，并且您发送的所有电子邮件都通过了测试 - 您可以增加此参数。您有两个选择：
 - en: 'Set `p=quarantine`. This tells the receiving server that, if both SPF and DKIM
     fail, the email should be quarantined. That might mean it gets marked as spam
     right away, and sent to the receiver''s spam folder. It might mean that it''s
@@ -1020,6 +1231,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置 `p=quarantine`。这告诉接收服务器，如果SPF和DKIM都失败，电子邮件应该被隔离。这可能意味着它立即被标记为垃圾邮件并发送到接收者的垃圾邮件文件夹中。也可能意味着它被放入隔离区，接收域的管理员可以批准或拒绝它。无论如何，这个选项都很好：它确保了您的域名安全，但用户遇到问题时还有补救措施。
 - en: Set `p=reject`. This is stricter. It tells the receiving server that, if both
     SPF and DKIM fail, the email should just be rejected. If you're *absolutely confident*
     that you've got everything configured correctly, *and* you're confident that future
@@ -1030,15 +1242,19 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置 `p=reject`。这更严格。它告诉接收服务器，如果SPF和DKIM都失败，那么电子邮件应该直接被拒绝。如果您非常确信您已正确配置了一切，并且对未来的服务设置也很有信心，那么这可能是适合您的选项。我会建议您先设置
+    `p=quarantine`，然后在以后逐步将其提升到 `p=reject`。
 - en: It's in your hands now, though.
   id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，这取决于您了。
 - en: Resources
   id: totrans-split-175
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 资源
 - en: dmarc.org have a good overview of [what DMARC records are made of](https://dmarc.org/overview/).
     If you want to skip right to the meaty stuff, read the section titled "Anatomy
     of a DMARC resource record in the DNS"
@@ -1046,18 +1262,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: dmarc.org对[DMARC记录的构成](https://dmarc.org/overview/)有一个很好的概述。如果您想直接跳到实质性内容，请阅读标题为“DMARC资源记录的解剖”部分。
 - en: dmarc.org also have a list of [code and libraries](https://dmarc.org/resources/code-and-libraries/)
     you can use. That's where I found lafayette.
   id: totrans-split-177
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: dmarc.org也有一个关于[代码和库](https://dmarc.org/resources/code-and-libraries/)的列表，您可以使用。这就是我找到lafayette的地方。
 - en: dmarcian have a [DMARC Record Checker](https://dmarcian.com/dmarc-inspector/),
     which will help validate that your policy is set up well.
   id: totrans-split-178
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: dmarcian有一个[DMARC记录检查器](https://dmarcian.com/dmarc-inspector/)，将帮助验证您的策略设置是否良好。
 - en: Postmark have a [guide to DMARC tools](https://postmarkapp.com/blog/best-dmarc-tools).
     This guide is a good, fairly-unbiased breakdown. You're likely going to pay for
     a service here, ~~and Postmark come at it with an unbiased perspective because
@@ -1069,25 +1288,31 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Postmark有一个关于[DMARC工具的指南](https://postmarkapp.com/blog/best-dmarc-tools)。这个指南是一个很好的、相对不偏不倚的分析。在这里，您可能需要为服务付费，~~Postmark以不偏不倚的视角提供这些信息，因为——在撰写本文时——他们并未提供这样的服务。~~
+    但是Postmark提供了一个合理的分析（事实证明，DMARC Digests是他们提供的服务，因此这并不是一个不偏不倚的来源。感谢[Hacker News上的max1cc](https://news.ycombinator.com/item?id=28193601)指出这一点。）
 - en: Troubleshooting
   id: totrans-split-180
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 故障排除
 - en: Not receiving reports? You might need EDV
   id: totrans-split-181
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 没有收到报告？您可能需要EDV。
 - en: '*Thanks to [Nicolas Lenz](https://www.eisfunke.com) for reaching out with this!*'
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: '*感谢[Nicolas Lenz](https://www.eisfunke.com)联系我！*'
 - en: If you've set everything up right, and are waiting for DMARC reports that just
     aren't coming, you might need to set up EDV.
   id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您已正确设置了一切，并且正在等待未到达的DMARC报告，您可能需要设置EDV。
 - en: You can't send DMARC reports to *just anyone*. I can't, for example, set up
     DMARC on `simonandrews.ca` and send the reports to `tim@apple.com`. It's likely
     that Tim Cook doesn't want to know about the deliverability of mail from my domain
@@ -1097,10 +1322,13 @@
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 您不能将DMARC报告发送给*任何人*。例如，我不能在`simonandrews.ca`上设置DMARC并发送报告到`tim@apple.com`。很可能Tim
+    Cook并不希望了解来自我的域名的邮件可达性（他的损失）。为了防止令人讨厌的、未经请求的报告，DMARC实施了一个名为EDV的系统（这根据您与谁交谈，可能是外部域验证或外部目的地验证）。
 - en: 'So, when might you need it? You''d need to meet these two main conditions:'
   id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，何时需要它呢？您需要满足这两个主要条件：
 - en: 'You''re sending your DMARC reports to a different domain. (EDV wouldn''t be
     necessary if I were sending reports from `simonandrews.ca` to `postmaster@simonandrews.ca`,
     because it''s not external. Remember: *external* domain verification.)'
@@ -1108,12 +1336,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您正在将您的DMARC报告发送到不同的域名。（如果我从`simonandrews.ca`发送报告到`postmaster@simonandrews.ca`，EDV不会是必需的，因为这不是外部的。请记住：*外部*域名验证。）
 - en: You're *not* using a third-party DMARC reporting service. (These tools should
     have EDV set up automatically.)
   id: totrans-split-187
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您*没有*使用第三方DMARC报告服务。（这些工具应该自动设置EDV。）
 - en: 'An example that *would* require EDV: I''m setting up DMARC on `sadl.io`, a
     domain that I own, and I want to send reports to [postmaster@simonandrews.ca](mailto:postmaster@simonandrews.ca),
     an email address on another domain that I own. In order for reporting to work,
@@ -1122,43 +1352,52 @@
   id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个需要EDV的示例：我正在为我拥有的`sadl.io`域设置DMARC，并且我想要发送报告到我拥有的另一个域上的邮件地址[postmaster@simonandrews.ca](mailto:postmaster@simonandrews.ca)。为了使报告工作，我需要在`sadl.io`上配置DMARC，并且在`simonandrews.ca`上配置EDV。
 - en: 'Once you understand all of that, it''s easy: add a DNS `TXT` record on the
     receiving domain (`simonandrews.ca`, in this case), on the `sadl.io._report._dmarc`
     subdomain, with a value of `v=DMARC1`. In other words, something like...'
   id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦您理解了所有这些，就很简单了：在接收域名（在这种情况下为`simonandrews.ca`）的DNS `TXT`记录上，添加一个`sadl.io._report._dmarc`子域的值为`v=DMARC1`。换句话说，类似于...
 - en: '[PRE6]'
   id: totrans-split-190
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Now, before a provider sends off a report to `postmaster@simonandrews.ca`, for
     emails related to `sadl.io`, it'll check `sadl.io._report._dmarc.simonandrews.ca`
     to see if it's willing to receive them.
   id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，在提供者将与 `postmaster@simonandrews.ca` 相关的 `sadl.io` 的电子邮件发送之前，它会检查 `sadl.io._report._dmarc.simonandrews.ca`，看看是否愿意接收它们。
 - en: You can find more on the dmarc.org article, [Receiving DMARC Reports Outside
     Your Domain](https://dmarc.org/2015/08/receiving-dmarc-reports-outside-your-domain/).
   id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在 dmarc.org 文章 [Receiving DMARC Reports Outside Your Domain](https://dmarc.org/2015/08/receiving-dmarc-reports-outside-your-domain/)
+    找到更多信息。
 - en: Wrapping up
   id: totrans-split-193
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: Chances are, you should implement all of these. But your implementation will
     probably fork off from mine, as you learn about it.
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: 有可能，您应该实施所有这些。但是随着您的学习，您的实施可能会与我的有所不同。
 - en: My main goal here was to provide you with a vocabulary, so you understand what
     SPF, DKIM, and DMARC are. I'm not an expert. I probably got some things wrong
     here. And this article, explicitly, only goes into the basics.
   id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的主要目标是为您提供一个词汇表，让您了解 SPF、DKIM 和 DMARC 是什么。我不是专家。我在这里可能做错了一些事情。而且明确地说，本文仅介绍基础知识。
 - en: But hopefully, now that you're here, you've got a basic understanding, and perhaps
     the start of an implementation. You can go read some other posts, and you won't
     be completely lost. I'd suggest looking at some of the resources I linked - they're
@@ -1166,6 +1405,7 @@
   id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
+  zh: 但希望现在您在这里，您已经有了基本的了解，也许开始实施了。您可以阅读其他一些文章，不会完全迷失方向。我建议您查看我链接的一些资源 - 它们并不复杂，大多数不会试图向您推销东西。
 - en: Thanks for coming along on this crazy, not-really-that-satisfying journey with
     me. I'll try and keep this post updated as I learn more, and welcome any and all
     feedback you might have. If I got anything wrong here (I'm absolutely certain
@@ -1173,17 +1413,22 @@
   id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢您陪伴我走过这段疯狂而并不那么令人满意的旅程。我会尽量在学到更多知识时保持这篇文章的更新，并欢迎您提供任何反馈意见。如果我在这里有任何错误（我绝对肯定有），请联系
+    [hello@sadl.io](mailto:hello@sadl.io)。
 - en: Corrections
   id: totrans-split-198
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 更正
 - en: You can take a look through all the changes I've made [on GitHub](https://github.com/simon360/simonandrews.ca/commits/main/pages/articles/how-to-set-up-spf-dkim-dmarc.mdx)
     - if you've read this article before, and just want to check the new stuff, I'd
     suggest reading the diffs.
   id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以查看我所做的所有更改 [在 GitHub 上](https://github.com/simon360/simonandrews.ca/commits/main/pages/articles/how-to-set-up-spf-dkim-dmarc.mdx)
+    - 如果您之前阅读过本文，只想查看新内容，我建议您查看差异。
 - en: A previous version of this article claimed that Postmark provided an unbiased
     view on DMARC analysis services, because they did not provide such a service.
     In fact, they do, called DMARC Digests, which is mentioned in their guide. **Thanks
@@ -1193,6 +1438,9 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 之前的版本声称，这篇文章认为 Postmark 提供了关于 DMARC 分析服务的公正观点，因为他们并未提供这样的服务。实际上，他们提供了一个名为 DMARC
+    Digests 的服务，在他们的指南中有提到。**感谢 [Hacker News 上的 max1cc](https://news.ycombinator.com/item?id=28193601)
+    纠正了这一点。**
 - en: The SPF section claims that SPF works on the From header. In fact, it works
     on the "envelope from", which only exists at the SMTP transport level. Rather
     than correcting this (I *did* try, but the section came out too complex), I added
@@ -1202,7 +1450,10 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: SPF 部分声称 SPF 在发件人头部起作用。实际上，它在 "envelope from" 上起作用，这只存在于 SMTP 传输层。而不是纠正这一点（我确实尝试了，但该部分变得过于复杂），我添加了一个额外的部分来解释区别。**感谢
+    Liam 通过电子邮件联系我并纠正我。**
 - en: 'Last updated: 17 August 2021, 7:10 PM BST'
   id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后更新时间：2021年8月17日，晚上7:10 BST
