@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:50:48'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:50:48'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: (How to Write a (Lisp) Interpreter (in Python))
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: (如何编写（Lisp）解释器（在Python中）)
 - en: 来源：[https://www.norvig.com/lispy.html](https://www.norvig.com/lispy.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.norvig.com/lispy.html](https://www.norvig.com/lispy.html)
 - en: (How to Write a (Lisp) Interpreter (in Python))
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: (如何编写（Lisp）解释器（在Python中）)
 - en: 'This page has two purposes: to describe how to implement computer language
     interpreters in general, and in particular to build an interpreter for most of
     the [*Scheme*](http://en.wikipedia.org/wiki/Scheme_(programming_language)) dialect
@@ -42,6 +49,16 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 'This page has two purposes: to describe how to implement computer language
+    interpreters in general, and in particular to build an interpreter for most of
+    the [*Scheme*](http://en.wikipedia.org/wiki/Scheme_(programming_language)) dialect
+    of Lisp using [Python 3](http://python.org) as the implementation language. I
+    call my language and interpreter *Lispy* ([**lis.py**](lis.py)). Years ago, I
+    showed how to write a semi-practical Scheme interpreter [Java](jscheme.html) and
+    in [in Common Lisp](http://books.google.com/books?id=QzGuHnDhvZIC&lpg=PA756&vq=scheme%20interpreter&dq=Paradigms%20of%20Artificial%20Intelligence%20Programming&pg=PA753#v=onepage&q&f=false)).
+    This time around the goal is to demonstrate, as concisely and simply as possible,
+    what [Alan Kay called](http://queue.acm.org/detail.cfm?id=1039523) "[*Maxwell''s
+    Equations of Software*](http://www.righto.com/2008/07/maxwells-equations-of-software-examined.html)."'
 - en: Why does this matter? As [Steve Yegge said](http://steve-yegge.blogspot.com/2007/06/rich-programmer-food.html),
     *"If you don't know how compilers work, then you don't know how computers work."*
     Yegge describes 8 problems that can be solved with compilers (or equally well
@@ -49,11 +66,14 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么这很重要？正如[Steve Yegge所说](http://steve-yegge.blogspot.com/2007/06/rich-programmer-food.html)，*"如果你不知道编译器是如何工作的，那么你不知道计算机是如何工作的。"*
+    Yegge描述了8个可以通过编译器解决的问题（或者同样可以通过解释器解决，或者以Yegge典型的大量讽刺方式解决的问题）。
 - en: Syntax and Semantics of Scheme Programs
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Scheme程序的语法和语义
 - en: The *syntax* of a language is the arrangement of characters to form correct
     statements or expressions; the *semantics* is the meaning of those statements
     or expressions. For example, in the language of mathematical expressions (and
@@ -65,52 +85,66 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种语言的*语法*是形成正确语句或表达式的字符排列；*语义*是这些语句或表达式的含义。例如，在数学表达式的语言中（以及许多编程语言中），添加1加2的语法是"1
+    + 2"，语义是将加法操作应用于这两个数字，得到值3。当我们确定表达式的值时，我们说我们正在*评估*该表达式；我们会说"1 + 2"评估为3，并写为"1 +
+    2" ⇒ 3。
 - en: 'Scheme syntax is different from most other programming languages. Consider:'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Scheme语法与大多数其他编程语言不同。考虑：
 - en: '| Java |        | Scheme |'
   id: totrans-split-12
   prefs:
   - PREF_BQ
   type: TYPE_TB
+  zh: '| Java |        | Scheme |'
 - en: '|  |'
   id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_TB
+  zh: '|  |'
 - en: '| `**if** (x.val() > 0) {   **return** fn(A[i] + 3 * i,'
   id: totrans-split-14
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '| `**if** (x.val() > 0) {   **return** fn(A[i] + 3 * i,'
 - en: '**new** String[] {"one", "two"});'
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**new** String[] {"one", "two"});'
 - en: '}` |   | `(**if** (> (val x) 0)     (fn (+ (aref A i) (* 3 i))'
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '}` |   | `(**if** (> (val x) 0)     (fn (+ (aref A i) (* 3 i))'
 - en: (**quote** (one two)))` |
   id: totrans-split-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: (**quote** (one two)))` |
 - en: 'Java has a wide variety of syntactic conventions (keywords, infix operators,
     three kinds of brackets, operator precedence, dot notation, quotes, commas, semicolons),
     but Scheme syntax is much simpler:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Java has a wide variety of syntactic conventions (keywords, infix operators,
+    three kinds of brackets, operator precedence, dot notation, quotes, commas, semicolons),
+    but Scheme syntax is much simpler:'
 - en: Scheme programs consist solely of *expressions*. There is no statement/expression
     distinction.
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Scheme程序仅由*表达式*组成。没有语句/表达式的区别。
 - en: Numbers (e.g. `1`) and symbols (e.g. `A`) are called *atomic expressions*; they
     cannot be broken into pieces. These are similar to their Java counterparts, except
     that in Scheme, operators such as `+` and `>` are symbols too, and are treated
@@ -119,6 +153,10 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Numbers (e.g. `1`) and symbols (e.g. `A`) are called *atomic expressions*; they
+    cannot be broken into pieces. These are similar to their Java counterparts, except
+    that in Scheme, operators such as `+` and `>` are symbols too, and are treated
+    the same way as `A` and `fn`.
 - en: 'Everything else is a *list expression*: a "(", followed by zero or more expressions,
     followed by a ")". The first element of the list determines what it means:'
   id: totrans-split-21

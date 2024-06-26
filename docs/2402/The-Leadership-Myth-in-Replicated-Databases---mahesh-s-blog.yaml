@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:41:18'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:41:18'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The Leadership Myth in Replicated Databases | mahesh’s blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 复制数据库中的领导力神话 | mahesh’s blog
 - en: 来源：[https://maheshba.bitbucket.io/blog/2023/05/06/Leadership.html](https://maheshba.bitbucket.io/blog/2023/05/06/Leadership.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://maheshba.bitbucket.io/blog/2023/05/06/Leadership.html](https://maheshba.bitbucket.io/blog/2023/05/06/Leadership.html)
 - en: I’ve heard multiple times that a strong notion of leadership somehow simplifies
     replication. I don’t think this is true. I explain why in this post.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我多次听说，强领导力概念在某种程度上简化了复制。我不认为这是真的。在本文中，我会解释原因。
 - en: In a prior [post](https://maheshba.bitbucket.io/blog/2021/11/20/MultiPaxos.html),
     we described the State Machine Replication (or SMR) abstraction. The SMR API allows
     you to propose commands and play them back in a total order. In another [post](https://maheshba.bitbucket.io/blog/2021/12/14/Modularity.html),
@@ -38,6 +45,9 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在之前的[文章](https://maheshba.bitbucket.io/blog/2021/11/20/MultiPaxos.html)中，我们描述了状态机复制（SMR）抽象。SMR
+    API 允许您提议命令并按照总序回放它们。在另一篇[文章](https://maheshba.bitbucket.io/blog/2021/12/14/Modularity.html)中，我们描述了如何直接使用
+    RPC（例如 Raft 或 Viewstamped Replication）或通过中间抽象如共享日志或进程组来实现 SMR。
 - en: To start with, consider a system that’s implementing the SMR API. In such a
     system, there is typically a layer of stateful servers (i.e., either application
     or database servers) storing replicated state. When a server wants to update the
@@ -46,6 +56,8 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，考虑一个实施 SMR API 的系统。在这样的系统中，通常有一层有状态的服务器（即应用程序或数据库服务器），用于存储复制的状态。当服务器想要更新复制的状态时，它向
+    SMR 层提议一个新的命令。SMR 层持续地将新命令应用到每个服务器上。
 - en: For now, let’s ignore how the SMR layer is implemented (i.e., via some custom
     consensus protocol or as a layer above some underlying abstraction like a shared
     log). Without loss of generality, I’ll use the terms ‘log’ or ‘shared log’ to
@@ -54,20 +66,25 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们暂时不考虑 SMR 层是如何实现的（即通过某种自定义共识协议或作为某种基础抽象上层的一层）。无损于一般性，我将使用术语 “日志” 或 “共享日志”
+    来表示 “SMR 总序列”，无论 SMR 层是通过实际的共享日志还是诸如 Raft 或 MultiPaxos 的协议构建此总序列。
 - en: 'In such a system, there are two key questions:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这样的系统中，有两个关键问题：
 - en: '**What** is proposed to the shared log?'
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**什么**被提议到共享日志？'
 - en: '**Who** is allowed to propose to the shared log?'
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**谁**被允许向共享日志提议？'
 - en: 'In classical SMR, the answer to *what* is simple: the proposal is an unexecuted
     piece of code (or a lambda, if you prefer). The proposing server does not first
     execute the code (i.e., apply the update to its local copy of state); instead,
@@ -78,6 +95,8 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在经典的 SMR 中，对于 *什么* 的回答很简单：提议是一个未执行的代码片段（或者如果你喜欢，是一个 lambda 函数）。提议的服务器不会首先执行代码（即不会将更新应用于其本地状态的副本）；相反，它首先将代码作为命令提议给
+    SMR 层。例如，一个命令可以是 "x++" 或者 "if(x<5) y++;" 每个服务器通过 SMR 层获得相同的命令总序，并在收到它们通过应用回调时在其本地状态上执行新命令。
 - en: 'This simple protocol results in a strong invariant: the local state at any
     given server always corresponds to some prefix of the SMR layer’s total order;
     if the server reboots, the SMR layer can examine its local copy of state and determine
@@ -87,6 +106,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个简单的协议导致了一个强不变量：任何给定服务器的本地状态始终对应于 SMR 层总序列的某个前缀；如果服务器重新启动，SMR 层可以检查其本地状态的副本，并确定应该在总序列的哪个位置恢复应用新命令。理想情况下，本地状态存储在具有故障原子性的持久存储中（例如
+    RocksDB），因此状态永远不会反映半应用的命令。
 - en: 'In classical SMR, the answer to *who* is also simple: any server can propose
     a new command. This results in a surprising and powerful property: there is no
     primary / master / leader at the database layer. You get active-active or multi-master
@@ -97,12 +118,14 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在经典的SMR中，对于*谁*的问题也很简单：任何服务器都可以提议一个新的命令。这导致了一个令人惊讶且强大的特性：在数据库层面上不存在主/主节点/领导者。你可以免费获得主动-主动或多主复制。客户端可以联系任何数据库服务器，并获得一个可线性化/严格序列化的响应。复制的数据库是平凡可序列化的，因为其状态对应于SMR总序列中的命令串行执行。
 - en: 'There is **no notion of leadership** is classical SMR: systems are multi-primary
     by default.'
   id: totrans-split-16
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 在经典的SMR中**没有领导者的概念**：系统默认是多主的。
 - en: 'Implementing an active-active / multi-master / multi-primary replicated database
     is simple: you can literally follow the most basic definition of SMR and obtain
     such a property. If active-active systems are this easy to build, why do systems
@@ -111,6 +134,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 实现一个主动-主动/多主复制的数据库很简单：你可以简单地遵循SMR的最基本定义，并获得这样的特性。如果主动-主动系统如此容易构建，为什么系统还要费心选举领导者？原因在于SMR
+    API的两端；让我们首先从API上面的生活开始讲起。
 - en: '**Leadership above the Log**: One reason for introducing leadership above the
     SMR API is safety: if the total order contains inputs proposed by any server,
     then each server is executing a lambda independently. As a result, if there is
@@ -123,6 +148,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**日志上面的领导者**: 引入SMR API上方的领导者的一个原因是安全性：如果总序列包含任何服务器提议的输入，那么每个服务器都独立地执行一个lambda。因此，如果数据库服务器的代码中存在任何非确定性（例如，如果命令是“if(random()>0.5)
+    x++”），副本状态将会发散。非确定性可能由执行逻辑中任何对实时或随机性的使用引起；或者在执行过程中抛出的非确定性错误（例如，磁盘空间不足错误）。从某种意义上说，系统中的复杂性转移到了远离领导变更的推理（因为没有领导者），而是朝着确保确定性的方向发展。'
 - en: In contrast, if the total order contains the output produced by an executed
     command (e.g., a write-set of keys updated by the command), we are no longer executing
     arbitrary code on multiple machines, so the burden of determinism is lower. Instead
@@ -130,6 +157,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，如果总序列包含由执行命令产生的输出（例如，命令的写入键的写集），那么我们不再在多台机器上执行任意代码，因此确定性的负担更低。命令不再是“x++”，而是简单地说“x=1”。
 - en: If the log contains outputs, then we can no longer blindly apply commands proposed
     by different servers. Each database server will still converge to the same state,
     but updates are no longer linearizable. For example if two servers simultaneously
@@ -140,6 +168,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果日志包含输出，那么我们不能再盲目地应用由不同服务器提出的命令。每个数据库服务器仍将收敛到相同的状态，但更新不再是可线性化的。例如，如果两个服务器同时从客户端接收到一个“x++”命令，每个服务器将读取其当前的x值并生成一个新值（例如，“x=1”）来提出。事实上，复制的数据库不再像执行总序列中的命令那样行为；因此，它不再严格可序列化。
 - en: To re-introduce serializability, we could somehow ensure that there is only
     one server proposing to the log at any given time, by baking mechanisms such as
     leases and fencing into the log itself; or equivalently, stitching together a
@@ -150,6 +179,8 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 要重新引入串行化，我们可以通过在日志中嵌入租约和栅栏等机制，确保在任何给定时间只有一个服务器向日志提出提议；或者等效地，通过将多提议者共享日志串接成一系列单提议者共享日志。如果日志本身在SMR
+    API下有领导者，这是一个更简单的选择，正如我们稍后讨论的那样；但是利用这一特性可能会限制数据库在特定日志实现上运行。
 - en: 'However, there’s an easier option that’s agnostic to the log implementation:
     we can store *speculative outputs* in the log. In this case, each proposing server
     would first execute the update (“x++”) on its own local state; and then add a
@@ -162,6 +193,8 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，还有一种更简单的选择与日志实现无关：我们可以在日志中存储*推测输出*。在这种情况下，每个提议服务器首先会在其自己的本地状态上执行更新（“x++”），然后添加一个命令，其中包含输出和读集：“if(x==0)
+    x=1;”。推测可以基于命令读取的状态值（即“x==0”）或该状态的版本。实质上，应用该命令的每个数据库服务器都会问自己这个问题：“如果我现在执行原始命令，我会得到与提议者相同的输出吗？”或者等效地，“在提议者执行命令时，状态是否已经发生变化？”。
 - en: 'Note that the speculation could also be on the identity of the proposer: “if(proposer==primary)
     x=1;”. This brings us to the second way to re-introduce serializability: we can
     simply elect a *designated proposer*. Crucially, this election can happen above
@@ -171,6 +204,8 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，推测也可以基于提议者的身份：“if(proposer==primary) x=1;”。这将我们带到重新引入串行性的第二种方法：我们可以简单地选举一个*指定的提议者*。至关重要的是，这种选举可以在SMR
+    API之上进行。我们所需要做的就是向日志提出一个“接管”命令，指出“我现在是指定的提议者；从这一点开始，请忽略日志中来自任何其他提议者的命令（除非是接管命令）”。
 - en: To switch between multi-primary and single-primary, we simply decide whether
     we want to store **inputs or outputs** in the log; and elect a **designated proposer**
     via the log.
@@ -178,6 +213,7 @@
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 要在多主节点和单主节点之间切换，我们只需决定是否要在日志中存储**输入或输出**，并通过日志选举一个**指定的提议者**。
 - en: 'A system that elects a primary in this manner obtains the performance benefits
     typically associated with primary-based systems. For example, we can do strongly
     consistent reads at the primary without catching up with the SMR total order (or
@@ -190,6 +226,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过这种方式选举主节点的系统获得了通常与基于主节点的系统相关联的性能优势。例如，我们可以在主节点上进行强一致性读取，而无需追赶SMR的总序列（或者等效地，无需通过网络与任何其他机器联系）：由于主节点是总序列的唯一提议者，它知道该顺序中的命令序列。请注意，在我们的SMR驱动选举中进行这种优化需要实时租约（新的主节点必须在提出“接管”命令后等待一段时间），但是在任何基于共识的系统中，这种实时租约基本上是必需的。
 - en: '**Leadership below the Log:** Note that so far we said absolutely nothing about
     the implementation of the SMR layer. In itself, this might be a surprising observation:
     most of the properties associated with leadership (e.g., strongly consistent reads
@@ -199,6 +236,8 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '**位于日志下的领导力：** 到目前为止，我们对SMR层的实现还没有详细说明。这本身可能是一个令人惊讶的观察：与领导力相关的大多数特性（例如，在领导者处进行强一致性读取）与上述SMR
+    API的数据库状态机设计有关，而与实现SMR API的共识协议完全无关。'
 - en: Internally, the SMR layer could be implemented in any of the five ways we discussed
     in a previous post. Some implementations have a notion of a leader and others
     don’t. The Paxos protocol that implements a single consensus slot is explicitly
@@ -209,12 +248,14 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在内部，SMR层可以以我们之前讨论的五种方式之一实现。一些实现有领导者的概念，而其他一些则没有。实施单一共识插槽的Paxos协议明确设计为*不*需要领导者；MultiPaxos重新引入领导者作为活跃性和延迟优化。Raft具有强领导者的概念（例如，领导者看到所有I/O）；Corfu具有弱领导者的概念（即分配时间戳但不看到所有I/O的序列器）。
 - en: The leader **above the log** – i.e., the database primary; the designated proposer
     – does not have to be the leader **below the log**.
   id: totrans-split-28
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '**日志上方的领导者**，即数据库的主节点；指定的提议者，不必是**日志下方的领导者**。'
 - en: In the 90s and 00s, the most common deployment model for replicated systems
     was to have a single replicated shard that collocated the database layer with
     the shared log; containing a strong primary above the log as well as a leader-based
@@ -225,6 +266,8 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在90年代和00年代，复制系统最常见的部署模型是将单个复制的分片与共享日志的数据库层合并在一起；在日志上方包含一个强主节点以及基于领导者的SMR实现。在这种部署模式下，将单台机器同时扮演日志上方和SMR
+    API下方的领导者角色是非常合理的。随着时间的推移，实现开始融合这些角色，模糊了日志上方和下方领导角色之间的区别。
 - en: However, understanding the difference between these two different leadership
     roles is very useful in a cloud setting. With the right layering, you can disaggregate
     your log layer from your database and scale it independently; switch your database
@@ -235,8 +278,10 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在云设置中理解这两种不同的领导角色的区别非常有用。通过正确的分层，您可以将日志层与数据库分离并独立扩展；在不改变共识协议的情况下将数据库从单主节点切换到多主节点；将共识协议更改为无领导者模式而不干扰数据库层等等。有关这些想法的更多技术描述，请参阅Meta的Delos论文。
 - en: (This post is informed by several discussions over the years with various collaborators
     at Confluent and Meta; as well as Ben Reed and Allen Clement)
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: （本文基于多年来与Confluent和Meta的各种合作者以及Ben Reed和Allen Clement的多次讨论。）
