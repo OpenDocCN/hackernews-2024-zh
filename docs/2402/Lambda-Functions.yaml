@@ -143,15 +143,18 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Oxigraph](https://github.com/oxigraph)是一个实现SPARQL标准的Rust图数据库库。假设我们想要封装它，这样我们就可以从Elixir内部访问一个快速的图数据库。我们将称之为`FeGraph`。'
 - en: 'We want to be able to:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们想要能够：
 - en: Make a new in-memory database
   id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建一个新的内存数据库
 - en: '[PRE0]'
   id: totrans-split-24
   prefs:
@@ -163,6 +166,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 向其中添加数据
 - en: '[PRE1]'
   id: totrans-split-26
   prefs:
@@ -175,6 +179,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将数据库导出为[Turtle](https://en.wikipedia.org/wiki/Turtle_(syntax))字符串：
 - en: '[PRE2]'
   id: totrans-split-28
   prefs:
@@ -187,11 +192,13 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了让这个长度合理，我们不打算实现需要暴露Oxigraph所有功能所需的一切；只需要足够来展示在Rust中保存数据并从Elixir中进行操作。
 - en: Implementation
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实现
 - en: (If you want to follow along, I recommend working through one of the many Rustler
     `add` tutorials I mentioned before getting into the code, so that you have a basic
     project up and running and have worked through how Rust and Elixir functions link
@@ -199,18 +206,21 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: （如果你想跟着做，我建议你在进入代码之前，先按照我之前提到的许多Rustler `add` 教程之一，这样你就可以运行一个基本的项目，并且了解了Rust和Elixir函数如何联系在一起。后面的一切都假设你已经到了那一点。）
 - en: The key to this whole approach is the ability to pass a [Resource](https://erlang.org/doc/man/erl_nif.html#resource_objects)
     between the two worlds. This acts as a handle to a piece of memory; it can be
     returned from a NIF and then passed back into another call. Exactly what we need.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 整个方法的关键在于能够在两个世界之间传递一个[Resource](https://erlang.org/doc/man/erl_nif.html#resource_objects)。这充当了一块内存的句柄；它可以从NIF返回，然后再传递回另一个调用。正是我们所需要的。
 - en: A BEAM `Resource` is represented in Rustler by a `rustler::resource::ResourceArc<T>`
     struct. To get started with our implementation, let’s define a new type that we
     can use as a handle to represent the state of our graph store.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个BEAM `Resource`在Rustler中由一个`rustler::resource::ResourceArc<T>`结构表示。让我们从我们的实现开始，定义一个我们可以用作表示图存储状态的句柄的新类型。
 - en: In a production scenario we’re likely to want to manage more state than this,
     but for now it will suffice to define a `MyGraph` struct that just contains (via
     a mutex) the Oxigraph data store; this represents the mutable data we want to
@@ -219,6 +229,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生产环境中，我们可能想管理更多的状态，但现在只需定义一个`MyGraph`结构，它只包含（通过互斥锁）Oxigraph数据存储；这代表了我们想要在Elixir外部管理的可变数据。将来，根据需要，可以向`MyGraph`添加更多的字段。
 - en: To turn this into something that can be passed back and forth between Elixir
     and Rust, we need to wrap it in a `ResourceArc`. In order to make our function
     signatures a bit more readable we’ll define a new type of `GraphArc` to represent
@@ -226,10 +237,12 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了将其转换为可以在Elixir和Rust之间传递的东西，我们需要将其包装在`ResourceArc`中。为了使我们的函数签名更加可读，我们将定义一个新类型的`GraphArc`，表示在`ResourceArc`中的`MyGraph`结构。
 - en: 'In `lib.rs`:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`lib.rs`中：
 - en: '[PRE3]'
   id: totrans-split-37
   prefs: []
@@ -240,6 +253,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要一点额外的管道工作告诉Rustler，`MyGraph`是可以用作`Resource`的东西：
 - en: '[PRE4]'
   id: totrans-split-39
   prefs: []
@@ -250,6 +264,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些定义，我们可以编写一个`new`函数，该函数分配一个新的数据存储并返回一个句柄：
 - en: '[PRE5]'
   id: totrans-split-41
   prefs: []
@@ -259,6 +274,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Elixir端，在`fe_graph.ex`中：
 - en: '[PRE6]'
   id: totrans-split-43
   prefs: []
@@ -270,6 +286,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，我们可以在`iex`中进行测试，看到上面的Elixir存根已被我们定义的Rust NIF替换，我们可以运行它，并得到一个引用：
 - en: '[PRE7]'
   id: totrans-split-45
   prefs: []
@@ -281,6 +298,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我们还无法*做*任何操作，但我们已经在Rust中定义了一个数据存储，并在Elixir中看到了它的迹象；在幕后，BEAM和Rustler正在为我们处理所有繁重的工作。
 - en: How about a simple function to add some data to our new store? In a way that
     will feel very familiar to Elixir code, it will need to both take and return a
     `GraphArc` handle. We’ll also have it accept a single string to use for all three

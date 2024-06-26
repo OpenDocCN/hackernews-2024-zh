@@ -2,47 +2,58 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:44:15'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:44:15'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Lamport clocks
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Lamport时钟
 - en: 来源：[https://blog.fponzi.me/2024-02-02-lamport-clocks.html](https://blog.fponzi.me/2024-02-02-lamport-clocks.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.fponzi.me/2024-02-02-lamport-clocks.html](https://blog.fponzi.me/2024-02-02-lamport-clocks.html)
 - en: Lamport clocks
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Lamport时钟
 - en: 'Published on 2024-02-02 | Last update: 2024-05-23 | 12 min read'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 发布于2024-02-02 | 最后更新：2024-05-23 | 阅读时长12分钟
 - en: <details class="toc-container" open=""><summary>Table of Contents</summary></details>
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: <details class="toc-container" open=""><summary>目录</summary></details>
 - en: Last weekend I wanted to get some inspiration to write some TLA+ spec and I
     got my hands back on the paper [Time, Clocks, and the Ordering of Events in a
     Distributed System by Leslie Lamport](http://lamport.azurewebsites.net/pubs/time-clocks.pdf).
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 上周末，我想找些灵感写一些TLA+规范，于是我重新阅读了Leslie Lamport的论文[《Time, Clocks, and the Ordering
+    of Events in a Distributed System》](http://lamport.azurewebsites.net/pubs/time-clocks.pdf)。
 - en: This is the most cited paper by Lamport. It introduces the concept of "happened
     before" and **Logical Clock**, often times referred to as *Lamport clock*, and
     gives an example on how to use them to solve the distributed mutual exclusion
@@ -50,6 +61,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是Lamport最被引用的论文。它介绍了“先于发生”的概念和**逻辑时钟**，通常被称为*Lamport时钟*，并且提供了一个使用它们来解决分布式互斥问题的示例。
 - en: This post is a quick summary of the paper and has a walk-through of the specification
     I've written based on the mutual exclusion algorithm described in the paper. While
     writing the spec for this post, I've also [contributed](https://github.com/hwayne/learntla-v2/pull/78)
@@ -57,11 +69,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章是对论文的快速总结，并详细介绍了我基于论文中描述的互斥算法所写的规范。在撰写这篇文章的规范时，我还通过一些文档[贡献](https://github.com/hwayne/learntla-v2/pull/78)给了learntla网站。
 - en: What problem are they trying to solve?
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 他们试图解决什么问题？
 - en: An "event" could be created after something important happened in our system,
     e.g., some instruction is executed. In our distributed system, assume we have
     a central authority that wants to know which of two events happened first. These
@@ -76,6 +90,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: “事件”可能是在我们的系统中发生重要事件之后创建的，例如执行某些指令。在我们的分布式系统中，假设我们有一个中央管理机构希望知道两个事件中哪一个先发生。这些事件发生在运行在两台不同机器上的进程上。首先的想法可能是让两个进程在将事件转发给中央管理机构之前将当前时间戳附加到事件上。理论上这可能有效，但问题在于时间戳是由运行在两台不同机器上的物理芯片派生的。即使只是使它们同步也很困难；例如使用NTP，它将带有一些误差。假设操作员没有错误地设置错误的时间，它们仍然受到称为“时钟漂移”的影响，这将导致它们随着时间的推移不同步。
 - en: 'First, the paper tries to answer this question: can we find which event happened
     first without using a physical clock? As we shall see, the answer is *not always*.
     The second part of the paper strengthens the properties of the first part by introducing
@@ -83,32 +98,38 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，论文试图回答这个问题：我们能否找出哪个事件先发生，而不使用物理时钟？正如我们将看到的那样，答案*并非总是*。论文的第二部分通过引入物理时钟加强了第一部分的属性。
 - en: What's the "happened-before" relation?
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: “先于发生”的关系是什么？
 - en: If we visualized a sequence of events in a process, "$a$" would show up before
     "$b$" if "$a$" *happened before* "$b$".
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们在一个过程中可视化一系列事件，则如果“$a$”在“$b$”*先于发生*，那么“$a$”将在“$b$”之前显示。
 - en: 'Let''s define the "*happened before*" relation, with symbol "$\rightarrow$":'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用符号"$\rightarrow$"来定义"*先于发生*"关系：
 - en: If $a$ and $b$ are events in the same process, and $a$ comes before $b$, then
     $a \rightarrow b$.
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果$a$和$b$是同一个过程中的事件，并且$a$发生在$b$之前，则$a \rightarrow b$。
 - en: If $a$ is the sending of a message $m$ by a process and $b$ is the receiving
     of $m$ by another process, then $a \rightarrow b$.
   id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果$a$是一个进程发送的消息$m$，$b$是另一个进程接收的$m$，那么$a \rightarrow b$。
 - en: If $a \rightarrow b$ and $b \rightarrow c$ then $a \rightarrow c$. Two distinct
     events $a$ and $b$ are said to be concurrent if $a \nrightarrow b$ and $b \nrightarrow
     a$.
@@ -116,22 +137,27 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果$a \rightarrow b$并且$b \rightarrow c$，那么$a \rightarrow c$。两个不同的事件$a$和$b$被称为并发事件，如果$a
+    \nrightarrow b$且$b \nrightarrow a$。
 - en: Assuming that $a \nrightarrow a$ for any event $a$, this relation defines an
     irreflexive partial ordering of the events.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设对于任何事件 $a$，都有 $a \nrightarrow a$，这个关系定义了事件的非自反偏序。
 - en: The "not always" from the previous paragraph is derived from the fact that for
     two concurrent events, we cannot tell which one happened before. The message exchange
     is a synchronization point.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 上一段中的“不总是”的概念源于两个并发事件，我们无法确定哪一个先发生。消息交换是一个同步点。
 - en: What's a logical clock then?
   id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 那么逻辑时钟是什么呢？
 - en: Every process has a number in their local state which can be thought as the
     current clock. The clock is increased after each event, and every event gets its
     own timestamp. In this way, if $a \rightarrow b$ then $a$'s timestamp will be
@@ -140,36 +166,45 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个进程在其本地状态中有一个数字，可以被认为是当前时钟。时钟在每个事件后递增，并且每个事件都有其自己的时间戳。这样，如果 $a \rightarrow
+    b$，那么 $a$ 的时间戳将比 $b$ 小。这个概念通过Lamport所称的时钟条件得到了形式化。
 - en: 'In a process $P_i$, let''s have a function $C_i$ that assigns a timestamp number
     $C_i\langle a \rangle$ to the event $a$. Then the Clock Condition is defined as:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进程 $P_i$ 中，我们有一个函数 $C_i$ 将时间戳编号 $C_i\langle a \rangle$ 分配给事件 $a$。然后时钟条件被定义为：
 - en: $For\ any\ events\ a,b:\ if\ a \rightarrow b\ then\ C\langle a \rangle < C\langle
     b \rangle$
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: $$对于\ 任何\ 事件\ a,b:\ 如果\ a \rightarrow b\ 那么\ C\langle a \rangle < C\langle b
+    \rangle$$
 - en: It's also interesting to note that the converse is not true. If $C\langle a
     \rangle < C\langle b\rangle$, it is possible that $a$ and $b$ are two concurrent
     events (running at the same time).
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样有趣的是反过来并不一定成立。如果 $C\langle a \rangle < C\langle b\rangle$，可能 $a$ 和 $b$ 是两个并发事件（同时运行）。
 - en: To synthesize, a logical clock can be thought as a way to add a timestamp to
     an event without using a physical clock.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结一下，逻辑时钟可以被认为是一种在事件上添加时间戳而不使用物理时钟的方法。
 - en: 'But how can we use it in practice in our algorithms? The paper gives two rules:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么我们如何在实践中应用它到我们的算法中呢？文章提出了两条规则：
 - en: Each process $P_i$ increments $C_i$ between two successive events.
   id: totrans-split-30
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每个进程 $P_i$ 在两个连续事件之间递增 $C_i$。
 - en: If event $a$ is sending a message $m$ by process $P_i$, then the message $m$
     contains timestamp $T_m = C \langle a \rangle$ . Upon receiving a message m, process
     $P_i$ sets $C_i$ greater than or equal to its present value and greater than $T_m$.
@@ -177,11 +212,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果事件 $a$ 由进程 $P_i$ 发送了消息 $m$，那么消息 $m$ 包含时间戳 $T_m = C \langle a \rangle$。收到消息
+    $m$ 后，进程 $P_i$ 将 $C_i$ 设置为不小于其当前值且大于 $T_m$。
 - en: How can we get a total ordering?
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何获得一个总排序？
 - en: Lamport presents a way to arbitrarily extend the → relation to a ⇒ relation
     that represents a total order. To break the ties, each process gets assigned a
     unique numeric id. When ordering events, first sort by the timestamps. If the
@@ -190,6 +228,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Lamport 提出了一种将 → 关系任意扩展到表示总序的 ⇒ 关系的方法。为了解决冲突，每个进程被分配一个唯一的数字标识。在事件排序时，首先按时间戳排序。如果时间戳相等，则按进程标识排序。这将得到一个总排序。
 - en: As mentioned, this is an arbitrary way to break the ties. It opens up to some
     anomalies on how the users perceived the passage of time and how the system perceived
     it. The paper explains that a user could send a request to some service, call
@@ -198,6 +237,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如提到的，这是一种任意打破冲突的方式。它引发了用户对时间流逝的感知和系统对时间流逝的感知之间的一些异常。文章解释了用户可能向某个服务发送请求，打电话给他们的朋友并告诉他们发送相同的请求，第二个请求可能具有较低的时间戳。
 - en: 'Then, we have only two-way around this. Either, when calling their friend,
     the first user provides the timestamp attached to their request and the second
     user attaches it to their request; or we need a system of clocks that can satisfy
@@ -205,11 +245,14 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们只有两种方式。或者，在打电话给他们的朋友时，第一个用户提供了附加到其请求的时间戳，第二个用户也附加了它们的请求;或者，我们需要一个能满足以下**强**时钟条件的时钟系统：
 - en: $$For\ any\ events\ a,b:\ a \rightarrow b\ \equiv C\langle a \rangle < C\langle
     b \rangle$$
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: $$对于\ 任何\ 事件\ a,b:\ a \rightarrow b\ \equiv C\langle a \rangle < C\langle b
+    \rangle$$
 - en: This is saying that if $C\langle a \rangle < C\langle b\rangle$, it means that
     a happened before b. In general, logical clocks don't satisfy the strong clock
     condition. The rest of the paper is devoted to creating a new system of clocks
@@ -217,6 +260,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是说如果$C\langle a \rangle < C\langle b\rangle$，这意味着a发生在b之前。一般来说，逻辑时钟不满足强时钟条件。本文的其余部分致力于使用物理时钟创建能够满足强时钟条件的新时钟系统。
 - en: It's interesting to know that a solution to implement such a system of clocks
     without using physical clocks is by using Vector clocks. Vector clocks keep track
     of time using a vector of clocks instead of a simple scalar like Lamport clocks.
@@ -225,11 +269,13 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣的是，通过使用向量时钟可以实现这种时钟系统的解决方案，而不使用物理时钟。向量时钟使用时钟向量而不是像Lamport时钟那样简单的标量来跟踪时间。在实际系统中，如Google的TrueTime和混合时钟中使用物理时钟。
 - en: How can we solve the mutual exclusion problem using Lamport clocks?
   id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我们如何使用Lamport时钟解决互斥问题？
 - en: The last part that I would like to write about is a practical example of how
     to use Lamport clocks to solve a mutual exclusion problem as presented in the
     paper. An instance of this problem would be when two processes need to access
@@ -237,47 +283,56 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想写的最后一部分是关于如何在实践中使用Lamport时钟解决互斥问题的实际例子。该问题的一个示例是当两个进程需要访问共享资源（如磁盘）时。
 - en: 'Let''s put some rules:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们列出一些规则：
 - en: A process which has been granted the resource must release it before it can
     be granted to another process.
   id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 被授予资源的进程必须在被授予给另一个进程之前释放它。
 - en: Different requests for the resource must be granted in the order in which they
     are made.
   id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 必须按照它们发出的顺序授予资源的不同请求。
 - en: If every process that is granted the resource eventually releases it, then every
     request is eventually granted.
   id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果每个被授予资源的进程最终都释放它，那么每个请求最终都会被授予。
 - en: The proposed algorithm is decentralized (no one node is more important than
     others) and doesn't deal with failures.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 所提出的算法是分散式的（没有一个节点比其他节点更重要），并且不涉及故障处理。
 - en: 'The local state of each process has:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个进程的本地状态包括：
 - en: For simplicity, each process can send messages to every other process, messages
     are never lost, and they arrive in the order in which they are sent.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 为简单起见，每个进程都可以向其他每个进程发送消息，消息不会丢失，并按发送顺序到达。
 - en: 'The algorithm solves the mutual exclusion problem using six actions. Each action
     maps to an event that causes an increase of the local timestamp:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 该算法使用六个动作解决互斥问题。每个动作映射到导致本地时间戳增加的事件：
 - en: To request the resource, process $P_i$ sends the message $<<RequestResource,\
     P_i,\ T_m>>$ to every other process, and puts that message on its own request
     queue, where Tm is the timestamp of the message.
@@ -285,6 +340,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 要请求资源，进程$P_i$向每个其他进程发送消息$<<RequestResource,\ P_i,\ T_m>>$，并将该消息放入其自己的请求队列中，其中$T_m$是消息的时间戳。
 - en: When process $P_j$ receives the message $<<RequestResource,\ P_i,\ T_m>>$ requests
     resource, (i) it places it on its request queue and (ii) sends a (timestamped)
     acknowledgment message to $P_i$.
@@ -292,12 +348,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当进程$P_j$接收到消息$<<RequestResource,\ P_i,\ T_m>>$请求资源时，(i) 它将其放置在其请求队列中，并(ii) 向$P_i$发送一个（带时间戳的）确认消息。
 - en: Whenever $P_i$ receives the $AckRequestResource$ it appends it to its local
     acknowledgments set.
   id: totrans-split-51
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 每当$P_i$收到$AckRequestResource$时，它将其附加到其本地的确认集合中。
 - en: To release the resource, process $P_i$ removes any $<<RequestResource,\ P_i,\
     T_m>>$ message from its request queue and sends a timestamped $P_i$ $ReleaseResource$
     message to every other process.
@@ -305,12 +363,16 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 要释放资源，进程$P_i$从其请求队列中删除任何$<<RequestResource,\ P_i,\ T_m>>$消息，并向每个其他进程发送一个带时间戳的$P_i$
+    $ReleaseResource$消息。
 - en: When process $P_j$ receives a $P_i$ $ReleaseResource$ message, it removes any
     $<<RequestResource,\ P_i,\ T_m>>$ requests resource message from its request queue.
   id: totrans-split-53
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 当进程$P_j$接收到$P_i$ $ReleaseResource$消息时，它从其请求队列中删除任何$<<RequestResource,\ P_i,\
+    T_m>>$请求资源消息。
 - en: 'Process $P_i$ is granted the resource when the following two conditions are
     satisfied: (i) There is a $<<RequestResource,\ P_i,\ T_m>>$ in its request queue
     which is ordered before any other request in its queue by the relation ⇒. (To
@@ -319,101 +381,121 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 进程$P_i$在满足以下两个条件时被授予资源：(i) 在其请求队列中有一个$<<RequestResource,\ P_i,\ T_m>>$，该请求在关系$⇒$下排在其队列中的任何其他请求之前。（为了定义消息的关系"⇒"，
 - en: we identify a message with the event of sending it.) (ii) $P_i$ has received
     a message from every other process timestamped later than Tm.
   id: totrans-split-55
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 我们将一个消息与发送它的事件进行了标识。 (ii) $P_i$已接收到每个时间戳晚于Tm的其他进程的消息。
 - en: The TLA+ specification
   id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: TLA+规范
 - en: From this blueprint, I've written a more formal specification using TLA+ and
     pluscal. I'll provide a short walkthrough here covering only the interesting parts,
     but you can find the full spec [here](https://github.com/FedericoPonzi/tla-plus-specs/).
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于这份蓝图，我用TLA+和PlusCal编写了一个更正式的规范。我会在这里进行简短的介绍，只涵盖有趣的部分，但你可以在[这里](https://github.com/FedericoPonzi/tla-plus-specs/)找到完整的规范。
 - en: '[PRE0]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Constants available are:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 可用的常量有：
 - en: '`Processes`: a set of processes like `{0, 1, 2}`.'
   id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Processes`：像`{0, 1, 2}`这样的一组进程。'
 - en: '`ProcessCanFail`: a boolean, if set to true it will show how liveness property
     is broken.'
   id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ProcessCanFail`：一个布尔值，如果设置为true，将展示活性属性是如何被破坏的。'
 - en: '`MaxTimestamp`: to keep the model bounded, I''ve set a limit on the max possible
     timestamp. Otherwise, TLC wouldn''t know when to stop model checking.'
   id: totrans-split-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`MaxTimestamp`：为了保持模型的界限，我设置了最大可能的时间戳限制。否则，TLC不知道何时停止模型检查。'
 - en: The assume statements are helpful for basic typechecking and make sure the configuration
     is correct.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设语句有助于基本类型检查，并确保配置正确。
 - en: '[PRE1]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The resource owner is a set of the current owner of the resource or, in other
     words, the process currently in its critical section.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 资源所有者是资源当前所有者的集合，或者换句话说，当前处于其临界区的进程。
 - en: The mailbox is used to communicate across processes. It allows one message at
     a time; it's simple, but it works. An alternative would be to keep al messages
     around in a message board in [Linda tuplespaces style](https://en.wikipedia.org/wiki/Linda_(coordination_language)).
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 邮箱用于跨进程进行通信。它一次只允许一个消息；虽然简单，但是有效。另一种选择是在[Linda tuplespaces风格](https://en.wikipedia.org/wiki/Linda_(coordination_language))中保留所有消息。
 - en: The `define` block has some useful definitions. `SortFunction` is used to create
     the total order. `Inv` is the safety invariant used to check that only a single
     process is in the critical section.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '`define`块包含一些有用的定义。 `SortFunction`用于创建总排序。 `Inv`是用于检查只有一个进程处于临界区的安全不变式。'
 - en: '[PRE2]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: These variables are the local state of the process, as explained in the previous
     section.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些变量是进程的局部状态，如前一节所述。
 - en: The body of the process is used to define the actions above.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 进程体用于定义上述动作。
 - en: '[PRE3]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The conditions to enter this block are:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 进入该块的条件是：
 - en: All mailboxes are empty or in other words, `p` can deliver a message to all
     the other processes
   id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有邮箱都是空的，或者换句话说，`p`可以将消息传递给所有其他进程。
 - en: '`p` hasn''t sent a request resource yet. This works because at the end of this
     action, `p` has added an `AckRequestResource, self, local_timestamp` to the local
     set. In this way, the cardinality of ack_request_resources can be used to understand
@@ -424,36 +506,43 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`p`尚未发送过资源请求。这是因为在此操作结束时，`p`已将`AckRequestResource, self, local_timestamp`添加到本地集合中。这样，可以使用ack_request_resources的基数来理解`p`是否发送了`RequestResource`，而无需保留额外的状态。避免在未获取资源的情况下发送多个请求只是简化规范的一种方式。'
 - en: '[PRE4]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The mailbox is a "global" map variable. I can use `mailbox[self]` to access
     p's allocated mailbox. Because a message has shape `msg, proc, ts`, I can access
     the sender's mailbox using `mailbox[mailbox[self].proc]` .
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 邮箱是一个“全局”映射变量。我可以使用`mailbox[self]`来访问p的分配邮箱。因为消息的形式是`msg, proc, ts`，所以我可以使用`mailbox[mailbox[self].proc]`来访问发送者的邮箱。
 - en: If `ProcessCanFail` is set to true, the smallest process `p` will never send
     the ack back, simulating a failure. This halts the system and breaks the liveness
     property.
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果将`ProcessCanFail`设置为true，最小进程`p`将永远不会发送确认消息，模拟一个故障。这会停止系统并破坏活性属性。
 - en: '[PRE5]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: To remove the `RequestResource` from the `requests_queue`, it is sufficient
     to order the requests using the sort function and discard the head of the result.
     This is safe thanks to the assumptions we made of no lost messages.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从`requests_queue`中移除`RequestResource`，只需使用排序函数对请求进行排序并丢弃结果的头部即可。这是安全的，这要归功于我们假设没有丢失消息。
 - en: '[PRE6]'
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Locally each `p` can now check if they're allowed to access their critical section.
     The `self \notin resource_owner` is just to reduce the number of state changes.
     As `resource_owner` is just a set, nothing bad would happen by re-entering this
@@ -461,28 +550,34 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，每个`p`可以在本地检查它们是否被允许访问其临界区域。`self \notin resource_owner`只是为了减少状态更改的数量。由于`resource_owner`只是一个集合，重新进入此操作不会有任何坏处。
 - en: '[PRE7]'
   id: totrans-split-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'This definition can be used as a state constraint to keep the model bounded.
     With this, I can then add in the cfg file:'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 此定义可用作状态约束，以保持模型的边界性。有了这个，我可以在 cfg 文件中添加：
 - en: '[PRE8]'
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'And now TLC will stop when this constraint returns TRUE. This approach is well
     described here: [https://learntla.com/topics/unbound-models.html#topic-unbound-models](https://learntla.com/topics/unbound-models.html#topic-unbound-models)'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，当此约束条件返回TRUE时，TLC将停止。这种方法在这里有详细描述：[https://learntla.com/topics/unbound-models.html#topic-unbound-models](https://learntla.com/topics/unbound-models.html#topic-unbound-models)
 - en: '[PRE9]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: As we saw, when `p` sends a `RequestResource` message it will append an ack
     in the local queue. The liveness property says that for any process that has requested
     access, eventually they will get ownership of the resource. I had to rule out
@@ -492,6 +587,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们所见，当`p`发送`RequestResource`消息时，它将在本地队列中附加一个确认。活性属性表明，对于任何请求访问的进程，最终它们将获得资源的所有权。我必须排除我们耗尽时间戳的情况，因为在这种情况下，系统无法进一步进行。这意味着我还必须从配置中禁用`CHECK_DEADLOCK`参数。
 - en: This concludes the walk-through, you can find the full spec on [GitHub](https://github.com/FedericoPonzi/tla-plus-specs/).
     Interestingly, after the spec was respecting the properties, I was able to refactor
     it by removing unneeded states and unneeded checks, leading to a short and simpler
@@ -499,23 +595,28 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就完成了整个演示，你可以在[GitHub](https://github.com/FedericoPonzi/tla-plus-specs/)上找到完整的规范。有趣的是，在规范符合属性之后，我能够通过删除不必要的状态和检查来重构它，从而导致了更短、更简单的规范；采用了“测试驱动开发”的风格。
 - en: A possible improvement would be to specify the mutual exclusion problem in a
     separate specification, and use refinement to check that this algorithm solves
     that problem.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个可能的改进是在单独的规范中指定互斥问题，并使用细化来检查该算法是否解决了该问题。
 - en: Conclusion
   id: totrans-split-90
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: In this article, I provided an overview of Logical Clocks introduced by Lamport
     in his paper *[Time, Clocks, and the Ordering of Events in a Distributed System
     by Leslie Lamport](http://lamport.azurewebsites.net/pubs/time-clocks.pdf)*.
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我概述了 Lamport 在他的论文*[Time, Clocks, and the Ordering of Events in a Distributed
+    System by Leslie Lamport](http://lamport.azurewebsites.net/pubs/time-clocks.pdf)*中介绍的逻辑时钟。
 - en: Logical clocks can be used to create a partial ordering among a set of events
     in a distributed system. The relation "happened before" is able to define a logical
     passage of time by using cause-effect rather than relying on physical clocks.
@@ -524,6 +625,7 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 逻辑时钟可以用于在分布式系统中一组事件之间创建部分排序。关系“发生在之前”能够通过使用因果关系而不是依赖于物理时钟来定义逻辑时间的流逝。物理时钟不准确，并且在不同机器和长距离上保持同步非常困难。
 - en: To break ties and get to a total ordering of the events, Lamport suggests ordering
     by timestamp and then by the process id. This is arbitrary in a sense that we
     define an ordering on concurrent events that could differ from the real time ordering.
@@ -532,6 +634,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了打破关系并实现事件的总排序，Lamport 建议按时间戳和进程ID排序。这在某种意义上是任意的，因为我们定义了并发事件的排序，这可能与实际时间排序不同。这可能导致异常情况。为了摆脱这些异常，我们需要一个满足强时钟条件的时钟系统。
 - en: I believe that a practical example is very useful to understand how to use Lamport
     clocks in practice. A TLA+ specification is presented to solve the mutual exclusion
     problem. TLA+ specs are a very nice and fun way to play with algorithm without
@@ -539,13 +642,17 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为实际示例非常有用，可以帮助理解如何在实践中使用 Lamport 时钟。本文介绍了一个用于解决互斥问题的 TLA+ 规范。TLA+ 规范是一种非常好玩的方式，可以在不必担心无关细节的情况下玩耍算法。
 - en: While writing the spec for this post, I've also [contributed](https://github.com/hwayne/learntla-v2/pull/78)
     with some documentation to the learntla website.
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 在编写本文的规范时，我还通过[贡献](https://github.com/hwayne/learntla-v2/pull/78)一些文档到 learntla
+    网站。
 - en: References
   id: totrans-split-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 参考文献
