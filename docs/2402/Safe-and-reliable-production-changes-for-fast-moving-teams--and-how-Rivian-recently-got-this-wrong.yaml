@@ -2,34 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:52:45'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:52:45'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Safe and reliable production changes for fast moving teams; and how Rivian recently
     got this wrong
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快速移动团队的安全可靠生产变更；以及Rivian最近如何做错了这一点
 - en: 来源：[https://blog.substrate.tools/safe-and-reliable-production-changes-for-fast-moving-teams-and-how-rivian-recently-got-this-wrong/](https://blog.substrate.tools/safe-and-reliable-production-changes-for-fast-moving-teams-and-how-rivian-recently-got-this-wrong/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.substrate.tools/safe-and-reliable-production-changes-for-fast-moving-teams-and-how-rivian-recently-got-this-wrong/](https://blog.substrate.tools/safe-and-reliable-production-changes-for-fast-moving-teams-and-how-rivian-recently-got-this-wrong/)
 - en: Changing production infrastructure can be scary because we don’t want to break
     things for customers, mistakes happen, and there can be many unknowns.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 更改生产基础设施可能令人担忧，因为我们不希望为客户引发问题，错误会发生，且可能存在许多未知因素。
 - en: In this post I’ll be discussing a recent over-the-air (OTA) software update
     to Rivian vehicles that went badly. It is speculative; I have no insider knowledge
     of Rivian’s software, systems or practices. However, I do have over 20 years experience
@@ -38,6 +45,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我将讨论最近对Rivian车辆进行的一次空中（OTA）软件更新，情况并不乐观。这只是推测性的；我对Rivian的软件、系统或实践没有内部知识。但是，我在Square、Segment和Confluent等公司拥有超过20年的构建、运营和领导团队的在线系统经验。
 - en: I’ve long been a car nerd, too, and modern vehicles, especially EVs are an exciting
     confluence of cars and technology, with software taking an ever greater role in
     the function and experience of the vehicles. I think Tesla and Rivian are doing
@@ -46,17 +54,20 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我长期以来也是一个汽车迷，特别是现代车辆，尤其是电动车，是汽车和技术的激动人心的交汇点，软件在车辆功能和体验中扮演着越来越重要的角色。我认为特斯拉和Rivian在推动汽车软件技术的前沿方面做得最多。我特别关注Rivian的动态，因为那是我驾驶的车辆。
 - en: I think a very similar methodology can apply to both Rivian’s fleets of cars
     and our large-scale cloud services for doing safe rollouts of changes to a production
     environment serving customers.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为非常类似的方法可以同时适用于Rivian的车队和我们的大规模云服务，以安全地在为客户提供服务的生产环境中部署变更。
 - en: '**The broken Rivian over-the-air software update**'
   id: totrans-split-10
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**破损的Rivian空中更新软件**'
 - en: On Monday, November 13, 2023, Rivian started rolling out version 2023.42 to
     customer vehicles. [RivianTrackr has a detailed timeline](https://rivian.software/2023-42-timeline/?ref=blog.substrate.tools).
     Typical monthly releases fix bugs, add features, and don’t cause much drama. This
@@ -64,6 +75,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 2023年11月13日星期一，Rivian开始向客户车辆推送2023.42版本。[RivianTrackr有详细的时间表](https://rivian.software/2023-42-timeline/?ref=blog.substrate.tools)。典型的每月发布版本用于修复错误，添加功能，并且通常不会引起太多波动。但这一次情况并非如此。
 - en: Roughly 3% of vehicles received this update which put their infotainment screen
     into a reboot loop. While the vehicles were still drivable, many of the controls
     were unavailable for several days while Rivian worked on a fix. Many Rivian owners
@@ -73,11 +85,13 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 大约有3%的车辆收到了这个更新，导致它们的信息娱乐屏幕进入了一个重启循环。虽然这些车辆仍然可驾驶，但许多控制功能在Rivian努力修复期间几天内不可用。许多Rivian车主（我认为Rivian自己也是）担心他们可能需要去服务中心进行修复。幸运的是，几天后，Rivian通过另一个空中更新成功解决了这个问题。
 - en: '**Process and Design Flaws**'
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**过程和设计缺陷**'
 - en: Rivian appears to make updates available to customers a few at a time, as visualized
     on [electraFi’s](https://electrafi.com/firmwareRivian?ref=blog.substrate.tools)
     Rivian dashboard. These over-the-air updates come approximately monthly, with
@@ -86,21 +100,25 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: Rivian似乎会将更新逐步推送给客户，如在[electraFi](https://electrafi.com/firmwareRivian?ref=blog.substrate.tools)的Rivian仪表板上可视化显示。这些空中更新大约每月进行一次，在开始向客户车辆逐步推送之前，会进行大约两周的内部测试。
 - en: Thanks to these practices, Rivian caught this issue when it was released to
     about 3% of vehicles. But that’s still around 2,000 vehicles. 2,000 customers.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这些做法，Rivian在发布给大约3%的车辆时就发现了这个问题。但这仍然影响了约2,000辆车，2,000名客户。
 - en: Rivian could borrow some pages from the web operations playbook to improve their
     process and protect their customers from many such issues in the future..
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: Rivian 可以借鉴 Web 运维手册的一些页面，改进他们的流程，并保护他们的客户免受未来许多类似问题的影响。
 - en: '**Canary Deploys**'
   id: totrans-split-17
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**试点部署**'
 - en: With the botched 2023.42 update [Rivian explained](https://www.reddit.com/r/Rivian/comments/17usikn/202342_ota_update_issue/?ref=blog.substrate.tools)
     that they pushed the wrong build with the wrong certificates to customer vehicles.
     This made me immediately think they *probably* don’t have a canary fleet of vehicles
@@ -108,6 +126,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着 2023.42 版本的失败更新 [Rivian 解释](https://www.reddit.com/r/Rivian/comments/17usikn/202342_ota_update_issue/?ref=blog.substrate.tools)，他们向客户车辆推送了错误的构建和错误的证书。这让我立即想到他们*可能*没有一个首先推广给试点车队的措施。
 - en: It seems like they have a beta fleet that is Rivian owned and Rivian employee
     owned vehicles. These have the ability to validate their beta certificates and
     get the new releases before customer vehicles. There must be some process where
@@ -118,6 +137,8 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来他们有一个测试车队，包括 Rivian 拥有的车辆和员工拥有的车辆。这些车辆有能力验证它们的测试证书，并在客户车辆之前获取新的发布版本。他们必须有一个流程，其中他们将车辆注册到测试计划中。我假设这与
+    Apple 的测试计划类似，您必须安装一组证书来注册和验证测试版本。生产车辆（客户车辆）无法验证这些证书。所以当测试版本被推送到它们时，这导致了信息娱乐系统陷入重启循环。
 - en: If Rivian had a canary fleet of even a single vehicle that had never run a beta
     build, it would have failed the update, and they could have caught this issue
     before it hit customers. There are plenty of problems that only happen in certain
@@ -126,11 +147,13 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 Rivian 有一个小型的试点车队，甚至只有一辆从未运行过测试版本的车辆，它们本可以发现这个问题，然后才会影响到客户。有许多只在特定条件下才会出现的问题，而试点部署则无法捕捉到。但我认为这个特定问题可以通过一个小型的试点车队立即捕捉到。
 - en: '**Pre-flight checks**'
   id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**预检程序**'
 - en: The next problem was that Rivian vehicles downloaded and installed the update
     without validating it first. They seemed to do a full install and then fail at
     90%, which leads me to believe they don’t do the certificate validation until
@@ -145,17 +168,21 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Rivian 的下一个问题是其车辆下载并安装更新时未进行验证。它们似乎完成了全面安装，但在 90% 处失败，这让我认为它们直到新操作系统镜像启动后才进行证书验证。这似乎是一个非常不幸的设计决定。可靠的系统应该有一个预检程序，在某些健康条件不满足时中止任何更改。在这种情况下，Rivian
+    的车辆本可以下载新的操作系统镜像，尝试验证证书，然后在验证失败时中止安装。然后它们可以向 Rivian 发送遥测数据，以便操作部署的工程师们能够迅速发现他们的错误，客户的不便可能只是一条关于更新失败的消息，并要求他们稍后重试。
 - en: Again, you can’t account for every possible problem in a pre-flight check. But
     validating the certificate of an OS image is about the most fundamental check
     you could do, second only to ensuring the downloaded image matches a known checksum.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，无法在预检程序中考虑到每一个可能的问题。但验证操作系统镜像的证书是您可以进行的最基本的检查之一，仅次于确保下载的镜像与已知的校验和匹配。
 - en: '**Rollbacks**'
   id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**回滚机制**'
 - en: Finally, I’m surprised that Rivian doesn’t have any kind of automatic rollback
     mechanism in place for a failed update. It’s pretty common for things like enterprise
     routers and switches and various embedded systems to keep the last known good
@@ -164,6 +191,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我对 Rivian 没有任何失败更新的自动回滚机制感到惊讶。像企业路由器、交换机和各种嵌入式系统一样，保留上次已知的良好操作系统镜像是相当普遍的。如果新的操作系统无法启动，系统将自动回滚到上次已知的良好镜像。
 - en: This is especially important for devices that are deployed in locations that
     are hard to get to for repair or devices that require higher uptime than any time
     to repair. To me it seems like having roughly 75,000 vehicles all over the US,
@@ -291,6 +319,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 频繁的生产变更意味着更小的变更。较小的变更通常更少复杂，更容易理解，如果出现问题也更容易修复。
 - en: Conversely, infrequent changes tend to be large, complex, and hard to fix when
     something goes wrong.
   id: totrans-split-49
@@ -298,12 +327,14 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 相反，不经常的变更往往是大规模的、复杂的，当出现问题时难以修复。
 - en: Teams that deploy frequently have many opportunities to practice deploying to
     and changing production. We tend to get quite good at things we practice regularly.
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 频繁部署的团队有许多机会练习向生产环境部署和更改。我们倾向于在经常练习的事情上表现得非常好。
 - en: These teams are also more likely to automate or smooth out any sharp edges in
     their tooling if they are using it very frequently.
   id: totrans-split-51
@@ -311,6 +342,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果使用非常频繁，这些团队也更有可能自动化或平滑其工具的任何尖锐边缘。
 - en: Frequently deploys mean less rush to get your code ready for a fixed schedule
     release. With infrequent releases, teams may feel pressure to rush their code
     or testing so they don’t miss the release train and have to wait for the next
@@ -319,6 +351,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 频繁的部署意味着不必赶着为固定时间表发布准备您的代码。与不经常的发布相比，团队可能感到压力，以便不错过发布时间，必须等待下一个时间表。
 - en: The next part of safely changing production is ensuring any changes are well
     tested before they reach production. High functioning software engineering teams
     tend to have some sort of CI (Continuous Integration) testing setup. For the rest
@@ -327,44 +360,52 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 安全更改生产的下一部分是确保任何更改在达到生产之前都经过了充分测试。高效的软件工程团队倾向于拥有某种CI（持续集成）测试设置。在本文的其余部分中，我们假设您拥有一个良好运作的CI系统或某种类似的测试设置，并且不会在该领域提出任何建议。
 - en: We will be focusing on how a change makes its way through various environments
     into production for all of your customers.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将专注于变更如何通过各种环境进入所有客户的生产环境。
 - en: We’re convinced most teams building and operating online services are best served
     by frequent small changes to production, and a phased rollout approach where changes
     are tested in a way that minimizes blast radius, including in production.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们确信，大多数构建和运营在线服务的团队最适合频繁向生产环境进行小规模更改，并采用分阶段推出的方法，在测试中最大程度地减小影响范围，包括在生产环境中。
 - en: One of the best ways to achieve this for infrastructure changes is detailed
     in [Terraform best practices for reliability at any scale](https://www.notion.so/RevenueCat-5bc42bbcd05c4a7cac7e897988dced72?pvs=21&ref=blog.substrate.tools).
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 实现基础设施变更的最佳方法之一详见[Terraform最佳实践：在任何规模下确保可靠性](https://www.notion.so/RevenueCat-5bc42bbcd05c4a7cac7e897988dced72?pvs=21&ref=blog.substrate.tools)。
 - en: Take Away
   id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: Designing reliable systems can be complex, but following some key principles
     can make your systems much more likely to survive the inevitable bugs and mistakes.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 设计可靠系统可能很复杂，但遵循一些关键原则可以大大增加系统生存不可避免的错误和失误的可能性。
 - en: Canary deploys - Deploy your change to a tiny fleet of systems that are exactly
     the same as the rest of production.
   id: totrans-split-59
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 金丝雀部署 - 将您的更改部署到与生产环境完全相同的一小部分系统中。
 - en: Phased rollouts - After canary, gradually roll your change out to more and more
     of your server fleet or customers.
   id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 分阶段推出 - 在金丝雀之后，逐渐将您的更改扩展到更多的服务器群或客户端。
 - en: Pre-flight checks - At a minimum, your deployment system should verify that
     the artifact it’s deploying passes certain integrity checks. More complex versions
     can also verify downstream dependencies.
@@ -372,6 +413,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 飞行前检查 - 至少，您的部署系统应验证其部署的工件是否通过了某些完整性检查。更复杂的版本还可以验证下游依赖项。
 - en: Rollbacks - Think through how you would roll back from any change, and practice
     it. When in doubt, roll back! At Square we evangelized this idea so much that
     it was immortalized internally as go/rollback and now exists publicly at [https://outage.party](https://outage.party/?ref=blog.substrate.tools).
@@ -379,3 +421,4 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 回滚 - 思考如何回滚任何更改，并进行实践。当有疑问时，请回滚！在Square，我们非常倡导这一理念，以至于在内部被永久化为go/rollback，并且现在在[https://outage.party](https://outage.party/?ref=blog.substrate.tools)公开存在。
