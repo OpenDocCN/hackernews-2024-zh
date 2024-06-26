@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:06:47'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:06:47'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Chris''s Wiki :: blog/unix/BashProgrammableCompletionFlaw'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Chris''s Wiki :: blog/unix/BashProgrammableCompletionFlaw'
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/BashProgrammableCompletionFlaw](https://utcc.utoronto.ca/~cks/space/blog/unix/BashProgrammableCompletionFlaw)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/BashProgrammableCompletionFlaw](https://utcc.utoronto.ca/~cks/space/blog/unix/BashProgrammableCompletionFlaw)
 - en: '[Bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) has an interesting
     and broadly useful feature called ''[programmable completion](https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion.html)''
     (this has sort of [come up before](/~cks/space/blog/linux/BashCompletionIssue)).
@@ -34,17 +40,23 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Bash](https://en.wikipedia.org/wiki/Bash_(Unix_shell)) 具有一个有趣且广泛有用的功能称为 ''[programmable
+    completion](https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion.html)''（这在以前已经提到过）。可编程完成使得
+    Bash 能够为当前程序自动完成命令行选项之类的事物。不幸的是，Bash 的可编程完成的一个缺陷是它不理解足够的 Bash 命令行语法，因此可能会妨碍您。'
 - en: 'Suppose, not hypothetically, that you are typing the following on the Bash
     command line on a Debian-based Linux system, with the bits in **bold** being what
     you typed before you hit tab:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设，非假设地，您正在 Debian-based Linux 系统上的 Bash 命令行中输入以下内容，并且在按下 TAB 键之前已输入 **粗体**
+    部分：
 - en: '`# **apt-get install $(grep -v ''^#'' somefi**`<TAB>'
   id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`# **apt-get install $(grep -v ''^#'' somefi**`<TAB>'
 - en: When you hit TAB to complete the file name, nothing will happen. This is because
     Bash has been told what the arguments to apt-get are and so 'knows' that they
     don't include files (this is actually wrong these days, but never mind). Bash
@@ -54,6 +66,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您按下 TAB 键以完成文件名时，不会发生任何事情。这是因为 Bash 已经知道 apt-get 的参数，并且 '知道' 它们不包括文件（尽管这在今天已经不正确了，但不要紧）。Bash
+    不够聪明，不能识别您通过 '`$(`' 开始编写命令替换并且现在位于完全不同的完成上下文中，即 `grep` 的完成上下文，您应该允许完成文件名。
 - en: Bash could in theory be this smart but there are probably a number of obstacles
     to doing that in practice. For example, we don't have a well-formed command substitution
     here, since we haven't typed the closing '`)`' yet; Bash would effectively have
@@ -64,6 +78,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 理论上 Bash 可以变得很聪明，但在实践中可能会遇到许多障碍。例如，在这里我们没有一个格式良好的命令替换，因为我们还没有输入闭合的 '`)`'；Bash
+    实际上需要做类似于编辑器自动完成的即时解析不完整代码的事情。也许 Bash 可以通过一些启发式方法做得更好，但当前的情况广泛易于解释和推理，即使结果有时会令人沮丧。
 - en: There are at least two ways to disable these programmable completions in Bash.
     You can turn off the feature entirely with '`shopt -u progcomp`' or you can flush
     all of the registered programmable completions with '`complete -r`'. In theory
@@ -73,11 +89,16 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 至少有两种方法可以禁用 Bash 中的这些可编程完成。您可以通过 '`shopt -u progcomp`' 完全关闭该功能，或者使用 '`complete
+    -r`' 刷新所有注册的可编程完成。理论上，您可以使用 '`complete -p`' 查看当前完成列表，然后使用 '`complete -r <name>`'
+    删除其中一个，但实际上，直到我开始尝试使用它们进行完成，'complete -p' 并不总是列出程序。
 - en: (Where the shell snippets that define completions go is system dependent, but
     Linux systems will often put them in '`/usr/share/bash-completion/completions`'.)
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: (定义完成的 shell 片段的位置取决于系统，但 Linux 系统通常会将它们放在 '`/usr/share/bash-completion/completions`'
+    中。)
 - en: People with better memories than me can also use M-/ instead to force completion
     of a filename no matter what Bash's programmable completion thinks should go there.
     M-! will complete command names, M-$ will complete variable names, and M-~ will

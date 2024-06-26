@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:34:40'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:34:40'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Chris''s Wiki :: blog/unix/ShellImportanceOfASpace'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Chris''s Wiki :: blog/unix/ShellImportanceOfASpace'
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/ShellImportanceOfASpace](https://utcc.utoronto.ca/~cks/space/blog/unix/ShellImportanceOfASpace)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/ShellImportanceOfASpace](https://utcc.utoronto.ca/~cks/space/blog/unix/ShellImportanceOfASpace)
 - en: In the sidebar to [yesterday's entry](/~cks/space/blog/sysadmin/FindPruningThingsOut)
     I (originally) made a Unix command line mistake by unthinkingly leaving out an
     ordinary, innocent looking space (it's corrected in the current version of the
@@ -33,27 +39,35 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[昨天的文章](/~cks/space/blog/sysadmin/FindPruningThingsOut)的侧边栏中，我（最初）因为一个无意的 Unix
+    命令行错误而犯了一个错误，我不经意地漏掉了一个看起来非常普通和无害的空格（在 Emilio 的评论中指出后，我已经在当前版本的文章中将其纠正）。这个看似无辜的错误及其后果说明了
+    Unix shell 命令行中的一些问题，尽管我不确定具体是什么问题，所以我打算写出来。
 - en: 'The story starts with the general arguments of [Bash''s ''`read`'' builtin](https://www.gnu.org/software/bash/manual/bash.html#index-read):'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 故事始于[Bash 的‘`read`’内建](https://www.gnu.org/software/bash/manual/bash.html#index-read)的一般参数：
 - en: '`read [-ers] [-a *aname*] [-d *delim*] [-i *text*] [-n *nchars*] [-N *nchars*]
     [-p *prompt*] [-t *timeout*] [-u *fd*] [*name* …]`'
   id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`read [-ers] [-a *aname*] [-d *delim*] [-i *text*] [-n *nchars*] [-N *nchars*]
+    [-p *prompt*] [-t *timeout*] [-u *fd*] [*name* …]`'
 - en: 'The ''`read`'' builtin follows the general standard behavior of Unix commands
     where ''-d *delim*'' and other options that take an argument can be shortened
     to omit the space, so ''-d*delim*''. So you can write, for example:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: ‘`read`’ 内建遵循 Unix 命令的一般标准行为，选项 '-d *delim*' 和其他需要参数的选项可以缩写以忽略空格，因此 '-d*delim*'。所以你可以写，例如：
 - en: '[PRE0]'
   id: totrans-split-10
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Bash also has a special feature for -d. Normally the first character of *delim*
     is taken as the 'line' terminator, but if *delim* is blank, `read` will terminate
     the line when it reads a NUL character (0 byte), which is just what you want to
@@ -61,32 +75,39 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Bash 还有一个特殊功能是 -d。通常，*delim* 的第一个字符被视为“行”终止符，但如果 *delim* 为空白，`read` 将在读取 NUL
+    字符（0 字节）时终止行，这正是你处理例如 'find ... -print0' 输出所需的方式。
 - en: 'The way you create an empty string argument in a Bash command line is to use
     an empty pair of quotes:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Bash 命令行中创建一个空字符串参数的方法是使用一对空引号：
 - en: '[PRE1]'
   id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'So when I was writing the original command line in [yesterday''s entry](/~cks/space/blog/sysadmin/FindPruningThingsOut),
     I absently mashed these two things together in my mind and wrote:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以当我在[昨天的文章](/~cks/space/blog/sysadmin/FindPruningThingsOut)中编写原始命令行时，我心不在焉地把这两者混在一起，写成了：
 - en: '[PRE2]'
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: I've used '' to create an empty argument and then I've done the standard thing
     of removing the space between -d and its argument. So clearly I've given '-d'
     an empty argument, right? Nope.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用''创建一个空参数，然后我标准地移除了 -d 和其参数之间的空格。所以清楚地我给了 -d 一个空参数，对吗？错了。
 - en: 'In Bash and other conventional shells, '''' is nothingness. It only means an
     argument that is an empty string if it occurs on its own; this is a special interpretation
     added by the shell, and programs don''t actually see the ''''s. If you put a ''''
@@ -96,15 +117,20 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Bash 和其他传统 shell 中，'' 表示无内容。只有当它单独出现时，它才表示一个空字符串参数；这是 shell 添加的特殊解释，程序实际上不会看到这些
+    ''。如果你将 '' 放在其他非空白字符旁边，它们在程序所看到的命令行中会消失。因此，写 '-d''' 与写没有参数的 '-d' 是相同的，而 '`read`'
+    命令行会看到它实际上是：
 - en: '[PRE3]'
   id: totrans-split-18
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Which would have caused '`read`' to use 'l' as the line terminator.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会导致 '`read`' 以 'l' 作为行终止符。
 - en: 'In the process of writing this entry, I realized that there''s a more interesting
     way to make what is fundamentally the same mistake, although it goes deeper into
     Unix arcana and doesn''t look half as obvious. In many modern shells, the Bourne
@@ -113,21 +139,27 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在写这篇文章的过程中，我意识到了另一种更有趣地犯同样错误的方法，尽管这更深入 Unix 奥秘，看起来并不那么明显。在许多现代 shell 中，包括 Bourne
+    shell，在命令行中你可以用 `$'\0'` 来表示 NUL 字符（0 字节）。因此，你会看到人们将 'read with NUL terminated
+    lines' 命令行写成：
 - en: '[PRE4]'
   id: totrans-split-21
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This works fine, and unlike the '''' case we obviously have a real argument
     here, not just an empty argument, so clearly we can shorten this to:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很好地运作，而且不像''情况下我们明显有一个真实的参数，而不仅仅是一个空参数，因此显然我们可以将其缩短为：
 - en: '[PRE5]'
   id: totrans-split-23
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'If you try this you will discover it doesn''t work. The fundamental problem
     is that **Unix command line arguments can''t include NUL characters**, because
     the Unix command line API passes the arguments as an array of NUL-terminate (C)
@@ -137,18 +169,22 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你尝试这样做，你会发现它不起作用。根本问题在于**Unix命令行参数不能包含NUL字符**，因为Unix命令行API将参数作为以NUL结尾的(C风格)字符串数组传递。无论如何调用程序，参数中的第一个NUL字符都会被程序视为该参数的结束。因此，尽管从键盘输入时看起来非常不同，但从`read`的角度来看，我们所做的与以下操作相同：
 - en: '[PRE6]'
   id: totrans-split-25
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: (And then it would have the same effect as my mistake.)
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: （然后它将产生与我的错误相同的效果。）
 - en: 'PS: This is a little tangled because ''`read`'' is a Bash builtin so in theory
     Bash doesn''t have to stick to the limits of the kernel API, but in practice I
     think Bash does do so.'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: PS：这有点复杂，因为'`read`'是Bash的内置命令，理论上Bash不必遵守内核API的限制，但实际上我认为Bash确实遵守了这些限制。
