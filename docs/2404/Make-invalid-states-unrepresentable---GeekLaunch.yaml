@@ -2,90 +2,109 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:32:23'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:32:23'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Make invalid states unrepresentable - GeekLaunch
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使无效状态不可表示 - GeekLaunch
 - en: 来源：[https://geeklaunch.io/blog/make-invalid-states-unrepresentable/](https://geeklaunch.io/blog/make-invalid-states-unrepresentable/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://geeklaunch.io/blog/make-invalid-states-unrepresentable/](https://geeklaunch.io/blog/make-invalid-states-unrepresentable/)
 - en: Let’s talk about types.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们谈谈类型。
 - en: This post will be applicable to most programming languages, but it is significantly
     easier to apply these concepts when using languages that have more powerful, functionally-inspired,
     or mathematically-flavored type systems^.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章适用于大多数编程语言，但在使用功能更强大、受函数启发或数学化类型系统的语言时，应用这些概念会更容易^。
 - en: As you probably know, the Rust compiler can spit out some pretty high-quality
     error messages.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你可能知道的那样，Rust 编译器可以输出一些非常高质量的错误消息。
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: For example, it will recommend changing the mutability of an immutable binding
     when code attempts to mutate it.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，当代码尝试修改一个不可变绑定时，它会建议改变其可变性。
 - en: '[PRE1]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Here, it suggests a missing field’s name from a type constructor.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，它建议从类型构造函数中缺失一个字段的名称。
 - en: '[PRE2]'
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'And here, it suggests changing an invalid identifier (side note: this is possibly
     my favorite `rustc` error message).'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，它建议修改一个无效的标识符（顺便说一句：这可能是我最喜欢的 `rustc` 错误消息之一）。
 - en: The Rust compiler is *smart*, and in conjunction with the language’s powerful
     type system, you have a useful tool at your disposal.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 编译器很 *智能*，与语言强大的类型系统结合，你将拥有一个实用的工具。
 - en: Legal vs. valid states
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 合法 vs. 有效状态
 - en: Types tell the compiler in what manner data can be represented. These might
     be types from the standard library, types from third-party libraries, primitives
     from the language, or even types that you write yourself.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 类型告诉编译器如何表示数据。这些类型可以来自标准库、第三方库、语言的基本类型，甚至是你自己编写的类型。
 - en: Types delineate the set of *legally representable states* $\mathcal{R}$ ^(in
     your application.)
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 类型界定了 *合法可表示状态* 的集合 $\mathcal{R}$ ^(在你的应用中。)
 - en: Then, there’s your business logic. Business logic leverages data that conform
     to the representable states defined by your types, manipulates those data, and
     delivers some output. The data that your business logic can handle comprises the
@@ -95,36 +114,43 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 接着，有你的业务逻辑。业务逻辑利用符合你的类型定义的可表示状态来操作这些数据，并生成一些输出。你的业务逻辑可以处理的数据组成了有效状态集合 $\mathcal{V}$（即“可处理”状态），而且关键的是，*有效状态集合未必等于可表示状态集合*。
 - en: $$\mathcal{R} \supseteq \mathcal{V}$$
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\mathcal{R} \supseteq \mathcal{V}$$
 - en: In fact, $\mathcal{R}$ is often *significantly* larger than $\mathcal{V}$, i.e.
     the code can handle far fewer states than are actually representable.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，$\mathcal{R}$ 往往比 $\mathcal{V}$ *显著* 大，即代码可以处理的状态远少于实际可表示的状态。
 - en: 'The difference between these two sets is the set of invalid states: the data
     which a program can represent but does not know how to handle properly. This is
     where bugs occur.'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两组之间的区别在于无效状态的集合：即程序能够表示但不知如何正确处理的数据。这就是 bug 发生的地方。
 - en: 'In order to reduce bugs, we therefore need to minimize this gap, and to do
     that, we can either:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了减少 bug，我们需要尽量缩小这个差距，为此，我们可以选择：
 - en: increase the number of cases handled by the code, or,
   id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 增加代码处理的案例数量，或者，
 - en: decrease the number of representable states.
   id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 减少可表示状态的数量。
 - en: 'Increasing the number of cases handled by the code tends to increase its complexity,
     and complex code also has a high tendency to be buggy if you’re not careful. Therefore,
     in this post, we’re covering the latter strategy: decreasing the number of representable
@@ -132,33 +158,40 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 增加代码处理的案例数量往往会增加其复杂性，复杂的代码如果不小心处理则更容易出 bug。因此，在这篇文章中，我们讨论的是后一种策略：减少可表示状态的数量。
 - en: Another way to think of this is that we’re moving as many errors as possible
     from runtime to compile-time.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种思考方式是，我们尽可能将尽可能多的错误从运行时转移到编译时。
 - en: 'Example: color'
   id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例：颜色
 - en: 'Let’s take a look at a simple example:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一个简单的例子：
 - en: '[PRE3]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Here, we have a function that accepts a color as input. Right now, it takes
     a string. Let’s see how this might pan out for our function:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里，我们有一个接受颜色作为输入的函数。目前，它接受一个字符串。让我们看看这对我们的函数有什么影响：
 - en: '[PRE4]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Right now, the set of representable states is greater than the set of valid
     states, meaning that our function will have to contain some parsing logic and
     probably some error handling. If the function propagates the error by returning
@@ -167,35 +200,42 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，可表示的状态集合大于有效状态集合，这意味着我们的函数将必须包含一些解析逻辑和可能一些错误处理。如果函数通过返回`Result`（Rust）或抛出异常（Java等）传播错误，则调用代码也需要执行一些错误处理。
 - en: 'Let’s instead introduce a simple `Color` data structure with two variants:
     for RGB and RGBA colors, and we’ll update our function to accept a parameter of
     this type instead of a string:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们改为引入一个简单的`Color`数据结构，它有两个变体：用于RGB和RGBA颜色，并且我们将更新我们的函数以接受此类型的参数而不是字符串：
 - en: '[PRE5]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Let’s take a look at the representable states now:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们来看看可表示的状态：
 - en: '[PRE6]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Turns out, all of the representable states are also valid states! This means
     that our sets $\mathcal{R}$ and $\mathcal{V}$ are equal, and no runtime error
     handling is necessary.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果表明，所有可表示的状态也都是有效状态！这意味着我们的集合$\mathcal{R}$和$\mathcal{V}$是相等的，并且不需要运行时错误处理。
 - en: 'Before I continue, let’s take a step back and evaluate how we can benefit from
     coding like this:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我继续之前，让我们退后一步，评估一下我们如何从这样编码中获益：
 - en: First, it helps us to separate concerns within the codebase. Before you can
     use user input in your business logic, it has to be validated and parsed into
     an internal data structure, and this requirement is enforced by the compiler.
@@ -203,24 +243,28 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先，它帮助我们在代码库中分离关注点。在您可以在业务逻辑中使用用户输入之前，它必须被验证并解析为内部数据结构，编译器强制执行此要求。
 - en: Then, the guarantees which that parsing and validating step check for persist
     as long as the data exist. It provides deeper and earlier guarantees.
   id: totrans-split-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 然后，只要数据存在，解析和验证步骤所提供的保证就会持续存在。这提供了更深入和更早的保证。
 - en: If we restrict the possible inputs to a function, for example, this means that
     the logic in the body of the function has to cover fewer cases.
   id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果我们将函数的可能输入限制在某些范围内，例如，这意味着函数主体中的逻辑只需涵盖更少的情况。
 - en: If your types mirror your business logic, changes to those types will cause
     compile-time errors until your code is updated respectively. This is a good thing.
   id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果您的类型反映您的业务逻辑，对这些类型的更改将导致编译时错误，直到相应更新您的代码。这是件好事。
 - en: Finally, well-structured data types are easier to understand and use. This is
     especially important in larger codebases with multiple contributors. Well-typed
     data is harder (though not impossible) to mistakenly use incorrectly.
@@ -228,247 +272,299 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后，在具有多个贡献者的较大代码库中，良好结构化的数据类型更易于理解和使用。在类型良好的数据中错误使用的可能性更小（尽管不是不可能）。
 - en: 'Example: modal text editor'
   id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 示例：模态文本编辑器
 - en: Let’s take a look at a little more complicated example.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看一个稍微复杂一些的例子吧。
 - en: Imagine you’re writing a Vim-like text editor. In Vim, you can perform different
     text editing actions, as well as some other functions, like recording macros.
     A macro is a combination of actions that can be saved and executed multiple times.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下你正在编写一个类似Vim的文本编辑器。在Vim中，你可以执行不同的文本编辑操作，以及一些其他功能，比如录制宏。宏是一系列可以保存和多次执行的操作组合。
 - en: In our example editor, we’re going to add the constraint that recorded macros
     are not allowed to save or record macros inside of them.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的示例编辑器中，我们将添加一个约束：不允许记录的宏内部保存或记录宏。
 - en: (Note that real Vim actually *does* support “recursive” macro operations, but
     this is a motivated example, so just roll with it.)
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: （请注意，实际的Vim确实*支持*“递归”宏操作，但这只是一个激发想象的例子，所以就顺着这个想法走吧。）
 - en: 'If we were to implement a type for actions, it might look something like this:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们要为操作实现一个类型，可能会看起来像这样：
 - en: '[PRE7]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Actions are represented by an enum. Saving a macro requires us to specify the
     register in which to save the macro, and the list of actions to save. The `Motion`
     and `Register` structs are irrelevant, so I’ve omitted any definition.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 操作由枚举表示。保存宏要求我们指定要保存宏的寄存器，以及要保存的动作列表。`Motion`和`Register`结构体是无关的，所以我省略了任何定义。
 - en: However, this set of types doesn’t enforce the non-recursive constraint. `SaveMacro::actions`
     isn’t *supposed* to be allowed to contain `Action::SaveMacro` or `Action::RunMacro`,
     but these type declarations allow for that.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这组类型不强制执行非递归约束。`SaveMacro::actions`不应*允许*包含`Action::SaveMacro`或`Action::RunMacro`，但这些类型声明允许这样做。
 - en: 'No big deal, we can still enforce this, no problem. We’ll just make the fields
     of `SaveMacro` private and provide a constructor that enforces the constraint:'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 没什么大不了的，我们仍然可以强制执行这一点，没有问题。我们只需将`SaveMacro`的字段设为私有，并提供一个强制执行约束的构造函数：
 - en: '[PRE8]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: It’s not too bad. We have a bit of code, a simple, self-explanatory error type,
     and our constructor works great.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 情况并不太糟。我们有一点代码，一个简单且自解释的错误类型，而且我们的构造函数运行得很好。
 - en: So what’s the issue?
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么问题出在哪里呢？
 - en: Well, whenever we want to use the constructor, the caller has to perform some
     error handling.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，每当我们想要使用构造函数时，调用者必须进行一些错误处理。
 - en: …which not the end of the world. Error handling is part of the job description.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: …这并不是世界末日。错误处理是工作描述的一部分。
 - en: '[PRE9]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Here I’ve used `unwrap`^(, which will halt the program if it encounters any
     errors.)
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里我使用了`unwrap`（如果遇到任何错误将停止程序的函数）。
 - en: What happens if we uncomment the commented-out line?
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们取消注释掉的那行代码会发生什么？
 - en: At compile time, nothing! Unfortunately, this code produces a runtime error.
     Our validation code only runs at *run*time, so there’s no way for the compiler
     to tell us anything has gone wrong.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 在编译时，什么也没有！不幸的是，这段代码产生了一个运行时错误。我们的验证代码只在*运行*时运行，因此编译器无法告诉我们出了什么问题。
 - en: 'This is not necessarily a bad thing: runtime errors are normal. Sometimes they
     are unavoidable. However, in this case, we can do better.'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不一定是件坏事：运行时错误很正常。有时是不可避免的。然而，在这种情况下，我们可以做得更好。
 - en: Shrinking the representable state space
   id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 缩小可表示的状态空间
 - en: Let’s take another look at our type declarations and do a bit of restructuring
     to shrink the set of representable states and make it closer to the set of valid
     states.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再次看看我们的类型声明，并进行一些重构，以缩小可表示的状态集合，并使其更接近有效状态集合。
 - en: First, a rewrite of our `Action` and `SaveMacro` types.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，重写我们的`Action`和`SaveMacro`类型。
 - en: '[PRE10]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: You’ll notice I’ve extracted the macro-legal actions out into their own enum.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 你会注意到我已将宏定义的合法操作提取到它们自己的枚举中。
 - en: Also note that in this version, there’s no constructor, no type for constructor
     errors, and the fields of `SaveMacro` can be public.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 还要注意，在这个版本中，没有构造函数，也没有用于构造函数错误的类型，并且`SaveMacro`的字段可以是公共的。
 - en: Here’s what it looks like to construct a `SaveMacro` action that does the same
     thing as the example for the previous version.
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是构造一个与前一个版本示例相同功能的`SaveMacro`操作的重写方式。
 - en: '[PRE11]'
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: However, this time, if we uncomment the commented-out line, we get an error
     at compile-time!
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这一次，如果我们取消注释掉的那行代码，我们会在编译时得到一个错误！
 - en: '[PRE12]'
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Perfect! This is exactly what we wanted.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 完美！这正是我们想要的。
 - en: We defined our type system in a way that more closely mirrored our business
     logic, and in return, the Rust compiler was able to automatically validate more
     of our code at compile-time.
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们以更接近业务逻辑的方式定义了我们的类型系统，作为回报，Rust 编译器能够在编译时自动验证更多的代码。
 - en: Compare this to the previous version, where we had to write the validation code
     ourselves, and even then we only got the error at runtime.
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较这一版本与之前的版本，我们需要自己编写验证代码，即使如此，我们仅在运行时才能得到错误。
 - en: State machines and state transitions
   id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 状态机和状态转换
 - en: Let’s look at one more example by implementing a state machine. We will leverage
     the power of the type system to enforce valid state transitions at compile time.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过实现一个状态机再看一个例子。我们将利用类型系统的能力来在编译时强制执行有效的状态转换。
 - en: 'We’ll use the simple example of a VPN, which has three states: `Disconnected`,
     `Connecting`, and `Connected`, as well as four state transitions:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用一个简单的 VPN 示例，它有三种状态：`Disconnected`（断开连接）、`Connecting`（连接中）和`Connected`（已连接），以及四种状态转换：
 - en: '`Disconnected` → `Connecting`'
   id: totrans-split-81
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Disconnected` → `Connecting`（断开连接 → 连接中）'
 - en: '`Connecting` → `Connected` (on connection success)'
   id: totrans-split-82
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Connecting` → `Connected`（连接成功时）'
 - en: '`Connecting` → `Disconnected` (on connection failure)'
   id: totrans-split-83
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Connecting` → `Disconnected`（连接失败时）'
 - en: '`Connected` → `Disconnected`'
   id: totrans-split-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`Connected` → `Disconnected`（已连接 → 断开连接）'
 - en: 'Here’s one way to model the data structures:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一种建模数据结构的方式：
 - en: '[PRE13]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Note that instead of putting the different states in an enum, we are parameterizing
     the `Vpn` struct with other “`Vpn` state” structs. In the future, all of the state
     structs might implement a common trait, but this is good enough for now.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，我们没有将不同的状态放在一个枚举中，而是用其他“`Vpn`状态”结构参数化了`Vpn`结构体。将来，所有状态结构体可能会实现一个共同的特性，但现在这已经足够了。
 - en: Since the state field is private in the struct, we can easily force the initial
     state of all `Vpn`s to be `Disconnected` by only implementing a `new` function
     on that type.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于结构体中的状态字段是私有的，我们可以通过在该类型上仅实现一个`new`函数来轻松强制所有`Vpn`的初始状态为`Disconnected`。
 - en: '[PRE14]'
   id: totrans-split-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: From here, it’s a simple matter to implement each state transition.
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这里开始，实现每个状态转换就变得非常简单了。
 - en: '[PRE15]'
   id: totrans-split-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'However, the `Connecting` state has two possibilities: it can transition to
     `Connected` on success, or `Disconnected` on failure.'
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，`Connecting`状态有两种可能性：成功时可以转换为`Connected`，或者失败时转换为`Disconnected`。
 - en: We can model this with a `TryFrom` implementation.
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过`TryFrom`实现来建模这个问题。
 - en: '[PRE16]'
   id: totrans-split-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '* * *'
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: I do not hope to convince you that your set of types is only good if it cannot
     represent invalid states, i.e. $\mathcal{R} = \mathcal{V}$. However, I do hope
     to demonstrate that putting a little more thought into the design of your data
@@ -476,25 +572,31 @@
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 我并不希望说服你认为你的类型集只有在不能表示无效状态时才是好的，即 $\mathcal{R} = \mathcal{V}$。然而，我希望展示，对数据结构设计稍加思考*可能*有助于你在开发早期*避免*更多*的*错误。
 - en: '* * *'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'I would be remiss if I failed to mention the body of work preceding me on this
     topic:'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我没有提到在这个主题上在我之前的工作，那我会感到遗漏。
 - en: '* * *'
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: I’m a software engineer for [NEAR Protocol](https://near.org/) and a graduate
     student at the [Tokyo Institute of Technology](https://www.titech.ac.jp/).
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我是[NEAR Protocol](https://near.org/)的软件工程师，也是[Tokyo Institute of Technology](https://www.titech.ac.jp/)的研究生。
 - en: Connect with me on [Twitter](https://twitter.com/sudo_build) and [Mastodon](https://infosec.exchange/@hatchet).
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 关注我的[Twitter](https://twitter.com/sudo_build)和[Mastodon](https://infosec.exchange/@hatchet)。
