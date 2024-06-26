@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:55:55'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:55:55
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Linux/ELF .eh_frame from the bottom up
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Linux/ELF .eh_frame 从底向上
 - en: 来源：[https://www.corsix.org/content/elf-eh-frame](https://www.corsix.org/content/elf-eh-frame)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.corsix.org/content/elf-eh-frame](https://www.corsix.org/content/elf-eh-frame)
 - en: '**Problem statement**'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '**问题陈述**'
 - en: Given the current register state for a thread, and read-only access to memory,
     what would the register state hypothetically become if the current function was
     to immediately return and execution was to resume in its caller?
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 针对线程的当前寄存器状态，并且只读访问内存，如果当前函数立即返回并且执行在其调用者中继续，寄存器状态假设会变成什么？
 - en: Notably, the register state includes (amongst other things) an instruction pointer
     and a stack pointer, so this operation can be iterated to generate a backtrace.
     With some extensions to support calling destructors and catching exceptions, this
@@ -41,20 +49,24 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，寄存器状态包括（除其他外）指令指针和堆栈指针，因此可以迭代此操作以生成回溯。通过一些扩展以支持调用析构函数和捕获异常，此操作还可以作为抛出异常的基础。
 - en: This operation is typically called *unwinding* (as in "unwinding a call frame"
     or "unwinding the stack").
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 此操作通常称为*展开*（如“展开调用帧”或“展开堆栈”）。
 - en: If certain registers are always undefined immediately after a function return
     (because they are volatile in the ABI), then we needn't care about their state.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果某些寄存器在函数返回后总是未定义（因为它们在 ABI 中是易失性的），那么我们无需关心它们的状态。
 - en: '**Portability**'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '**可移植性**'
 - en: 'The size and contents of the register state depends on the architecture being
     used. We''ll paper over this slightly by refering to registers by ordinal rather
     than by name, and rely on DWARF register number mappings to go between ordinal
@@ -62,90 +74,112 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 寄存器状态的大小和内容取决于所使用的体系结构。我们将稍微简化此过程，通过按序号而非名称引用寄存器，并依赖于 DWARF 寄存器号映射来在序号和名称之间进行转换，例如：
 - en: '| Ordinal | x86 name | x86_64 name | aarch64 name |'
   id: totrans-split-13
   prefs: []
   type: TYPE_TB
+  zh: '| 序号 | x86 名称 | x86_64 名称 | aarch64 名称 |'
 - en: '| 0 | eax | rax | X0 |'
   id: totrans-split-14
   prefs: []
   type: TYPE_TB
+  zh: '| 0 | eax | rax | X0 |'
 - en: '| 1 | ecx | rdx | X1 |'
   id: totrans-split-15
   prefs: []
   type: TYPE_TB
+  zh: '| 1 | ecx | rdx | X1 |'
 - en: '| 2 | edx | rcx | X2 |'
   id: totrans-split-16
   prefs: []
   type: TYPE_TB
+  zh: '| 2 | edx | rcx | X2 |'
 - en: '| 3 | ebx | rbx | X3 |'
   id: totrans-split-17
   prefs: []
   type: TYPE_TB
+  zh: '| 3 | ebx | rbx | X3 |'
 - en: '| 4 | esp | rsi | X4 |'
   id: totrans-split-18
   prefs: []
   type: TYPE_TB
+  zh: '| 4 | esp | rsi | X4 |'
 - en: '| 5 | ebp | rdi | X5 |'
   id: totrans-split-19
   prefs: []
   type: TYPE_TB
+  zh: '| 5 | ebp | rdi | X5 |'
 - en: '| 6 | esi | rbp | X6 |'
   id: totrans-split-20
   prefs: []
   type: TYPE_TB
+  zh: '| 6 | esi | rbp | X6 |'
 - en: '| 7 | edi | rsp | X7 |'
   id: totrans-split-21
   prefs: []
   type: TYPE_TB
+  zh: '| 7 | edi | rsp | X7 |'
 - en: '| 8 |  | r8 | X8 |'
   id: totrans-split-22
   prefs: []
   type: TYPE_TB
+  zh: '| 8 |  | r8 | X8 |'
 - en: '| 9 |  | r9 | X9 |'
   id: totrans-split-23
   prefs: []
   type: TYPE_TB
+  zh: '| 9 |  | r9 | X9 |'
 - en: '| 10 |  | r10 | X10 |'
   id: totrans-split-24
   prefs: []
   type: TYPE_TB
+  zh: '| 10 |  | r10 | X10 |'
 - en: '| 11 |  | r11 | X11 |'
   id: totrans-split-25
   prefs: []
   type: TYPE_TB
+  zh: '| 11 |  | r11 | X11 |'
 - en: '| 12 |  | r12 | X12 |'
   id: totrans-split-26
   prefs: []
   type: TYPE_TB
+  zh: '| 12 |  | r12 | X12 |'
 - en: '| 13 |  | r13 | X13 |'
   id: totrans-split-27
   prefs: []
   type: TYPE_TB
+  zh: '| 13 |  | r13 | X13 |'
 - en: '| 14 |  | r14 | X14 |'
   id: totrans-split-28
   prefs: []
   type: TYPE_TB
+  zh: '| 14 |  | r14 | X14 |'
 - en: '| 15 |  | r15 | X15 |'
   id: totrans-split-29
   prefs: []
   type: TYPE_TB
+  zh: '| 15 |  | r15 | X15 |'
 - en: '| 16 |  |  | X16 |'
   id: totrans-split-30
   prefs: []
   type: TYPE_TB
+  zh: '| 16 |  |  | X16 |'
 - en: '| ⋮ |  |  | ⋮ |'
   id: totrans-split-31
   prefs: []
   type: TYPE_TB
+  zh: '| ⋮ |  |  | ⋮ |'
 - en: '| 30 |  |  | X30 (LR) |'
   id: totrans-split-32
   prefs: []
   type: TYPE_TB
+  zh: '| 30 |  |  | X30（LR） |'
 - en: '| 31 |  |  | SP |'
   id: totrans-split-33
   prefs: []
   type: TYPE_TB
+  zh: '| 31 |  |  | SP |'
 - en: 'Because everyone loves special cases, the instruction pointer register (e.g.
     eip / rip / PC) isn''t given an ordinal. On aarch64, it doesn''t need one: the
     return address is always in *some* register (usually X30, aka. LR), and so we
@@ -157,15 +191,20 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为每个人都喜欢特殊情况，指令指针寄存器（例如 eip / rip / PC）没有被赋予序号。在 aarch64 上，它不需要一个：返回地址总是在*某个*寄存器中（通常是
+    X30，也称为 LR），因此我们可以使用返回地址寄存器来表示指令指针。相反，在 x86 和 x86_64 上，返回地址放在堆栈而不是寄存器中。对于这些情况，我们将发明一个虚拟寄存器（通常是
+    x86 上的序号 8，x86_64 上的序号 16），*假装*它包含返回地址，并用它来表示指令指针。
 - en: Floating-point and vector registers are generally volatile in Linux ABIs, so
     we needn't worry about them too much.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 浮点和矢量寄存器在 Linux ABI 中通常是易失性的，因此我们不必太担心它们。
 - en: '**Start small: unwinding just the stack pointer**'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '**从小开始：仅展开堆栈指针**'
 - en: 'In most cases, the hypothetical stack pointer after function return can be
     easily calculated by adding some value to some register. This can be expressed
     as two DWARF-style [ULEB128](https://en.wikipedia.org/wiki/LEB128) values: one
@@ -175,10 +214,13 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数情况下，函数返回后的假设堆栈指针可以通过将某个寄存器的某个值相加来轻松计算。这可以表示为两个 DWARF 风格的 [ULEB128](https://en.wikipedia.org/wiki/LEB128)
+    值：一个 ULEB128 用于指定从哪个寄存器开始（通常是当前堆栈指针），然后一个 ULEB128 用于指定要添加的数量。作为前奏，我们将称之为 `DW_CFA_def_cfa`。
 - en: '**Unwinding other registers**'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '**展开其他寄存器**'
 - en: 'In most cases, if a function modifies a non-volatile register, it''ll save
     it to somewhere on the stack before modifying it. Upon function return, it''ll
     re-load the value from said stack slot. The locations of these stack slots can
@@ -195,157 +237,208 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数情况下，如果函数修改了一个非易失性寄存器，它会在修改之前将其保存到堆栈的某个位置。函数返回时，它会重新加载来自该堆栈插槽的值。这些堆栈插槽的位置可以表示为相对于函数返回后的假设堆栈指针。这可以再次表示为两个
+    DWARF 风格的 ULEB128 值：一个 ULEB 用于指定我们讨论的寄存器，然后一个 ULEB 用于指定其堆栈插槽的偏移量。只有一个问题：由于偏移量针对的是函数返回后的假设堆栈指针，所需的偏移量将是负数，而
+    ULEB 无法表示负数。为了解决这个问题，我们将所谓的 `data_align` 值（通常为 -4 或 -8）乘以第二个 ULEB，这也有利于使 ULEB
+    变小。预示着，我们将其称为 `DW_CFA_offset_extended`。当第一个 ULEB 小于 64 时，我们也可以称之为 `DW_CFA_offset`。
 - en: '**More ways to unwind other registers**'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '**更多展开其他寄存器的方法**'
 - en: 'So far we''ve described forming the address of a stack slot, and then loading
     from it. There''s a natural variation that skips the 2^(nd) part: form the address
     of a stack slot, then set the value of a register to be that address.'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们已经描述了如何形成堆栈插槽的地址，然后从中加载。有一种自然的变体跳过第二部分：形成堆栈插槽的地址，然后设置寄存器的值为该地址。
 - en: 'There''s another common variant: unwind register X by taking the value from
     register Y (when X equals Y, this means that said register was unchanged).'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有另一种常见的变体：通过从寄存器 Y 获取值来取消寄存器 X 的展开（当 X 等于 Y 时，这意味着该寄存器未更改）。
 - en: For when these common variants aren't sufficient, we'll [later describe](#dw_op_)
     a little expression language and associated bytecode VM capable of describing
     all sorts of complicated mechanisms.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 当这些常见的变体不足以满足需求时，我们稍后将描述一个小型表达式语言及其相关的字节码虚拟机，可以描述各种复杂的机制。
 - en: 'This leads to the following definitions to describe how to unwind registers:'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这导致以下定义来描述如何展开寄存器：
 - en: '[PRE0]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'With the associated unwind logic being:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 随附的展开逻辑如下：
 - en: '[PRE1]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'A little bytecode VM is defined to populate an instance of `UnwindActions`:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 定义了一个小型字节码虚拟机来填充 `UnwindActions` 的实例：
 - en: '| Opcode | Name and operands | Semantics assuming `UnwindActions* ua` |'
   id: totrans-split-49
   prefs: []
   type: TYPE_TB
+  zh: '| 操作码 | 名称和操作数 | 假设 `UnwindActions* ua` 的语义 |'
 - en: '| `0x0c` | DW_CFA_def_cfa(uleb128 Reg, uleb128 Off) | `ua->sp = RegOffset(Reg,
     Off)` |'
   id: totrans-split-50
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0c` | DW_CFA_def_cfa(uleb128 寄存器, uleb128 偏移量) | `ua->sp = RegOffset(寄存器,
+    偏移量)` |'
 - en: '| `0x12` | DW_CFA_def_cfa_sf(uleb128 Reg, sleb128 Off) | `ua->sp = RegOffset(Reg,
     Off * data_align)` |'
   id: totrans-split-51
   prefs: []
   type: TYPE_TB
+  zh: '| `0x12` | DW_CFA_def_cfa_sf(uleb128 寄存器, sleb128 偏移量) | `ua->sp = RegOffset(寄存器,
+    偏移量 * data_align)` |'
 - en: '| `0x0f` | DW_CFA_def_cfa_expression(uleb128 Len, uint8_t DwOpBytecode[Len])
     | `ua->sp = ExprResult(DwOpBytecode)` |'
   id: totrans-split-52
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0f` | DW_CFA_def_cfa_expression(uleb128 长度, uint8_t DwOpBytecode[长度])
+    | `ua->sp = ExprResult(DwOpBytecode)` |'
 - en: '| `0x80 + Reg` | DW_CFA_offset(uleb128 Off) | `ua->reg[Reg] = LoadFromStackSlot(Off
     * data_align)` |'
   id: totrans-split-53
   prefs: []
   type: TYPE_TB
+  zh: '| `0x80 + 寄存器` | DW_CFA_offset(uleb128 偏移量) | `ua->reg[寄存器] = LoadFromStackSlot(偏移量
+    * data_align)` |'
 - en: '| `0x05` | DW_CFA_offset_extended(uleb128 Reg, uleb128 Off) | `ua->reg[Reg]
     = LoadFromStackSlot(Off * data_align)` |'
   id: totrans-split-54
   prefs: []
   type: TYPE_TB
+  zh: '| `0x05` | DW_CFA_offset_extended(uleb128 寄存器, uleb128 偏移量) | `ua->reg[寄存器]
+    = LoadFromStackSlot(偏移量 * data_align)` |'
 - en: '| `0x11` | DW_CFA_offset_extended_sf(uleb128 Reg, sleb128 Off) | `ua->reg[Reg]
     = LoadFromStackSlot(Off * data_align)` |'
   id: totrans-split-55
   prefs: []
   type: TYPE_TB
+  zh: '| `0x11` | DW_CFA_offset_extended_sf(uleb128 寄存器, sleb128 偏移量) | `ua->reg[寄存器]
+    = LoadFromStackSlot(偏移量 * data_align)` |'
 - en: '| `0x2f` | DW_CFA_GNU_negative_offset_extended(uleb128 Reg, uleb128 Off) |
     `ua->reg[Reg] = LoadFromStackSlot(-(Off * data_align))` |'
   id: totrans-split-56
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2f` | DW_CFA_GNU_negative_offset_extended(uleb128 寄存器, uleb128 偏移量) |
+    `ua->reg[寄存器] = LoadFromStackSlot(-(偏移量 * data_align))` |'
 - en: '| `0x14` | DW_CFA_val_offset(uleb128 Reg, uleb128 Off) | `ua->reg[Reg] = AddressOfStackSlot(Off
     * data_align)` |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| `0x14` | DW_CFA_val_offset(uleb128 寄存器, uleb128 偏移量) | `ua->reg[寄存器] = AddressOfStackSlot(偏移量
+    * data_align)` |'
 - en: '| `0x15` | DW_CFA_val_offset_sf(uleb128 Reg, sleb128 Off) | `ua->reg[Reg] =
     AddressOfStackSlot(Off * data_align)` |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| `0x15` | DW_CFA_val_offset_sf(uleb128 寄存器, sleb128 偏移量) | `ua->reg[寄存器] =
+    AddressOfStackSlot(偏移量 * data_align)` |'
 - en: '| `0xc0 + Reg` | DW_CFA_restore | `ua->reg[Reg] = CopyFromRegister(Reg)` †
     |'
   id: totrans-split-59
   prefs: []
   type: TYPE_TB
+  zh: '| `0xc0 + 寄存器` | DW_CFA_restore | `ua->reg[寄存器] = CopyFromRegister(寄存器)` †
+    |'
 - en: '| `0x06` | DW_CFA_restore_extended(uleb128 Reg) | `ua->reg[Reg] = CopyFromRegister(Reg)`
     † |'
   id: totrans-split-60
   prefs: []
   type: TYPE_TB
+  zh: '| `0x06` | DW_CFA_restore_extended(uleb128 寄存器) | `ua->reg[寄存器] = CopyFromRegister(寄存器)`
+    † |'
 - en: '| `0x08` | DW_CFA_same_value(uleb128 Reg) | `ua->reg[Reg] = CopyFromRegister(Reg)`
     |'
   id: totrans-split-61
   prefs: []
   type: TYPE_TB
+  zh: '| `0x08` | DW_CFA_same_value(uleb128 寄存器) | `ua->reg[寄存器] = CopyFromRegister(寄存器)`
+    |'
 - en: '| `0x09` | DW_CFA_register(uleb128 Reg, uleb128 Src) | `ua->reg[Reg] = CopyFromRegister(Src)`
     |'
   id: totrans-split-62
   prefs: []
   type: TYPE_TB
+  zh: '| `0x09` | DW_CFA_register(uleb128 寄存器, uleb128 源) | `ua->reg[寄存器] = CopyFromRegister(源)`
+    |'
 - en: '| `0x07` | DW_CFA_undefined(uleb128 Reg) | `ua->reg[Reg] = Undefined` |'
   id: totrans-split-63
   prefs: []
   type: TYPE_TB
+  zh: '| `0x07` | DW_CFA_undefined(uleb128 寄存器) | `ua->reg[寄存器] = Undefined` |'
 - en: '| `0x10` | DW_CFA_expression(uleb128 Reg, uleb128 Len, uint8_t DwOpBytecode[Len])
     | `ua->reg[Reg] = LoadFromExprResult(DwOpBytecode)` |'
   id: totrans-split-64
   prefs: []
   type: TYPE_TB
+  zh: '| `0x10` | DW_CFA_expression(uleb128 寄存器, uleb128 长度, uint8_t DwOpBytecode[长度])
+    | `ua->reg[寄存器] = LoadFromExprResult(DwOpBytecode)` |'
 - en: '| `0x16` | DW_CFA_val_expression(uleb128 Reg, uleb128 Len, uint8_t DwOpBytecode[Len])
     | `ua->reg[Reg] = ExprResult(DwOpBytecode)` |'
   id: totrans-split-65
   prefs: []
   type: TYPE_TB
+  zh: '| `0x16` | DW_CFA_val_expression(uleb128 寄存器, uleb128 长度, uint8_t DwOpBytecode[长度])
+    | `ua->reg[寄存器] = ExprResult(DwOpBytecode)` |'
 - en: '| `0x00` | DW_CFA_nop | No-op |'
   id: totrans-split-66
   prefs: []
   type: TYPE_TB
+  zh: '| `0x00` | DW_CFA_nop | 空操作 |'
 - en: † This differs from the usual DWARF semantics. To avoid confusion, use DW_CFA_same_value
     instead of DW_CFA_restore.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: † 这与通常的DWARF语义不同。为避免混淆，应使用DW_CFA_same_value代替DW_CFA_restore。
 - en: If the bytecode does not initialise `sp`, its value is `Undefined`. If the bytecode
     does not initialise `reg[i]`, its value is `CopyFromRegister(i)`.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果字节码没有初始化`sp`，其值为`Undefined`。如果字节码没有初始化`reg[i]`，其值为`CopyFromRegister(i)`。
 - en: '**Putting it together in a CIE**'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '**在CIE中整合这些内容**'
 - en: 'The aforementioned bytecode gets wrapped up in something called a CIE, which
     also includes a bunch of other fields:'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述的字节码被封装在一个称为CIE的东西中，其中还包括一堆其他字段：
 - en: '[PRE2]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The `aug_string` field is a NUL-terminated ASCII string. Conceptually it is
     a bitmask of flags, except that each flag is represented by one or two characters
     rather than by a single bit. If the flag has associated operand(s), they are read
@@ -354,43 +447,54 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '`aug_string`字段是一个以NUL结尾的ASCII字符串。在概念上，它是一个标志位掩码，不过每个标志由一个或两个字符表示，而不是单个位。如果标志有关联的操作数，则它们按照`aug_string`中字符的顺序从`aug_operands`字段中读取。已识别的标志包括：'
 - en: '| Char(s) | Operand(s) | Notes |'
   id: totrans-split-73
   prefs: []
   type: TYPE_TB
+  zh: '| 字符串 | 操作数 | 备注 |'
 - en: '| `"eh"` | `void* eh_ptr` | Operand not part of `aug_operands` |'
   id: totrans-split-74
   prefs: []
   type: TYPE_TB
+  zh: '| `"eh"` | `void* eh_ptr` | 操作数不是`aug_operands`的一部分 |'
 - en: '| `"z"` | `uleb128 length` | In bytes, of subsequent `aug_operands` |'
   id: totrans-split-75
   prefs: []
   type: TYPE_TB
+  zh: '| `"z"` | `uleb128 长度` | `aug_operands`后续字节的长度（以字节为单位） |'
 - en: '| `"R"` | `uint8_t fde_ptr_encoding` | [Foreshadowing](#fde) |'
   id: totrans-split-76
   prefs: []
   type: TYPE_TB
+  zh: '| `"R"` | `uint8_t fde_ptr_encoding` | [预示](#fde) |'
 - en: '| `"P"` | `uint8_t ptr_encoding` `uint8_t personality_ptr[]` | [Foreshadowing](#lsda)
     |'
   id: totrans-split-77
   prefs: []
   type: TYPE_TB
+  zh: '| `"P"` | `uint8_t ptr_encoding` `uint8_t personality_ptr[]` | [预示](#lsda)
+    |'
 - en: '| `"L"` | `uint8_t lsda_ptr_encoding` | [Foreshadowing](#lsda) |'
   id: totrans-split-78
   prefs: []
   type: TYPE_TB
+  zh: '| `"L"` | `uint8_t lsda_ptr_encoding` | [预示](#lsda) |'
 - en: '| `"S"` | None | Signal handler frame |'
   id: totrans-split-79
   prefs: []
   type: TYPE_TB
+  zh: '| `"S"` | 无 | 信号处理程序帧 |'
 - en: '| `"B"` | None | aarch64 ptrauth uses B key |'
   id: totrans-split-80
   prefs: []
   type: TYPE_TB
+  zh: '| `"B"` | 无 | aarch64 ptrauth使用B键 |'
 - en: '| `"\0"` | None | End of `aug_string` |'
   id: totrans-split-81
   prefs: []
   type: TYPE_TB
+  zh: '| `"\0"` | 无 | `aug_string`的结束 |'
 - en: '`"eh"`, if it appears, must be first. In practice, it is never present, except
     in code compiled by very old versions of g++. `"z"`, if it appears, must be next,
     and in practice is always present. The remaining characters (except NUL) can appear
@@ -400,6 +504,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: '`"eh"`如果出现，必须放在第一位。实际上，除了由非常旧版本的g++编译的代码，它从未出现过。如果出现`"z"`，必须紧跟其后，而且实际上总是存在。剩余的字符（除了NUL）可以以任何顺序出现，尽管如果`"R"`存在，并且`"S"`和/或`"B"`也存在，则`"R"`必须在`"S"`和`"B"`之前出现（以解决[`get_cie_encoding`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L335-L392)中的错误，与正确的[`extract_cie_info`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2.c#L412-L517)相比）。'
 - en: 'The whole `struct cie` must have a length which is a multiple of `sizeof(uintptr_t)`
     bytes. The `zero_padding` field at the end ensures this. Helpfully, `DW_CFA_nop`
     is zero, so `zero_padding` can be seen as an extension of the `dw_cfa_bytecode`
@@ -413,10 +518,13 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 整个`struct cie`的长度必须是`sizeof(uintptr_t)`字节的倍数。末尾的`zero_padding`字段确保了这一点。方便的是，`DW_CFA_nop`为零，因此`zero_padding`可以看作是`dw_cfa_bytecode`字段的扩展。整个`struct
+    cie`的长度为`4 + length`。要获得合并的`dw_cfa_bytecode` / `zero_padding`的长度，需要减去所有其他字段的长度。对于大多数字段来说，这很直接（尽管有点麻烦），唯一的难点是`aug_operands`：它的长度取决于`aug_string`的内容，并且`aug_string`中可能有我们无法识别的字符。这就是`"z"`的用处：一旦我们解码了它的操作数，它就告诉我们`aug_operands`的剩余长度。
 - en: '**From one location to many**'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '**从一个位置到多个位置**'
 - en: Obtaining the `UnwindActions` applicable to one instruction pointer value is
     all well and good, but this needs to scale to every (*) possible instruction pointer
     value across an entire program. One relevant observation is that the `UnwindActions`
@@ -425,12 +533,14 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 获取适用于一个指令指针值的`UnwindActions`是可以的，但这需要扩展到整个程序中的每一个(*)可能的指令指针值。一项相关的观察是，适用于指令指针X的`UnwindActions`*通常*非常相似（甚至相同）于适用于指令指针值X+1的那些。
 - en: (*) Assuming `-fasynchronous-unwind-tables`. Less coverage is required if only
     `-fnon-call-exceptions` is used, and less still is required if neither is used.
     Note that `-fasynchronous-unwind-tables` is enabled by default on some architectures.
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: (*) 假设使用`-fasynchronous-unwind-tables`。如果仅使用`-fnon-call-exceptions`，所需覆盖范围较少，如果两者都不使用，所需覆盖范围更少。请注意，某些架构默认启用`-fasynchronous-unwind-tables`。
 - en: 'With this observation in mind, we can borrow a trick from video compression:
     use a keyframe to describe the `UnwindActions` applicable at the *start* of every
     function, and then use delta frames to describe the differences as the instruction
@@ -438,6 +548,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 鉴于这一观察，我们可以借用视频压缩的一个技巧：使用关键帧描述每个函数开头的`UnwindActions`，然后使用增量帧描述指令指针在函数中逐步推进的差异。
 - en: 'This motivates a bunch of new VM opcodes, along with two pieces of VM state:
     set `target` to the instruction pointer that you want `UnwindActions` for, set
     `fpc` to the instruction pointer of the start of the function, and execute VM
@@ -445,102 +556,135 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 这激励了一系列新的虚拟机操作码，以及两个虚拟机状态：将`target`设置为你想要`UnwindActions`的指令指针，将`fpc`设置为函数开始的指令指针，并执行虚拟机指令，直到虚拟机指令用尽，或直到`fpc
+    >= target`：
 - en: '| Opcode | Name and operands | Semantics |'
   id: totrans-split-89
   prefs: []
   type: TYPE_TB
+  zh: '| 操作码 | 名称及操作数 | 语义 |'
 - en: '| `0x40 + Off` | DW_CFA_advance_loc | `fpc += Off * code_align; if (fpc >=
     target) break;` |'
   id: totrans-split-90
   prefs: []
   type: TYPE_TB
+  zh: '| `0x40 + Off` | DW_CFA_advance_loc | `fpc += Off * code_align; if (fpc >=
+    target) break;` |'
 - en: '| `0x02` | DW_CFA_advance_loc1(uint8_t Off) | `fpc += Off * code_align; if
     (fpc >= target) break;` |'
   id: totrans-split-91
   prefs: []
   type: TYPE_TB
+  zh: '| `0x02` | DW_CFA_advance_loc1(uint8_t Off) | `fpc += Off * code_align; if
+    (fpc >= target) break;` |'
 - en: '| `0x03` | DW_CFA_advance_loc2(uint16_t Off) | `fpc += Off * code_align; if
     (fpc >= target) break;` |'
   id: totrans-split-92
   prefs: []
   type: TYPE_TB
+  zh: '| `0x03` | DW_CFA_advance_loc2(uint16_t Off) | `fpc += Off * code_align; if
+    (fpc >= target) break;` |'
 - en: '| `0x04` | DW_CFA_advance_loc4(uint32_t Off) | `fpc += Off * code_align; if
     (fpc >= target) break;` |'
   id: totrans-split-93
   prefs: []
   type: TYPE_TB
+  zh: '| `0x04` | DW_CFA_advance_loc4(uint32_t Off) | `fpc += Off * code_align; if
+    (fpc >= target) break;` |'
 - en: '| `0x01` | DW_CFA_set_loc(uint8_t Ptr[]) | `fpc = DecodePtr(fde_encoding from
     CIE, Ptr); if (fpc >= target) break;` |'
   id: totrans-split-94
   prefs: []
   type: TYPE_TB
+  zh: '| `0x01` | DW_CFA_set_loc(uint8_t Ptr[]) | `fpc = DecodePtr(fde_encoding from
+    CIE, Ptr); if (fpc >= target) break;` |'
 - en: 'It also motivates two pieces of VM state called `spReg` and `spOff`, along
     with revisements to DW_CFA_def_cfa / DW_CFA_def_cfa_sf, and new opcodes which
     perform only one half of DW_CFA_def_cfa / DW_CFA_def_cfa_sf:'
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 它还激励了两个虚拟机状态，分别为`spReg`和`spOff`，以及对DW_CFA_def_cfa / DW_CFA_def_cfa_sf的修订和执行只占DW_CFA_def_cfa
+    / DW_CFA_def_cfa_sf的一半的新操作码：
 - en: '| Opcode | Name and operands | Semantics assuming `UnwindActions* ua` |'
   id: totrans-split-96
   prefs: []
   type: TYPE_TB
+  zh: '| 操作码 | 名称及操作数 | 假设`UnwindActions* ua`的语义 |'
 - en: '| `0x0c` | DW_CFA_def_cfa(uleb128 Reg, uleb128 Off) | `ua->sp = RegOffset(spReg
     = Reg, spOff = Off)` |'
   id: totrans-split-97
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0c` | DW_CFA_def_cfa(uleb128 Reg, uleb128 Off) | `ua->sp = RegOffset(spReg
+    = Reg, spOff = Off)` |'
 - en: '| `0x12` | DW_CFA_def_cfa_sf(uleb128 Reg, sleb128 Off) | `ua->sp = RegOffset(spReg
     = Reg, spOff = Off * data_align)` |'
   id: totrans-split-98
   prefs: []
   type: TYPE_TB
+  zh: '| `0x12` | DW_CFA_def_cfa_sf(uleb128 Reg, sleb128 Off) | `ua->sp = RegOffset(spReg
+    = Reg, spOff = Off * data_align)` |'
 - en: '| `0x0d` | DW_CFA_def_cfa_register(uleb128 Reg) | `spReg = Reg; ua->sp = RegOffset(spReg,
     spOff)` |'
   id: totrans-split-99
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0d` | DW_CFA_def_cfa_register(uleb128 Reg) | `spReg = Reg; ua->sp = RegOffset(spReg,
+    spOff)` |'
 - en: '| `0x0e` | DW_CFA_def_cfa_offset(uleb128 Off) | `spOff = Off; if (ua->sp is
     RegOffset) ua->sp = RegOffset(spReg, spOff)` |'
   id: totrans-split-100
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0e` | DW_CFA_def_cfa_offset(uleb128 Off) | `spOff = Off; if (ua->sp is
+    RegOffset) ua->sp = RegOffset(spReg, spOff)` |'
 - en: '| `0x13` | DW_CFA_def_cfa_offset_sf(sleb128 Off) | `spOff = Off * data_align;
     if (ua->sp is RegOffset) ua->sp = RegOffset(spReg, spOff)` |'
   id: totrans-split-101
   prefs: []
   type: TYPE_TB
+  zh: '| `0x13` | DW_CFA_def_cfa_offset_sf(sleb128 Off) | `spOff = Off * data_align;
+    if (ua->sp is RegOffset) ua->sp = RegOffset(spReg, spOff)` |'
 - en: 'Finally, it motivates adding a `Stack<UnwindActions>` to the VM, along with
     some opcodes to manipulate it:'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，这激励我们在VM中添加 `Stack<UnwindActions>`，以及一些操作码来操作它：
 - en: '| Opcode | Name and operands | Semantics assuming `UnwindActions* ua` |'
   id: totrans-split-103
   prefs: []
   type: TYPE_TB
+  zh: '| 操作码 | 名称和操作数 | 假设 `UnwindActions* ua` 的语义 |'
 - en: '| `0x0a` | DW_CFA_remember_state | `Push(*ua)` (note that `ua` not modified)
     |'
   id: totrans-split-104
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0a` | DW_CFA_remember_state | `Push(*ua)` (请注意，`ua` 没有被修改) |'
 - en: '| `0x0b` | DW_CFA_restore_state | `*ua = Pop()` |'
   id: totrans-split-105
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0b` | DW_CFA_restore_state | `*ua = Pop()` |'
 - en: '**From one function to many**'
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: '**从一个函数到多个函数**'
 - en: 'We could happily have one CIE per function, but there would be quite a lot
     of repetition between CIEs. To resolve this, we introduce the concept of an FDE,
     which is essentially a stripped down CIE:'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以很高兴地为每个函数拥有一个CIE，但是在CIE之间会有相当多的重复。为了解决这个问题，我们引入了FDE的概念，它本质上是一个精简版的CIE：
 - en: '[PRE3]'
   id: totrans-split-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The `cie_offset` field points to a CIE, and the FDE inherits everything from
     the pointed-to CIE. For inheritance of `aug_string`, each flag therein sometimes
     has operand(s) in the CIE''s `aug_operands`, sometimes in the FDE''s `aug_operands`,
@@ -548,43 +692,55 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: '`cie_offset` 字段指向一个CIE，并且FDE从指向的CIE继承所有内容。对于 `aug_string` 的继承，其中的每个标志有时在CIE的
+    `aug_operands` 中有操作数，有时在FDE的 `aug_operands` 中有操作数，有时两者都有。FDE 的 `aug_operands`
+    包括：'
 - en: '| Char(s) | Operand(s) | Notes |'
   id: totrans-split-110
   prefs: []
   type: TYPE_TB
+  zh: 字符串和操作数
 - en: '| `"eh"` | None |  |'
   id: totrans-split-111
   prefs: []
   type: TYPE_TB
+  zh: '| `"eh"` | None |  |'
 - en: '| `"z"` | `uleb128 length` | In bytes, of subsequent `aug_operands` |'
   id: totrans-split-112
   prefs: []
   type: TYPE_TB
+  zh: '| `"z"` | `uleb128 length` | 字节，后续 `aug_operands` 的长度 |'
 - en: '| `"R"` | None |  |'
   id: totrans-split-113
   prefs: []
   type: TYPE_TB
+  zh: '| `"R"` | None |  |'
 - en: '| `"P"` | None |  |'
   id: totrans-split-114
   prefs: []
   type: TYPE_TB
+  zh: '| `"P"` | None |  |'
 - en: '| `"L"` | `uint8_t lsda_ptr[]` | Encoded using `lsda_ptr_encoding` from CIE
     |'
   id: totrans-split-115
   prefs: []
   type: TYPE_TB
+  zh: '| `"L"` | `uint8_t lsda_ptr[]` | 使用来自CIE的 `lsda_ptr_encoding` 进行编码 |'
 - en: '| `"S"` | None |  |'
   id: totrans-split-116
   prefs: []
   type: TYPE_TB
+  zh: '| `"S"` | None |  |'
 - en: '| `"B"` | None |  |'
   id: totrans-split-117
   prefs: []
   type: TYPE_TB
+  zh: '| `"B"` | None |  |'
 - en: '| `"\0"` | None | End of `aug_string` |'
   id: totrans-split-118
   prefs: []
   type: TYPE_TB
+  zh: '| `"\0"` | None | `aug_string` 的结尾 |'
 - en: 'The `dw_cfa_bytecode` field is inherited by concatenation: executing the bytecode
     for an FDE involves first executing the bytecode of the associated CIE. All VM
     state is carried over from the end of the CIE bytecode to the start of the FDE
@@ -593,6 +749,8 @@
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: '`dw_cfa_bytecode` 字段通过连接方式继承：执行FDE的字节码首先需要执行关联CIE的字节码。所有VM状态从CIE字节码结束到FDE字节码开始都被保留，尽管使用
+    DW_CFA_remember_state / DW_CFA_restore_state 时，堆栈在从CIE切换到FDE时会被清空。'
 - en: That leaves `func_start`, which is a variable length pointer, and `func_length`,
     which is a variable length integer. If `aug_string` does *not* contain `"R"`,
     then these fields are `void*` and `uintptr_t` respectively. If `aug_string` *does*
@@ -603,10 +761,14 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 那留给 `func_start`，它是一个变长指针，和 `func_length`，它是一个变长整数。如果 `aug_string` 不包含 `"R"`，那么这些字段分别是
+    `void*` 和 `uintptr_t`。如果 `aug_string` 包含 `"R"`，那么 `"R"` 的操作数 (`fde_ptr_encoding`)
+    描述了 `func_start` 的大小和解释，同时 `fde_ptr_encoding & 0xF` 描述了 `func_length` 的大小和解释。这是讨论指针编码的过渡。
 - en: '**Pointer encodings**'
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: '**指针编码**'
 - en: 'Depending on the context, it can be desirable to encode a pointer in different
     ways. For example, sometimes a `uintptr_t` is desirable, whereas other times an
     `int32_t` offset from the start of the current function is desirable. To allow
@@ -615,189 +777,236 @@
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据上下文，以不同方式编码指针可能更合适。例如，有时希望使用 `uintptr_t`，而其他时候希望使用从当前函数开始的 `int32_t` 偏移量。为了允许灵活性，各个位置允许使用
+    `uint8_t` 描述正在使用的指针编码方式。这些位置包括：
 - en: '| Encoding field | Associated pointer field |'
   id: totrans-split-123
   prefs: []
   type: TYPE_TB
+  zh: '| 编码字段 | 相关的指针字段 |'
 - en: '| `cie::fde_ptr_encoding` | `fde::func_start` |'
   id: totrans-split-124
   prefs: []
   type: TYPE_TB
+  zh: '| `cie::fde_ptr_encoding` | `fde::func_start` |'
 - en: '| `cie::fde_ptr_encoding & 0xF` | `fde::func_length` |'
   id: totrans-split-125
   prefs: []
   type: TYPE_TB
+  zh: '| `cie::fde_ptr_encoding & 0xF` | `fde::func_length` |'
 - en: '| `cie::fde_ptr_encoding` | `DW_CFA_set_loc` operand |'
   id: totrans-split-126
   prefs: []
   type: TYPE_TB
+  zh: '| `cie::fde_ptr_encoding` | `DW_CFA_set_loc` 操作数 |'
 - en: '| `cie::aug_string` `"P"` `ptr_encoding` | `cie::aug_string` `"P"` `personality_ptr`
     |'
   id: totrans-split-127
   prefs: []
   type: TYPE_TB
+  zh: '| `cie::aug_string` `"P"` `ptr_encoding` | `cie::aug_string` `"P"` `personality_ptr`
+    |'
 - en: '| `cie::aug_string` `"L"` | `fde::aug_string` `"L"` (LSDA pointer) |'
   id: totrans-split-128
   prefs: []
   type: TYPE_TB
+  zh: '| `cie::aug_string` `"L"` | `fde::aug_string` `"L"`（LSDA指针） |'
 - en: '| `eh_frame_hdr::eh_frame_ptr_enc` | `eh_frame_hdr::eh_frame_ptr` † |'
   id: totrans-split-129
   prefs: []
   type: TYPE_TB
+  zh: '| `eh_frame_hdr::eh_frame_ptr_enc` | `eh_frame_hdr::eh_frame_ptr` † |'
 - en: '| `eh_frame_hdr::fde_count_enc` | `eh_frame_hdr::fde_count` † |'
   id: totrans-split-130
   prefs: []
   type: TYPE_TB
+  zh: '| `eh_frame_hdr::fde_count_enc` | `eh_frame_hdr::fde_count` † |'
 - en: '| `eh_frame_hdr::table_enc` | `eh_frame_hdr::sorted_table` † |'
   id: totrans-split-131
   prefs: []
   type: TYPE_TB
+  zh: '| `eh_frame_hdr::table_enc` | `eh_frame_hdr::sorted_table` † |'
 - en: '| DW_OP_GNU_encoded_addr | DW_OP_GNU_encoded_addr ‡ |'
   id: totrans-split-132
   prefs: []
   type: TYPE_TB
+  zh: '| DW_OP_GNU_encoded_addr | DW_OP_GNU_encoded_addr ‡ |'
 - en: † [Foreshadowing](#eh_frame_hdr).
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: † [预示](#eh_frame_hdr)。
 - en: ‡ [More foreshadowing](#dw_op_).
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: ‡ [更多预示](#dw_op_)。
 - en: 'There are two special cases for this `uint8_t`:'
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两个`uint8_t`的特殊情况：
 - en: '| Encoding | Meaning |'
   id: totrans-split-136
   prefs: []
   type: TYPE_TB
+  zh: '| 编码 | 含义 |'
 - en: '| `0xff` | Encoded value is absent/empty, decode as NULL. |'
   id: totrans-split-137
   prefs: []
   type: TYPE_TB
+  zh: '| `0xff` | 编码值缺失/空，解码为NULL。 |'
 - en: '| `0x50` | Encode a `uintptr_t`, but precede with padding to align it. |'
   id: totrans-split-138
   prefs: []
   type: TYPE_TB
+  zh: '| `0x50` | 编码一个`uintptr_t`，但是在前面加上填充以对齐。 |'
 - en: 'Once the two special cases are excluded, the remaining cases split the byte
     into a four bit field, a three bit field, and a one bit field. The low four bits
     denote the data type:'
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 排除了两个特殊情况后，剩下的情况将字节分割为四位字段、三位字段和一位字段。低四位表示数据类型：
 - en: '| Encoding & 0xF | Data type | Size in bytes |'
   id: totrans-split-140
   prefs: []
   type: TYPE_TB
+  zh: '| 编码 & 0xF | 数据类型 | 字节大小 |'
 - en: '| `0x0` | `uintptr_t` | Typically either 4 or 8 |'
   id: totrans-split-141
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0` | `uintptr_t` | 通常为4或8 |'
 - en: '| `0x1` ‡ | `uleb128` | Varies (≥ 1) |'
   id: totrans-split-142
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1` ‡ | `uleb128` | 变化（≥ 1） |'
 - en: '| `0x2` | `uint16_t` | 2 |'
   id: totrans-split-143
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2` | `uint16_t` | 2 |'
 - en: '| `0x3` | `uint32_t` | 4 |'
   id: totrans-split-144
   prefs: []
   type: TYPE_TB
+  zh: '| `0x3` | `uint32_t` | 4 |'
 - en: '| `0x4` | `uint64_t` | 8 |'
   id: totrans-split-145
   prefs: []
   type: TYPE_TB
+  zh: '| `0x4` | `uint64_t` | 8 |'
 - en: '| `0x9` ‡ | `sleb128` | Varies (≥ 1) |'
   id: totrans-split-146
   prefs: []
   type: TYPE_TB
+  zh: '| `0x9` ‡ | `sleb128` | 变化（≥ 1） |'
 - en: '| `0xA` | `int16_t` | 2 |'
   id: totrans-split-147
   prefs: []
   type: TYPE_TB
+  zh: '| `0xA` | `int16_t` | 2 |'
 - en: '| `0xB` | `int32_t` | 4 |'
   id: totrans-split-148
   prefs: []
   type: TYPE_TB
+  zh: '| `0xB` | `int32_t` | 4 |'
 - en: '| `0xC` | `int64_t` | 8 |'
   id: totrans-split-149
   prefs: []
   type: TYPE_TB
+  zh: '| `0xC` | `int64_t` | 8 |'
 - en: ‡ Cannot be used for `fde_ptr_encoding`.
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: ‡ 不能用于`fde_ptr_encoding`。
 - en: 'The next three bits denote a base value to be added to non-NULL values:'
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来的三位数表示要添加到非NULL值的基础值：
 - en: '| Encoding & 0x70 | Base value |'
   id: totrans-split-152
   prefs: []
   type: TYPE_TB
+  zh: '| 编码 & 0x70 | 基础值 |'
 - en: '| `0x00` | NULL |'
   id: totrans-split-153
   prefs: []
   type: TYPE_TB
+  zh: '| `0x00` | NULL |'
 - en: '| `0x10` (pcrel) | Address of first byte of encoded pointer |'
   id: totrans-split-154
   prefs: []
   type: TYPE_TB
+  zh: '| `0x10`（pcrel） | 编码指针的第一个字节地址 |'
 - en: '| `0x20` (textrel) | Start of .text (in theory), but usually NULL in practice
     |'
   id: totrans-split-155
   prefs: []
   type: TYPE_TB
+  zh: '| `0x20`（textrel） | .text的起始位置（理论上），但在实践中通常为NULL |'
 - en: '| `0x30` (datarel) | Start of .got (x86) or NULL (most other architectures)
     † |'
   id: totrans-split-156
   prefs: []
   type: TYPE_TB
+  zh: '| `0x30`（datarel） | .got的起始位置（x86），或NULL（大多数其他架构）† |'
 - en: '| `0x40` (funcrel) ‡ | `fde::func_start` (after decoding) |'
   id: totrans-split-157
   prefs: []
   type: TYPE_TB
+  zh: '| `0x40`（funcrel） ‡ | `fde::func_start`（解码后） |'
 - en: † Except in `eh_frame_hdr::table_enc`, where it means start of .eh_frame_hdr.
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: † 除了在`eh_frame_hdr::table_enc`中，它指的是.eh_frame_hdr的起始位置。
 - en: ‡ Cannot be used for `fde_ptr_encoding`, or in `eh_frame_hdr`.
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: ‡ 不能用于`fde_ptr_encoding`或`eh_frame_hdr`。
 - en: 'The final top bit controls an optional dereference:'
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后的最高位控制可选的解引用：
 - en: '| Encoding & 0x80 | Semantics |'
   id: totrans-split-161
   prefs: []
   type: TYPE_TB
+  zh: '| 编码 & 0x80 | 语义 |'
 - en: '| `0x00` | Treat value as `void*` |'
   id: totrans-split-162
   prefs: []
   type: TYPE_TB
+  zh: '| `0x00` | 将值视为`void*` |'
 - en: '| `0x80` | Treat value as `void**`, dereference it to get `void*` |'
   id: totrans-split-163
   prefs: []
   type: TYPE_TB
+  zh: '| `0x80` | 将值视为`void**`，解引用以获取`void*` |'
 - en: If an integer is desired rather than a pointer (as is the case for `func_length`
     and `fde_count_enc`), then the `void*` is reinterpreted as `uintptr_t`.
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果需要整数而不是指针（比如`func_length`和`fde_count_enc`），那么`void*`会被重新解释为`uintptr_t`。
 - en: '**Finding all the FDEs**'
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '**寻找所有的FDEs**'
 - en: The various CIE and FDE structures are concatenated together, and then placed
     in the ELF `.eh_frame` section.
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 各种CIE和FDE结构被串联在一起，然后放置在ELF的`.eh_frame`段中。
 - en: Traditionally, the compiler would insert a call to [`__register_frame`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L151-L162)
     somewhere during startup, passing along the address of the `.eh_frame` section.
     If non-NULL values were desired for textrel / datarel pointer encodings, it would
@@ -812,6 +1021,9 @@
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统上，在启动期间编译器会插入一个调用[`__register_frame`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L151-L162)，传递`.eh_frame`节的地址。如果需要非NULL值用于textrel
+    / datarel指针编码，则会插入一个调用[`__register_frame_info_bases`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L108-L143)。在关闭期间，会进行匹配的调用[`__deregister_frame`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L301-L307)或[`__deregister_frame_info_bases`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L224-L293)。如果存在多个`.eh_frame`节且链接器未将它们合并，则可以改用[`__register_frame_table`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L205-L210)
+    / [`__register_frame_info_table_bases`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde.c#L168-L197)，它们接受指向NULL结尾的`.eh_frame`节指针列表的指针。
 - en: 'A more modern approach is to add an ELF `.eh_frame_hdr` section, and use either
     [`_dl_find_object`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde-dip.c#L551)
     or [`dl_iterate_phdr`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde-dip.c#L570)
@@ -820,10 +1032,12 @@
   id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 更现代的方法是添加一个ELF`.eh_frame_hdr`节，并使用[`_dl_find_object`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde-dip.c#L551)或[`dl_iterate_phdr`](https://github.com/gcc-mirror/gcc/blob/cc136a0bdcf096ca7d38b080a52fc9c041aa36db/libgcc/unwind-dw2-fde-dip.c#L570)来查找适当的`.eh_frame_hdr`节。一旦找到，该节包含一个按FDE指针排序的表：
 - en: '[PRE4]'
   id: totrans-split-169
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The combined size of the `eh_frame_ptr` and `fde_count` fields must be a multiple
     of four (which happens naturally if `eh_frame_ptr_enc` and `fde_count_enc` both
     use 4 or 8 byte types). The `eh_frame_ptr` field contains a pointer to the `.eh_frame`
@@ -836,10 +1050,13 @@
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: '`eh_frame_ptr`和`fde_count`字段的组合大小必须是四的倍数（如果`eh_frame_ptr_enc`和`fde_count_enc`都使用4或8字节类型，则自然发生）。`eh_frame_ptr`字段包含指向`.eh_frame`节的指针，如果某些原因无法解析`.eh_frame_hdr`节，则用作后备。`table_enc`字段包含`sorted_table`内容使用的编码，虽然datarel表示相对于`.eh_frame_hdr`的起始位置，而且唯一支持的编码是datarel
+    int32_t。表按升序的`func_start`顺序排序，并且其中的`func_start`值会覆盖所引用FDE的`func_start`（尽管实际上它们应该是相同的）。'
 - en: '**Personality pointers and LSDA pointers**'
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: '**人物指针和LSDA指针**'
 - en: 'To support calling destructors during unwinding, and to support catching exceptions
     (and thereby stopping unwinding), a CIE can specify a pointer to a personality
     function. Said function contains the destructing and/or catching logic, and will
@@ -849,295 +1066,380 @@
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了支持在展开期间调用析构函数，并支持捕获异常（从而停止展开），CIE可以指定指向人格函数的指针。该函数包含析构和/或捕获逻辑，并将作为展开的一部分调用（除非仅生成回溯）。我不会详述接口的具体细节，不过人格函数可以查询展开状态的各个部分：
 - en: '`_Unwind_GetLanguageSpecificData` returns `lsda_ptr` from the FDE.'
   id: totrans-split-173
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`_Unwind_GetLanguageSpecificData`从FDE返回`lsda_ptr`。'
 - en: '`_Unwind_GetRegionStart` returns `func_start` from the FDE.'
   id: totrans-split-174
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`_Unwind_GetRegionStart`从FDE返回`func_start`。'
 - en: Very old versions of g++ use `eh_ptr` instead of personality functions and LSDA
     pointers. Unless you are implementing [`__frame_state_for`](https://github.com/gcc-mirror/gcc/blob/39d989022dd0eacf1a7b95b7b20621acbe717d70/libgcc/unwind-dw2.c#L1072-L1120),
     you shouldn't need to worry about `eh_ptr`.
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 旧版本的g++使用`eh_ptr`而不是人格函数和LSDA指针。除非您正在实现[`__frame_state_for`](https://github.com/gcc-mirror/gcc/blob/39d989022dd0eacf1a7b95b7b20621acbe717d70/libgcc/unwind-dw2.c#L1072-L1120)，否则您无需担心`eh_ptr`。
 - en: '**Expression bytecode**'
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: '**表达式字节码**'
 - en: 'The `UnwindOneFrame` function from earlier included calls to `EvalExpr` to
     handle complex cases. The outline of `EvalExpr` is:'
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 之前的`UnwindOneFrame`函数包含对`EvalExpr`的调用，用于处理复杂情况。`EvalExpr`的概述如下：
 - en: '[PRE5]'
   id: totrans-split-178
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'With the various supported opcodes being:'
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是支持的各种操作码：
 - en: '| Opcode | Name and operands | Semantics (assuming stack for `Push`, `Pop`,
     `At`) |'
   id: totrans-split-180
   prefs: []
   type: TYPE_TB
+  zh: '| 操作码 | 名称和操作数 | 语义（假设用于`Push`、`Pop`、`At`的堆栈）'
 - en: '| `0x03` | DW_OP_addr(uintptr_t Lit) | `Push(Lit)` |'
   id: totrans-split-181
   prefs: []
   type: TYPE_TB
+  zh: '| `0x03` | DW_OP_addr(uintptr_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x08` | DW_OP_const1u(uint8_t Lit) | `Push(Lit)` |'
   id: totrans-split-182
   prefs: []
   type: TYPE_TB
+  zh: '| `0x08` | DW_OP_const1u(uint8_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x09` | DW_OP_const1s(int8_t Lit) | `Push(Lit)` |'
   id: totrans-split-183
   prefs: []
   type: TYPE_TB
+  zh: '| `0x09` | DW_OP_const1s(int8_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x0A` | DW_OP_const2u(uint16_t Lit) | `Push(Lit)` |'
   id: totrans-split-184
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0A` | DW_OP_const2u(uint16_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x0B` | DW_OP_const2s(int16_t Lit) | `Push(Lit)` |'
   id: totrans-split-185
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0B` | DW_OP_const2s(int16_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x0C` | DW_OP_const4u(uint32_t Lit) | `Push(Lit)` |'
   id: totrans-split-186
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0C` | DW_OP_const4u(uint32_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x0D` | DW_OP_const4s(int32_t Lit) | `Push(Lit)` |'
   id: totrans-split-187
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0D` | DW_OP_const4s(int32_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x0E` | DW_OP_const8u(uint64_t Lit) | `Push(Lit)` |'
   id: totrans-split-188
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0E` | DW_OP_const8u(uint64_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x0F` | DW_OP_const8s(int64_t Lit) | `Push(Lit)` |'
   id: totrans-split-189
   prefs: []
   type: TYPE_TB
+  zh: '| `0x0F` | DW_OP_const8s(int64_t Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x10` | DW_OP_constu(uleb128 Lit) | `Push(Lit)` |'
   id: totrans-split-190
   prefs: []
   type: TYPE_TB
+  zh: '| `0x10` | DW_OP_constu(uleb128 Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x11` | DW_OP_consts(sleb128 Lit) | `Push(Lit)` |'
   id: totrans-split-191
   prefs: []
   type: TYPE_TB
+  zh: '| `0x11` | DW_OP_consts(sleb128 Lit) | `Push(Lit)`（推送Lit）'
 - en: '| `0x12` | DW_OP_dup | `Push(At(-1))` (duplicate top element) |'
   id: totrans-split-192
   prefs: []
   type: TYPE_TB
+  zh: '| `0x12` | DW_OP_dup | `Push(At(-1))`（复制顶部元素）'
 - en: '| `0x14` | DW_OP_over | `Push(At(-2))` (duplicate penultimate element) |'
   id: totrans-split-193
   prefs: []
   type: TYPE_TB
+  zh: '| `0x14` | DW_OP_over | `Push(At(-2))`（复制倒数第二个元素）'
 - en: '| `0x15` | DW_OP_pick(uint8_t Idx) | `Push(At(-1-Idx))` |'
   id: totrans-split-194
   prefs: []
   type: TYPE_TB
+  zh: '| `0x15` | DW_OP_pick(uint8_t Idx) | `Push(At(-1-Idx))`（推送At(-1-Idx)）'
 - en: '| `0x13` | DW_OP_drop | `Pop()` |'
   id: totrans-split-195
   prefs: []
   type: TYPE_TB
+  zh: '| `0x13` | DW_OP_drop | `Pop()`（弹出）'
 - en: '| `0x16` | DW_OP_swap | `a = Pop(); b = Pop(); Push(a); Push(b)` |'
   id: totrans-split-196
   prefs: []
   type: TYPE_TB
+  zh: '| `0x16` | DW_OP_swap | `a = Pop(); b = Pop(); Push(a); Push(b)`（a = 弹出();
+    b = 弹出(); 推送(a); 推送(b)）'
 - en: '| `0x17` | DW_OP_rot | `a = Pop(); b = Pop(); c = Pop(); Push(a); Push(c);
     Push(b)` |'
   id: totrans-split-197
   prefs: []
   type: TYPE_TB
+  zh: '| `0x17` | DW_OP_rot | `a = Pop(); b = Pop(); c = Pop(); Push(a); Push(c);
+    Push(b)`（a = 弹出(); b = 弹出(); c = 弹出(); 推送(a); 推送(c); 推送(b)）'
 - en: '| `0x06` | DW_OP_deref | `Push(*(uintptr_t*)Pop())` |'
   id: totrans-split-198
   prefs: []
   type: TYPE_TB
+  zh: '| `0x06` | DW_OP_deref | `Push(*(uintptr_t*)Pop())`（推送*(uintptr_t*)Pop()）'
 - en: '| `0x94` `0x01` | DW_OP_deref_size | `Push(*(uint8_t*)Pop())` |'
   id: totrans-split-199
   prefs: []
   type: TYPE_TB
+  zh: '| `0x94` `0x01` | DW_OP_deref_size | `Push(*(uint8_t*)Pop())`（推送*(uint8_t*)Pop()）'
 - en: '| `0x94` `0x02` | DW_OP_deref_size | `Push(*(uint16_t*)Pop())` |'
   id: totrans-split-200
   prefs: []
   type: TYPE_TB
+  zh: '| `0x94` `0x02` | DW_OP_deref_size | `Push(*(uint16_t*)Pop())`（推送*(uint16_t*)Pop()）'
 - en: '| `0x94` `0x04` | DW_OP_deref_size | `Push(*(uint32_t*)Pop())` |'
   id: totrans-split-201
   prefs: []
   type: TYPE_TB
+  zh: '| `0x94` `0x04` | DW_OP_deref_size | `Push(*(uint32_t*)Pop())`（推送*(uint32_t*)Pop()）'
 - en: '| `0x94` `0x08` | DW_OP_deref_size | `Push(*(uint64_t*)Pop())` |'
   id: totrans-split-202
   prefs: []
   type: TYPE_TB
+  zh: '| `0x94` `0x08` | DW_OP_deref_size | `Push(*(uint64_t*)Pop())`（推送*(uint64_t*)Pop()）'
 - en: '| `0x19` | DW_OP_abs | `a = Pop(); Push((intptr_t)a < 0 ? -a : a)` |'
   id: totrans-split-203
   prefs: []
   type: TYPE_TB
+  zh: '| `0x19` | DW_OP_abs | `a = Pop(); Push((intptr_t)a < 0 ? -a : a)`（a = 弹出();
+    推送((intptr_t)a < 0 ? -a : a)）'
 - en: '| `0x1f` | DW_OP_neg | `a = Pop(); Push(-a)` |'
   id: totrans-split-204
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1f` | DW_OP_neg | `a = Pop(); Push(-a)`（a = 弹出(); 推送(-a)）'
 - en: '| `0x20` | DW_OP_not | `a = Pop(); Push(~a)` |'
   id: totrans-split-205
   prefs: []
   type: TYPE_TB
+  zh: '| `0x20` | DW_OP_not | `a = Pop(); Push(~a)`（a = 弹出(); 推送(~a)）'
 - en: '| `0x23` | DW_OP_plus_uconst(uleb128 Lit) | `a = Pop(); Push(a + Lit)` |'
   id: totrans-split-206
   prefs: []
   type: TYPE_TB
+  zh: '| `0x23` | DW_OP_plus_uconst(uleb128 Lit) | `a = Pop(); Push(a + Lit)`（a =
+    弹出(); 推送(a + Lit)）'
 - en: '| `0x1a` | DW_OP_and | `rhs = Pop(); lhs = Pop(); Push(lhs & rhs)` |'
   id: totrans-split-207
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1a` | DW_OP_and | `rhs = Pop(); lhs = Pop(); Push(lhs & rhs)`（rhs = 弹出();
+    lhs = 弹出(); 推送(lhs & rhs)）'
 - en: '| `0x1b` | DW_OP_div | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs / (intptr_t)rhs)`
     |'
   id: totrans-split-208
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1b` | DW_OP_div | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs / (intptr_t)rhs)`（rhs
+    = 弹出(); lhs = 弹出(); 推送((intptr_t)lhs / (intptr_t)rhs)）'
 - en: '| `0x1c` | DW_OP_minus | `rhs = Pop(); lhs = Pop(); Push(lhs - rhs)` |'
   id: totrans-split-209
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1c` | DW_OP_minus | `rhs = Pop(); lhs = Pop(); Push(lhs - rhs)`（rhs =
+    弹出(); lhs = 弹出(); 推送(lhs - rhs)）'
 - en: '| `0x1d` | DW_OP_mod | `rhs = Pop(); lhs = Pop(); Push(lhs % rhs)` |'
   id: totrans-split-210
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1d` | DW_OP_mod | `rhs = Pop(); lhs = Pop(); Push(lhs % rhs)`（rhs = 弹出();
+    lhs = 弹出(); 推送(lhs % rhs)）'
 - en: '| `0x1e` | DW_OP_mul | `rhs = Pop(); lhs = Pop(); Push(lhs * rhs)` |'
   id: totrans-split-211
   prefs: []
   type: TYPE_TB
+  zh: '| `0x1e` | DW_OP_mul | `rhs = Pop(); lhs = Pop(); Push(lhs * rhs)` |'
 - en: '| `0x21` | DW_OP_or | `rhs = Pop(); lhs = Pop(); Push(lhs &#124; rhs)` |'
   id: totrans-split-212
   prefs: []
   type: TYPE_TB
+  zh: '| `0x21` | DW_OP_or | `rhs = Pop(); lhs = Pop(); Push(lhs &#124; rhs)` |'
 - en: '| `0x22` | DW_OP_plus | `rhs = Pop(); lhs = Pop(); Push(lhs + rhs)` |'
   id: totrans-split-213
   prefs: []
   type: TYPE_TB
+  zh: '| `0x22` | DW_OP_plus | `rhs = Pop(); lhs = Pop(); Push(lhs + rhs)` |'
 - en: '| `0x24` | DW_OP_shl | `rhs = Pop(); lhs = Pop(); Push(lhs << rhs)` |'
   id: totrans-split-214
   prefs: []
   type: TYPE_TB
+  zh: '| `0x24` | DW_OP_shl | `rhs = Pop(); lhs = Pop(); Push(lhs << rhs)` |'
 - en: '| `0x25` | DW_OP_shr | `rhs = Pop(); lhs = Pop(); Push(lhs >> rhs)` |'
   id: totrans-split-215
   prefs: []
   type: TYPE_TB
+  zh: '| `0x25` | DW_OP_shr | `rhs = Pop(); lhs = Pop(); Push(lhs >> rhs)` |'
 - en: '| `0x26` | DW_OP_shra | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs >> rhs)`
     |'
   id: totrans-split-216
   prefs: []
   type: TYPE_TB
+  zh: '| `0x26` | DW_OP_shra | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs >> rhs)`
+    |'
 - en: '| `0x27` | DW_OP_xor | `rhs = Pop(); lhs = Pop(); Push(lhs ^ rhs)` |'
   id: totrans-split-217
   prefs: []
   type: TYPE_TB
+  zh: '| `0x27` | DW_OP_xor | `rhs = Pop(); lhs = Pop(); Push(lhs ^ rhs)` |'
 - en: '| `0x29` | DW_OP_eq | `rhs = Pop(); lhs = Pop(); Push(lhs == rhs)` |'
   id: totrans-split-218
   prefs: []
   type: TYPE_TB
+  zh: '| `0x29` | DW_OP_eq | `rhs = Pop(); lhs = Pop(); Push(lhs == rhs)` |'
 - en: '| `0x2e` | DW_OP_ne | `rhs = Pop(); lhs = Pop(); Push(lhs != rhs)` |'
   id: totrans-split-219
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2e` | DW_OP_ne | `rhs = Pop(); lhs = Pop(); Push(lhs != rhs)` |'
 - en: '| `0x2a` | DW_OP_ge | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs >= (intptr_t)rhs)`
     |'
   id: totrans-split-220
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2a` | DW_OP_ge | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs >= (intptr_t)rhs)`
+    |'
 - en: '| `0x2b` | DW_OP_gt | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs > (intptr_t)rhs)`
     |'
   id: totrans-split-221
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2b` | DW_OP_gt | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs > (intptr_t)rhs)`
+    |'
 - en: '| `0x2c` | DW_OP_le | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs <= (intptr_t)rhs)`
     |'
   id: totrans-split-222
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2c` | DW_OP_le | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs <= (intptr_t)rhs)`
+    |'
 - en: '| `0x2d` | DW_OP_lt | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs < (intptr_t)rhs)`
     |'
   id: totrans-split-223
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2d` | DW_OP_lt | `rhs = Pop(); lhs = Pop(); Push((intptr_t)lhs < (intptr_t)rhs)`
+    |'
 - en: '| `0x2f` | DW_OP_skip(int16_t Delta) | `bpc += Delta` |'
   id: totrans-split-224
   prefs: []
   type: TYPE_TB
+  zh: '| `0x2f` | DW_OP_skip(int16_t Delta) | `bpc += Delta` |'
 - en: '| `0x28` | DW_OP_bra(int16_t Delta) | `if (Pop() != 0) bpc += Delta` |'
   id: totrans-split-225
   prefs: []
   type: TYPE_TB
+  zh: '| `0x28` | DW_OP_bra(int16_t Delta) | `if (Pop() != 0) bpc += Delta` |'
 - en: '| `0x30 + Lit` | DW_OP_lit | `Push(Lit)` |'
   id: totrans-split-226
   prefs: []
   type: TYPE_TB
+  zh: '| `0x30 + Lit` | DW_OP_lit | `Push(Lit)` |'
 - en: '| `0x50 + Reg` | DW_OP_reg | `Push(original->value[Reg])` |'
   id: totrans-split-227
   prefs: []
   type: TYPE_TB
+  zh: '| `0x50 + Reg` | DW_OP_reg | `Push(original->value[Reg])` |'
 - en: '| `0x70 + Reg` | DW_OP_breg(sleb128 Lit) | `Push(original->value[Reg] + Lit)`
     |'
   id: totrans-split-228
   prefs: []
   type: TYPE_TB
+  zh: '| `0x70 + Reg` | DW_OP_breg(sleb128 Lit) | `Push(original->value[Reg] + Lit)`
+    |'
 - en: '| `0x90` | DW_OP_regx(uleb128 Reg) | `Push(original->value[Reg])` |'
   id: totrans-split-229
   prefs: []
   type: TYPE_TB
+  zh: '| `0x90` | DW_OP_regx(uleb128 Reg) | `Push(original->value[Reg])` |'
 - en: '| `0x92` | DW_OP_bregx(uleb128 Reg, sleb128 Lit) | `Push(original->value[Reg]
     + Lit)` |'
   id: totrans-split-230
   prefs: []
   type: TYPE_TB
+  zh: '| `0x92` | DW_OP_bregx(uleb128 Reg, sleb128 Lit) | `Push(original->value[Reg]
+    + Lit)` |'
 - en: '| `0x96` | DW_OP_nop | No-op |'
   id: totrans-split-231
   prefs: []
   type: TYPE_TB
+  zh: '| `0x96` | DW_OP_nop | No-op |'
 - en: '| `0xf1` | DW_OP_GNU_encoded_addr(uint8_t PtrEncoding, uint8_t Ptr[]) | `Push(DecodePtr(PtrEncoding,
     Ptr))` |'
   id: totrans-split-232
   prefs: []
   type: TYPE_TB
+  zh: '| `0xf1` | DW_OP_GNU_encoded_addr(uint8_t PtrEncoding, uint8_t Ptr[]) | `Push(DecodePtr(PtrEncoding,
+    Ptr))` |'
 - en: The gcc implementation of `EvalExpr` assumes that the stack never holds more
     than 64 elements. Bad things will happen if the stack exceeds this size.
   id: totrans-split-233
   prefs: []
   type: TYPE_NORMAL
+  zh: '`EvalExpr`的gcc实现假设堆栈永远不会超过64个元素。如果堆栈超出此大小，将会发生严重问题。'
 - en: 'By far the most common usage of this expression language is to allow a single
     FDE to succinctly describe an arbitrary number of PLT entries. The serialised
     bytecode in this case will be something like:'
   id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前这种表达语言最常见的用法是允许单个FDE简洁地描述任意数量的PLT条目。在这种情况下的序列化字节码可能如下所示：
 - en: '[PRE6]'
   id: totrans-split-235
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Which encodes the expression:'
   id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
+  zh: 用以编码表达式：
 - en: '[PRE7]'
   id: totrans-split-237
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'In other words, each 16-byte PLT entry is split into two pieces: the 1^(st)
     being 11 bytes long, and the 2^(nd) being 5 bytes long. If in the 1^(st) piece,
     the expression gives `rsp + 8`, whereas in the 2^(nd) piece it gives `rsp + 16`.'
   id: totrans-split-238
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，每个16字节的PLT条目分为两部分：第1部分长度为11字节，第2部分长度为5字节。如果在第1部分中，表达式为`rsp + 8`，而在第2部分中为`rsp
+    + 16`。
 - en: '**References**'
   id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
+  zh: '**参考文献**'
 - en: 'The [DWARF Standard](https://dwarfstd.org/doc/DWARF5.pdf) is documented, though
     `.eh_frame` diverges from it in a few areas. It also requires architecture-specific
     extensions (e.g. [x86](https://www.uclibc.org/docs/psABI-i386.pdf), [x86_64](http://refspecs.linux-foundation.org/elf/x86_64-abi-0.99.pdf),
@@ -1148,10 +1450,12 @@
   id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
+  zh: '[DWARF标准](https://dwarfstd.org/doc/DWARF5.pdf)有详细记录，尽管`.eh_frame`在几个方面与其有所偏差。此外，还需要特定于体系结构的扩展（例如[x86](https://www.uclibc.org/docs/psABI-i386.pdf)，[x86_64](http://refspecs.linux-foundation.org/elf/x86_64-abi-0.99.pdf)，[aarch64](https://github.com/ARM-software/abi-aa/blob/main/aadwarf64/aadwarf64.rst)）。唯一真正的参考是gcc源代码，其一些相关入口点包括：'
 - en: '**See also**'
   id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
+  zh: '**参见**'
 - en: For a completely different take on the same problem, consider [ARM64 unwinding
     on Windows](/content/windows-arm64-unwind-codes). An `.xdata` record therein is
     roughly equivalent to an FDE, and it has a bytecode interpreter similar in purpose
@@ -1159,7 +1463,10 @@
   id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于同一个问题的完全不同解决方法，请考虑在 Windows 上的[ARM64解包](/content/windows-arm64-unwind-codes)。其中的`.xdata`记录大致相当于FDE，并且它具有一个与DW_CFA_
+    bytecode在目的上类似（但风格非常不同）的字节码解释器。
 - en: 'Some examples of complete `.eh_frame` sections are available in LuaJIT:'
   id: totrans-split-243
   prefs: []
   type: TYPE_NORMAL
+  zh: LuaJIT 中有一些完整的`.eh_frame`部分的示例：
