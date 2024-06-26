@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:01:01'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:01:01'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Fuzzing Ladybird with tools from Google Project Zero
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用 Google Project Zero 的工具对 Ladybird 进行模糊测试
 - en: 来源：[https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from](https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from](https://awesomekling.substack.com/p/fuzzing-ladybird-with-tools-from)
 - en: While [Ladybird](https://ladybird.dev/) does an okay job with well-formed web
     content, I thought it would be useful to throw some security research tools at
     it and see what kind of issues it might reveal. So today we’ll be using “**[Domato](https://github.com/googleprojectzero/domato)**
@@ -33,118 +39,149 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然 [Ladybird](https://ladybird.dev/) 在处理格式良好的网页内容方面做得不错，但我认为用一些安全研究工具来测试它并查看可能出现的问题也是有用的。因此，今天我们将使用来自
+    [Google Project Zero](https://googleprojectzero.blogspot.com/) 的“**[Domato](https://github.com/googleprojectzero/domato)**
+    [🍅](https://github.com/googleprojectzero/domato)” DOM 模糊器来对 Ladybird 进行压力测试并修复一些问题。
 - en: The way this works is that Domato generates randomized web pages with lots of
     mostly-valid but strange HTML, CSS and JavaScript. I then load these pages into
     a debug build of Ladybird and observe what happens.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个工作原理是，Domato 生成带有大量几乎有效但奇怪的 HTML、CSS 和 JavaScript 的随机化网页。然后我加载这些页面到 Ladybird
+    的调试版本中，并观察发生了什么。
 - en: Domato generates HTML pages of roughly 500 KiB in size, filled with “interesting”
     JS, CSS and HTML to surprise and delight your browser engine!
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Domato 生成大约 500 KiB 大小的 HTML 页面，充斥着“有趣”的 JS、CSS 和 HTML，可以惊喜和取悦您的浏览器引擎！
 - en: The Domato README boasts a ton of bugs discovered in all major browsers, so
     I have no doubt it will find some in ours as well. Here we go!
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Domato 的 README 中自豪地宣称发现了所有主要浏览器中的大量漏洞，因此我确信它也会在我们的浏览器中找到一些。我们开始吧！
 - en: 'Unsurprisingly, it took less than a second to find the first issue! The output
     produced by Domato is actually 562 KiB, but I was able to reduce it to the following:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 毫不奇怪，不到一秒钟就找到了第一个问题！由 Domato 生成的输出实际上是 562 KiB，但我能将其减少到以下内容：
 - en: '[PRE0]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'I’ve compiled Ladybird with UBSAN (Undefined Behavior SANitizer) for this test,
     and I get the following very helpful trace output:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我为了这次测试编译了带有 UBSAN（未定义行为 SANitizer）的 Ladybird，并获得了以下非常有用的跟踪输出：
 - en: '[PRE1]'
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: It’s a good old-fashioned null pointer dereference!
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个传统的空指针解引用错误！
 - en: 'As it turns out, we’ve implemented `<th>` and `<td>` elements with the assumption
     that there’s always a `<table>` somewhere above it in the DOM tree. We probably
     believed this because the following is not allowed by the HTML parser:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果证明，我们实现了 `<th>` 和 `<td>` 元素，假设在 DOM 树中总是有一个 `<table>` 元素位于其上方。我们可能会这样认为，因为
+    HTML 解析器不允许以下内容：
 - en: '`<mfrac><th>`'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '`<mfrac><th>`'
 - en: If you load the above markup in a spec-compliant browser, it will create a single
     `<mfrac>` element with nothing inside it.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在符合规范的浏览器中加载上述标记，将创建一个单独的 `<mfrac>` 元素，里面没有任何内容。
 - en: However, when creating DOM nodes manually using JavaScript API, you can break
     some of the rules that the parser has to follow, and indeed put a `<th>` inside
     an `<mfrac>`!
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，当使用 JavaScript API 手动创建 DOM 节点时，您可能会违反解析器必须遵循的一些规则，并确实将 `<th>` 放在 `<mfrac>`
+    中！
 - en: 'Here’s the buggy function:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是有问题的函数：
 - en: '[PRE2]'
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: It’s used to implement the ancient feature where `<table border=3>` and `<table
     padding=5>` applies CSS border and padding to each table cell, and not just the
     table box itself.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 它用于实现 `<table border=3>` 和 `<table padding=5>` 的古老特性，这些特性将 CSS 边框和填充应用于每个表格单元格，而不仅仅是表格框本身。
 - en: 'The fix is simply to stop assuming that `<th>` and `<td>` elements always have
     a containing `<table>` in the ancestor chain. We don’t need the `table_containing_cell`
     helper but can instead simply replace this:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决方法很简单，不再假设 `<th>` 和 `<td>` 元素总是有包含它们的 `<table>` 元素在祖先链中。我们不需要 `table_containing_cell`
+    辅助函数，而可以简单地替换为：
 - en: '[PRE3]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'With this:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这个：
 - en: '[PRE4]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'And we’re done with issue #1! [(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/b9bacb3ff49ba675f9875434d646fb1b34d2c0df)'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '我们已经解决了问题 #1！[(在此提交了修复。)](https://github.com/SerenityOS/serenity/commit/b9bacb3ff49ba675f9875434d646fb1b34d2c0df)'
 - en: 'We continue executing the fuzzer and once again, within less than 1 second,
     we hit a new problem. The Domato output is 472 KiB, but it whittles down to this:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们继续执行模糊测试程序，不到 1 秒钟，又遇到了一个新问题。Domato 的输出是 472 KiB，但最终精简到了这样：
 - en: '[PRE5]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'When opened in Ladybird, we fail like so:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 当在 Ladybird 中打开时，我们就会像这样失败：
 - en: '[PRE6]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The reason things go wrong here is due to the special behavior of `onfoo` event
     handler attributes on the `<body>` element. For compatibility with ancient web
     content, assignments to `document.body.onfoo` must forward to `window.onfoo`.
@@ -182,6 +219,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The SVG above would cause our implementation to loop forever as it attempted
     to follow the chain of referenced gradients. Oops, indeed!
   id: totrans-split-38
@@ -197,6 +235,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: To properly handle cyclical references, we have to keep track of all the gradients
     we’ve visited, and stop following the chain if we encounter a gradient we’ve already
     visited before.
@@ -220,6 +259,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'The above test would crash like this:'
   id: totrans-split-46
   prefs: []
@@ -228,6 +268,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: As it turns out, this is actually a bug in the HTML spec! When an iframe is
     removed from the DOM, its content document is detached from its browsing context.
     However, when getting or setting a property on a window object, we run a spec
@@ -261,42 +302,52 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是简化后的问题：
 - en: '[PRE11]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'This was a mistake in the implementation of `before()`, which has to find the
     first preceding sibling of `<div id=”two”>` that isn’t one of its arguments (i.e
     `<div id=”one”>` in this case.) We had the following loop mistake in the implementation:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实现`before()`方法时出现了错误，需要找到`<div id=”two”>`的第一个前兄弟节点，而不是它的参数之一（即在这种情况下是`<div
+    id=”one”>`）。在实现中我们有以下循环错误：
 - en: '[PRE12]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The problem here is that we kept fetching `node->previous_sibling`, instead
     of continuing to follow the sibling chain via `previous_sibling->previous_sibling`.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题在于我们一直在获取`node->previous_sibling`，而不是继续通过`previous_sibling->previous_sibling`跟随兄弟链。
 - en: 'Here’s how I fixed it:'
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我修复它的方法：
 - en: '[PRE13]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[(Fix committed here.)](https://github.com/SerenityOS/serenity/commit/35f359c51c787153cd17c7289664ab87146241ea)'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[(修复提交在此处。)](https://github.com/SerenityOS/serenity/commit/35f359c51c787153cd17c7289664ab87146241ea)'
 - en: This can probably go on for quite some time, so let’s call it a day. We found
     five real bugs, one of which was a spec bug, and were able to fix all of them.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能会持续相当长时间，所以我们就这样吧。我们找到了五个真正的错误，其中一个是规范错误，并成功修复了所有问题。
 - en: Even though things went basically as I expected, it’s still quite interesting
     just how quickly we fall apart when confronted with strange and unexpected inputs.
     Fuzzers like Domato are an amazing resource for anyone who wants to make their
@@ -304,6 +355,7 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管事情基本按我预期的进行，但当面对奇怪和意外的输入时，我们仍然很快就崩溃了。像Domato这样的模糊测试工具对于希望使他们的软件更加健壮的人来说是一个很好的资源。
 - en: The next step here will be to get Ladybird to the point where we can handle
     a sustained onslaught of fuzzed inputs. And once it’s reasonably stable, we can
     start running it automatically in the cloud somewhere, and hopefully shake out
@@ -311,3 +363,4 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步将是让Ladybird能够处理持续的模糊输入。一旦它相对稳定，我们可以开始在云中自动运行它，希望能发现更多问题。
