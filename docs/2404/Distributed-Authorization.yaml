@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:14:59'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:14:59
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Distributed Authorization
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 分布式授权
 - en: 来源：[https://www.osohq.com/post/distributed-authorization](https://www.osohq.com/post/distributed-authorization)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.osohq.com/post/distributed-authorization](https://www.osohq.com/post/distributed-authorization)
 - en: “The ability to do authorization queries over data in our existing database
     reduces architectural complexity and is a big technical win for us. We’re super
     excited to take advantage of it.” – Anthony Cristiano, Staff Software Engineer,
@@ -32,6 +38,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “在我们现有数据库中对数据进行授权查询的能力，减少了架构复杂性，对我们来说是一个重大的技术胜利。我们非常兴奋能够利用它。” – Anthony Cristiano，首席软件工程师，Headway
 - en: Authorization as a Service. The reality falls short of the promise. That’s because
     to use an authorization service, you have to send it a lot of application data.
     Any solution that signs you up for a data synchronization process isn’t providing
@@ -39,33 +46,40 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 授权作为一种服务。现实与承诺不符。这是因为要使用授权服务，您必须向其发送大量应用程序数据。任何让您签署数据同步过程的解决方案都不是提供服务，而是造成负担。
 - en: When we started work on Oso, we knew this. It’s one of the key problems we set
     out to solve. Today we’re taking a major step towards realizing that vision with
     the release of ***Distributed Authorization***.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们开始开发 Oso 时，我们知道这一点。这是我们着手解决的关键问题之一。今天，我们通过发布***分布式授权***迈出了实现这一愿景的重要一步。
 - en: Distributed Authorization lets you apply your application data to authorization
     decisions without synchronizing it to Oso Cloud. Instead, you distribute authorization
     decisions between the Oso Cloud service and the Oso Cloud client in your application.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 分布式授权允许您在不将其同步到 Oso Cloud 的情况下，将应用程序数据应用于授权决策。相反，您在 Oso Cloud 服务和应用程序中的 Oso
+    Cloud 客户端之间分发授权决策。
 - en: This may sound counterintuitive – shouldn’t an authorization service answer
     authorization questions on its own? Surprisingly, no.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这听起来可能有些违反直觉——一个授权服务不应该独自回答授权问题吗？令人惊讶的是，不是这样。
 - en: In this post, we’ll show you how we reached that conclusion and why we’re so
     excited about Distributed Authorization.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们将向您展示我们是如何得出这一结论的，以及我们对分布式授权如此兴奋的原因。
 - en: 'DIY Authorization: Good until it Isn’t'
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: DIY 授权：好到不行
 - en: 'Authorization starts with a question. Consider [gitcloud](https://github.com/osohq/gitcloud),
     our sample version control app. You may be asked this question: May `alice` `read`
     the `amazing-app` repository? In order to answer this question you need two things:
@@ -73,41 +87,50 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 授权始于一个问题。考虑[gitcloud](https://github.com/osohq/gitcloud)，我们的示例版本控制应用。您可能会被问到这个问题：`alice`
+    是否可以 `read` `amazing-app` 仓库？为了回答这个问题，您需要两样东西：逻辑和数据。逻辑可能是：
 - en: A `user` may `read` a `repository` in their `organization` if they have the
     `maintainer` or `admin` role on that `repository`
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果用户在组织中拥有 `maintainer` 或 `admin` 角色，则`user`可以`read`其`organization`中的`repository`。
 - en: 'The data might be:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据可能是：
 - en: '`alice` is a member of the `acme` organization.'
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`alice` 是 `acme` 组织的成员。'
 - en: the `acme` organization contains the `amazing-app` repository
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`acme` 组织包含 `amazing-app` 仓库'
 - en: '`alice` has the `maintainer` role on the `amazing-app` repository'
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`alice` 在 `amazing-app` 仓库上拥有 `maintainer` 角色'
 - en: 'By combining the logic and the data, we get our answer: `alice` can `read`
     the `amazing-app` repository.'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 结合逻辑和数据，我们得到了答案：`alice` 可以 `read` `amazing-app` 仓库。
 - en: 'In the early stages of an application, this logic usually lives in the application
     code, and the data in the application database. For the case of our simple question
     above, that might look like this:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在应用程序的早期阶段，这种逻辑通常存在于应用程序代码中，而数据则存在于应用程序数据库中。对于我们上面的简单问题的情况，可能看起来像这样：
 - en: '[PRE0]'
   id: totrans-split-21
   prefs: []
@@ -124,23 +147,27 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您的授权逻辑不比这更复杂，那这就可以完全胜任。但随着时间推移，授权问题和逻辑都倾向于变得更加复杂。
 - en: It becomes cumbersome to manage roles at the repository level, so you allow
     users to inherit roles on repositories from their role in the organization.
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在仓库级别管理角色变得繁琐时，您允许用户从组织中继承仓库角色。
 - en: You start getting a lot of requests to add new roles to gitcloud, so you give
     users the ability to create custom roles with configurable permission
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您开始收到许多请求要求向 gitcloud 添加新角色，因此您允许用户创建具有可配置权限的自定义角色
 - en: You add an Issue feature to gitcloud, so repo users have a way to report bugs.
   id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 您向 gitcloud 添加了一个 Issue 功能，因此仓库用户有了报告错误的途径。
 - en: 'Great news – your Issue feature is taking off! In fact, it’s so popular that
     your users request a list of Issues that they have permission to triage, because
     it’s getting hard to keep track of them. You decide that a user can `triage` an
@@ -148,45 +175,54 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 太棒了——您的Issue功能正在火爆上升！实际上，它如此受欢迎，以至于您的用户要求列出他们有权进行审查的问题，因为跟踪它们变得困难。您决定如果用户可以`triage`一个问题，则可以：
 - en: They created the `issue` *or*
   id: totrans-split-28
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们创建了`issue` *或*
 - en: They have the `triage` role on the `repository` that contains the `issue` *or*
   id: totrans-split-29
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们在包含`issue`的`repository`上有`triage`角色 *或*
 - en: They have the `triage` role on the `organization` that contains the `repository`
     *or*
   id: totrans-split-30
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们在包含`repository`的`organization`上有`triage`角色 *或*
 - en: They have a `custom role` that grants them the necessary permissions
   id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 他们有一个授予他们必要权限的`custom role`
 - en: 'This looks something like this:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 它看起来像这样：
 - en: Sample code left as an exercise for the reader.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 样例代码留作读者的练习。
 - en: Good luck sifting through that code 6 months from now when you want to figure
     out the rules for granting triage access to a user.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 从现在起，当您希望弄清楚如何为用户授予审查访问权限的规则时，祝您好运。
 - en: 'Policy As Code: Decouple Authorization Logic From Application Logic'
   id: totrans-split-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 策略即代码：将授权逻辑与应用程序逻辑分离
 - en: Your application has an authorization policy, whether you build it explicitly
     or not. When you mix application logic and authorization logic in your application
     code, you make that policy implicit. The problem with things that are implicit
@@ -197,6 +233,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论您是否明确构建了它，您的应用程序都有一个授权策略。当您在应用程序代码中混合应用程序逻辑和授权逻辑时，您使该策略变得隐式化。隐式化的问题在于它们很容易被误解，或者完全被忽视。假设您决定在gitcloud中添加团队，以便组织中的不同团队可以拥有不同的权限。您能找到所有必须修改的函数和查询以使团队正常工作吗？您想要这样做吗？
 - en: 'This is why we introduced [Polar](https://www.osohq.com/docs/reference/polar/foundations),
     our declarative DSL for authorization. Polar allows you to separate your authorization
     logic from your application logic and express it in a language that is purpose
@@ -204,6 +241,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么我们引入了[Polar](https://www.osohq.com/docs/reference/polar/foundations)，我们的声明性授权DSL。Polar允许您将授权逻辑与应用程序逻辑分离，并用专为授权而构建的语言表达它。一个简单的Polar策略看起来像这样：
 - en: '[PRE2]'
   id: totrans-split-38
   prefs: []
@@ -216,6 +254,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已指定我们感兴趣的实体：`User`和`Organization`。我们已定义了允许给定`User`根据`member`角色`read`一个`Organization`的条件。最后，我们断言`alice`在`acme`组织上有`member`角色。
 - en: Like any new language, it takes a little getting used to if you haven’t worked
     with Polar before, but we can see from this example that it’s both concise and
     expressive. These are important characteristics if our aim is to make your authorization
@@ -224,17 +263,20 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像任何新语言一样，如果您以前没有使用过Polar，那么需要一点时间来适应，但是从这个示例中我们可以看到，它既简洁又富有表现力。这些都是重要特征，如果我们的目标是使您的授权逻辑明确化。如果您不得不浏览一堆混乱的语法来揭示该逻辑，那我们将白费力气。
 - en: Explicit policy is a big improvement for complex authorization logic. Now we
     needed to let you take advantage of that policy in your code. This is why we built
     the Oso library.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 明确的策略对于复杂的授权逻辑是一个重大进步。现在我们需要让您在代码中利用该策略。这就是为什么我们构建了Oso库。
 - en: 'Oso Library: Authorization for Monoliths'
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Oso库：单体应用的授权
 - en: 'The Oso library represented our initial implementation of a client to Polar.
     There was a lot to like about it. It was open source. It operated directly over
     your data. It integrated tightly with your application. With your policy defined
@@ -243,6 +285,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Oso库代表了我们对Polar的初始实现的看法。有很多值得称赞的地方。它是开源的。它直接在您的数据上操作。它与您的应用程序紧密集成。通过在Polar中定义您的策略并将开源库嵌入您的应用程序中，您可以找出`alice`是否可以像这样`read`一个`repository`：
 - en: '[PRE3]'
   id: totrans-split-44
   prefs: []
