@@ -133,14 +133,17 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 猜猜看？`Ctrl-c`又恢复工作了。'
 - en: What?
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么？
 - en: Okay, another attempt. What if we do *both*?
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，再试一次。如果我们*两者*都做呢？
 - en: '[PRE3]'
   id: totrans-split-28
   prefs: []
@@ -150,15 +153,18 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 那个*也*奏效了。什么！
 - en: Okay, wait a second… my gut is telling me something. `/usr/bin/env` isn’t a
     shell built-in, is it? But `echo` is. Is that a clue?
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，等一下... 我的直觉告诉我点什么。`/usr/bin/env`不是一个内置的shell命令，对吧？但`echo`是。这是一个线索吗？
 - en: 'Let’s try this one:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们试试这个：
 - en: '[PRE4]'
   id: totrans-split-32
   prefs: []
@@ -170,27 +176,32 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 那个老牌的`ls`。可能是我一生中运行得最多的命令。每当我需要它的时候，无论我访问哪台机器，我都会立即运行`ls`来确认它能正常工作。我可以用我的生命来信赖`ls`。
 - en: 'And yet: after running `ls` in that subshell, `Ctrl-c` stopped working. Et
     tu, `ls`?'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而：在那个子shell中运行`ls`后，`Ctrl-c`停止工作了。连你也，`ls`吗？
 - en: 'Next hypothesis: is it something in Zed? Do we setup some signal handlers?
     Let’s find out. We copied the function to a new, bare-bones Rust project, ran
     it and… it reproduced. `Ctrl-c` stopped working in that project too.'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个假设：是Zed里面的问题吗？我们需要设置一些信号处理程序吗？让我们找出来。我们把这个函数复制到一个新的、最简单的Rust项目中运行，结果... 它也复现了。在那个项目中`Ctrl-c`也停止工作了。
 - en: Okay, is it Rust then? I rewrote the function to Go and in Go too `Ctrl-c` lost
     control.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，难道是Rust的问题吗？我用Go重写了这个函数，在Go中`Ctrl-c`也失去了控制。
 - en: 'At this point we had spent nearly 2 hours on this and couldn’t figure it out.
     But we did have a workaround:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 到这一步，我们已经花了将近2个小时，还是解决不了。但我们确实找到了一个解决方法：
 - en: '[PRE5]'
   id: totrans-split-38
   prefs: []
@@ -203,12 +214,15 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '`exit`在所有不同的shell中都是内置命令，所以可以安全地运行并且修复了问题。好的，公平。我们在那行上方加了一行非常重要的注释，让下一个遇到这个问题的人知道`exit
+    0`现在是有负载的，然后继续。'
 - en: But this puzzle got to me. I asked [fellow shell-nerds](https://twitter.com/thorstenball/status/1760693619164393907)
     whether they know what’s happening but no one had an answer ready. So in my mornings
     I started to investigate.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这个难题困扰着我。我问了一些[shell爱好者](https://twitter.com/thorstenball/status/1760693619164393907)，是否知道发生了什么，但没有人有准备好的答案。所以在早晨，我开始调查。
 - en: 'I setup a [repository](https://github.com/mrnugget/strange-subshell) in which
     a small Rust program reproduced the problem: it spawns a shell process, waits
     for it to exit, then idles for 5 seconds so I can test whether `Ctrl-c` still
@@ -216,6 +230,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在一个[存储库](https://github.com/mrnugget/strange-subshell)中设置了一个小的Rust程序，重现了这个问题：它生成一个shell进程，等待它退出，然后空闲5秒，这样我就可以测试`Ctrl-c`是否仍然起作用。这是一场追踪之旅。
 - en: 'The first big light bulb moment came when I realized that I don’t have to send
     a signal via `Ctrl-c`: I can use the `kill` command. And, alas, it’s *not* the
     signal handling that’s borked! When I used `kill -INT` the signal arrived and
@@ -225,6 +240,8 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个重大的灵光乍现时刻是当我意识到我不必通过`Ctrl-c`发送信号：我可以使用`kill`命令。然后，啊，问题并不在于信号处理出了问题！当我使用`kill
+    -INT`时，信号传递并且进程停止了。问题并不是我的进程不再响应信号，而是在启动shell进程后，`Ctrl-c`没有传递正确的信号。
 - en: 'Next attempt: is the terminal stated borked after launching the shell? Okay,
     so something about the terminal state. [Someone in the tweet replies](https://twitter.com/hugelgupf/status/1760704715111944347)
     did point me to `stty`, which lets you set options on your terminal device, such
@@ -233,18 +250,22 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一次尝试：启动shell后，终端状态是否出错？嗯，应该是终端状态的问题。[推特回复中的某人](https://twitter.com/hugelgupf/status/1760704715111944347)指向了`stty`，它可以让你设置终端设备的选项，如波特率（是的）和其他选项。我修改了我的程序，在shell进程之前和之后运行了`stty
+    -a`。没用：输出没有变化。
 - en: Desperate, I also used [Ghostty’s terminal inspector](https://mitchellh.com/writing/ghostty-devlog-005)
     to see whether some state changes in the terminal that results in `Ctl-c` going
     up in smoke. But no luck there either.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 绝望之际，我还使用了[Ghostty的终端检查工具](https://mitchellh.com/writing/ghostty-devlog-005)来查看终端中是否有某些状态改变导致`Ctrl-c`失效。但也没有运气。
 - en: 'After days of going back and forth on this with ChatGPT (which I [wrote about
     the last time](https://registerspill.thorstenball.com/p/how-i-use-ai)) it finally
     gave me a clue:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过与ChatGPT反复讨论数天后（我[上次写到过](https://registerspill.thorstenball.com/p/how-i-use-ai)），它终于给了我一个线索：
 - en: The spawned shell inherits the terminal (TTY) control, and since it’s an interactive
     shell (-i flag), it sets itself as the foreground process group leader for the
     terminal. This changes how signals, especially SIGINT generated by Ctrl-C, are
@@ -253,12 +274,15 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 生成的 shell 继承了终端（TTY）控制权，并且因为是交互式 shell（-i 标志），它将自己设定为终端的前台进程组组长。这改变了信号的处理方式，特别是由
+    Ctrl-C 生成的 SIGINT 信号的处理。
 - en: 'Huh. Foreground process group leader. Interesting. Hmmm. Here’s what [Advanced
     Programming in the Unix Environment (APUE)](https://en.wikipedia.org/wiki/Advanced_Programming_in_the_Unix_Environment),
     which I pulled out today while writing this, says on process groups:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦。前台进程组组长。有意思。嗯。这里是《Unix 环境高级编程》（APUE），我在写这篇文章时找出来的，关于进程组的内容：
 - en: 'A process group is a collection of one or more processes, usually associated
     with the same job (job control is discussed in Section 9.8), that can receive
     signals from the same terminal. Each process group has a unique process group
@@ -269,36 +293,44 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 进程组是一个或多个进程的集合，通常与同一作业相关联（作业控制在第 9.8 节中讨论），它们可以从同一终端接收信号。每个进程组都有一个唯一的进程组 ID。进程组
+    ID 类似于进程 ID：它们是正整数，并且可以存储在 `pid_t` 数据类型中。函数 `getpgrp` 返回调用进程的进程组 ID。
 - en: 'The important part: “that can receive signals from the same terminal.”'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 重要的部分是：“它们可以从同一终端接收信号。”
 - en: 'It’s been a while since I last looked up something in a physical book. Pictured:
     Advanced Programming in the Unix Environment. A fantastic book.'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 已经有一段时间没有在实体书中查找信息了。图片：《Unix 环境高级编程》。一本绝佳的书。
 - en: 'APUE has more clues:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: APUE 给出了更多线索：
 - en: It is possible for a process group leader to create a process group, create
     processes in the group, and then terminate.
   id: totrans-split-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 进程组领导者可以创建一个进程组，创建组内的进程，然后终止。
 - en: So is that what happens? The shell spawns, claims it’s the process group leader
     when it doesn’t run a built-in command, exits, and then doesn’t restore the previous
     process group leader?
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么就是这样发生的吗？shell 生成，声称它是进程组领导者，当它不运行内建命令时退出，然后不恢复之前的进程组领导者吗？
 - en: 'It felt like I was getting closer. So I kept asking ChatGPT how to confirm
     this and it led me to `tcgetprg`:'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我觉得我离真相越来越近了。所以我继续询问 ChatGPT 如何确认这一点，并它引导我到了 `tcgetprg`：
 - en: The function `tcgetpgrp()` returns the process group ID of the foreground process
     group on the terminal associated to `fd`, which must be the controlling terminal
     of the calling process.
@@ -306,11 +338,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 函数 `tcgetpgrp()` 返回与调用进程的控制终端（fd 必须是调用进程的控制终端）关联的前台进程组的进程组 ID。
 - en: 'Okay, now we’re talking, this sounds like it could lead us somewhere. I asked
     ChatGPT to generate me some Rust code for that `tcgetpgrp` call:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 好了，现在我们开始谈论，这听起来可能会给我们带来一些线索。我让 ChatGPT 为我生成了一些 Rust 代码来调用 `tcgetpgrp`：
 - en: '[PRE6]'
   id: totrans-split-57
   prefs: []
@@ -322,6 +356,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将它插入到我的程序中，以便在 `$SHELL` 进程运行之前和之后打印与 STDIN（文件描述符 `0`）关联的进程组 ID。这是它打印出来的内容：
 - en: '[PRE7]'
   id: totrans-split-59
   prefs: []
@@ -337,6 +372,9 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，你好！这看起来确实像是凶器。但我怎样确认它 *确实* 是导致我的 `Ctrl-c` 失效的东西？有没有办法我可以阻止 shell 接管进程组领导者的角色？ChatGPT
+    说我可以在 `std::process::Command` 的 `pre_exec` 钩子上使用，将 shell 进程置于一个新的、独立的进程会话中，这将把它置于一个新的进程组，进而意味着它无法成为与
+    STDIN 关联的进程组的进程组领导者。就像这样：
 - en: '[PRE8]'
   id: totrans-split-61
   prefs: []
@@ -347,22 +385,26 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 就在这里，在中间：`setsid`。这是在我们用 `fork` 创建新进程后但在将该进程转换为 `$SHELL` 之前调用的。
 - en: 'APUE on what happens when a process calls `setsid`:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: APUE 讨论进程调用 `setsid` 时发生的情况：
 - en: The process becomes the session leader of this new session. […]
   id: totrans-split-64
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 这个进程成为了新会话的会话领导者。[…]
 - en: The process becomes the process group leader of a new process group. […]
   id: totrans-split-65
   prefs:
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 进程成为了一个新进程组的进程组领导者。[…]
 - en: The process has no controlling terminal. […] If the process had a controlling
     terminal before calling `setsid`, that association is broken.`
   id: totrans-split-66
@@ -370,17 +412,20 @@
   - PREF_BQ
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 进程没有控制终端。[…] 如果进程在调用 `setsid` 前有一个控制终端，那么这种关联会被断开。
 - en: That makes sense. By calling `setsid` it would break any association the newly-spawned
     shell process has with the terminal and that could help me confirm whether the
     shell mucking with the process groups leader is the problem.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很有道理。通过调用 `setsid`，可以打破新生成的 shell 进程与终端的任何关联，这有助于我确认 shell 操纵进程组领导者是否是问题所在。
 - en: 'And — boom! fireworks! loud noises! a small child saying: “ta-da!” — with the
     `pre_exec` hook this is what the program printed:'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后 — 砰！烟花！大声的噪音！一个小孩说：“ta-da！” — 通过 `pre_exec` 钩子，程序打印了这个：
 - en: '[PRE9]'
   id: totrans-split-69
   prefs: []
@@ -390,6 +435,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且 `Ctrl-C` 仍然有效！
 - en: 'The foreground process group ID *is* the murder weapon. At this point it was
     clear *what* happens: the shell that’s spawned takes control of the terminal,
     by setting the foreground process group ID, which means the signal resulting from
@@ -400,21 +446,27 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 前台进程组 ID *就是* 凶器。这时候，*发生了什么* 清楚了：生成的 shell 接管了终端，通过设置前台进程组 ID，这意味着由 `Ctrl-C`
+    导致的信号被发送到 shell 进程。但是，如果 shell 作为其最后一个命令运行非内建命令，它不会自我清理，其进程 ID 保持与终端关联，导致所有我们的
+    `Ctrl-C` 都消失无踪。
 - en: 'With that *What?* the next question is: why?'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了 *什么？* 接下来的问题是：为什么？
 - en: Why does ZSH (the shell with which this happened for me) not reset the foreground
     process group leader when it runs a non-built in command?
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么 ZSH（这是发生在我身上的 shell）在运行非内建命令时不重置前台进程组领导者？
 - en: 'On my Linux machine I ran `strace -f` to see which syscalls my process and,
     more importantly, its child processes (including the spawned shell) were making.
     What I could figure out was this:'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的 Linux 机器上，我运行了 `strace -f` 来查看我的进程以及其子进程（包括生成的 shell）都在进行哪些系统调用。我能弄清楚的是：
 - en: 'When `zsh` is run with `-c` and the last command in that passed command is
     a non-built-in, such as `ls` or `env`, then ZSH `execve`s into that last process.
     Meaning: it doesn’t create a child process to run `ls`. No, instead it turns itself
@@ -424,6 +476,8 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 当以 `-c` 运行 `zsh` 并且传递的命令中最后一个命令是非内建命令，比如 `ls` 或 `env`，那么 ZSH 就会 `execve` 进入到该最后的进程中。这意味着：它不会创建一个子进程来运行
+    `ls`。不，它会将自己变成那个命令。这意味着在 `zsh -c 'echo lol; ls'` 中运行 `ls` 时，`zsh` 进程已经消失并变成了 `ls`，没有人留下来重新设置前台进程组领导者。
 - en: 'But when you run `zsh -c ''/usr/bin/env; echo lol''`, i.e.: first non-built-in,
     then built-in, then ZSH doesn’t disappear. It `forks` and `execs`  `/usr/bin/env`
     and then executes the `echo lol` and, somewhere in there, cleans up the foreground
@@ -431,12 +485,15 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是当你运行 `zsh -c '/usr/bin/env; echo lol'`，即：先是非内建，然后是内建命令，那么 ZSH 不会消失。它会 `fork`
+    和 `exec` `/usr/bin/env`，然后执行 `echo lol`，在某个地方，清理前台进程组领导者。
 - en: Now, listen. I wish I could continue here and end with “… and *this* is why
     ZSH does it that way!” and someone would finally PayPal me $100 with the message
     “thanks for your newsletter”, but I have to disappoint you.
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，请听我说。我希望我能继续并以 “… 这就是为什么 ZSH 那样做！” 结束，然后有人终于通过 PayPal 给我 100 美元并留言 “感谢你的通讯”，但我必须让你失望了。
 - en: I don’t know how and why exactly ZSH does what it does. I cloned the repo, I
     compiled it, I tried to run it from source, but somehow failed and man `cmake`
     is a lot and also the folders have names like `Src` and `Doc` and who the hell
@@ -446,6 +503,9 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不知道 `ZSH` 为什么以及如何做这些事情。我克隆了仓库，编译了它，试图从源码运行它，但不知何故失败了，而且 `cmake` 真是个大问题，还有文件夹的名字像
+    `Src` 和 `Doc`，谁会大写文件夹名字的第一个字母，还有一个 `./configure` 你必须运行，然后确保它不使用你的系统库… 你看，这些 shell
+    调查的事情并不容易，我放弃了，抱歉。
 - en: What I *did*  [find though](https://sourcegraph.com/github.com/zsh-users/zsh@fa9b3ad5977ede0a4635cd86276dd0f0c2f6f03e/-/blob/Src/jobs.c?L3151-3169)
     is that ZSH does actively set the process group id for job control. And it also
     [remembers the original one and resets it](https://sourcegraph.com/github.com/zsh-users/zsh@fa9b3ad5977ede0a4635cd86276dd0f0c2f6f03e/-/blob/Src/jobs.c?L3213-3227).
