@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:47:56'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:47:56'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Landlock: unprivileged access control — The Linux Kernel documentation'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Landlock：非特权访问控制 — Linux内核文档
 - en: 来源：[https://docs.kernel.org/userspace-api/landlock.html](https://docs.kernel.org/userspace-api/landlock.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://docs.kernel.org/userspace-api/landlock.html](https://docs.kernel.org/userspace-api/landlock.html)
 - en: The goal of Landlock is to enable to restrict ambient rights (e.g. global filesystem
     or network access) for a set of processes. Because Landlock is a stackable LSM,
     it makes possible to create safe security sandboxes as new security layers in
@@ -34,6 +40,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Landlock的目标是允许为一组进程限制环境权限（例如全局文件系统或网络访问）。由于Landlock是可堆叠的LSM，它使得可以创建安全的安全沙盒作为现有系统范围访问控制的新安全层。这种沙盒预期有助于减轻用户空间应用程序中的错误或意外/恶意行为的安全影响。Landlock使得任何进程，包括非特权进程，都能安全地限制自己。
 - en: 'We can quickly make sure that Landlock is enabled in the running system by
     looking for “landlock: Up and running” in kernel logs (as root): `dmesg | grep
     landlock || journalctl -kb -g landlock` . Developers can also easily check for
@@ -42,54 +49,66 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '我们可以通过在内核日志中搜索“landlock: Up and running”（作为root用户）来快速确认运行系统中是否启用了Landlock：`dmesg
+    | grep landlock || journalctl -kb -g landlock`。开发者还可以通过[相关系统调用](#landlock-abi-versions)轻松检查Landlock支持情况。如果当前不支持Landlock，则需要[适当配置内核](#kernel-support)。'
 - en: Landlock rules
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Landlock规则
 - en: A Landlock rule describes an action on an object which the process intends to
     perform. A set of rules is aggregated in a ruleset, which can then restrict the
     thread enforcing it, and its future children.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个Landlock规则描述了进程打算执行的对象上的操作。一组规则聚合在一个规则集中，然后可以限制执行它及其未来子进程的线程。
 - en: 'The two existing types of rules are:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 现有的两种规则类型是：
 - en: Filesystem rules
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件系统规则
 - en: For these rules, the object is a file hierarchy, and the related filesystem
     actions are defined with filesystem access rights.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这些规则，对象是文件层次结构，并且相关的文件系统操作定义了文件系统访问权限。
 - en: Network rules (since ABI v4)
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 网络规则（自ABI v4起）
 - en: For these rules, the object is a TCP port, and the related actions are defined
     with network access rights.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这些规则，对象是TCP端口，并且相关的操作使用网络访问权限定义。
 - en: Defining and enforcing a security policy
   id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定义和执行安全策略
 - en: We first need to define the ruleset that will contain our rules.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先需要定义将包含我们规则的规则集。
 - en: For this example, the ruleset will contain rules that only allow filesystem
     read actions and establish a specific TCP connection. Filesystem write actions
     and other TCP actions will be denied.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为示例，该规则集将包含仅允许文件系统读取操作并建立特定的TCP连接的规则。将拒绝文件系统写入操作和其他TCP操作。
 - en: The ruleset then needs to handle both these kinds of actions. This is required
     for backward and forward compatibility (i.e. the kernel and user space may not
     know each other’s supported restrictions), hence the need to be explicit about
@@ -97,33 +116,40 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，规则集需要处理这两种类型的操作。这对于向后和向前兼容性是必需的（即内核和用户空间可能不知道对方支持的限制），因此需要明确拒绝默认访问权限的需要。
 - en: '[PRE0]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Because we may not know on which kernel version an application will be executed,
     it is safer to follow a best-effort security approach. Indeed, we should try to
     protect users as much as possible whatever the kernel they are using.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们可能不知道应用程序将在哪个内核版本上执行，所以最好采取最佳安全性方法。事实上，我们应该尽量保护用户，无论他们使用哪个内核。
 - en: 'To be compatible with older Linux versions, we detect the available Landlock
     ABI version, and only use the available subset of access rights:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了兼容旧的Linux版本，我们检测可用的Landlock ABI版本，并且只使用可用的访问权限子集：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This enables to create an inclusive ruleset that will contain our rules.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使得可以创建一个包含我们规则的包容性规则集。
 - en: '[PRE2]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We can now add a new rule to this ruleset thanks to the returned file descriptor
     referring to this ruleset. The rule will only allow reading the file hierarchy
     `/usr`. Without another rule, write actions would then be denied by the ruleset.
@@ -133,10 +159,13 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们可以通过返回的文件描述符向此规则集添加新规则。该规则将只允许读取文件层次结构`/usr`。没有另一条规则的话，规则集将拒绝写入操作。要将`/usr`添加到规则集中，我们使用`O_PATH`标志打开它，并用这个文件描述符填充`&[`struct
+    landlock_path_beneath_attr`](#c.landlock_path_beneath_attr "landlock_path_beneath_attr")。
 - en: '[PRE3]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: It may also be required to create rules following the same logic as explained
     for the ruleset creation, by filtering access rights according to the Landlock
     ABI version. In this example, this is not required because all of the requested
@@ -144,15 +173,19 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能还需要创建遵循与规则集创建相同逻辑的规则，通过根据Landlock ABI版本过滤访问权限来筛选。在这个示例中，这不是必需的，因为所有请求的`allowed_access`权限已经在ABI
+    1中可用。
 - en: 'For network access-control, we can add a set of rules that allow to use a port
     number for a specific action: HTTPS connections.'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于网络访问控制，我们可以添加一组规则，允许使用特定操作的端口号：HTTPS连接。
 - en: '[PRE4]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The next step is to restrict the current thread from gaining more privileges
     (e.g. through a SUID binary). We now have a ruleset with the first rule allowing
     read access to `/usr` while denying all other handled accesses for the filesystem,
@@ -160,18 +193,22 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是限制当前线程获取更多特权（例如通过SUID二进制文件）。现在我们有一个规则集，第一条规则允许读取`/usr`，同时拒绝文件系统的所有其他受控访问，第二条规则允许HTTPS连接。
 - en: '[PRE5]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The current thread is now ready to sandbox itself with the ruleset.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 当前线程现在准备使用规则集进行沙盒化。
 - en: '[PRE6]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: If the `landlock_restrict_self` system call succeeds, the current thread is
     now restricted and this policy will be enforced on all its subsequently created
     children as well. Once a thread is landlocked, there is no way to remove its security
@@ -180,15 +217,18 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果`landlock_restrict_self`系统调用成功，当前线程现在被限制，并且此策略也将强制执行到所有随后创建的子线程上。一旦线程被Landlock，就没有办法移除其安全策略；只允许添加更多限制。这些线程现在位于一个新的Landlock域中，合并了它们的父域（如果有的话）和新的规则集。
 - en: Full working code can be found in [samples/landlock/sandboxer.c](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/samples/landlock/sandboxer.c).
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 完整的工作代码可以在[samples/landlock/sandboxer.c](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/samples/landlock/sandboxer.c)中找到。
 - en: Good practices
   id: totrans-split-36
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 良好实践
 - en: It is recommended setting access rights to file hierarchy leaves as much as
     possible. For instance, it is better to be able to have `~/doc/` as a read-only
     hierarchy and `~/tmp/` as a read-write hierarchy, compared to `~/` as a read-only
@@ -202,6 +242,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 建议将文件层次结构的访问权限设置得尽可能细致。例如，最好将`~/doc/`作为只读层次结构，将`~/tmp/`作为读写层次结构，而不是将`~/`作为只读层次结构，将`~/tmp/`作为读写层次结构。遵循这一良好实践可以形成自给自足的层次结构，不依赖于它们的位置（即父目录）。当我们希望允许链接或重命名时，这一点尤为重要。确实，每个目录的一致访问权限使得能够更改此类目录的位置而无需依赖目标目录的访问权限（除了执行此操作所需的权限外，参见`LANDLOCK_ACCESS_FS_REFER`文档）。
 - en: Having self-sufficient hierarchies also helps to tighten the required access
     rights to the minimal set of data. This also helps avoid sinkhole directories,
     i.e. directories where data can be linked to but not linked from. However, this
@@ -212,11 +253,14 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 拥有自给自足的层次结构还有助于将所需访问权限紧密限制在最小数据集上。这也有助于避免“黑洞目录”，即可以将数据链接到但无法从中链接的目录。然而，这取决于数据组织，可能并非由开发者控制。在这种情况下，授予对
+    `~/tmp/` 的读写访问权限，而不是仅写入访问权限，可能允许将 `~/tmp/` 移动到不可读目录，并仍然保持列出 `~/tmp/` 内容的能力。
 - en: Layers of file path access rights
   id: totrans-split-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文件路径访问权限的层次
 - en: Each time a thread enforces a ruleset on itself, it updates its Landlock domain
     with a new layer of policy. Indeed, this complementary policy is stacked with
     the potentially other rulesets already restricting this thread. A sandboxed thread
@@ -224,6 +268,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 每当一个线程对自身强制执行规则集时，它会使用新的策略层更新其 Landlock 域。实际上，这个补充策略与已经限制该线程的潜在其他规则集堆叠在一起。因此，一个沙盒线程可以安全地通过一个新的强制执行的规则集向自身添加更多约束。
 - en: One policy layer grants access to a file path if at least one of its rules encountered
     on the path grants the access. A sandboxed thread can only access a file path
     if all its enforced policy layers grant the access as well as all the other system
@@ -231,17 +276,22 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果在路径上遇到的规则中至少有一个规则授予访问权限，则一个策略层将授予对文件路径的访问权限。一个沙盒线程只能在所有其强制执行的策略层授予访问权限的情况下访问文件路径，以及所有其他系统访问控制（例如文件系统
+    DAC、其他 LSM 策略等）。
 - en: Bind mounts and OverlayFS
   id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 绑定挂载和 OverlayFS
 - en: Landlock enables to restrict access to file hierarchies, which means that these
     access rights can be propagated with bind mounts (cf. [Shared Subtrees](../filesystems/sharedsubtree.html))
     but not with [Overlay Filesystem](../filesystems/overlayfs.html).
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Landlock 允许限制对文件层次结构的访问权限，这意味着这些访问权限可以通过绑定挂载（参见 [共享子树](../filesystems/sharedsubtree.html)）传播，但不能通过
+    [Overlay 文件系统](../filesystems/overlayfs.html) 传播。
 - en: A bind mount mirrors a source file hierarchy to a destination. The destination
     hierarchy is then composed of the exact same files, on which Landlock rules can
     be tied, either via the source or the destination path. These rules restrict access
@@ -251,6 +301,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 绑定挂载将源文件层次结构镜像到目标。然后，目标层次结构由完全相同的文件组成，可以通过源路径或目标路径绑定 Landlock 规则。这些规则在路径上遇到时限制访问，这意味着它们可以同时限制对多个文件层次结构的访问，无论这些层次结构是否是绑定挂载的结果。
 - en: An OverlayFS mount point consists of upper and lower layers. These layers are
     combined in a merge directory, result of the mount point. This merge hierarchy
     may include files from the upper and lower layers, but modifications performed
@@ -263,11 +314,15 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个 OverlayFS 挂载点由上层和下层组成。这些层被合并在一个合并目录中，这是挂载点的结果。这个合并层次结构可以包括来自上层和下层的文件，但在合并层次结构上进行的修改只会反映在上层。从
+    Landlock 策略的角度来看，每个 OverlayFS 层和合并层次结构都是独立的，包含它们自己的文件和目录，这与绑定挂载不同。限制 OverlayFS
+    层不会限制结果的合并层次结构，反之亦然。因此，Landlock 用户应该只考虑他们想要允许访问的文件层次结构，而不考虑底层文件系统。
 - en: Inheritance
   id: totrans-split-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 继承
 - en: Every new thread resulting from a *clone(2)* inherits Landlock domain restrictions
     from its parent. This is similar to the seccomp inheritance (cf. [Seccomp BPF
     (SECure COMPuting with filters)](seccomp_filter.html)) or any other LSM dealing
@@ -277,6 +332,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个从*clone(2)*产生的新线程从其父进程继承Landlock域限制。这类似于seccomp继承（参见[Seccomp BPF（带过滤器的安全计算）](seccomp_filter.html)）或任何处理任务*credentials(7)*的其他LSM。例如，一个进程的线程可以对自身应用Landlock规则，但这些规则不会自动应用于其他同级线程（与POSIX线程凭据更改不同，参见*nptl(7)*）。
 - en: When a thread sandboxes itself, we have the guarantee that the related security
     policy will stay enforced on all this thread’s descendants. This allows creating
     standalone and modular security policies per application, which will automatically
@@ -284,11 +340,13 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 当线程自我沙盒化时，我们保证相关的安全策略将在所有此线程的后代上保持强制执行。这允许为每个应用程序创建独立和模块化的安全策略，这些策略将根据其运行时父策略自动组合。
 - en: Ptrace restrictions
   id: totrans-split-49
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Ptrace 限制
 - en: A sandboxed process has less privileges than a non-sandboxed process and must
     then be subject to additional restrictions when manipulating another process.
     To be allowed to use *ptrace(2)* and related syscalls on a target process, a sandboxed
@@ -297,38 +355,46 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个沙盒化的进程权限比非沙盒化的进程少，当操纵另一个进程时必须遵守额外的限制。为了允许在目标进程上使用*ptrace(2)*及其相关系统调用，沙盒化进程应该具有目标进程规则的子集，这意味着被跟踪者必须在追踪者的子域中。
 - en: Truncating files
   id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 截断文件
 - en: The operations covered by `LANDLOCK_ACCESS_FS_WRITE_FILE` and `LANDLOCK_ACCESS_FS_TRUNCATE`
     both change the contents of a file and sometimes overlap in non-intuitive ways.
     It is recommended to always specify both of these together.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LANDLOCK_ACCESS_FS_WRITE_FILE`和`LANDLOCK_ACCESS_FS_TRUNCATE`涵盖的操作都会更改文件的内容，并且有时在非直观的方式下重叠。建议始终同时指定这两者。'
 - en: A particularly surprising example is *creat(2)*. The name suggests that this
     system call requires the rights to create and write files. However, it also requires
     the truncate right if an existing file under the same name is already present.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个特别令人惊讶的例子是*creat(2)*。名称表明这个系统调用需要创建和写入文件的权限。然而，如果同名的现有文件已经存在，它还需要截断权限。
 - en: It should also be noted that truncating files does not require the `LANDLOCK_ACCESS_FS_WRITE_FILE`
     right. Apart from the *truncate(2)* system call, this can also be done through
     *open(2)* with the flags `O_RDONLY | O_TRUNC`.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 还应注意，截断文件不需要`LANDLOCK_ACCESS_FS_WRITE_FILE`权限。除了*truncate(2)*系统调用外，还可以通过使用`O_RDONLY
+    | O_TRUNC`标志的*open(2)*来完成。
 - en: The truncate right is associated with the opened file (see below).
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 截断权限与打开的文件关联（见下文）。
 - en: Rights associated with file descriptors
   id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 与文件描述符关联的权限
 - en: When opening a file, the availability of the `LANDLOCK_ACCESS_FS_TRUNCATE` and
     `LANDLOCK_ACCESS_FS_IOCTL_DEV` rights is associated with the newly created file
     descriptor and will be used for subsequent truncation and ioctl attempts using
@@ -338,6 +404,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 当打开文件时，`LANDLOCK_ACCESS_FS_TRUNCATE`和`LANDLOCK_ACCESS_FS_IOCTL_DEV`权限的可用性与新创建的文件描述符相关联，并将用于后续使用*ftruncate(2)*和*ioctl(2)*进行截断和ioctl尝试。行为类似于打开文件进行读取或写入时，在*open(2)*期间检查权限，但在随后的*read(2)*和*write(2)*调用期间不检查。
 - en: As a consequence, it is possible that a process has multiple open file descriptors
     referring to the same file, but Landlock enforces different things when operating
     with these file descriptors. This can happen when a Landlock ruleset gets enforced
@@ -348,27 +415,32 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，进程可能具有多个指向同一文件的打开文件描述符，但Landlock在操作这些文件描述符时强制执行不同的规则。当Landlock规则集得到强制执行并且进程保留在强制执行之前和之后打开的文件描述符时，情况可能会如此。甚至可以在涉及的某些进程没有强制执行Landlock规则集的情况下，在进程之间传递这些文件描述符并保持它们的Landlock属性。
 - en: Current limitations
   id: totrans-split-59
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 当前限制
 - en: Filesystem topology modification
   id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 文件系统拓扑修改
 - en: Threads sandboxed with filesystem restrictions cannot modify filesystem topology,
     whether via *mount(2)* or *pivot_root(2)*. However, *chroot(2)* calls are not
     denied.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过文件系统限制隔离的线程无法通过*mount(2)*或*pivot_root(2)*修改文件系统拓扑结构。然而，*chroot(2)*调用不受限制。
 - en: Special filesystems
   id: totrans-split-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 特殊文件系统
 - en: Access to regular files and directories can be restricted by Landlock, according
     to the handled accesses of a ruleset. However, files that do not come from a user-visible
     filesystem (e.g. pipe, socket), but can still be accessed through `/proc/<pid>/fd/*`,
@@ -381,11 +453,13 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 按照规则集处理的访问方式，可以通过Landlock限制对常规文件和目录的访问。然而，并非来自用户可见文件系统的文件（如管道、套接字），但仍可通过`/proc/<pid>/fd/*`访问，目前无法显式限制。同样地，一些特殊的内核文件系统如nsfs，可以通过`/proc/<pid>/ns/*`访问，目前也无法显式限制。然而，由于[ptrace限制](#ptrace-restrictions)，对这些敏感的`/proc`文件的访问根据域层次结构自动限制。未来的Landlock发展可能会通过专用规则集标志显式限制这些路径。
 - en: Ruleset layers
   id: totrans-split-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 规则集层级
 - en: There is a limit of 16 layers of stacked rulesets. This can be an issue for
     a task willing to enforce a new ruleset in complement to its 16 inherited rulesets.
     Once this limit is reached, [`sys_landlock_restrict_self()`](#c.sys_landlock_restrict_self
@@ -396,17 +470,21 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 最多可以叠加16层规则集。对于希望在其16个继承规则集之外强制执行新规则集的任务，这可能是一个问题。一旦达到此限制，[`sys_landlock_restrict_self()`](#c.sys_landlock_restrict_self
+    "sys_landlock_restrict_self")将返回E2BIG。因此，强烈建议在线程生命周期内仔细构建规则集，特别是对于能够启动其他应用程序并可能希望自我隔离的应用程序（如shell、容器管理器等）。
 - en: IOCTL support
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: IOCTL支持
 - en: The `LANDLOCK_ACCESS_FS_IOCTL_DEV` right restricts the use of *ioctl(2)*, but
     it only applies to *newly opened* device files. This means specifically that pre-existing
     file descriptors like stdin, stdout and stderr are unaffected.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LANDLOCK_ACCESS_FS_IOCTL_DEV`权限限制了对*ioctl(2)*的使用，但仅适用于*新打开的*设备文件。这意味着像stdin、stdout和stderr这样的预存在的文件描述符不受影响。'
 - en: Users should be aware that TTY devices have traditionally permitted to control
     other processes on the same TTY through the `TIOCSTI` and `TIOCLINUX` IOCTL commands.
     Both of these require `CAP_SYS_ADMIN` on modern Linux systems, but the behavior
@@ -414,12 +492,14 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户应该意识到，TTY设备传统上允许通过`TIOCSTI`和`TIOCLINUX` IOCTL命令控制同一TTY上的其他进程。在现代Linux系统上，这两者都需要`CAP_SYS_ADMIN`权限，但`TIOCSTI`的行为可配置。
 - en: On older systems, it is therefore recommended to close inherited TTY file descriptors,
     or to reopen them from `/proc/self/fd/*` without the `LANDLOCK_ACCESS_FS_IOCTL_DEV`
     right, if possible.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，建议在旧系统上关闭继承的TTY文件描述符，或者如果可能的话，从`/proc/self/fd/*`重新打开它们，而无需`LANDLOCK_ACCESS_FS_IOCTL_DEV`权限。
 - en: Landlock’s IOCTL support is coarse-grained at the moment, but may become more
     fine-grained in the future. Until then, users are advised to establish the guarantees
     that they need through the file hierarchy, by only allowing the `LANDLOCK_ACCESS_FS_IOCTL_DEV`
@@ -427,15 +507,18 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前，Landlock的IOCTL支持粗粒度化，但未来可能变得更细粒度。因此，建议用户通过文件层次结构建立他们需要的保证，只在确实需要的文件上允许`LANDLOCK_ACCESS_FS_IOCTL_DEV`权限。
 - en: '## Kernel support'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '## 内核支持'
 - en: Build time configuration
   id: totrans-split-72
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 构建时配置
 - en: Landlock was first introduced in Linux 5.13 but it must be configured at build
     time with `CONFIG_SECURITY_LANDLOCK=y`. Landlock must also be enabled at boot
     time as the other security modules. The list of security modules enabled by default
@@ -445,51 +528,62 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: Landlock首次引入于Linux 5.13，但必须在构建时配置`CONFIG_SECURITY_LANDLOCK=y`。Landlock还必须像其他安全模块一样在引导时启用。默认情况下启用的安全模块列表由`CONFIG_LSM`设置。然后，内核配置应包含`CONFIG_LSM=landlock,[...]`，其中`[...]`是运行系统的其他可能有用的安全模块列表（参见`CONFIG_LSM`帮助）。
 - en: Boot time configuration
   id: totrans-split-74
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 引导时间配置
 - en: If the running kernel does not have `landlock` in `CONFIG_LSM`, then we can
     enable Landlock by adding `lsm=landlock,[...]` to [The kernel’s command-line parameters](../admin-guide/kernel-parameters.html)
     in the boot loader configuration.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果运行的内核没有在`CONFIG_LSM`中包含`landlock`，那么我们可以通过在引导加载程序配置中的[内核命令行参数](../admin-guide/kernel-parameters.html)添加`lsm=landlock,[...]`来启用Landlock。
 - en: 'For example, if the current built-in configuration is:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果当前内置配置是：
 - en: '[PRE7]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '...and if the cmdline doesn’t contain `landlock` either:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: ……如果命令行中也没有包含`landlock`：
 - en: '[PRE8]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '...we should configure the boot loader to set a cmdline extending the `lsm`
     list with the `landlock,` prefix:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: ……我们应该配置引导加载程序以设置一个命令行，将`lsm`列表扩展为`landlock,`前缀：
 - en: '[PRE9]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'After a reboot, we can check that Landlock is up and running by looking at
     kernel logs:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 重启后，我们可以通过查看内核日志来检查Landlock是否正常运行：
 - en: '[PRE10]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The kernel may be configured at build time to always load the `lockdown` and
     `capability` LSMs. In that case, these LSMs will appear at the beginning of the
     `LSM: initializing` log line as well, even if they are not configured in the boot
@@ -497,11 +591,14 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '内核可以在构建时配置为始终加载`lockdown`和`capability` LSMs。在这种情况下，即使它们在引导加载程序中未配置，这些LSM也将出现在`LSM:
+    initializing`日志行的开头。'
 - en: Network support
   id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 网络支持
 - en: To be able to explicitly allow TCP operations (e.g., adding a network rule with
     `LANDLOCK_ACCESS_NET_BIND_TCP`), the kernel must support TCP (`CONFIG_INET=y`).
     Otherwise, [`sys_landlock_add_rule()`](#c.sys_landlock_add_rule "sys_landlock_add_rule")
@@ -510,3 +607,5 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 要能够显式允许TCP操作（例如，使用`LANDLOCK_ACCESS_NET_BIND_TCP`添加网络规则），内核必须支持TCP（`CONFIG_INET=y`）。否则，[`sys_landlock_add_rule()`](#c.sys_landlock_add_rule
+    "sys_landlock_add_rule")将返回`EAFNOSUPPORT`错误，可以安全地忽略，因为这种TCP操作已经不可能。
