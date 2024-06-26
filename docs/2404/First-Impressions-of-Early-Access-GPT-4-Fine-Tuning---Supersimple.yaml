@@ -123,11 +123,13 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 从技术上讲，LLM输出一种我们为特定用例设计的自定义高级标记语言（DSL），这种DSL在token效率和与预训练语言模型的良好对齐方面表现良好。这个DSL编译成JSON，然后我们将其编译成一个或多个要执行的数据库查询。最后，根据DSL指定的报告结构，我们呈现一个交互式数据探索给用户。
 - en: 'It''s important to highlight that this task is quite different from the traditional
     text-to-SQL problem for a number of reasons:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 强调一下，这个任务与传统的文本转SQL问题有很多不同之处：
 - en: The output is a no-code exploration, which is transparent and explainable to
     the user. This means that the model directly interacts with our data platform.
     We believe that generating & showing code or SQL is a terrible way to prove/explain
@@ -136,6 +138,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输出是一个无代码探索，对用户透明且可解释。这意味着模型直接与我们的数据平台交互。我们认为生成和展示代码或SQL是向用户证明/解释报告的可怕方式——即使这些用户是技术人员，尤其是如果他们不是。
 - en: The resulting report/exploration is easily editable in the UI, and is meant
     to serve as a starting point for further deep dives. When exploring data, you
     won’t want to think about refactoring SQL queries.
@@ -143,12 +146,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 结果报告/探索在UI中易于编辑，旨在作为进一步深入探索的起点。在探索数据时，您不希望考虑重构SQL查询。
 - en: The complex output is broken into individual blocks that represent logical steps
     in the reasoning process.
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 复杂的输出被分成代表推理过程中逻辑步骤的单个块。
 - en: We offload the complexity of constructing correct SQL queries with many joins,
     CTEs and subqueries to the platform’s “query engine”, which deterministically
     compiles the semantic steps output by the model into valid and performant SQL.
@@ -158,39 +163,46 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们将构建正确的SQL查询的复杂性（包括许多连接、CTE和子查询）转移到平台的“查询引擎”，该引擎将模型输出的语义步骤确定性地编译成有效且高效的SQL。这意味着LLM不需要担心整个问题类别，从而可以在整体上表现更好。
 - en: When generating output, the model takes into account existing dashboards and
     user-defined concepts.
   id: totrans-split-27
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在生成输出时，模型会考虑现有的仪表板和用户定义的概念。
 - en: Due to the complexity of the task and the need for a custom output format (a
     DSL that the AI uses to effectively construct app UI state), we found that fine-tuned
     models tend to perform significantly better than the base ones.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于任务的复杂性和需要自定义的输出格式（我们设计的用于有效构建应用程序UI状态的DSL），我们发现微调模型的性能通常比基础模型显著更好。
 - en: 'To reiterate: we never generate SQL using LLMs – our LLMs only interact with
     our app directly.'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 重申一下：我们从不使用LLM生成SQL——我们的LLM只直接与我们的应用程序交互。
 - en: '**Fine-tuning and benchmarking**'
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**微调和基准测试**'
 - en: For fine-tuning, we use a proprietary dataset that contains tens of millions
     of tokens worth of question-answering examples, with combinations of data models,
     questions and the perfect output reports to answer these questions.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于微调，我们使用了一个专有数据集，其中包含数千万个token的问答示例，包括数据模型的组合，问题和完美的输出报告以回答这些问题。
 - en: GPT-3.5 (gpt-3.5-turbo-0125) and GPT-4 (gpt-4-0613, the only fine-tunable GPT-4
     model available at the moment) were fine-tuned for 3 epochs.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: GPT-3.5（gpt-3.5-turbo-0125）和GPT-4（gpt-4-0613，目前唯一可微调的GPT-4模型）都进行了3轮的微调。
 - en: For both of the base models here (gpt-3.5-turbo-0125 and gpt-4-0125-preview),
     we used the same prompt, containing 8-shot examples. Performance of all models
     except davinci was evaluated in the beginning of March 2024 while the performance
@@ -198,17 +210,20 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这里的两个基础模型（gpt-3.5-turbo-0125和gpt-4-0125-preview），我们使用了相同的提示，包含8次示例。除了davinci之外的所有模型的性能在2024年3月初进行了评估，而davinci的性能则是在2023年8月进行了最后评估。
 - en: The performance comparison is shown in the next table. For our test set, fine-tuned
     (FT) GPT-4 **outperformed GPT-3.5 by 56%**, a significant, albeit slightly smaller
     improvement than the jump from Davinci FT to GPT-3.5 FT (96%).
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 性能比较显示在下表中。对于我们的测试集，微调的GPT-4 **性能比GPT-3.5提高了56%**，这是一个显著的改进，尽管略小于从Davinci微调到GPT-3.5微调（96%）的跃升。
 - en: Fine-tuned GPT-4 is slightly slower than fine-tuned GPT-3.5 (21.6 tokens/s vs
     31 tokens/s).
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 微调的GPT-4比微调的GPT-3.5稍慢（21.6 tokens/s对31 tokens/s）。
 - en: '*Note: the original version of this article showed significantly worse latency
     stats for GPT-4: our first benchmarks only achieved 5.8 tokens/s, but OpenAI has
     since greatly improved the service''s stability and speed.*'
