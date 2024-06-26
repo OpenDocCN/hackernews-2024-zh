@@ -2,53 +2,65 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:30:08'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:30:08'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: A better Python cache for slow function calls
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个更好的Python缓存用于缓慢的函数调用
 - en: 来源：[https://docs.sweep.dev/blogs/file-cache](https://docs.sweep.dev/blogs/file-cache)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://docs.sweep.dev/blogs/file-cache](https://docs.sweep.dev/blogs/file-cache)
 - en: <main class="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main class="nx-w-full nx-min-w-0 nx-max-w-6xl nx-px-6 nx-pt-4 md:nx-px-12">
 - en: 📚 Blogs
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 📚 博客
 - en: 📂 A better Python cache for slow function calls
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 📂 一个更好的Python缓存用于缓慢的函数调用
 - en: A better Python cache for slow function calls
   id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一个更好的Python缓存用于缓慢的函数调用
 - en: '**William Zeng** - March 18th, 2024'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**William Zeng** - 2024年3月18日'
 - en: '* * *'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: We wrote a file cache - it's like Python's `lru_cache`, but it stores the values
     in files instead of in memory. This has saved us hours of time running our LLM
     benchmarks, and we'd like to share it as its own Python module. Thanks to [Luke
@@ -57,6 +69,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们编写了一个文件缓存 - 它类似于Python的`lru_cache`，但它将值存储在文件中而不是内存中。这为运行我们的LLM基准测试节省了大量时间，并且我们希望将其分享为自己的Python模块。感谢[Luke
+    Jaggernauth (在新标签页中打开)](https://github.com/lukejagg)（前Sweep工程师）为构建此初始版本而感谢！
 - en: 'Here''s the link: [https://github.com/sweepai/sweep/blob/main/docs/public/file_cache.py
     (opens in a new tab)](https://github.com/sweepai/sweep/blob/main/docs/public/file_cache.py).
     To use it, simply add the `file_cache` decorator to your function. Here''s an
@@ -64,15 +78,19 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是链接：[https://github.com/sweepai/sweep/blob/main/docs/public/file_cache.py
+    (在新标签页中打开)](https://github.com/sweepai/sweep/blob/main/docs/public/file_cache.py)。要使用它，只需将`file_cache`装饰器添加到您的函数中。这里有一个示例：
 - en: '[PRE0]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Background
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 背景
 - en: We spend a lot of time prompt engineering our agents at Sweep. Our agents take
     a set of input strings, formats them as a prompt, then sends the prompt and any
     other information off to the LLM. We chain multiple agents to turn a GitHub issue
@@ -81,6 +99,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在Sweep花费大量时间进行prompt工程。我们的agents接受一组输入字符串，将它们格式化为提示，然后将提示和任何其他信息发送给LLM。我们链接多个agents来将GitHub问题转换为拉取请求。例如，要修改代码，我们将输入旧代码、任何相关上下文和指令，然后输出新代码。
 - en: 'A typical improvement involves tweaking a small part of our pipeline (like
     improving our planning algorithm), then running the entire pipeline again. We
     use pdb (python''s native debugger) to set breakpoints and inspect the state of
@@ -89,19 +108,23 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 典型的改进包括调整我们管道的一个小部分（如改进我们的规划算法），然后再次运行整个管道。我们使用pdb（Python的本地调试器）设置断点和检查我们的提示、输入值和解析逻辑的状态。例如，我们可以检查某个字符串是否与正则表达式匹配：
 - en: '[PRE1]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This lets us debug at runtime with the actual data.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使我们能够在实际数据运行时调试。
 - en: Cached pdb
   id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Cached pdb
 - en: pdb works great, but we have to wait for the entire pipeline to run again. Imagine
     a version of pdb that not only interrupted execution, but also cached the entire
     program state up to that point. Our time to hit that same bug could be cut from
@@ -109,31 +132,37 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: pdb效果很好，但我们必须等待整个管道再次运行。想象一个pdb的版本，不仅中断执行，而且还缓存到该点为止的整个程序状态。我们解决同样的错误可能从10分钟缩短到15秒（提升40倍）。
 - en: We didn't build this, but we think our file_cache works just as well.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们没有构建这个，但我们认为我们的`file_cache`同样有效。
 - en: LLM calls are slow but their inputs and outputs are easy to cache, saving a
     lot of time. We can use the input prompt/string as the cache key, and the output
     string as the cache value.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: LLM调用虽然慢，但它们的输入和输出很容易缓存，从而节省了大量时间。我们可以使用输入提示/字符串作为缓存键，输出字符串作为缓存值。
 - en: What's different from lru_cache?
   id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 与`lru_cache`有什么不同？
 - en: lru_cache is great for memoizing repeated function calls, but it doesn't support
     two key features.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '`lru_cache`非常适合对重复的函数调用进行记忆化，但它不支持两个关键功能。'
 - en: we need to persist the cache between runs.
   id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们需要在运行之间持久化缓存。
 - en: lru_cache stores the results in-memory, which means that the next time you run
     the program the cache will be empty. file_cache stores the results on disk. We
     also considered using Redis, but writing to disk is easier to set up/manage.
@@ -142,11 +171,13 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`lru_cache`将结果存储在内存中，这意味着下次运行程序时缓存将为空。`file_cache`将结果存储在磁盘上。我们也考虑过使用Redis，但写入磁盘更容易设置/管理。'
 - en: lru_cache doesn't support ignoring arguments that invalidate the cache.
   id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`lru_cache`不支持忽略使缓存无效的参数。'
 - en: We'll use a custom `chat_logger` which stores the chats for visualization. It
     contains the current timestamp `chat_logger.expiration`, which will invalidate
     the cache if it's serialized.
@@ -155,6 +186,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们将使用自定义的 `chat_logger`，用于可视化存储聊天记录。它包含当前时间戳 `chat_logger.expiration`，如果被序列化，将使缓存无效。
 - en: 'To counteract this we added ignored parameters, used like this: `file_cache(ignore_params=["chat_logger"])`.
     This removes `chat_logger` from the cache key construction and prevents bad invalidation
     due to the constantly changing `expiration`.'
@@ -163,52 +195,65 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，我们添加了忽略的参数，使用方式如下：`file_cache(ignore_params=["chat_logger"])`。这会从缓存键的构建中移除
+    `chat_logger`，并防止由于不断变化的 `expiration` 导致的无效缓存。
 - en: Implementation
   id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实现
 - en: Our two main methods are `recursive_hash` and `file_cache`.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的两个主要方法是 `recursive_hash` 和 `file_cache`。
 - en: recursive_hash
   id: totrans-split-33
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: recursive_hash
 - en: We want to stably hash objects, and this is [not natively supported in python
     (opens in a new tab)](https://death.andgravity.com/stable-hashing).
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望稳定地对对象进行哈希，这在 [Python 中并非原生支持 (在新标签页打开)](https://death.andgravity.com/stable-hashing)。
 - en: '[PRE2]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'hashlib.md5 alone doesn''t work for objects, giving us the error: `TypeError:
     object supporting the buffer API required`. We use recursive_hash, which works
     for arbitrary python objects.'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 'hashlib.md5 单独对对象无效，导致错误：`TypeError: object supporting the buffer API required`。我们使用
+    `recursive_hash`，它适用于任意的 Python 对象。'
 - en: '[PRE3]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: file_cache
   id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: file_cache
 - en: file_cache is a decorator that handles the caching logic for us.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: file_cache 是一个为我们处理缓存逻辑的装饰器。
 - en: '[PRE4]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Without the cache, searching through the codebase using our LLM agent to get
     `top_results` takes 5 minutes - way too long if we're not actually testing it.
     Instead with file_cache, we just need to wait for deserialization of the pickled
@@ -216,83 +261,104 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果没有缓存，使用我们的 LLM 代理在代码库中搜索 `top_results` 需要 5 分钟 - 如果我们实际上不在测试中，这时间太长了。相反，使用
+    file_cache，我们只需等待拾取对象的反序列化 - 对于搜索结果来说基本瞬间完成。
 - en: Wrapper
   id: totrans-split-42
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 包装器
 - en: First we store our cache in `/tmp/file_cache`. This lets us remove the cache
     by simply deleting the directory (running `rm -rf /tmp/file_cache`). We can also
     selectively remove function calls using `rm -rf /tmp/file_cache/search_codebase*`.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们将缓存存储在 `/tmp/file_cache` 中。这让我们可以通过简单删除目录（运行 `rm -rf /tmp/file_cache`）来删除缓存。我们还可以使用
+    `rm -rf /tmp/file_cache/search_codebase*` 有选择地移除函数调用。
 - en: '[PRE5]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Then we can create a cache key.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们可以创建一个缓存键。
 - en: Cache Key Creation / Miss Conditions
   id: totrans-split-46
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 缓存键的创建 / 未命中条件
 - en: 'We have another problem - we want to miss our cache under two conditions:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还有另一个问题 - 我们希望在两种情况下错过我们的缓存：
 - en: The arguments to the function change - handled by `recursive_hash`
   id: totrans-split-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 函数的参数变化由 `recursive_hash` 处理
 - en: The code changes
   id: totrans-split-49
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 代码更改
 - en: To handle 2\. we used `inspect.getsource(func)` to add the function's source
     code to the hash, correctly missing the cache when the the code changes.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了处理第 2 个问题，我们使用 `inspect.getsource(func)` 将函数的源代码添加到哈希中，从而在代码更改时正确地错过缓存。
 - en: '[PRE6]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Cache hits and misses
   id: totrans-split-53
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 缓存命中和未命中
 - en: Finally we check cache key existence and write to the cache in the case of a
     cache miss.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们检查缓存键的存在性，并在缓存未命中的情况下写入缓存。
 - en: '[PRE8]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Conclusion
   id: totrans-split-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: We hope this code is useful to you. We've found it to be a massive time saver
     when debugging LLM calls. We'd love to hear your feedback and contributions at
     [https://github.com/sweepai/sweep (opens in a new tab)](https://github.com/sweepai/sweep)!
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望这段代码对你有用。我们发现在调试 LLM 调用时，它能大大节省时间。我们很乐意听取你的反馈和贡献，网址是 [https://github.com/sweepai/sweep
+    (在新标签页打开)](https://github.com/sweepai/sweep)!
 - en: </main>
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
