@@ -2,56 +2,68 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:32:39'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:32:39
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Fine tune LLAMA3 on million scale dataset in consumer GPU using QLora, Deepspeed
     | by Suman | Apr, 2024 | Medium
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在消费级GPU上使用QLora，Deepspeed对百万规模数据集进行LLAMA3微调 | 作者：苏曼 | 2024年4月 | Medium
 - en: 来源：[https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a](https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a](https://medium.com/@sumandas0/fine-tune-llama3-on-million-scale-dataset-in-consumer-gpu-using-qlora-deepspeed-3ae8ad75299a)
 - en: Fine tune LLAMA3 on million scale dataset in consumer GPU using QLora, Deepspeed
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在消费级GPU上使用QLora，Deepspeed对百万规模数据集进行LLAMA3微调
 - en: Highlights,
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Highlights,
 - en: '**Model** : LLAMA-8b-instruct'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '**模型**：LLAMA-8b-instruct'
 - en: '**Dataset**: Openhermes-2.5(700k training, 300k testing)'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '**数据集**：Openhermes-2.5（700k训练，300k测试）'
 - en: '**GPU**: 4 RTX 4090, 24GB'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '**GPU**：4 RTX 4090，24GB'
 - en: Bit of background about me,
   id: totrans-split-11
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一点关于我的背景，
 - en: I’m a full-time software engineer 2, at the core of our platform team. In my
     scarce free time, I explore various aspects of the machine learning world, with
     interests in tabular data, NLP, and sound. Whatever I’m sharing here are scraps
@@ -64,17 +76,21 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我是一名全职软件工程师2，在我们平台团队的核心。在我稀少的空闲时间里，我探索机器学习世界的各个方面，对表格数据、自然语言处理和声音感兴趣。我在这里分享的都是从互联网各处收集汇总而来的碎片。我有训练小型NLP模型的经验，并在Kaggle竞赛中使用DeBERTa
+    v3提交了解决方案，得分足以进入前50%，但我从未尝试过与大型语言模型合作。这是我的第一次尝试，请告诉我是否有任何疏忽。是的，这是我的第一篇博客文章。写这篇文章肯定会对我有所帮助，希望对任何读者也有用。
 - en: LLama
   id: totrans-split-13
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: LLama
 - en: Who don’t know about this long necked creature revolutionizing the AI field
     from its birth. Joke apart release of llama where the whole OSS powered LLM kicked
     of the revolution which don’t seems like stopping in near future.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 谁不知道这种长颈骆驼般的生物从诞生开始就在革新人工智能领域。开玩笑的话，全OSS动力的LLM发行的羊驼引爆了这场看起来在不久的将来不会停止的革命。
 - en: To learn more on llama in depth and technical do checkout this [Post | LinkedIn](https://www.linkedin.com/posts/ujamil_llama-explained-kv-cache-rotary-positional-activity-7100620274642866176-XaKO/)
     , this is one of the most technically simplified explanation I can found all over
     the internet. Few things they implemented in their architecture like Grouped Multi
@@ -85,26 +101,31 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 要深入了解羊驼和技术，请查看此[文章|LinkedIn](https://www.linkedin.com/posts/ujamil_llama-explained-kv-cache-rotary-positional-activity-7100620274642866176-XaKO/)，这是我在互联网上找到的最简化的技术解释之一。他们在他们的架构中实施了一些很酷的东西，如分组多查询注意力、KV缓存、旋转位置嵌入（RoPE）。这些不在本文的讨论范围之内。他们继续发布LLama的版本，最新版本几天前发布。这一次将大量数据压缩到几GB参数中。
 - en: '[Meta Unveils Llama 3–10 Key Facts About The Advanced LLM (forbes.com)](https://www.forbes.com/sites/janakirammsv/2024/04/19/meta-unveils-llama-310-key-facts-about-the-advanced-llm/)'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Meta揭示Llama 3-10关于先进LLM的关键事实（forbes.com）](https://www.forbes.com/sites/janakirammsv/2024/04/19/meta-unveils-llama-310-key-facts-about-the-advanced-llm/)'
 - en: Deepspeed
   id: totrans-split-17
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Deepspeed
 - en: '*DeepSpeed is a deep learning optimization library that makes distributed training
     and inference easy, efficient, and effective.*'
   id: totrans-split-18
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*DeepSpeed是一个深度学习优化库，使分布式训练和推断变得简单、高效和有效。*'
 - en: '[*https://github.com/microsoft/DeepSpeed*](https://github.com/microsoft/DeepSpeed)'
   id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[*https://github.com/microsoft/DeepSpeed*](https://github.com/microsoft/DeepSpeed)'
 - en: I will be training this model using four RTX 4090 GPUs that I’ve rented from
     [vast.ai](http://vast.ai/), so we need to take some steps to train the models
     across multiple GPUs. Training on multiple GPUs is a complex task compared to
@@ -114,6 +135,9 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将使用从 [vast.ai](http://vast.ai/) 租来的四块 RTX 4090 GPU 来训练这个模型，因此我们需要采取一些步骤来跨多个
+    GPU 进行模型训练。与单个 GPU 训练相比，多 GPU 训练是一项复杂的任务。为什么？当我们在单个 GPU 上训练时，优化器状态、参数和梯度都驻留在一个系统中，这有助于在一个
+    GPU 上迭代模型。
 - en: 'Now, if we add another GPU, there are two systems that will train the models,
     each with its own state(Optimizer state, parameters and gradients). After one
     epoch or several steps, we would like to obtain a single result. Now imagine two
@@ -127,21 +151,27 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果我们再添加一个 GPU，会有两个系统来训练模型，每个系统都有自己的状态（优化器状态、参数和梯度）。经过一个 epoch 或几个步骤后，我们希望获得一个单一的结果。现在想象两个系统并行训练两个数据批次；它们需要通信其状态，并以最小的数据损失汇聚结果。有多种方式可以利用多个
+    GPU：我们可以复制参数、梯度和优化器状态到所有 GPU，或者我们可以仅分片优化器状态，或者优化器状态和梯度。DeepSpeed 有助于在多个 GPU 上分布负载而没有任何问题。而
+    Huggingface 的 accelerate 包让我们做到这一点就像小菜一碟。
 - en: I will use stage 3 which will shard all parameters, gradients and optimizer
     state which will let us training over less memory requirement,
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用阶段 3，它将分片所有参数、梯度和优化器状态，从而让我们在内存需求较少的情况下进行训练。
 - en: 'More details in their blog, [ZeRO & DeepSpeed: New system optimizations enable
     training models with over 100 billion parameters — Microsoft Research](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 更多细节请参阅他们的博客，[ZeRO & DeepSpeed：新系统优化使训练模型的参数超过 1000 亿 — 微软研究](https://www.microsoft.com/en-us/research/blog/zero-deepspeed-new-system-optimizations-enable-training-models-with-over-100-billion-parameters/)
 - en: QLoRA
   id: totrans-split-24
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: QLoRA
 - en: Until I write something about QLoRA, please take a look into this blog to get
     more technical context [What is QLoRA? | QLoRA — Weights & Biases (wandb.ai)](https://wandb.ai/sauravmaheshkar/QLoRA/reports/What-is-QLoRA---Vmlldzo2MTI2OTc5),
     basically 70B/8B models are very large in size means when you fine tune it you
@@ -154,16 +184,21 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我写关于 QLoRA 的内容之前，请看看这篇博客以获取更多技术背景 [什么是 QLoRA？| QLoRA — Weights & Biases (wandb.ai)](https://wandb.ai/sauravmaheshkar/QLoRA/reports/What-is-QLoRA---Vmlldzo2MTI2OTc5)，基本上
+    70B/8B 模型在尺寸上非常大，这意味着当你进行微调时，你将无法完全使用任何 GPU 在正常人的预算内，因此我们尝试使用非常低的资源进行微调，并且 LoRA
+    帮助我们只需训练低秩参数并与原始权重合并，然后出现 QLoRA，它通过将预训练的 LLM 量化为 4 位精度来进一步减少内存消耗，量化本身就是一个独立的主题，因此不再深入讨论。
 - en: Also take a look into this article [LoRA Fine-tuning & Hyperparameters Explained
     (in Plain English) | Entry Point AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 还请看看这篇文章 [LoRA 微调和超参数解释（用简单英语）| Entry Point AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
 - en: Lets start finetuning LLamA 3
   id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 让我们开始对 LLamA 3 进行微调
 - en: We will be finetuning the llama3 instruct model [meta-llama/Meta-Llama-3–8B-Instruct
     · Hugging Face](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct) over
     [openhermes](https://huggingface.co/teknium/OpenHermes-2.5-Mistral-7B) dataset
@@ -171,165 +206,204 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将对 llama3 instruct 模型进行微调 [meta-llama/Meta-Llama-3–8B-Instruct · Hugging Face](https://huggingface.co/meta-llama/Meta-Llama-3-8B-Instruct)，使用
+    teknium 提供的 [openhermes](https://huggingface.co/teknium/OpenHermes-2.5-Mistral-7B)
+    数据集。
 - en: Data preparation
   id: totrans-split-29
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 数据准备
 - en: Meta has their own chat format so tried to follow the format they provided and
     read their encoding algorithm in their llama3 repository,
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Meta 有他们自己的聊天格式，所以试图遵循他们提供的格式，并阅读他们在他们的 llama3 仓库中的编码算法。
 - en: '**Load the dataset**'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '**加载数据集**'
 - en: '[PRE0]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**The encoding utility I took inspiration from** [**llama3 repo**](https://github.com/meta-llama/llama3/blob/af6eedf7042fb51d00b2b26d8ef1ceaab73e1670/llama/tokenizer.py#L202)**,**'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '**我从 [**llama3 repo**](https://github.com/meta-llama/llama3/blob/af6eedf7042fb51d00b2b26d8ef1ceaab73e1670/llama/tokenizer.py#L202)
+    取得编码实用程序的灵感,**'
 - en: '[PRE1]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Remove redundunt columns and split it into train and validation
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 删除冗余列并将其拆分为训练和验证集
 - en: '[PRE3]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '**And push it to hub,**'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '**并将其推送到hub,**'
 - en: '[PRE4]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The resultant dataset, [sumandas/openhermes-2.5-llama3 · Datasets at Hugging
     Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3), example
     text
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果数据集，[sumandas/openhermes-2.5-llama3 · Datasets at Hugging Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3)，示例文本
 - en: '[PRE5]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now its time for training LLama3
   id: totrans-split-42
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 现在是训练LLama3的时候了
 - en: All of the resources were already available in internet I just fine tuned those
     for my setup and requirements,
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有资源已经在互联网上可用，我只是根据我的设置和需求对其进行了精细调整，
 - en: '**Prerequisites,**'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '**先决条件,**'
 - en: Install cuda dev kit `conda install cuda` or follow [developer.nvidia.com/cuda-downloads?target_os=Linux](https://developer.nvidia.com/cuda-downloads?target_os=Linux)
   id: totrans-split-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 安装cuda开发工具包 `conda install cuda` 或访问 [developer.nvidia.com/cuda-downloads?target_os=Linux](https://developer.nvidia.com/cuda-downloads?target_os=Linux)
 - en: Install deepspeed
   id: totrans-split-46
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 安装deepspeed
 - en: Install flash-attention *pip install flash-attn — no-build-isolation*
   id: totrans-split-47
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 安装闪烁-关注 *pip install flash-attn — no-build-isolation*
 - en: Install these libraries, I use [uv](https://github.com/astral-sh/uv) for faster
     dependency resolution,
   id: totrans-split-48
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 安装这些库，我使用 [uv](https://github.com/astral-sh/uv) 进行更快的依赖项解决，
 - en: '[PRE6]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '**Training code**'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '**训练代码**'
 - en: 'This is Swiss knife training code where you can train in multiple mode as per
     you convenience, found this in this repo [pacman100/LLM-Workshop: LLM Workshop
     by Sourab Mangrulkar (github.com)](https://github.com/pacman100/LLM-Workshop),'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '这是瑞士军刀培训代码，您可以根据自己的方便模式进行多模式训练，发现此代码库 [pacman100/LLM-Workshop: LLM Workshop
+    by Sourab Mangrulkar (github.com)](https://github.com/pacman100/LLM-Workshop)，'
 - en: The `training.py` file is the one we will launch using accelerate with proper
     configs, just putting the training.py gist here, [https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab](https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab)
   id: totrans-split-52
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`training.py` 文件是我们将使用加速器和适当配置启动的文件，这里只是放置 training.py 要点，[https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab](https://gist.github.com/sumandas0/0483db8514ea43e45cc5e5f5525914ab)'
 - en: This training code uses SFTTrainer from huggingface, more details [Supervised
     Fine-tuning Trainer (huggingface.co)](https://huggingface.co/docs/trl/en/sft_trainer)
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 此训练代码使用了来自huggingface的SFTTrainer，更多细节 [Supervised Fine-tuning Trainer (huggingface.co)](https://huggingface.co/docs/trl/en/sft_trainer)
 - en: You can do multiple thing with this, you can train with loftq, unsloth, FFT,
     normal lora but I will just use QloRa with Deepspeed ZerO stage 3.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以用此做多种事情，可以使用loftq、unsloth、FFT、普通lora进行训练，但我只会使用带有Deepspeed ZerO阶段3的QloRa。
 - en: '**First lets define the accelerate config for using deepspeed**'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '**首先定义加速配置以使用deepspeed**'
 - en: Note, If you increase the number of GPU update number in *num_processes*
   id: totrans-split-56
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 注意，如果增加GPU更新号，请在 *num_processes* 中更新
 - en: Now lets just run the accelerate command to start training,
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们运行加速命令来开始训练，
 - en: '[PRE7]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '**Notes,**'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**注意,**'
 - en: Set env variable HF_HUB_ENABLE_HF_TRANSFER=1 first
   id: totrans-split-60
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先设置环境变量 HF_HUB_ENABLE_HF_TRANSFER=1
 - en: output_dir will also be the repo created in huggingface where all the checkpoints
     will be stored, checkpoints will be created every 500 steps by default
   id: totrans-split-61
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 输出目录也将是在huggingface中创建的仓库，所有检查点将默认每500步创建一个
 - en: I set chat template format as `none` , because I already formatted those in
     my way, if you have other format do use for e.g chatml, zephyr
   id: totrans-split-62
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我将聊天模板格式设置为 `none`，因为我已经按自己的方式格式化了它们，如果您有其他格式，请使用例如chatml，zephyr
 - en: '`lora_target_modules` is set as all-linear which is QLoRa specific where they
     published paper to show fine tuning all linear layers gives us comparable result
     to full fine tune.'
@@ -337,6 +411,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`lora_target_modules` 被设置为全线性，这是QLoRa特有的，他们发表了一篇论文显示，微调所有线性层使我们的结果可与全面微调相媲美。'
 - en: For setting up hyperparameters for LoRa, take a look into this awesome blog
     [LoRA Fine-tuning & Hyperparameters Explained (in Plain English) | Entry Point
     AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
@@ -344,95 +419,119 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 要设置LoRa的超参数，请查看此精彩博客 [LoRA Fine-tuning & Hyperparameters Explained (in Plain
+    English) | Entry Point AI](https://www.entrypointai.com/blog/lora-fine-tuning/)
 - en: Set up WANDB_API_KEY=<key> if you are reporting to wandb else remove `report_to='wandb'`
   id: totrans-split-65
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 设置WANDB_API_KEY=<key>，如果要报告给wandb，则删除 `report_to='wandb'`
 - en: This should be it and your training should be running in full force, look for
     GPU utilization.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该就是全部了，您的训练应该在全力运行中，请查看GPU利用率。
 - en: Observation
   id: totrans-split-67
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 观察
 - en: Ran the fine tuning for only 1 epoch, took around 15 hours. Loss curve
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅运行了1个epoch的精细调整，大约花费了15小时。损失曲线
 - en: 'fig: training loss [train/loss (24/04/25 02:44:11) | huggingface — Weights
     & Biases (wandb.ai)](https://wandb.ai/sumandas0/huggingface/reports/train-loss-24-04-25-02-44-11---Vmlldzo3Njg1NzIw?accessToken=hinzctjy4lbm48zwjoamnmhxs5r56zp8l88iqpss2jb0xo2w2bu049jkiqd59btj)'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 'fig: 训练损失 [train/loss (24/04/25 02:44:11) | huggingface — Weights & Biases
+    (wandb.ai)](https://wandb.ai/sumandas0/huggingface/reports/train-loss-24-04-25-02-44-11---Vmlldzo3Njg1NzIw?accessToken=hinzctjy4lbm48zwjoamnmhxs5r56zp8l88iqpss2jb0xo2w2bu049jkiqd59btj)'
 - en: '**WandB summary**'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '**WandB 摘要**'
 - en: '[PRE8]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Last steps,
   id: totrans-split-72
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 最后的步骤，
 - en: After the finetuning what model you will get is small adapter model not full
     model that you can just start using just now, we need to add the adapter to the
     original meta llama3 weights,
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 在微调之后，您将获得一个小的适配器模型而不是完整的模型，您现在可以立即开始使用，我们需要将适配器添加到原始的 meta llama3 权重中，
 - en: Load PEFT adapter model,
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 载入 PEFT 适配器模型，
 - en: '[PRE9]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Now save the adapter model into hf,
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在将适配器模型保存到 hf 中，
 - en: '[PRE10]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Inference
   id: totrans-split-78
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 推断
 - en: '[PRE11]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Response,
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 回复
 - en: '[PRE13]'
   id: totrans-split-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Do send my model and dataset some love if it has any worth :)
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我的模型和数据集有任何价值，请给予一些爱 :)
 - en: '[sumandas/openhermes-2.5-llama3 · Datasets at Hugging Face](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3)'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '[sumandas/openhermes-2.5-llama3 · 在 Hugging Face 的数据集](https://huggingface.co/datasets/sumandas/openhermes-2.5-llama3)'
 - en: '[sumandas/llama3-openhermes-2.5 · Hugging Face](https://huggingface.co/sumandas/llama3-openhermes-2.5)'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '[sumandas/llama3-openhermes-2.5 · Hugging Face](https://huggingface.co/sumandas/llama3-openhermes-2.5)'

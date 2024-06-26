@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:32:55'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:32:55'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Chris''s Wiki :: blog/tech/WriteBufferingAndSyncs'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Chris''s Wiki :: blog/tech/WriteBufferingAndSyncs'
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/tech/WriteBufferingAndSyncs](https://utcc.utoronto.ca/~cks/space/blog/tech/WriteBufferingAndSyncs)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://utcc.utoronto.ca/~cks/space/blog/tech/WriteBufferingAndSyncs](https://utcc.utoronto.ca/~cks/space/blog/tech/WriteBufferingAndSyncs)
 - en: Pretty much every modern system defaults to having data you write to filesystems
     be buffered by the operating system and only written out asynchronously or when
     you specially request for it to be flushed to disk, which gives you [general questions
@@ -36,6 +42,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 几乎每个现代系统默认将你写入文件系统的数据由操作系统缓冲，并仅在异步时或特别请求时将其刷新到磁盘，这给你提供了[关于你想要多少写入缓冲的一般问题](/~cks/space/blog/tech/WriteBufferingHowMuch)。现在假设，而不是假设，你正在进行几乎总是会特别刷新到磁盘的写入IO（使用`fsync()`或其等效物），在程序将其视为完成的时候。你可能会遇到这样的情况，你正在写入和重写邮件文件夹，或者主要写入源是更新[预写日志](https://en.wikipedia.org/wiki/Write-ahead_logging)。
 - en: In this situation where the data being written is almost always going to be
     flushed to disk, I believe the tradeoffs are a bit different than in [the general
     write case](/~cks/space/blog/tech/WriteBufferingHowMuch). Broadly, you can never
@@ -52,10 +59,12 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在几乎总是将写入的数据刷新到磁盘的情况下，我认为与[一般的写入情况](/~cks/space/blog/tech/WriteBufferingHowMuch)相比，权衡有所不同。总体来说，你实际上无法以比底层存储的写入速率更快的速度写入，因为最终你必须等待你的写入数据实际到达磁盘才能继续进行。我认为这意味着你希望操作系统在进程写入数据时几乎立即开始将数据写入磁盘；延迟写出只会在长远来看需要更多时间，除非出于某些原因操作系统在你要求刷新之前能更快地写入数据。理论上和孤立情况下，你可能希望这些写入是异步的（直到进程要求进行磁盘刷新，此时你必须同步等待它们），因为如果进程不再因为等待单个写入而停顿，它可能能更快地生成数据。
 - en: (In OS tuning jargon, we'd say that you want writeback to start almost immediately.)
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: (在操作系统调优术语中，我们会说你希望写回缓存几乎立即开始。)
 - en: However, journaling filesystems and concurrency add some extra complications.
     Many journaling filesystems have the journal as a central synchronization point,
     where only one disk flush can be in progress at once and if several processes
@@ -70,6 +79,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，日志文件系统和并发性增加了一些额外的复杂性。许多日志文件系统将日志作为一个中央同步点，一次只能进行一个磁盘刷新，如果几个进程在更或少同一时间请求磁盘刷新，它们无法独立进行。如果你有多个进程都在进行它们最终会刷新的写入IO，并且你希望最小化进程体验到的延迟，那么如果不同的进程写入不同量的IO，则可能存在问题。异步写入大量IO然后刷新到磁盘的进程显然会有一个潜在较长的刷新时间，而这种刷新会延迟写入较少数据的其他进程，因为一切都通过文件系统日志的瓶颈运行。
 - en: In this situation I think you want the process that's writing a lot of data
     to be forced to delay, to turn its potentially asynchronous writes into more synchronous
     ones that are restricted to the true disk write data rate. This avoids having
@@ -83,6 +93,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，我认为您希望正在写入大量数据的进程被迫延迟，将其潜在的异步写入转换为更多限制在真实磁盘写入数据速率上的同步写入。这样一来，在最终刷新时避免有大量未决写入，希望避免其他进程在尝试刷新时出现大延迟。虽然如果写入量较少的进程可以异步写入可能更理想，但我认为如果所有进程都被迫降低到相对同步的写入，以便所有进程平等公平地分享磁盘写入带宽，这也可能是可以接受的。即使在这种情况下，写入和刷新数据较少的进程将更快完成，降低其延迟。
 - en: To translate this to typical system settings, I believe that you want to aggressively
     trigger disk writeback and perhaps deliberately restrict the total amount of buffered
     writes that the system can have. Rather than allowing multiple gigabytes of outstanding
@@ -93,6 +104,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 要将此转化为典型系统设置，我认为您希望积极触发磁盘写回，并可能有意限制系统可以具有的缓冲写入的总量。与允许多个GB的未完成缓冲写入并推迟写回直到积累了1GB或更多不同，您会设置为几乎立即触发写回，然后一旦有相对较小量的未完成写入，强制执行进行写IO的进程等待磁盘写入完成。
 - en: (This is in contrast to typical operating system settings, which will often
     allow you to use a relatively large amount of system RAM for asynchronous writes
     and not aggressively start writeback. This especially would make a difference
@@ -100,3 +112,4 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: （与典型操作系统设置相反，后者通常允许您使用相对较大的系统RAM进行异步写入，而不会积极开始写回。这在具有大量RAM的系统上尤为重要。）
