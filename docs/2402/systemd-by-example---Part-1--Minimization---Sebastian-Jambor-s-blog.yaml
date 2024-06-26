@@ -2,62 +2,75 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:54:21'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:54:21'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'systemd by example - Part 1: Minimization - Sebastian Jambor''s blog'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'systemd by example - Part 1: Minimization - Sebastian Jambor''s blog'
 - en: 来源：[https://seb.jambor.dev/posts/systemd-by-example-part-1-minimization/](https://seb.jambor.dev/posts/systemd-by-example-part-1-minimization/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://seb.jambor.dev/posts/systemd-by-example-part-1-minimization/](https://seb.jambor.dev/posts/systemd-by-example-part-1-minimization/)
 - en: November 23, 2021
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: November 23, 2021
 - en: systemd by example
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 通过示例理解 systemd
 - en: 'Part 1: Minimization'
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 'Part 1: Minimization'
 - en: Series overview
   id: totrans-split-9
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 系列概述
 - en: This article is part of the series *systemd by example*. The following articles
     are available.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文是系列 *systemd by example* 的一部分。以下文章也可供参考。
 - en: Introduction
   id: totrans-split-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 引言
 - en: This is the first article in a series where I try to understand systemd by creating
     small containerized examples.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个系列文章的第一篇，我将通过创建小型容器化示例来理解 systemd。
 - en: 'systemd always has been a bit of a mystery to me. I knew that it is used for
     system initialization and for service management, but I didn’t really understand
     how it worked. Every time I tried to dig deeper, for example by looking at the
@@ -71,6 +84,9 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: systemd 对我来说一直是个谜。我知道它用于系统初始化和服务管理，但我并不真正理解它的工作原理。每次我试图深入了解，比如查看我的机器设置或阅读文档，我很快就感到不知所措。我的系统上有超过
+    300 个活跃的 systemd 单元，要知道哪些是重要的，以及它们的用途并不容易。手册内容非常详尽，但很容易在细节中迷失。在线资源也是如此：虽然有很多，但没有一篇真正让我豁然开朗。尽管
+    systemd 的原始公告 [重新思考 PID 1](http://0pointer.de/blog/projects/systemd.html) 解答了不少疑问。
 - en: 'What usually helps me in situations like this is to start with a minimal example
     which only contains the essentials and try to understand how this works; then
     incrementally extend it: add new features, explore things described in the documentation,
@@ -81,6 +97,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在像这样的情况下，通常能帮助我解决问题的方法是从一个只包含基本要素的最小示例开始，试图理解其工作原理；然后逐步扩展它：添加新功能，探索文档中描述的内容，尝试不同的设置；最后进行迭代。对于
+    systemd 来说，这一开始看起来很难做到。毕竟，如果我不知道自己在做什么，我确实不想在系统配置中胡乱折腾。此外，实验必然意味着可能会出问题，这绝对是我不愿在实际系统上尝试的事情。
 - en: I then found this article on [how to run systemd in a container](https://developers.redhat.com/blog/2019/04/24/how-to-run-systemd-in-a-container).
     This allows me to do exactly what I want! It gives a testbed for examples and
     allows quick iteration on experiments. It’s ok to break things since it is confined
@@ -89,21 +107,26 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我后来找到了这篇关于 [如何在容器中运行 systemd](https://developers.redhat.com/blog/2019/04/24/how-to-run-systemd-in-a-container)
+    的文章。这让我能够完全按自己的意愿进行操作！它为示例提供了一个测试环境，并允许快速迭代实验。因为限定在容器中，所以即使出了问题也没关系。而且通过使用不同的目录和版本控制可以轻松跟踪不同的示例。
 - en: So let’s start by creating a minimal systemd example!
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，让我们从创建一个最小的 systemd 示例开始吧！
 - en: '*Note*: It should be clear by now that I’m not a systemd expert, so take everything
     I write with a grain of salt. Instead of authoritative information, I hope that
     you take this article as an invitation to do your own systemd experiments.'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注*: 显然我不是 systemd 的专家，所以请对我写的一切持保留态度。我希望这篇文章不是权威信息，而是邀请你进行自己的 systemd 实验。'
 - en: systemd units
   id: totrans-split-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: systemd 单元
 - en: 'The basic building block of systemd is a unit. Most of them are defined in
     unit files which live in `/lib/systemd/system` and `/etc/systemd/system` (the
     former is supposed to contain unit files installed by the distribution, and the
