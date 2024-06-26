@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:48:54'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日 14:48:54
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Switching from S3 to Tigris on Fly.io
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Fly.io 上从 S3 切换到 Tigris
 - en: 来源：[https://benhoyt.com/writings/flyio-and-tigris/](https://benhoyt.com/writings/flyio-and-tigris/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://benhoyt.com/writings/flyio-and-tigris/](https://benhoyt.com/writings/flyio-and-tigris/)
 - en: Switching from S3 to Tigris on Fly.io
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Fly.io 上从 S3 切换到 Tigris
 - en: February 2024
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年2月
 - en: '**Go to:** [Buckets](#creating-a-bucket) | [Endpoint](#endpoint-change) | [Caching](#caching-differences)
     | [Auth](#authentication-differences) | [Copying](#copying-files-and-shadow-buckets)
     | [DB migration](#database-migration) | [Final thoughts](#final-thoughts)'
@@ -40,12 +48,17 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**前往：** [存储桶](#creating-a-bucket) | [端点](#endpoint-change) | [缓存](#caching-differences)
+    | [认证](#authentication-differences) | [复制](#copying-files-and-shadow-buckets)
+    | [数据库迁移](#database-migration) | [最终想法](#final-thoughts)'
 - en: A year ago I switched my [GiftyWeddings.com](https://giftyweddings.com/) side
     project from being hosted on Amazon EC2 to using [Fly.io](https://fly.io/). I
     had [fun doing it](/writings/flyio/) and saved a few bucks a month.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 一年前，我将我的 [GiftyWeddings.com](https://giftyweddings.com/) 边缘项目从托管在 Amazon EC2
+    切换到使用 [Fly.io](https://fly.io/)。这是一次 [有趣的体验](/writings/flyio/)，并且每月省下了几美元。
 - en: Last week someone from [Tigris](https://www.tigrisdata.com/) contacted me, asking
     if I’d like to try out a private beta of the S3-compatible storage service they’ve
     built on top of Fly.io infrastructure and have integrated with the `fly` CLI.
@@ -54,18 +67,22 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 上周，有人从 [Tigris](https://www.tigrisdata.com/) 联系我，问我是否想尝试他们在 Fly.io 基础设施上构建的与
+    `fly` CLI 集成的 S3 兼容存储服务的私有 beta 版本。（Tigris 付了我一点钱来试用他们的 beta 版并撰写文章，但他们对内容没有任何发言权。）
 - en: I hadn’t actually heard of Tigris, but this piqued my interest – I’ve had a
     good experience with Fly.io, and I think it’s great that more small companies
     are competing with the AWS Bezomoth.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我以前没听说过 Tigris，但这引起了我的兴趣 — 我在 Fly.io 上有很好的经验，我认为更多的小公司与 AWS 巨头竞争很棒。
 - en: 'I already use Fly.io to run the Gifty server (written in Go), but before a
     couple of days ago I still used Amazon S3 for file storage: user-uploaded images
     and SQLite backups.'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 几天前我仍然使用 Amazon S3 来运行用 Go 编写的 Gifty 服务器，但是现在不再如此。
 - en: 'It was straight-forward to switch: copy the files over, update the server’s
     config to point to the Tigris endpoint instead of S3, and `fly deploy`. I had
     to do a minor code change due to Tigris handling authentication and caching differently,
@@ -73,20 +90,24 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 切换很简单：复制文件，更新服务器配置以指向 Tigris 终端而不是 S3，并 `fly deploy`。由于 Tigris 处理认证和缓存的方式不同，我不得不进行了一个小的代码更改，并碰到了一些小问题，但总体上非常顺利。
 - en: Creating a bucket
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 创建存储桶
 - en: 'The first step was to create a test bucket for user-uploaded images. I went
     straight in with a `fly storage create` command:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是为用户上传的图像创建一个测试存储桶。我直接使用 `fly storage create` 命令：
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: It surprised me that just creating a bucket automatically set a bunch of environment
     variables and re-deployed my app. It did this because I was in the app directory
     where the app’s `fly.toml` config file lives, however, this behaviour seems unexpected
@@ -94,39 +115,48 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 令我惊讶的是，只需创建一个存储桶就自动设置了一堆环境变量并重新部署了我的应用程序。这是因为我在应用程序目录，即应用程序的 `fly.toml` 配置文件所在的位置，但这种行为似乎出乎意料且过于神奇
+    — 毕竟，我只是为本地开发创建了一个测试存储桶。
 - en: 'This is [documented](https://fly.io/docs/reference/tigris/#create-and-manage-a-tigris-storage-bucket),
     so it’s kind of my fault for not reading that bit – though they probably should
     add “and re-deploy”:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这在 [文档中有说明](https://fly.io/docs/reference/tigris/#create-and-manage-a-tigris-storage-bucket)，所以这部分是我的错
+    — 虽然他们可能应该补充“并重新部署”：
 - en: Running the following command in a Fly.io app context – inside an app directory
     or specifying `-a yourapp` – will automatically set secrets on your app.
   id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在 Fly.io 应用上下文中运行以下命令 — 在应用程序目录内或指定 `-a yourapp` — 将自动在您的应用程序上设置密钥。
 - en: This feature could potentially be downtime-inducing, so I think it should be
     opt-in, for example an `--update-app` or `--add-secrets` command line option.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个功能可能会造成停机，所以我认为应该选择性地启用，例如 `--update-app` 或 `--add-secrets` 命令行选项。
 - en: 'There’s also no easy way to access the value of those automatically-set secrets.
     This is for security and by design, but it meant I had to create a new test bucket
     (outside the app directory) to get the credential for local testing:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有简便的方法来访问那些自动设置的密钥的值。这是出于安全和设计考虑，但这意味着我不得不创建一个新的测试存储桶（在应用程序目录之外），以获取本地测试的凭证：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Okay, that’s better. Then I updated my local app config with that access key
     and secret, and it worked … mostly. I first had to iron out a few wrinkles, described
     below.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，这样更好了。然后我用那个访问密钥和密码更新了我的本地应用配置，它运行得很……大多数情况下都行。我首先得解决一些小问题，如下所述。
 - en: 'One other quirk when creating buckets – in case the `fly` CLI devs are reading
     this – is that when you run `fly storage create`, it prints out the environment
     variables in an undefined order. You can see that above: in the first example,
@@ -136,44 +166,53 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个创建存储桶时的怪癖——如果`fly` CLI的开发人员正在阅读这篇文章——是当你运行`fly storage create`时，它会以未定义的顺序打印出环境变量。你可以在上面看到：在第一个例子中，`BUCKET_NAME`首先被打印出来；在第二个例子中，`AWS_REGION`先出现。这不是问题，但有点奇怪，我反复确认确实两次打印出了相同的键。
 - en: Endpoint change
   id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 端点变更
 - en: 'It’s probably obvious that I needed to start using the new Tigris API endpoint
     rather than the default AWS one. When creating the S3 client, I do the following:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 很明显，我需要开始使用新的Tigris API端点，而不是默认的AWS端点。在创建S3客户端时，我进行了以下操作：
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'To use the correct endpoint, I added these lines:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使用正确的端点，我添加了以下几行：
 - en: '[PRE3]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Note that I’m still using v1 of the AWS SDK for Go. This works a bit [differently
     in v2](https://www.tigrisdata.com/docs/sdks/s3/aws-go-sdk/).
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，我仍在使用AWS SDK for Go的v1版本。这在[v2版本](https://www.tigrisdata.com/docs/sdks/s3/aws-go-sdk/)中有所不同。
 - en: Caching differences
   id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 缓存差异
 - en: When I used Amazon S3, and a user uploaded a new image for their wedding registry,
     I found I could get away with just uploading to the same filename (key). When
     the page reloaded and the image was re-fetched, the new image would appear.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我使用Amazon S3时，用户为他们的婚礼注册表上传了一张新图片时，我发现只需上传到相同的文件名（键）即可。当页面重新加载并重新获取图片时，新图片就会出现。
 - en: I’m not sure this was a good idea even using S3, because originally S3 was only
     [eventually consistent](https://en.wikipedia.org/wiki/Eventual_consistency). However,
     in 2020 they switched to [strong read-after-write consistency](https://aws.amazon.com/blogs/aws/amazon-s3-update-strong-read-after-write-consistency/),
@@ -181,6 +220,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不确定即使使用S3，这是否是个好主意，因为最初S3只是[最终一致性](https://en.wikipedia.org/wiki/Eventual_consistency)的。然而，到了2020年，他们转向了[强一致性读后写](https://aws.amazon.com/blogs/aws/amazon-s3-update-strong-read-after-write-consistency/)，因此在PUT后的所有对文件的GET操作都会立即获取到更新的内容。
 - en: 'When I starting using Tigris, and re-uploaded an image, I had to do a Ctrl-Shift-R
     (reload, overriding cache) for the new image to appear. Tigris seems to do more
     aggressive caching: looking at the response headers from an image uploaded to
@@ -189,6 +229,8 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '当我开始使用Tigris并重新上传图片时，我必须按下Ctrl-Shift-R（重新加载，覆盖缓存），新图片才会出现。Tigris似乎采用了更积极的缓存策略：从上传到Tigris的图片的响应头中可以看到，默认情况下它发送了`Cache-Control:
+    max-age=3600`头部，尽管我没有设置这个头部。'
 - en: I’m not sure this is a good default, but because they’re trying to be a [CDN](https://en.wikipedia.org/wiki/Content_delivery_network)
     as well as a storage system, I can see why they chose that. It forces people to
     use caching techniques like [content-based filenames](https://github.com/benhoyt/cdnupload),
@@ -196,11 +238,13 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不确定这是一个好的默认设置，但因为他们同时想要成为[CDN](https://en.wikipedia.org/wiki/Content_delivery_network)和存储系统，我可以理解他们为什么选择了这种方式。这迫使人们使用像[基于内容的文件名](https://github.com/benhoyt/cdnupload)这样的缓存技术，这是件好事。
 - en: '*Update: After reading this article, Tigris added a nice [page about caching](https://www.tigrisdata.com/docs/caching/)
     that documents this behaviour and their intention on this point.*'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更新：阅读本文后，Tigris添加了一篇关于[缓存的页面](https://www.tigrisdata.com/docs/caching/)，详细记录了这种行为和他们在这一点上的意图。*'
 - en: 'In any case, it was a chance for me to improve Gifty’s handling of uploads.
     I changed the code to add a short content-based hash to the filename: instead
     of using `{registryID}.jpg` as the key, I use `{registryID}-{contentHash}.jpg`,
@@ -208,24 +252,29 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，这给我提高Gifty处理上传的机会。我改变了代码，向文件名添加了一个简短的基于内容的哈希值：不再使用`{registryID}.jpg`作为键，而是使用`{registryID}-{contentHash}.jpg`，这解决了缓存问题：
 - en: '[PRE4]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'I also changed the full image URL from hard-coding `amazonaws.com` and made
     the URL format configurable:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还改变了完整的图片URL，不再硬编码`amazonaws.com`，并使URL格式可配置化：
 - en: '[PRE5]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Authentication differences
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 认证差异
 - en: When using S3, I have two buckets – one for registry images, and one for backups
     – and they both use the same AWS key and secret for authentication. This is probably
     not great (I probably should have used a different credential for backups), but
@@ -284,6 +333,7 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Database migration
   id: totrans-split-52
   prefs:
@@ -303,6 +353,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: After that, the site was fully on Tigris and Fly.io, and 100% AWS-free!
   id: totrans-split-56
   prefs: []
@@ -348,29 +399,34 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Tigris](https://www.tigrisdata.com/docs/pricing/)：存储费用为每GB每月$0.02，获取请求为每1000个请求$0.0005。'
 - en: '[S3](https://aws.amazon.com/s3/pricing/): storage is $0.023 per GB per month,
     GET requests are $0.0004 per 1000.'
   id: totrans-split-64
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[S3](https://aws.amazon.com/s3/pricing/)：存储费用为每GB每月$0.023，获取请求为每1000个请求$0.0004。'
 - en: Either way, Tigris gave me $150 free credit as part of the beta sign-up process.
     That’s 7500 GB-months or 300 million GET requests – almost certainly more than
     my small website will use in my lifetime.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，Tigris在测试版注册过程中给了我$150的免费信用额度。这相当于7500 GB月或3亿次GET请求 - 几乎肯定超出了我小型网站一生中的使用量。
 - en: Disclaimer and durability
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 免责声明和耐用性
 - en: 'One thing you might want to know: when I signed up for their [**early access
     beta**](https://hello.tigrisdata.com/forms/early-access/), Tigris sent me an email
     saying, “Please avoid using this service for production workloads during the beta!”'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 有件事你可能想知道：当我注册他们的[**早期访问测试版**](https://hello.tigrisdata.com/forms/early-access/)时，Tigris给我发了封电子邮件说：“请在测试版期间避免将此服务用于生产工作负载！”
 - en: I asked if this was just a disclaimer to cover their backsides, or if it was
     more like “files will go missing randomly, and we’ll delete all data nightly during
     the beta”. They said it’s more of a disclaimer, and that both Fly.io and Tigris
@@ -379,6 +435,7 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 我问过，这只是一个免责声明来规避他们的责任，还是更像是“文件会随机丢失，并且我们将每晚删除所有数据”的声明。他们说这更像是一个免责声明，并且Fly.io和Tigris都把这个作为一个生产平台对待。显然存在风险，但我对此感到满意，而且他们很快就会退出测试版。
 - en: I also wondered about Tigris’s durability compared to S3, who advertise their
     99.999999999% durability of objects. Tigris certainly seems to have thought about
     their [architecture](https://www.tigrisdata.com/docs/concepts/architecture/) a
@@ -388,11 +445,13 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我也对Tigris的耐用性与S3相比有所疑惑，后者宣称其对象有99.999999999%的耐用性。Tigris显然对他们的[架构](https://www.tigrisdata.com/docs/concepts/architecture/)进行了很多考虑，但我想知道是否可能测量他们的耐用性并与[S3的惊人数字](https://aws.amazon.com/blogs/aws/new-amazon-s3-reduced-redundancy-storage-rrs/)进行比较？不过，S3的十一个9的数字[实际上有意义吗](https://stackoverflow.com/a/4188501/68707)？
 - en: The end
   id: totrans-split-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 结束
 - en: All that said, I had a very good experience doing the switchover, and haven’t
     yet had any problems – but I’m sure time will tell! I hope both Tigris and Fly.io
     continue to do well, and introduce some much-needed competition for the big cloud
@@ -400,3 +459,4 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，我在进行切换时有非常好的经验，并且到目前为止还没有遇到任何问题 - 但我相信时间会告诉我们一切！我希望Tigris和Fly.io继续做得不错，并为大型云公司引入一些急需的竞争。
