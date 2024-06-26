@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:40:56'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:40:56
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Embedded Swift on the Raspberry Pi Pico/RP2040 without the Pico SDK - Community
     Showcase - Swift Forums
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在树莓派Pico/RP2040上嵌入的Swift，没有Pico SDK - 社区展示 - Swift论坛
 - en: 来源：[https://forums.swift.org/t/embedded-swift-on-the-raspberry-pi-pico-rp2040-without-the-pico-sdk/69338](https://forums.swift.org/t/embedded-swift-on-the-raspberry-pi-pico-rp2040-without-the-pico-sdk/69338)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://forums.swift.org/t/embedded-swift-on-the-raspberry-pi-pico-rp2040-without-the-pico-sdk/69338](https://forums.swift.org/t/embedded-swift-on-the-raspberry-pi-pico-rp2040-without-the-pico-sdk/69338)
 - en: Interesting. I think a special libc *might* be interesting/necessary for some
     embedded environments. For example, the Pico C SDK does depend on an embedded
     libc AFAIK, but that's a topic for the other thread [Embedded Swift running on
@@ -34,17 +40,21 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 有趣。我认为一种特殊的libc *可能* 对某些嵌入式环境是有趣/必要的。例如，我认为Pico C SDK确实依赖于嵌入式libc AFAIK，但这是另一个主题的话题
+    [在树莓派Pico上运行的嵌入式Swift](https://forums.swift.org/t/embedded-swift-running-on-the-raspberry-pi-pico/69001)。你说得对，我们正在讨论的这个从头开始的方法不需要它。
 - en: 'That would be nice, although I fear the stuff we need to do for the RP2040
     will be difficult to wrap in a package:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 那将很好，尽管我担心我们需要为RP2040做的工作可能很难打包：
 - en: The second-stage bootloader (boot2) is assembled and linked with a special linker
     script that puts it at the right location in flash
   id: totrans-split-8
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第二阶段引导加载程序（boot2）是通过一个特殊的链接器脚本组装和链接的，该脚本将其放置在闪存中的正确位置
 - en: Then we calculate a checksum over the bootloader binary and write that checksum
     into the binary (the RP2040 won't boot unless this checksum is there). This is
     currently done by a Python script.
@@ -52,22 +62,26 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 然后我们计算引导加载程序二进制文件的校验和，并将该校验和写入二进制文件中（如果没有该校验和，RP2040将无法启动）。目前这是由一个Python脚本完成的。
 - en: The runtime (crt0) for the main executable (setting up IRQ handlers, exception
     handlers etc.) is assembled and linked with the main executable
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 主可执行文件的运行时（crt0）（设置IRQ处理程序、异常处理程序等）与主可执行文件一起组装和链接
 - en: The main executable also needs to be linked with a special linker script
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 主可执行文件还需要与一个特殊的链接器脚本进行链接
 - en: Maybe the checksum calculation can be done in a SwiftPM plugin? But I'm not
     sure we can integrate this cleanly.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许校验计算可以在一个SwiftPM插件中完成？但我不确定我们能干净地集成这个。
 - en: We can prebuild boot2 and crt0, but then we're also no longer talking about
     a simple package that you can include as a dependency, right (because of the binary
     files involved)? And it doesn't solve how to pass the linker script to the final
@@ -75,6 +89,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以预构建boot2和crt0，但这样我们也不再谈论一个简单的可以作为依赖项包含的包了，对吧（因为涉及到二进制文件）？而且这并不能解决如何将链接器脚本传递给最终的链接步骤。
 - en: I think my biggest problem in doing any SwiftPM experiments right now is that
     I can't use `swift` as the linker to build a Pico executable – I have to use Clang
     for linking. I don't think I can tell SwiftPM to link with Clang unless I build
@@ -82,6 +97,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我现在做任何SwiftPM实验的最大问题，我不能使用`swift`作为链接器来构建Pico可执行文件 - 我必须使用Clang进行链接。我不认为我能告诉SwiftPM使用Clang进行链接，除非我构建一个SE-0387风格的SDK？
 - en: 'Here are the errors I get when I try to link with Swift (on Linux; I understand
     linking ELF files on macOS is work in progress: [[embedded] Start building and
     including lld even in Darwin toolchains by kubamracek · Pull Request #70715 ·
@@ -89,26 +105,32 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我尝试在Swift上链接时（在Linux上；我了解在macOS上链接ELF文件仍在进行中：
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: OK, so it's looking for `/usr/lib/swift/armv6m/swiftrt.o` and doesn't find it.
     That directory doesn't exist. Should it exist? Will it exist in the future as
     the embedded toolchain improves?
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，所以它正在寻找`/usr/lib/swift/armv6m/swiftrt.o`并且找不到它。那个目录不存在。它应该存在吗？随着嵌入式工具链的改进，它将来会存在吗？
 - en: 'Linking with `-nostartfiles` gets rid of that error, but produces more:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`-nostartfiles`链接可以消除该错误，但会产生更多错误：
 - en: '[PRE1]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: I'm afraid I don't really understand what I'm doing here, so it's hard to ask
     better questions.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我怕我真的不明白我在这里做什么，所以很难提出更好的问题。
