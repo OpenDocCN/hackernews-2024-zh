@@ -94,6 +94,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管上述算法对设计工程师非常重要，但需要注意的是，CORDIC算法仅在严格的收敛区内运行，这可能需要工程师执行一些预缩放，以确保算法表现如预期。值得注意的是，算法将随着工程师决定实现的每次迭代（串行）或阶段（并行）而变得更加精确。一个经验法则是，对于n位精度，需要n次迭代或阶段。
 - en: The CORDIC algorithm will only converge (work) across a limited range of input
     value. For circular configurations of CORDIC algorithms, convergence is guaranteed
     for the angles below the sum of the angles in the lookup table (i.e. between -99.7
@@ -105,6 +106,8 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: CORDIC算法仅在有限的输入值范围内收敛（工作）。对于CORDIC算法的圆形配置，仅在查找表中角度之和以下的角度（即-99.7至99.7度）内收敛是有保证的。对于超出此范围的角度，工程师必须使用三角恒等式将其转化为内部角度。这对于线性配置的收敛同样适用。然而，在双曲模式下，必须重复某些迭代（4,
+    13, 40, K… 3K+1）以获得收敛性。在这种情况下，Ɵ的最大输入约为1.118弧度。
 - en: Like previously stated, CORDICs are used in a wide range of applications from
     DSP and image processing to industrial control systems. The most basic method
     of using a CORDIC is to generate sine and cosine waves when coupled with a phase
@@ -125,10 +128,13 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如之前所述，CORDIC广泛应用于从DSP和图像处理到工业控制系统的各种应用中。使用CORDIC的最基本方法是与相位累加器配合生成正弦和余弦波形。如果操作正确，该算法生成的波形将具有较高的无杂散动态范围（SFDR）。值得注意的是，大多数信号处理应用都要求良好的SFDR性能。在机器人领域，CORDIC在运动学中的使用使得通过圆形CORDIC在矢量化模式下添加坐标值与新坐标值成为可能。在图像处理领域，像光照和向量旋转这样的三维操作则是算法实现的理想候选。然而，该算法最常见的用途或许是在实现传统数学函数中，如表一所示。在这里，我们可以看到，在没有专用乘法器或DSP块的设备中，需要乘法器、除法器或更复杂的数学函数。这意味着，在许多小型工业控制器中，使用CORDIC实现数学转换函数是非常常见的。真有效值（True
+    RMS）测量就是一个这样的例子。
 - en: '**Implementation within an FPGA**'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '**FPGA内的实现**'
 - en: When it comes to implementing a CORDIC within our AMD FPGA, we can implement
     the CORDIC IP block that comes with Vivado. This module provides a range of configurations
     to implement vectoring, rotation, and sine and cosine generation along with support
@@ -136,12 +142,14 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于在我们的AMD FPGA中实现CORDIC，我们可以实现Vivado提供的CORDIC IP块。该模块提供了一系列配置选项，用于实现矢量化、旋转以及正弦和余弦生成，同时支持双曲线和平方根操作。
 - en: To conclude this article, we are going to configure the module to generate sine
     and cosine vectors and simulate it to understand more about its operation. We
     will extend the test bench to look at other features in a future blog.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 结论：我们将配置模块以生成正弦和余弦向量，并对其进行模拟，以进一步了解其操作。在未来的博客中，我们将扩展测试平台以查看其他功能。
 - en: When working in the sine and cosine mode, we need to ensure the option for coarse
     rotation is checked if we want to be able to cover the full circle. If this is
     not checked, we are limited to the -Pi/4 to Pi/. With it selected, we are able
@@ -149,137 +157,169 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在正弦和余弦模式下工作时，如果我们希望能够覆盖整个圆周，需要确保选择了粗旋转选项。如果没有选中，我们只能覆盖-Pi/4到Pi/4。选中后，我们能够完成整个圆周。
 - en: The block diagram looks as below.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 方框图如下所示。
 - en: With the simple design created, I made a simple test bench which inputs values
     using the AXIS. The input format of this vector is 3 signed integer bits with
     the remainder fractional. This allows values between +/- Pi to be input.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 利用创建的简单设计，我制作了一个简单的测试台，该测试台使用AXIS输入值。这个向量的输入格式为3个有符号整数位和剩余的分数部分。这允许输入值在+/- Pi之间。
 - en: While the output vector is formatted as a 1 bits signed integer bit with the
     remainder fractional, this allows values between -1 and 1 to be output and the
     sine and cosine outputs are shared on the output vector.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出向量格式为1位有符号整数位和剩余分数部分，允许输出在-1到1之间的值，并且正弦和余弦输出共享在输出向量上。
 - en: The test bench is very straight forward and uses a counter to count continually
     between -pi and pi and is applied as the phase input to the CORDIC IP core.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 测试台非常直接，使用计数器来不断计数在-pi和pi之间，并作为相位输入应用到CORDIC IP核心中。
 - en: '[PRE0]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[PRE1]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '[PRE6]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '[PRE7]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '[PRE9]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[PRE13]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '[PRE14]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '[PRE15]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '[PRE16]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '[PRE17]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '[PRE18]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '[PRE19]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '[PRE20]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '[PRE21]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '[PRE22]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: '[PRE23]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Running this in the test bench provides the following output in Vivado simulator.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Vivado模拟器中运行测试台将提供以下输出。
 - en: In a future blog, we will look deeper at exploiting this for various applications,
     but until then, we now know more about the CORDIC algorithm!
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在未来的博客中，我们将更深入地探讨如何利用这一点进行各种应用，但在此之前，我们现在更了解CORDIC算法！
 - en: If you enjoyed the blog why not take a look at the free webinars, workshops
     and training courses we have created over the years. Highlights include
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你喜欢这篇博客，不妨看看多年来我们创建的免费网络研讨会、工作坊和培训课程。亮点包括
 - en: Do you want to know more about designing embedded systems from scratch? Check
     out our book on creating embedded systems. This book will walk you through all
     the stages of requirements, architecture, component selection, schematics, layout,
@@ -293,3 +333,5 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 想要了解如何从零开始设计嵌入式系统吗？查看我们的关于创建嵌入式系统的书籍。这本书将引导你完成需求、架构、组件选择、原理图、布局以及FPGA / 软件设计的所有阶段。书中的核心板我们设计并制造了！原理图和布局在Altium
+    [这里](https://www.e3designers.com/altium-365)可见。了解更多关于板子的信息（参见之前关于[上电](https://www.adiuvoengineering.com/post/microzed-chronicles-configuring-zynq-on-a-custom-board)、[DDR验证](https://www.adiuvoengineering.com/post/microzed-chronicles-validating-your-custom-zynq-board-memory)、[USB](https://www.adiuvoengineering.com/post/microzed-chronicles-smart-sensor-iot-board-getting-usb-up-and-running)、[传感器](https://www.adiuvoengineering.com/post/microzed-chronicles-petalinux-i2c-in-the-ps-and-axi-iic)的先前博客），并查看原理图[这里](https://www.adiuvoengineering.com/post/sensorsthink-board-schematic)。
