@@ -92,6 +92,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当像Google这样的搜索引擎显示搜索结果时，它们会将更“重要”和更高质量的页面排在比不那么重要的页面更靠前的位置。但搜索引擎如何知道哪些页面比其他页面更重要呢？在PageRank算法中，如果一个网站被其他重要网站链接，那么它就更重要，而来自不那么重要网站的链接则权重较低。这个定义似乎有点循环，但事实证明有多种策略可以计算这些排名。
 - en: Imagine we randomly started by sampling Page 5\. We’d then have no choice but
     to go to Page 6, and then no choice but to go to Page 5 after that, and then Page
     6 again, and so forth. We’d end up with an estimate of 0.5 for the PageRank for
@@ -101,6 +102,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象我们随机从第5页开始采样。然后我们别无选择，只能去第6页，然后再去第5页，然后再去第6页，依此类推。我们会得到第5页和第6页的PageRank估计为0.5，而其余页面的PageRank估计为0，因为我们把所有时间都花在了第5页和第6页，没有访问任何其他页面。
 - en: To ensure we can always get to somewhere else in the corpus of web pages, we’ll
     introduce to our model a damping factor **d**. With probability **d** (where **d**
     is usually set around **0.85**), the random surfer will choose from one of the
@@ -110,6 +112,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了确保我们始终可以访问到网页语料库中的其他位置，我们将引入一个阻尼因子**d**到我们的模型中。以概率**d**（通常设置为约**0.85**），随机冲浪者将从当前页面的链接中随机选择一个。但否则（以概率**1
+    - d**），随机冲浪者将从语料库中的所有页面中随机选择一个（包括当前所在的页面）。
 - en: Our random surfer now starts by choosing a page at random, and then, for each
     additional sample we’d like to generate, chooses a link from the current page
     at random with probability **d**, and chooses any page at random with probability
@@ -118,6 +122,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的随机冲浪者现在从随机选择一个页面开始，并且对于我们想要生成的每个额外样本，根据当前页面的链接随机选择一个链接的概率为**d**，并且以概率**1
+    - d**随机选择任意页面。如果我们跟踪每个页面作为样本出现的次数，我们可以将出现在特定页面的状态比例视为其PageRank。
 - en: 'We can also define a page’s PageRank using a recursive mathematical expression.
     Let **PR(p)** be the PageRank of a given page **p**: the probability that a random
     surfer ends up on that page. How do we define **PR(p)**? Well, we know there are
@@ -125,18 +131,21 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还可以使用递归的数学表达式定义页面的PageRank。设**PR(p)**为给定页面**p**的PageRank：随机冲浪者最终停留在该页面的概率。我们如何定义**PR(p)**呢？我们知道随机冲浪者可以以两种方式停留在页面上：
 - en: With probability **1 - d**, the surfer chose a page at random and ended up on
     page **p**.
   id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 以概率**1 - d**，冲浪者随机选择一个页面，最终停留在页面**p**上。
 - en: With probability **d**, the surfer followed a link from a page **i** to page
     **p**.
   id: totrans-split-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 以概率**d**，冲浪者从页面**i**跟随一个链接到达页面**p**。
 - en: 'The first condition is fairly straightforward to express mathematically: it’s
     **1 - d** divided by **N**, where **N** is the total number of pages across the
     entire corpus. This is because the **1 - d** probability of choosing a page at
@@ -144,6 +153,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个条件在数学上表达相当直接：这是**1 - d**除以整个语料库中页面总数**N**，因为随机选择页面的**1 - d**概率均匀分布在所有**N**个可能页面之间。
 - en: For the second condition, we need to consider each possible page **i** that
     links to page **p**. For each of those incoming pages, let **NumLinks(i)** be
     the number of links on page **i**. Each page **i** that links to **p** has its
@@ -154,17 +164,20 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于第二个条件，我们需要考虑每一个可能链接到页面**p**的页面**i**。对于这些传入页面中的每一个，让**NumLinks(i)**表示页面**i**上的链接数。每一个链接到**p**的页面**i**都有自己的PageRank，**PR(i)**，代表我们在任意时刻位于页面**i**的概率。由于从页面**i**到其任何链接的概率相等，我们将**PR(i)**除以链接数**NumLinks(i)**来得到我们位于页面**i**并选择链接到页面**p**的概率。
 - en: This gives us the following definition for the PageRank for a page **p** as
     shown above.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这为上述页面**p**的PageRank定义如下。
 - en: In this formula, **d** is the damping factor, **N** is the total number of pages
     in the corpus, **i** ranges over all pages that link to page **p**, and **NumLinks(i)**
     is the number of links present on page **i**.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个公式中，**d**是阻尼因子，**N**是语料库中页面的总数，**i**遍历所有链接到页面**p**的页面，并且**NumLinks(i)**是页面**i**上存在的链接数。
 - en: 'How would we go about calculating PageRank values for each page, then? We can
     do so via iteration: start by assuming the PageRank of every page is **1 / N**
     (i.e., equally likely to be on any page). Then, use the above formula to calculate
@@ -175,11 +188,13 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我们如何计算每个页面的PageRank值呢？我们可以通过迭代来完成：首先假设每个页面的PageRank都是**1 / N**（即在任何页面上均等可能）。然后，根据上述公式，基于先前的PageRank值计算每个页面的新PageRank值。如果我们不断重复这个过程，根据先前的PageRank值计算每个页面的新PageRank值，最终PageRank值将会收敛。
 - en: / The formula seems promising. But how does it relate to the integration level
     of the space? The physical space?
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: / 公式看起来很有前景。但是它如何与空间的整合水平相关联呢？物理空间呢？
 - en: When we look at the main idea of how the algorithm is functioning, we could
     begin to create a connection to translate that heuristic approach. The purpose
     of the algorithm is to rank web pages to figure which one is more important than
@@ -189,10 +204,12 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们看算法功能的主要思想时，我们可以开始建立一个连接以翻译该启发式方法。算法的目的是对网页进行排名，以确定哪一个比其他网页更重要。思考如何将该算法集成到帮助我们找出哪个空间比其他空间更重要或质量更高。
 - en: 'Take our case study as an example:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 以我们的案例研究为例：
 - en: This is the architectural floor plan of a section inside a building. The plan
     includes 10 rooms connecting via open passageways. Room 1 connects to room 2,
     3, and 4\. Room 2 only connects to room 1\. Room 3 connects to room 1, 5, and
@@ -202,43 +219,54 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是建筑物内部某一区域的结构平面图。平面图包括10个通过开放通道连接的房间。Room 1连接到Room 2、3和4。Room 2只连接到Room 1。Room
+    3连接到Room 1、5等等。有了这些信息，我们就可以构建一个语料库，基本上是一个Python字典，将房间号映射到所有与之相连房间的集合。
 - en: '"Room1": {"Room2","Room3","Room4"},'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room1": {"Room2","Room3","Room4"},'
 - en: '"Room3": {"Room1","Room5"},'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room3": {"Room1","Room5"},'
 - en: '"Room4": {"Room1","Room5","Room6"},'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room4": {"Room1","Room5","Room6"},'
 - en: '"Room5": {"Room3","Room4","Room7","Room8"},'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room5": {"Room3","Room4","Room7","Room8"},'
 - en: '"Room6": {"Room4","Room8"},'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room6": {"Room4","Room8"},'
 - en: '"Room7": {"Room5","Room9"},'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room7": {"Room5","Room9"},'
 - en: '"Room8": {"Room5","Room6","Room9"},'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room8": {"Room5","Room6","Room9"},'
 - en: '"Room9": {"Room7","Room8","Room10"},'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Room9": {"Room7","Room8","Room10"},'
 - en: The iterative function begins by assigning each room a rank of **1 / N**, where
     **N** is the total number of rooms in the corpus, 10.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 迭代函数从给每个房间分配**1 / N**的等级开始，其中**N**是语料库中的总房间数，共10个。
 - en: The function then repeatedly calculate new rank values based on all of the current
     rank values, according to the PageRank formula. (i.e., calculating room’s rank
     based on the ranks of all rooms that link to it). A room that has no links at
@@ -247,11 +275,13 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数然后根据所有当前排名值根据PageRank公式重复计算新的排名值。（即根据所有连接到它的房间的排名计算房间的排名）。一个没有任何链接的房间被解释为每个语料库中的房间（包括它自己）都有一个链接。
 - en: 'The algorithm has processed for 100 iterations, and this is the result that
     we receive:'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 该算法已经进行了100次迭代，这是我们得到的结果：
 - en: As seen from the visualization, room 5 is perceived to have the highest level
     of engagement because it has abundant connections to other rooms; has most nearby
     high-quality rooms linked to it. On the other hand, room 2 and room 10, which
@@ -260,14 +290,17 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如从可视化中看到的，房间5被认为具有最高的参与度，因为它与其他房间有丰富的连接；大多数附近的高质量房间都与它相连。另一方面，位于角落且每个只有一个连接的房间2和房间10，参与度较低并倾向于更加私密。
 - en: 'Let''s take a look at another example on an urban scale:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再来看一个城市规模的例子：
 - en: ( Pathum Wan District, Bangkok )
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: （曼谷Pathum Wan区）
 - en: / The city plan displays the ranking of the roads via the use of color; red
     suggests higher quality and blue for lower quality. The calculation has taken
     into account only the primary, secondary, and tertiary road lines. The result
@@ -278,16 +311,19 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: / 城市规划通过颜色显示了道路的排名；红色表示较高质量，蓝色表示较低质量。计算只考虑了主要、次要和三级道路线。结果可能看起来很诱人，但请记住，特别是这个例子，已经被大大简化。在现实世界中，高速公路有多车道，并且交叉口并不一定意味着所有通往它的道路都彼此连接。街道遵循法律，汽车运动受限。
 - en: These are only some of the factors that put the constraint on the dynamic of
     our heuristic approach. The more precise the information in the corpus is, the
     more accurate the calculation is going to be. /
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些只是我们启发式方法动态约束的一些因素。语料库中信息越精确，计算结果就越准确。 /
 - en: 'Here''s the final example:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是最后的例子：
 - en: / The algorithm has also been integrated inside the retail plan management with
     the content of the shelf disregarded. Similarly, the plan illustrates the engagement
     quality in each aisle; red suggests higher quality and blue for lower quality.
@@ -299,6 +335,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: / 该算法还与零售计划管理内容集成，忽略货架内容。同样，该计划展示了每个走廊的参与质量；红色表示较高质量，蓝色表示较低质量。主要走廊展示了更高的价值和更好的连通性；这意味着它们有更多通往它们的路径。相反，仅连接到主要走廊的次级走廊之间的概率平均值在它们之间保持较低的曝光。因此，在这里展示的产品可能会有较少的访客。
 - en: The challenge with this experiment is identifying the boundary of the space;
     at what point does an aisle end and how much area does it cover? Since the space
     inside the retail is very distinct; no doors and no clear barriers. This could
@@ -307,6 +344,8 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个实验的挑战在于确定空间的边界；走廊何时结束以及它涵盖多少区域？由于零售内部空间非常独特；没有门，也没有明确的障碍。这在思考我们应该如何在语料库中设置内容时可能变得棘手。
+    /
 - en: / Nevertheless, all three case studies have emphasized promising results. The
     algorithm doesn't simply depend solely on visualizing the existing problem as
     precisely as it could but also on raising the unseen solution. The purpose is
@@ -315,6 +354,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: / 无论如何，所有三个案例研究都强调了令人鼓舞的结果。该算法不仅仅依赖于尽可能精确地可视化现有问题，还依赖于提出未曾见过的解决方案。其目的不是确定并接受现有结果看起来是什么样子，而是构成它可能是什么样子。
 - en: In conclusion, the algorithm is a work in progress and can only be developed
     further by studying the public engagement behavior in the physical facility. It's
     certainly clear to see why the ability to describe space would play such a vital
