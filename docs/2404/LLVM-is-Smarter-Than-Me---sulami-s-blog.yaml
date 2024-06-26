@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:25:53'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:25:53'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: LLVM is Smarter Than Me - sulami's blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: LLVM比我更聪明 - sulami的博客
 - en: 来源：[https://blog.sulami.xyz/posts/llvm-is-smarter-than-me/](https://blog.sulami.xyz/posts/llvm-is-smarter-than-me/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.sulami.xyz/posts/llvm-is-smarter-than-me/](https://blog.sulami.xyz/posts/llvm-is-smarter-than-me/)
 - en: I was reading [Algorithms for Modern Hardware](https://en.algorithmica.org/hpc/)
     recently, specifically [the chapter on SIMD](https://en.algorithmica.org/hpc/simd/),
     and was impressed by auto-vectorization. The basic idea is that modern CPUs have
@@ -35,6 +41,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我最近在阅读[现代硬件算法](https://en.algorithmica.org/hpc/)，特别是[SIMD章节](https://en.algorithmica.org/hpc/simd/)时，对自动向量化印象深刻。基本思想是现代CPU具有所谓的SIMD指令，允许一次对多个值应用操作，比逐个执行等效的标量指令快得多。现代编译器可以检测到某些编程模式，其中对标量值重复执行操作，并将这些操作分组以利用更快的指令。
 - en: 'The book uses primarily C++ for its examples, but I was curious if the same
     pattern would work in Rust as well, without having to manually annotate anything.
     So I opened up the [compiler explorer](https://godbolt.org/) and typed in my first
@@ -42,20 +49,24 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 该书主要使用C++示例，但我很好奇相同的模式在Rust中是否也有效，而无需手动注释任何内容。所以我打开了[编译器资源管理器](https://godbolt.org/)，并输入了我的第一个测试，看起来像这样：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'To make sure the compiler would feel safe to use SIMD instructions, I used
     `-C opt-level=3 -C target-cpu=skylake`, telling it that the target CPU supports
     them. But instead of SIMD instructions I got this assembly:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了确保编译器安全使用SIMD指令，我使用了`-C opt-level=3 -C target-cpu=skylake`，告诉它目标CPU支持这些指令。但是，我没有得到SIMD指令，而是得到了这段汇编代码：
 - en: '[PRE1]'
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Turns out I was outsmarted by the compiler, which used [constant folding](https://en.wikipedia.org/wiki/Constant_folding)
     to directly return the final value it computed at compile time. To avoid this
     optimization from happening we can pass an argument into the function, so that
@@ -63,18 +74,22 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果证明编译器比我聪明，利用常量折叠在编译时直接返回了最终计算得到的值。为了避免发生这种优化，我们可以向函数传递参数，这样编译器无法知道最终结果：
 - en: '[PRE2]'
   id: totrans-split-12
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Which generates this assembly:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这生成了以下汇编代码：
 - en: '[PRE3]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Still there are no SIMD instructions in here, which would usually start with
     the letter `v`, such as [`vpaddd`](https://www.felixcloutier.com/x86/paddb:paddw:paddd:paddq)
     which adds integers in parallel. To compare, I wrote the equivalent program in
@@ -82,10 +97,12 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里还没有SIMD指令，通常以字母`v`开头，比如[`vpaddd`](https://www.felixcloutier.com/x86/paddb:paddw:paddd:paddq)，用于并行添加整数。为了比较，我用C++写了等效的程序：
 - en: '[PRE4]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Compiler explorer defaults to GCC to compile C++. I used the equivalent `-O3
     -march=skylake`, and sure enough, I got back 106 lines of assembly (omitted for
     brevity), including the desired SIMD instructions. I then switched to Clang, the
@@ -95,6 +112,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器资源管理器默认使用GCC编译C++。我使用了等效的`-O3 -march=skylake`，果然，我得到了106行汇编代码（为了简洁起见已省略），包括所需的SIMD指令。然后我切换到Clang，这是基于LLVM的C/C++编译器，也被Rust使用，它生成了与Rust版本完全相同的汇编代码。这告诉我们，区别不在于语言，而在于编译器。
 - en: A quick comparative benchmark revealed the LLVM version to be significantly
     faster than GCC's vectorized loop, especially for large values of `n`, which is
     unsurprising when looking at the instructions, about 10 scalar instructions will
@@ -102,39 +120,47 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 一项快速的比较基准测试显示，LLVM版本比GCC的向量化循环要快得多，特别是对于较大的`n`值，这在查看指令时并不令人意外，大约10条标量指令将击败数百条循环向量指令。
 - en: 'The key here is that the sum of consecutive integers from zero to n has a closed
     form solution, which I only realized after looking more closely at the assembly:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键在于从零到n的连续整数的和有一个闭合形式解，这是我在仔细查看汇编代码后才意识到的：
 - en: $$\sum^n_{i=0}{i} = \frac{n (n+1)}{2}$$
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: $$\sum^n_{i=0}{i} = \frac{n (n+1)}{2}$$
 - en: LLVM apparently detects that that is exactly what we are trying to do, and as
     a result it can do away with the looping altogether and directly calculate the
     result in one step, changing `sum` from O(n) to O(1). Colour me impressed.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，LLVM检测到这正是我们试图做的事情，因此它可以完全摒弃循环，并在一步之内直接计算结果，将`sum`从O(n)改变为O(1)。让我印象深刻。
 - en: 'Finally, replicating the book''s example more closely, I managed to get LLVM
     to automatically vectorize a loop for me, using the following code:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，更贴近书中示例的复制，我设法让LLVM为我自动向量化一个循环，使用以下代码：
 - en: '[PRE5]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: This works because LLVM has no idea about the contents of the array, so it cannot
     deduce a more efficient way of calculating their sum than to actually add them
     all up.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有效果是因为LLVM对数组的内容一无所知，因此它无法推断出比实际将它们全部加起来更有效的计算方式。
 - en: My takeaway here is that LLVM is even better at generating optimal code than
     I would have expected, at least for trivial examples. I am happy that I can continue
     writing idiomatic code without feeling like I am trading off performance for readability.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在这里的收获是，LLVM在生成优化代码方面比我预期的要好得多，至少对于简单的例子是如此。我很高兴我可以继续编写惯用代码，而不必感觉像是在以可读性为代价来交换性能。

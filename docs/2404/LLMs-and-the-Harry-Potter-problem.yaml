@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:27:25'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年5月27日13:27:25
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: LLMs and the Harry Potter problem
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: LLMs 和《哈利·波特问题》
 - en: 来源：[https://www.pyqai.com/blog/llms-and-the-harry-potter-problem](https://www.pyqai.com/blog/llms-and-the-harry-potter-problem)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.pyqai.com/blog/llms-and-the-harry-potter-problem](https://www.pyqai.com/blog/llms-and-the-harry-potter-problem)
 - en: Introduction
   id: totrans-split-6
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 简介
 - en: 'Long-context LLMs are all the rage these days - it feels like every new one
     increases its context window by about an order of magnitude over the competition.
     They even do well on typical benchmarks, like the [Needle In A Haystack](https://arstechnica.com/information-technology/2024/03/claude-3-seems-to-detect-when-it-is-being-tested-sparking-ai-buzz-online/).
@@ -37,6 +44,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 当前，长上下文LLM正在风靡，感觉每一个新LLM都将其上下文窗口增加了一个数量级。它们甚至在典型的基准测试中表现良好，比如[大海里的针](https://arstechnica.com/information-technology/2024/03/claude-3-seems-to-detect-when-it-is-being-tested-sparking-ai-buzz-online/)。不幸的是，在我们看来，它们仍然存在一些关键问题：我们称之为《哈利·波特问题》。
 - en: In this article, we will begin with a description of the problem and its practical
     implications. In response to our proofreaders (thanks all), we provide an explanation
     for why agents, out-of-the-box RAG and fine-tuning aren’t adequate solutions to
@@ -45,6 +53,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们将从问题及其实际影响的描述开始。在回应我们的校对人员（感谢所有人），我们解释为什么代理、开箱即用的RAG和微调不足以解决这个问题。对于更技术性的读者，我们还提供了一些进一步阅读和数据。
 - en: '"Large language models may have big context windows, but they still aren''t
     good enough at using the information in big contexts, especially in high value
     use-cases."'
@@ -52,11 +61,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '"大语言模型可能有很大的上下文窗口，但它们仍然不能很好地利用大上下文中的信息，特别是在高价值的使用案例中。"'
 - en: The problem
   id: totrans-split-10
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 问题
 - en: 'Imagine you give an LLM (note: not an agent - explanation for why we care about
     the LLM’s ability later in this article) a chapter of Harry Potter and ask it
     to count how many times the word “wizard” is mentioned. GPT4, Claude 3 Opus, Gemini
@@ -65,6 +76,8 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下，你给一个LLM（注：不是一个代理人 - 为什么我们关心LLM的能力会在本文稍后解释）一章《哈利·波特》，并要求它计算“wizard”一词出现的次数。截至本文撰写时，GPT4、Claude
+    3 Opus、Gemini Ultra 和 Mixtral - 都是当今的技术代表 - 尽管上下文窗口很大，但在这项任务上都失败了。
 - en: 'This test admittedly has a split focus: it is measuring the model’s in-context
     recall and its ability to count, both of which are weak points. For the purpose
     of this discussion, we will focus on in-context recall because that’s more closely
@@ -72,41 +85,49 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个测试显然有分裂的焦点：它既在衡量模型的上下文回忆能力，也在计数能力上，这两者都是弱点。就本次讨论而言，我们将重点放在上下文回忆上，因为这与长上下文模型的要点更为相关。
 - en: 'Here are some summary statistics that help describe the issue. Read till the
     end for all the details on our tests and methodology:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一些摘要统计数据，帮助描述这个问题。请阅读到最后以了解我们所有测试和方法论的详细信息：
 - en: '**GPT4 Turbo: 55% accuracy** on documents over >=64k tokens'
   id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**GPT4 Turbo：对于大于等于64k个标记的文档，准确率为55%**'
 - en: '**Claude 3 Opus: 65% accuracy** on documents over >=64k tokens'
   id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**Claude 3 Opus：对于大于等于64k个标记的文档，准确率为65%**'
 - en: '**Mixtral 8x7b Instruct: 17.5% accuracy** on documents over >=64k tokens'
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**Mixtral 8x7b Instruct：对于大于等于64k个标记的文档，准确率为17.5%**'
 - en: '**Gemini 1.5 Pro: 45% accuracy** on documents over >=64k tokens'
   id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**Gemini 1.5 Pro：对于大于等于64k个标记的文档，准确率为45%**'
 - en: Evidently, none do especially well in long contexts. More details about our
     methodology at the end of this post.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，在长上下文中，没有一个表现特别出色的。关于我们的方法论的更多细节，请参阅本文末尾。
 - en: Why should I care?
   id: totrans-split-19
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 为什么我要关心？
 - en: 'In short, this problem can really hurt LLM accuracy and is very hard to catch.
     Harry Potter is an innocent example, but this problem is far more costly when
     it comes to higher value use-cases. For example, we analyze insurance policies.
@@ -117,21 +138,25 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，这个问题可能会严重影响LLM的准确性，并且非常难以捕捉。《哈利·波特》只是一个无辜的例子，但是当涉及到更高价值的使用案例时，这个问题会更加昂贵。例如，我们分析保险政策。它们有70-120页，非常密集，期望读者在分布在各个页面上的信息之间建立逻辑联系（比如，第5页和第95页各一句）。因此，回答类似“我的火灾损失覆盖是多少？”这样的问题意味着你必须阅读：
 - en: Page 2 (the premium)
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第2页（保费）
 - en: Page 3 (the deductible and limit)
   id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第3页（免赔额和限额）
 - en: Page 78 (the fire damage exclusions)
   id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 第78页（火灾损害除外）
 - en: Page 94 (the legal definition of “fire damage”)
   id: totrans-split-24
   prefs:
