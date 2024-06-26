@@ -2,39 +2,47 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:32:59'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:32:59
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Fast Virtual Functions: Hacking the VTable for Fun and Profit | by Caleb Leak
     | Medium'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快速虚函数：通过黑客方式操作VTable获取乐趣和利润 | 作者：Caleb Leak | Medium
 - en: 来源：[https://medium.com/@calebleak/fast-virtual-functions-hacking-the-vtable-for-fun-and-profit-25c36409c5e0](https://medium.com/@calebleak/fast-virtual-functions-hacking-the-vtable-for-fun-and-profit-25c36409c5e0)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@calebleak/fast-virtual-functions-hacking-the-vtable-for-fun-and-profit-25c36409c5e0](https://medium.com/@calebleak/fast-virtual-functions-hacking-the-vtable-for-fun-and-profit-25c36409c5e0)
 - en: 'Fast Virtual Functions: Hacking the VTable for Fun and Profit'
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快速虚函数：通过黑客方式操作VTable获取乐趣和利润
 - en: Virtual functions have clear intrinsic value; using them can make architectures
     significantly more flexible and solve a plethora of design problems.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 虚函数具有明显的内在价值；使用它们可以使体系结构更加灵活，并解决大量设计问题。
 - en: When it comes to virtual functions(or methods, the terminology distinction isn’t
     fruitful in this context) there are two main schools of thought for performance.
     The first is that they’re slow, always have been, and always will be. Folks of
@@ -45,6 +53,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 当涉及到虚函数（或方法，在这个上下文中术语区别并不重要）时，关于性能有两种主流观点。第一种观点认为它们很慢，一直都是，而且将来也会是。这个学派的人会告诉你，在游戏中使用它们太慢了。第二种观点是，它们曾经很慢，但现代编译器和架构已经使它们变得高效了。这个学派的人会告诉你，应该大量使用它们，即使在性能关键的代码中，因为它们基本上是免费的。
 - en: 'So, what’s the truth? The unsurprising answer is: it depends. Depends on what?
     Well, I’m glad you asked. The answer is, like most indirections, it depends mostly
     on the cache and how your application interacts with it. In this article I’ll
@@ -52,12 +61,14 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，真相是什么？毫不奇怪的答案是：取决于情况。取决于什么？好吧，我很高兴你问了。答案是，像大多数间接性操作一样，它主要取决于缓存以及你的应用程序如何与其交互。在本文中，我将深入探讨三件事情（重点关注C++）：
 - en: '**How to avoid the performance hit of virtual functions.** I’ll show how you
     can call virtual functions directly and avoid the cost of indirection.'
   id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**如何避免虚函数的性能损失。** 我将展示如何直接调用虚函数并避免间接调用的成本。'
 - en: '**How to make large batches of virtual functions fast**. This a common problem
     in game engines where a scene may have thousands of objects, each with several
     not necessarily unique update functions. If these updates happen at framerate,
@@ -66,6 +77,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**如何使大批量的虚函数快速执行。** 这是游戏引擎中的常见问题，其中一个场景可能有数千个对象，每个对象都有几个不一定是唯一的更新函数。如果这些更新按帧率发生，那么每秒将会有数以十万计的调用。'
 - en: '**How to detect if a virtual function has been overridden.** This is another
     common problem in modern game engines where there’s a plethora of functions to
     override. Unity for example has 64 such overrideable methods (they call them *messages*),
@@ -75,58 +87,70 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**如何检测虚函数是否已被覆盖。** 这是现代游戏引擎中的另一个常见问题，在那里有大量要重写的函数。例如，Unity拥有64个这样的可重写方法（它们称之为*消息*），其中大多数对大多数对象来说都是空操作。当检测到这种情况时，引擎可以完全避免调用它们。'
 - en: I won’t talk about *why* virtual functions are useful.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不会讨论虚函数为何有用。
 - en: Understanding virtual functions and VTables
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 理解虚函数和VTables
 - en: Before diving into the performance of virtual functions, I’d like to take a
     moment to look at how virtual functions work. If you’re a virtual function guru,
     feel free to skip this section.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在深入探讨虚函数性能之前，我想花点时间看看虚函数是如何工作的。如果你是虚函数大师，请随意跳过本节。
 - en: 'Let’s start by creating a class hierarchy without virtual functions. We’ll
     create greeters that simply greet people by their given name:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从创建一个没有虚函数的类层次结构开始。我们将创建简单地通过给定名称向人们问候的问候者：
 - en: 'The output of this is:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 其输出如下：
 - en: '[PRE0]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Poor Alice doesn’t get a proper greeting. Notice how we called the same function
     (at least functions with the same name) on the same object, but got different
     results depending on how we cast it. Why is that?
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 可怜的爱丽丝并没有得到合适的问候。请注意，我们如何在相同对象上调用相同函数（至少是同名函数），但根据我们如何进行强制转换而得到不同的结果。这是为什么？
 - en: The compiler has no special knowledge about where data came from. To it, a `GenericGreeter*`
     constructed from `FriendlyGreeter` is the same as one constructed from a `GenericGreeter`,
     so it simply calls the base function.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器对数据的来源没有特殊知识。对于它来说，从`FriendlyGreeter`构造的`GenericGreeter*`和从`GenericGreeter`构造的是相同的，因此它只是调用基础函数。
 - en: 'Now let’s do the same thing with virtual functions:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们用虚函数做同样的事情：
 - en: 'Now the output is:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在输出是：
 - en: '[PRE1]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The derived function is now called — somehow the compiler knows to do this.
     It still just has a `GenericGreeter` pointer with no special knowledge of how
     that data was constructed, but now there’s more to this pointer than meets the
@@ -134,6 +158,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 派生函数现在被称为——编译器不知道如何做到这一点。它仍然只是一个具有`GenericGreeter`指针的对象，没有特殊知识来构造数据，但是现在这个指针背后有更多的东西。
 - en: Hiding inside `GenericGreeter` now is a pointer to a virtual function table
     or *VTable*. This table is simply a bit of static memory with one or more function
     pointers in it. The memory is static (and therefore pointed to, rather than contained)
@@ -142,45 +167,55 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在`GenericGreeter`内部隐藏着一个指向虚函数表或*VTable*的指针。这个表只是一小段静态内存，里面有一个或多个函数指针。这段内存是静态的（因此被指向而不是包含），因为特定类的每个实例都会有完全相同的VTable
+    — 所以它被存储在可以共享的地方。
 - en: 'I think this is best illustrated with an example. Here is our same set of greeters,
     but this time we’ll create our own VTables:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为最好用一个例子来说明。这里是我们相同的一组问候者，但这次我们将创建我们自己的VTables：
 - en: 'Again, the output is:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，输出是：
 - en: '[PRE2]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: And that’s the basics of VTables and virtual functions. With deeper hierarchies
     and multi-inheritance there can be multiple VTables, but they all follow this
     pattern.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是VTables和虚函数的基础。在更深的层次结构和多重继承中，可能会有多个VTable，但它们都遵循这个模式。
 - en: Poking at the VTable
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 探索VTable
 - en: We saw in the previous section how VTables work, but we didn’t actually access
     any — not directly. Here we’ll go over locating and making use of the VTable.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在上一节中看到了VTables的工作原理，但我们实际上没有直接访问任何VTable。在这里，我们将介绍如何定位和利用VTable。
 - en: 'Let’s first extend the example from the previous section to include more than
     one virtual function:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先扩展上一节的示例，以包含多个虚函数：
 - en: 'Now let’s define what the VTable looks like. Note that we’re not implementing
     it ourselves, but simply making a convenient struct to understand it:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们来定义VTable的样子。请注意，我们不是自己实现它，而只是创建一个方便的结构体来理解它：
 - en: 'We’re now ready to play with the VTable — but where is it? Well, it’s hiding
     in plain sight. Any class that declares a new virtual function, not just overrides
     an existing one, gets an implicit pointer to a VTable added along side its member
@@ -191,6 +226,8 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经准备好操作VTable了——但它在哪里？嗯，它就藏在明处。任何声明新虚函数的类，而不仅仅是覆盖现有虚函数的类，都会在其成员变量旁边隐式添加一个指向VTable的指针。按照惯例，VTable指针在类的所有其他成员变量之前
+    — 这是MSVC、gcc和Clang遵循的稳定惯例。这使得它们非常容易找到。继续我们的例子，一个查找VTable指针的函数就像这样简单：
 - en: 'It’s worth noting that in this case taking in a `void*` would work instead
     of `GenericGreeter*` but is less robust. A VTable pointer is a member of whatever
     class in the hierarchy makes the VTable, like the example in the last section.
@@ -202,28 +239,35 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '值得注意的是，在这种情况下，使用`void*`代替`GenericGreeter*`也可以，但不够健壮。VTable指针是层次结构中使VTable的类的成员，就像上一节的示例一样。因此，它们遵循多重继承和`class
+    WeirdGreeter : public Weird, public GenericGreeter {…}`的所有典型规则，包括VTable指针在`Weird`的所有成员*之前*，而不是在`GenericGreeter`的成员之前，包括VTable指针。当然，像上面的函数一样转换为基础类型是绕过此问题的健壮方法。'
 - en: 'Finally, let’s put the pieces together and call a virtual function directly,
     bypassing the dispatch:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们把所有的部分放在一起，直接调用虚函数，绕过分派：
 - en: 'The output of this is:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个输出是：
 - en: '[PRE3]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Only the overridden functions were called!
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 只调用了重写的函数！
 - en: When are virtual functions slow and how slow are they?
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 虚函数何时慢以及它们有多慢？
 - en: We’ve seen how you can call virtual functions directly, now let’s see why you
     might want to.
   id: totrans-split-41
@@ -316,27 +360,32 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 要直接调用虚函数，我们将访问 VTable 并直接获取我们想要调用的函数的指针。“但等等”，你说，“那不会产生与常规虚函数调用相同的惩罚吗？”是的，确实会。这里的关键是我们可以重用这个函数指针，无论是在将来与相同实例调用它，还是（如下一节所述）在同一类的其他实例上调用它。
 - en: 'To get the function pointer, we can first define a generic function to get
     the VTable:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 要获取函数指针，我们可以首先定义一个通用函数来获取 VTable：
 - en: 'Then it’s as easy as casting the appropriate entry to the desired function
     pointer:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后只需将适当的条目强制转换为所需的函数指针即可：
 - en: In the case above, it simply invokes the virtual function in slot 1\. Where
     this technique really becomes useful is when a function is called repeatedly,
     either as a batch or on its own.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述情况下，它只是调用第 1 个槽中的虚函数。当一个函数被重复调用时，无论是作为批处理还是单独调用，这种技术真正变得有用。
 - en: Running batches of virtual functions efficiently
   id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 高效运行虚函数批处理
 - en: In games and other interactive applications, it’s common to run batches of virtual
     functions at a time. For example, running thousands of `Update()` functions from
     various scene objects each frame. We can take some of the tools from the previous
@@ -344,12 +393,14 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 在游戏和其他交互应用程序中，一次运行多个虚函数批处理是很常见的。例如，每帧从各种场景对象中运行数千个 `Update()` 函数。我们可以从前面的章节中借用一些工具，以高效完成这项任务。
 - en: The key insight we can leverage to run these batches efficiently is that cache
     misses on function calls kill performance. So how can we minimize cache misses?
     We can group our function calls to keep code in the cache!
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以利用的关键洞见是，函数调用时的缓存未命中会降低性能。那么如何最小化缓存未命中呢？我们可以分组我们的函数调用以保持代码在缓存中！
 - en: One easy way to group virtual functions is with `std::set`, which maintains
     an ordered set of values. By sorting pairs of { function pointer, object pointer
     }, the set can easily be iterated over to call everything in sorted order. This
@@ -357,22 +408,26 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `std::set` 来分组虚函数是一种简单的方法，它维护一个有序的值集合。通过对 {函数指针，对象指针} 对进行排序，可以轻松地迭代整个集合以按排序顺序调用所有函数。这尤其方便，因为任何场景管理器都需要此列表。
 - en: Below is a complete example. It uses `SceneObject` as its base class containing
     the overrideable `Update()` function. `SceneManager` holds these objects and allows
     all update functions be called as a single batch, grouping update functions.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是一个完整的示例。它以 `SceneObject` 作为基类，包含可重写的 `Update()` 函数。`SceneManager` 拥有这些对象，并允许所有更新函数作为单个批处理调用，分组更新函数。
 - en: 'With a framework like this in place, there’s one more step to take to be truly
     efficient: don’t call empty functions.'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这样一个框架，要真正高效地执行还需要迈出一步：不要调用空函数。
 - en: Detecting when virtual functions are overridden
   id: totrans-split-64
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 检测虚函数何时被重写
 - en: In the previous example, we batched `Update()` functions and grouped repeated
     calls to the same function (but with different objects) for efficiency. This works
     fine if every child class of `SceneObject` needs an update function, but what
@@ -383,33 +438,40 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前面的示例中，我们将 `Update()` 函数分批，并以效率的方式分组重复调用同一个函数（但使用不同的对象）。如果 `SceneObject` 的每个子类都需要一个更新函数，这种方法很有效。但如果某些类不需要呢？如果我们有大量可重写的函数，如
+    `LateUpdate`、`PhysicsUpdate` 和 `DrawImmediate`，而大多数对象都不需要重写它们，调用空函数将是浪费周期。这时就需要检查重写。
 - en: To check if a function is overridden, you simply need to compare the function
     entries in each VTable. The caveat here is that you need an instance of the base
     object (for which the null-object pattern fits nicely) to compare against.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 要检查一个函数是否被重写，你只需比较每个 VTable 中的函数条目。这里的一个注意点是，你需要一个基本对象的实例（适合空对象模式）来进行比较。
 - en: 'Let’s update the example from the previous section with the new functions we
     just mentioned:'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们用刚刚提到的新函数更新前面章节中的示例：
 - en: 'Now we can update the scene manager to conditionally add new objects to each
     batch only when they have overridden the appropriate function:'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们可以更新场景管理器，以便仅在对象覆盖了适当的函数时才将其添加到每个批处理中。
 - en: It’s that easy! Of course, you’d probably want to start wrapping these up in
     nicer classes. You can also use some macro magic to guarantee your VTable struct
     always matches what’s actually defined in the class.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这么简单！当然，你可能希望开始将这些内容封装在更好的类中。你也可以使用一些宏魔术来确保你的VTable结构始终与类中实际定义的内容匹配。
 - en: Conclusion
   id: totrans-split-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: 'Hopefully you’ve seen how useful playing with the VTable can be — and also
     that it’s not so hard. I encourage you to try this for yourself. The end result
     will be a faster program and happier developers. There’s something very satisfying
@@ -417,12 +479,15 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望你已经看到了玩弄VTable的有用性，而且也发现这并不难。我鼓励你亲自尝试一下。最终结果将是一个更快的程序和更快乐的开发者。能够像这样编写代码真是一件非常令人满足的事情：
 - en: and not worry about undue overhead or registering functions.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且不必担心不必要的开销或者注册函数。
 - en: The full source for all examples and tests is [on GitHub](https://github.com/cleak/VirtualFunctionPerf).
     Happy hacking!
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有示例和测试的完整源代码位于[GitHub](https://github.com/cleak/VirtualFunctionPerf)上。祝编程愉快！
