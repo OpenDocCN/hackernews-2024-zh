@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:07:52'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:07:52
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Going in circles without a real-time clock
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在没有实时时钟的情况下打转
 - en: 来源：[https://rachelbythebay.com/w/2024/04/10/rtc/](https://rachelbythebay.com/w/2024/04/10/rtc/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://rachelbythebay.com/w/2024/04/10/rtc/](https://rachelbythebay.com/w/2024/04/10/rtc/)
 - en: Going in circles without a real-time clock
   id: totrans-split-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在没有实时时钟的情况下打转
 - en: I have a story about paper cuts when using a little Linux box.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我有一个关于使用小型Linux盒子时的纸张切口故事。
 - en: One of my sites has an older Raspberry Pi installed in a spot that takes some
     effort to access. A couple of weeks ago, it freaked out and stopped allowing remote
     logins. My own simple management stuff was still running and was reporting that
@@ -41,6 +49,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的一个站点安装了一台老旧的树莓派，位置不太方便访问。几周前，它突然不允许远程登录。我的简单管理工具仍在运行，并报告有问题，但没有足够的详细信息来找出发生了什么。
 - en: I had to get a console connected to it in order to find out that it was freaking
     out about its filesystem because something stupid had apparently happened to the
     SD card. I don't know exactly why it wouldn't let me log in. Back in the old days,
@@ -53,6 +62,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我必须连接控制台以找出它对文件系统感到困扰，因为SD卡上显然发生了一些愚蠢的事情。我不知道为什么它不让我登录。在过去，即使磁盘完全损坏，只要缓存中还有足够的东西，你仍然可以进入机器
+    - inetd + telnetd + login +你的shell，或者sshd +你的shell和（当然）所有这些东西依赖的库。我猜发生了一些事情，方程的某些部分丢失了。如今，随着整个xz事务的发展，有更多的移动部件。无论如何。
 - en: So I rebooted it, and went about my business, and it wasn't until a while later
     that I noticed the thing's clock was over a day off. chrony was running, so WTF,
     right? chrony actually said that it had no sources, so it was just sitting there
@@ -60,6 +71,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我重新启动了它，然后继续做我的事情，直到后来我注意到那个东西的时钟已经超过一天了。chrony在运行，所以什么鬼，对吧？chrony实际上说它没有源，所以它只是坐在那里感到难过。
 - en: This made little sense to me, given that chrony is one of the more [clueful](/w/2022/12/21/boot/)
     programs which will keep trying to resolve sources until it gets enough to feel
     happy about using them for synchronization. In the case of my stock install, that
@@ -67,12 +79,14 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 对我来说这有点不合理，因为chrony是其中一个更[聪明](/w/2022/12/21/boot/)的程序，会不断尝试解析源，直到它获取足够的源来进行同步。在我的标准安装中，这意味着它正在尝试使用2.debian.pool.ntp.org。
 - en: I tried to resolve it myself on the box. It didn't work. I queried another resolver
     (on another box) and it worked fine. So now what, on top of chrony not working,
     unbound wasn't working too?
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我试图在盒子上自己解决这个问题。但没用。我在另一个解析器（在另一台盒子上）上查询，结果正常。那么现在怎么办，在chrony不工作的同时，未绑定也不工作？
 - en: 'A little context here: this box was reconfigured at some point to run its own
     recursive caching resolver for the local network due to some other (*cough* [TP-Link](/w/2023/11/17/omada/)
     *cough*) problems I had last year. It was also configured to *only* use that local
@@ -80,27 +94,33 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 一点背景：这个盒子曾经在某个时候重新配置，以运行自己的递归缓存解析器，用于本地网络，因为去年我遇到了一些其他问题（*咳咳* [TP-Link](/w/2023/11/17/omada/)
+    *咳咳*）。它还配置为**仅**使用该本地的未绑定进行DNS解析。
 - en: This started connecting some of the dots. chrony wasn't setting the clock because
     it couldn't resolve hosts in the NTP pool. It couldn't resolve hosts because unbound
     wasn't working. But, okay, why wasn't unbound working?
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这开始串联起一些事实。chrony未能设置时钟，因为无法解析NTP池中的主机。无法解析主机是因为未绑定未工作。但好吧，为什么未绑定不工作呢？
 - en: Well, here's the problem - it *mostly* was. I could resolve several other domains
     just fine. It's just that ntp.org stuff wasn't happening.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，问题就在这里 - 它*大部分*是。我可以正常解析其他几个域名。只是ntp.org的东西没法解析。
 - en: (This is where you start pointing at the screen if this has happened to you
     before.)
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: （如果你以前遇到过这种情况，这时你就会开始指着屏幕说。）
 - en: So, what would make only some domains not resolve... but not all of them...
     on a box... with a clock that's over a day behind?
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，在一个时钟超过一天的盒子上，只有一些域名解析不了... 但不是所有的...会是什么原因呢？
 - en: Yeah, that's about when it fit together. I figured they must be running DNSSEC
     on that zone (or some part of it), and it must have a "not-before" constraint
     on some aspect of it. I've been down [this road](/w/2018/03/20/sshclock/) before
@@ -108,27 +128,33 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，大概那时候一切都成了一片混乱。我想他们一定在那个区域上运行了 DNSSEC（或者某个部分），并且它必须对它的某些方面有一个“不早于”的约束。我以前在
+    SSH 证书的问题上遇到过类似的情况，为什么不是 DNS 呢？
 - en: I added another resolver to resolv.conf, then chrony started working, and that
     brought the time forward, and then unbound started resolving the pool, and everything
     else returned to normal.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我添加了另一个解析器到 resolv.conf，然后 chrony 开始工作，时间向前推进，然后 unbound 开始解析池，一切恢复正常。
 - en: By "everything else", I also mean WireGuard. Did you know that if your machine
     gets far enough out of sync, that'll stop working, too? I had no idea that it
     apparently includes time in its crypto stuff, but what other explanation is there?
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于“其他一切”，我也指的是 WireGuard。你知道吗，如果你的机器时间严重不同步，它也会停止工作？我不知道它显然包括时间在它的加密中，但还有什么其他解释呢？
 - en: Backing up, let's talk about what happened, because most of this is on me.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 回溯一下，让我们谈谈发生了什么，因为大部分责任在我身上。
 - en: I have an old Pi running from an SD card. It freaked out. It took me about a
     day and a half to get to where it was so I could start working on fixing it.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我有一个运行在 SD 卡上的旧树莓派。它出了问题。我花了大约一天半的时间到达它的状态，这样我就可以开始修复它了。
 - en: This particular Pi doesn't have a real-time clock. The very newest ones (5B)
     *do*, but you have to actually buy a battery and connect it. By default, they
     are in the same boat. This means when they come up, they use some nonsense time
@@ -136,6 +162,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这台特定的树莓派没有实时时钟。最新的一些（5B）*有*，但是你必须购买一个电池并连接它。默认情况下，它们也处于同样的困境。这意味着当它们启动时，它们会在一段时间内使用一些无意义的时间。我不确定那是多少，因为……
 - en: systemd does something of late where it will try to put the clock back to somewhere
     closer to "now" when it detects a value that's too far in the past. I suspect
     it just digs around in the journal, grabs the last timestamp from that, and runs
@@ -145,23 +172,28 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: systemd 最近做了一些事情，当它检测到时间值过于久远时，会试图将时钟调回到接近“现在”的某个地方。我怀疑它只是在日志中翻找，抓取最后的时间戳，然后继续运行。通常情况下这是挺好的，因为如果你只是执行了命令重启，差异只有几秒钟，而你的时间同步功能很快就会修复其余部分。
 - en: But, recall that the machine sat there unable to write to its "disk" (SD card)
     for well over a day, so that's the timestamp it used. If I had gotten there sooner,
     I guess it wouldn't have been so far off, but that wasn't an option.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，请记住，那台机器坐在那里超过一天没有写入它的“磁盘”（SD 卡），所以它使用了那个时间戳。如果我早点到那里，我想时间不会差那么多，但那并不是一个选项。
 - en: Coming up with time that far off made unbound unable to resolve the ntp.org
     pool servers, and that made chrony unable to update the clock... which made unbound
     unable to resolve the pool servers... which...
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 时间差太大，导致 unbound 无法解析 ntp.org 的池服务器，进而使 chrony 无法更新时钟…… 这使得 unbound 无法解析池服务器……
+    导致……
 - en: My own configuration choice which pointed DNS resolution only at localhost did
     the rest.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我自己的配置选择，只将 DNS 解析指向本地主机。
 - en: So, what now? Well, first of all, I gave it secondary and tertiary resolvers
     so that particular DNS anomaly won't be repeated. Then I explicitly gave chrony
     a "peer" source of a nearby host (another Pi, unfortunately) which might be able
@@ -170,14 +202,17 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，现在怎么办？首先，我给了它第二和第三个解析器，这样特定的 DNS 异常就不会重复了。然后，我明确地给 chrony 一个“peer”源，这是一个附近的主机（另一台树莓派，不幸的是），即使连接到外部的链路出了问题，也可以在紧急情况下帮助它。
 - en: There's a certain problem with thinking of these little boxes as cheap. They
     are... until they aren't. To mangle a line from jwz, a Raspberry Pi is only cheap
     if your time has no value.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 将这些小盒子视为便宜的某个问题。它们确实便宜…… 直到它们不是。用 jwz 的一句话来说，如果你的时间没有价值，树莓派只是便宜的。
 - en: As usual, this post is not a request for THE ONE to show up. If you are THE
     ONE, you don't make mistakes. We know. Shut up and go away.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 像往常一样，这篇文章并不是要求“THE ONE”出现。如果你是“THE ONE”，你不会犯错。我们知道。闭嘴，离开。
