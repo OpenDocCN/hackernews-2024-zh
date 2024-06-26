@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 15:05:35'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:05:35
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Cranelift code generation comes to Rust [LWN.net]
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Cranelift代码生成进入Rust[LWN.net]
 - en: 来源：[https://lwn.net/SubscriberLink/964735/8b795f23495af1d4/](https://lwn.net/SubscriberLink/964735/8b795f23495af1d4/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lwn.net/SubscriberLink/964735/8b795f23495af1d4/](https://lwn.net/SubscriberLink/964735/8b795f23495af1d4/)
 - en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
     made this article — and everything that surrounds it — possible. If you appreciate
     our content, please [buy a subscription](/subscribe/) and make the next set of
@@ -31,14 +37,17 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_TB
+  zh: '**本文由LWN订阅者支持**LWN.net的订阅者使本文及其周边一切成为可能。如果您欣赏我们的内容，请[购买订阅](/subscribe/)，支持我们制作更多的文章。'
 - en: By **Daroc Alden**
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者：**达洛克·奥尔登**
 - en: March 15, 2024
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年3月15日
 - en: '[Cranelift](https://cranelift.dev/) is an Apache-2.0-licensed code-generation
     backend being developed as part of the [Wasmtime](https://wasmtime.dev/) runtime
     for [WebAssembly](https://webassembly.org/). In October 2023, the Rust project
@@ -51,6 +60,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Cranelift](https://cranelift.dev/)是作为[WebAssembly](https://webassembly.org/)运行时的一部分开发的Apache-2.0许可的代码生成后端。2023年10月，Rust项目将Cranelift作为其每夜构建工具链的可选组件提供给用户。现在用户可以将Cranelift作为Rust项目调试构建的代码生成后端，这是查看Cranelift不同之处的一个适当时机。Cranelift旨在通过仅优先考虑最重要的优化来生成比现有编译器更快的代码。'
 - en: Fast compiler times are one of the many things that users want from their programming
     languages. Compile times have been a source of [complaints](https://fasterthanli.me/articles/why-is-my-rust-build-so-slow)
     about Rust (and [other languages that use LLVM](/Articles/959915/)) for some time,
@@ -63,6 +73,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 快速编译时间是用户从他们的编程语言中想要的许多功能之一。尽管Rust和LLVM项目持续稳定进展，编译时间长期以来一直是关于Rust（以及[使用LLVM的其他语言](/Articles/959915/)）的抱怨来源。此外，一个能够快速生成代码的编译器在当前更合理使用解释器的应用程序中有潜在的可行性。所有这些因素都表明，一个专注于编译速度而不是生成代码速度的编译器可能非常有价值。
 - en: Cranelift's first use was as the backend of Wasmtime's just-in-time (JIT) compiler.
     Many languages now come equipped with JIT compilers, which often use specialized
     tricks to quickly compile isolated functions. For example, Python [recently added
@@ -74,6 +85,8 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Cranelift首次用作Wasmtime的即时（JIT）编译器的后端。现在许多语言都配备了JIT编译器，这些编译器通常使用专门的技巧来快速编译孤立的函数。例如，Python
+    [最近添加了一个复制和补丁的JIT](/Articles/958350/)，它通过在内存中获取每个Python字节码的预编译代码段并将它们拼接在一起来工作。JIT编译器通常使用诸如推测性优化之类的技术，这使得在其原始上下文之外重用编译器变得困难，因为它们对设计时的特定语言进行了许多假设。
 - en: The developers of Cranelift chose to use a more generic architecture, which
     means that Cranelift is usable outside of the confines of WebAssembly. The project
     was [originally designed](https://github.com/bytecodealliance/wasmtime/tree/main/cranelift#planned-uses)
