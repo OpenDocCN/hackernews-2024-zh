@@ -2,63 +2,76 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:49:57'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:49:57'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: foreach loop - Why does Rust choose not to provide `for` comprehensions? - Programming
     Language Design and Implementation Stack Exchange
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: foreach循环 - 为什么Rust选择不提供`for`理解？ - 编程语言设计与实现Stack Exchange
 - en: 来源：[https://langdev.stackexchange.com/questions/2848/why-does-rust-choose-not-to-provide-for-comprehensions](https://langdev.stackexchange.com/questions/2848/why-does-rust-choose-not-to-provide-for-comprehensions)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://langdev.stackexchange.com/questions/2848/why-does-rust-choose-not-to-provide-for-comprehensions](https://langdev.stackexchange.com/questions/2848/why-does-rust-choose-not-to-provide-for-comprehensions)
 - en: Python List Comprehensions
   id: totrans-split-6
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Python列表理解
 - en: 'In Python, there are 3 blessed collections -- `list`, `set`, and `dict` --
     for which syntactic sugar built into the language allow creating one, or the other,
     directly. The List Comprehension syntax available in Python allows creating either:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中，有3个受到祝福的集合 -- `list`、`set`和`dict` -- 其中语法糖内建到语言中，允许直接创建其中之一。Python中可用的列表理解语法允许创建：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This is great when you use them... and less so when you'd like another.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您使用它们时很棒... 当您希望另一个时则不是那么棒。
 - en: 'Equality: no second-class citizen in Rust!'
   id: totrans-split-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 'Equality: Rust中没有二等公民！'
 - en: Rust is a Systems Programming Language.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust是一种系统编程语言。
 - en: 'In Python, most developers do not know, nor care, exactly how `dict` works
     under the hood: what''s the memory layout? The type of hash-map used? The hashing
     algorithm used?'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中，大多数开发者既不了解，也不关心`dict`在幕后是如何工作的：内存布局是什么？使用的哈希图类型是什么？使用的哈希算法是什么？
 - en: Systems Programmers, however, do care. They may care due to performance reasons,
     they may care due to the lack of memory allocation in their domain (embedded,
     kernel). This means that unlike Python developers, they are *much* more likely
@@ -66,82 +79,98 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，系统程序员关心。他们可能关心是由于性能原因，也可能由于在他们的领域（嵌入式、内核）中缺乏内存分配。这意味着与Python开发者不同，他们更有可能需要专门的集合，而不是一般的标准集合。
 - en: And therein lies the rub. The thought of all those specialized collections being
     second-class citizens, and much more awkward to use than 3 blessed standard collections,
     did not sit well with Rust developers.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 而问题的关键在于：所有这些专门的集合都被看作是二等公民，而且比3个受到祝福的标准集合更加笨拙，这在Rust开发者中并不受欢迎。
 - en: 'Therefore, instead of creating a list-comprehension syntax that would only
     be usable with 3 standard collections, they instead focused on making the operations
     you are looking for work with any collection via Rust''s powerful trait system:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，与其创建只能用于3个标准集合的列表理解语法，他们反而专注于通过Rust强大的特性系统使您正在寻找的操作适用于任何集合：
 - en: The `Iterator` trait allows iterating over anything, and provides many way to
     filter/transform the elements being yielded.
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`Iterator` trait允许迭代任何东西，并提供许多过滤/转换正在产出的元素的方法。'
 - en: The `FromIterator` trait allows any type implementing it to be built from an
     `Iterator`.
   id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '`FromIterator` trait允许任何实现它的类型从`Iterator`构建。'
 - en: 'Therefore, it is perfectly possible to create one collection from another:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，完全可以从一个集合创建另一个集合：
 - en: '[PRE1]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '*Note: It is not possible to *directly* create an array due to fallibility
     concerns, though maybe one should submit a RFC to allow collecting into a `Result<[_;
     _], _>` as that would handle the fallibility concerns.*'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注意：由于可能的失败性问题，不可能*直接*创建数组，虽然也许应该提交一个RFC来允许收集到`Result<[_; _], _>`，因为那样可以处理失败性问题。*'
 - en: 'Iterator chains are very powerful: take, skip, filter, filter_map, enumerate,
     ... so that list comprehensions would be a step down (they can only map and filter)
     in many cases.'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 迭代器链非常强大：take、skip、filter、filter_map、enumerate等等，因此在许多情况下，列表理解将是一种下降（它们只能映射和过滤）。
 - en: Is it worth having special syntax for the easy case? Well, so far, the answer
     from Rust developers has been that they don't feel it would be.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了轻松的情况值得吗？嗯，到目前为止，来自Rust开发者的答案是他们觉得不值得。
 - en: '* * *'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'On a tangent, the same iterators chains are available for *extending* an existing
     collection with more elements:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一句，相同的迭代器链也可用于*扩展*现有集合以添加更多元素：
 - en: '[PRE2]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The `extend` method takes any iterator yielding elements of the same type as
     the collection.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '`extend`方法接受任何产生与集合相同类型元素的迭代器。'
 - en: Macros!
   id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 宏！
 - en: It should also be noted that Rust has macros.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 还应注意Rust有宏。
 - en: 'A quick search on [crates.io](https://crates.io) reveals that some Rust users
     felt the need for quick & easy, and they went ahead and created macros for it,
     such as the [`list_comprehension_macro`](https://crates.io/crates/list_comprehension_macro)
@@ -149,17 +178,23 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [crates.io](https://crates.io) 上快速搜索表明，一些 Rust 用户感到需要快速且简便的功能，于是他们前去创建了相应的宏，比如
+    [`list_comprehension_macro`](https://crates.io/crates/list_comprehension_macro)
+    crate（以及其他很多）。来自 README：
 - en: '[PRE3]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This, in turn, is also a disincentive to include any such functionality in the
     standard library, as it's easy enough to make your own, or use a 3rd-party library.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 反过来说，这也是不鼓励将任何此类功能包含在标准库中的因素之一，因为很容易自己制作，或者使用第三方库。
 - en: '*Note: a somewhat minimal standard library is also an explicit goal of Rust
     developers.*'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注意：相对较小的标准库也是 Rust 开发者的一个显式目标。*'
