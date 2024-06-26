@@ -316,6 +316,9 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多可能具有相同隐藏状态大小的循环架构，但我们的工作突显了特征化（例如线性注意力特征映射、状态更新机制）的重要性。我们在Based中选择的映射实际上非常简单（*高中的微积分就足够了*）：用Taylor级数逼近指数。我们计算$\phi$使得$\phi(q)
+    \phi(k)^T \approx \exp (q k^T)$。我们仅使用二阶Taylor级数，如同我们之前的工作中，其中$\hat{\exp}(x) =
+    1 + x + x^2 / 2$！请注意，如果$x$的维度为$d’$，那么$x^2$项的维度将为$d’^2$！键值外积的结果（步骤1以上）在$d’$上迅速增长，为Based扩展状态大小。
 - en: '*How much does our choice of featurization vs. the expanded state size matter
     when leading to the quality of Based?*The model’s ability to *use the state effectively*
     is key. Shown in the accuracy vs. recurrent state size tradeoff curves, several
@@ -331,11 +334,15 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我们在选择特征化与扩展状态大小时对Based质量的影响有多大？* 模型有效地*使用状态*是关键。在准确性与循环状态大小权衡曲线上显示，几种替代Taylor映射的选择*低于*帕累托前沿。在下文的绘图中，我们与扩展状态大小的模型进行比较，这些模型使用了学习的投影并应用了文献中的流行特征映射（[Performer](https://arxiv.org/abs/2009.14794),
+    [CosFormer](https://arxiv.org/abs/2202.08791), [PosELU](https://proceedings.mlr.press/v119/katharopoulos20a.html)）。我们在[MQAR
+    synthetic](https://github.com/HazyResearch/zoology)测试集上训练这些模型进行联想回忆，并扫描所有点的超参数（学习率），发现Taylor映射效果最好。这种趋势延续到了Pile语言建模语料库的真实世界实验中（详见我们的论文）。'
 - en: IO and dataflow-aware implementation
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: IO和数据流感知的实现
 - en: The next key question is how to make Based competitive in wall clock efficiency.
     Linear attention is theoretically more efficient than standard attention as a
     function of sequence length. However, existing implementations of linear attention
@@ -344,6 +351,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个关键问题是如何使Based在墙钟效率上具有竞争力。线性注意力在理论上比标准注意力在序列长度函数上更高效。然而，现有的线性注意力方法实现通常比像[FlashAttention](https://github.com/Dao-AILab/flash-attention)这样经过优化的注意力实现*更慢*。
 - en: In Based, we use the 2nd degree Taylor approximation, which expands the dimension
     of the keys, leading to large state sizes and large memory consumption O(Nd’²d),
     in sequence length N, key dimension d’, and value dimension d (discussed above).
@@ -352,6 +360,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Based中，我们使用了二次Taylor近似，扩展了键的维度，导致大的状态大小和大的内存消耗O(Nd’²d)，其中N为序列长度，d’为键的维度，d为值的维度（如上所述）。由于键值状态较大，简单的Taylor线性注意力实现变得相当慢。
 - en: First let’s revisit a bit of context on how the hardware works. GPUs have small
     amounts of fast-to-access memory (thread-specific registers, shared memory at
     the warp/32-threads level using SRAM) and large amounts of slow-to-access memory
