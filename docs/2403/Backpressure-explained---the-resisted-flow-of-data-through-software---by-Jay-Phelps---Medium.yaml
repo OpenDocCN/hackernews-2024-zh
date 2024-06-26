@@ -2,85 +2,102 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:40:49'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:40:49'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Backpressure explained — the resisted flow of data through software | by Jay
     Phelps | Medium
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 通过杰伊·菲尔普斯（Jay Phelps）在Medium上的文章解释背压——软件中数据的阻力流动。
 - en: 来源：[https://medium.com/@jayphelps/backpressure-explained-the-flow-of-data-through-software-2350b3e77ce7](https://medium.com/@jayphelps/backpressure-explained-the-flow-of-data-through-software-2350b3e77ce7)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@jayphelps/backpressure-explained-the-flow-of-data-through-software-2350b3e77ce7](https://medium.com/@jayphelps/backpressure-explained-the-flow-of-data-through-software-2350b3e77ce7)
 - en: Backpressure explained — the resisted flow of data through software
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 背压解释——数据通过软件的阻力流动
 - en: Backpressure (or back pressure) is something nearly every software engineer
     will have to deal with at some point, and for some it’s a frequent problem. But
     the term itself isn’t nearly as understood and recognized as such.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 背压（或背压）是几乎每个软件工程师在某个时候都必须处理的问题，对于一些人来说，这是一个频繁的问题。但这个术语本身并没有像这样被理解和认识。
 - en: In this post I’m going to elaborate on what exactly backpressure is, when it’s
     common, and the strategies we can use to mitigate it.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我将详细阐述什么是背压，什么时候会普遍出现以及我们可以用来减轻它的策略。
 - en: 'I recently gave a talk about this at ReactiveConf:'
   id: totrans-split-9
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我最近在ReactiveConf上关于这个问题发表了演讲：
 - en: The Definition
   id: totrans-split-10
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 定义
 - en: In the software world “backpressure” is an analogy borrowed from fluid dynamics,
     like in automotive exhaust and house plumbing.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在软件世界中，“背压”是从流体动力学借来的一个类比，就像汽车排气和房屋管道中的情况一样。
 - en: 'The [Wikipedia definition](https://en.wikipedia.org/wiki/Back_pressure):'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Wikipedia的定义](https://en.wikipedia.org/wiki/Back_pressure)：'
 - en: Resistance or force opposing the desired flow of fluid through pipes.
   id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 阻力或反对希望通过管道流动的流体。
 - en: 'In the context of software, the definition could be tweaked to refer to the
     flow of data within software:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在软件的背景下，可以调整定义以指涉软件内部数据的流动：
 - en: Resistance or force opposing the desired **flow of data through software**.
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 阻力或反对希望通过软件的**数据流动**。
 - en: The purpose of software is to take input data and turn it into some desired
     output data. That output data might be JSON from an API, it might be HTML for
     a webpage, or the pixels displayed on your monitor.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 软件的目的是接受输入数据并将其转换为所需的输出数据。该输出数据可能来自API的JSON，可能是网页的HTML，或者是显示在您监视器上的像素。
 - en: 'Backpressure is when the progress of turning that input to output is resisted
     in some way. In most cases that resistance is computational speed — trouble computing
     the output as fast as the input comes in — so that’s by far the easiest way to
@@ -89,12 +106,14 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 背压是指在某种方式上阻碍将输入转化为输出的进程。在大多数情况下，这种阻力是计算速度——即以与输入进入速度相同的速度计算输出可能会有问题——因此这是最简单的看待它的方式。但也可能会发生其他形式的背压：例如，如果您的软件必须等待用户采取某些操作。
 - en: By the way, you might eventually hear someone use the word “backpressure” to
     actually mean something has the ability to **control or handle backpressure.**
   id: totrans-split-18
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 顺便说一句，你可能会听到有人用“背压”这个词来指代某物具有**控制或处理背压的能力**。
 - en: 'For example, if someone says: “I made this new library with built-in backpressure…”
     they probably mean it somehow helps you manage backpressure, not that it actually
     intrinsically is the cause of it. Backpressure is not “desirable” except when
@@ -103,22 +122,26 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 例如，如果有人说：“我用内置背压的新库……”他们可能是指它在某种程度上帮助你管理背压，而不是说它本质上是背压的原因。除非不可避免且你希望保护其他对象免受其影响，否则背压并不“理想”。
 - en: Even with these definitions in hand, what “backpressure” really means can still
     be a little hazy at this point. I find many people have their “ah ha” moment after
     hearing some examples.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使有了这些定义，到底“背压”意味着什么在某些时候仍可能有些模糊。我发现很多人在听过一些例子后才有了他们的“啊哈”时刻。
 - en: Examples of Backpressure
   id: totrans-split-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 背压的例子
 - en: 'I Love Lucy: Chocolate Factory'
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我爱露茜：巧克力工厂
 - en: Let’s start with an analogy. In the 50s television show “I Love Lucy” there’s
     an episode in which Lucy is working at a candy packaging plant. Her job is to
     take candy from a conveyor belt and wrap each of them in paper. Easy enough, except
@@ -127,11 +150,13 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从一个类比开始。在50年代的电视节目《我爱露茜》中，有一集讲述露茜在糖果包装厂工作的情节。她的工作是从传送带上取出糖果并用纸包装每一个。听起来很简单，但问题是她很快发现传送带的速度比她处理的速度快。于是引发了一连串的笑话。
 - en: Thanks to my old co-worker **Randall Koutnik for suggesting this example years
     ago!**
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢我的老同事**Randall Koutnik 多年前建议这个例子！**
 - en: 'This is a perfect example of backpressure. She actually tries two different
     ways of dealing with it: setting some aside to get to later (buffering), and eventually
     she starts eating and hiding them in her hat (dropping). However, in the case
@@ -141,16 +166,19 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是背压的一个典型例子。她实际上尝试了两种不同的处理方法：将一些设置到稍后处理（缓冲），最终开始吃掉并藏在她的帽子里（丢弃）。然而，在巧克力工厂的情况下，这些背压策略都不可行。相反，她需要减慢传送带的速度；换句话说，她需要能够控制生产者的速度。我们稍后会更详细地讨论策略！
 - en: Reading and Writing Files
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 读写文件
 - en: Now we’ll talk about software-related backpressure. The most common case is
     when dealing with the file system.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们将讨论与软件相关的背压。最常见的情况是在处理文件系统时。
 - en: Writing to a file is [slower than reading](https://www.lifewire.com/what-are-read-and-write-speeds-2640236)
     a file. Imagine a hard drive that provides an effective read speed of 150 MB/s
     and a write speed of 100 MB/s. If you were to read a file into memory as fast
@@ -161,11 +189,14 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 写入文件比[读取文件慢](https://www.lifewire.com/what-are-read-and-write-speeds-2640236)。想象一下，一个硬盘提供有效的读取速度为每秒
+    150 MB，写入速度为每秒 100 MB。如果你尽可能快地读取文件到内存中，同时又以尽可能快的速度将其写回磁盘——你将不得不每秒缓冲 50 MB。这是一个不断增长的差额！直到输入文件完全被读取完毕，你才能开始赶上并还清这笔债务。
 - en: Now imagine doing this with a 6 GB file. By the time you’ve read the file completely,
     you’d have a 2 GB buffer you still need to finish writing.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在想象一下，用一个 6 GB 的文件来做这个操作。当你完全读取文件时，你仍然有一个 2 GB 的缓冲区需要完成写入。
 - en: '[PRE0]'
   id: totrans-split-30
   prefs: []
@@ -178,28 +209,34 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样会造成大量的内存浪费。在某些系统上，这甚至可能超过可用内存的数量。或者想象一下，这是一个 Web 服务器为多个请求执行此操作的情况。希望很明显，这种方法在许多情况下都不可行。
 - en: 'Fear not, the solution is simple: only read as fast as you can write. Nearly
     all I/O libraries will provide abstractions to do this for you automatically,
     often with the concept of “streams” and “pipes”. [Node.js is a great example](https://nodejs.org/en/docs/guides/backpressuring-in-streams/).'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 不用担心，解决方法很简单：只需尽可能快地读取与写入一样快。几乎所有 I/O 库都会提供抽象来自动完成此操作，通常使用“流”和“管道”的概念。[Node.js
+    是一个很好的例子](https://nodejs.org/en/docs/guides/backpressuring-in-streams/)。
 - en: Server Communication
   id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 服务器通信
 - en: The next example is communication between servers. Today it’s very common to
     employ a microservice architecture where responsibilities are separated into multiple
     servers.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个例子是服务器之间的通信。如今，采用微服务架构是非常常见的，其中责任被分离到多个服务器中。
 - en: Backpressure can commonly occur in this scenario when one server is sending
     requests to another faster than it can process them.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，当一个服务器发送请求给另一个服务器的速度超过其处理速度时，通常会发生背压。
 - en: If server A sends 100 rps (requests per second) to server B, but server B can
     only process 75 rps, you’ve got a 25 rps deficit. Server B might be falling behind
     because it needs to do processing or it might also need to communicate with other
@@ -207,6 +244,8 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果服务器 A 向服务器 B 发送 100 个 rps（每秒请求），但服务器 B 只能处理 75 个 rps，那么就会出现 25 个 rps 的缺口。服务器
+    B 可能因为需要进行处理或者需要与下游的其他服务器进行通信而落后。
 - en: Either way, server B needs to deal with backpressure somehow. Buffering that
     25 rps deficit is one option, but if that increase remains constant it’ll soon
     run out of memory and fall over. Dropping requests is another option, but it’s
@@ -214,6 +253,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论哪种方式，服务器 B 都需要想办法处理背压。缓冲这 25 个 rps 的差额是一种选择，但如果这种增加保持恒定，很快就会耗尽内存并崩溃。丢弃请求是另一种选择，但普遍要求不能接受丢弃请求。
 - en: The ideal option is for server B to control the rate in which server A sends
     requests, but again that’s not always viable — if server A is requesting on behalf
     of a user, you can’t always tell or control the user to slow down, but sometimes
@@ -223,6 +263,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 理想的选择是让服务器 B 控制服务器 A 发送请求的速率，但这并不总是可行的 — 如果服务器 A 代表用户请求，你不能总是告诉或控制用户放慢速度，但有时候可以！尽管如此，通常最好让请求服务器缓冲，这样你可以更好地分配内存负载到下游，避免影响其他请求者。
 - en: For example, if three different types of services (A, B, C) all make requests
     to the same downstream service (Z), and one of the four (A) is experiencing high
     load, service Z could effectively tell service A to “slow down” (control the producer)
@@ -237,6 +278,8 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果三种不同类型的服务（A、B、C）都向同一个下游服务（Z）发出请求，其中一种服务（A）遇到高负载，服务 Z 可以有效地告诉服务 A “放慢速度”（控制生产者），导致服务
+    A 缓冲请求。如果继续这样下去，最终服务 A 将耗尽内存，但其他两种服务（B、C）和下游服务 Z 仍将保持运行，因为它不允许一个行为不端的服务阻塞其他服务的平等访问。在这种情况下，可能不可避免地会发生故障，但我们限制了范围，防止了级联拒绝服务。这将是控制生产者的情况，因此他们需要缓冲，但重要的是*谁*来缓冲。
 - en: When I worked at Netflix, this sort of backpressure was common. I talk about
     it in [one of my talks](https://www.youtube.com/watch?v=uODxUJ5Jwis). Ultimately,
     which strategy we used to control backpressure depended on the use case. Sometimes
@@ -245,6 +288,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在 Netflix 工作时，这种类型的反压力很常见。我在[我的其中一个演讲](https://www.youtube.com/watch?v=uODxUJ5Jwis)中提到过。最终，我们用来控制反压力的策略取决于具体情况。有时候我们能够通过像[RSocket](http://rsocket.io/)和[gRPC](https://grpc.io/)这样的工具来控制生产者。
 - en: If handling services-at-scale interests you, you’ll want to learn more about
     [Chaos Engineering](https://www.gremlin.com/chaos-monkey/the-origin-of-chaos-monkey/)
     and how you can intentionally induce these failures in production to test resiliency
@@ -253,11 +297,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果你对规模化处理服务感兴趣，你可能会想了解更多关于[混沌工程](https://www.gremlin.com/chaos-monkey/the-origin-of-chaos-monkey/)的信息，以及如何在生产中故意引发这些故障来测试系统的弹性和备用方案。
 - en: Rendering UI
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 渲染 UI
 - en: The final example of backpressure is rendering a UI app. Backpressure happens
     when you can’t render as fast as you need to. It could be as simple as trying
     to render a giant list, debouncing rapid keyboard events, or more complex situations
@@ -266,12 +312,16 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终的反压力示例是渲染 UI 应用程序。当你无法按需渲染时就会出现反压力。它可能简单到尝试渲染一个巨大的列表、去抖动快速的键盘事件，或者更复杂的情况，比如尝试显示每秒发出
+    20,000 个事件的 WebSocket 的输出。
 - en: Because this sort of backpressure can be *very* complex, often involving [death
     by a thousand cuts](https://logrocket.com/blog/death-by-a-thousand-cuts-a-checklist-for-eliminating-common-react-performance-issues/),
     let’s focus on the WebSocket example since it’s easier to see how it can go wrong.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为这种类型的反压力可能非常复杂，通常涉及到[千刀万剐](https://logrocket.com/blog/death-by-a-thousand-cuts-a-checklist-for-eliminating-common-react-performance-issues/)，让我们专注于
+    WebSocket 的例子，因为更容易看出问题所在。
 - en: If a WebSocket is emitting 20k, 100k, or even 200k+ messages per second, there’s
     no way you’re going to be able to render each of those messages as they come in.
     Zero chance. So we need some sort of backpressure strategy. If we can’t [control
@@ -280,6 +330,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个 WebSocket 每秒发出 20k、100k，甚至 200k+ 条消息，你根本无法在它们到达时渲染每条消息。没有机会。因此，我们需要一些反压力策略。如果我们无法从服务器端[控制速率](https://github.com/rsocket/rsocket-js)，我们将需要在客户端进行缓冲或丢弃。
 - en: In the case of buffering, you could perhaps accumulate incoming messages in
     an array and periodically flush it on each [requestAnimationFrame](https://www.html5rocks.com/en/tutorials/speed/rendering/),
     rendering that list into the DOM. Alternatively, you could buffer them for some
@@ -290,37 +341,45 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在缓冲情况下，您可以将传入的消息累积到一个数组中，并在每个[requestAnimationFrame](https://www.html5rocks.com/en/tutorials/speed/rendering/)上定期刷新，将列表渲染到DOM中。或者，您可以将它们缓冲一段时间，比如每秒钟一次。如果您将它们附加到现有表格中，您可能还希望使用某种形式的[table
+    virtualization](https://swizec.com/blog/build-list-virtualization/swizec/8167)，因为渲染100k行也将成为一个巨大的瓶颈，同时也是一种反压的形式！
 - en: 'Depending on the actual number of events coming in, one of these approaches
     might work. Otherwise, your only other option is to “drop”: sample only a percentage
     of the incoming messages and filter out the others.'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据实际传入事件的数量，其中一种方法可能会奏效。否则，您唯一的选择就是“drop”：仅对传入消息的一部分进行抽样，并过滤掉其他部分。
 - en: Backpressure Strategies
   id: totrans-split-48
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 反压策略
 - en: 'Aside from scaling up your available compute resources, how you handle backpressure
     can pretty much be summed up with three possible options:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了扩展您可用的计算资源之外，如何处理反压基本上可以总结为三种可能的选择：
 - en: '**Control** the producer (slow down/speed up is decided by consumer)'
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Control** 生产者（通过消费者决定减速/加速）'
 - en: '**Buffer** (accumulate incoming data spikes temporarily)'
   id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Buffer**（临时累积传入数据突发）'
 - en: '**Drop** (sample a percentage of the incoming data)'
   id: totrans-split-52
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Drop**（对传入数据进行百分比抽样）'
 - en: Technically there’s a fourth option — ignore the backpressure — which, to be
     honest, is not a bad idea if the backpressure isn’t causing critical issues. Introducing
     more complexity comes at a cost too.
@@ -328,6 +387,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 技术上讲，还有第四种选择 —— 忽略反压力 —— 老实说，如果反压并没有造成关键性问题，这也不是一个坏主意。引入更多复杂性也是有成本的。
 - en: '**Controlling** the producer is by far the best option. When it’s actually
     possible, it has no real tradeoffs to speak of, other than the overhead of the
     control mechanism itself. You don’t need to use excess memory buffering things
@@ -335,12 +395,14 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 控制生产者无疑是最佳选择。当它确实可行时，除了控制机制本身的开销外，它没有真正的权衡。您不需要在您的端上使用过多内存缓冲东西，也不需要丢弃数据以降低损失。
 - en: Unfortunately, of course controlling the producer isn’t always possible. The
     most clear case is when dealing with user input. Try as we might, it’s not easy
     to control our users!
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，当然并不总是可能控制生产者。最明显的情况是处理用户输入时。尽管我们努力，但控制用户并不容易！
 - en: '**Buffering** is what most people will reach for next. However, always keep
     in mind that buffering is dangerous if unbounded — meaning you don’t have a size
     or time limit to the buffer. Unbounded buffers are a common source of memory crashes
@@ -348,29 +410,34 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Buffering** 是大多数人会尝试的下一步。但请始终记住，如果不加限制地进行缓冲，这是危险的 —— 这意味着您没有缓冲区的大小或时间限制。无限缓冲区是服务器内存崩溃的常见来源。'
 - en: 'When used, always ask yourself: is it possible that the rate the buffer grows
     will ever exceed the rate it is drained for any appreciable amount of time? Refer
     back to the Server Communication example above for an example of this.'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用时，请始终问自己：缓冲区增长的速率是否可能在任何可感知的时间内超过它被排干的速率？有关此示例，请参阅上面的服务器通信示例。
 - en: In fact, some people advocate that buffers should **never** be left unbounded.
     I’m not that strict, but I would say that it is often better to start dropping
     than to fall over completely (run out of memory).
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，有些人主张缓冲区**永远**不应该保持无界限。我不那么严格，但我会说，通常最好开始丢弃而不是完全崩溃（内存耗尽）。
 - en: '**Dropping** is the last strategy, and as mentioned it’s often combined with
     buffering too. Sampling based on time is the most common, e.g. 10% of data per
     second.'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '**Dropping** 是最后的策略，正如前面提到的，它通常也与缓冲结合使用。基于时间的抽样是最常见的方式，例如每秒钟的数据的10%。'
 - en: Choosing a Strategy
   id: totrans-split-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 选择策略
 - en: When deciding which approach to take, the User Experience (UX) can often help
     guide us. Is it a good UX updating a table 100k per second, even if we could?
     Probably not. Would the user rather see a sample updated per second? Or perhaps
@@ -380,17 +447,20 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 在决定采取哪种方法时，用户体验（User Experience，UX）通常可以为我们提供指导。即使我们可以每秒更新 100k 个表格，但这是否是良好的用户体验呢？可能不是。用户可能更愿意看到每秒更新一次的样本？或者重新设计架构，使流数据发送到可以按需读取的数据库中，速度更慢？只有您独特的情况可以告诉您，但请记住，用户体验可以为您提供指导！
 - en: It’s very common for developers to spend a lot of time tuning performance, only
     to end up with a bad UX, when the good UX wouldn’t have had the performance issue
     to begin with.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 对开发者来说，经常花费大量时间来调优性能，最终却得到了不好的用户体验，而良好的用户体验本来就不会有性能问题。
 - en: Code for Backpressure
   id: totrans-split-63
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 用于背压的代码
 - en: I wanted to keep most of this post agnostic of the language/platform you code
     for, since backpressure is a problem we all have to deal with. ***But***, there
     are some patterns you’ll see across ecosystems and I imagine many of my readers
@@ -398,16 +468,20 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望保持这篇文章大部分内容在编码语言/平台上的中立性，因为背压是我们所有人都必须处理的问题。***但***，在不同生态系统中您会看到一些模式，我想许多读者将是
+    Web 开发者。
 - en: 'The term “stream” is unfortunately ambiguous. Elaborating on them all will
     have to be saved for another post, but in summary:'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: “流”这个术语可惜是含糊不清的。详细阐述它们需要另一篇文章来保存，但总结如下：
 - en: Pull
   id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 拉取（Pull）
 - en: With pull-based streams the consumer controls the producer. Usually it’s a 1:1
     request → response style, but there are patterns for `request(n)` as well, like
     [Flowables](https://github.com/ReactiveX/RxJava/wiki/Backpressure-(2.0)) in RxJava.
@@ -419,6 +493,11 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于基于拉取的流，消费者控制生产者。通常是一对一的请求→响应风格，但也有像在 RxJava 中的 [Flowables](https://github.com/ReactiveX/RxJava/wiki/Backpressure-(2.0))
+    这样的 `request(n)` 模式。一些其他的拉取流包括 [Node.js Streams](https://nodejs.org/en/docs/guides/backpressuring-in-streams/)、[Web
+    Streams](https://developer.mozilla.org/en-US/docs/Web/API/Streams_API)，以及 [Async
+    Iterators](http://2ality.com/2016/10/asynchronous-iteration.html) — 对于 JavaScript
+    开发者来说，[IxJS 是一个很棒的异步迭代器库](https://github.com/ReactiveX/IxJS)，其他语言也有类似的实现。
 - en: Depending on who you talk to, many of these are considered hybrid “push-pull”
     if the response is pushed to you asynchronously. Some consider normal synchronous
     [iterators](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterators)
@@ -427,10 +506,13 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据您与之交流的对象，许多人认为这些都是混合的“推-拉”流，如果响应是异步推送给您的话。有些人认为正常的同步 [迭代器](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterators)
+    是传统的“拉”流，有些人则不区分异步/同步，统称为“拉”流。
 - en: '**Push**'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '**推送（Push）**'
 - en: With push-based streams, the producer is in control and pushes data to the consumer
     when it’s available. Often push-streams are used when dealing with user input;
     they model the producer accurately since you can’t control the user. There are
@@ -440,11 +522,15 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于基于推送的流，生产者控制并在数据可用时推送给消费者。通常在处理用户输入时使用推送流；它们准确地模拟了生产者，因为您无法控制用户。有许多库，但到目前为止最受欢迎的是响应式扩展的实现，如
+    [RxJS](https://github.com/ReactiveX/rxjs/)、[RxJava](https://github.com/ReactiveX/RxJava)，可能还有
+    [RxYourFavoriteLanguage](https://github.com/ReactiveX)。
 - en: Summary
   id: totrans-split-71
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 总结
 - en: When I first heard the term “backpressure”, I’ll admit I was intimidated. It
     felt like jargon being used to make the person sound smart — and unfortunately,
     sometimes it is. But in truth it is a real thing, and knowing about it and how
