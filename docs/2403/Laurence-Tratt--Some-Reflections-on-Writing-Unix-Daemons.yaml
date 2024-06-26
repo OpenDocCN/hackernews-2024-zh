@@ -2,34 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:30:10'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:30:10
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Laurence Tratt: Some Reflections on Writing Unix Daemons'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Laurence Tratt: 关于编写 Unix 守护程序的一些反思'
 - en: 来源：[https://tratt.net/laurie/blog/2024/some_reflections_on_writing_unix_daemons.html](https://tratt.net/laurie/blog/2024/some_reflections_on_writing_unix_daemons.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tratt.net/laurie/blog/2024/some_reflections_on_writing_unix_daemons.html](https://tratt.net/laurie/blog/2024/some_reflections_on_writing_unix_daemons.html)
 - en: Unix daemons are programs which run in the background, performing tasks on our
     behalf indefinitely. Daemons are somewhat mysterious, easily overlooked, programs
     of a kind few of us have experience in writing.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Unix 守护程序是在后台运行的程序，无限期地代表我们执行任务。守护程序有些神秘，容易被忽视，是我们很少有经验编写的一类程序。
 - en: In this post I’m going to describe some of the things I’ve learnt in the course
     of writing and maintaining 3 daemons ([extsmail](/laurie/src/extsmail/), [snare](/laurie/src/snare/),
     and [pizauth](/laurie/src/pizauth/)) over 15 years. I’m going to start, however,
@@ -38,11 +45,14 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本篇文章中，我将描述我在编写和维护三个守护程序（[extsmail](/laurie/src/extsmail/)、[snare](/laurie/src/snare/)
+    和 [pizauth](/laurie/src/pizauth/)）15 年来所学到的一些东西。但我将从简要概述守护程序及其启动方式开始，因为这将使本文后面的部分更容易理解。
 - en: Background
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 背景
 - en: 'Let’s start with the most important question: why the term “daemon” and why
     the weird spelling? The term seems to [date from the early 1960s](https://ei.cs.vt.edu/~history/Daemon.html)
     when “operating systems” as we know them today started to take recognisable form.
@@ -55,6 +65,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从最重要的问题开始：为什么使用术语“守护程序”，而且为什么这种奇怪的拼写？这个术语似乎可以追溯到[20世纪60年代初期](https://ei.cs.vt.edu/~history/Daemon.html)，当今天我们所熟知的“操作系统”开始形成。总体术语相当合理，基于[麦克斯韦的恶魔](https://en.wikipedia.org/wiki/Maxwell%27s_demon)，但我认为“古老世界”的伪古文拼写（即额外的“a”）是当时人们觉得有趣的结果。Unix
+    似乎从其早期就使用了“守护程序”的拼写[（见这里）](https://github.com/dspinellis/unix-history-repo/commit/57d94bd7265b0f4c07b74eeb409118de076baef4)。这两种拼写“demon”和“daemon”通常可以互换使用，可能因为前者更为熟悉且被人们的拼写检查器所接受。
 - en: As this post goes on we’ll look at a diverse set of daemons, but to get us started,
     let’s think of “server” processes (e.g. HTTP/web or SMTP/mail servers). These
     tend to have a minimal user-interface, text-file configuration, and some command-line
@@ -65,6 +77,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将逐步介绍各种类型的守护程序，但首先让我们考虑“服务器”进程（例如 HTTP/web 或 SMTP/mail 服务器）。这些通常具有最小化的用户界面、文本文件配置和一些命令行开关。大多数在系统安装后或不久之后进行配置。关键是，这类守护程序不与“人类用户登录”绑定
+    —— 一旦执行守护程序，它就会自行“进入后台”，无限期地运行，即使用户注销。
 - en: Over time, daemons have become more common in non-server contexts. Unix desktops
     start a surprising number of daemons (e.g. for audio multiplexing). Although there’s
     some variety in implementation, some of these end up being tied indirectly to
@@ -74,16 +88,19 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着时间的推移，守护程序在非服务器环境中变得更加普遍。Unix 桌面会启动大量的守护程序（例如用于音频复用）。尽管实现方式有所不同，其中一些最终间接地与桌面登录相关联（即注销将尝试终止它们）。我将忽略这一点，因为这并不重要，主要是为了掩盖这两类守护程序之间更为普遍的共同点。
 - en: Starting a daemon
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 启动守护程序
 - en: Most daemons start running when a system is booted, or when a user starts a
     desktop environment.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数守护程序在系统启动时运行，或者在用户启动桌面环境时运行。
 - en: Because daemons need to run in the background, they have to start – or, more
     accurately, be started – differently to most other programs. Fundamentally, daemons
     need to be somehow “detached” from normal terminal process control so that they
@@ -93,6 +110,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为守护进程需要在后台运行，它们必须以不同于大多数其他程序的方式启动 – 或者更准确地说，被启动。基本上，守护进程需要以某种方式“分离”于正常终端进程控制，以便它们在后台运行，并且不会在其直接父进程退出时被杀死（例如，因为用户注销或关闭终端窗口）。据我所知，有三种主要方法可以实现这一点。
 - en: First was the “[double fork method](https://en.wikipedia.org/wiki/Fork_(system_call))”.
     The first `fork` create a new process as normal; the child process calls `setsid`;
     then the child process `fork`s again. The grandchild process is [then unable to
@@ -102,6 +120,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 最早的是“[双重fork方法](https://en.wikipedia.org/wiki/Fork_(system_call))”。第一个`fork`像平常一样创建一个新的进程；子进程调用`setsid`；然后子进程再次`fork`。孙子进程因此[无法重新附加到终端](https://0xjet.github.io/3OHA/2022/04/11/post.html)。我不确定这样做可能带来的安全收益是否值得，而且`fork`并非没有成本。
 - en: Much later, in 1990, the [`daemon()`](https://man.openbsd.org/daemon) function
     became fairly, though never universally, widespread. In essence it does a single
     `fork`. The [first version](https://github.com/dspinellis/unix-history-repo/commit/ec6328965ffe37aef2882f92004284f56088cb3a)
@@ -114,6 +133,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 更晚些时候，1990年，[`daemon()`](https://man.openbsd.org/daemon)函数变得相当流行，尽管从未普遍。它本质上只做了一次`fork`。[第一个版本](https://github.com/dspinellis/unix-history-repo/commit/ec6328965ffe37aef2882f92004284f56088cb3a)缺少`nochdir`和`noclose`参数，这些参数是[仅在两周后添加的](https://github.com/dspinellis/unix-history-repo/commit/c6c450362dec22b151e6b669a54f8a2222d6c123)。这个函数在OpenBSD的[当前版本](https://github.com/openbsd/src/commit/b7041c0781c8668129da8084451ded41b0c43954#diff-9c2dace2b189ae391df92e2f2673d49895f3ab9aebbdcad7bf90e26aed8788e9)可以从第二个版本中辨认出来！虽然双重fork方法和`daemon()`之间有一些[轻微差异](https://www.man7.org/linux/man-pages/man3/daemon.3.html#BUGS)，但大多数人可以在不了解它们的情况下过上幸福而富有成效的生活。
 - en: More recently, a very different method of starting daemons is via a “manager”
     of some sorts, the best known of which is Linux’s [systemd](https://systemd.io/).
     Rather than having processes detach themselves from the terminal, these managers
@@ -128,35 +148,42 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 较近期的，启动守护进程的一种非常不同的方法是通过某种“管理器”，其中最著名的是Linux的[systemd](https://systemd.io/)。与让进程从终端分离不同，这些管理器将守护进程运行得像是正常的（尽管是长时间运行的）程序。这在某种程度上简化了守护进程本身，并为用户提供了更加统一的体验。然而，管理器本身现在必须为比大多数人关心的情况更广泛的功能提供支持。特别地，管理器必须在引导过程中早期运行，并且对于那些一个守护进程*必须*在另一个之前运行的情况，必须有某种守护进程依赖的概念。我不是Linux专家，但我甚至意识到systemd引发了强烈的正面和负面意见，尽管我对此事无经验，也没有意见。
 - en: Ultimately, no matter *how* a daemon is started, what all daemons share in common
     is that they are long-running background tasks.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终，无论守护进程如何被启动，所有守护进程共享的共同点是它们都是长期运行的后台任务。
 - en: My experience
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我的经历
 - en: 'I’ve now written, and still maintain, 3 Unix daemons (in chronological order):'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我目前已经编写并且仍在维护三个Unix守护进程（按时间顺序）：
 - en: '[extsmail](/laurie/src/extsmail/), for sending email via external commands.'
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[extsmail](/laurie/src/extsmail/)，用于通过外部命令发送电子邮件。'
 - en: '[snare](/laurie/src/snare/), a GitHub webhooks runner.'
   id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[snare](/laurie/src/snare/)，一个GitHub Webhooks运行程序。'
 - en: '[pizauth](/laurie/src/pizauth/), for accessing OAuth2 tokens.'
   id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[pizauth](/laurie/src/pizauth/)，用于访问OAuth2令牌。'
 - en: 'As well as spanning 3 different problem domains and use cases, these 3 daemons
     span time: I started extsmail in 2008, snare in 2019, and pizauth in 2022. They’re
     written in 2 languages: extsmail in C; and snare and pizauth in Rust. My understanding
@@ -165,16 +192,19 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了涵盖3个不同的问题领域和用例外，这3个守护进程还涵盖了时间：我从2008年开始使用extsmail，2019年启动snare，2022年启动pizauth。它们使用了2种语言：extsmail使用C语言；snare和pizauth使用Rust语言。随着时间的推移，我对守护进程的理解以及它们运行的上下文发生了相当大的变化。
 - en: I’m going to start by going over each daemon in turn, before gathering together
     some general lessons.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将依次介绍每个守护进程，然后总结一些一般性的经验教训。
 - en: extsmail
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: extsmail
 - en: I started extsmail during a time when internet access was less widely spread,
     slower, and less reliable, than it is now. I wanted to be able to send emails
     from [mutt](https://mutt.org/) (later [neomutt](https://neomutt.org/)) without
@@ -186,6 +216,8 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在互联网接入比现在更少、更慢、更不可靠的时期开始使用extsmail。我希望能够从[mutt](https://mutt.org/)（后来是[neomutt](https://neomutt.org/)）发送电子邮件，而无需检查它们是否实际发送出去。我本可以设置一个完整的本地SMTP服务器，但许多系统可能会拒绝来自随机IP地址的电子邮件。我本可以设置某种经过身份验证的中继，但这不仅看起来难以做到，而且在[Let's
+    Encrypt](https://letsencrypt.org/)出现之前难以确保安全性。
 - en: 'What I really wanted to do was exploit my existing ssh setup to send email,
     implicitly gaining its authentication and security for free. That led me to create
     extsmail which is most easily thought of as “a per-user sendmail binary that keeps
@@ -194,29 +226,35 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我真正想做的是利用我现有的ssh设置来发送电子邮件，隐含地获得免费的身份验证和安全性。这导致我创建了extsmail，最容易将其理解为“一个每个用户的sendmail二进制文件，不断尝试通过给定的命令发送电子邮件，直到成功为止”。例如，要配置mutt使用extsmail，只需设置：
 - en: '[PRE0]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'and then configure extsmail itself with this in `~/.extsmail/externals`:'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后在`~/.extsmail/externals`中配置extsmail本身：
 - en: '[PRE1]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In this simple example, `sendmail` on a remote machine is run as if it was on
     my local machine. My mail appears to have been sent by `myremote.example.com`,
     even though I wrote it on my local machine.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个简单的例子中，远程机器上的`sendmail`被当作在我的本地机器上运行。我的邮件似乎是由`myremote.example.com`发送的，尽管我是在本地机器上写的。
 - en: Personally I start `extsmaild` (the daemon part of extsmail) in `~/.xsession`
     with `extsmaild -m daemon`.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我个人在`~/.xsession`中启动`extsmaild`（extsmail的守护进程部分），命令是`extsmaild -m daemon`。
 - en: I didn’t have a clue what I was doing when I started extsmail. Indeed, it was
     the first “proper” Unix program I’d written. I certainly didn’t expect to be using
     it over 15 years later, but as things stand I can’t imagine not using it. I’m
@@ -227,6 +265,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我开始使用extsmail时，我根本不知道自己在做什么。事实上，这是我写的第一个“正式”的Unix程序。我当然没想到会在15年后仍在使用它，但就目前情况而言，我无法想象不使用它。我正在火车上写这段话，虽然这里有wifi，但并不完全可靠。extsmail使我能够在按下“发送”按钮后，确信邮件会发送出去，尽管在火车的wifi上尝试失败的频率令人惊讶。
 - en: Although there have been a small number of bugs that have meant some emails
     have been stuck in the queue, as far as I remember extsmail has never claimed
     that an email has been sent that wasn’t, which is more important. Just on my own
@@ -234,6 +273,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管有少量bug导致一些电子邮件被卡在队列中，但据我记得，extsmail从未声称发送了未发送的电子邮件，这更重要。单单我自己就通过extsmail发送了至少8万封电子邮件！
 - en: 'Looking back, extsmail has gone through a few phases: the rush of initial development
     in late 2008 to early 2009; a long period until early 2012 of mostly minor portability
     tweaks as it picked up users; a roughly year-long period until early 2013 as I
@@ -244,11 +284,13 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾历程，extsmail 经历了几个阶段：2008年底至2009年初的初步开发高潮；随着用户增多，直到2012年初，主要是进行了一些小的可移植性调整；2013年初至2014年初，我逐渐理解并修复了一些罕见情况，导致消息可能被卡在队列中的问题；2014年，一位相当多产的贡献者进行了一些小但有用的改进；此后长期进行维护，并且大约每年发布一次更新。
 - en: The Good
   id: totrans-split-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 好处
 - en: Something that’s obvious now, but wasn’t obvious to me when I started, was that
     it is plausible to create good quality Unix daemons without prohibitive effort
     levels. extsmail isn’t a huge program but it’s proven useful to, and, for at least
@@ -257,11 +299,13 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在显而易见的一件事，但我开始时并不明显，那就是在不需要过高努力的情况下，可以创建高质量的Unix守护程序。extsmail并不是一个庞大的程序，但它已被证明对一些用户来说是有用的，并且在至少过去的十年中是可靠的。我从知道即使是这样一个小众工具对其他人也是有用的事实中获得了相当多的满足感。
 - en: A very different lesson I learnt from extsmail is the power of conventions.
     This came in two flavours.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 从extsmail学到的一个非常不同的教训是约定的力量。这有两种不同的方式。
 - en: First are Unix conventions around how software is packaged and installed. I
     decided to create a standard `configure` script, standard installation expectations,
     conventional man pages, and so on, in part just to see how they were done. Most
@@ -277,6 +321,9 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是Unix约定，关于软件如何打包和安装。我决定创建一个标准的`configure`脚本，标准的安装预期，传统的man页面等等，部分原因只是为了看看它们是如何完成的。其中大多数约定至少略显烦人
+    —— 例如，man页面使用一种非常奇怪、难以阅读的格式。然而，随着时间的推移，这样做的好处变得显而易见 —— 它们对用户来说是熟悉的，并且减少了安装、理解和使用新工具的负担。与使用自定义构建系统（或者使用新的构建工具）的项目相比，这可以节省用户大量时间。从那时起，我一直试图思考“我是否可以以重用已知约定的方式解决这个问题，或者我真的需要做一些不同的事情？”
+    一旦我能控制自己的自负，答案几乎总是“我不需要做一些不同的事情”。
 - en: 'Second is the much vaguer Unix convention that good programs should try to
     do one thing well and leave as much as possible to external programs. extsmail
     has a specific use case: send email via external commands. In the maximalist direction,
@@ -288,6 +335,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次是更模糊的Unix约定，即好的程序应该尽量做好一件事，并尽可能多地留给外部程序处理。extsmail有一个特定的用例：通过外部命令发送电子邮件。在极端的情况下，我可以尝试制作一个完全通用的程序，但那样做会模仿“大型”SMTP服务器的复杂性，这将背离初衷。在极简的情况下，我可以只让extsmail能够通过ssh发送电子邮件，因为那是我写extsmail时唯一的用例，也是我所知道的唯一用例。
 - en: By allowing users to run arbitrary commands, I found myself in the happy situation
     that an early user told me they were using [msmtp](https://marlam.de/msmtp/) instead
     of `ssh` with extsmail. Not only did I not know of msmtp, but soon after I found
@@ -298,15 +346,18 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过允许用户运行任意命令，我发现自己处于这样一种幸福的境地：早期用户告诉我他们正在使用[msmtp](https://marlam.de/msmtp/)而不是`ssh`来使用extsmail。我不仅不知道msmtp，而且不久之后我发现我需要与extsmail一起使用SMTP，而msmtp则是完美的选择！extsmail让我意识到，我可以设计小型程序，这些程序足够灵活，不会感到过于受限。这听起来像是一件小事，但这个意识从那时起对我设计软件的方式产生了深远的影响。
 - en: The bad
   id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 不好的
 - en: In retrospect, extsmail has several minor flaws.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾来看，extsmail有几个小缺陷。
 - en: 'First are its configuration flaws. extsmail uses the older convention of expecting
     configuration files in `~/.extsmail/` rather than the more modern, and in my opinion
     rather tidier, `~/.config/` . That is easily fixed, but if I’m going to do that
@@ -320,6 +371,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是它的配置缺陷。extsmail使用旧的惯例，期望配置文件位于`~/.extsmail/`而不是更现代化、我认为更整洁的`~/.config/`。这很容易解决，但如果我要这样做，我还应该解决一个问题：extsmail强制用户创建两个配置文件（`~/.extsmail/config`和`~/.extsmail/externals`），其实只需要一个文件就够了。我之所以做出这个选择，完全是因为愚蠢：我没有仔细看先例，也没有思考到可能真正需要的灵活性。我一直告诉自己，我会允许这两个文件合并成一个，并且有一个迁移期，在这个期间旧的和新的都是有效的，但这从未成为我的待办事项清单的重要项目。
 - en: 'Second are the two binaries extsmail installs: `extsmail` is a very tiny sendmail
     replacement (about 150LoC); the main daemon is named `extsmaild`. The ‘d’ suffix
     is not an uncommon Unix convention, but if you installed a program called “extsmail”
@@ -332,6 +384,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次是extsmail安装的两个二进制文件：`extsmail`是一个非常小的sendmail替代品（约150行代码）；主要守护进程命名为`extsmaild`。‘d’后缀在Unix中并不罕见，但如果你安装了一个名为“extsmail”的程序，你会首先运行什么命令？当然是`extsmail`！这样做会加载一个程序，看起来好像在你的终端上静默无声地运行。实际上，它正在等待stdin的输入（就像`sendmail`一样！），但这一点并不明显。如果你手动退出`extsmail`——使用Ctrl-D或Ctrl-D——它会留下一个空白文件。`extsmaild`曾经抱怨这不是一个有效的文件：在早期混淆的extsmail用户之后，我教会了`extsmaild`完全忽略空文件。
 - en: Third is the relative lack of automated tests. There are many odd cases that
     documentation tells us we need to handle, but which we don’t know how to actually
     make happen artificially. It’s then very tempting to do no automated testing at
@@ -339,6 +392,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 第三是相对缺乏自动化测试。文档告诉我们有许多我们需要处理的奇怪情况，但我们不知道如何实际制造它们。这时很容易完全不进行自动化测试——这是我屈服于的诱惑。
 - en: Astonishingly, it took a long time before the consequences of this decision
     became clear to me. In particular, as careful as I tried to be in handling the
     odd cases that Unix throws up – I became a very careful reader of man pages –
@@ -346,6 +400,7 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 令人惊讶的是，这个决定的后果花了很长时间才变得清晰。特别是在我尝试处理Unix抛出的奇怪情况时，我变得非常谨慎——我成了man手册的忠实读者——这种情况比人们想象的要多。
 - en: Two examples that I eventually bumped into are that Unix’s [handling of child
     processes is an absolute mess](http://catern.com/process.html) and that `poll`
     [behaves differently across platforms](https://www.greenend.org.uk/rjk/tech/poll.html).
@@ -358,11 +413,14 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我最终遇到的两个例子是 Unix 的[子进程处理绝对一团糟](http://catern.com/process.html)，以及 `poll` 在[不同平台上表现不同](https://www.greenend.org.uk/rjk/tech/poll.html)。即使我分别调整了
+    extsmail 来处理这些问题，但我没有考虑它们相互之间的影响。多年后，我意识到存在问题，并强迫自己编写了一个[简单的测试套件](https://github.com/ltratt/extsmail/commit/8deb27e620e6aba873dfe956304755c3a95d4e69)，帮助我缩小问题的范围，并[慢慢但肯定地](https://github.com/ltratt/extsmail/commit/d457926f7c6e452787570fa5ac86a221b1cdad56)修复了问题。如果我早些时候创建了一个测试套件，即使是小的测试套件，我就能避免很多痛苦！
 - en: Other Lessons
   id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 其他教训
 - en: 'One thing that really surprised me when I started writing extsmail is how many
     ways there are for Unix functions to fail. A simple example is that many functions
     in Unix can return early (with `EINTR`) if an interrupt is received: sometimes
@@ -371,6 +429,8 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始编写 extsmail 时真正让我吃惊的是 Unix 函数失败的方式有多么多样化。一个简单的例子是，如果接收到中断，Unix 中的许多函数可以提前返回（带有
+    `EINTR`）：有时可以尝试重新调用函数，但在其他情况下，可能需要采取不同的方法。
 - en: 'The sheer variety of ways things can go wrong is mind-boggling: pipes can close
     unexpectedly; files that have data in them no longer return their data; child
     processes sometimes act like computer-game lemmings; and so on. Eventually I slowly
@@ -378,6 +438,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 事情出错的方式多种多样，令人难以置信：管道可能意外关闭；有数据的文件可能不再返回数据；子进程有时会像电脑游戏中的旅鼠那样表现；等等。最终，我在现实生活中慢慢遇到了所有这些问题，还有更多其他问题。
 - en: As I slowly realised the burden I’d taken on, I worried that I’d bitten off
     more than I could chew. I was tempted to simplify the problem by having the program
     exit if any of the weirder cases happened, particularly those that I didn’t know
@@ -385,6 +446,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我慢慢意识到自己承担的负担时，我担心自己咬了比自己能咬的更多的东西。我曾考虑简化问题，如果发生任何更奇怪的情况，特别是那些我不知道如何触发的情况，就让程序退出。
 - en: I soon decided that a fundamental part of being a daemon is the ability to keep
     running (correctly!) when things go wrong. That eventually led me to decide that
     I would make extsmail continue in every case except a lack of memory . I think
@@ -393,6 +455,8 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我很快决定，作为守护程序的一个基本部分是在事情出错时（正确地！）继续运行。最终，这导致我决定，除了内存不足外，extsmail 在任何情况下都会继续运行。我想最终我成功了，尽管现在处理所有这些情况可能占据
+    extsmail 源代码的大约 50%！
 - en: A surprising outcome for me was the realisation that I would not have been able
     to write extsmail in an exception-based language. Because C forces you to think
     about each and every case where something can go wrong, libraries have to carefully
@@ -401,11 +465,14 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 令我惊讶的结果是意识到我无法在基于异常的语言中编写 extsmail。因为 C 强迫你考虑每一种可能出错的情况，库必须仔细记录所有可能出错的方式。这正是我[需要使
+    extsmail 更加健壮的东西](/laurie/blog/2008/how_can_c_programs_be_so_reliable.html)。
 - en: snare
   id: totrans-split-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: snare
 - en: The research group I’m part of tries, as a matter of course, to automate much
     of our infrastructure. We use [Buildbot](https://www.buildbot.net/) for our continuous
     integration, but there are all sorts of other tasks where that’s not the right
@@ -416,6 +483,8 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我所在的研究小组通常试图自动化我们的大部分基础设施。我们使用 [Buildbot](https://www.buildbot.net/) 进行持续集成，但有很多其他任务并不适合该工具。例如，我们希望在
+    GitHub 仓库推送时自动重建网站，但是现有的系统复杂——我记得甚至无法让其中一两个构建成功，更不用说运行了！
 - en: I quickly realised that what I wanted was a daemon that could run arbitrary
     Unix commands when an event occurred on a repository (pushes, pull requests merging,
     etc). Since I wasn’t very sure how easy this might be, I hacked together a quick
@@ -426,16 +495,21 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 我很快意识到我想要的是一个守护进程，可以在仓库上发生事件时运行任意 Unix 命令（例如推送、合并拉取请求等）。因为我不确定这有多容易，所以我在几个小时内用
+    Python 快速制作了一个原型。它运行得相当好，足以让我意识到编写一个“正式”的守护进程是可行的。那时我主要在 Rust 中编写代码，所以我决定将这个即将进行的工作用作编写
+    Rust 守护进程的测试场。
 - en: 'I thus created [snare](/laurie/src/snare/). snare is configured with a single
     configuration file (I learnt that lesson from extsmail!). A minimal configuration
     file looks as follows:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我创建了 [snare](/laurie/src/snare/)。snare 配置文件只有一个，从 extsmail 中吸取了教训！一个最简配置文件如下所示：
 - en: '[PRE2]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'As this suggests, snare listens on a given IP address and port. In a GitHub
     repository, you specify a “webhook” that sends messages (as HTTP requests) to
     that IP and port. `match ".*"` is a regular expression that matches against a
@@ -447,11 +521,16 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 如此一来，snare 监听给定的 IP 地址和端口。在 GitHub 仓库中，您指定了一个“webhook”，该 webhook 发送消息（作为 HTTP
+    请求）到该 IP 和端口。 `match ".*"` 是一个正则表达式，匹配 `owner/repository` 对：`.*` 匹配任何字符串。当接收到请求时，snare
+    检查它是否与 `secret` 匹配，然后运行 shell 命令 `cmd`：`%` 变量分别展开为 GitHub 所有者仓库事件和 JSON 请求。如果出现任何问题，snare
+    运行 `errorcmd`，例如将错误输出发送到指定的电子邮件地址。
 - en: The good
   id: totrans-split-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: The good
 - en: snare was written relatively quickly. Within a couple of months of part-time
     work it had taken firm shape. A couple of months after that it was largely finished.
     Partly I created it quickly because I had the experience of extsmail under my
@@ -459,6 +538,8 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: snare 相对快速地编写完成了。在几个月的业余时间工作后，它已经形成了稳定的形态。再过几个月，它基本上就完成了。部分原因是因为我已经有了 extsmail
+    的经验。
 - en: 'But, mostly, it’s because snare was written in Rust, not C. This was a very
     deliberate choice on my part: one surprising lesson from extsmail was [how C makes
     it possible, despite its clear flaws, to write reliable programs](/laurie/blog/2008/how_can_c_programs_be_so_reliable.html).
@@ -467,6 +548,8 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，大多数情况下，这是因为 snare 是用 Rust 编写的，而不是 C。这是我故意做出的选择：extsmail 给我一个令人惊讶的教训是，尽管 C
+    明显存在缺陷，但它确实能够编写可靠的程序。我尝试 Rust 之前，没有其他语言似乎能够替代 C。总体而言，我认为这个实验是一个明确的成功！
 - en: 'snare borrows a configuration pattern that I’d first seen in OpenBSD’s [pf](https://www.openbsd.org/faq/pf/)
     and seen repeated a few times since. In essence, the configuration file “executes”
     from top to bottom with each match overwriting some or all of the previous values.
@@ -474,35 +557,44 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: snare 借鉴了一个配置模式，我最初在 OpenBSD 的 [pf](https://www.openbsd.org/faq/pf/) 中看到过，并且之后几次看到了重复。基本上，配置文件从上到下“执行”，每个匹配都会覆盖前面的一些或全部值。这是一个简单而强大的模式。例如，给定这个
+    snare 配置：
 - en: '[PRE3]'
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'the repositories `a/b` and `c/d` will have the following settings:'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 仓库 `a/b` 和 `c/d` 将有以下设置：
 - en: '[PRE4]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'As this might suggest, `queue = sequential` and `timeout = 3600` are defaults
     provided by snare: the `match ".*"` block overrides `cmd`, `errorcmd`, and `secret`;
     and `a/b` further overwrites `secret`.'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 如此可能暗示，`queue = sequential` 和 `timeout = 3600` 是 snare 提供的默认值：`match ".*"` 块覆盖了
+    `cmd`、`errorcmd` 和 `secret`；而 `a/b` 进一步覆盖了 `secret`。
 - en: This configuration style isn’t appropriate for every program, but when it is,
     it works really well. Some of the lengthy snare setups I have benefit hugely from
     this idiom.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种配置风格并不适用于每个程序，但在适用的情况下，它确实非常有效。我有几个复杂的 snare 设置受益匪浅。
 - en: The bad
   id: totrans-split-71
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: The bad
 - en: snare contains an HTTP server to listen for requests. I used an external library
     which had the seemingly small side-effect of using Rust’s `async`/`await` features.
     I soon came to regret this. There are use-cases for `async`/`await`, particularly
@@ -513,6 +605,8 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: snare 包含一个HTTP服务器来监听请求。我使用了一个外部库，这个库似乎会带来使用 Rust 的 `async`/`await` 特性的小副作用。不久我就后悔了。`async`/`await`
+    有它的用例，特别是对于单线程语言，或者写网络服务器需要处理大量查询的人。Rust 是多线程的 - 实际上，它的类型系统禁止了大多数经典的多线程错误 - 我们很少有人编写需要处理大量查询的服务器。
 - en: 'Unfortunately, `async`/`await` [splits code into two](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)
     in ways that become very awkward to work with. I quickly found that snare was
     being divided into code that needed to be `async`/`await` and that which didn’t.
@@ -524,6 +618,10 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，`async`/`await` [将代码分成两部分](https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/)，在使用起来变得非常笨拙。我很快发现，snare
+    被分成了需要是 `async`/`await` 的代码和不需要的代码。当我发现需要为 `async`/`await` 代码使用 [不同的 `Mutex` 库](https://crates.io/crates/async-mutex)
+    时，我感到吃惊，并尽量减少它在 snare 中的使用到最低限度。但即便如此，这还不够：我发现 snare 有一些奇怪的，尽管非常小的内存泄漏，似乎是由我隐式吸收的大量
+    `async`/`await` 运行时代码引起的。
 - en: In 2023 I finally got fed up enough to [remove the last `async`/`await` vestiges](https://github.com/softdevteam/snare/commit/1263ececbeb693bce5ef89111b65baf8a74fde21).
     snare’s dependencies decreased from 213 to 172 and on OpenBSD the binary size
     shrunk by 20% — for exactly the same user-visible functionality! Of course, this
@@ -534,17 +632,21 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2023年，我终于受够了，[删除了最后的`async`/`await`遗留](https://github.com/softdevteam/snare/commit/1263ececbeb693bce5ef89111b65baf8a74fde21)。snare的依赖项从213减少到172，在OpenBSD上二进制大小减少了20%
+    - 对于完全相同的用户可见功能！当然，这触及了snare的核心部分，而我又一次太愚蠢没有添加测试套件。所以，我首先为基本功能添加了一个测试套件，让我确信这些变化不会破坏它；然后，我进一步扩展了测试套件，以覆盖snare安全相关的部分，我有了信心。
 - en: And, finally, why did I use semi-colons at the end of configuration options?
     I think I was influenced by a period writing lots of grammars for C-like languages.
     However, it feels out of place with Unix configuration norms.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终，为什么我在配置选项的末尾使用了分号呢？我觉得受到了写许多类似C语言的语法的影响。然而，这与Unix配置规范格格不入。
 - en: Other Lessons
   id: totrans-split-76
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 其他的经验教训
 - en: 'extsmail and snare both listen for the `SIGHUP` signal and reload their configuration
     file when the signal is received. I have rarely used this facility with extsmail,
     but I have used it quite often for snare: since it might be running jobs, I’d
@@ -552,6 +654,8 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: extsmail 和 snare 都会监听 `SIGHUP` 信号，并在接收到信号时重新加载它们的配置文件。我很少使用 extsmail 这个功能，但是对于
+    snare，我经常使用它：因为它可能正在运行作业，除非必须这样做，我宁愿不关闭它并重新启动它。
 - en: 'However, `SIGHUP` is unsatisfactory: communicating via a PID (Process ID) is
     both dangerous and clumsy (distinguishing multiple instances from each other).
     When something goes wrong, users aren’t notified directly, with messages hidden
@@ -559,17 +663,20 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，`SIGHUP` 是不理想的：通过 PID（进程ID）进行通信既危险又笨拙（区分多个实例）。当出现问题时，用户不会直接收到通知，而是消息藏在日志中，他们经常忘记检查。
 - en: This observation is not a new one – indeed, many people have made it before
     me – but I resolved that I would try a different approach for any other Unix daemons
     I might write in the future.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个观察并不是新观点 - 实际上，在我之前许多人都已经提出过 - 但我决定，对于我将来可能编写的任何其他Unix守护程序，我将尝试不同的方法。
 - en: pizauth
   id: totrans-split-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: pizauth
 - en: OAuth2 is an increasingly widely used authentication standard. In 2022 I suddenly
     found myself needing to use it for some crucial parts of my workflow, including
     email, but couldn’t find an existing tool which worked well in my setup. I realised
@@ -579,24 +686,29 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: OAuth2是越来越广泛使用的认证标准。在2022年，我突然发现自己需要在工作流程的一些关键部分（包括电子邮件）中使用它，但是无法找到适合我设置的现有工具。我从使用snare的经验中意识到，我现在可以相当快速地创建相当不错的守护程序，因此不久之后，我创建了pizauth的第一个版本。第一个alpha版本在[大约6周后发布](/laurie/blog/2022/pizauth_oauth_authenticator_alpha.html)。
 - en: 'pizauth requires a single configuration file (typically `~/.confg/pizauth.conf`)
     which looks roughly as follows:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: pizauth需要一个配置文件（通常是`~/.confg/pizauth.conf`），大致如下所示：
 - en: '[PRE5]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'One lesson I learnt from snare is that pizauth is split into two parts. The
     “backend” or “server” part is started with:'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 我从snare中学到的一个教训是，pizauth被分成两部分。“后端”或“服务器”部分是这样启动的：
 - en: '[PRE6]'
   id: totrans-split-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The “frontend” commands then communicate with the backend via a Unix domain
     socket. For example instead of sending a `SIGHUP` signal to a PID and crossing
     my fingers, `pizauth reload` asks pizauth in a safe way to reload its configuration
@@ -606,32 +718,39 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: “前端”命令然后通过Unix域套接字与后端通信。例如，不是向PID发送`SIGHUP`信号并祈祷，而是通过`pizauth reload`以安全的方式请求pizauth重新加载其配置文件。这两部分使用非常简单的基于文本的协议进行通信。`pizauth
+    reload`向服务器发送`reload:`命令，服务器回复`ok:`或`error:<reason>`。
 - en: 'To obtain an authorisation token, one runs `pizauth show`. The first time this
     is run for an account, it will print an error to stderr that includes an authorisation
     URL:'
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 要获取授权令牌，可以运行`pizauth show`命令。首次为某个帐户运行此命令时，它将在stderr上打印包含授权网址的错误：
 - en: '[PRE7]'
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The user then needs to open that URL in the browser of their choice and complete
     authentication. Once complete, pizauth will be notified, and shortly afterwards
     `pizauth show officesmtp` will start showing a token on stdout:'
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后用户需要在其选择的浏览器中打开该网址并完成验证。完成后，pizauth将收到通知，不久后`pizauth show officesmtp`将开始在stdout上显示令牌：
 - en: '[PRE8]'
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Once authentication has complete, pizauth regularly updates the access token,
     aiming to do so sufficiently seamlessly that end users never need to worry when
     access tokens change.
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦认证完成，pizauth会定期更新访问令牌，目标是在访问令牌更改时，最终用户无需担心。
 - en: 'pizauth has some useful tricks up its sleeve. Most obviously, `pizauth show`
     is asynchronous, so authorisation might be required by another program without
     an alert being printed on your terminal. `auth_notify_cmd` allows the user to
@@ -640,25 +759,30 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: pizauth有一些有用的技巧。显而易见的是，`pizauth show`是异步的，因此可能需要另一个程序的授权而不会在终端上打印警告。`auth_notify_cmd`允许用户指定在这种情况下要运行的命令。要立即在浏览器中打开授权网址，我们可以指定：
 - en: '[PRE9]'
   id: totrans-split-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Having the browser suddenly open a page out of nowhere can be discombobulating.
     If we want to be more subtle, we can use `notify-send` to show a pop-up which
     we have to click on to open a URL:'
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 浏览器突然打开一个页面可能会让人感到不安。如果我们想要更加 subtle，我们可以使用`notify-send`显示一个弹出窗口，我们必须点击以打开URL：
 - en: '[PRE10]'
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The good
   id: totrans-split-96
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 好的
 - en: 'pizauth was written in almost indecent haste: I was a better programmer in
     Rust by this time, and had the experience of writing snare under my belt. I avoided
     several of the mistakes I’d made when writing snare, which saved me useful amounts
@@ -666,6 +790,7 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: pizauth是以几乎不体面的速度编写的：到这个时候，我已经成为Rust中更好的程序员，并且已经有了编写snare的经验。我避免了写snare时犯的几个错误，这节省了我大量的时间。
 - en: I deliberately tried to incorporate what I’d learnt about daemons from extsmail
     and snare to make pizauth a more “modern” Unix daemon. Most obviously, the split
     into a backend and frontends, which communicate with domain sockets, removes the
@@ -674,6 +799,7 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 我有意试图吸收从extsmail和snare中学到的守护程序知识，使pizauth成为一个更“现代”的Unix守护程序。显而易见的是，将其拆分为后端和前端，通过域套接字进行通信，消除了传统的PID和竞争条件问题。所有pizauth的命令都通过单一二进制运行，这使得安装和发现变得容易。
 - en: 'pizauth also respects various modern conventions about configuration and cache
     file locations. `pizauth info` is a subcommand I wish more daemons had (inspired
     by [this post](https://utcc.utoronto.ca/~cks/space/blog/sysadmin/ReportConfigFileLocations))
@@ -681,10 +807,13 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: pizauth 也遵循关于配置和缓存文件位置的各种现代约定。`pizauth info` 是一个子命令，我希望更多守护程序也有（受 [这篇文章](https://utcc.utoronto.ca/~cks/space/blog/sysadmin/ReportConfigFileLocations)
+    的启发），因为它消除了文件位置的猜测：
 - en: '[PRE11]'
   id: totrans-split-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: “Modern” doesn’t mean diverging from the good parts of “traditional” daemons.
     In particular, pizauth is fairly minimal. I’m particularly fond of the design
     of `pizauth dump` and `pizauth restore` which [are designed to work well with
@@ -692,17 +821,21 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: “现代”并不意味着偏离“传统”守护程序的优点。特别是，pizauth 相当简洁。我特别喜欢 `pizauth dump` 和 `pizauth restore`
+    的设计，它们 [设计得与外部工具很好地配合](/laurie/blog/2023/pizauth_dump_restore.html)。
 - en: The bad
   id: totrans-split-102
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 缺点
 - en: It’s perhaps a little too soon for me to know what I’ll regret about pizauth.
     The code which deals with communication between backend and frontends could do
     with a good tidy-up, but it is functional and safe.
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许现在对我来说知道我将对 pizauth 感到遗憾还为时过早。处理后端与前端之间通信的代码可能需要进行彻底整理，但它是功能齐全且安全的。
 - en: 'Perhaps the deepest issue I’ve realised so far is that I wish, behind the scenes,
     I’d installed multiple binaries: one for the backend; and one per front-end command.
     If each of those binaries contained only the code it needs to run, the scope for
@@ -710,15 +843,18 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我意识到的可能最深刻的问题也许是，我希望在幕后安装了多个二进制文件：一个用于后端；每个前端命令一个。如果每个二进制文件只包含运行所需的代码，那么像基于小工具的攻击之类的事情的范围就会减少。
 - en: '* * *'
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Higher-Level Reflections
   id: totrans-split-106
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更高层次的反思
 - en: I hope that sharing my detailed reflections on extsmail, snare, and pizauth
     has been useful. Doing so has also helped me collect together some higher-level
     reflections, some of which are probably obvious from the above, but some of which
@@ -726,11 +862,13 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望分享我对 extsmail、snare 和 pizauth 的详细反思对大家有所帮助。这样做还帮助我汇总了一些更高层次的反思，其中一些可能从上文中显而易见，但也有一些可能不是。我将它们分成几类。
 - en: We Need More Daemons
   id: totrans-split-108
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我们需要更多的守护程序
 - en: The thing that makes daemons a distinct kind of software is that they run permanently
     in the background and react to events. We intuitively realise why this is relevant
     for daemons that react to events external to the computer (e.g. an HTTP server
@@ -741,6 +879,8 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 使守护程序成为一种独特的软件的特点是它们在后台永久运行并对事件做出反应。我们直观地意识到这对于那些对计算机外部事件做出反应的守护程序是相关的（例如，HTTP
+    服务器对 `GET` 请求做出反应），但我们通常低估了它对于计算机内部事件有多么有用。因为守护程序可以立即对事件做出反应，它允许不同的程序如此无缝地协同工作，以至于作为用户，我们将它们视为一个实体。
 - en: For example, many people run – or would like to run! – a daemon which detects
     each update of a file on their local drives and immediately back it up remotely.
     extsmail is a more niche example of this same technique — as soon as an email
@@ -751,6 +891,8 @@
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，许多人运行 — 或者希望运行！ — 一个守护进程，检测本地驱动器上文件的每次更新，并立即远程备份。extsmail 是同样技术的一个更为专业的例子
+    — 一旦电子邮件写入驱动器，extsmail 就会尝试运行一个“发送”命令。还有许多其他有用的事件可以做出反应，包括硬件连接/断开、网络上下线、程序启动和停止等。
 - en: 'Once upon a time daemons had to “poll” (i.e. intermittently query) the system
     to see if an event had occurred. Not only did this introduce lag, but continually
     waking the daemon up, and it then performing mostly pointless operations could
@@ -762,6 +904,9 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 曾几何时，守护进程必须“轮询”（即间歇性地查询）系统以查看事件是否发生。这不仅引入了延迟，而且持续唤醒守护进程，它执行大部分无意义的操作可能是一个显著的计算和功耗负担。现代
+    Unix 系统已经在很大程度上解决了这个问题：进程可以请求内核通知它们关注的广泛类型事件（参见例如 [`epoll`](https://zh.wikipedia.org/wiki/Epoll)
+    或 [`kqueue`](https://zh.wikipedia.org/wiki/Kqueue)）。换句话说，我们现在可以编写几乎不消耗资源的守护进程，直到确实发生可能感兴趣的事件。
 - en: My strong belief is that too few programs exploit this way of working and that
     the world would be a better place if we wrote more of them. To some extent I think
     this is because many people don’t realise what a daemon *could* do, let alone
@@ -769,6 +914,8 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 我坚信，太少的程序利用了这种工作方式，如果我们写更多这样的程序，世界将会变得更美好。在某种程度上，我认为这是因为很多人并没有意识到一个守护进程*能够*做什么，更不用说现代
+    Unix 系统是如何使其易于高效地实现的了。
 - en: What I’ve also realised is that many excellent programmers implicitly assume
     that they cannot, or should not, write a daemon . Many assume that “other” people
     are better suited to doing so, either because daemons can be created only by the
@@ -776,6 +923,8 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还意识到很多优秀的程序员默认地认为他们不能或不应该编写一个守护进程。许多人认为“其他”人更适合这样做，要么是因为守护进程只能由最优秀的程序员创建，要么是因为那些深谙古老
+    Unix 知识的人更合适。
 - en: You might think that I’m about to descend into platitudes and say that every
     programmer can create good quality daemons. As much as I might like that to be
     the case, long experience has taught me otherwise. In particular, when writing
@@ -784,6 +933,7 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能会认为我即将陷入陈词滥调，并说每个程序员都可以创建高质量的守护进程。尽管我很希望情况是这样，长期经验告诉我并非如此。特别是在编写守护进程时，人们必须在每一点上思考“可能出现什么问题？”并不是每个程序员似乎能够或愿意以这种方式思考。
 - en: However “not every programmer” is far from “only the best programmers”. I’m
     a decent programmer, but I know many better — and I’ve been able to create three
     reasonable quality daemons in little scraps of time. It’s also much easier to
@@ -792,16 +942,20 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，“并非每位程序员”远非“仅限于最优秀的程序员”。我是一个不错的程序员，但我认识到有很多更优秀的人 —— 而我已经能够在零碎的时间里创建三个质量合理的守护进程。现在创建一个守护进程比以往更容易多了，部分原因是
+    Rust 现在是一个适合守护进程的可行语言。
 - en: 'There’s thus a good news story here: while I think we need more daemons, it’s
     never been easier to create good daemons!'
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此在这里有一个好消息：虽然我认为我们需要更多的守护进程，但现在创建好的守护进程从未如此简单！
 - en: Simplicity is a Virtue for Daemons
   id: totrans-split-117
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 对于守护进程来说，简洁是一种美德。
 - en: “Do one thing and do it well” has become a Unix cliché. As advice goes, it’s
     often not appropriate — I remember using minimalistic text editors, for example,
     and I much prefer the modern kitchen sinks. But the very nature of daemons makes
@@ -809,6 +963,7 @@
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: “做好一件事，并且做到最好”已经成为 Unix 的陈词滥调。作为建议，这通常不合适 —— 例如，我记得使用极简主义文本编辑器，但我更喜欢现代的多功能工具。但守护进程的本质使这个建议特别适用。
 - en: 'The reason for this is ultimately due to the unusual nature of daemons: because
     they run in the background, they’re easily forgotten. I’m using “forgotten” deliberately
     because it can be interpreted in two ways: daemons are forgotten because they’re
@@ -818,6 +973,7 @@
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是因为守护进程的不寻常特性，最终导致了这一结果：因为它们在后台运行，很容易被忽略。我故意使用“被忘记”这个词，因为它有两种解释方式：守护进程因为工作得很好而被忘记，我们假设它们将继续如此；或者它们因为停止工作良好而被忘记，但没有人注意到和/或知道罪魁祸首是谁。
 - en: It can be tempting to think that if no-one has noticed something isn’t working
     then the thing isn’t important. The problem is that sometimes we don’t notice
     that something isn’t working until it’s too late, automatic backups not working
@@ -825,6 +981,7 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候会产生一种诱惑，认为如果没有人注意到某些功能未正常工作，那么这些功能就不重要。问题在于，有时候我们直到为时已晚才发现某些功能未正常工作，自动备份未能工作就是一个众所周知的例子。
 - en: 'One common solution to daemons going wrong is to have continual notifications
     or monitoring: when something goes wrong, a human is alerted, and they have to
     fix the resulting mess. Sometimes there’s no way around this, but it is obviously
@@ -833,6 +990,7 @@
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理守护进程出现问题的一个常见解决方案是持续通知或监控：当出现问题时，会有人类被警报，并且他们必须修复因此产生的混乱。有时候这是无法避免的，但显然效率低下，只有最有耐心或最充足资源的人才能做到。更重要的是，这集中于症状而非原因。
 - en: My belief is that the reliability of a daemon in large part depends on its configuration
     complexity. Unlike foreground software that we knowingly interact with daily,
     we tend not to fully understand what daemons can do, or exactly how they work.
@@ -841,6 +999,7 @@
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的观点是，守护进程的可靠性在很大程度上取决于其配置的复杂性。与我们每天明知故问地互动的前台软件不同，我们往往不完全了解守护进程的能力，或者它们的工作原理。更糟糕的是，我们往往在最无知的时候一次性地配置它们，然后长达数月甚至数年不再理会。
 - en: 'As we increase the complexity of a daemon’s configuration, we thus increase
     the likelihood of users configuring it incorrectly. I think that most daemons
     offer too many configuration options to users: many seem useful, or at worst harmless,
@@ -850,6 +1009,7 @@
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着守护进程配置的复杂性增加，我们增加了用户配置错误的可能性。我认为大多数守护进程向用户提供了过多的配置选项：许多看似有用或最坏的情况下无害，但总体上它们往往会使用户感到超负荷。通常用户甚至没有意识到他们超负荷了：守护进程拥有的配置选项越多，它在记录单个细节时的表现就越差。
 - en: Because daemons are hard to test, I am sometimes sceptical that the interactions
     between more obscure configuration options can be fully relied upon. Ultimately
     the more configuration options we make available to users the more complex our
@@ -857,51 +1017,61 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于守护进程难以测试，我有时怀疑更加隐晦的配置选项之间的交互是否可以完全依赖。最终，我们向用户提供的配置选项越多，我们的守护进程在内部就变得越复杂，引入错误的可能性也就越大。
 - en: 'User-Interface:'
   id: totrans-split-125
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 用户界面：
 - en: 'Users typically interact with daemons in 4 ways:'
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户通常以4种方式与守护进程互动：
 - en: Starting the daemon with given flags (e.g. `-v`).
   id: totrans-split-127
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用给定的标志启动守护进程（例如 `-v`）。
 - en: Specifying a configuration file (e.g. `~/.config/pizauth.con`).
   id: totrans-split-128
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 指定一个配置文件（例如 `~/.config/pizauth.con`）。
 - en: Sending signals (e.g. `SIGHUP`) to the daemon.
   id: totrans-split-129
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 向守护进程发送信号（例如 `SIGHUP`）。
 - en: Communicating via a domain socket (i.e. inter-process communication where the
     pipe is identified with a given file such as `~/.cache/pizauth/pizauth.sock`).
   id: totrans-split-130
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过域套接字进行通信（即进程间通信，其中管道以特定文件标识，例如 `~/.cache/pizauth/pizauth.sock`）。
 - en: 'Those 4 ways neatly break down into categories: configuration (1 and 2) and
     communication (3 and 4).'
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 这4种方式可以清晰地分为两类：配置（1和2）和通信（3和4）。
 - en: Configuration
   id: totrans-split-132
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 配置
 - en: As noted above, just as it is best to keep the scope of a daemon as narrow as
     possible, it is also best to keep configuration flexibility as limited as possible.
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上所述，正如保持守护进程范围尽可能窄一样，将配置灵活性保持尽可能有限也是最佳选择。
 - en: 'I tend to add very few flags to my daemons, normally only those: to allow specifying
     a specific configuration file (`-c`); to help debugging by not forking into the
     background (`-d`) ; and to temporarily increase logging verbosity (`-v`, which
@@ -909,6 +1079,7 @@
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 我往往很少向我的守护进程添加很多标志，通常只有这些：允许指定特定配置文件（`-c`）；通过不分叉进入后台以帮助调试（`-d`）；以及临时增加日志详细度（`-v`，通常可以多次指定以增加日志信息）。
 - en: For configuration files, I also try to keep the options to the minimum that
     I think a user needs. In general, I believe that users *think* they need more
     flexibility than they actually do. A small, but sometimes vocal, set of users
@@ -922,6 +1093,8 @@
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于配置文件，我也尽量保持我认为用户需要的选项最少化。总的来说，我认为用户*认为*他们需要的灵活性比实际需要的要多。一小部分用户（有时候声音很大）会因为无法配置系统的每一个小细节而感到非常沮丧，但我认为他们不应该毁掉我们其他人的体验。当我觉得有必要为一部分用户提供选项时，我会力求提供一个明智的默认设置，这样大多数人可以忽略它。例如，snare
+    允许用户配置可以运行多少个并行作业，但默认设置是允许与活动CPU核心数量相同的作业。显然这并不适用于所有情况，但对大多数情况来说已经足够好了。
 - en: 'Finally there is the issue of configuration file syntax. It is tempting to
     use a “standard” syntax such as TOML. In general I don’t think these standard
     syntaxes are a great fit for daemons: they’re either not flexible enough (e.g.
@@ -934,17 +1107,20 @@
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，还有配置文件语法的问题。使用像TOML这样的“标准”语法是很诱人的。但总体上我认为这些标准语法并不适合守护程序：它们要么不够灵活（例如TOML），要么太灵活（例如YAML）。我更喜欢创建一个简单的Yacc语法，通常是C风格的语法，用大括号进行嵌套。使用自定义语法的一个优点是我可以在解析器中捕获大量意外错误，并提供高质量的错误消息。虽然这样做确实需要用户学习一种新的语法，但大多数人对这种语法已经如此熟悉，以至于这并不是一个明显的入门障碍。
 - en: Communication
   id: totrans-split-137
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 通信
 - en: Traditionally the only way one could directly communicate with a daemon was
     via a signal. For example, most daemons interpret `SIGHUP` as “reload your configuration
     file” .
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统上，与守护程序直接通信的唯一方法是通过信号。例如，大多数守护程序将`SIGHUP`解释为“重新加载配置文件”。
 - en: I now strongly believe that using signals in this way is a bad idea that we
     should consign to the past. Put bluntly, signals are one of the worst designed
     parts of Unix. From a user’s perspective, their reliance on process names and/or
@@ -957,6 +1133,7 @@
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我坚定地认为，以这种方式使用信号是一个我们应该放弃的坏主意。坦率地说，信号是Unix中设计最糟糕的部分之一。从用户的角度来看，它们对进程名称和/或PID的依赖性增加了发送信号给错误进程的机会。从守护程序作者的角度来看，信号以一种奇怪的异步执行形式执行代码，期间很少能安全执行正常操作。我注意到，大多数程序员对信号处理程序中允许的操作过于乐观，只有通过奇怪的故障经历才真正读懂并理解相关规则。
 - en: 'Instead it is better to communicate with a daemon via a domain socket. In essence,
     this is a Unix pipe whose user-facing end is identified via a named file. Since
     writing bytes into a pipe isn’t a great user experience, the “daemon” then needs
@@ -965,6 +1142,7 @@
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，最好通过域套接字与守护程序通信。实质上，这是一个Unix管道，其用户端通过命名文件标识。由于向管道写入字节不是很好的用户体验，因此“守护程序”需要分成两部分：“后端”或“服务器”守护程序和“前端”或“客户端”命令，后者与后端进行通信。
 - en: pizauth is an example of a daemon which uses this idiom. `pizauth server` crates
     a domain socket (e.g. `~/.cache/pizauth/pizauth.sock`) when it starts. Commands
     such as `pizauth show act1` connect to the domain socket, write a simple command
@@ -972,6 +1150,8 @@
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: pizauth 就是使用这种习惯用法的守护程序示例。当它启动时，`pizauth server`会创建一个域套接字（例如`~/.cache/pizauth/pizauth.sock`）。诸如`pizauth
+    show act1`的命令会连接到域套接字，向套接字写入一个简单的命令（例如`showtoken:act1`），并监听回复（例如`access_token:abcd1234`）。
 - en: 'As well as bypassing worries about PIDs and signal handlers, this idiom turns
     out to have other advantages. It makes it easy and reliable for a daemon to check
     if it is already running: if the domain socket file doesn’t exist, the daemon
@@ -983,6 +1163,8 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了绕过有关 PID 和信号处理程序的担忧外，这种习惯用法还有其他优点。它使得守护程序可以轻松可靠地检查自己是否已经在运行：如果域套接字文件不存在，则明显守护程序未在运行；如果域套接字文件存在，则守护程序可以向套接字发送请求，如果没有收到回复，则守护程序未在运行。最后，它使得与守护程序交互的新方式变得微不足道。例如，pizauth
+    随着时间的推移增加了几个新的子命令，每个子命令我只需要一两分钟就能实现。
 - en: 'There are two consequences to this style of daemon. First, how does one expose
     all the different subcommands to the user? Some daemons install multiple binaries
     with different names. Especially if these binaries don’t share a common prefix,
@@ -992,10 +1174,13 @@
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种守护程序风格有两个后果。首先，如何向用户公开所有不同的子命令？一些守护程序安装多个具有不同名称的二进制文件。特别是如果这些二进制文件没有共同的前缀，这会降低可发现性。即使它们有共同的前缀，这意味着简单的
+    `-h` 类型的帮助只能针对每个二进制文件。相比之下，`pizauth -h` 可以合理地一次性向用户展示所有子命令：
 - en: '[PRE12]'
   id: totrans-split-144
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Second, how does one implement all these subcommands? pizauth literally installs
     a single binary: if invoked as `pizauth server` it takes one path of execution;
     all other subcommands take another path. For many daemons this is probably acceptable,
@@ -1005,6 +1190,8 @@
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次，如何实现所有这些子命令？pizauth 实际上只安装了一个单独的二进制文件：如果作为 `pizauth server` 调用，它会走一条路径；所有其他子命令则走另一条路径。对于许多守护程序来说，这可能是可以接受的，但这也意味着单个二进制文件相当大。如今，这让我有些担心，因为我可能会为[gadget
+    attacks](https://en.wikipedia.org/wiki/Return-oriented_programming)暴露一个不必要的大攻击面。
 - en: In retrospect, I think it would have been better to install multiple subcommand
     binaries out of sight of the user (e.g. `pizauth-server`, `pizauth-show` into
     `/usr/local/exec/pizauth/`) and have a single binary or shell script (`/usr/local/bin/pizauth`)
@@ -1016,17 +1203,22 @@
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾来看，我认为最好在用户看不到的地方安装多个子命令二进制文件（例如 `pizauth-server`、`pizauth-show` 安装在 `/usr/local/exec/pizauth/`
+    目录下），然后使用单个二进制文件或者 shell 脚本（`/usr/local/bin/pizauth`）来转发执行。每个子命令二进制文件只包含执行其特定操作所需的最小代码。从实现的角度来看，pizauth
+    的“核心”将是一个库，每个子命令都会导入并根据需要使用。采用这种风格的实现并不会增加太多难度，我以后写的任何守护程序都可能会这样做。
 - en: Implementation Suggestions
   id: totrans-split-147
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实施建议
 - en: 'Until recently, daemons were universally written in C. It is hard to recommend
     C for new software: it reduces productivity and is difficult to write secure code
     in .'
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 直到最近，守护程序普遍使用 C 语言编写。很难推荐 C 语言用于新软件：它降低了生产力，而且很难编写安全的代码。
 - en: My experience with snare and pizauth is that Rust is a viable language for writing
     daemons in. Rust isn’t a perfect language (e.g. unsafe Rust currently has no meaningful
     semantics so any code which uses `unsafe` comes with fewer guarantees than C)
@@ -1039,6 +1231,10 @@
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在 snare 和 pizauth 的经验表明，Rust 是编写守护进程的可行语言。Rust 并非完美的语言（例如，不安全的 Rust 当前没有实质性的语义，因此任何使用
+    `unsafe` 的代码都比 C 语言的保证更少），而且某些实现的部分与传统的 Unix 期望不符（它生成的二进制文件大小令人惊讶）。但是在 Rust 中，即使在达到
+    [目前可用的广泛库](https://crates.io) 之前，也可以比在 C 中更高效地工作。毫无疑问，如果我局限于 C 语言，我将无法找到足够的时间来编写
+    snare 或 pizauth。
 - en: One pleasant benefit of Rust’s type system is that it makes writing multi-threaded
     programs much easier than any other equivalent language. Since daemons often want
     to do multiple things in parallel (e.g. listen for new events, and carry out actions
@@ -1052,6 +1248,9 @@
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 类型系统的一个愉快的好处是，它使得编写多线程程序比任何其他等效语言都更容易。由于守护进程通常希望并行执行多个任务（例如监听新事件并执行与先前事件相关的操作），线程是一种自然的方法。pizauth
+    特别是广泛使用线程，因此效果更佳。我唯一的警告是，带锁的代码经常因为 [临时生命周期延长](https://rustwiki.org/en/reference/destructors.html#temporary-lifetime-extension)
+    的未指明性而失败。这不是一个理论问题 —— 只有在它在 pizauth 中引发 [问题](https://github.com/ltratt/pizauth/commit/b8bcfd06d0642f75ec9ed391f63ba4bf7213b0f3)（现已修复）后，我才意识到什么是临时生命周期延长。
 - en: 'Whatever language one uses for a daemon, robustness – the ability to keep working
     correctly in the face of difficult situations – is key. It’s tempting to think
     robustness is something that can be added to a daemon later, but it has profound
@@ -1061,6 +1260,8 @@
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论使用哪种语言编写守护进程，稳健性 —— 在面对困难情况时保持正确工作的能力 —— 是关键。人们很容易认为，稳健性可以在稍后添加到守护进程中，但它在宏观和微观层面上都有深远的影响。期望像临时脚本一样快速编写守护进程是一个坏主意：稳健性需要时间；它需要更多的代码（通常是
+    *更多* 的代码）；它需要仔细和持续的思考。
 - en: The final lesson I have learned for daemons is that just because automated testing
     is hard doesn’t mean that one should avoid automated testing. Most daemons I know
     of have little if any automated testing, and I accepted this as a given. However,
@@ -1071,6 +1272,7 @@
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 我为守护进程学到的最后一课是，仅仅因为自动化测试很困难，并不意味着应该避免自动化测试。我所知的大多数守护进程几乎没有进行任何自动化测试，我也接受了这一点。然而，由于守护进程持续运行，它们比我们编写的任何其他软件更有可能遇到不太可能的情况。虽然一些不太可能发生的情况，特别是那些只可能发生在某些平台上的情况，是难以触发的，但我后悔没有更彻底地测试我编写的守护进程。
 - en: The obvious challenge is that there’s often not much one can unit test in a
     daemon. For example, snare and pizauth’s configuration modules have reasonable
     unit testing , but what I worry about more is that the system as a whole does
@@ -1080,6 +1282,8 @@
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 显而易见的挑战是，在守护进程中通常很难进行单元测试。例如，snare 和 pizauth 的配置模块进行了合理的单元测试，但我更担心的是整个系统是否能够正确运行。我之前提到了
+    extsmail、子进程和 poll 的问题。现在，extsmail 有一个小型但令人惊讶地有效的测试套件，检查这些方面是否正常工作。
 - en: 'snare had a different problem: I became increasingly reluctant over time to
     make meaningful changes to snare because I was worried that I might break things
     in a subtle way. When I decided to rip out the external HTTP server snare was
