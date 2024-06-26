@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:32:10'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:32:10'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Oracle Shared Pool Internals: Allocated Chunk Status Indicators in Heap Dumps
     | Tanel Poder Consulting'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Oracle共享池内部：堆转储中分配的块状态指示器 | Tanel Poder Consulting
 - en: 来源：[https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/](https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/](https://tanelpoder.com/posts/oracle-shared-pool-chunk-status-indicators-in-heapdump/)
 - en: <main>
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main>
 - en: Over time, Oracle has been adding more contextual information into each allocated
     heap memory chunk, to make it easier to see what for your heap memory is used.
     This instrumentation is used for private (PGA,UGA,etc) heaps too, but this article
@@ -36,16 +43,20 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着时间的推移，Oracle一直在每个已分配的堆内存块中添加更多的上下文信息，以便更容易看到堆内存的用途。这种工具也用于私有（PGA、UGA等）堆，但本文仅关注共享池堆。
 - en: 'A few examples from past are:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 过去的一些例子包括：
 - en: '[Library cache object hash values added to allocated shared pool chunk names](/2010/11/04/a-little-new-feature-for-shared-pool-geeks/)
     (2010)'
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[添加库缓存对象哈希值到已分配的共享池块名称](/2010/11/04/a-little-new-feature-for-shared-pool-geeks/)
+    (2010)'
 - en: The above technique is used for some other allocation types too, like `KKSSP^NNN`
     allocations that are used for “session pages” that hold various tiny memory structures
     like library cache lock (and pin in older DB versions) that a session must allocate
@@ -55,6 +66,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 上述技术也适用于其他一些分配类型，例如用于“会话页面”的`KKSSP^NNN`分配，这些页面保存各种小内存结构，例如访问库缓存对象时会话必须分配的库缓存锁（在较旧的DB版本中还有固定）。在这种情况下，NNN并不显示某些哈希值，而是分配会话的SID。
 - en: Additionally, you can use shared pool dumps for listing chunk location in the
     *recurrent* end of the heap LRU replacement list after the [SEPARATOR marker in
     shared pool heap dumps](/posts/oracle-shared-pool-list-chunk-position-in-lru-list/)
@@ -65,11 +77,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 另外，您可以使用共享池转储来列出堆LRU替换列表末尾的*周期*结束后的[SEPARATOR标记共享池堆转储](/posts/oracle-shared-pool-list-chunk-position-in-lru-list/)
+    (2020)。这将告诉您哪些现有游标已被执行多次（至少固定了3次-一次是为了将对象加载到缓存中+至少2次执行）。
 - en: 'Newer Oracle versions print out even more info about chunk status indicators
     in heap dumps, for example:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的Oracle版本在堆转储中打印出更多关于块状态指示器的信息，例如：
 - en: '[PRE0]'
   id: totrans-split-13
   prefs: []
@@ -79,47 +94,59 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 可重建的块有2个字符表示其状态。
 - en: 'First character:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个字符：
 - en: '**P** - chunk is pinned'
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**P** - chunk is pinned'
 - en: '**U** - chunk is unpinned'
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**U** - chunk is unpinned'
 - en: 'Second character:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个字符：
 - en: '**C** - chunk is just created (pinned only once for KGL parent objects, twice
     for child objects)'
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**C** - chunk is just created (pinned only once for KGL parent objects, twice
+    for child objects)'
 - en: '**T** - chunk is in the *transient* end of the LRU list (loaded and used only
     once, heap is pinned only twice)'
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**T** - chunk is in the *transient* end of the LRU list (loaded and used only
+    once, heap is pinned only twice)'
 - en: '**R** - chunk is in the *recurrent* end of the LRU list (loaded and used twice
     or more, heap is pinned at least 3 times)'
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**R** - chunk is in the *recurrent* end of the LRU list (loaded and used twice
+    or more, heap is pinned at least 3 times)'
 - en: The 3-digit number in `recrPC001` is the CON_ID of the allocating container/PDB,
     if you’re using multitenant database.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`recrPC001`中的三位数是分配容器/PDB的CON_ID，如果您正在使用多租户数据库。
 - en: You might wonder what’s the difference between C and T above. It looks like
     Oracle immediately uses the transient flag (T) for objects like library cache
     object handle (KGLHD - the entry point to any library cache object structure,
@@ -129,10 +156,12 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能想知道上面的C和T之间有什么区别。看起来Oracle立即对像库缓存对象句柄（KGLHD - 任何库缓存对象结构的入口点，数据字典缓存对象KQR PO/SO）之类的对象使用瞬态标志（T），但对于实际的库缓存对象“有效载荷”，例如游标、PL/SQL对象，它首先使用（C）标志，然后如果执行超过一次则更改为（R）。
 - en: 'Query executed only once:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 查询仅执行一次：
 - en: '[PRE1]'
   id: totrans-split-25
   prefs: []
@@ -142,6 +171,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 相同的查询执行两次：
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
@@ -152,6 +182,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述输出中，您可以看到`recrUC001`如何变成`recrUR001`，并且该块被移动到LRU列表中的`SEPARATOR`特殊标记下面。
 - en: 'Here’s an example of a few library cache object handle (KGLHD) objects, that
     don’t even have the object name hash value included in the allocations (you can
     find the right ones using `v$db_object_cache.addr` or `v$sql.address/child_address`)
