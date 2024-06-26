@@ -103,6 +103,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个证书几乎有 1MB 大小，Zimmie 发现其尺寸是由于 CA 每秒重复撤销和重新签发它签署的每个证书。这个 CRL 在周末期间每天增长超过 250
+    KiB，他估计这相当于一天内的一个世纪增长。
 - en: '"Fortunately, the certificate authority had a certificate operation log," recounted
     Zimmie. "This log records every time the CA revokes a certificate, signs a new
     one, or performs a few other operations. Looking at the most recent entries, I
@@ -112,18 +114,22 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '"幸运的是，证书颁发机构有一个证书操作日志，" Zimmie 回忆道。"这个日志记录了 CA 撤销证书、签发新证书或执行其他几个操作的每一次。查看最近的条目，我看到
+    CA 进程唤醒，决定 CA 自己的证书已过期，然后撤销并重新签发它签署的每个证书。往前看，我看到它在一秒之前做了同样的处理。再往前一秒钟。"'
 - en: It's not valid before 2037, and it's not valid after 1910? That means it's never
     valid. How did that happen?
   id: totrans-split-19
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在 2037 年之前无效，而在 1910 年之后也无效？这意味着它永远无效。这是怎么发生的？
 - en: 'These digital [certificates](https://datatracker.ietf.org/doc/html/rfc5280),
     according to Zimmie, have two dates: notBefore, a date before which they''re not
     valid; and notAfter, a date after which they''re expired.'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据 Zimmie 所说，这些数字[证书](https://datatracker.ietf.org/doc/html/rfc5280)有两个日期：notBefore，表示在此日期之前它们无效；notAfter，表示在此日期之后它们过期。
 - en: '"I look at the CA''s certificate, and it says it''s not valid after 1910,"
     he wrote. "Weird, but that at least explains why the CA is telling us its certificate
     is expired. But when it issues a replacement certificate for itself, the replacement
@@ -132,33 +138,40 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '"我查看了 CA 的证书，上面写着在 1910 年后就无效了，" 他写道。"很奇怪，但至少解释了为什么 CA 告诉我们它的证书已过期。但是当它为自己颁发一张替代证书时，替代证书的有效期也是在
+    1910 年后。这*非常*奇怪。它应该用新的日期重新发放证书。"'
 - en: Zimmie took note of the notBefore date. "People rarely care about this date,
     because it's extremely rare to get certificates which aren't valid yet," he explained.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Zimmie 注意到了 notBefore 的日期。"人们很少关心这个日期，因为几乎不可能得到还不有效的证书，" 他解释道。
 - en: '"But this one isn''t valid before some time in 2037\. Wait, what? It''s not
     valid before 2037, and it''s not valid after 1910? That means it''s never valid.
     How did that happen?"'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '"但这个证书在 2037 年某个时间之前都不有效。等等，什么？它在 2037 年之前无效，在 1910 年之后也无效？这意味着它永远无效。这是怎么发生的？"'
 - en: Bad calculations
   id: totrans-split-24
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 错误的计算
 - en: 'Readers who deal with networking may already have some idea: Something is amiss
     with the time calculation.'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理网络的读者可能已经有了一些想法：时间计算出了问题。
 - en: '"Quite a while ago, the developers of UNIX decided to track time as a signed
     32-bit counter of the number of seconds since midnight, January 1, 1970," explained
     Zimmie.'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '"相当长时间以前，UNIX 的开发人员决定将时间跟踪为从 1970 年 1 月 1 日午夜以来的带符号 32 位秒计数器，" Zimmie 解释道。'
 - en: '"Linux kept this decision for compatibility. The ''signed'' part means the
     number can be negative, to allow time values before 1970 to be represented. Thirty-two
     bits is enough for a little under 4.3 billion seconds. The sign means you get
@@ -167,12 +180,15 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '"Linux 为了兼容性保留了这个决定。''signed'' 部分意味着数字可以是负数，以允许表示 1970 年之前的时间值。32 位足够表示将近 43
+    亿秒。符号意味着你可以在 1970 年之前获得大约 21 亿秒，在之后获得大约 21 亿秒。21 亿秒大约是不到 25,000 天，或者超过 68 年。"'
 - en: Sixty-eight years after 1970, Zimmie said, is 2038\. Anyone who deals with UNIX
     time should recognize the year 2038, which has [its own website](https://theyear2038problem.com/)
     warning of troubles ahead.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 1970 年后的六十八年后是 2038 年，Zimmie 说。任何处理 UNIX 时间的人都应该认识到 2038 年，这年有[它自己的网站](https://theyear2038problem.com/)警告未来可能出现的问题。
 - en: '"The latest time which can be represented like this is 03:14:07 UTC on January
     19, 2038," said Zimmie. "Once the timer is incremented from this second, the value
     ''overflows'' and goes from being a large positive number to being a large negative
@@ -181,6 +197,9 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: “可以像这样表示的最新时间是 2038 年 1 月 19 日 UTC 时间的 03:14:07，” Zimmie 说。“一旦计时器从此秒开始递增，该值就会
+    '溢出' 并从一个大正数变为一个大负数。该计数器可以表示的下一个秒是 1901 年 12 月 13 日 UTC 时间的 20:45:52。这就是所谓的 2038
+    年问题。”
 - en: Noting that the certificate authority signs its own certificate to be valid
     for a ten-year period, Zimmie concluded it ran into the 2038 problem when calculating
     expiration dates. That suggested a bug in the date math library, or the code implementing
@@ -189,11 +208,14 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意到证书颁发机构签署自己的证书以在十年期间内有效，Zimmie 得出结论，计算到期日期时遇到了 2038 年问题。这表明日期数学库或实现该库的代码存在
+    bug。但这仍然留下一个问题，即为什么它会用相同日期更新证书。
 - en: Zimmie checked the CA's automatic renewal code and confirmed that it won't reissue
     the certificate with an earlier start date when it expires.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Zimmie 检查了 CA 的自动更新代码，并确认在证书到期时不会重新发放具有较早起始日期的证书。
 - en: '"That makes sense under normal operation, but makes it impossible to recover
     from odd situations like the one my customer found himself in," he explained.
     "Another bug. But why did it sign a certificate not valid before 2037 in the first
@@ -201,17 +223,21 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: “这在正常运行下是有道理的，但在像我客户遇到的奇怪情况下是不可能恢复的。”他解释道。“又一个 bug。但它为什么在首次签发不早于 2037 年的证书？”
 - en: After checking the lengthy CA operation log, he found a system date stamp in
     2037 about the CA renewing itself.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 在检查了冗长的 CA 操作日志后，他发现了一个关于 CA 自我更新的系统日期时间戳在 2037 年。
 - en: '"Now the certificate starting in 2037 makes sense, except for the not-so-minor
     fact it''s 2010, not 2037," he said. "So why does the CA operation log have entries
     from 2037?"'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: “现在 2037 年开始的证书有了解释，除了一个不太重要的事实，那就是它是 2010 年而不是 2037 年，”他说。“那么为什么 CA 操作日志有来自
+    2037 年的条目呢？”
 - en: The customer, Zimmie recalled, reported that he didn't set the time to 2037\.
     "He's using NTP, though, and it's synchronizing with the time server every 120
     seconds," he elaborated, referring to the Network Time Protocol, which is used
@@ -219,6 +245,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户 Zimmie 回忆道，他报告称未将时间设置为 2037 年。“尽管如此，他正在使用 NTP，并且每 120 秒与时间服务器同步。”他详细说明道，指的是用于将计算机时钟与网络时间信号同步的网络时间协议。
 - en: '"I started looking through the NTP client logs. Most of the entries are from
     the client adjusting the clock a small fraction of a second forward or back. I
     filter out all the entries with adjustments starting with ''-0.'' or ''0.'', and
@@ -228,16 +255,20 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: “我开始查看 NTP 客户端日志。大多数条目是客户端微调时钟向前或向后一小部分秒数。我过滤掉所有调整开始于 '-0.' 或 '0.' 的条目，发现了一些大得多的调整。数万秒。数十万。数百万。我找到一个约为
+    -40 亿秒的调整，然后又回到数百万或数十万秒。”
 - en: Time travel
   id: totrans-split-37
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 时间旅行
 - en: According to Zimmie, the system believed that the NTP server had set the time
     to 2010, 2019, 2028, 2037, 1907, 1918, and so on until it cycled back to the present.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 据 Zimmie 称，系统认为 NTP 服务器已将时间设置为 2010、2019、2028、2037、1907、1918 等，直到再次循环到当前时间。
 - en: '"The NTP client in the OS is really bad, and it''s clearly allowing time adjustments
     much larger than are reasonable," he lamented. "The CA was running on an appliance
     OS provided by my employer, so we own the NTP client. Third bug of the day. At
@@ -245,17 +276,21 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: “操作系统中的 NTP 客户端真的很糟糕，明显允许比合理范围大得多的时间调整。” 他悲叹道。“CA 运行在我雇主提供的设备操作系统上，所以我们拥有 NTP
+    客户端。这是今天的第三个 bug。至少现在我们知道证书颁发机构为何认为是 2037 年！”
 - en: The NTP client in the OS is really bad, and it's clearly allowing time adjustments
     much larger than are reasonable
   id: totrans-split-40
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 操作系统中的 NTP 客户端真的很糟糕，明显允许比合理范围大得多的时间调整。
 - en: That still left the question of why the NTP client raced forward through the
     available timestamp space.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这仍然让人困惑，为什么 NTP 客户端在可用时间戳空间中快速向前。
 - en: '"It happened again a few days later, and we got a packet capture proving it
     actually handed out the bogus timestamps," he explained. "Unfortunately, the NTP
     server was an appliance from another vendor, so I can only speculate. I think
@@ -263,6 +298,8 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: “几天后它再次发生，我们得到了一个数据包捕获，证明它实际上发送了虚假时间戳，”他解释道。“不幸的是，NTP 服务器是另一个供应商的设备，所以我只能推测。我认为这是
+    C 语言中的值类型错误。”
 - en: Zimmie told us "C has the concept of signed integers and unsigned integers,
     but the separation between them is extremely weak. You can tell the system to
     take this signed integer value and store it somewhere, then you can accidentally
@@ -270,6 +307,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Zimmie 告诉我们：“C 语言具有有符号整数和无符号整数的概念，但它们之间的区分非常弱。你可以告诉系统将这个有符号整数值存储在某个地方，然后你可能会在以后意外地将其解释为无符号值。”
 - en: '"For positive integers, this doesn''t matter. It becomes a problem with negative
     integers, though. For several reasons, they are stored in memory in what is called
     ''two''s complement'' form. When you store the value -1 as a 32-bit signed integer,
@@ -278,11 +316,14 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: “对于正整数来说，这并不重要。但是对于负整数来说，情况就不同了。由于几个原因，它们以所谓的 '二进制补码' 形式存储在内存中。当你将值 -1 存储为 32
+    位有符号整数时，在内存中的表示是 0xFFFFFFFF。如果你稍后将其解释为无符号整数，你会得到 4,294,967,295 这个值。”
 - en: According to Zimmie, the NTP server used a radio receiver to listen to an upstream
     time source.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据 Zimmie 的说法，NTP 服务器使用无线电接收器监听上游时间源。
 - en: '"These radios are commonly GPS receivers, but CDMA cell networks at the time
     also provided precise enough time information. I suspect the NTP server had a
     badly faulty internal clock which ran very fast. I also suspect it lost the radio
@@ -291,6 +332,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: “这些无线电通常是 GPS 接收器，但当时的 CDMA 手机网络也提供了足够精确的时间信息。我怀疑 NTP 服务器的内部时钟严重故障，运行得非常快。我还怀疑它失去了无线电信号足够长的时间，以至于内部时钟比从无线电获得的时间快了至少一秒钟。”
 - en: '"When it reacquired the radio signal, I think it subtracted the internal clock
     time from the radio time to find out how many seconds off it was. If I''m right,
     it got a small negative number. I think it then treated this as an unsigned integer
@@ -300,11 +342,14 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: “当它重新获得无线电信号时，我认为它会从无线电时间中减去内部时钟时间，以找出它的偏差多少秒。如果我没错，它会得到一个小的负数。我认为在确定它落后多少秒时，它将这个小负数作为无符号整数处理，结果这个小负数变成了一个*巨大*的正数。因此，它以每秒
+    4.29 亿的速度飞驰。”
 - en: '"In my experience, the most baffling behavior is almost always caused by very
     small mistakes," quipped Zimmie. "This small mistake would explain the behavior."'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: “根据我的经验，最令人困惑的行为几乎总是由非常微小的错误引起的，”Zimmie 嘲笑道。“这个小错误可以解释这种行为。”
 - en: Zimmie wrote in his post that recovery was difficult. "Without the VPN connections
     working, they needed someone to physically go to around a hundred sites and get
     each one to trust the new CA," he explained. "It also ended up happening a few
@@ -312,11 +357,13 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Zimmie 在他的帖子中写道，恢复过程非常困难。“在 VPN 连接未工作的情况下，他们需要有人亲自去约一百个站点，并让每个站点信任新的 CA，”他解释道。“在一切都能修复之前，这种情况也发生了几次。”
 - en: '*The Register* asked Zimmie why he believes this story has resonated with people
     who have seen it on social media.'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '*The Register* 询问 Zimmie 为什么认为这个故事在社交媒体上引起了人们的共鸣。'
 - en: '"People enjoy mysteries," he replied. "We want to understand. I like telling
     that story because it illustrates how a simple problem can actually be bigger
     than you think, but big, weird problems can still be broken down and understood.
@@ -324,10 +371,12 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: “人们喜欢解谜，”他回答说。“我们想要理解。我喜欢讲述这个故事，因为它说明了一个简单的问题实际上可能比你想象的要大，但是即使是大而奇怪的问题，仍然可以被分解和理解。我认为这对很多人有共鸣。”
 - en: It's also a bit of fun when you're actually solving the mystery.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你真正解决谜团时，这也是一点有趣的事情。
 - en: '"I generally start troubleshooting an issue by asking the system what it is
     doing," explained Zimmie. "Packet captures, poking through logs, and so on. After
     a few rounds of this, I start hypothesizing a reason, and testing my hypothesis.
@@ -338,10 +387,12 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '"通常，我开始解决问题是通过询问系统它正在做什么，" Zimmie 解释道。"数据包捕获，查看日志等等。经过几轮这样的操作后，我开始提出假设，并测试我的假设。这些都是基本的科学方法。大多数问题都很简单检查。如果假设错误，我就继续前进。当我开始缩小可能性并验证假设时，真相大白时，我感觉很兴奋。提出一个合理的猜测并证明它是正确的，是非常令人满足的。"'
 - en: Zimmie told *The Register* that NTP implementation problems like this are uncommon.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Zimmie 告诉 *The Register* ，像这样的NTP实施问题并不常见。
 - en: '"I think the closest thing I''ve seen in the last ten years was that [gpsd
     bug](https://www.theregister.com/2021/10/19/gpsd_bug_reset/) you wrote about in
     late 2021," he recalled. "Of course, the nastiest bugs and implementation issues
@@ -350,3 +401,5 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '"我认为我在过去十年中见过的最接近的事情就是那个 [gpsd bug](https://www.theregister.com/2021/10/19/gpsd_bug_reset/)，你在2021年底写过的，"
+    他回忆道。"当然，最恶心的 bug 和实施问题似乎总是在我们最不经意的时候袭击。随着我们逼近2038年，我肯定会警惕NTP问题。" ®'
