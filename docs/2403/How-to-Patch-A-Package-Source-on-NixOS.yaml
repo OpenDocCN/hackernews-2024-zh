@@ -2,59 +2,71 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:00:23'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:00:23
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How to Patch A Package Source on NixOS
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何在 NixOS 上修补软件包源码
 - en: 来源：[https://drakerossman.com/blog/how-to-patch-a-package-source-on-nixos](https://drakerossman.com/blog/how-to-patch-a-package-source-on-nixos)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://drakerossman.com/blog/how-to-patch-a-package-source-on-nixos](https://drakerossman.com/blog/how-to-patch-a-package-source-on-nixos)
 - en: 'This post is part of a series about NixOS. The series is done in support of
     my upcoming Opus Magnum, "Practical NixOS: the Book", and you can read the [detailed
     post here](/blog/practical-nixos-the-book).'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章是关于 NixOS 系列的一部分。该系列支持即将发布的我的大作，《实用 NixOS：本书》，你可以在[这里阅读详细文章](/blog/practical-nixos-the-book)。
 - en: Should you find this article lacking some information, be sure to tell me in
     the comments or elsewhere, since it is a living document and I am very keen on
     expanding it.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你发现本文缺少某些信息，请务必在评论或其他地方告诉我，因为它是一个持续更新的文档，我非常愿意扩展它。
 - en: This article's full code is [available on NixOS Musings GitHub](https://github.com/drakerossman/nixos-musings/tree/main/how-to-patch-a-package-source-on-nixos).
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章的完整代码可以在[NixOS Musings GitHub](https://github.com/drakerossman/nixos-musings/tree/main/how-to-patch-a-package-source-on-nixos)上找到。
 - en: <details open=""><summary class="pt-2 pb-2 ml-6 text-xl font-bold">Table of
     Contents (Click to Hide/Show)</summary></details>
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: <details open=""><summary class="pt-2 pb-2 ml-6 text-xl font-bold">目录（点击隐藏/显示）</summary></details>
 - en: '[](#introduction)Introduction'
   id: totrans-split-10
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '[](#introduction)介绍'
 - en: To get an overview of nix formatters ecosystem, please refer to a [previous
     article](/blog/overview-of-nix-formatters-ecosystem) of mine.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 要了解 nix 格式化程序生态系统的概述，请参考我的[先前文章](/blog/overview-of-nix-formatters-ecosystem)。
 - en: To format my nix code, I prefer the `alejandra` formatter (though I'd be switching
     to [nixfmt](https://github.com/serokell/nixfmt) once it's accepted as the standard).
     `alejandra` does not provide any configuration options, however I would really
@@ -63,41 +75,50 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了格式化我的 nix 代码，我更喜欢`alejandra`格式化程序（尽管一旦[nixfmt](https://github.com/serokell/nixfmt)被接受为标准，我会转换过去）。`alejandra`不提供任何配置选项，但我真的很想将缩进设置为
+    4 个空格。`alejandra`毫不妥协，我也一样。
 - en: '[](#identifying-the-code-of-interest-to-be-patched)Identifying the Code of
     Interest to be Patched'
   id: totrans-split-13
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '[](#identifying-the-code-of-interest-to-be-patched)识别需要修补的感兴趣代码'
 - en: 'We''re going to achieve that in a rather simple way: we will replace the hard-coded
     formatting option of 2 spaces with 4\. For this, let''s check the [sourcecode
     of `alejandra`](https://github.com/kamadorueda/alejandra/tree/main/src).'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将通过一个非常简单的方式来实现：我们将把硬编码的 2 个空格的格式选项替换为 4 个。为此，让我们查看[`alejandra`的源代码](https://github.com/kamadorueda/alejandra/tree/main/src)。
 - en: By searching for `indentation` throughout the codebase, we identify the file
     that has the indent size definition - [`/src/alejandra/src/builder.rs`](https://github.com/kamadorueda/alejandra/tree/main/src/alejandra/src/builder.rs).
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过在代码库中搜索`indentation`，我们确定了定义缩进大小的文件 - [`/src/alejandra/src/builder.rs`](https://github.com/kamadorueda/alejandra/tree/main/src/alejandra/src/builder.rs)。
 - en: 'Here''s the [relevant snippet (line 49)](https://github.com/kamadorueda/alejandra/blob/e53c2c6c6c103dc3f848dbd9fbd93ee7c69c109f/src/alejandra/src/builder.rs#L49C1-L50C1):'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是[相关片段（第49行）](https://github.com/kamadorueda/alejandra/blob/e53c2c6c6c103dc3f848dbd9fbd93ee7c69c109f/src/alejandra/src/builder.rs#L49C1-L50C1)：
 - en: '[PRE0]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: To achieve the 4-space indentation, we will replace `2` with `4` in the line
     containing `2 * build_ctx.indentation`. Obvious!
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了实现 4 个空格的缩进，我们将在包含`2 * build_ctx.indentation`的行中将`2`替换为`4`。显而易见！
 - en: '[](#modifying-the-source-via-postpatch)Modifying the Source via `postPatch`'
   id: totrans-split-19
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '[](#modifying-the-source-via-postpatch)通过 `postPatch` 修改源码'
 - en: 'But first, let''s take a look at how `alejandra` is packaged on `nixpkgs`.
     Search for `alejandra` at [https://search.nixos.org/packages](https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=alejandra),
     and you''ll find `alejandra` as the first result, and from the web UI you can
@@ -105,19 +126,24 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 但首先，让我们看看在 `nixpkgs` 上如何打包`alejandra`。在[https://search.nixos.org/packages](https://search.nixos.org/packages?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=alejandra)搜索`alejandra`，你会发现它是第一个结果，通过
+    Web UI 你可以找到到 nix 包定义的链接：
 - en: 'Here''s the [source code](https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/tools/nix/alejandra/default.nix),
     and the full definition fits just a couple of lines, so I copy it below:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是[源代码](https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/tools/nix/alejandra/default.nix)，整个定义只有几行，我将其复制如下：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: What do we see here?
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这里看到了什么？
 - en: We build a Rust package (`alejandra` is written in Rust) via `rustPlatform.buildRustPackage`.
     For that, we declare the package name and its version with `pname = "alejandra"`
     and `version = "3.0.0";`. Then, we fetch the source code of `alejandra` from its
@@ -162,6 +188,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Nix comes with a neat built-in function called `substituteInPlace`. It allows
     us to replace a line with some other one in a file where necessary, and do it
     without the need to write some shell script ourselves.
@@ -195,6 +222,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Here''s the final result:'
   id: totrans-split-36
   prefs: []
@@ -203,6 +231,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[](#using-patchfiles-in-builder)Using Patchfiles in Builder'
   id: totrans-split-38
   prefs:
@@ -279,6 +308,7 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'This is how a [standard Unix patch file](https://en.wikipedia.org/wiki/Patch_%28Unix%29)
     should be structured, except we should also remove the top 2 lines attached by
     git:'
@@ -289,6 +319,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: You may have also produced such a patch file without `git` by simply copying
     the file, modifying the copy, and then running `diff original.toml modified.toml`,
     but you wouldn't get the header, which has the correct paths to patched files
@@ -305,6 +336,7 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Save the patch as `patch-name.diff` in the same directory as the patched source
     builder definition, and then include it via `patches = [./name-patch.diff];` inside
     the builder:'
@@ -315,6 +347,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: That should do the work, and `alejandra4` now has the proper name.
   id: totrans-split-59
   prefs: []
@@ -342,6 +375,7 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: All the Nix code in this article is formatted with `alejandra4` 🙂
   id: totrans-split-65
   prefs: []
