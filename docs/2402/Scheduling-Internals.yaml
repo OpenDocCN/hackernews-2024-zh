@@ -2,122 +2,147 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:29:40'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:29:40
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Scheduling Internals
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 调度内部
 - en: 来源：[https://tontinton.com/posts/scheduling-internals/](https://tontinton.com/posts/scheduling-internals/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tontinton.com/posts/scheduling-internals/](https://tontinton.com/posts/scheduling-internals/)
 - en: A sneak peek to what's coming!
   id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 先睹为快！
 - en: I remember when I first learned that you can write a server handling millions
     of clients running on just a single thread, my mind was simply blown away 🤯
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我记得当我第一次得知你可以在仅一个线程上运行处理数百万客户端的服务器时，我的脑袋简直是被震惊到了 🤯
 - en: I used Node.js while knowing it is single threaded, I used `async` / `await`
     in Python, and I used threads, but never asked myself *"How is any of this possible?"*.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用 Node.js，虽然知道它是单线程的，我在 Python 中使用了`async` / `await`，也使用了线程，但从未问过自己“*这一切怎么可能呢？*”。
 - en: This post is written to spread the genius of concurrency and hopefully getting
     you excited about it too.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章的目的是传播并发的天才，并希望你也对此感到兴奋。
 - en: My goal is for you to want to send a link to this post to an engineer in your
     team asking out loud *"Wait, but how does async even work?"*.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的目标是让你想把这篇文章的链接发送给团队中的工程师，并大声问道“*等等，异步工作是怎么回事？*”。
 - en: 'Questions I''m going to answer:'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我要回答的问题：
 - en: Why not create a thread per client?
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为什么不为每个客户端创建一个线程？
 - en: How to sleep when waiting on I/O?
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在等待 I/O 时如何进行休眠？
 - en: How does Node.js achieve concurrency?
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Node.js 如何实现并发？
 - en: What's concurrency? What's parallelism?
   id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是并发？什么是并行？
 - en: What are coroutines?
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是协程？
 - en: With an implementation we'll build piece by piece.
   id: totrans-split-17
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 通过一个实现，我们将逐步构建起来。
 - en: What are preemptive and non-preemptive schedulers?
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么是抢占式和非抢占式调度器？
 - en: How does Go and Rust implement concurrency in the language (stackful vs stackless)?
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Go 和 Rust 如何在语言中实现并发（有栈 vs 无栈）？
 - en: What scheduling algorithms are used by linux, Go and Rust's tokio?
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Linux、Go 和 Rust 的 Tokio 使用什么调度算法？
 - en: I assume proficiency in reading code and OS internals at an intermediate level,
     but don't stress over details you don't understand, try to get the bigger picture!
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我假设您在中级水平上具备阅读代码和操作系统内部的熟练能力，但不要过于强调您不理解的细节，试着把握整体图景！
 - en: With all of that out of the way, let us begin.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 一切搞定后，让我们开始吧。
 - en: Just create a thread, bro
   id: totrans-split-23
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 只需创建一个线程，伙计
 - en: 'Let''s try to write a simple echo server (whatever we receive, we send back)
     in C code, we''ll call it `echod`:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试在 C 代码中编写一个简单的回显服务器（无论收到什么，我们都返回），我们称之为`echod`：
 - en: '[PRE0]'
   id: totrans-split-25
   prefs: []
@@ -130,15 +155,18 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 很酷，现在如果我们想要同时处理多个客户端应该怎么办？当一个客户端正在被处理时，另一个试图连接到我们的服务器，但永远不成功，因为我们的服务器只有在处理当前客户端后才会调用`accept`。
 - en: How can we fix that?
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们如何修复这个问题？
 - en: 'The first thing most people will think is *"Can''t you just create a thread
     for each client?"*, something that looks like this:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数人会首先想到“*难道你不能为每个客户端创建一个线程吗？*”，看起来像这样：
 - en: '[PRE1]'
   id: totrans-split-29
   prefs: []
@@ -156,6 +184,8 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用线程的第一个问题是操作系统为新线程分配堆栈的方式。堆栈分配了虚拟内存（Linux 默认为 10MB），物理页面仅在实际写入页面时才会分配。这非常好，因为这意味着你不会在一开始就为每个线程预留10MB的RAM，**但**它确实意味着分配的粒度至少是页面大小（运行`getconf
+    PAGESIZE`，我的机器是4KB）。使用`pthread_attr_setstacksize`不会解决问题，你仍然必须提供一个页面大小的倍数。页面可能比你实际使用的要大得多，这取决于应用程序。
 - en: I also think that relying on overcommitment of memory is pretty annoying. We
     are getting killed by the OOM killer instead of having an opportunity cleaning
     up resources when an allocation fails indicating we are out of memory.
@@ -163,11 +193,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我也认为依赖内存超额分配非常恼人。我们被内存耗尽杀手（OOM killer）杀死，而不是在分配失败时有机会清理资源。
 - en: 'The second problem we need to fix when creating a bunch of OS threads is to
     change all the relevant limits:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建一堆操作系统线程时需要解决的第二个问题是更改所有相关的限制：
 - en: '[PRE2]'
   id: totrans-split-33
   prefs: []
@@ -178,44 +210,53 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有我向您展示的文件可能对您的系统不够，例如`systemd`也设置了最大限制。
 - en: The third problem is performance. Context switching between kernel and user
     mode is expensive in terms of CPU cycles. A single context switch isn't that expensive
     on its own, but doing a lot of them adds up.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 第三个问题是性能。内核和用户模式之间的上下文切换在 CPU 循环方面是昂贵的。单个上下文切换本身并不昂贵，但如果频繁进行大量切换，成本就会累积起来。
 - en: The fourth problem is that the stack allocation is static, we can't modify the
     stack size (grow) or free up commited physical pages in the stack once they are
     unused (shrink).
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 第四个问题是堆栈分配是静态的，我们无法修改堆栈大小（增加）或在未使用时释放已分配的物理页（缩减）。
 - en: Because of all these problems, threads should not be your go-to solution for
     running a lot of tasks concurrently (especially for I/O bound tasks like in `echod`).
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为所有这些问题，线程不应该成为同时运行大量任务的首选解决方案（特别是在像`echod`中的 I/O 绑定任务中）。
 - en: How else can we make `echod` serve millions of clients concurrently?
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还能以何种方式使`echod`同时为数百万个客户端提供服务？
 - en: Async I/O
   id: totrans-split-39
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 异步 I/O
 - en: Why block an entire thread from running, when calling `read` / `write` / `accept`?
     If you think about it, we waste a precious resource (CPU) from doing anything
     while the application waits for I/O.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 当调用`read` / `write` / `accept`时，为什么要阻塞整个线程？如果仔细考虑，我们会浪费一种宝贵的资源（CPU），让应用程序等待
+    I/O。
 - en: When calling `read` for example, the kernel waits for a network packet to be
     received from the network interface card or `NIC`. The CPU is free to run something
     else meanwhile.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，在调用`read`时，内核会等待从网络接口卡或`NIC`接收到网络数据包。CPU 可以在此期间运行其他任务。
 - en: In linux, you can mark a socket as non-blocking by either using `ioctl(fd, FIONBIO)`
     or `fcntl & O_NONBLOCK` (posix). A `read` call on that same socket will return
     immediately. If there's a packet written by the `NIC` we haven't read yet, `read`
@@ -224,11 +265,13 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Linux 中，您可以通过使用`ioctl(fd, FIONBIO)`或`fcntl & O_NONBLOCK`（POSIX）将套接字标记为非阻塞。对同一套接字的`read`调用将立即返回。如果`NIC`写入了我们尚未读取的数据包，`read`将像往常一样复制缓冲区，否则将返回错误，`errno`等于`EWOULDBLOCK`。
 - en: 'Let''s patch `echod` to be single threaded again, but this time, supporting
     multiple concurrent clients using non-blocking sockets:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们再次将`echod`修补为单线程，但这次使用非阻塞套接字支持多个并发客户端：
 - en: '[PRE3]'
   id: totrans-split-44
   prefs: []
@@ -240,17 +283,20 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 有点冗长，不要试图理解一切，只需知道我们同时处理许多不同的任务。要获取可编译版本，请点击[这里](https://github.com/tontinton/echod-hog/blob/master/main.c)。
 - en: The main problem with this solution is that we are now always busy doing something,
     the CPU runs at 100%, even when most loop iterations will result in `EWOULDBLOCK`.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种解决方案的主要问题是我们现在总是在忙于做某事，CPU 的利用率为 100%，即使大多数循环迭代将导致`EWOULDBLOCK`。
 - en: Another problem is code complexity, we are now prohibited from running code
     that will block, to not block our entire server application.
   id: totrans-split-47
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 另一个问题是代码复杂性，现在我们被禁止运行可能会阻塞整个服务器应用程序的代码。
 - en: What we really want is to sleep when we have nothing *useful* to do. I.e. When
     there is no client waiting to connect, no client has sent any packet and we can't
     yet send a packet to the client for whatever reason (maybe the client is busy
@@ -258,50 +304,59 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们真正想要的是在没有有用事情可做时休眠。即当没有客户端等待连接，没有客户端发送任何数据包，并且由于某种原因（也许客户端正在忙于自己的事情），我们尚未能够向客户端发送数据包时。
 - en: 'The reasons we want this are:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望这样做的原因有：
 - en: To be good neighbours to other applications running on the same machine, and
     not take CPU cycles they might want to utilize.
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了成为在同一台机器上运行的其他应用程序的良好邻居，并且不占用它们可能想要利用的 CPU 循环。
 - en: 'The more the CPU runs, the more energy it takes:'
   id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: CPU 运行得越多，消耗的能量就越多：
 - en: Worse battery life.
   id: totrans-split-52
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 电池寿命更短。
 - en: More expensive.
   id: totrans-split-53
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更昂贵。
 - en: Less environmental friendly 🌲🌳🌿
   id: totrans-split-54
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更少环保 🌲🌳🌿
 - en: 'Good news though, most operating systems provide an API to do just that. Maybe
     even too many APIs:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过好消息是，大多数操作系统提供了适合此类操作的 API。甚至可能提供了太多的 API：
 - en: '**select(2)** - A posix API. The man page is excellent, so let''s copy the
     important bits:'
   id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**select(2)** - 一个 POSIX API。手册非常棒，让我们复制重要部分：'
 - en: '[PRE4]'
   id: totrans-split-57
   prefs: []
@@ -315,36 +370,42 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 主要的要点是select只能监视`FD_SETSIZE`数量的FDs，通常为1024（glibc）。另一个需要注意的是，当FD准备就绪时，它会扫描所有注册的FDs（`O(n)`），因此当你有大量的FDs时，可能会花费大量时间在这上面。
 - en: '**poll(2)** - A posix API. Not limited to `FD_SETSIZE` but still `O(n)` like
     `select`.'
   id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**poll(2)** - 一个posix API。不限于`FD_SETSIZE`，但仍然像`select`一样是`O(n)`。'
 - en: '**epoll(7)** - A linux API. A non portable `poll` but at least it scales better
     as it''s `O(1)`.'
   id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**epoll(7)** - 一个Linux API。非可移植的`poll`，但至少它的扩展性更好，因为它是`O(1)`的。'
 - en: '**aio(7)** - A linux API. Unlike previous APIs, it supports both sockets and
     files, but with some major disadvantages:'
   id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**aio(7)** - 一个Linux API。与之前的API不同，它支持套接字和文件，但有一些主要的缺点：'
 - en: Supports only files opened with `O_DIRECT`, which are complex to work with.
   id: totrans-split-62
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 仅支持使用`O_DIRECT`打开的文件，这些文件的处理非常复杂。
 - en: Blocks if file metadata isn't available until it becomes available.
   id: totrans-split-63
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果文件的元数据不可用，会阻塞直到可用。
 - en: Blocks when the storage device is out of request slots (each storage device
     has a fixed number of slots).
   id: totrans-split-64
@@ -352,6 +413,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当存储设备的请求槽位用完时会阻塞（每个存储设备都有固定数量的槽位）。
 - en: Each IO submission copies 72 bytes and each completion copies 32 bytes. 104
     bytes copied for each IO operation using 2 syscalls.
   id: totrans-split-65
@@ -359,6 +421,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每次IO提交都会复制72字节，每次完成都会复制32字节。每次IO操作使用2个系统调用复制104字节。
 - en: '**io_uring(7)** - A linux API (since 5.1). Like `aio`, it unifies disk and
     network operations under a single API, but without `aio`''s shortcomings. It is
     designed to be fast, creating 2 queues that live in shared memory (between user
@@ -369,12 +432,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**io_uring(7)** - 自Linux 5.1起的一个Linux API。像`aio`一样，它将磁盘和网络操作统一到一个API下，但没有`aio`的缺点。它被设计为快速的，创建了两个队列，这两个队列存在于共享内存中（用户空间和内核空间之间），一个用于提交I/O操作，另一个用于存放I/O操作的结果一旦准备好。更多信息请访问["什么是io_uring？"](https://unixism.net/loti/what_is_io_uring.html)。'
 - en: '`ScyllaDB` have successfully implemented their database using `aio` in [seastar](https://seastar.io/),
     you can read more on async disk I/O on [their blog](https://scylladb.com/2017/10/05/io-access-methods-scylla/).'
   id: totrans-split-67
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`ScyllaDB`成功地在[seastar](https://seastar.io/)中使用`aio`实现了他们的数据库，您可以在[他们的博客](https://scylladb.com/2017/10/05/io-access-methods-scylla/)上了解更多关于异步磁盘I/O的信息。'
 - en: If you're interested about platforms other than linux, windows has [I/O Completion
     Ports](https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports),
     with FreeBSD and MacOS both using [kqueue](https://man.freebsd.org/cgi/man.cgi?kqueue).
@@ -382,11 +447,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果您对除了Linux以外的平台感兴趣，Windows有[I/O Completion Ports](https://learn.microsoft.com/en-us/windows/win32/fileio/i-o-completion-ports)，FreeBSD和MacOS都使用[kqueue](https://man.freebsd.org/cgi/man.cgi?kqueue)。
 - en: Prior to `io_uring`, async I/O abstraction libraries used a thread pool to run
     disk I/O in a non-blocking manner.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`io_uring`之前，异步I/O抽象库使用线程池以非阻塞方式运行磁盘I/O。
 - en: There are libraries like [libuv](https://libuv.org/) (what powers Node.js) that
     you can use to run highly concurrent servers while using just a single thread
     (they finally changed it to [use io_uring](https://github.com/libuv/libuv/pull/3952)).
@@ -395,16 +462,20 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似于[libuv](https://libuv.org/)（Node.js的动力来源）的库可以在仅使用一个线程的情况下运行高并发服务器（最终改为[使用
+    io_uring](https://github.com/libuv/libuv/pull/3952)）。这类库通常被称为`事件循环`，让我们稍微谈谈它们。
 - en: Event Loop
   id: totrans-split-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 事件循环
 - en: 'At its essence an event loop (also sometimes called [reactor pattern](https://en.wikipedia.org/wiki/Reactor_pattern))
     is basically this:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 本质上，事件循环（有时也称为[反应器模式](https://en.wikipedia.org/wiki/Reactor_pattern)）基本上是这样的：
 - en: '[PRE5]'
   id: totrans-split-73
   prefs: []
@@ -414,6 +485,7 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，就是这样，看看`libuv`的`uv_run`：
 - en: '[PRE6]'
   id: totrans-split-75
   prefs: []
@@ -423,6 +495,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是`uv__run_pending`，不遗漏任何细节：
 - en: '[PRE7]'
   id: totrans-split-77
   prefs: []
@@ -432,12 +505,14 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 相当令人印象深刻，对吧？这就是所有Node.js应用程序正在运行的内容。
 - en: What if you need to call a blocking 3rd party library function? For that, most
     event loop libraries have a thread pool you can run arbitrary code on, for example
     in `libuv`, you can use [uv_queue_work()](https://docs.libuv.org/en/v1.x/threadpool.html).
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果需要调用阻塞的第三方库函数怎么办？为此，大多数事件循环库都有一个线程池，您可以在其中运行任意代码，例如在`libuv`中，您可以使用[uv_queue_work()](https://docs.libuv.org/en/v1.x/threadpool.html)。
 - en: 'Pop quiz: how would something like `setTimeout` be implemented in an event
     loop? If nothing comes to mind, try cloning `libuv` and reading the implementation
     of `uv__run_timers` in `src/timer.c`.'
@@ -914,11 +989,13 @@
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 协程简单来说是可以暂停和恢复的程序。主要有两种实现方式：为每个协程分配一个堆栈（基于堆栈），或者使每个标记为`async`的函数返回一个可以暂停和恢复该函数所需状态的对象（无堆栈）。
 - en: 'Stackful and stackless impact the API greatly, each with its own advantages
     and disadvantages. Here''s an overview:'
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于堆栈和无堆栈极大地影响API，各有其优缺点。以下是概述：
 - en: '**Stackful** - Coroutines have the exact same API and semantics as OS threads,
     which makes sense, as they both allocate a stack at runtime. Our example scheduler
     using `setjmp` is stackful. Go is another example of a stackful implementation.
@@ -933,6 +1010,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**基于堆栈** - 协程与操作系统线程具有完全相同的API和语义，这是有道理的，因为它们都在运行时分配堆栈。我们使用`setjmp`的示例调度程序是基于堆栈的。Go语言是另一个基于堆栈的实现的示例。就像Go需要定期上下文切换一样，它还需要定期检查是否有足够的空闲堆栈空间继续运行，如果没有，它重新分配堆栈以获得更多内存，复制之前的内容并修复所有指向旧堆栈的指针，使其指向新堆栈。堆栈不仅可以动态增长，还可以在需要时缩小。真正的美妙之处在于，您可以选择在后台同步或异步运行任何函数，而不影响其周围的代码：'
 - en: '[PRE25]'
   id: totrans-split-157
   prefs: []
@@ -950,6 +1028,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**无堆栈** - 如果您曾经使用过具有`async`和`await`的语言，您就使用过无堆栈的实现。例如，Rust和Python的`asyncio`。Rust的`async`将一段代码块转换为一个状态机，在您`await`它之前不会运行。这种方法的最大优势在于运行时的轻量级，内存分配恰好在需要时进行，这也非常适合Rust的嵌入式用例。这种方法的主要问题是“函数着色”。`async`函数只能在另一个`async`函数内部调用：'
 - en: '[PRE26]'
   id: totrans-split-159
   prefs: []
@@ -961,52 +1040,62 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Rust在发布之前采用了基于堆栈的方法，但最终切换到了无栈：["为什么选择异步 Rust？"](https://without.boats/blog/why-async-rust/)。
 - en: Scheduler Algorithms
   id: totrans-split-161
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 调度算法
 - en: A scheduler is also responsible for deciding which task it should run next once
     one finishes.
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 调度程序还负责决定一旦一个任务完成后应该运行哪个任务。
 - en: One of the simplest methods is one we have already seen before in the event
     loop section, and that is to run tasks in the order that they are added to the
     task queue.
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单的方法之一是我们已经在事件循环部分看到的，在任务队列中按照它们被添加的顺序运行任务。
 - en: 'Linux''s `SCHED_FIFO` scheduler does exactly this:'
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: Linux的`SCHED_FIFO`调度程序正是这样做的：
 - en: Each circle is a task. The white progress circle around tasks is the time left
     to run until the task is blocked.
   id: totrans-split-165
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 每个圆圈都是一个任务。围绕任务的白色进度圆圈显示任务被阻塞的剩余运行时间。
 - en: '**Purple box** - The queue holding tasks ready to run.'
   id: totrans-split-166
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**紫色框** - 包含准备运行任务的队列。'
 - en: '**Green box** - The CPU.'
   id: totrans-split-167
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**绿色框** - CPU。'
 - en: '**Gray box** - Tasks blocked on something (e.g. I/O).'
   id: totrans-split-168
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**灰色框** - 被某些东西阻塞的任务（例如I/O）。'
 - en: 'Taking `SCHED_FIFO` and adding a task runtime limit is what `SCHED_RR` does,
     allowing the CPU to be shared in a more uniform manner:'
   id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用`SCHED_FIFO`并添加任务运行时限是`SCHED_RR`所做的，允许CPU以更均匀的方式共享：
 - en: What if you have a task that *must* run once every 5ms, even if for a really
     short amount of time? For example in audio programming, you have a buffer to fill
     with a signal in time (e.g. `sin(x)`) that the audio device reads from at some
