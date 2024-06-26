@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:38:32'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:38:32
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Answering Legal Questions with LLMs
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用LLM回答法律问题
 - en: 来源：[https://hugodutka.com/posts/answering-legal-questions-with-llms/](https://hugodutka.com/posts/answering-legal-questions-with-llms/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://hugodutka.com/posts/answering-legal-questions-with-llms/](https://hugodutka.com/posts/answering-legal-questions-with-llms/)
 - en: If you asked a lawyer whether ChatGPT could do his job, he would laugh you out
     of the room. The tool is often useful, but can’t handle legal questions end to
     end. It makes up sources, its reasoning can be flawed, and it may overlook key
@@ -31,6 +37,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你问一个律师ChatGPT是否能胜任他的工作，他会笑掉大牙。这个工具通常很有用，但无法完全处理法律问题。它会捏造来源，其推理可能有缺陷，并可能忽视法律的关键方面。
 - en: We decided to tackle this problem at [Hotseat](https://hotseatai.com). After
     iterating multiple times, implementing advanced agentic workflows, and testing
     with dozens of lawyers, we’re certain that the product has glaring limitations
@@ -40,35 +47,42 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们决定在[Hotseat](https://hotseatai.com)解决这个问题。经过多次迭代、实施先进的代理工作流，并与数十名律师进行测试，我们确信该产品存在显著的局限性，不会很快取代任何工作。然而，我们找出了一种不直觉的，仅限于LLM的RAG方法来解决这个问题，并利用它使LLM能够回答关于特定欧盟法规的复杂问题。
 - en: In this post, you’re going to learn how to implement a system that can perform
     advanced reasoning over very long documents.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，您将学习如何实施一个能够对非常长的文件进行高级推理的系统。
 - en: The Problem
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题
 - en: 'A great answer to a legal question must at least:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于法律问题的一个很好的回答至少必须：
 - en: Be based on sound reasoning;
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 基于合理的推理；
 - en: Quote the source text of the law to be verifiable; and
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 引述法律文本源以便验证；以及
 - en: Take into account all relevant parts of the law.
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 考虑法律的所有相关部分。
 - en: To meet these requirements, we had to put the relevant documents in the prompt
     - we couldn’t just hope that the LLM was trained on all of the law. We also limited
     our scope to a single regulation. It made the problem approachable, and we could
@@ -76,96 +90,115 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了满足这些要求，我们不得不将相关文件放入提示中 - 我们不能只是希望LLM已经接受了所有法律的培训。我们还将范围限制在单一法规内。这使问题变得可解，我们可以随后扩展。
 - en: 'In our first attempts, we^([1](#user-content-fn-we)) fed the entire 226 pages
     of the [EU’s AI Act](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206)
     into GPT-4 and asked a sample question:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的首次尝试中，我们将整个226页的[欧盟AI法案](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:52021PC0206)输入GPT-4，并提出了一个样本问题：
 - en: Does the deployment of an LLM acting as a proxy to optimize SQL queries fall
     within the regulatory scope of the EU’s AI Act?
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 作为优化SQL查询的代理的部署是否属于欧盟AI法案的监管范围？
 - en: And we found that GPT-4 couldn’t give us a good answer.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现GPT-4无法给出一个好的答案。
 - en: 'A lawyer would start by asking some helper questions:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 律师通常会从一些辅助问题开始询问：
 - en: Does the proxy meet the definition of an AI system?
   id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 代理是否符合AI系统的定义？
 - en: Can the proxy be classified as a high-risk AI system?
   id: totrans-split-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 代理是否可以被分类为高风险AI系统？
 - en: Will the proxy process personal or sensitive data?
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 该代理是否会处理个人或敏感数据？
 - en: But in a single response, GPT-4 couldn’t both break down the question and answer
     it. The former task requires a high-level analysis of the document, and the latter
     - low-level focus on details.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，在单一的回答中，GPT-4无法同时分解问题并回答。前者需要对文件进行高级别的分析，后者则需要对细节进行低级别的关注。
 - en: The Solution
   id: totrans-split-23
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解决方案
 - en: We split answering the question into subtasks.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将回答问题分解为子任务。
 - en: 'The rough idea is to:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 大致的想法是：
 - en: Make GPT-4 figure out which subquestions it should ask; then
   id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 让GPT-4找出它应该问哪些子问题；然后
 - en: Answer each subquestion independently; and
   id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 独立回答每个子问题；以及
 - en: Aggregate the findings into a single response.
   id: totrans-split-28
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将研究结果汇总成单一回应。
 - en: Breaking Down the Question
   id: totrans-split-29
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 分解问题
 - en: To answer a legal question based on a single regulation, GPT-4 must first find
     the relevant sections. It requires high-level reasoning across the entire document.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 要回答基于单一法规的法律问题，GPT-4必须首先找到相关部分。它需要在整个文件中进行高级推理。
 - en: 'We discovered that GPT-4 can complete this task well, provided you prompt it
     carefully. All the standard prompt engineering guidelines apply. Crucial were:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现，只要仔细提示，GPT-4可以很好地完成这项任务。所有标准的提示工程指南都适用。其中关键的是：
 - en: '**Structuring the document with Markdown.** Without it, reasoning over 80,000
     tokens wouldn’t work.'
   id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**使用Markdown结构化文档。** 没有它，对超过80,000个令牌的推理是行不通的。'
 - en: '**Roleplaying.** We framed the task as a senior lawyer planning out work for
     a junior lawyer.'
   id: totrans-split-33
@@ -259,6 +292,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: We convert such calls into prompts that contain the task, the question, the
     specified parts of the regulation, and instructions to carry out the task. Whatever
     GPT-4 outputs is fed back into the master chat as the junior lawyer’s answer.
@@ -290,34 +324,40 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在“法律追踪”部分[这里](https://hotseatai.com/ans/does-the-development-and-deployment-of-q_2azysfQoPxFksVXKW8TYw2TGT79#legal-trace)看到最终答案。
 - en: Here’s [the master prompt](https://gist.github.com/hugodutka/58ccf2d104c0fe9a8f7bde585d304d59)
     along with [function definitions](https://gist.github.com/hugodutka/004b8e90ca55e5c6f8f83e3eb603cf01),
     and here’s [the junior lawyer’s prompt](https://gist.github.com/hugodutka/d19137accea33fc4a0105f94f7f296c0).
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是[主提示](https://gist.github.com/hugodutka/58ccf2d104c0fe9a8f7bde585d304d59)，以及[函数定义](https://gist.github.com/hugodutka/004b8e90ca55e5c6f8f83e3eb603cf01)，这里还有[初级律师的提示](https://gist.github.com/hugodutka/d19137accea33fc4a0105f94f7f296c0)。
 - en: Results and Limitations
   id: totrans-split-56
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结果与局限性
 - en: Answering a question this way takes 5 to 10 minutes and costs about $2 with
     GPT-4.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 用 GPT-4 这种方式回答问题需要5到10分钟，并且成本约为$2。
 - en: The highlight of testing the system with dozens of lawyers was when a GDPR specialist
     reviewed its answers. The lawyer ranked 8 out of 10 responses as excellent, and
     the remaining 2 as overly cautious in interpreting the law.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在与数十位律师测试系统时的亮点是一位 GDPR 专家审查其答案。该律师将10个答案中的8个评为优秀，而将其余2个评为在解释法律时过于谨慎。
 - en: However, over the long term, we found that GPT-4 can identify subquestions very
     well but often can’t answer them correctly. In non-trivial scenarios, it makes
     logical errors.^([2](#user-content-fn-logic))
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，长期以来，我们发现 GPT-4 能够很好地识别子问题，但通常无法正确回答它们。在非平凡的情况下，它会出现逻辑错误。^([2](#user-content-fn-logic))
 - en: Lawyers also told us that when they answer a question, they rarely touch upon
     a single regulation. Not only do they analyze multiple regulations, but they also
     take into account supporting documents such as various guidelines, regulatory
@@ -326,6 +366,7 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 律师们还告诉我们，当他们回答问题时，很少仅涉及一项法规。他们不仅分析多个法规，还考虑支持性文件，如各种指南、监管技术标准和法院裁决。相比之下，该系统一次只能处理一个文档。
 - en: We’ve learned that the combination of high latency, faulty reasoning, and limited
     document scope kills usage. No lawyer wants to expend effort to ask a detailed
     question, wait 10 minutes for an answer, wade through a 2-pages-long response,
@@ -333,16 +374,20 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发现，高延迟、错误推理以及有限的文档范围的组合使得该系统难以使用。没有律师愿意费力提出详细问题，等待10分钟得到答案，然后翻阅两页长的回答，并发现
+    AI 出现错误。
 - en: Conclusion
   id: totrans-split-62
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: Keeping all the limitations in mind, dividing complex jobs into simple tasks
     improves the reasoning capabilities of LLMs dramatically.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到所有限制，将复杂的工作分解为简单的任务显著提高了 LLM 的推理能力。
 - en: While the system isn’t directly useful for lawyers yet, the underlying architecture
     can be generalized to other problems. If less-than-perfect reasoning and high
     latency are acceptable, you could use it to answer arbitrary questions about arbitrary
@@ -350,6 +395,7 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这一系统目前对律师来说还没有直接的用处，但其基础架构可以推广到其他问题。如果可以接受不完美的推理和较高的延迟，你可以使用它来回答关于任意文档的任意问题。
 - en: If solving such problems is interesting to you, we’re looking for another co-founder.
     We’re still early, but we’ve learned a ton about how lawyers do legal research.
     Our next steps will be focused on semantic search that actually works, helping
@@ -360,3 +406,5 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您对解决此类问题感兴趣，我们正在寻找另一位联合创始人。我们还处于早期阶段，但我们已经对律师如何进行法律研究有了很多了解。我们的下一步将集中在实际有效的语义搜索，帮助法律公司浏览成千上万的法律文件。^([3](#user-content-fn-aipdf))
+    如果您希望在法律技术领域构建一个有意义的产品，请查看我们的[联合创始人申请](https://go.gkk.dev/request-for-cofounder)。我们很乐意听取您的意见。
