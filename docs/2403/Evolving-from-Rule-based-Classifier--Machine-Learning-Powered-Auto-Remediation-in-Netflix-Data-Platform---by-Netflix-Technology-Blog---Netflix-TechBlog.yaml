@@ -2,35 +2,42 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:42:03'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:42:03'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Evolving from Rule-based Classifier: Machine Learning Powered Auto Remediation
     in Netflix Data Platform | by Netflix Technology Blog | Netflix TechBlog'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从基于规则的分类器进化：Netflix数据平台中的机器学习驱动自动修复 | Netflix 技术博客 | Netflix TechBlog
 - en: 来源：[https://netflixtechblog.com/evolving-from-rule-based-classifier-machine-learning-powered-auto-remediation-in-netflix-data-039d5efd115b?gi=f2beca8c0a2b](https://netflixtechblog.com/evolving-from-rule-based-classifier-machine-learning-powered-auto-remediation-in-netflix-data-039d5efd115b?gi=f2beca8c0a2b)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://netflixtechblog.com/evolving-from-rule-based-classifier-machine-learning-powered-auto-remediation-in-netflix-data-039d5efd115b?gi=f2beca8c0a2b](https://netflixtechblog.com/evolving-from-rule-based-classifier-machine-learning-powered-auto-remediation-in-netflix-data-039d5efd115b?gi=f2beca8c0a2b)
 - en: 'Evolving from Rule-based Classifier: Machine Learning Powered Auto Remediation
     in Netflix Data Platform'
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从基于规则的分类器进化：Netflix数据平台中的机器学习驱动自动修复
 - en: by [Binbing Hou](https://www.linkedin.com/in/binbing-hou/overlay/about-this-profile/),
     [Stephanie Vezich Tamayo](https://www.linkedin.com/in/stephanievezich/overlay/about-this-profile/),
     [Xiao Chen](https://www.linkedin.com/in/chenxiao000/overlay/about-this-profile/),
@@ -42,6 +49,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者：[侯斌兵](https://www.linkedin.com/in/binbing-hou/overlay/about-this-profile/)，[斯蒂芬妮·韦齐克·塔马约](https://www.linkedin.com/in/stephanievezich/overlay/about-this-profile/)，[陈晓](https://www.linkedin.com/in/chenxiao000/overlay/about-this-profile/)，[田亮](https://www.linkedin.com/in/liangtian/overlay/about-this-profile/)，[特洛伊·里斯托](https://www.linkedin.com/in/troy-ristow-4899b49/overlay/about-this-profile/)，[王浩元](https://www.linkedin.com/in/haoyuanwang/overlay/about-this-profile/)，[斯尼哈尔·切纳鲁](https://www.linkedin.com/in/snehalchennuru/overlay/about-this-profile/)，[帕万·迪克希特](https://www.linkedin.com/in/pawan-dixit-b4307b2/overlay/about-this-profile/)
 - en: '*This is the first of the series of our work at Netflix on leveraging data
     insights and Machine Learning (ML) to improve the operational automation around
     the performance and cost efficiency of big data jobs. Operational automation–including
@@ -58,11 +66,13 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这是我们在Netflix关于利用数据洞察和机器学习（ML）改善大数据作业性能和成本效率运营自动化系列工作的第一篇。操作自动化——包括但不限于自动诊断、自动修复、自动配置、自动调整、自动扩展、自动调试和自动测试——是现代数据平台成功的关键。在本博文中，我们介绍了我们的自动修复项目，它将目前使用的基于规则的分类器与ML服务集成，旨在无需人工干预自动修复失败的作业。我们已将自动修复投入生产环境，用于处理Spark作业的内存配置错误和未分类错误，并观察到其效率和效果（例如自动修复了56%的内存配置错误并节省了由所有错误引起的50%的货币成本），并具有进一步改进的巨大潜力。*'
 - en: Introduction
   id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Introduction
 - en: At Netflix, hundreds of thousands of workflows and millions of jobs are running
     per day across multiple layers of the big data platform. Given the extensive scope
     and intricate complexity inherent to such a distributed, large-scale system, even
@@ -71,6 +81,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Netflix，每天有数十万个工作流和数百万个作业在大数据平台的多个层次上运行。鉴于这种分布广泛、大规模系统固有的广泛范围和复杂性，即使失败的作业占总工作负载的一小部分，诊断和纠正作业故障也会带来相当大的操作负担。
 - en: For efficient error handling, Netflix developed an error classification service,
     called Pensive, which leverages a rule-based classifier for error classification.
     The rule-based classifier classifies job errors based on a set of predefined rules
@@ -79,6 +90,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了高效处理错误，Netflix开发了一个错误分类服务，名为Pensive，它利用基于规则的分类器进行错误分类。基于一组预定义规则，规则分类器对作业错误进行分类，并为调度器提供决定是否重试作业的见解，同时也为工程师提供诊断和修复作业失败的支持。
 - en: However, as the system has increased in scale and complexity, the rule-based
     classifier has been facing challenges due to its limited support for operational
     automation, especially for handling memory configuration errors and unclassified
@@ -89,6 +101,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，随着系统规模和复杂性的增加，基于规则的分类器在操作自动化方面面临挑战，特别是在处理内存配置错误和未分类错误方面支持有限。因此，操作成本随着失败作业数量的增加而线性增加。在某些情况下，例如，诊断和修复由于内存不足（OOM）错误导致的作业失败，需要跨团队共同努力，不仅涉及用户本身，还涉及支持工程师和领域专家。
 - en: 'To address these challenges, we have developed a new feature, called *Auto
     Remediation*, which integrates the rule-based classifier with an ML service. Based
     on the classification from the rule-based classifier, it uses an ML service to
@@ -98,6 +111,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决这些挑战，我们开发了一项名为*自动修复*的新功能，它将基于规则的分类器与机器学习服务集成。根据规则分类器的分类结果，它使用机器学习服务预测重试成功概率和重试成本，并选择最佳的候选配置作为推荐；还有一个配置服务来自动应用这些推荐。其主要优点如下：
 - en: '**Integrated intelligence.** Instead of completely deprecating the current
     rule-based classifier, Auto Remediation integrates the classifier with an ML service
     so that it can leverage the merits of both: the rule-based classifier provides
@@ -109,6 +123,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**集成智能。** 自动修复不是完全废弃当前的基于规则的分类器，而是将其与机器学习服务集成，以便充分利用两者的优点：基于规则的分类器提供静态、确定性的每个错误类别的分类结果，基于领域专家的上下文；机器学习服务针对每个作业提供性能和成本效益意识的推荐，充分利用机器学习的能力。通过集成智能，我们可以有效地满足不同错误的修复要求。'
 - en: '**Fully automated.** The pipeline of classifying errors, getting recommendations,
     and applying recommendations is fully automated. It provides the recommendations
     together with the retry decision to the scheduler, and particularly uses an online
@@ -118,6 +133,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**完全自动化。** 对错误进行分类、获取推荐并应用推荐的流程完全自动化。它将推荐与重试决策一起提供给调度器，并特别使用在线配置服务来存储和应用推荐的配置。这样一来，在修复过程中不需要人为干预。'
 - en: '**Multi-objective optimizations.** Auto Remediation generates recommendations
     by considering both performance (i.e., the retry success probability) and compute
     cost efficiency (i.e., the monetary costs of running the job) to avoid blindly
@@ -129,6 +145,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**多目标优化。** 自动修复通过同时考虑性能（即重试成功概率）和计算成本效率（即运行作业的货币成本），生成推荐，避免盲目推荐资源消耗过大的配置。例如，对于内存配置错误，它搜索与作业执行的内存使用相关的多个参数，并推荐最小化失败概率和计算成本线性组合的组合。'
 - en: These advantages have been verified by the production deployment for remediating
     Spark jobs’ failures. Our observations indicate that Auto Remediationcan successfully
     remediate about 56% of all memory configuration errors by applying the recommended
@@ -140,28 +157,33 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些优点已经通过生产部署验证，用于纠正Spark作业的故障。我们的观察表明，自动纠正能够成功纠正约56%的所有内存配置错误，通过在线应用推荐的内存配置，无需人工干预；同时，通过推荐新的配置使内存配置成功，并禁用对未分类错误的不必要重试，从而降低了约50%的成本。我们还注意到，通过模型调整，可以进一步提升潜力（参见生产发布部分）。
 - en: 'Rule-based Classifier: Basics and Challenges'
   id: totrans-split-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 基于规则的分类器：基础和挑战
 - en: Basics
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基础知识
 - en: 'Figure 1 illustrates the error classification service, i.e., Pensive, in the
     data platform. It leverages the rule-based classifier and is composed of three
     components:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 图1展示了数据平台中的错误分类服务Pensive。它利用基于规则的分类器，由三个组件组成：
 - en: '**Log Collector** is responsible for pulling logs from different platform layers
     for error classification (e.g., the scheduler, job orchestrator, and compute clusters).'
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**日志收集器**负责从不同的平台层拉取日志，用于错误分类（例如调度器、作业编排器和计算集群）。'
 - en: '**Rule Execution Engine** is responsible for matching the collected logs against
     a set of predefined rules. A rule includes (1) the name, source, log, and summary,
     of the error and whether the error is restartable; and (2) the regex to identify
@@ -173,6 +195,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**规则执行引擎**负责将收集到的日志与一组预定义规则进行匹配。规则包括：（1）错误的名称、来源、日志和摘要，以及错误是否可重新启动；（2）用于从日志中识别错误的正则表达式。例如，名为SparkDriverOOM的规则包含的信息表明，如果Spark作业的标准输出日志可以匹配到正则表达式*SparkOutOfMemoryError:*，则将此错误分类为用户错误，不可重新启动。'
 - en: '**Result Finalizer** is responsible for finalizing the error classification
     result based on the matched rules. If one or multiple rules are matched, then
     the classification of the first matched rule determines the final classification
@@ -183,17 +206,20 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**结果最终处理器**根据匹配的规则最终确定错误分类结果。如果匹配了一个或多个规则，则第一个匹配的规则决定最终的分类结果（规则优先级由规则顺序决定，第一个规则优先级最高）。另一方面，如果没有匹配的规则，则认为此错误未分类。'
 - en: Challenges
   id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 挑战
 - en: 'While the rule-based classifier is simple and has been effective, it is facing
     challenges due to its limited ability to handle the errors caused by misconfigurations
     and classify new errors:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然基于规则的分类器简单且有效，但由于其处理配置错误和分类新错误的能力有限，面临挑战：
 - en: '**Memory configuration errors.** The rules-based classifier provides error
     classification results indicating whether to restart the job; however, for non-transient
     errors, it still relies on engineers to manually remediate the job. The most notable
@@ -212,6 +238,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**内存配置错误。** 基于规则的分类器提供错误分类结果，指示是否重新启动作业；但对于非瞬态错误，仍然依赖工程师手动修复作业。最显著的例子是内存配置错误。此类错误通常由于作业内存配置错误引起。设置过小的内存可能导致内存溢出（OOM）错误，而设置过大的内存则可能浪费集群内存资源。更具挑战性的是，某些内存配置错误需要更改多个参数的配置。因此，正确设置内存配置不仅需要手动操作，还需要
+    Spark 作业执行的专业知识。此外，即使作业的内存配置最初调整良好，数据大小和作业定义的更改也可能导致性能下降。考虑到数据平台每月约有 600 个内存配置错误，及时修复仅内存配置错误就需要大量工程工作。'
 - en: '**Unclassified errors.** The rule-based classifier relies on data platform
     engineers to manually add rules for recognizing errors based on the known context;
     otherwise, the errors will be unclassified. Due to the migrations of different
@@ -225,22 +253,27 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**未分类错误。** 基于已知上下文，规则分类器依赖数据平台工程师手动添加规则以识别错误；否则，这些错误将被视为未分类。由于数据平台不同层次的迁移和应用程序的多样性，现有规则可能失效，并且添加新规则需要工程工作，也依赖于部署周期。分类器已添加了超过
+    300 条规则，但约 50% 的故障仍未分类。对于未分类错误，作业可能会使用默认重试策略多次重试。如果错误是非瞬态的，这些失败的重试将增加不必要的作业运行成本。'
 - en: 'Evolving to Auto Remediation: Service Architecture'
   id: totrans-split-28
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 演变为自动修复：服务架构
 - en: Methodology
   id: totrans-split-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 方法论
 - en: 'To address the above-mentioned challenges, our basic methodology is to integrate
     the rule-based classifier with an ML service to generate recommendations, and
     use a configuration service to apply the recommendations automatically:'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决上述挑战，我们的基本方法是将基于规则的分类器与 ML 服务集成以生成推荐，并使用配置服务自动应用推荐：
 - en: '**Generating recommendations.** We use the rule-based classifier as the first
     pass to classify all errors based on predefined rules, and the ML service as the
     second pass to provide recommendations for memory configuration errors and unclassified
@@ -249,6 +282,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**生成推荐。** 我们首先使用基于规则的分类器对所有错误进行分类，基于预定义规则，然后使用 ML 服务进行第二次分类，为内存配置错误和未分类错误提供推荐。'
 - en: '**Applying recommendations.** We use an online configuration service to store
     and apply the recommended configurations. The pipeline is fully automated, and
     the services used to generate and apply recommendations are decoupled.'
@@ -256,16 +290,19 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**应用推荐。** 我们使用在线配置服务存储和应用推荐的配置。管道完全自动化，并且用于生成和应用推荐的服务是解耦的。'
 - en: Service Integrations
   id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 服务集成
 - en: 'Figure 2 illustrates the integration of the services generating and applying
     the recommendations in the data platform. The major services are as follows:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 图 2 展示了数据平台中生成和应用推荐服务的集成。主要服务如下：
 - en: '**Nightingale** is a service running the ML model trained using [Metaflow](https://metaflow.org/)
     and is responsible for generating a retry recommendation. The recommendation includes
     (1) whether the error is restartable; and (2) if so, the recommended configurations
@@ -274,6 +311,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Nightingale** 是一个运行使用 [Metaflow](https://metaflow.org/) 训练的 ML 模型的服务，负责生成重试建议。该建议包括：(1)
+    错误是否可重新启动；以及 (2) 如果是，则推荐的配置以重新启动作业。'
 - en: '**ConfigService** is an online configuration service. The recommended configurations
     are saved in **ConfigService** as a JSON patch with a scope defined to specify
     the jobs that can use the recommended configurations. When **Scheduler** calls
@@ -286,6 +325,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**ConfigService** 是一个在线配置服务。推荐的配置保存为一个 JSON 补丁，并定义范围以指定可以使用推荐配置的作业。当 **Scheduler**
+    调用 **ConfigService** 获取推荐配置时，**Scheduler** 将原始配置传递给 **ConfigService**，并通过将 JSON
+    补丁应用于原始配置来返回变异的配置。**Scheduler** 可以使用变异的配置（包括推荐的配置）重新启动作业。'
 - en: '**Pensive** is an error classification service that leverages the rule-based
     classifier. It calls **Nightingale** to get recommendations and stores the recommendations
     to **ConfigService** so that it can be picked up by **Scheduler** to restart the
@@ -294,6 +336,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Pensive** 是一个利用基于规则的分类器的错误分类服务。它调用 **Nightingale** 来获取推荐，并将推荐保存到 **ConfigService**
+    中，以便 **Scheduler** 可以重新启动作业。'
 - en: '**Scheduler** is the service scheduling jobs (our current implementation is
     with [Netflix Maestro](/orchestrating-data-ml-workflows-at-scale-with-netflix-maestro-aaa2b41b800c)).
     Each time when a job fails, it calls **Pensive** to get the error classification
@@ -303,15 +347,19 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Scheduler** 是调度作业的服务（我们当前的实现与 [Netflix Maestro](/orchestrating-data-ml-workflows-at-scale-with-netflix-maestro-aaa2b41b800c)）。每次作业失败时，它调用
+    **Pensive** 获取错误分类以决定是否重新启动作业，并调用 **ConfigServices** 获取重新启动作业所需的推荐配置。'
 - en: 'Figure 3 illustrates the sequence of service calls with Auto Remediation:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 图 3 描述了带有自动修复功能的服务调用顺序：
 - en: Upon a job failure, **Scheduler** calls **Pensive** to get the error classification.
   id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在作业失败时，**Scheduler** 调用 **Pensive** 获取错误分类。
 - en: '**Pensive** classifies the error based on the rule-based classifier. If the
     error is identified to be a memory configuration error or an unclassified error,
     it calls **Nightingale** to get recommendations.'
@@ -319,6 +367,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**Pensive** 根据基于规则的分类器对错误进行分类。如果识别出错误是内存配置错误或未分类错误，则调用 **Nightingale** 获取推荐。'
 - en: With the obtained recommendations, **Pensive** updates the error classification
     result and saves the recommended configurations to **ConfigService**; and then
     returns the error classification result to **Scheduler**.
@@ -326,40 +375,47 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用获取的推荐，**Pensive** 更新错误分类结果，并将推荐的配置保存到 **ConfigService**；然后将错误分类结果返回给 **Scheduler**。
 - en: Based on the error classification result received from **Pensive, Scheduler**
     determines whether to restart the job.
   id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 根据从 **Pensive** 收到的错误分类结果，**Scheduler** 决定是否重新启动作业。
 - en: Before restarting the job, **Scheduler** calls **ConfigService** to get the
     recommended configuration and retries the job with the new configuration.
   id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在重新启动作业之前，**Scheduler** 调用 **ConfigService** 获取推荐的配置，并使用新配置重试作业。
 - en: 'Evolving to Auto Remediation: ML Service'
   id: totrans-split-45
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 进化到自动修复：ML 服务
 - en: Overview
   id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 概述
 - en: 'The ML service, i.e., Nightingale, aims to generate a retry policy for a failed
     job that trades off between retry success probability and job running costs. It
     consists of two major components:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: ML 服务，即 Nightingale，旨在为失败的作业生成重试策略，权衡重试成功概率和作业运行成本。它由两个主要组件组成：
 - en: '**A prediction model** that jointly estimates a) probability of retry success,
     and b) retry cost in dollars, conditional on properties of the retry.'
   id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**一个预测模型**，联合估计了 a) 重试成功的概率，以及 b) 重试成本（以美元计），条件是重试的属性。'
 - en: '**An optimizer** which explores the Spark configuration parameter space to
     recommend a configuration which minimizes a linear combination of retry failure
     probability and cost.'
@@ -367,6 +423,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**一个优化器**，探索 Spark 配置参数空间以推荐最小化重试失败概率和成本的线性组合的配置。'
 - en: The prediction model is retrained offline daily, and is called by the optimizer
     to evaluate each candidate set of configuration parameter values. The optimizer
     runs in a RESTful service which is called upon job failure. If there is a feasible
@@ -378,11 +435,14 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 预测模型每天离线重新训练一次，并由优化器调用以评估每组候选配置参数值集合。优化器作为一个 RESTful 服务在作业失败时被调用。如果优化有可行的配置解决方案，响应将包含此推荐，ConfigService
+    使用它来改变重试的配置。如果没有可行解决方案——换句话说，仅通过更改 Spark 配置参数可能不太可能使重试成功——响应将包含一个标志来禁用重试，从而消除浪费的计算成本。
 - en: Prediction Model
   id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 预测模型
 - en: Given that we want to explore how retry success and retry cost might change
     under different configuration scenarios, we need some way to predict these two
     values using the information we have about the job. Data Platform logs both retry
@@ -394,6 +454,8 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到我们想探索在不同配置场景下重试成功和重试成本如何变化，我们需要一种方法来使用我们对作业的信息来预测这两个值。数据平台记录了重试成功的结果和执行成本，为我们提供了可靠的标签。由于我们使用共享的特征集来预测这两个目标，并且需要在线快速运行推理以满足
+    SLOs，因此我们决定将问题制定为一个多输出监督学习任务。具体来说，我们使用一个简单的前馈多层感知器（MLP）模型，其中有两个输出头，分别用于预测每个结果。
 - en: '**Training:** Each record in the training set represents a potential retry
     which previously failed due to memory configuration errors or unclassified errors.
     The labels are: a) did retry fail, b) retry cost. The raw feature inputs are largely
@@ -408,6 +470,8 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '**训练：** 训练集中的每个记录代表了以前由于内存配置错误或未分类错误而失败的潜在重试。标签包括：a) 重试是否失败，b) 重试成本。原始特征输入主要是关于作业的未结构化元数据，例如
+    Spark 执行计划、运行作业的用户以及 Spark 配置参数和其他作业属性。我们将这些特征分为可以解析为数值的部分（例如 Spark 执行器内存参数）和不能解析为数值的部分（例如用户名）。由于非数值值来自高基数和动态的值集合，我们使用特征哈希处理这些值。然后我们创建一个较低维度的嵌入，它与归一化的数值值连接，并通过几层传递。'
 - en: '**Inference:** Upon passing validation audits, each new model version is stored
     in [Metaflow](https://metaflow.org/) Hosting, a service provided by our internal
     ML Platform. The optimizer makes several calls to the model prediction function
@@ -416,11 +480,14 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '**推理：** 在通过验证审计后，每个新的模型版本都存储在我们内部 ML 平台提供的服务 [Metaflow](https://metaflow.org/)
+    Hosting 中。优化器针对每个传入的配置建议请求多次调用模型预测函数，下面详细描述。'
 - en: Optimizer
   id: totrans-split-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 优化器
 - en: When a job attempt fails, it sends a request to Nightingale with a job identifier.
     From this identifier, the service constructs the feature vector to be used in
     inference calls. As described previously, some of these features are Spark configuration
@@ -439,6 +506,8 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 当作业尝试失败时，它会向Nightingale发送一个带有作业标识符的请求。从此标识符，服务构建要在推理调用中使用的特征向量。正如之前所述，其中一些特征是Spark配置参数，这些参数可能会被突变（例如，spark.executor.memory，spark.executor.cores）。Spark配置参数集是基于深入从事Spark性能调优的领域专家的精炼知识。我们使用贝叶斯优化（通过Meta的[Ax库](https://ax.dev/)实现）来探索配置空间并生成推荐。在每次迭代中，优化器生成一个候选参数值组合（例如，spark.executor.memory=7192
+    mb，spark.executor.cores=8），然后通过调用预测模型评估该候选，以估计使用候选配置（即在特征向量中突变其值）的重试失败概率和成本。在固定数量的迭代之后，如果可行，优化器返回“最佳”配置解决方案（即最小化了联合重试失败和成本目标）。如果找不到可行解决方案，我们会禁用重试。
 - en: One downside of the iterative design of the optimizer is that any bottleneck
     can block completion and cause a timeout, which we initially observed in a non-trivial
     number of cases. Upon further profiling, we found that most of the latency came
@@ -450,17 +519,20 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 优化器迭代设计的一个缺点是，任何瓶颈都可能阻止完成并导致超时，这是我们最初在一些案例中观察到的。通过进一步的性能分析，我们发现大部分延迟来自于候选生成步骤（即在前一个迭代的评估结果之后找出在配置空间中采取哪些方向）。我们发现这个问题已经被提到Ax库的所有者那里，并且他们在他们的API中添加了GPU加速选项。利用这个选项显著减少了我们的超时率。
 - en: Rollout in Production
   id: totrans-split-58
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在生产环境中推出
 - en: 'We have deployed Auto Remediation in production to handle memory configuration
     errors and unclassified errors for Spark jobs. Besides the retry success probability
     and cost efficiency, the impact on user experience is the major concern:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经在生产环境中部署了自动修复，用于处理Spark作业中的内存配置错误和未分类错误。除了重试成功率和成本效益之外，用户体验的影响是主要关注点：
 - en: '**For memory configuration errors:** Auto remediation improves user experience
     because the job retry is rarely successful without a new configuration for memory
     configuration errors. This means that a successful retry with the recommended
@@ -470,6 +542,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**内存配置错误自动修复：** 自动修复提升了用户体验，因为在没有针对内存配置错误的新配置的情况下，作业重试成功的可能性很小。这意味着使用推荐的配置成功重试可以减少操作负载并节省作业运行成本，而失败的重试并不会使用户体验变差。'
 - en: '**For unclassified errors:** Auto remediation recommends whether to restart
     the job if the error cannot be classified by existing rules in the rule-based
     classifier. In particular, if the ML model predicts that the retry is very likely
@@ -484,6 +557,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**对于未分类的错误：** 如果错误无法被规则分类器中现有规则分类，自动修复建议是否重新启动作业。特别是，如果ML模型预测到重试很可能失败，它将建议禁用重试，这可以节省不必要的重试导致的作业运行成本。对于业务关键作业且用户偏好无论重试成功概率低都始终重试的情况，我们可以向规则分类器添加新规则，以便下次由规则分类器分类相同错误，跳过ML服务的建议。这展示了规则分类器和ML服务集成智能的优势。'
 - en: The deployment in production has demonstrated that Auto Remediationcan provide
     effective configurations for memory configuration errors, successfully remediating
     about 56% of all memory configuration without human intervention. It also decreases
@@ -494,6 +568,7 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在生产部署中表明，自动修复可以为内存配置错误提供有效配置，成功修复约56%的所有内存配置问题，无需人工干预。它还通过建议新的配置使重试成功或禁用不必要的重试，将这些作业的计算成本降低约50%。由于性能和成本效率之间的权衡是可调节的，我们可以通过调整ML服务决定达到更高的成功率或更多的成本节省。
 - en: It is worth noting that the ML service is currently adopting a conservative
     policy to disable retries. As discussed above, this is to avoid the impact on
     the cases that users prefer always retrying the job upon job failures. Although
@@ -506,11 +581,13 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，ML服务目前采用保守策略禁用重试。如上所述，这是为了避免对用户偏好作业失败后始终重试的情况的影响。尽管这些情况是预期的，可以通过向规则分类器添加新规则来解决，但我们考虑逐步调整目标函数以逐步禁用更多重试有助于提供理想的用户体验。鉴于目前禁用重试的政策是保守的，自动修复潜力巨大，最终可以带来更多成本节省，而不影响用户体验。
 - en: 'Beyond Error Handling: Towards Right Sizing'
   id: totrans-split-64
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 超越错误处理：朝向正确的尺寸调整
 - en: Auto Remediation is our first step in leveraging data insights and Machine Learning
     (ML) for improving user experience, reducing the operational burden, and improving
     cost efficiency of the data platform. It focuses on automating the remediation
@@ -519,6 +596,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 自动修复是利用数据洞见和机器学习（ML）改善用户体验、减少数据平台运营负担和提高成本效率的第一步。它专注于自动化修复失败作业，同时为自动化处理除错误处理之外的操作铺平道路。
 - en: One of the initiatives we are taking, called *Right Sizing*, is to reconfigure
     scheduled big data jobs to request the proper resources for job execution. For
     example, we have noted that the average requested executor memory of Spark jobs
@@ -534,11 +612,13 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们正在采取的一项措施之一，称为*合适调整*，是重新配置预定的大数据作业，以请求适当的资源来执行作业。例如，我们注意到Spark作业的平均请求执行器内存约为其最大使用内存的四倍，表明存在显著的过度配置。除了作业本身的配置外，请求执行作业的容器的资源过度配置也可以减少以节省成本。通过启发式和基于ML的方法，我们可以推断作业执行的适当配置，以最小化资源过度配置并每年节省数百万美元，而不影响性能。类似于自动修复，这些配置可以通过ConfigService自动应用，无需人工干预。*合适调整*正在进行中，并将在专门的技术博客文章中详细介绍。请继续关注。
 - en: Acknowledgements
   id: totrans-split-67
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 致谢
 - en: Auto Remediation is a joint work of the engineers from different teams and organizations.
     This work would have not been possible without the solid, in-depth collaborations.
     We would like to appreciate all folks, including Spark experts, data scientists,
@@ -553,3 +633,9 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 自动修复是来自不同团队和组织的工程师们共同努力的成果。如果没有坚实而深入的合作，这项工作将无法实现。我们要感谢所有的人，包括Spark专家、数据科学家、ML工程师、调度器和作业编排工程师、数据工程师和支持工程师，他们分享了背景信息，并提供了建设性建议和宝贵的反馈（例如，[John
+    Zhuge](https://www.linkedin.com/in/jzhuge/)、[Jun He](https://www.linkedin.com/in/jheua/)、[Holden
+    Karau](https://www.linkedin.com/in/holdenkarau/)、[Samarth Jain](https://www.linkedin.com/in/samarthjain11/)、[Julian
+    Jaffe](https://www.linkedin.com/in/julianjaffe/)、[Batul Shajapurwala](https://www.linkedin.com/in/batul-shajapurwala-3274b863/)、[Michael
+    Sachs](https://www.linkedin.com/in/michael-sachs-b2453b/overlay/about-this-profile/)、[Faisal
+    Siddiqi](https://www.linkedin.com/in/fzsiddiqi/overlay/about-this-profile/)）。
