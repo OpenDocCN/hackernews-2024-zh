@@ -689,19 +689,24 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LinearWithDoRAMerged` 类在几个关键方面与我们之前的 `LinearWithLoRAMerged` 类不同，主要体现在如何修改和应用线性层权重上。然而，两个类都整合了
+    `LoRALayer` 来增强原始线性层的权重，但是DoRA添加了权重归一化和调整。'
 - en: 'The figure below shows a file-diff of both classes side by side:'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图展示了两个类的文件差异并排显示：
 - en: File-diff between `LinearWithLoRAMerged` and `LinearWithDoRAMerged`
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LinearWithLoRAMerged` 和 `LinearWithDoRAMerged` 的文件差异'
 - en: As we can see in the figure above, `LinearWithDoRAMerged` introduces an additional
     step involving dynamic normalization of the augmented weights.
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上图所示，`LinearWithDoRAMerged` 引入了一个额外步骤，涉及对增强权重进行动态归一化。
 - en: After combining the original weights with the LoRA-adjusted weights (`self.linear.weight
     + self.lora.alpha*lora.T`), it calculates the norm of these combined weights across
     columns (`column_norm`). Then, it normalizes the combined weights by dividing
@@ -711,6 +716,8 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 在将原始权重与LoRA调整后的权重（`self.linear.weight + self.lora.alpha*lora.T`）合并后，计算这些组合权重在列方向上的范数（`column_norm`）。然后，通过将它们除以它们的范数来对组合权重进行归一化（`V
+    = combined_weight / column_norm`）。这一步确保了组合权重矩阵的每列具有单位范数，从而通过保持权重更新的规模来稳定学习过程。
 - en: DoRA also introduces a learnable vector `self.m`, which represents the magnitude
     of each column of the normalized weight matrix. This parameter allows the model
     to dynamically adjust the scale of each weight vector in the combined weight matrix
@@ -719,21 +726,25 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: DoRA还引入了一个可学习的向量 `self.m`，表示归一化权重矩阵每列的大小。该参数允许模型在训练过程中动态调整组合权重矩阵中每个权重向量的比例。这种额外的灵活性有助于模型更好地捕捉不同特征的重要性。
 - en: In summary, `LinearWithDoRAMerged` extends the concept of `LinearWithLoRAMerged`
     by incorporating dynamic weight normalization and scaling to improve the training
     performance.
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 总之，`LinearWithDoRAMerged` 通过引入动态权重归一化和调整来扩展了 `LinearWithLoRAMerged` 的概念，从而提高了训练性能。
 - en: 'In practice, considering the multilayer perceptron from earlier, we can simply
     swap existing Linear layers with our `LinearWithDoRAMerged` layers as follows:'
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实践中，考虑到之前的多层感知机，我们可以简单地将现有的线性层替换为我们的 `LinearWithDoRAMerged` 层，如下所示：
 - en: '**In:**'
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入:**'
 - en: '[PRE16]'
   id: totrans-split-116
   prefs: []
@@ -743,6 +754,7 @@
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出:**'
 - en: '[PRE17]'
   id: totrans-split-118
   prefs: []
@@ -753,10 +765,12 @@
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在微调模型之前，我们可以重用之前实现的 `freeze_linear_layers` 函数，仅使LoRA权重和幅度向量可训练：
 - en: '**In:**'
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输入:**'
 - en: '[PRE18]'
   id: totrans-split-121
   prefs: []
@@ -766,6 +780,7 @@
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: '**输出:**'
 - en: '[PRE19]'
   id: totrans-split-123
   prefs: []
@@ -776,11 +791,13 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: '**包括模型训练的完整代码示例可在我的GitHub仓库中找到：[https://github.com/rasbt/dora-from-scratch](https://github.com/rasbt/dora-from-scratch).**'
 - en: In my opinion, DoRA seems like a logical, effective, and promising extension
     of LoRA, and I am excited to try it in real-world LLM finetuning contexts.
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，DoRA似乎是LoRA的一个逻辑、有效和有前景的扩展，我很兴奋地想在真实的LLM微调环境中尝试它。
 - en: In the meantime, I also added the DoRA implementation above to the [LoRA From
     Scratch – Implement Low-Rank Adaptation for LLMs in PyTorch](https://lightning.ai/lightning-ai/studios/code-lora-from-scratch)
     Lightning Studio to finetune a DistilBERT language model (see `bonus_02_finetune-with-dora.ipynb`).
@@ -789,10 +806,13 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，我还将上述的DoRA实现添加到[LoRA从零开始 - 在PyTorch中为LLM实现低秩适应](https://lightning.ai/lightning-ai/studios/code-lora-from-scratch)
+    Lightning Studio，用于微调DistilBERT语言模型（参见 `bonus_02_finetune-with-dora.ipynb`）。即使没有超参数调整，我已经看到比LoRA更高超过1%的预测准确率提升。
 - en: '* * *'
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '*This magazine is personal passion project that does not offer direct compensation.
     However, for those who wish to support me, please consider purchasing a copy of
     [one of my books](https://sebastianraschka.com/books). If you find them insightful
