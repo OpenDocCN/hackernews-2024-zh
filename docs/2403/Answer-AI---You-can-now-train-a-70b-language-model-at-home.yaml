@@ -106,11 +106,14 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的大胆构想很简单：找出如何利用这些更便宜、低内存的游戏 GPU 来训练最优秀的开源模型。因此，目标是：仅使用游戏 GPU 训练一个拥有 700 亿参数（70b）的模型，这意味着我们每个
+    GPU 的内存最多只有 24GB。这将是一个挑战，因为每个参数通常需要 16 位（2 字节），所以存储权重至少需要 140GB，而且这还不包括激活、梯度和优化状态等所有其他数据！
 - en: Why this project?
   id: totrans-split-17
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 为什么选择这个项目？
 - en: Answer.AI is a very unusual type of organization – a for-profit R&D lab closer
     in spirit to [19th century electricity labs](https://www.answer.ai/posts/2024-01-26-freaktakes-lessons.html)
     than to today’s AI research groups. Figuring out how to make large model training
@@ -120,6 +123,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Answer.AI 是一种非常不同寻常的组织类型——一个营利性研发实验室，更接近于[19世纪的电力实验室](https://www.answer.ai/posts/2024-01-26-freaktakes-lessons.html)，而不是今天的
+    AI 研究团体。找出如何使大模型训练变得廉价且易于访问，正是 Eric Ries 和 Jeremy Howard 希望我们在去年[NeurIPS上推出该组织](https://www.answer.ai/posts/2023-12-12-launch.html)时能够做到的事情之一。
 - en: Solving this problem is hard. It requires understanding many separate libraries
     (e.g bitsandbytes, PEFT, Transformers, Accelerate, and PyTorch), and computer
     science and math concepts (e.g discretization, distributed computing, GPU programming,
@@ -128,6 +133,8 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决这个问题很难。这需要理解许多不同的库（例如 bitsandbytes、PEFT、Transformers、Accelerate 和 PyTorch），以及计算机科学和数学概念（例如离散化、分布式计算、GPU
+    编程、线性代数、SGD 概念如梯度检查点），以及它们之间的互动。
 - en: Academia is full of brilliant people that solve hard problems. But academia
     hasn’t solved this particular problem. That’s because it’s difficult for university
     researchers to justify spending time on this kind of work. Combining existing
@@ -139,6 +146,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 学术界充满了解决难题的杰出人才。但学术界尚未解决这个特定问题。这是因为大学研究人员很难为这类工作投入时间。将现有工具和技术结合在一起通常不被认为足够“新颖”，无法在高影响力期刊上发表文章，但这是学术界所需要的。此外，学术界通常期望在其领域内高度专业化，这使得将许多碎片组合成一个解决方案变得具有挑战性。
 - en: And, of course, big tech companies are also full of brilliant people that solve
     hard problems. But this particular problem, training models with consumer GPUs,
     isn’t a problem they need to solve – they’ve already bought the big expensive
@@ -150,6 +158,8 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，大型科技公司也充满了解决难题的杰出人才。但是，用消费级 GPU 训练模型这个具体问题，并不是他们需要解决的问题——他们已经购买了昂贵的大型 GPU！许多初创公司也充满了解决难题的杰出人才！但正如[Eric
+    Ries 解释的](https://ltse.com/about/mission)，“当今的金融市场迫使企业将短期收益置于一切之上”。初创公司极难向投资者证明他们为什么要将资金投入到开源软件和公共研究上。
 - en: Whilst academia, big tech, and startups had good reasons for not solving this
     problem, these are [the exact reasons](https://www.answer.ai/posts/2023-12-12-launch.html)
     that this problem was a great fit for Answer.AI. Everyone who works at the company
@@ -212,6 +222,9 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 避免这种限制的诀窍是使用 [LoRA](https://arxiv.org/abs/2106.09685) – “Large Language Models
+    的低秩适应”。LoRA 并不训练整个大型语言模型，而是添加了“适配器”，这些适配器是非常小的矩阵（通常小于完整模型的 1%），它们在训练过程中保持不变。如果你曾经使用过像
+    Stable Diffusion 这样的模型，你可能会经常看到这些适配器；这是这些模型通常如此小而快速下载的原因。
 - en: 'Tim realized that LoRA can be combined with quantization: use a quantized base
     model, which is not changed at all by the training, and add trainable LoRA adaptors
     that are not quantized. This combination is *QLoRA*. Tim’s team was able to use
@@ -220,6 +233,8 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Tim 发现 LoRA 可以与量化结合：使用一个量化的基础模型，这个模型在训练过程中完全没有改变，然后添加可训练的未量化的 LoRA 适配器。这种组合被称为
+    *QLoRA*。Tim 的团队首次使用这种方法训练了一个超过 GPU 大小的模型：他们在一张 48GB 的卡上训练了一个 65b 的模型（未量化时为 130GB）。
 - en: Hugging Face stepped in once again here, creating the [PEFT](https://huggingface.co/blog/peft)
     library, which made LoRA training far simpler, and also integrating it directly
     with bitsandbytes to allow anyone to use QLoRA with just a few lines of code.
@@ -231,6 +246,9 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Hugging Face 在这里再次发挥了作用，创建了 [PEFT](https://huggingface.co/blog/peft) 库，使 LoRA
+    训练变得更加简单，并直接与 bitsandbytes 集成，使任何人都可以仅用几行代码使用 QLoRA。Hugging Face 团队一直在幕后不懈努力，确保开源社区能够使用这些技术来训练他们的模型。如果你曾经使用过
+    Transformers 通过单个函数参数加载 4 位模型，那么你应该感谢他们（即使你没有，你几乎肯定使用了使用这一生态系统构建其模型的人的工作）。
 - en: QLoRA didn’t quite slay the problem we set out to solve, to train a 70b model
     on 24GB cards, but it got closer than anything before. When quantized to 4 bits
     (which is 0.5 bytes), the 70b model takes 70/2 = 35 GB, which is larger than the
@@ -238,6 +256,8 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: QLoRA 没有完全解决我们想要解决的问题，即在 24GB 卡上训练一个 70b 模型，但它比以往任何方法都要接近。当量化为 4 位（即 0.5 字节）时，70b
+    模型需要 70/2 = 35 GB 的空间，这比我们想要使用的 24GB 游戏 GPU 大得多。
 - en: There are other limitations to QLoRA. A 48GB card is very expensive, and training
     a 65b model only just fits on such a card. That can be a problem, because we need
     to store lots of other things too, including the activations, gradients, and optimization
@@ -246,6 +266,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: QLoRA 还存在其他限制。一张 48GB 的卡非常昂贵，仅仅能够容纳一个 65b 的模型。这可能是个问题，因为我们还需要存储许多其他东西，包括训练过程中模型的激活、梯度和优化状态。如果加载模型权重后剩余的内存不多，那么就没有足够的工作内存支持训练。
 - en: For instance, one of the benefits of language models is that we can use them
     to “chat” with, or understand, or analyze long documents or conversations. To
     make models that can handle long sequences like that, we need to show them examples
@@ -257,6 +278,8 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，语言模型的一个好处是我们可以使用它们来“聊天”、理解或分析长文档或对话。为了制造能处理这种长序列的模型，我们需要在训练期间向它们展示长序列的示例。在训练中使用的最长序列称为“序列长度”。尝试在
+    48GB 卡上训练一个 65b QLoRA 模型时使用除了短序列长度之外的任何内容都会导致错误，因为没有足够的内存来存储关于序列的所有信息；几乎所有的内存都用于存储模型本身。
 - en: Furthermore, if the model can only look at a single sequence at a time, it’s
     going to take a really long time to get through all the data in our training set.
     So instead we want to be able to “batch” a few sequences together at a time. The
@@ -266,11 +289,13 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，如果模型一次只能查看一个序列，那么它将花费很长时间才能完成所有训练集中的数据。因此，我们希望能够一次将几个序列“批量”在一起。包含的序列数称为“批量大小”。当在加载模型权重后GPU上剩余空间很少时，我们只能使用非常小的批量大小，导致训练速度极慢。
 - en: 'FSDP: Scale training to multiple GPUs'
   id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: FSDP：将训练扩展到多个GPU
 - en: 'One obvious solution to the problem of the RAM limitations of a single consumer
     GPU, is to use more than one GPU! A very common approach in the open source community
     is to simply place a few layers of the model on each card. So then to train, you
@@ -284,6 +309,8 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决单个消费者GPU的RAM限制问题的一个明显解决方案是使用多个GPU！在开源社区中一个非常常见的方法是简单地在每张卡上放置模型的几层。因此，要进行训练，您在第一个GPU上运行前几层，然后在第二个GPU上运行下几层，依此类推。例如，一个70b（140GB）的模型可以分布在8个24GB的GPU上，每个GPU使用17.5GB。在Hugging
+    Face Transformers中甚至有一个方便的设置`device_map='auto'`，您可能已经使用过；这实际上是在幕后执行的操作。这能胜任工作，但有一个巨大的缺点：每次只有一个GPU处于活动状态，其他所有GPU都在等待它们的“轮次”。这意味着计算资源的⅞被浪费了。
 - en: '*Distributed Data Parallel* (DDP) was previously the gold standard approach
     to training models across multiple GPUs efficiently. This requires keeping the
     full model on each GPU – if you have a small model (e.g. a 2b model, which takes
@@ -295,6 +322,8 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '*分布式数据并行*（DDP）先前是在多个GPU上高效训练模型的黄金标准方法。这要求在每个GPU上保持完整的模型 – 如果您有一个小模型（例如`2b`模型，需要4GB
+    RAM），您可以简单地将整个模型分别加载到每个GPU上，然后每个GPU可以并行处理训练示例。因此，例如，如果您有4个GPU，这将加快4倍的训练速度。但是如果模型不能适应一个GPU，足够空间来容纳训练过程所需的数据，DDP就不起作用了。'
 - en: So we need something that can split a model across GPUs (like `device_map=’auto’`)
     and also use them in parallel (like DPP). This is where Meta’s [Fully Sharded
     Data Parallel](https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html)
@@ -309,6 +338,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们需要一些能够将模型分割到多个GPU上（例如`device_map='auto'`）并且并行使用它们（类似DDP）的方法。这就是Meta的[完全分片数据并行](https://pytorch.org/tutorials/intermediate/FSDP_tutorial.html)（FSDP）库的用武之地。它通过在多个GPU上分割模型的参数来“分片”大模型，允许所有GPU同时使用。在训练期间计算神经网络的一层时，所有必需的片段都会被复制到特定的GPU上。然后进行计算，最后从该GPU中删除复制的部分。尽管听起来非常低效，但通过在当前层忙于计算时同时聪明地复制下一层数据，这种方法可能不会比DDP慢。
 - en: FSDP’s ability to bring the performance of DDP to models that are larger than
     any one GPU has been a revelation. For instance, a 70b (70 billion parameter)
     unquantized model takes 140GB of RAM (because each parameter is stored as 16 bits,
@@ -318,15 +348,20 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: FSDP 将 DDP 的性能带到比任何单个 GPU 都要大的模型上是一个突破。例如，一个 70b（70亿参数）的非量化模型占用 140GB RAM（因为每个参数都存储为16位，即2字节），但即使是
+    NVIDIA 的 H100 显卡（每张卡约40000美元！）也不足以满足需求，因为它只有80GB RAM。但是使用 FSDP，四张 H100 GPU 可以组合使用，总共提供320GB
+    RAM。
 - en: (Mind you, such a machine is going to set you back around $150,000…)
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: （请注意，这样一台机器将耗费您约$150,000…）
 - en: Bringing FSDP and QLoRA together
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将 FSDP 和 QLoRA 结合起来
 - en: At Answer.AI our north star is making useful AI more accessible. $150,000 to
     create your own high-quality personalized model definitely doesn’t count as accessible!
     So the first project we embarked on was to make it possible to use a desktop with
@@ -337,11 +372,15 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Answer.AI，我们的北极星是使有用的人工智能更易于获取。花费$150,000来创建自己的高质量个性化模型绝对不算易于获取！因此，我们着手的第一个项目是使得可以使用配备消费级游戏
+    GPU 的台式机来高效地训练一个70b模型成为可能。我们认为，如果我们可以使用 QLoRA 将模型大小减少约400%（因此70b模型可以适应35GB RAM），然后我们使用
+    FSDP 将其分片到两个或更多的24GB消费者卡上，那么剩下的RAM足以训练一个模型。
 - en: First steps
   id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 第一步
 - en: Jeremy and Tim in late 2023 discussed the idea of bringing FSDP and QLoRA together.
     Tim connected Jeremy with Titus von Koeller, and Jeremy and Titus worked together
     to try, explore, understand, and document the issues that occurred when the two
@@ -349,6 +388,8 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 2023年末，杰里米和蒂姆讨论了将 FSDP 和 QLoRA 结合起来的想法。蒂姆将杰里米与 Titus von Koeller 联系起来，杰里米和 Titus
+    共同努力，尝试、探索、理解并记录两个库结合时出现的问题。
 - en: 'Answer.AI’s Johno Whitaker put together an important first step: a simple standalone
     test script which allowed us to more deeply understand the problem, and test solutions.
     A key breakthrough came in early 2024 when Answer.AI’s Benjamin Warner and Titus
@@ -358,6 +399,8 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Answer.AI 的 Johno Whitaker 制作了一个重要的第一步：一个简单的独立测试脚本，使我们能够更深入地理解问题，并测试解决方案。2024年初，Answer.AI
+    的本杰明·沃纳和 Titus 独立提出了一个关键想法：将量化参数存储在可选择的数据类型中，其中存储数据类型与模型的“计算类型”相同。
 - en: 'Benjamin had this prototyped within 24 hours of developing the idea, but then
     we discovered another problem: FSDP was not copying the quantization information
     needed for each shard to use the model! That’s because FSDP is quite opinionated
@@ -369,6 +412,9 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 本杰明在开发这个想法的24小时内完成了原型，但随后我们发现了另一个问题：FSDP 没有复制每个分片所需的量化信息以供模型使用！这是因为 FSDP 对它将在
+    GPU 之间同步的数据子集持有一定意见。我们意识到，如果在每个 GPU 上量化模型，那么缺失的元数据将在所有 GPU 上保持不变。此外，我们不得不将“量化状态”（用于（反）量化参数所需的信息）从参数移动到层中，以确保在
+    FSDP 移动分片时它们不会被移除。
 - en: Once we had those issues resolved, we were able to successfully train our first
     batch of data with a quantized model using FSDP! Benjamin and Answer.AI’s Kerem
     Turgutlu were able to package this up with all the tests and refactoring needed
@@ -378,11 +424,15 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们解决了这些问题，我们就能够使用 FSDP 成功地训练我们的第一批数据，这是使用量化模型！本杰明和 Answer.AI 的 Kerem Turgutlu
+    能够将这一切与所需的所有测试和重构打包成一个 [pull request](https://github.com/TimDettmers/bitsandbytes/pull/970)，提交给
+    bitsandbytes。我们非常感谢 bitsandbytes 项目的维护者，在推动我们的 PR 通过其流程方面非常响应。
 - en: Mission accomplished, nearly
   id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 任务完成，几乎
 - en: At this point, we once again figured that we’d have things tied up pretty quickly,
     and once again we under-estimated the complexity of the task! The first thing
     we realized was that it still wasn’t actually possible to load a quantized model
@@ -391,6 +441,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我们再次意识到我们将很快能够解决问题，但我们再次低估了任务的复杂性！我们首先意识到，加载和量化过程本身需要整个模型放在一个GPU上，因此仍然无法加载大于单个GPU的量化模型。
 - en: Jeremy had spent a few weeks carefully studying Meta’s fantastic [Llama-Recipes](https://github.com/facebookresearch/llama-recipes)
     project, which was the best complete FSDP fine tuning implementation he had found,
     and by closely tracking how it worked together with bitsandbytes, along with Hugging
@@ -400,6 +451,8 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 杰里米花了几周时间仔细研究Meta的出色[Llama-Recipes](https://github.com/facebookresearch/llama-recipes)项目，这是他发现的最佳完整FSDP精调实现，并通过密切跟踪其与bitsandbytes、Hugging
+    Face的PEFT、Transformers和Accelerate项目的协作方式，他设法构建了一个最小的独立脚本，手动完成了所有细调模型所需的步骤。
 - en: Benjamin realized that with some tweaks it would be possible to do the loading
     and discretization one layer at a time, thus avoiding the need to ever have the
     whole model on a single GPU. He also figured out how to prevent the PEFT library
@@ -408,17 +461,20 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 本杰明意识到，通过一些调整，可以逐层进行加载和离散化，从而避免在单个GPU上拥有整个模型的需求。他还想出了如何防止PEFT库将量化状态移动到CPU的方法。Kerem编写了LoRA算法的自定义实现，以便它可以与本杰明的变更配合工作。
 - en: And with that, we were able to fine tune a 70b model on dual 3090 gaming GPUs
     for the first time!
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这一点，我们首次能够在双3090游戏GPU上对70b模型进行精调！
 - en: 'To make this work, we were benefiting not just from FSDP and QLoRA, but also
     from a vast array of clever techniques developed over the last couple of years
     by the academic and open source communities. We used:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使此工作成功，我们不仅仅受益于FSDP和QLoRA，还从学术界和开源社区在过去几年中开发的大量聪明技术中受益。我们使用了：
 - en: '[Gradient checkpointing](https://arxiv.org/abs/1604.06174) (also known as activation
     checkpointing) to avoid storing full gradients, instead saving activations at
     a number of ‘checkpoints’ throughout the model and then re-computing gradients
@@ -427,6 +483,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[梯度检查点](https://arxiv.org/abs/1604.06174)（也称为激活检查点）以避免存储完整梯度，而是在模型各处的若干“检查点”处保存激活，然后根据需要重新运行前向计算步骤来重新计算梯度。'
 - en: '[CPU offloading](https://pytorch.org/docs/stable/fsdp.html#torch.distributed.fsdp.CPUOffload)
     to store weights in CPU RAM rather than on the GPU when they are not in use, drastically
     reducing the GPU memory required. This technique isn’t very useful to the “GPU
@@ -437,12 +494,15 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[CPU卸载](https://pytorch.org/docs/stable/fsdp.html#torch.distributed.fsdp.CPUOffload)
+    将权重存储在CPU RAM中，而不是在GPU上当它们不在使用时，大大减少了所需的GPU内存。对于使用H100 GPU的“GPU富人”来说，这种技术并不是很有用，因为它们有高度优化的方法来相互传递权重。但对于我们的用例来说，这是绝对必要的，因为游戏GPU和主板没有这些系统。'
 - en: '[Flash Attention 2](https://arxiv.org/abs/2307.08691) to efficiently calculate
     attention using a memory-optimized Cuda kernel.'
   id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[Flash Attention 2](https://arxiv.org/abs/2307.08691) 以使用内存优化的Cuda核心高效计算注意力。'
 - en: Making these work together with FSDP and QLoRA wasn’t always straightforward.
     For instance, when using CPU offloading, Benjamin discovered and fixed a problem
     in bitsandbytes. Each time an “offloaded” weight was copied back to the GPU, it
@@ -453,6 +513,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 使这些与FSDP和QLoRA一起工作并不总是直接的。例如，在使用CPU卸载时，本杰明发现并修复了bitsandbytes中的问题。每当“卸载”的权重被复制回GPU时，它就会自动重新量化，这实际上将预训练模型转变为随机权重！我们向bitsandbytes提交了一个拉取请求，以跟踪哪些参数已经被量化，以便我们可以避免冗余计算。
 - en: After all this work, we were very pleased to see that we could train large models
     with consumer GPUs. Jeremy had run detailed benchmarking of the original llama-recipes
     across a range of GPU hardware, and Kerem developed a comprehensive benchmarking
@@ -462,6 +523,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过所有这些工作，我们非常高兴地发现，我们可以使用消费级GPU训练大型模型。Jeremy已经在各种GPU硬件上对原始llama-recipes进行了详细的基准测试，而Kerem为新项目开发了一个全面的基准测试系统。在比较这两者时，我们意识到我们仍然无法使用希望的序列长度或批处理大小——由于某种原因，我们使用的内存超出了预期。
 - en: When we looked closely, it turned out that it wasn’t due to our FSDP/QLoRA integration
     at all – but actually as we increased seqlen in bitsandbytes even without FSDP,
     the memory usage went up super-linearly, eventually resulting in even higher memory
@@ -471,11 +533,13 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们仔细观察时，原来这并不是由于我们的FSDP/QLoRA集成造成的——实际上，即使没有FSDP，只要我们增加了bitsandbytes中的seqlen，内存使用量就会超线性增加，最终导致甚至比没有量化时内存使用量更高！原来我们并不是第一个发现这个问题的人。我们目前还没有bitsandbytes的解决方案（但正在调查），但这确实带来了一个令人兴奋的发现……
 - en: Discovering HQQ
   id: totrans-split-60
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 发现HQQ
 - en: We love collaborating with like minded people, so when we saw the amazing work
     being done by Daniel Han on [Unsloth](https://unsloth.ai/) we wanted to learn
     more, and see whether we might be able to help each other out. We asked Daniel
@@ -484,6 +548,7 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们喜欢与志同道合的人合作，所以当我们看到Daniel Han在Unsloth上所做的惊人工作时，我们想了解更多，并看看我们是否可以互相帮助。我们问Daniel是否还有其他这个领域的有趣项目值得关注，他指引我们关注了HQQ。
 - en: To explain HQQ, we’ll need to give a bit of background first… The 4-bit quantization
     done by bitsandbytes uses a simple, fast, and clever approach where each group
     of parameters is normalized to a consistent range, and then each parameter is
@@ -494,6 +559,7 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解释HQQ，我们首先需要简要介绍一下背景…… bitsandbytes进行的4位量化采用了一种简单、快速且巧妙的方法，其中每组参数被归一化到一个一致的范围，然后每个参数被放置在一个桶中，桶的分界点基于参数服从正态分布的假设。这样做的好处是量化几乎是即时的，但因为真实模型参数不会完全符合假设的分布，精度可能会受到影响。
 - en: Other approaches such as GPTQ and the more recent AWQ go in a different direction,
     where the quantization parameters are optimized based on the actual behavior of
     the model when representative data is passed to it. These methods tend to produce
@@ -503,12 +569,14 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他方法如GPTQ和最新的AWQ则采取了不同的方向，这些方法根据模型在传递代表性数据时的实际行为来优化量化参数。这些方法往往能产生更准确的模型，可能每个参数甚至少于4位；但它们的缺点是优化过程可能需要几个小时甚至几天来完成每个模型。
 - en: HQQ combines the best of both worlds. It is 50x faster to process a 70b model
     compared to GPTQ, yet is more accurate than it. Kerem decided to investigate whether
     HQQ would work well with FSDP.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: HQQ结合了两个世界的优势。与GPTQ相比，处理70b模型快50倍，同时比GPTQ更准确。Kerem决定调查HQQ是否与FSDP兼容良好。
 - en: He discovered that making HQQ and FSDP work well together took nearly the exact
     same steps as was required for bitsandbytes, and as result he had a complete working
     example completed within days. The [mobius.ml folks](https://www.mobiuslabs.com/)
@@ -517,11 +585,13 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 他发现，让HQQ和FSDP良好结合的过程几乎与bitsandbytes所需的完全相同步骤，结果他在几天内完成了一个完整的工作示例。mobius.ml的人们在确保我们的PR成功合并方面非常响应和有帮助，所以我们现在很高兴地宣布FSDP也能与HQQ兼容！
 - en: How to use FSDP/QLoRA
   id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何使用FSDP/QLoRA
 - en: To use FSDP, you will of course need more than one GPU. If you don’t have access
     to such a system, you can rent a dual 3090 box from the [Runpod Community Cloud](https://www.runpod.io/)
     for around $0.60/hour. There are many other providers to choose from; [cloud-gpus](https://cloud-gpus.com/)
