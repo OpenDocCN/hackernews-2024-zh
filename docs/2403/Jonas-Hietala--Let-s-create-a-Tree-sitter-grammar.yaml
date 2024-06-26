@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:32:10'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:32:10'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Jonas Hietala: Let''s create a Tree-sitter grammar'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Jonas Hietala：让我们创建一个Tree-sitter语法
 - en: 来源：[https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/](https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/](https://www.jonashietala.se/blog/2024/03/19/lets_create_a_tree-sitter_grammar/)
 - en: A Tree-sitter parser is actually a C program. The grammar we’ve seen has been
     described in JavaScript, but it’s only used as a description to generate the parser
     in C. If you’re a masochist, you can take a look at it in `src/parser.c` after
@@ -31,26 +37,32 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Tree-sitter解析器实际上是一个C程序。我们在JavaScript中看到的语法只是用作描述以生成C中的解析器。如果你是个虐待狂，你可以在运行`tree-sitter
+    generate`后查看`src/parser.c`。
 - en: An external scanner is just some custom C code that’s inserted into the parser,
     and it allows us to override the parser precedence, keep track of a context state,
     or whatever else we might need or want to do.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 外部扫描器只是一些自定义的C代码，插入到解析器中，它允许我们覆盖解析器的优先级，跟踪上下文状态或者其他我们可能需要或想要做的事情。
 - en: Let’s take a look.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看。
 - en: Let’s start by closing a paragraph early when a `:::` is encountered. This is
     simpler because we can solve this without storing any state.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从遇到`:::`时提前关闭段落开始。这更简单，因为我们可以在不存储任何状态的情况下解决这个问题。
 - en: 'When parsing `$.paragraph` we’ll give the parser a choice between ending the
     paragraph on a newline or on our new `$._close_paragraph` token:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在解析`$.paragraph`时，我们将让解析器在换行符或我们新的`$._close_paragraph`标记上选择结束段落：
 - en: '[PRE0]'
   id: totrans-split-11
   prefs: []
@@ -61,6 +73,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '`$._close_paragraph`由外部扫描器处理，其使用`externals`字段指定：'
 - en: '[PRE1]'
   id: totrans-split-13
   prefs: []
@@ -71,6 +84,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们转向`src/scanner.c`。`externals`中的标记会被分配一个递增的编号，从0开始……就像C中的枚举一样！
 - en: '[PRE2]'
   id: totrans-split-15
   prefs: []
@@ -80,6 +94,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要实现的五个函数如下：
 - en: '[PRE3]'
   id: totrans-split-17
   prefs: []
@@ -89,11 +104,13 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为我们不会使用任何状态，所以我们只需要更新`scan`函数。
 - en: 'What you’re supposed to do is check `valid_symbols` for the tokens we can return
     at any point in time, and return `true` if any was found:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 你应该做的是检查`valid_symbols`中我们可以在任何时候返回的标记，并且如果找到任何标记，则返回`true`：
 - en: '[PRE4]'
   id: totrans-split-20
   prefs: []
@@ -106,10 +123,12 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 要决定是否提前关闭段落，我们将向前查找任何`:::`，如果找到，则在不消耗任何字符的情况下关闭它。这可能不是最有效的解决方案，因为我们将不得不再次解析`:::`，但它完成了工作。
 - en: 'The matched token should be stored in `lexer->result_symbol`:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 匹配的标记应存储在`lexer->result_symbol`中：
 - en: '[PRE5]'
   id: totrans-split-23
   prefs: []
@@ -123,10 +142,12 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，结果标记将标记我们跨越的任何符号为该标记所拥有。所以`:::`会被标记为`_close_paragraph`（由于以下划线开头，输出将忽略它），而不是`div_marker`。为了防止这种情况，我们在推进词法分析器之前将`_close_paragraph`转换为零宽标记。
 - en: 'How do we advance the lexer? We call `lexer->advance`:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们如何推进词法分析器？我们调用`lexer->advance`：
 - en: '[PRE6]'
   id: totrans-split-26
   prefs: []
@@ -138,10 +159,12 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这几乎是我们可以用词法分析器做的所有事情。我们一次只处理一个字符，不能向后查看，而向前查看的唯一工具是在正确的位置`mark_end`（我们也可以查询当前列位置）。
 - en: 'With this we have a working external scanner and div tags now close paragraphs:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个，我们现在有一个工作的外部扫描器和div标签现在可以关闭段落：
 - en: '[PRE7]'
   id: totrans-split-29
   prefs: []
@@ -157,16 +180,19 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 要自动关闭其他打开的块，我们需要向解析器添加一些上下文，这意味着我们需要状态管理。
 - en: The small subset we’re implementing is only concerned with closing divs—because
     it would be a terribly long post otherwise—but I’ll try to implement this in a
     general manner, to be more indicative of a real-world parser.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们正在实现的这个小子集只关注关闭divs——否则这篇文章会太长了——但我会尝试以一种更一般的方式来实现，以更好地说明真实世界解析器的工作方式。
 - en: 'Our strategy is this:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的策略是这样的：
 - en: A div can have a varying number of `:` that must match.
   id: totrans-split-34
   prefs:
@@ -360,6 +386,7 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为推进词法分析器是原始的，并且我们不能“返回一个字符”，所以重要的是只有在真正需要推进时才这样做。因此，在继续之前我们始终需要检查`valid_symbols`：
 - en: '[PRE18]'
   id: totrans-split-67
   prefs: []
@@ -370,6 +397,7 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要消耗我们所处的所有冒号，并且只有在看到至少三个冒号时才继续：
 - en: '[PRE19]'
   id: totrans-split-69
   prefs: []
@@ -379,6 +407,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 打开一个新的 div 很简单；我们推入块并注册冒号的数量：
 - en: '[PRE20]'
   id: totrans-split-71
   prefs: []
@@ -390,6 +419,7 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，要决定是否应该打开或关闭 div，我们需要一种方法来搜索堆栈。这个函数就是做这个的，同时还会返回我们在堆栈中找到的 div 的深度（我们很快会用到）：
 - en: '[PRE21]'
   id: totrans-split-73
   prefs: []
@@ -400,10 +430,12 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们有一个问题：当我们想关闭 div 时，我们希望能够输出多个标记。
 - en: 'For example, with this type of input:'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，使用这种类型的输入：
 - en: '[PRE22]'
   id: totrans-split-76
   prefs: []
@@ -413,6 +445,7 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们看到关闭的`:::`标记时，我们将有一个包含 3 个 div 的堆栈：
 - en: '[PRE23]'
   id: totrans-split-78
   prefs: []
@@ -424,12 +457,14 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的代码中，`from_top`将是`3`，我们需要输出 4 个标记：3 个`BLOCK_CLOSE`（每个 div 一个）和 1 个`DIV_MARKER_END`（用于最后的`:::`）。但是扫描器一次只能输出一个标记。
 - en: The way I solved this is by introducing more state to the Scanner. Specifically,
     I introduced a `blocks_to_close` variable that we’ll use to output `BLOCK_CLOSE`,
     and some variables to output (and consume) the `DIV_MARKER_END`.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我解决这个问题的方式是向扫描器引入更多状态。具体来说，我引入了一个名为`blocks_to_close`的变量，我们将用它来输出`BLOCK_CLOSE`，以及一些用于输出（和消耗）`DIV_MARKER_END`的变量。
 - en: '[PRE24]'
   id: totrans-split-81
   prefs: []
@@ -439,10 +474,12 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要记住更新创建和序列化函数。
 - en: 'Serialize:'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 序列化：
 - en: '[PRE25]'
   id: totrans-split-84
   prefs: []
@@ -452,6 +489,7 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 反序列化：
 - en: '[PRE26]'
   id: totrans-split-86
   prefs: []
@@ -462,6 +500,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用`IGNORED`作为未使用的标记，因此在创建扫描器时需要重置它：
 - en: '[PRE27]'
   id: totrans-split-88
   prefs: []
@@ -472,6 +511,7 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在当我们扫描时，我们应该先检查`blocks_to_close`，然后再检查`delayed_token`，然后再扫描其他内容：
 - en: '[PRE28]'
   id: totrans-split-90
   prefs: []
@@ -482,6 +522,7 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们看到`blocks_to_close > 0`时，我们应该输出一个`BLOCK_CLOSE`并删除顶部块（一些健全性检查以确保安全）：
 - en: '[PRE29]'
   id: totrans-split-92
   prefs: []
@@ -491,6 +532,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个，我们可以输出多个`BLOCK_CLOSE`，现在来处理延迟的标记：
 - en: '[PRE30]'
   id: totrans-split-94
   prefs: []
@@ -503,10 +545,12 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种设计方式是拥有一个延迟标记的堆栈，然后只需弹出它。这当然更强大，我只是在玩耍时选择了这种方式，因为它更加明确，感觉更容易跟踪发生了什么。
 - en: 'Either way, we can now implement the div end handling. In `parse_div`:'
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论哪种方式，我们现在都可以实现 div 结束处理。在`parse_div`中：
 - en: '[PRE31]'
   id: totrans-split-97
   prefs: []
@@ -517,6 +561,7 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '`close_blocks_with_final_token`是一个通用的辅助函数，设置要关闭的块数和最终标记：'
 - en: '[PRE32]'
   id: totrans-split-99
   prefs: []
@@ -526,6 +571,7 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们终于可以尝试关闭 div 了：
 - en: '[PRE33]'
   id: totrans-split-101
   prefs: []
@@ -541,17 +587,20 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到它在解析时没有错误，最后一个标记正确关闭了第二个 div，并且最后一个标记捕获了最后的`:::`。
 - en: While I’m jumping to a working implementation directly in this post, when I
     first did this that was of course not the case. I found the `-d` argument useful
     to see what characters are consumed and what token is output in each step.
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我在这篇文章中直接跳到了一个工作实现，但当我第一次尝试时当然不是这样。我发现`-d`参数很有用，可以看到在每一步中消耗了哪些字符并输出了什么标记。
 - en: 'Here’s a part of the output (when scanning the final `:::`), with some comments
     to point out some interesting things:'
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是输出的一部分（扫描最后的`:::`时），并附有一些注释指出一些有趣的事情：
 - en: '[PRE35]'
   id: totrans-split-106
   prefs: []
@@ -563,3 +612,4 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然输出看起来令人困惑，但是当你知道要找什么时，它是非常有用的。我发现，采用一个深思熟虑的过程，逐个字符查看，有助于我解决目前遇到的问题。
