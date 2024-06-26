@@ -2,52 +2,63 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 13:24:42'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 13:24:42
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: programming - Does this 8088 code in the Leisure Suit Larry 2 game actually
     do anything? - Retrocomputing Stack Exchange
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 编程 - Leisure Suit Larry 2 游戏中的 8088 代码是否真的有用？ - Retrocomputing Stack Exchange
 - en: 来源：[https://retrocomputing.stackexchange.com/questions/29565/does-this-8088-code-in-the-leisure-suit-larry-2-game-actually-do-anything](https://retrocomputing.stackexchange.com/questions/29565/does-this-8088-code-in-the-leisure-suit-larry-2-game-actually-do-anything)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://retrocomputing.stackexchange.com/questions/29565/does-this-8088-code-in-the-leisure-suit-larry-2-game-actually-do-anything](https://retrocomputing.stackexchange.com/questions/29565/does-this-8088-code-in-the-leisure-suit-larry-2-game-actually-do-anything)
 - en: It's most definitely not a program 'written' by a programmer, but rather a listing
     of some random program segment using the disassembly command of a [debugger](https://en.wikipedia.org/wiki/Debugger).
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这绝对不是一个程序员“编写”的程序，而是使用 [调试器](https://en.wikipedia.org/wiki/Debugger) 的反汇编命令列出的一些随机程序段。
 - en: Have you tried to find that code within the program?
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 你试过在程序中找到那段代码吗？
 - en: Let's See What We Got
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 让我们看看我们得到了什么
 - en: 'Hard to say anything definitive with only this (incomplete) section. A few
     details visible are:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅凭这个（不完整的）部分很难说出什么明确的。可见的几个细节是：
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '*1 - Since the second INT 21h (L:04), made when an error is returned, asks
     DOS for a [program''s return code](https://fd.lod.bz/rbil/interrup/dos_kernel/214d.html),
     the previous DOS call (L:01) was most likely an [EXEC call](https://fd.lod.bz/rbil/interrup/dos_kernel/214b.html)
@@ -56,25 +67,32 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '*1 - 自第二个 INT 21h（L:04）在返回错误时，通过 INT 21h 要求 DOS 返回程序的返回码，可以推断出前一个 DOS 调用（L:01）很可能是一个
+    [EXEC 调用](https://fd.lod.bz/rbil/interrup/dos_kernel/214b.html)，用于作为子进程运行不同的程序。使用此函数还表明该程序是为
+    MS-DOS 2.0 或更高版本编写/编译的。'
 - en: '*2 - A hint that the debugger used was most likely the one supplied with MS-DOS.'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '*2 - 提示所使用的调试器很可能是与 MS-DOS 一起提供的那种。'
 - en: '*3 - Line 08 might be a target from a previous branch, one like the one on
     L:02\. Such would be a typical compiler structure to continue from a branch to
     a destination more than 128 bytes away.'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '*3 - 第 08 行可能是前一个分支的目标，类似于 L:02 上的分支。这种结构通常是编译器的结构，用于从分支继续到距离超过 128 字节的目的地。'
 - en: '*4 - An entry point, like *2, except here operation continues'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '*4 - 一个入口点，类似于 *2，但在这里操作继续'
 - en: '*5 - Using an IRET here is a strong indicator that the program may be a .COM
     program and this being used to terminate it.'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '*5 - 在这里使用 IRET 强烈表明该程序可能是一个 .COM 程序，并且这个指令用于终止它。'
 - en: DOS prepares the memory of a COM program much like CP/M, including a way that
     a jump at address 0000h will terminate it. This is done by placing it's original
     [termination interrupt](https://fd.lod.bz/rbil/interrup/dos_kernel/20.html) INT
@@ -83,6 +101,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: DOS 准备 COM 程序的内存方式与 CP/M 类似，包括在地址 0000h 处的跳转将其终止的方式。这是通过将其原始的 [终止中断](https://fd.lod.bz/rbil/interrup/dos_kernel/20.html)
+    INT 20h 放置在 PSP 的起始处来完成的 - 对于 COM 程序而言，这是在 CS:0 处 - 并将一个字 0000h 推入栈中完成的。
 - en: Now a simple RET NEAR can be used to terminate. This of course only works if
     CS doesn't get changed inbetween. A condition true for most simple programs, especially
     such converted from 8080 code. To still use that way of termination while possibly
@@ -93,12 +113,17 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在可以使用简单的 RET NEAR 来终止。当然，这仅在 CS 在中间没有改变的情况下才有效。对于大多数简单程序来说，这是一个真实的条件，尤其是从 8080
+    代码转换而来的程序。为了在程序运行期间可能更改 CS 的情况下仍然使用这种终止方式，COM 程序开始时将 CS 和另一个字 0000h 推入栈中。现在可以使用
+    RETF，无论 CS 当时内容如何（只要所有栈级别都已清除）。
 - en: EXE programs added a little issue as their initial CS is not pointing to the
     PSP. But DS is loaded in both types with the PSP address, so pushing DS instead
     of CS would make the code usable for both types of program.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: EXE 程序有一个小问题，因为它们的初始 CS 没有指向 PSP。但是 DS 在这两种类型的程序中都加载了 PSP 的地址，所以将 DS 推入栈而不是
+    CS 可使代码对两种类型的程序都可用。
 - en: Since that 'trick' would leave a a single word on stack (the one provided by
     DOS to start with), it became common to use an IRET instead of a RET FAR, which
     does take that word as well off the stack. Not that it made a difference, but
@@ -106,6 +131,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这种“技巧”会在栈上留下一个字（由 DOS 提供），因此使用 IRET 代替 RET FAR 变得很常见，后者也会将该字一并从栈上移除。尽管没有任何不同，但感觉更好：))
 - en: '*6 - It''s extreme hard to do any guess without knowing the address that code
     is located. But having two jumps targeted only one byte apart means that either
     some (for x86) unusual program trick is used, or 014Fh containing a single byte
@@ -116,6 +142,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '*6 - 在不知道代码所在地址的情况下，几乎不可能进行任何猜测。但是，有两个仅相隔一个字节的跳转目标意味着要么使用了某种（对于x86）不寻常的程序技巧，要么014Fh包含单字节指令。考虑到IRET/INT组合相当不寻常，并且IRET是单字节指令，这很可能是其地址为014Fh的原因。但是再次，先前的JZ不会太有意义，因为无论哪种方式都将导致执行IRET。'
 - en: '*7 - Checking AH after DOS functions is rare, as the standard return code is
     contained in AL (AX). Get Return code (see L:03/04) in turn does use AH and AL
     different. AL contains the child return code, while AH contains the termination
@@ -125,24 +152,30 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '*7 - 在DOS功能后检查AH是罕见的，因为标准返回码包含在AL（AX）中。获取返回码（参见L:03/04）反过来确实使用AH和AL不同。AL包含子返回码，而AH包含终止原因。这里的00h/01h是常规终止原因，而02h是关键错误中止。如果前面的INT
+    21h也是EXEC调用，检查上述01h以上将是有意义的。'
 - en: '*7 - Note this being he same target as used on line 02, which seems to be the
     default good exit.'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '*7 - 注意这与第02行使用的目标相同，这似乎是默认的良好退出。'
 - en: '*8 - Note this being he same target as used on line 14'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '*8 - 注意这与第14行使用的目标相同'
 - en: '* * *'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Conclusions From Code
   id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 从代码中得出的结论
 - en: The code snipplet is most likely part of an exec function that starts a child
     program and checks if the execution went well and continues afterwards. It might
     thus be some menu system/framework starting overlay modules for different tasks
@@ -150,11 +183,13 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 该代码片段很可能是一个启动子程序并检查执行情况后继续的exec函数的一部分。因此，它可能是为不同任务（游戏部分？？）启动叠加模块的某些菜单系统/框架。它似乎是用某种高级语言编写的。
 - en: Also, it's most likely not from DOS or any OS level software, but user space,
     as it used INT 21h functions.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，它很可能不是来自DOS或任何操作系统级软件，而是用户空间，因为它使用了INT 21h功能。
 - en: Using the IRET termination hints to some really old code with DOS 1.x origin,
     or a compiler using that trick to save code size if here are multiple termination
     points. It must be an older one, as MS discouraged use of returning via PSP:0
@@ -162,6 +197,8 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用IRET终止提示指向某些真正老旧的DOS 1.x原始代码，或者使用该技巧以节省代码大小的编译器，如果存在多个终止点，则必须是较旧的一个，因为MS不鼓励使用通过PSP:0和总体上DOS
+    3的INT 20h返回。
 - en: Taking into account that the target for 'good' execution (L:02/L:17) points
     to a very low address within this code, this could be an endless loop starting
     around the loading and executing a child process. Together with the fact that
@@ -172,25 +209,30 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到“良好”执行的目标（L:02/L:17）指向代码中的一个非常低的地址，这可能是从加载和执行子进程开始的无休止循环。再加上它在从子进程返回后检查其自身代码段中的标志来决定如何继续，我可以想象这是一个更大程序的加载器，其唯一工作是在正常终止时重新加载该程序，除非子进程在终止前设置了某些标志。
 - en: A program like this could be a simple solution to catch certain errors without
     adding lots of error checking code within the application. Any error detection
     would just exit the child, which then gets restarted from above code.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样的程序可能是在不添加大量错误检查代码的情况下捕获某些错误的简单解决方案。任何错误检测将只退出子程序，然后从上述代码重新启动。
 - en: 'Note: These are all wild guesses, not necessary true. There is no way to tell
     where it''s originated, unless one finds exactly that code in some program.'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：这些都是猜测，不一定正确。除非在某个程序中找到了确切的代码，否则无法确定其来源。
 - en: Now, What is It?
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 现在，它是什么？
 - en: Nothing. I'd say they just started up their debugger, loaded some program, dumped
     a random section of 21 lines and copied them into the game text. Could be from
     the game or any other program.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有。我会说他们刚刚启动了他们的调试器，加载了一些程序，转储了21行的随机部分，并将它们复制到游戏文本中。可能来自游戏或任何其他程序。
