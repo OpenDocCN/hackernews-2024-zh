@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:43:03'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日14:43:03
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'How we got fine-tuning Mistral-7B to not suck: Helix Project Report, Feb 2024'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我们是如何精调Mistral-7B以避免失败的：螺旋计划报告，2024年2月
 - en: 来源：[https://helixml.substack.com/p/how-we-got-fine-tuning-mistral-7b](https://helixml.substack.com/p/how-we-got-fine-tuning-mistral-7b)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://helixml.substack.com/p/how-we-got-fine-tuning-mistral-7b](https://helixml.substack.com/p/how-we-got-fine-tuning-mistral-7b)
 - en: Hi folks,
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 大家好，
 - en: 'It’s been just over a month since we [launched Helix v0.1](https://www.producthunt.com/products/helix-5),
     and today I’m happy to announce today the availability of [Helix v0.5](https://github.com/helixml/helix/releases).
     [Run it yourself on your own secure private infrastructure](https://docs.helix.ml/docs/controlplane)
@@ -35,12 +42,15 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 距[Helix v0.1发布](https://www.producthunt.com/products/helix-5)已经过去一个多月了，今天我很高兴地宣布[Helix
+    v0.5](https://github.com/helixml/helix/releases)的可用性。[在您自己的安全私人基础设施上运行](https://docs.helix.ml/docs/controlplane)或者[在我们的SaaS上试用](https://app.tryhelix.ai)吧：
 - en: Along with a shiny new UI (you can a screenshot for comparison in our [first
     post](https://helixml.substack.com/p/building-a-generative-ai-platform)), we’ve
     been extremely focused on improving the quality of the text fine-tuning.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了全新的闪亮UI（你可以在我们的[第一篇文章](https://helixml.substack.com/p/building-a-generative-ai-platform)中找到比较的截图），我们一直在极力提高文本精调的质量。
 - en: When we first launched Helix, the text fine tuning of the Mistral-7B-Instruct
     language model was based on [this LlamaIndex docs page](https://docs.llamaindex.ai/en/latest/examples/finetuning/knowledge/finetune_knowledge.html).
     Yeah, we basically decided to build a whole business around one this LlamaIndex
@@ -48,11 +58,13 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们首次推出Helix时，Mistral-7B-Instruct语言模型的文本精调是基于[这篇LlamaIndex文档页面](https://docs.llamaindex.ai/en/latest/examples/finetuning/knowledge/finetune_knowledge.html)。是的，我们基本上决定围绕这本LlamaIndex笔记开展整个业务。
 - en: 'At the time, unfortunately I hadn’t even seen the link from the parent page
     in the LlamaIndex docs that said “WIP: this isn’t very good yet”. Uh-oh.'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，当时我甚至没有看到来自LlamaIndex文档父页面的链接，上面写着“WIP：这还不太好”。哎呀。
 - en: 'Of course, because Helix is targeting being runnable fully on-prem, we’re using
     [Mistral-7B with axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)
     for fine-tuning instead of the GPT-3.5 API, but it’s the same principle. The idea
@@ -63,38 +75,47 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，因为Helix的目标是完全在本地运行，所以我们在精调时使用[Mistral-7B与axolotl](https://github.com/OpenAccess-AI-Collective/axolotl)，而不是使用GPT-3.5
+    API，但原理相同。思路是将文档分块，然后要求语言模型生成问答对（这是您需要提供给精调过程的训练数据的形式）。您使用LLM来自动化生成用于精调另一个LLM的训练数据。原始提示看起来像这样：
 - en: Did it work? Sorta, but it was a bit crap. Just like LlamaIndex said it would
     be.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 行得通吗？有点行，但有点糟糕。就像LlamaIndex说的那样。
 - en: We were able to feed it [complex technical papers](https://docs.helix.ml/docs/papers),
     and it was able to answer technical questions about them. But it failed at some
     much more basic tasks.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们能够为其提供[复杂的技术论文](https://docs.helix.ml/docs/papers)，它能够回答与它们有关的技术问题。但是在一些更基本的任务上失败了。
 - en: 'This one news article for example: [Junior doctors in England to stage more
     strikes over pay](https://www.theguardian.com/society/2023/dec/05/junior-doctors-in-england-to-stage-more-strikes).
     This article became the bane of my life for a few weeks 😂'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如这篇新闻文章：[英格兰的初级医生因薪酬问题将再次举行罢工](https://www.theguardian.com/society/2023/dec/05/junior-doctors-in-england-to-stage-more-strikes)。这篇文章在我生活中成为了一段时间的噩梦
+    😂
 - en: 'Why? Because when we first asked the fine tuned model the simple question:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么？因为当我们首次询问文本精调模型一个简单的问题时：
 - en: What?! You were fine-tuned on information derived from the article. Why are
     you talking about fine-tuning?!
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 什么？！你是从那篇文章中获取的信息进行精调的。你为什么要谈论精调？！
 - en: –me
   id: totrans-split-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: –我
 - en: 'OK, turned out this one was fairly straightforward. One of the text elements
     meant to tell the user “fine tuning completed” was also being sent back to the
     model as if the user had said it. Now the only context the model had to go on
@@ -102,6 +123,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，结果还是相当简单的。为了告诉用户“精调完成”，其中一个文本元素也被发送回模型，就好像用户真的说了这句话。现在，模型得到的唯一上下文就是精调的概念。我们解决了这个问题。很酷，让我们再试一次：
 - en: OMG, seriously? Surely you should know that the doctors are threatening to go
     on strike. It’s right there in the title! Stupid fine-tuning, maybe it will never
     work. 🤬
