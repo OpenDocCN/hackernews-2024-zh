@@ -2,47 +2,58 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:38:54'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:38:54
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Google's First Tensor Processing Unit - Architecture
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 谷歌的第一个张量处理单元 - 架构
 - en: 来源：[https://thechipletter.substack.com/p/googles-first-tpu-architecture](https://thechipletter.substack.com/p/googles-first-tpu-architecture)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://thechipletter.substack.com/p/googles-first-tpu-architecture](https://thechipletter.substack.com/p/googles-first-tpu-architecture)
 - en: … we say tongue-in-cheek that TPU v1 “launched a thousand chips.”
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: … 我们半开玩笑地说，TPU v1 “启动了一千片芯片”。
 - en: In [Google’s First Tensor Processing Unit - Origins](https://thechipletter.substack.com/p/googles-first-tensor-processing-unit),
     we saw why and how Google developed the first Tensor Processing Unit (or TPU v1)
     in just 15 months, starting in late 2013\.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[谷歌的第一个张量处理单元 - 起源](https://thechipletter.substack.com/p/googles-first-tensor-processing-unit)中，我们看到为什么以及如何谷歌在仅
+    15 个月内从2013年底开始开发了第一个张量处理单元（或 TPU v1）。
 - en: Today’s post will look in more detail at the architecture that emerged from
     that work and at its performance.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天的文章将更详细地查看从该工作中产生的架构及其性能。
 - en: '[Share](https://thechipletter.substack.com/p/googles-first-tpu-architecture?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[分享](https://thechipletter.substack.com/p/googles-first-tpu-architecture?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
 - en: A quick reminder of the objectives of the TPU v1 project. As Google saw not
     only the opportunities provided by a new range of services using Deep Learning
     but also the huge scale and the cost of the hardware that would be needed to power
@@ -50,46 +61,55 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 TPU v1 项目的目标，这里有一个快速的提醒。当谷歌看到不仅能通过新的深度学习服务范围提供的机会，还有所需硬件的大规模和成本时，项目的目标将是……
 - en: … to develop an Application Specific Integrated Circuit (ASIC) that would generate
     a 10x cost-performance advantage on inference when compared to GPUs.
   id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: … 开发一种特定应用集成电路（ASIC），将在推理时与 GPU 相比提供 10 倍的成本性能优势。
 - en: and to …
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且……
 - en: Build it quickly
   id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 快速建立
 - en: Achieve high performance
   id: totrans-split-14
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 实现高性能
 - en: '......at scale'
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '......在规模上'
 - en: '...for new workloads out-of-the-box...'
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '... 用于全新的工作负载...'
 - en: all while being cost-effective
   id: totrans-split-17
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 同时还要保持成本效益
 - en: Before we look at the TPU v1 that emerged from the project in more detail, a
     brief reminder of the Tensor operations that give the TPU its name.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们更详细地查看从项目中产生的 TPU v1 之前，简要提醒一下给 TPU 其名称的张量运算。
 - en: Why is a Tensor Processing Unit so called? Because it is designed to speed up
     operations involving tensors. Precisely, what operations though? The operations
     are referred to … as a “map (multilinear relationship) between different objects
@@ -98,6 +118,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 为什么称之为张量处理单元？因为它被设计用于加速涉及张量的操作。确切地说，是哪些操作呢？这些操作被称为……“将不同对象（如向量、标量，甚至其他张量）之间的映射（多线性关系）”。
 - en: Let’s take a simple example. A two-dimensional array can describe a multilinear
     relationship between two one-dimensional arrays. The mathematically inclined will
     recognize the process of getting from one vector to the other as multiplying a
@@ -106,6 +127,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 让我们举一个简单的例子。一个二维数组可以描述两个一维数组之间的多线性关系。数学上倾向的人会认识到从一个向量到另一个向量的过程，即通过将向量乘以矩阵来获得另一个向量。
 - en: This can be generalized to tensors representing the relationship between higher
     dimensional arrays. However, although tensors describe the relationship between
     arbitrary higher-dimensional arrays, in practice the TPU hardware that we will
@@ -115,22 +137,26 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这可以推广到表示高维数组之间关系的张量。然而，尽管张量描述了任意高维数组之间的关系，但实际上，我们将考虑的 TPU 硬件旨在执行与一维和二维数组相关的计算。或者更具体地说，向量和矩阵运算。
 - en: Let’s look at one of these operations, matrix multiplication. If we take two
     2x2 matrices (2x2 arrays) then we multiply them together to get another 2x2 matrix
     by multiplying the elements as follows.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看其中一个操作，矩阵乘法。如果我们取两个 2x2 矩阵（2x2 数组），然后将它们相乘，以如下方式相乘矩阵元素来得到另一个 2x2 矩阵。
 - en: 'Why are matrix multiplications key to the operation of neural networks? We
     can look at a simple neural network with four layers as follows (only the connections
     from the first node in each later layer are shown for simplicity):'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么矩阵乘法对神经网络的运算至关重要？我们可以看一个简单的具有四层的神经网络如下（仅显示每个后续层中第一个节点的连接，以简化）：
 - en: Where ‘f’ here is the [activation function](https://en.wikipedia.org/wiki/Activation_function).
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里的 'f' 是 [激活函数](https://en.wikipedia.org/wiki/Activation_function)。
 - en: So the hidden and output layers are the results of applying the activation function
     to each element of the vector which is the result of multiplying the vector of
     input values times the matrix of weights. With a number of data inputs this is
@@ -139,16 +165,20 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，隐藏层和输出层是对应于将激活函数应用于输入值向量与权重矩阵相乘的结果向量中的每个元素的结果。在数据输入的情况下，这相当于对结果矩阵中的每个条目应用激活函数。
 - en: '* * *'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: As we’ve seen, the approach adopted by the TPU v1 team was an architecture first
     set out by H.T Kung and Charles E. Leiserson in their 1978 paper [Systolic Arrays
     (for VLSI)](https://www.eecs.harvard.edu/htk/static/files/1978-cmu-cs-report-kung-leiserson.pdf).
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们所见，TPU v1 团队采用的方法是由 H.T Kung 和 Charles E. Leiserson 在他们 1978 年的论文《[Systolic
+    Arrays (for VLSI)](https://www.eecs.harvard.edu/htk/static/files/1978-cmu-cs-report-kung-leiserson.pdf)》中首次提出的架构。
 - en: A systolic system is a network of processors which rhythmically compute and
     pass data through the system….In a systolic computer system, the function of a
     processor is analogous to that of the heart. Every processor regularly pumps data
@@ -158,11 +188,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一个系统阵列是一个网络处理器，它们通过系统节奏地计算和传递数据。在系统阵列计算机系统中，处理器的功能类似于心脏的功能。每个处理器定期地将数据输入和输出，每次执行一些简短的计算，以便在网络中保持数据的常规流动。
 - en: So how is the systolic approach used in the TPU v1 to efficiently perform matrix
     multiplications? Let’s return to our 2x2 matrix multiplication example.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，TPU v1 如何有效地使用系统阵列方法来执行矩阵乘法？让我们回到我们的 2x2 矩阵乘法的例子。
 - en: If we have a 2x2 array of multiplication units that are connected in a simple
     grid, and we feed the elements of the matrices that we are multiplying, into the
     grid in the right order then the results of the matrix multiplication will naturally
@@ -170,38 +202,45 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有一个由乘法单元组成的 2x2 网格连接的数组，并且以正确的顺序将要相乘的矩阵元素输入到网格中，则矩阵乘法的结果将自然地从数组中得出。
 - en: The calculation can be represented in the following diagram. The squares in
     each corner represent a multiply / accumulate unit (MAC) that can perform a multiplication
     and addition operation.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算可以用下面的图表表示。每个角落的正方形代表一个乘积/累加单元（MAC），可以执行乘法和加法操作。
 - en: In this diagram, the values in yellow are the inputs that are fed into the matrix
     from the top and the left. The light blue values are the partial sums that are
     stored. The dark blue values are the final results
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个图表中，黄色的值是从顶部和左侧输入到矩阵中的值。浅蓝色的值是存储的部分和值。深蓝色的值是最终的结果。
 - en: .Let’s take it step by step.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们一步一步来。
 - en: '*Step 1:*'
   id: totrans-split-34
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*步骤 1:*'
 - en: Values a11 and b11 are loaded into the top left multiply/accumulate unit (MAC).
     They are multiplied together and the result is stored.
   id: totrans-split-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 值 a11 和 b11 被加载到左上角的乘积/累加单元（MAC）中。它们相乘的结果被存储。
 - en: '*Step 2:*'
   id: totrans-split-36
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*步骤 2:*'
 - en: Values a12 and b21 are loaded into the top left MAC. They are multiplied together
     and added to the previously calculated result. This gives the top left value of
     the results matrix.
@@ -209,6 +248,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 值 a12 和 b21 被加载到左上角的 MAC。它们相乘，然后加到先前计算的结果中。这给出了结果矩阵的左上角的值。
 - en: Meanwhile, b11 is transferred to the top right MAC where it is multiplied by
     the newly loaded value a21 and the result is stored. Also, a11 is transferred
     to the bottom left MAC where it is multiplied by the newly loaded value b12, and
@@ -217,11 +257,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 同时，b11 被传输到右上角的 MAC，与新加载的值 a21 相乘，并存储结果。此外，a11 被传输到左下角的 MAC，与新加载的值 b12 相乘，并存储结果。
 - en: '*Step 3:*'
   id: totrans-split-39
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*步骤 3:*'
 - en: b21 is transferred to the top right MAC where it is multiplied by the newly
     loaded value a22 and the result is added to the previously stored result. Also,
     a12 is transferred to the bottom left MAC where it is multiplied by the newly
@@ -232,17 +274,21 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: b21 被传输到右上角的 MAC，与新加载的值 a22 相乘，并将结果添加到先前存储的结果中。同时，a12 被传输到左下角的 MAC，与新加载的值 b22
+    相乘，并将结果添加到先前存储的结果中。在这一步中，我们计算了结果矩阵的右上角和左下角的值。
 - en: Meanwhile, a12 and b21 are transferred to the bottom right MAC where they are
     multiplied and the result is stored.
   id: totrans-split-41
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 与此同时，a12和b21被传输到右下角MAC，它们相乘，并存储结果。
 - en: '*Step 4: *'
   id: totrans-split-42
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*第四步：*'
 - en: Finally, a22 and b22 are transferred to the bottom right MAC where they are
     multiplied and the result is added to the previously stored value giving the bottom
     right value of the results matrix.
@@ -250,12 +296,14 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 最后，a22和b22被传输到右下角MAC，它们相乘，结果添加到先前存储的值中，得到结果矩阵的右下角值。
 - en: So the results of the matrix multiplication emerge down a moving ‘diagonal’
     in the matrix of MACs.
   id: totrans-split-44
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 因此，矩阵乘法的结果以MAC矩阵中的移动‘对角线’形式出现。
 - en: In our example, it takes 4 steps to do a 2 x 2 matrix multiplication, but only
     because some of the MACs are not utilized at the start and end of the calculation.
     In practice, a new matrix multiplication would start top left as soon as the MAC
@@ -264,23 +312,27 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的示例中，执行 2 x 2 矩阵乘法需要 4 个步骤，但仅因为一些 MAC 在计算的开始和结束时未被利用。实际上，一旦 MAC 空闲，新的矩阵乘法将从左上角开始。因此，该单元能够每两个周期进行一次新的矩阵乘法。
 - en: This is a simplified representation of how a systolic array works and we’ve
     glossed over some of the details of the implementation of the systolic array in
     TPU v1\. I hope that the principles of how this architecture works are clear though.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是收缩阵列如何工作的简化表示，并且我们略过了在TPU v1中实现收缩阵列的一些细节。但我希望这个架构如何工作的原理已经清楚了。
 - en: This is the simplest possible matrix multiplication but can be extended to bigger
     matrices with larger arrays of multiplication units.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是最简单的矩阵乘法，但可以扩展到具有更大乘法单元阵列的更大矩阵。
 - en: The key point is that if data is fed into the systolic array in the right order
     then the flow of values and results through the system will ensure that the required
     results emerge from the array over time.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键点在于，如果按正确顺序将数据馈送到收缩阵列中，则值和结果通过系统的流动将确保所需结果随时间从阵列中出现。
 - en: Crucially there is no need to store and fetch intermediate results from a ‘main
     memory’ area. Intermediate results are automatically available when needed due
     to the structure of the matrix multiply unit and the order in which inputs are
@@ -288,26 +340,31 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键的是，无需将中间结果存储和获取到‘主存储’区域。由于矩阵乘法单元的结构以及输入被馈送到单元的顺序，中间结果在需要时会自动可用。
 - en: 'Of course, the matrix multiply unit does not sit in isolation and the simplest
     presentation of the complete system is as follows:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，矩阵乘法单元并不孤立存在，完整系统的最简单展示如下：
 - en: The first thing to note is that TPUv1 relies on communication with the host
     computer over a [PCIe](https://en.wikipedia.org/wiki/PCI_Express) (high speed
     serial bus) interface. It also has direct access to its own DDR3 Dynamic RAM storage.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先要注意的是，TPUv1 依赖于与主机计算机通过[PCIe](https://en.wikipedia.org/wiki/PCI_Express)（高速串行总线）接口的通信。它还直接访问自己的DDR3动态RAM存储。
 - en: 'We can expand this to a more detailed presentation of the design:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将这扩展到更详细的设计展示中：
 - en: 'Let’s pick some key elements from this presentation of the design, starting
     at the top and moving (broadly) clockwise:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从这个设计展示中挑选一些关键元素，从顶部开始，（大体上）顺时针移动：
 - en: '**DDR3 DRAM / Weight FIFO:** Weights are stored in DDR3 RAM chips connected
     to the TPU v1 via DDR3-2133 interfaces. Weights are ‘pre-loaded’ onto these chips
     from the host computer’s memory via PCIe and can then be transferred into the
@@ -316,6 +373,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**DDR3 DRAM / 权重 FIFO：** 权重存储在连接到 TPU v1 的 DDR3 RAM 芯片中，通过 DDR3-2133 接口传输。权重从主机计算机的内存通过
+    PCIe “预加载”到这些芯片上，然后可以转移到‘权重 FIFO’存储器，以供矩阵乘法单元使用。'
 - en: '**Matrix Multiply Unit:** This is a ‘systolic’ array with 256 x 256 matrix
     multiply/accumulate units that is fed by 256 ‘weight’ values from the top and
     256 data inputs from the left.'
@@ -323,18 +382,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**矩阵乘法单元：** 这是一个带有 256 x 256 矩阵乘积/累加单元的“收缩”阵列，从顶部接收 256 个‘权重’值和从左侧接收 256 个数据输入。'
 - en: '**Accumulators:** The results emerge from the systolic matrix unit at the bottom
     and are stored in ‘accumulator’ memory storage.'
   id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**累加器：** 结果从收缩矩阵单元底部出现，并存储在‘累加器’内存存储器中。'
 - en: '**Activation:** The activation functions described in the neural network above
     are applied here.'
   id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**激活：** 上述神经网络中描述的激活函数在此应用。'
 - en: '**Unified Buffer / Systolic Data Setup:** The results of applying the activation
     functions are stored in a ‘unified buffer’ memory where they are ready to be fed
     back as inputs to the Matrix Multiply Unit to calculate the values needed for
@@ -343,6 +405,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**统一缓冲区 / systolic 数据设置：** 应用激活函数的结果存储在 ''统一缓冲区'' 内存中，准备好作为输入馈送回矩阵乘法单元，以计算下一层所需的值。'
 - en: So far we haven’t specified the nature of the multiplications performed by the
     matrix multiply unit. TPU v1 performs 8-bit x 8-bit integer multiplications, making
     use of quantization to avoid the need for more die-area-hungry floating-point
@@ -350,6 +413,7 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们还没有明确指定矩阵乘法单元执行的乘法性质。TPU v1 执行 8 位 x 8 位整数乘法，利用量化来避免更多面积占用的浮点计算需求。
 - en: The TPU v1 uses a CISC (Complex Instruction Set Computer) design with around
     only about 20 instructions. It’s important to note that these instructions are
     sent to it by the host computer over the PCIe interface, rather than being fetched
@@ -357,37 +421,45 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: TPU v1 使用 CISC（复杂指令集计算机）设计，约仅有约 20 条指令。重要的是指出，这些指令是通过 PCIe 接口由主机计算机发送给它，而不是从内存中提取的。
 - en: 'The five key instructions are as follows:'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 五个关键指令如下：
 - en: '***Read_Host_Memory***'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '***读取主机内存***'
 - en: Reads input values from the host computer’s memory into the Unified Buffer over
     PCIe.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 从主机计算机内存读取输入值到统一缓冲区上通过 PCIe。
 - en: '***Read_Weights***'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '***读取权重***'
 - en: Read weights from the weight memory into the Weight FIFO. Note that the weight
     memory will already have been loaded with weights read from the computer’s main
     memory over PCIe.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 从计算机主内存通过 PCIe 读取权重，然后将这些权重加载到权重内存中。
 - en: '***Matrix_Multiply / Convolve***'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '***矩阵乘法 / 卷积***'
 - en: From the paper this instruction
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据论文的这一指令
 - en: … causes the Matrix Unit to perform a matrix multiply or a convolution from
     the Unified Buffer into the Accumulators. A matrix operation takes a variable-sized
     B*256 input, multiplies it by a 256x256 constant weight input, and produces a
@@ -396,19 +468,24 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: … 导致矩阵单元从统一缓冲区执行矩阵乘法或卷积到累加器。矩阵操作采用可变大小的 B*256 输入，将其与 256x256 的常数权重输入相乘，并产生 B*256
+    输出，完成 B 管道化周期。
 - en: This is the instruction that implements the systolic array matrix multiply.
     It can also perform convolution calculations needed for Convolutional Neural Networks.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是执行 systolic 数组矩阵乘法的指令。它还可以执行卷积神经网络所需的卷积计算。
 - en: '***Activate***'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '***激活***'
 - en: From the paper this instruction
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据论文的这一指令
 - en: Performs the nonlinear function of the artificial neuron, with options for ReLU,
     Sigmoid, and so on. Its inputs are the Accumulators, and its output is the Unified
     Buffer.
@@ -416,6 +493,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 执行人工神经元的非线性函数，包括 ReLU、Sigmoid 等选项。其输入是累加器，输出是统一缓冲区。
 - en: If we go back to our simple neural network model the values in the hidden layers
     are the result of applying an ‘activation function’ to the sum of the weights
     multiplied by the inputs. [ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))
@@ -425,18 +503,23 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果回顾我们简单的神经网络模型，隐藏层中的值是通过将权重乘以输入并应用 '激活函数' 而得出的。[ReLU](https://en.wikipedia.org/wiki/Rectifier_(neural_networks))
+    和 [Sigmoid](https://en.wikipedia.org/wiki/Sigmoid_function) 是两种最流行的激活函数之一。在硬件中实现这些函数将大大加快激活函数的应用速度。
 - en: '***Write_Host_Memory***'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '***写入主机内存***'
 - en: Writes results to the host computer’s memory from the Unified Buffer over PCIe.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过 PCIe 从统一缓冲区向主机计算机内存写入结果。
 - en: '* * *'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'It’s probably worth pausing for a moment to reflect on the elegance of these
     five instructions in providing an almost complete implementation of inference
     in the TPU v1\. In pseudo-code, we could describe the operation of the TPU v1
@@ -444,16 +527,19 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得暂停一刻来反思这五条指令在 TPU v1 推理中提供了几乎完整的实现的优雅性。在伪代码中，我们可以大致描述 TPU v1 的操作如下：
 - en: '[PRE0]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'It’s also useful to emphasize the importance of the systolic unit in making
     this possible and efficient. As described by the TPU v1 team (and as we’ve already
     seen):'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 强调 systolic 单元在实现这一过程中的重要性和效率是非常有用的。正如 TPU v1 团队描述的那样（我们已经看到的）：
 - en: .. the matrix unit uses systolic execution to save energy by reducing reads
     and writes of the Unified Buffer …. It relies on data from different directions
     arriving at cells in an array at regular intervals where they are combined. …
@@ -464,12 +550,16 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: .. 矩阵单元使用脉动执行来通过减少统一缓冲区的读写来节省能量... 它依赖于来自不同方向的数据定期到达数组中的单元，这些数据在那里被组合。 ... 数据从左侧流入，权重从顶部加载。
+    给定的256元素乘积累加操作通过矩阵以对角波前的形式移动。
 - en: The TPU v1’s hardware would be of little use without a software stack to support
     it. Google developed and used Tensorflow so creating ‘drivers’ so that Tensorflow
     could work with the TPU v1 was the main step needed.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: TPU v1的硬件如果没有软件堆栈来支持它将毫无用处。 Google开发并使用Tensorflow，因此创建‘驱动程序’以便Tensorflow可以与TPU
+    v1一起工作是主要步骤。
 - en: The TPU software stack had to be compatible with those developed for CPUs and
     GPUs so that applications could be ported quickly to the TPU. The portion of the
     application run on the TPU is typically written in TensorFlow and is compiled
@@ -478,6 +568,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: TPU软件堆栈必须与为CPU和GPU开发的堆栈兼容，以便应用程序可以快速移植到TPU上。 在TPU上运行的应用程序部分通常使用TensorFlow编写，并编译为可以在GPU或TPU上运行的API。
 - en: Like GPUs, the TPU stack is split into a User Space Driver and a Kernel Driver.
     The Kernel Driver is lightweight and handles only memory management and interrupts.
     It is designed for long-term stability. The User Space driver changes frequently.
@@ -487,6 +578,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 类似于GPU，TPU堆栈分为用户空间驱动程序和内核驱动程序。 内核驱动程序轻量级，仅处理内存管理和中断。 它设计用于长期稳定性。 用户空间驱动程序经常更改。
+    它设置并控制TPU执行，将数据重新格式化为TPU顺序，将API调用转换为TPU指令，并将其转换为应用程序二进制。
 - en: As we saw in our earlier post, the TPU v1 was fabricated by TSMC using a relatively
     ‘mature’ 28nm TSMC process. Google has said that the die area is less than half
     the die area of the Intel Haswell CPU and Nvidia’s K80 GPU chips, each of which
@@ -495,6 +588,8 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我们在早期文章中所看到的，TPU v1是由TSMC使用相对‘成熟’的28纳米TSMC工艺制造的。 Google表示，与此时期其数据中心中使用的更先进的Intel
+    Haswell CPU和Nvidia的K80 GPU芯片相比，芯片面积小于其一半。
 - en: We have already seen how simple the TPU v1’s instruction set was, with just
     20 CISC instructions. The simplicity of the ISA leads to a very low ‘overhead’
     in the TPU v1’s die for decoding and related activities with just 2% of the die
@@ -502,11 +597,13 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经看到了TPU v1指令集的简单性，仅有20条CISC指令。 ISA的简单性导致TPU v1在解码和相关活动方面的‘开销’非常低，仅有2％的芯片面积专用于被标记为‘控制’的部分。
 - en: By contrast, 24% of the die area is dedicated to the Matrix Multiply Unit and
     29% to the ‘Unified Buffer’ memory that stores inputs and intermediate results.
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 相比之下，24％的芯片面积专用于矩阵乘法单元，29％专用于存储输入和中间结果的‘统一缓冲区’内存。
 - en: At this point, it’s useful to remind ourselves that the TPU v1 was designed
     to make inference - that is the use of already trained models in real-world services
     provided at Google’s scale - more efficient. It was not designed to improve the
@@ -515,30 +612,37 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，值得提醒我们的是，TPU v1的设计目标是使推断 - 即在Google规模提供的现实世界服务中使用已经训练过的模型 - 更加高效。 它并不是为了改善训练的速度或效率。
+    尽管推断和训练在开发专用硬件时具有一些共同的特征，但提供了完全不同的挑战。
 - en: So how did the TPU v1 do?
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么TPU v1表现如何呢？
 - en: In 2013 the key comparisons for the TPU v1 were with Intel’s Haswell CPU and
     Nvidia’s K80 GPU.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2013年，TPU v1的关键比较对象是Intel的Haswell CPU和Nvidia的K80 GPU。
 - en: 'And crucially the TPU v1 was much more energy efficient that GPUs:'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 至关重要的是，TPU v1比GPU更加节能：
 - en: In the first post on the TPU v1, we focused on the fact that an organization
     like Google could marshal the resources to build the TPU v1 quickly.
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在TPU v1的第一篇文章中，我们集中讨论了像Google这样的组织能够迅速集结资源来构建TPU v1的事实。
 - en: In this post we’ve seen how the custom architecture of the TPU v1 was crucial
     in enabling it to generate much better performance with much lower energy use
     than contemporary CPUs and GPUs.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们看到了 TPU v1 的定制架构如何至关重要，使其在比当时的 CPU 和 GPU 能效更高的情况下，表现出更好的性能。
 - en: The TPU v1 was only the start of the story. TPU v1 was designed quickly and
     with the sole objective of making inference faster and more power efficient. It
     had a number of clear limitations and was not designed for training. Both inside
@@ -547,8 +651,11 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: TPU v1 只是故事的开始。 TPU v1 设计迅速，唯一目标是使推理速度更快、更节能。 它有一些明显的局限性，并且不适用于训练。 Google 内外的公司很快开始研究如何改进
+    TPU v1。 我们将在后续文章中看一些它的后继产品。
 - en: After the paywall, a small selection of further reading and viewing on Google’s
     TPU v1.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 支付墙之后，有关 Google TPU v1 的进一步阅读和观看的小部分选择。
