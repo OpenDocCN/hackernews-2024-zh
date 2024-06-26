@@ -2,34 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:32:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:32:17'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How is a binary executable organized? Let's explore it!
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 二进制可执行文件是如何组织的？让我们来探索一下吧！
 - en: 来源：[https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/](https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/](https://jvns.ca/blog/2014/09/06/how-to-read-an-executable/)
 - en: I used to think that executables were totally impenetrable. I’d compile a C
     program, and then that was it! I had a Magical Binary Executable that I could
     no longer read.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我曾经以为可执行文件完全是不可渗透的。我编译了一个C程序，然后就是这样了！我有了一个神奇的二进制可执行文件，我再也看不懂它了。
 - en: It is not so! Executable file formats are regular file formats that you can
     understand. I’ll explain some simple tools to start! We’ll be working on Linux,
     with ELF binaries. (binaries are kind of the definition of platform-specific,
@@ -38,10 +45,12 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 原来并非如此！可执行文件格式是常规的文件格式，你可以理解它们。我将解释一些简单的工具来开始吧！我们将在Linux上操作，使用ELF二进制文件格式。（二进制文件是平台特定的定义，所以这都是平台特定的。）我们将使用C语言，但你也可以轻松地查看任何编译语言的输出。
 - en: 'Let’s write a simple C program, `hello.c`:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们写一个简单的C程序，`hello.c`：
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
@@ -54,61 +63,75 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们编译它（`gcc -o hello hello.c`），得到一个名为`hello`的二进制文件。最初这似乎是不可渗透的（我们甚至如何二进制？！），但让我们看看如何进行调查！我们将学习**符号**、**段**和**节**是什么。在高层次上：
 - en: '**symbols** are like function names, and are used to answer “If I call `printf`
     and it’s defined somewhere else, how do I find it?”'
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**符号**就像函数名一样，用来回答“如果我调用`printf`而它在其他地方定义，我该如何找到它？”'
 - en: symbols are organized into **sections** – code lives in one section (`.text`),
     and data in another (`.data`, `.rodata`)
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: symbols are organized into **sections** – code lives in one section (`.text`),
+    and data in another (`.data`, `.rodata`)
 - en: sections are organized into **segments**
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: sections are organized into **segments**
 - en: Throughout we’ll use a tool called `readelf` to look at these.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: Throughout we’ll use a tool called `readelf` to look at these.
 - en: So, let’s dive into our binary!
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，让我们深入研究我们的二进制文件吧！
 - en: 'Step 1: open it in a text editor!'
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 步骤1：在文本编辑器中打开它！
 - en: 'This is most naive possible way to view a binary. If run `cat hello`, I get
     something like this:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是查看二进制文件的最原始的方法。如果运行`cat hello`，我得到类似这样的内容：
 - en: '[PRE1]H��k����H���5 H�[]�fff.�H�=p'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE1]H��k����H���5 H�[]�fff.�H�=p'
 - en: UH��t�H��]�H`��]Ð�UH����@�����]Ð�����������H�l$�L�d$�H�- L�%
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: UH��t�H��]�H`��]Ð�UH����@�����]Ð�����������H�l$�L�d$�H�- L�%
 - en: L�l$�L�t$�L�|$�H�\$�H��8L)�A��I��H��I���s���H��t1@L��L��D��A��H��H9�u�H�\H�l$L�d$L�l$
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: L�l$�L�t$�L�|$�H�\$�H��8L)�A��I��H��I���s���H��t1@L��L��D��A��H��H9�u�H�\H�l$L�d$L�l$
 - en: L�t$(L�|$0H��8��Ð�������������UH��SH�H�
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: L�t$(L�|$0H��8��Ð�������������UH��SH�H�
 - en: H���t�(`DH���H�H���u�H�[]Ð�H��o���H��Penguin!;,����H
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: H���t�(`DH���H�H���u�H�[]Ð�H��o���H��Penguin!;,����H
 - en: '[PRE2]'
   id: totrans-split-23
   prefs: []
@@ -118,25 +141,30 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: $ readelf --symbols hello
 - en: 'Num:    Value          Size Type    Bind   Vis      Ndx Name'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Num:    Value          Size Type    Bind   Vis      Ndx Name'
 - en: '48: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@@GLIBC_2.2.5'
   id: totrans-split-26
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '48: 0000000000000000     0 FUNC    GLOBAL DEFAULT  UND puts@@GLIBC_2.2.5'
 - en: '59: 0000000000400410     0 FUNC    GLOBAL DEFAULT   13 _start'
   id: totrans-split-27
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '59: 0000000000400410     0 FUNC    GLOBAL DEFAULT   13 _start'
 - en: '61: 00000000004004f4    16 FUNC    GLOBAL DEFAULT   13 main'
   id: totrans-split-28
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '61: 00000000004004f4    16 FUNC    GLOBAL DEFAULT   13 main'
 - en: '[PRE3]'
   id: totrans-split-29
   prefs: []
@@ -146,42 +174,52 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: $ objdump -s hello
 - en: 'Contents of section .text:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Contents of section .text:'
 - en: 400410 31ed4989 d15e4889 e24883e4 f0505449  1.I..^H..H...PTI
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 400410 31ed4989 d15e4889 e24883e4 f0505449  1.I..^H..H...PTI
 - en: 400420 c7c0a005 400048c7 c1100540 0048c7c7  ....@.H....@.H..
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 400420 c7c0a005 400048c7 c1100540 0048c7c7  ....@.H....@.H..
 - en: 400430 f4044000 e8c7ffff fff49090 4883ec08  ..@.........H...
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 400430 f4044000 e8c7ffff fff49090 4883ec08  ..@.........H...
 - en: 'Contents of section .interp:'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Contents of section .interp:'
 - en: 400238 2f6c6962 36342f6c 642d6c69 6e75782d  /lib64/ld-linux-
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 400238 2f6c6962 36342f6c 642d6c69 6e75782d  /lib64/ld-linux-
 - en: 400248 7838362d 36342e73 6f2e3200           x86-64.so.2\.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 400248 7838362d 36342e73 6f2e3200           x86-64.so.2\.
 - en: 'Contents of section .rodata:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Contents of section .rodata:'
 - en: 4005f8 01000200 50656e67 75696e21 00        ....Penguin!.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 4005f8 01000200 50656e67 75696e21 00        ....企鹅！.
 - en: '[PRE4]'
   id: totrans-split-40
   prefs: []
@@ -191,32 +229,39 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: $ readelf --sections hello
 - en: 'Section Headers:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 'Section Headers:'
 - en: '[Nr] Name              Type             Address           Offset'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Nr] Name              Type             Address           Offset'
 - en: Size              EntSize          Flags  Link  Info  Align
   id: totrans-split-44
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: Size              EntSize          Flags  Link  Info  Align
 - en: '[13] .text             PROGBITS         0000000000400410  00000410'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '[13] .text             PROGBITS         0000000000400410  00000410'
 - en: 00000000000001d8  0000000000000000  AX       0     0     16
   id: totrans-split-46
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 00000000000001d8  0000000000000000  AX       0     0     16
 - en: '[15] .rodata           PROGBITS         00000000004005f8  000005f8'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[15] .rodata           PROGBITS         00000000004005f8  000005f8'
 - en: 000000000000000b  0000000000000000   A       0     0     4
   id: totrans-split-48
   prefs:
