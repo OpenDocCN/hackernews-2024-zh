@@ -2,66 +2,80 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:20:31'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 13:20:31'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Iterating over Bit Sets quickly
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快速迭代位集
 - en: 来源：[https://alexharri.com/blog/bit-set-iteration](https://alexharri.com/blog/bit-set-iteration)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://alexharri.com/blog/bit-set-iteration](https://alexharri.com/blog/bit-set-iteration)
 - en: <main class="css-fkkl8v">
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main class="css-fkkl8v">
 - en: Iterating over Bit Sets quickly
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快速迭代位集
 - en: January 6, 2024
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年1月6日
 - en: 'Welcome to part 2 of my 2-part series on bit sets! If you''re not very familiar
     with bit manipulation — or don''t know what bit sets are — I recommend reading
     part 1 first: [Bit Sets: An introduction to bit manipulation](/blog/bit-sets).'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 欢迎来到我关于位集的两部分系列的第二部分！如果你对位操作不是很熟悉，或者不知道什么是位集，我建议你先阅读第一部分：[位集：介绍位操作](/blog/bit-sets)。
 - en: If you know your bit manipulation, then you can freely skip part 1.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你了解位操作，你可以直接跳过第一部分。
 - en: '[Bit sets](https://en.wikipedia.org/wiki/Bit_array) — also known as bit arrays
     or bit vectors — are a highly compact data structure that stores a list of bits.
     They are often used to represent a set of integers or an array of booleans.'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[位集](https://en.wikipedia.org/wiki/Bit_array) — 也称为位数组或位向量 — 是一种高度紧凑的数据结构，用于存储一系列位。它们经常用来表示整数集合或布尔数组。'
 - en: 'In [part 1](/blog/bit-sets) we started writing a `BitSet` class, and implemented
     a few basic methods:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[第一部分](/blog/bit-sets)中，我们开始编写一个`BitSet`类，并实现了一些基本方法：
 - en: '[PRE0]'
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The bits of our bit set are stored in a `number[]` called `words`. Since JavaScript
     only [supports 32-bit integers](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#fixed-width_number_conversion),
     each [word](https://en.wikipedia.org/wiki/Word_(computer_architecture)) stores
@@ -70,127 +84,155 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们位集的位存储在名为`words`的`number[]`中。由于JavaScript只支持[32位整数](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number#fixed-width_number_conversion)，每个[字](https://en.wikipedia.org/wiki/Word_(computer_architecture))存储32位（第一个字存储位1-32，第二个字存储位33-64，依此类推）。
 - en: In this post, we'll tackle `BitSet.forEach`. We'll start off implementing the
     naive approach where we iterate over the bits and see how far we can optimize
     that approach.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们将处理`BitSet.forEach`。我们将从实现朴素方法开始，通过迭代位来看看我们能优化到什么程度。
 - en: We'll then learn about [two's complement](https://en.wikipedia.org/wiki/Two%27s_complement)
     and [Hamming weights](https://en.wikipedia.org/wiki/Hamming_weight), and how exploiting
     those lets us iterate over bit sets *really* quickly.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们将学习[二进制补码](https://en.wikipedia.org/wiki/Two%27s_complement)和[汉明权重](https://en.wikipedia.org/wiki/Hamming_weight)，以及如何利用它们让我们*非常快速*地迭代位集。
 - en: Implementing BitSet.forEach
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实现 BitSet.forEach
 - en: The `BitSet.forEach` method should invoke a callback for every bit that is set
     to 1, with the index of that bit.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '`BitSet.forEach`方法应该对每个被设置为1的位调用一个回调，带上该位的索引。'
 - en: '[PRE1]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'To start, we''ll iterate over every word in `words`:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们将遍历`words`中的每个字：
 - en: '[PRE2]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'For each word, we''ll run through the bits in ascending order:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于每个字，我们将按升序遍历位：
 - en: '[PRE3]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '`WORD_LEN` is set to 32: the number of bits in each `word`'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '`WORD_LEN`设为32：每个`word`中的位数'
 - en: 'We can check whether the bit is set via `(word & (1 << i)) !== 0`:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过`(word & (1 << i)) !== 0`来检查位是否被设置：
 - en: '[PRE4]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'If the bit is non-zero, we''ll want to invoke `callback` with the index of
     the bit:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果位非零，我们将想要调用带有位的索引的`callback`：
 - en: '[PRE5]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'We can compute the bit''s `index` in the bit set like so:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以这样计算位集中位的`index`：
 - en: '[PRE6]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '`WORD_LOG` is set to 5: the base 2 logarithm of 32'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '`WORD_LOG`设为5：32的底2对数'
 - en: The expression `wordIndex << WORD_LOG` is equivalent to `wordIndex * WORD_LEN`
     because left shifting by one is equivalent to multiplying by 2 (and `2 ** WORD_LOG`
     equals `WORD_LEN`).
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 表达式`wordIndex << WORD_LOG`等同于`wordIndex * WORD_LEN`，因为左移一位相当于乘以2（而`2 ** WORD_LOG`等于`WORD_LEN`）。
 - en: '[PRE7]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: And so, we have a basic implementation.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们有了一个基本的实现。
 - en: '[PRE8]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Optimizing `BitSet.forEach`
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 优化`BitSet.forEach`
 - en: We've now got a working implementation for `BitSet.forEach`. Can we optimize
     it further?
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经为`BitSet.forEach`实现了一个工作中的版本。我们能进一步优化吗？
 - en: The first thing that pops out to me is that we always iterate over every bit
     in every word. We can skip words with no set bits with a cheap `word === 0` check.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我注意到的第一件事是，我们总是要遍历每个字中的每个位。我们可以通过一个廉价的`word === 0`检查来跳过没有设置位的字。
 - en: '[PRE9]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: This won't do much for dense sets where most words have some bits set, but this
     skips a lot of work for sparse sets.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于大部分单词有一些位被设置的密集集合，这不会有太大帮助，但对于稀疏集合来说，这可以跳过大量工作。
 - en: '[PRE10]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: But how significant are the performance gains from this optimization? Let's
     figure it out by running some benchmarks.
   id: totrans-split-42
@@ -204,6 +246,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: For each density, we'll create a bit set with 100 million bits.
   id: totrans-split-45
   prefs: []
@@ -212,6 +255,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'The `makeBitSet` method is implemented like so:'
   id: totrans-split-47
   prefs: []
@@ -220,6 +264,7 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Now that we've created our bit sets, we'll run the `forEach` method for each
     of them and log out how long it takes.
   id: totrans-split-49
@@ -229,6 +274,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'For the unoptimized version, we get:'
   id: totrans-split-51
   prefs: []
@@ -237,6 +283,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'With the `ìf (word === 0) continue;` optimization, we get:'
   id: totrans-split-53
   prefs: []
@@ -245,6 +292,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Let''s put this into a table and compare the performance:'
   id: totrans-split-55
   prefs: []
@@ -313,6 +361,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Using them, we want to
   id: totrans-split-71
   prefs: []
@@ -335,6 +384,7 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'Which we use to determine the range of bits we iterate over:'
   id: totrans-split-76
   prefs: []
@@ -343,6 +393,7 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Let''s see the difference this makes:'
   id: totrans-split-78
   prefs: []
@@ -557,6 +608,7 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Note: This also works in the opposite direction (from negative to positive)'
   id: totrans-split-127
   prefs: []
@@ -576,6 +628,7 @@
   id: totrans-split-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Here we observe that all the bits before the least-significant set bit become
     1 when inverted. When 1 is added to the number, the 1s are carried until they
     reach the least-significant 0 (which was the least-significant 1 pre-inversion).
@@ -593,6 +646,7 @@
   id: totrans-split-133
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: We can now iterate over the set bits of a word, but we've got a small problem.
     We want to invoke the callback with the *index of* the set bits, not the set bits
     themselves.
@@ -617,6 +671,7 @@
   id: totrans-split-138
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: The brute-force approach would be to walk over the bits one by one, but then
     we're back to iterating over bits. That's a no-go.
   id: totrans-split-139
@@ -644,6 +699,7 @@
   id: totrans-split-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: How this works, precisely, is something that we won't get into. We'll just trust
     that this works.
   id: totrans-split-144
@@ -666,6 +722,7 @@
   id: totrans-split-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'While `word` is non-zero, we find the least-significant bit `lsb`:'
   id: totrans-split-149
   prefs: []
@@ -674,6 +731,7 @@
   id: totrans-split-150
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'Using `lsb` we can compute the index using the hamming weight of `lsb - 1`:'
   id: totrans-split-151
   prefs: []
@@ -682,6 +740,7 @@
   id: totrans-split-152
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'Before the next iteration, we unset the least significant bit via `word XOR
     lsb`, making `word` ready for the next iteration:'
   id: totrans-split-153
@@ -695,6 +754,7 @@
   id: totrans-split-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: But how fast is this optimized version? Let's run our benchmark and compare.
   id: totrans-split-156
   prefs: []
@@ -776,42 +836,53 @@
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Daniel Lemire](https://lemire.me/blog/) 在位集方面写了很多篇文章。他的[许多](https://lemire.me/blog/2018/02/21/iterating-over-set-bits-quickly/)
+    [文](https://lemire.me/blog/2012/11/13/fast-sets-of-integers/) [章](https://lemire.me/blog/2019/05/03/really-fast-bitset-decoding-for-average-densities/)
+    都涉及到位集。他的[`FastBitSet` 实现](https://github.com/lemire/FastBitSet.js) 是我发现用于优化集合位的这一技巧的地方。如果你关注软件性能，他在这个主题上写得*很多*。'
 - en: Parting thoughts
   id: totrans-split-174
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结语
 - en: Any given piece of code can be optimized, but taking a different approach will
     often outperform those local optimizations.
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何给定的代码片段都可以优化，但采用不同的方法通常会超越那些局部优化。
 - en: Different algorithms will often favor some inputs over others, as we saw with
     low vs high-density sets in this post. It's useful to keep these sorts of trade-offs
     in mind when considering which way to go. Benchmark when possible!
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们看到不同的算法通常会偏好某些输入，比如低密度集合与高密度集合。在考虑选择路径时，记住这些权衡是很有用的。如果可能的话，进行基准测试！
 - en: '* * *'
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'Anyway, thanks for reading this short series on bit set! If you haven''t read
     part 1 yet, you can find it here: [Bit Sets: An introduction to bit manipulation](/blog/bit-sets).'
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 无论如何，感谢阅读这篇关于位集的短系列！如果你还没读过第一部分，你可以在这里找到它：[位集：位操作简介](/blog/bit-sets)。
 - en: I may write a part 3, taking an in-depth look at bit set performance for boolean
     operations (and, or, xor, andNot, etc), but I've thought about bit sets quite
     enough for now.
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许我会写第三部分，深入探讨位集在布尔操作（与、或、异或、非等）中的性能，但目前为止，我对位集的思考已经足够多了。
 - en: — Alex Harri
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: — 亚历克斯·哈里
 - en: </main>
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
