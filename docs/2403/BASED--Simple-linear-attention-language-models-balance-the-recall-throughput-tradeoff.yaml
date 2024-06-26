@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:38:57'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:38:57'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'BASED: Simple linear attention language models balance the recall-throughput
     tradeoff'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: BASED：简单线性注意力语言模型平衡了召回和吞吐量的权衡
 - en: 来源：[https://www.together.ai/blog/based](https://www.together.ai/blog/based)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.together.ai/blog/based](https://www.together.ai/blog/based)
 - en: Introducing Based, a simple efficient architecture that combines two familiar
     primitives – sliding window attention and linear attention – to offer high-quality
     language modeling with strong associative recall capabilities! At inference time,
@@ -33,11 +39,14 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 引入Based，这是一个简单而高效的架构，结合了两个熟悉的基元——滑动窗口注意力和线性注意力——提供具有强大关联召回能力的高质量语言建模！在推断时，Based在不使用KV缓存的情况下解码，使得其在处理Flash-Attention
+    2的Transformer时吞吐量提高了24倍！
 - en: '**Overview**'
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**概述**'
 - en: In an [ICLR paper](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology1-analysis)
     (and [blogpost](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology1-analysis))
     we posted towards the end of last year, we share the finding that many efficient
@@ -50,6 +59,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在[ICLR论文](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology1-analysis)（和[博客文章](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology1-analysis)）中，我们在去年年底分享了一项发现：许多高效架构（例如[Mamba](https://arxiv.org/abs/2312.00752)、[RWKV](https://github.com/BlinkDL/RWKV-LM)、[Hyena](https://arxiv.org/abs/2302.10866)、[RetNet](https://arxiv.org/abs/2307.08621)）在召回方面表现不如Transformer，即在上下文学习和复制中，根据上下文信息生成生成物的能力。我们利用这一分析设计了一个新的Based架构（在这篇[博客文章](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology2-based)中进行了预览）。我们很高兴分享这一工作线的最新进展。
 - en: 'Our recent work digs deeper into the recall challenge. We begin by illustrating
     a fundamental tradeoff between a model’s recall abilities and the size of its
     recurrent state during generation. This analysis informs the design of Based,
@@ -63,6 +73,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们最近的工作深入探讨了召回挑战。我们首先展示了模型召回能力与生成过程中其循环状态大小之间的基本权衡。这一分析为Based的设计提供了信息，Based是一个简单的循环架构，在真实世界的召回密集任务（信息提取、阅读理解）和上下文学习（SuperGLUE的少样本自然语言理解）中优于先前的次线性模型。与FlashAttention-2和Mamba相比，Based在处理提示时的速度分别提高了56%和44%（4k序列长度，1.3Bn参数）。Based在下一个标记预测中的吞吐量也比FlashAttention-2高出24倍（生成1024个标记，128批次大小，1.3Bn参数）。
 - en: We’re particularly excited about the *simplicity* of Based. Using just two well-known,
     familiar, attention-like building blocks, sliding window attention (with *tiny*
     window sizes) and linear attention (with Taylor series approximation of exp(QK^T)),
@@ -71,23 +82,27 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们特别看好Based的*简洁性*。仅使用两个众所周知的注意力类似构建块——滑动窗口注意力（具有*微小*的窗口大小）和线性注意力（使用QK^T的Taylor级数近似exp(QK^T)）——我们可以在语言建模上胜过最强的次线性架构，并在优化的Transformer上实现了巨大的加速！
 - en: This blogpost provides an overview of our 1) analysis on recall in sub-quadratic
     architectures that leads to the Based architecture’s design and 2) how we make
     Based go brrrr!
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇博文概述了我们在次线性架构中召回分析的情况，这导致了Based架构的设计，并展示了Based如何实现“嗡嗡嗡”！
 - en: '**Motivating analysis: the recall-memory tradeoff**'
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**激励分析：召回-内存权衡**'
 - en: '**‍**The main question driving our exploration is: *can we drastically improve
     the real-world speed and memory consumption of language models without compromising
     on recall and in-context learning capability?*'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '**‍**推动我们探索的主要问题是：*我们是否能显著改善语言模型的现实速度和内存消耗，而不会牺牲回溯和上下文学习能力？*'
 - en: To begin answering this question, we had to first think about what slows architectures
     down. Efficient architectures (*e.g.* Mamba) are much faster than Transformers
     at inference time (*e.g.* 5x higher throughput) in large part because they have
@@ -101,6 +116,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始回答这个问题，我们首先必须考虑什么因素使架构变慢。高效的架构（例如Mamba）在推断时间比变压器快得多（例如5倍的吞吐量），这在很大程度上是因为它们具有较小的内存占用。较小的内存占用意味着更大的批处理大小和更少的I/O。然而，减少内存占用过多可能会损害模型回溯之前序列中看到的信息的能力。对我们来说，这看起来像是一个经典的“*没有免费午餐*”情况，因此我们采取了许多流行的架构，变化了影响内存占用的超参数，并在一个具有挑战性的合成关联回溯任务上评估性能。
 - en: '*The recall-memory tradeoff.* We found that all architectures obeyed a fundamental
     tradeoff: the less memory the model consumed during inference, the worse it did
     on associative recall. We focused on the *recurrent state size,* the number of
@@ -109,6 +125,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '*回溯-内存权衡。* 我们发现所有的架构都遵循一个基本的权衡：模型在推断期间消耗的内存越少，关联回溯的效果越差。我们专注于*循环状态大小*，即在生成令牌时用于表示先前看到的令牌的字节数（*即*递归地）。'
 - en: In attention, the *state* is commonly referred to as the KV-cache, and it grows
     with the length of the sequence. In the top right of Figure 1, we can see that
     attention performs recall perfectly, albeit at the cost of a huge recurrent state.
@@ -119,22 +136,26 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在注意力机制中，*状态*通常称为KV缓存，并且随着序列长度的增加而增长。在图1的右上角，我们可以看到，注意力可以完美执行回溯，尽管付出了巨大的循环状态的代价。滑动窗口注意力提供了一种限制KV缓存大小的方法，但我们发现（不足为奇地），随着递归状态大小的减少（例如，从1MB递归状态降至65KB递归状态），回溯性能迅速下降（图1，浅蓝色）。
 - en: Excitingly, we found that Mamba expands the pareto frontier of the recall-memory
     tradeoff curve beyond sliding window attention. This means it is making **better
     use of limited recurrent state size** than approaches like sliding window attention.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 令人兴奋的是，我们发现Mamba在超越滑动窗口注意力的回溯-内存权衡曲线的帕累托前沿上做出了更好的利用有限递归状态大小的贡献。
 - en: 'The natural question is: *are there other, perhaps simpler, models that can
     also expand the pareto frontier?*'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 自然的问题是：*是否有其他，也许更简单的模型，也可以扩展帕累托前沿？*
 - en: ‍**Based*:* a simple model at the pareto frontier**
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ‍**基于*：在帕累托前沿的一个简单模型**
 - en: '**‍**To answer this question, we started studying why the simplest alternatives
     to softmax attention fail to strike a favorable tradeoff. As a further design
     principle, we searched for primitives that could scale well on current and future
@@ -144,6 +165,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '**‍**为了回答这个问题，我们开始研究为什么与softmax注意力最简单的替代方法未能取得有利的权衡。作为进一步的设计原则，我们寻找了可以在当前和未来硬件上良好扩展的基元。例如，如果我们的基元能够利用GPU
+    Tensor Cores，这将非常理想，现代GPU上的专用硬件可以比默认的CUDA核心在16x16矩阵上执行矩阵乘法（GEMMs）快16倍！'
 - en: 'In our [ICLR paper](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology1-analysis),
     we did a deep dive on why any model with a convolutional view (*e.g.* H3 or Hyena)
     will struggle on recall. Next, we considered two of the simplest efficient attention
@@ -153,12 +176,17 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的[ICLR论文](https://hazyresearch.stanford.edu/blog/2023-12-11-zoology1-analysis)，我们深入探讨了任何具有卷积视角（*例如*
+    H3 或 Hyena）的模型为何在回溯方面会遇到困难。接下来，我们考虑了目前存在的两种最简单高效的注意力技术：(1) [滑动](https://arxiv.org/abs/2004.05150)
+    [窗口](https://arxiv.org/abs/2007.14062) [注意力](https://mistral.ai/news/announcing-mistral-7b/)
+    和 (2) [线性注意力](https://arxiv.org/abs/2006.16236)（*即* 不带 softmax 的注意力）。
 - en: Our experiments on real-world language modeling (up to 1.4bn parameters) and
     synthetic associative recall suggested to us that neither primitive alone would
     suffice to navigate the pareto frontier.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在真实世界语言建模（高达14亿参数）和合成联想回溯的实验中发现，单独的基本单元都无法足够导航帕累托前沿。
 - en: We found that pure linear attention models struggled to perform precise local
     token shifts and token comparisons, skills important in recall (Fu et al., 2023;
     Arora et al., 2023a), as well as dense attention. Expanding on our findings, we
@@ -174,6 +202,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们发现纯线性注意力模型在执行精确的本地标记移位和标记比较时遇到困难（Fu等人，2023年；Arora等人，2023年a），这在回溯中至关重要，以及密集注意力。在我们的研究结果上进行扩展，我们发现我们的纯线性注意力模型改进了早期的次二次架构。聚焦于Pile测试集中的回溯密集型切片（即强制模型使用先前上下文与记忆知识进行下一个标记预测），355M的纯线性注意力模型在PPL上表现优于RWKV-v5
+    0.1个PPL和H3 2.6个PPL（表1，论文）。在这个回溯切片上，纯线性注意力甚至与Mamba架构可比 – Mamba的PPL为2.21，而纯线性注意力为2.29！然而，我们观察到与变压器之间存在显著差距，在回溯切片上变压器实现了1.87个PPL。
 - en: In sliding window attention, models can only recall tokens within the sliding
     window (Figure 2, center). As we increase the window size, the recurrent state
     grows linearly and has a non-linear effect on speed during parallel training and
@@ -182,6 +212,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在滑动窗口注意力中，模型只能回溯滑动窗口内的标记（图2，中部）。随着窗口大小的增加，递归状态呈线性增长，并对并行训练和推理速度产生非线性影响（图2，左侧）。
 - en: However, we find the two primitives are complementary – linear attention for
     modeling long-range token interactions and sliding window for local token interactions
     in the sequence. We combined them into a single architecture, called Based (Figure
@@ -189,6 +220,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，我们发现这两个基本单元是互补的 – 线性注意力用于建模长距离标记交互，滑动窗口用于序列中的局部标记交互。我们将它们结合到一个单一的架构中，称为Based（图2，右侧）。
 - en: Sliding window attention can perform the precise *local* shifts needed for associative
     recall. We use *tiny* window sizes (e.g. 64 in experiments) contrasting the larger
     window sizes in architectures like [Mistral-7B](https://mistral.ai/news/announcing-mistral-7b/)
@@ -204,6 +236,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 滑动窗口注意力可以执行精确的*本地*移位，以实现联想回溯。我们使用*微小*的窗口大小（例如实验中的64），与[Mistral-7B](https://mistral.ai/news/announcing-mistral-7b/)等架构中较大的窗口大小形成对比，以及最近提出的[Griffin](https://arxiv.org/abs/2402.19427)。从质量的角度来看，更多的注意力（更大的窗口大小）在直觉上是有益的，但我们希望在质量和墙上时钟速度之间取得平衡。为了平衡这些目标，让我们来看看上图中左图的情况。注意到对于16x16与64x64矩阵的矩阵乘法延迟大致相等，而超过64后，延迟随窗口大小呈非线性增长。需要注意的是，后者之所以能保持GPU张量核心的充分利用，是因为维持了足够高的饱和度！
 - en: Linear attention enables *global* token interactions, while maintaining a fixed
     size recurrent state. Unlike softmax attention, the size of linear attention’s
     recurrent state is a function of hyperparameters (*e.g.* choice of feature map)
@@ -215,6 +248,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 线性注意力可以*全局*令牌交互，同时保持固定大小的循环状态。与softmax注意力不同，线性注意力的循环状态大小是超参数（*例如*特征映射选择）的函数，而不是序列长度。这使我们能够平稳地穿越权衡空间。我们使用**指数函数的泰勒近似作为特征映射**，这在我们关于线性注意力的[先前工作](https://arxiv.org/abs/2402.04347)中首次使用！
 - en: Critically, the recurrent state size in Based does not grow with the sequence
     length, as it does in attention. Instead, it is determined by the linear attention
     feature dimension and the window size. **By dialing these hyperparameters, we
@@ -223,10 +257,12 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 关键是，Based中的循环状态大小不随序列长度增长而增长，就像注意力中那样。相反，它由线性注意力特征维度和窗口大小决定。**通过调整这些超参数，我们可以在图1的帕累托前沿中权衡回忆和吞吐量。**
 - en: ‍
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Despite its simplicity, on real language modeling experiments (up to at least
     1.3 billion parameters), Based is competitive with Mamba in terms of overall Pile
     perplexity and standard zero-shot benchmarks from the [LM eval harness](https://github.com/EleutherAI/lm-evaluation-harness)
@@ -234,6 +270,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管其简单性，在真实的语言建模实验中（至少达到13亿参数），Based在整体Pile困惑度和来自[LM评估工具](https://github.com/EleutherAI/lm-evaluation-harness)的标准零-shot基准测试（显示在问答-常见问题下）方面与Mamba竞争力相当。
 - en: These commonly-used zero-shot benchmarks are limited to extremely short text,
     so they don’t stress test models’ recall capabilities. To address this shortcoming,
     we [curated a small suite of *real world recall-intensive* benchmarks](https://arxiv.org/abs/2304.09433)
@@ -247,6 +284,8 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些常用的零-shot基准测试仅限于极短的文本，因此它们不会对模型的回忆能力进行严格测试。为了解决这一不足，我们[策划了一套小型的*真实世界、需要大量回忆*的基准测试](https://arxiv.org/abs/2304.09433)，这些测试需要从长文档中回忆信息（*例如*从[FDA文件](https://pubmed.ncbi.nlm.nih.gov/21321283/https://pubmed.ncbi.nlm.nih.gov/21321283/)和[原始HTML](https://paperswithcode.com/dataset/swde)中提取信息，以及阅读理解）。在这些任务中，Based是最强的次二次架构，在平均精度上超过Mamba
+    6.22个百分点。然而，Based和Mamba仍然比最强的Transformer基线表现不佳，有时差距很大。这与我们以上的“没有免费午餐”观察是一致的。
 - en: It’s important to note that we don’t believe Based is the only architecture
     that can operate at this point on the tradeoff curve. For example, we show in
     our paper that we can replace the sliding window attention with short-convolutions
@@ -257,11 +296,13 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，我们并不认为Based是唯一可以在权衡曲线上运行的架构。例如，我们在论文中展示了，我们可以用短卷积（滤波器尺寸3）替换滑动窗口注意力，并在0.1个困惑点内达到类似的性能。我们怀疑还有许多其他架构也可以匹配这个帕累托前沿，我们希望还有其他架构可以超越它！
 - en: ‍**How we use our fixed-size recurrent state matters too! **
   id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ‍**我们如何使用我们的固定大小循环状态也很重要！**
 - en: 'There are many recurrent architectures that might have the same hidden state
     size, but our work highlights how the featurization (e.g. linear attention feature
     map, state update mechanism) matters as well. Our choice for the map in Based
@@ -323,6 +364,8 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们重新审视一下硬件工作的背景。GPU具有少量快速访问的内存（线程特定寄存器、使用SRAM的warp/32线程级共享内存），以及大量慢速访问的内存（HBM）。减少慢速HBM和SRAM之间以及SRAM和寄存器之间的读写次数非常重要，以提高效率。我们提出了新的IO感知算法，用于泰勒线性注意力前向传播和推断，通过$O(Nd'^2)$字节减少HBM到SRAM的数据移动，以及通过$O(Nd^{2}d')$字节减少SRAM到寄存器的数据移动。我们的算法允许在特征维度d’
+    = 16时将KV状态保持在*线程寄存器*中，这在实验中被使用。
 - en: Below we include a comparison between the naive Taylor attention forward pass,
     an implementation that leverages the popular linear attention kernels from [Fast
     Transformers](https://github.com/idiap/fast-transformers/blob/master/fast_transformers/attention/causal_linear_attention.py),
@@ -330,6 +373,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面我们将比较朴素的泰勒注意力前向传播、利用来自[快速变换器](https://github.com/idiap/fast-transformers/blob/master/fast_transformers/attention/causal_linear_attention.py)流行的线性注意力核心的实现，以及我们的自定义核心，在批量大小（序列长度为1024）上展示。
 - en: We then compare the end-to-end generation speeds of FlashAttention-2, Mamba,
     and Based 360M and 1.3Bn parameter models using our IO-aware algorithms. We hold
     the batch size to 2 for prefill, and generate 1024 tokens for next token prediction.
@@ -337,6 +381,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们比较了FlashAttention-2、Mamba以及基于360M和1.3Bn参数模型的端到端生成速度，使用我们的IO感知算法。我们将批次大小保持为2以进行预填充，并生成1024个令牌以进行下一个令牌预测。引人注目的是，Based的吞吐量比FlashAttention-2高达24倍！
 - en: '*Stay tuned!* These algorithms are implemented in an exciting new CUDA DSL
     called ThunderKittens, that’s being developed by our lab. Stay tuned for more
     on this soon – we hope the DSL improves the accessibility of CUDA development!
@@ -348,10 +393,12 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '*敬请关注！* 这些算法是在我们实验室开发的一种激动人心的新CUDA DSL——ThunderKittens中实现的。请继续关注更多信息——我们希望这种DSL能够提升CUDA开发的易用性！与Triton等框架不同，该DSL是*嵌入*在C++中的。我们非常期待与您分享并获取您的反馈！我们将在未来几周内推出更多模型工件，受到以下问题的驱动：*硬件需要什么模型？*'
 - en: ‍
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: 'You can play with our checkpoints and evaluations on [Hugging Face](https://huggingface.co/collections/hazyresearch/based-65d77fb7a6f9c813c8b94339c)
     and in this code repository: [https://github.com/HazyResearch/based](https://github.com/HazyResearch/based)!
     Huge thank you to [Together AI](https://www.together.ai/), [Stanford HAI](https://hai.stanford.edu/),
@@ -362,3 +409,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在[Hugging Face](https://huggingface.co/collections/hazyresearch/based-65d77fb7a6f9c813c8b94339c)上玩耍我们的检查点和评估，并在此代码存储库中查看：[https://github.com/HazyResearch/based](https://github.com/HazyResearch/based)！特别感谢[Together
+    AI](https://www.together.ai/)、[Stanford HAI](https://hai.stanford.edu/)和[Stanford
+    CRFM](https://crfm.stanford.edu/)支持此工作！请发送您的反馈和问题至：Simran Arora（[simarora@stanford.edu](mailto:simarora@stanford.edu)）、Sabri
+    Eyuboglu（[eyuboglu@stanford.edu](mailto:eyuboglu@stanford.edu)）、Michael Zhang（[mzhang@stanford.edu](mailto:mzhang@stanford.edu)）。
