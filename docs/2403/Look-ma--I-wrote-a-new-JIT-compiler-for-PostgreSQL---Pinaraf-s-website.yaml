@@ -159,6 +159,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，在PostgreSQL中构建一个新的JIT引擎需要什么？希望不多，否则我可能不会写博客谈论这个。
 - en: When JIT compilation was introduced, it was suggested on hackers to make LLVM
     a plugin, allowing future extensions to bring other JIT compilers. Back then,
     I was quite skeptical to this idea (but never expressed this opinion, I did not
@@ -175,6 +176,8 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: JIT编译引入时，有人在hacker上建议将LLVM作为插件，允许将来扩展带来其他JIT编译器。当时，我对这个想法非常怀疑（但从未表达过这种观点，我不想后来证明自己错了），结果证明我自己错了……
+    接口非常简单，你的`.so`只需提供一个名为`_PG_jit_provider_init`的函数，然后在这个函数中初始化三个回调函数，命名为`compile_expr`、`release_context`和`reset_after_error`。主要的是`compile_expr`。你会得到一个`ExprState*`参数，指向一个由操作码组成的表达式。然后“只是”把这些操作码编译到一起，以任何你想要的方式标记这个构建好的代码为可执行，并将`evalfunc`更改为这段代码，而不是PostgreSQL解释器。这很容易，如果遇到尚未实现的操作码，你会自动回退到PostgreSQL解释器。
 - en: The copy and patch algorithm (implemented with only a few small optimizations
     so far) is so easy I can explain it here. For each opcode, the compiler will look
     into the stencil collection. If the opcode has a stencil, the stencil is appended
@@ -184,11 +187,13 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 复制和补丁算法（目前仅实现了一些小的优化）非常简单，我可以在这里解释一下。对于每个操作码，编译器将查看stencil集合。如果操作码有对应的stencil，则将该stencil附加到“构建好”的代码中。否则，编译过程停止，并且PostgreSQL解释器介入。在附加stencil后，将填充其每个空位所需的值。
 - en: For instance, let’s consider this basic unoptimized stencil, for the opcode
     CONST.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，让我们考虑一下这个基本的未优化stencil，对于操作码CONST。
 - en: '[PRE0]'
   id: totrans-split-24
   prefs: []
@@ -203,6 +208,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: op声明为extern ExprEvalStep op;（而NEXT_OP稍难解释，这里我不会深入）。当编译成单个`.o`文件时，编译器会在汇编代码中留下一个空位，op的地址将需要插入（使用重定位）。在构建stencil集合时，会保留并由JIT编译器使用当前操作码结构的地址信息，以获取工作代码。
 - en: The build process for the stencils is quite fun, not complicated, but fun. The
     first step is to build the stencils to a single .o file, and then extract the
     assembly code and relocations from this .o file into C usable structures, that
@@ -210,10 +216,12 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译stencils的过程非常有趣，不复杂，但很有趣。第一步是将stencils编译成单个`.o`文件，然后从这个`.o`文件中提取汇编代码和重定位信息，转换成C可用的结构，供JIT编译器链接使用。
 - en: And that’s about all there is.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 大约就是这些。
 - en: At first, I was extracting the assembly code manually. Using that way, I managed
     to get the three needed opcodes for SELECT 42; to work. And there was much joy.
     After this first proof of concept (and I guess some disturbed looks a few days
@@ -224,11 +232,14 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 起初，我是手动提取汇编代码的。通过这种方式，我设法使SELECT 42;所需的三个操作码能够正常工作。当时我非常高兴。在这个第一个概念验证后（我猜几天前在PgDay.Paris，当人们看到我对能够运行SELECT
+    42感到高兴时，可能有些困惑），我编写了一个DirtyPython（非官方变体）脚本来自动化汇编代码提取，并在几小时内实现了函数调用、单表查询、更复杂的数据类型，引入了一些优化……
 - en: Current state
   id: totrans-split-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 当前状态
 - en: It works on my computer with PostgreSQL 16\. It should be fine with older releases.
     It only supports AMD64 because that’s what I have and I can not target everything
     at once. Later I will add ARM64, and I would love to have some time to add support
