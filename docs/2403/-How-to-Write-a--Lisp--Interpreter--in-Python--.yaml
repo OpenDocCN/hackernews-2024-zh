@@ -125,6 +125,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 其他都是 *列表表达式*：一个"(", 后面跟着零个或多个表达式，然后是")"。列表的第一个元素决定了其含义：
 - en: A list starting with a keyword, e.g. `(if ...)`, is a *special form*; the meaning
     depends on the keyword.
   id: totrans-split-22
@@ -132,12 +133,14 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 以关键字开头的列表，如`(if ...)`，是一个 *特殊形式*；其含义取决于关键字。
 - en: A list starting with a non-keyword, e.g. `(fn ...)`, is a function call.
   id: totrans-split-23
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 以非关键字开头的列表，如`(fn ...)`，是一个函数调用。
 - en: The beauty of Scheme is that the full language only needs 5 keywords and 8 syntactic
     forms. In comparison, Python has 33 keywords and [110](https://docs.python.org/3/reference/grammar.html)
     syntactic forms, and Java has 50 keywords and [133](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html)
@@ -148,6 +151,9 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: Scheme的美妙之处在于整个语言只需要5个关键字和8个语法形式。相比之下，Python有33个关键字和[110](https://docs.python.org/3/reference/grammar.html)个语法形式，Java有50个关键字和[133](https://docs.oracle.com/javase/specs/jls/se7/html/jls-18.html)个语法形式。所有这些括号可能看起来令人望而生畏，但Scheme语法具有简单和一致的优点。（有人开玩笑说"Lisp"代表"[***L**ots
+    of **I**rritating **S**illy **P**arentheses*](http://www.google.com/search?q=Lots+of+Irritating+Silly+Parentheses)";
+    我认为它代表"[***L**isp **I**s **S**yntactically **P**ure*](http://www.google.com/search?hl=en&as_q=&as_epq=Lisp+Is+Syntactically+Pure)"。)
 - en: In this page we will cover all the important points of the Scheme language and
     its interpretation (omitting some minor details), but we will take two steps to
     get there, defining a simplified language first, before defining the near-full
@@ -155,11 +161,13 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本页中，我们将涵盖Scheme语言及其解释的所有重要要点（省略一些细节），但我们将分两步完成，首先定义一个简化的语言，然后再定义接近完整的Scheme语言。
 - en: 'Language 1: Lispy Calculator'
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 语言1：Lisp计算器
 - en: '*Lispy Calculator* is a subset of Scheme using only five syntactic forms (two
     atomic, two special forms, and the procedure call). Lispy Calculator lets you
     do any computation you could do on a typical calculator—as long as you are comfortable
@@ -170,42 +178,56 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Lispy Calculator* 是Scheme的一个子集，只使用了五个语法形式（两个原子形式，两个特殊形式和过程调用）。Lispy Calculator让你能够执行任何你在典型计算器上进行的计算，只要你习惯前缀表示法。并且你可以做两件典型计算器语言不提供的事情："if"表达式，和定义新变量。以下是一个计算半径为10的圆的面积的示例程序，使用公式
+    π *r*²：'
 - en: '[PRE0]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Here is a table of all the allowable expressions:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是所有可接受的表达式的表格：
 - en: '| Expression | Syntax | Semantics and Example |'
   id: totrans-split-30
   prefs: []
   type: TYPE_TB
+  zh: '| 表达式 | 语法 | 语义和例子 |'
 - en: '| [variable reference](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.1)
     | *symbol* | A symbol is interpreted as a variable name; its value is the variable''s
     value. Example: `r` ⇒ `10` (assuming `r` was previously defined to be 10) |'
   id: totrans-split-31
   prefs: []
   type: TYPE_TB
+  zh: '| [变量引用](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.1)
+    | *symbol* | 一个符号被解释为一个变量名；它的值是该变量的值。例如：`r` ⇒ `10`（假设`r`之前被定义为10） |'
 - en: '| [constant literal](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.2)
     | *number* | A number evaluates to itself. Examples: `12 ⇒ 12` *or* `-3.45e+6
     ⇒ -3.45e+6` |'
   id: totrans-split-32
   prefs: []
   type: TYPE_TB
+  zh: '| [常量字面量](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.2)
+    | *number* | 一个数字求值为它自身。例如：`12 ⇒ 12` 或 `-3.45e+6 ⇒ -3.45e+6` |'
 - en: '| [conditional](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.5)
     | `(if` *test conseq alt*`)` | Evaluate *test*; if true, evaluate and return *conseq*;
     otherwise *alt*. Example: `(if (> 10 20) (+ 1 1) (+ 3 3)) ⇒ 6` |'
   id: totrans-split-33
   prefs: []
   type: TYPE_TB
+  zh: '| [条件](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.5)
+    | `(if` *test conseq alt*`)` | 对*test*进行评估；如果为真，评估并返回*conseq*；否则返回*alt*。例如：`(if
+    (> 10 20) (+ 1 1) (+ 3 3)) ⇒ 6` |'
 - en: '| [definition](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-8.html#%_sec_5.2)
     | `(define` *symbol* *exp*`)` | Define a new variable and give it the value of
     evaluating the expression *exp*. Examples: `(define r 10)` |'
   id: totrans-split-34
   prefs: []
   type: TYPE_TB
+  zh: '| [定义](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-8.html#%_sec_5.2)
+    | `(define` *symbol* *exp*`)` | 定义一个新变量，并将其值设为求值表达式 *exp*。例如：`(define r 10)` |'
 - en: '| [procedure call](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.3)
     | `(`*proc arg...*`)` | If *proc* is anything other than one of the symbols `if,
     define,` or `quote` then it is treated as a procedure. Evaluate *proc* and all
@@ -214,21 +236,28 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_TB
+  zh: '| [过程调用](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.3)
+    | `(`*proc arg...*`)` | 如果 *proc* 不是 `if, define` 或 `quote` 中的任何一个符号，则将其视为过程。评估
+    *proc* 和所有 *args*，然后将该过程应用于 *arg* 值列表。例如：`(sqrt (* 2 8)) ⇒ 4.0` |'
 - en: In the Syntax column of this table, *symbol* must be a symbol, *number* must
     be an integer or floating point number, and the other italicized words can be
     any expression. The notation *arg...* means zero or more repetitions of *arg*.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在此表的语法列中，*symbol* 必须是符号，*number* 必须是整数或浮点数，其他斜体字可以是任何表达式。符号 *arg...* 表示 *arg*
+    的零个或多个重复。
 - en: What A Language Interpreter Does
   id: totrans-split-37
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 语言解释器的功能
 - en: 'A language interpreter has two parts:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 语言解释器有两部分：
 - en: '**Parsing:** The parsing component takes an input program in the form of a
     sequence of characters, verifies it according to the *syntactic rules* of the
     language, and translates the program into an internal representation. In a simple
@@ -242,6 +271,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**解析：** 解析组件接受以字符序列形式的输入程序，根据语言的*语法规则*进行验证，并将程序转换为内部表示。在简单的解释器中，内部表示是树结构（通常称为*抽象语法树*），它紧密地反映了程序中语句或表达式的嵌套结构。在称为*编译器*的语言翻译器中，通常有一系列内部表示，从抽象语法树开始，进展到一系列可以由计算机直接执行的指令。Lispy
+    解析器使用函数 `parse` 实现。'
 - en: '**Execution:** The internal representation is then processed according to the
     *semantic rules* of the language, thereby carrying out the computation. Lispy''s
     execution function is called `eval` (note this shadows Python''s built-in function
@@ -250,42 +281,51 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**执行：** 然后根据语言的*语义规则*处理内部表示，从而进行计算。Lispy 的执行函数称为 `eval`（请注意，这与 Python 的同名内置函数相冲突）。'
 - en: 'Here is a picture of the interpretation process:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是解释过程的图片：
 - en: program ➡ `parse` ➡ abstract-syntax-tree ➡ `eval` ➡ result
   id: totrans-split-42
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 程序 ➡ `parse` ➡ 抽象语法树 ➡ `eval` ➡ 结果
 - en: 'And here is a short example of what we want `parse` and `eval` to be able to
     do (`begin` evaluates each expression in order and returns the final one):'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '这里是我们希望 `parse` 和 `eval` 能够执行的简短示例（`begin` 按顺序评估每个表达式并返回最终一个）:'
 - en: '[PRE1]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Type Definitions
   id: totrans-split-45
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 类型定义
 - en: 'Let''s be explicit about our representations for Scheme objects:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们明确我们对 Scheme 对象的表示：
 - en: '[PRE2]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Parsing: `parse`, `tokenize` and `read_from_tokens`'
   id: totrans-split-48
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解析：`parse`，`tokenize` 和 `read_from_tokens`
 - en: 'Parsing is traditionally separated into two parts: *lexical analysis*, in which
     the input character string is broken up into a sequence of *tokens*, and *syntactic
     analysis*, in which the tokens are assembled into an abstract syntax tree. The
@@ -297,18 +337,24 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析通常分为两部分：*词法分析*，其中输入字符串被分解为一系列*标记*，以及*语法分析*，其中标记被组装成抽象语法树。Lispy 的标记包括括号、符号和数字。有许多词法分析工具（如
+    Mike Lesk 和 Eric Schmidt 的 [lex](http://dinosaur.compilertools.net/#lex)），但现在我们将使用一个非常简单的工具：Python
+    的 `str.split` 函数。函数 `tokenize` 的输入是一个字符串；它在每个括号周围添加空格，然后调用 `str.split` 来获取一个标记列表：
 - en: '[PRE3]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'Here we apply tokenize to our sample program:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在这里将 tokenize 应用于我们的示例程序：
 - en: '[PRE4]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Our function `parse` will take a string representation of a program as input,
     call `tokenize` to get a list of tokens, and then call `read_from_tokens` to assemble
     an abstract syntax tree. `read_from_tokens` looks at the first token; if it is
@@ -320,27 +366,33 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的函数`parse`将接受一个程序的字符串表示作为输入，调用`tokenize`以获取一个令牌列表，然后调用`read_from_tokens`以组装一个抽象语法树。`read_from_tokens`查看第一个令牌；如果它是`')'`，那么是语法错误。如果是`'('`，则我们开始构建一个子表达式列表，直到找到匹配的`')'`为止。任何非括号令牌必须是符号或数字。我们将让Python来区分它们：对于每个非括号令牌，首先尝试将其解释为整数，然后尝试解释为浮点数，如果既不是整数也不是浮点数，则必须是符号。这是解析器：
 - en: '[PRE5]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '`parse` works like this:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '`parse`的工作方式如下：'
 - en: '[PRE6]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We're almost ready to define `eval`. But we need one more concept first.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们差不多可以定义`eval`了。但是我们首先需要再介绍一个概念。
 - en: Environments
   id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 环境
 - en: An environment is a mapping from variable names to their values. By default,
     `eval` will use a global environment that includes the names for a bunch of standard
     functions (like `sqrt` and `max`, and also operators like `*`). This environment
@@ -349,48 +401,64 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 环境是从变量名到它们的值的映射。默认情况下，`eval`将使用一个全局环境，其中包括许多标准函数（如`sqrt`和`max`，以及像`*`这样的操作符）。此环境可以通过使用表达式`(define
+    *symbol value*)`来扩充用户定义的变量。
 - en: '[PRE7]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Evaluation: `eval`'
   id: totrans-split-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 评估：`eval`
 - en: 'We are now ready for the implementation of `eval`. As a refresher, we repeat
     the table of Lispy Calculator forms:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们准备实现`eval`。作为复习，我们重复列出Lispy计算器的形式表格：
 - en: '| Expression | Syntax | Semantics and Example |'
   id: totrans-split-63
   prefs: []
   type: TYPE_TB
+  zh: '| 表达式 | 语法 | 语义和示例 |'
 - en: '| [variable reference](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.1)
     | *symbol* | A symbol is interpreted as a variable name; its value is the variable''s
     value. Example: `r` ⇒ `10` (assuming `r` was previously defined to be 10) |'
   id: totrans-split-64
   prefs: []
   type: TYPE_TB
+  zh: '| [变量引用](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.1)
+    | *symbol* | 符号被解释为变量名；其值是变量的值。例子：`r` ⇒ `10`（假设`r`先前已定义为10） |'
 - en: '| [constant literal](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.2)
     | *number* | A number evaluates to itself. Examples: `12 ⇒ 12` *or* `-3.45e+6
     ⇒ -3.45e+6` |'
   id: totrans-split-65
   prefs: []
   type: TYPE_TB
+  zh: '| [常量文字](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.2)
+    | *number* | 数字评估为它自己。示例：`12 ⇒ 12` *或* `-3.45e+6 ⇒ -3.45e+6` |'
 - en: '| [conditional](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.5)
     | `(if` *test conseq alt*`)` | Evaluate *test*; if true, evaluate and return *conseq*;
     otherwise *alt*. Example: `(if (> 10 20) (+ 1 1) (+ 3 3)) ⇒ 6` |'
   id: totrans-split-66
   prefs: []
   type: TYPE_TB
+  zh: '| [条件](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.5)
+    | `(if` *test conseq alt*`)` | 评估*test*；如果为真，评估并返回*conseq*；否则*alt*。示例：`(if (>
+    10 20) (+ 1 1) (+ 3 3)) ⇒ 6` |'
 - en: '| [definition](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-8.html#%_sec_5.2)
     | `(define` *symbol* *exp*`)` | Define a new variable and give it the value of
     evaluating the expression *exp*. Examples: `(define r 10)` |'
   id: totrans-split-67
   prefs: []
   type: TYPE_TB
+  zh: '| [定义](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-8.html#%_sec_5.2)
+    | `(define` *symbol* *exp*`)` | 定义一个新变量，并将其值设为求值表达式*exp*的结果。示例：`(define r 10)`
+    |'
 - en: '| [procedure call](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.3)
     | `(`*proc arg...*`)` | If *proc* is anything other than one of the symbols `if,
     define,` or `quote` then it is treated as a procedure. Evaluate *proc* and all
@@ -399,27 +467,35 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_TB
+  zh: '| [过程调用](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.3)
+    | `(`*proc arg...*`)` | 如果*proc*不是`if, define,`或`quote`中的一个符号，则将其视为过程。评估*proc*和所有*args*，然后将该过程应用于*arg*值的列表。示例：`(sqrt
+    (* 2 8)) ⇒ 4.0` |'
 - en: 'Here is the code for `eval`, which closely follows the table:'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是`eval`的代码，其紧随表格而来：
 - en: '[PRE8]'
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '*We''re done!* You can see it all in action:'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我们完成了！* 你可以看到它如何运行：'
 - en: '[PRE9]'
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Interaction: A REPL'
   id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 交互：一个REPL
 - en: 'It is tedious to have to enter `eval(parse("..."))` all the time. One of Lisp''s
     great legacies is the notion of an interactive read-eval-print loop: a way for
     a programmer to enter an expression, and see it immediately read, evaluated, and
@@ -429,38 +505,48 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 每次输入 `eval(parse("..."))` 都很繁琐。Lisp 的一个伟大遗产之一是交互式读取-评估-打印循环：程序员可以输入一个表达式，并立即看到它被读取、评估和打印，而无需经历冗长的构建/编译/运行循环。因此，让我们定义函数
+    `repl`（代表读取-评估-打印循环）和函数 `schemestr`，后者返回表示 Scheme 对象的字符串。
 - en: '[PRE10]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Here is `repl` in action:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '`repl` 的实际操作如下：'
 - en: '[PRE11]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Language 2: Full Lispy'
   id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 语言 2：完全的 Lisp 风格
 - en: 'We will now extend our language with three new special forms, giving us a much
     more nearly-complete Scheme subset:'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们将通过引入三种新的特殊形式扩展我们的语言，从而得到一个更接近完整的 Scheme 子集：
 - en: '| Expression | Syntax | Semantics and Example |'
   id: totrans-split-80
   prefs: []
   type: TYPE_TB
+  zh: '| 表达式 | 语法 | 语义和示例 |'
 - en: '| [quotation](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.2)
     | `(quote` *exp*`)` | Return the *exp* literally; do not evaluate it. Example:
     `(quote (+ 1 2)) ⇒ (+ 1 2)` |'
   id: totrans-split-81
   prefs: []
   type: TYPE_TB
+  zh: '| [quotation](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.2)
+    | `(quote` *exp*`)` | 直接返回 *exp*；不对其进行评估。例如：`(quote (+ 1 2)) ⇒ (+ 1 2)` |'
 - en: '| [assignment](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.6)
     | `(set!` *symbol exp*`)` | Evaluate *exp* and assign that value to *symbol*,
     which must have been previously defined (with a `define` or as a parameter to
@@ -468,22 +554,30 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_TB
+  zh: '| [assignment](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.6)
+    | `(set!` *symbol exp*`)` | 评估 *exp* 并将其值分配给之前定义过的 *symbol*（使用 `define` 或作为封闭过程的参数）。例如：`(set!
+    r2 (* r r))` |'
 - en: '| [procedure](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.4)
     | `(lambda (`*symbol...*`)` *exp*`)` | Create a procedure with parameter(s) named
     *symbol...* and *exp* as the body. Example: `(lambda (r) (* pi (* r r)))` |'
   id: totrans-split-83
   prefs: []
   type: TYPE_TB
+  zh: '| [procedure](http://www.schemers.org/Documents/Standards/R5RS/HTML/r5rs-Z-H-7.html#%_sec_4.1.4)
+    | `(lambda (`*symbol...*`)` *exp*`)` | 创建一个具有参数名为 *symbol...* 和体为 *exp* 的过程。例如：`(lambda
+    (r) (* pi (* r r)))` |'
 - en: 'The `lambda` special form (an obscure nomenclature choice that refers to Alonzo
     Church''s [lambda calculus](http://en.wikipedia.org/wiki/Lambda_calculus)) creates
     a procedure. We want procedures to work like this:'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: '`lambda` 特殊形式（一个晦涩的命名选择，指的是阿隆佐·邱奇的[λ演算](http://en.wikipedia.org/wiki/Lambda_calculus)）创建一个过程。我们希望过程能像这样工作：'
 - en: '[PRE12]'
   id: totrans-split-85
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: There are two steps here. In the first step, the `lambda` expression is evaluated
     to create a procedure, one which refers to the global variables `pi` and `*`,
     takes a single parameter, which it calls `r`. This procedure is used as the value
@@ -500,11 +594,16 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有两个步骤。在第一步中，`lambda` 表达式被评估以创建一个过程，该过程引用全局变量 `pi` 和 `*`，接受一个称为 `r` 的单一参数。这个过程被用作新变量
+    `circle-area` 的值。在第二步中，我们刚刚定义的过程是 `circle-area` 的值，因此它被调用，参数为值为 10。我们希望 `r` 取值为
+    10，但不能简单地在全局环境中设置 `r` 为 10。如果我们正在使用 `r` 作其他用途，我们不希望调用 `circle-area` 导致该值发生改变。相反，我们希望安排有一个名为
+    `r` 的*局部*变量，可以将其设置为 10，而不必担心干扰具有相同名称的任何全局变量。调用过程的过程引入了这些新的局部变量，将函数参数列表中的每个符号绑定到函数调用参数列表中的相应值。
 - en: Redefining `Env` as a Class
   id: totrans-split-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重新定义 `Env` 为一个类
 - en: 'To handle local variables, we will redefine `Env` to be a subclass of `dict`.
     When we evaluate `(circle-area (+ 5 5))`, we will fetch the procedure body, `(*
     pi (* r r))`, and evaluate it in an environment that has `r` as the sole local
@@ -515,14 +614,19 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 要处理局部变量，我们将重新定义 `Env` 为 `dict` 的一个子类。当我们评估 `(circle-area (+ 5 5))` 时，我们将获取过程体
+    `(* pi (* r r))` 并在一个环境中评估它，该环境将 `r` 作为唯一的局部变量（值为10），同时也将全局环境作为“外部”环境；在那里我们将找到
+    `*` 和 `pi` 的值。换句话说，我们希望一个看起来像这样的环境，局部（蓝色）环境嵌套在外部（红色）全局环境中：
 - en: '| `pi: 3.141592653589793 *: <built-in function mul>'
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '| `pi: 3.141592653589793 *: <内置函数 mul>'
 - en: '...`  |'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: '...`  |'
 - en: 'When we look up a variable in such a nested environment, we look first at the
     innermost level, but if we don''t find the variable name there, we move to the
     next outer level. Procedures and environments are intertwined, so let''s define
@@ -530,10 +634,12 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这样的嵌套环境中查找变量时，首先查找最内层，如果变量名不在那里找到，则移动到下一个外层。过程和环境是交织在一起的，因此让我们一起定义它们：
 - en: '[PRE13]'
   id: totrans-split-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'We see that every procedure has three components: a list of parameter names,
     a body expression, and an environment that tells us what other variables are accessible
     from the body. For a procedure defined at the top level this will be the global
@@ -543,6 +649,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到每个过程有三个组成部分：参数名列表、体表达式和一个告诉我们从体表达式中可以访问哪些其他变量的环境。对于在顶层定义的过程来说，这将是全局环境，但过程也可以引用它定义时的环境的局部变量（而不是调用时的环境）。
 - en: 'An environment is a subclass of `dict`, so it has all the methods that `dict`
     has. In addition there are two methods: the constructor `__init__` builds a new
     environment by taking a list of parameter names and a corresponding list of argument
@@ -553,6 +660,8 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '环境是 `dict` 的一个子类，因此它具有 `dict` 的所有方法。此外，还有两个方法：构造函数 `__init__` 通过取参数名列表和对应的参数值列表，创建一个具有这些
+    {变量: 值} 对作为内部部分，并且还引用给定的 `outer` 环境的新环境。方法 `find` 用于找到变量的正确环境：内部环境或外部环境。'
 - en: 'To see how these all go together, here is the new definition of `eval`. Note
     that the clause for variable reference has changed: we now have to call `env.find(x)`
     to find at what level the variable `x` exists; then we can fetch the value of
@@ -564,229 +673,289 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 要看看它们是如何一起工作的，请看 `eval` 的新定义。注意变量引用的条款已经改变：现在我们必须调用 `env.find(x)` 来找到变量 `x`
+    存在的级别；然后我们可以从那个级别获取 `x` 的值。（`define` 的条款没有改变，因为 `define` 总是在最内层环境中添加一个新变量。）还有两个新的条款：对于
+    `set!`，我们找到变量存在的环境级别，并将其设置为新值。对于 `lambda`，我们创建一个新的过程对象，其中包括给定的参数列表、体和环境。
 - en: '[PRE14]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'To appreciate how procedures and environments work together, consider this
     program and the environment that gets formed when we evaluate `(account1 -20.00)`:'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解过程和环境如何协同工作，可以考虑这个程序及其在评估 `(account1 -20.00)` 时形成的环境：
 - en: '|'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '&#124; `(define **make-account**'
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: '&#124; `(define **make-account**'
 - en: '&#124;   (lambda (**balance**)'
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: '&#124;   (lambda (**balance**)'
 - en: '&#124;     (lambda (**amt**)       (begin **(set! balance (+ balance amt))**'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: '&#124;     (lambda (**amt**)       (begin **(set! balance (+ balance amt))**'
 - en: balance)))) &#124;
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: balance)))) &#124;
 - en: '&#124;'
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: '&#124;'
 - en: '`(define **account1** (make-account 100.00))'
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: '`(define **account1** (make-account 100.00))'
 - en: (account1 -20.00)`` &#124;
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: (account1 -20.00)`` &#124;
 - en: '|   |'
   id: totrans-split-106
   prefs: []
   type: TYPE_TB
+  zh: '|   |'
 - en: '&#124; **`+`**: <built-in operator add> `**make-account**: <a Procedure>'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: '&#124; **`+`**: <内置运算符 add> `**make-account**: <一个Procedure>'
 - en: '``**account1**: <a Procedure>[PRE15]'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '``**account1**: <一个Procedure>[PRE15]'
 - en: '>>> repl()'
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: '>>> repl()'
 - en: lis.py> (define circle-area (lambda (r) (* pi (* r r))))
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define circle-area (lambda (r) (* pi (* r r))))
 - en: lis.py> (circle-area 3)
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (circle-area 3)
 - en: '28.274333877'
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '28.274333877'
 - en: lis.py> (define fact (lambda (n) (if (<= n 1) 1 (* n (fact (- n 1))))))
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define fact (lambda (n) (if (<= n 1) 1 (* n (fact (- n 1))))))
 - en: lis.py> (fact 10)
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (fact 10)
 - en: '3628800'
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: '3628800'
 - en: lis.py> (fact 100)
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (fact 100)
 - en: '9332621544394415268169923885626670049071596826438162146859296389521759999322991'
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: '9332621544394415268169923885626670049071596826438162146859296389521759999322991'
 - en: '5608941463976156518286253697920827223758251185210916864000000000000000000000000'
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '5608941463976156518286253697920827223758251185210916864000000000000000000000000'
 - en: lis.py> (circle-area (fact 10))
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (circle-area (fact 10))
 - en: '4.1369087198e+13'
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: '4.1369087198e+13'
 - en: lis.py> (define first car)
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define first car)
 - en: lis.py> (define rest cdr)
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define rest cdr)
 - en: lis.py> (define count (lambda (item L) (if L (+ (equal? item (first L)) (count
     item (rest L))) 0)))
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define count (lambda (item L) (if L (+ (equal? item (first L)) (count
+    item (rest L))) 0)))
 - en: lis.py> (count 0 (list 0 1 2 3 0 0))
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (count 0 (list 0 1 2 3 0 0))
 - en: '3'
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: '3'
 - en: lis.py> (count (quote the) (quote (the more the merrier the bigger the better)))
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (count (quote the) (quote (the more the merrier the bigger the better)))
 - en: '4'
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: '4'
 - en: lis.py> (define twice (lambda (x) (* 2 x)))
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define twice (lambda (x) (* 2 x)))
 - en: lis.py> (twice 5)
   id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (twice 5)
 - en: '10'
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: '10'
 - en: lis.py> (define repeat (lambda (f) (lambda (x) (f (f x)))))
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define repeat (lambda (f) (lambda (x) (f (f x)))))
 - en: lis.py> ((repeat twice) 10)
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> ((repeat twice) 10)
 - en: '40'
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: '40'
 - en: lis.py> ((repeat (repeat twice)) 10)
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> ((repeat (repeat twice)) 10)
 - en: '160'
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: '160'
 - en: lis.py> ((repeat (repeat (repeat twice))) 10)
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> ((repeat (repeat (repeat twice))) 10)
 - en: '2560'
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: '2560'
 - en: lis.py> ((repeat (repeat (repeat (repeat twice)))) 10)
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> ((repeat (repeat (repeat (repeat twice)))) 10)
 - en: '655360'
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: '655360'
 - en: lis.py> (pow 2 16)
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (pow 2 16)
 - en: '65536.0'
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: '65536.0'
 - en: lis.py> (define fib (lambda (n) (if (< n 2) 1 (+ (fib (- n 1)) (fib (- n 2))))))
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define fib (lambda (n) (if (< n 2) 1 (+ (fib (- n 1)) (fib (- n 2))))))
 - en: lis.py> (define range (lambda (a b) (if (= a b) (quote ()) (cons a (range (+
     a 1) b)))))
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (define range (lambda (a b) (if (= a b) (quote ()) (cons a (range (+
+    a 1) b)))))
 - en: lis.py> (range 0 10)
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (range 0 10)
 - en: (0 1 2 3 4 5 6 7 8 9)
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: (0 1 2 3 4 5 6 7 8 9)
 - en: lis.py> (map fib (range 0 10))
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (map fib (range 0 10))
 - en: (1 1 2 3 5 8 13 21 34 55)
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: (1 1 2 3 5 8 13 21 34 55)
 - en: lis.py> (map fib (range 0 20))
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: lis.py> (map fib (range 0 20))
 - en: (1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765)
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: (1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765)
 - en: '```'
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: '```'
 - en: We now have a language with procedures, variables, conditionals (`if`), and
     sequential execution (the `begin` procedure). If you are familiar with other languages,
     you might think that a `while` or `for` loop would be needed, but Scheme manages
@@ -797,20 +966,24 @@
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了一个具有过程、变量、条件（`if`）和顺序执行（`begin`过程）的语言。如果您熟悉其他语言，您可能会认为需要`while`或`for`循环，但Scheme语言完全没有这些也能运行良好。Scheme语言报告说：“Scheme展示了形成表达式的非常少的规则，以及这些规则如何组合，足以形成一个实用且高效的编程语言。”在Scheme语言中，您通过定义递归函数进行迭代。
 - en: How Small/Fast/Complete/Good is Lispy?
   id: totrans-split-152
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Lisp语言的大小/速度/完整性/优良性如何？
 - en: 'In which we judge Lispy on several criteria:'
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，我们根据几个标准评判Lisp语言：
 - en: True Story
   id: totrans-split-154
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 真实故事
 - en: 'To back up the idea that it can be very helpful to know how interpreters work,
     here''s a story. Way back in 1984 I was writing a Ph.D. thesis. This was before
     LaTeX, before Microsoft Word for Windows—we used troff. Unfortunately, troff had
@@ -825,6 +998,9 @@
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了支持这个想法——了解解释器如何工作是非常有帮助的——这里有一个故事。早在1984年，我正在写博士论文。当时还没有LaTeX，也没有Windows上的Microsoft
+    Word——我们使用troff排版系统。不幸的是，troff系统不支持向符号标签的前向引用：我想能够写“正如我们将在@theorem-x页面上看到”，然后在适当的地方写上类似“@(set
+    theorem-x \n%)”（其中troff寄存器\n%保存页面号）。我的同事Tony DeRose也有同样的需求，于是我们一起草拟了一个简单的Lisp程序，作为预处理器来处理这个问题。然而，当时的Lisp语言在读取Lisp表达式时效率很高，但在逐字符读取非Lisp表达式时速度非常慢，使得我们的程序使用起来很烦人。
 - en: From there Tony and I split paths. He reasoned that the hard part was the interpreter
     for expressions; he needed Lisp for that, but he knew how to write a tiny C routine
     for reading and echoing the non-Lisp characters and link it in to the Lisp program.
@@ -836,25 +1012,30 @@
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 从那时起，托尼和我选择了不同的道路。他认为困难的部分是表达式的解释器；他需要用Lisp来做这件事，但他知道如何写一个小的C程序来读取和回显非Lisp字符，并将其链接到Lisp程序中。我不知道如何进行这种链接，但我推理道，写一个解释器来处理这种简单的语言（它只有设置变量、获取变量和字符串连接的功能）很容易，所以我用C写了一个解释器。所以，具有讽刺意味的是，托尼写了一个Lisp程序（其中有一个小小的C例程），因为他是一个C程序员，而我写了一个C程序，因为我是一个Lisp程序员。
 - en: In the end, we both got our theses done ([Tony](http://www.eecs.berkeley.edu/Pubs/TechRpts/1985/6081.html),
     [Peter](http://www.eecs.berkeley.edu/Pubs/TechRpts/1987/5995.html)).
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们俩都完成了我们的论文（[Tony](http://www.eecs.berkeley.edu/Pubs/TechRpts/1985/6081.html)，[Peter](http://www.eecs.berkeley.edu/Pubs/TechRpts/1987/5995.html)）。
 - en: The Whole Thing
   id: totrans-split-158
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 全部内容
 - en: 'The whole program is here: [lis.py](lis.py).'
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 整个程序在这里：[lis.py](lis.py)。
 - en: Further Reading
   id: totrans-split-160
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进一步阅读
 - en: To learn more about Scheme consult some of the fine books (by [Friedman and
     Fellesein](http://books.google.com/books?id=xyO-KLexVnMC&lpg=PP1&dq=scheme%20programming%20book&pg=PP1#v=onepage&q&f=false),
     [Dybvig](http://books.google.com/books?id=wftS4tj4XFMC&lpg=PA300&dq=scheme%20programming%20book&pg=PP1#v=onepage&q&f=false),
@@ -867,19 +1048,26 @@
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 要了解更多关于Scheme的信息，请参考一些优秀的书籍（由[Friedman and Fellesein](http://books.google.com/books?id=xyO-KLexVnMC&lpg=PP1&dq=scheme%20programming%20book&pg=PP1#v=onepage&q&f=false)，[Dybvig](http://books.google.com/books?id=wftS4tj4XFMC&lpg=PA300&dq=scheme%20programming%20book&pg=PP1#v=onepage&q&f=false)，[Queinnec](http://books.google.com/books?id=81mFK8pqh5EC&lpg=PP1&dq=scheme%20programming%20book&pg=PP1#v=onepage&q&f=false)，[Harvey
+    and Wright](http://www.eecs.berkeley.edu/~bh/ss-toc2.html)或者[Sussman and Abelson](http://mitpress.mit.edu/sicp/)撰写），视频（由[Abelson
+    and Sussman](http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/)制作），教程（由[Dorai](http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme.html)，[PLT](http://docs.racket-lang.org/quick/index.html)，或者[Neller](http://cs.gettysburg.edu/~tneller/cs341/scheme-intro/index.html)制作），或者[参考手册](http://www.schemers.org/Documents/Standards/R5RS/HTML)。
 - en: I also have another page describing a [more advanced version of Lispy](http://norvig.com/lispy2.html).
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还有另一页描述了[Lispy的更高级版本](http://norvig.com/lispy2.html)。
 - en: '* * *'
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '*[Peter Norvig](http://norvig.com)*'
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: '*[Peter Norvig](http://norvig.com)*'
 - en: '* * *'
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
