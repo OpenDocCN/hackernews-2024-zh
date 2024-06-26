@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:36:08'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:36:08
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: On Avoiding Register Spills in Vectorized Code with Many Constants - Johnny's
     Software Lab
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何避免向量化代码中的寄存器溢出 - Johnny's Software Lab
 - en: 来源：[https://johnnysswlab.com/on-avoiding-register-spills-in-vectorized-code-with-many-constants/](https://johnnysswlab.com/on-avoiding-register-spills-in-vectorized-code-with-many-constants/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://johnnysswlab.com/on-avoiding-register-spills-in-vectorized-code-with-many-constants/](https://johnnysswlab.com/on-avoiding-register-spills-in-vectorized-code-with-many-constants/)
 - en: '*We at **Johnny’s Software Lab LLC** are experts in performance. If performance
     is in any way concern in your software project, feel free to [contact us](https://johnnysswlab.com/contact/).*'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在**Johnny’s Software Lab LLC**是性能专家。如果您的软件项目中有性能方面的任何问题，请随时[联系我们](https://johnnysswlab.com/contact/)。
 - en: 'Consider the following code that calculates *cosine* using numerical methods:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑以下计算*余弦*的数值方法代码：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
@@ -46,6 +54,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这段代码中，总共有六个常量：(1) 1. / (2. * M_PI)，(2) 0.25，(3) 16.0，(4) 0.5，(5) 0.225和(6)
+    1.0。在向量化此代码时，直接的方法是在循环外将常量存储到向量变量中：
 - en: '[PRE1]'
   id: totrans-split-10
   prefs: []
@@ -60,6 +70,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在许多情况下，这可能是一个好的方法，但并非所有情况都是如此。这种代码总共保留了六个寄存器来保存常量。在SSE/AVX上这可能是一个大问题，因为寄存器数量是16个。在NEON和AVX512上这个问题稍微小一些，因为寄存器数量是32个。但是，在许多科学应用程序中，具有许多常量的代码非常常见，因此常量的数量很容易超过可用寄存器的数量。
 - en: When the compiler doesn’t have enough registers to generate efficient assembly,
     it [spills registers to the stack](https://johnnysswlab.com/decreasing-the-number-of-memory-accesses-the-compilers-secret-life-2-2/)
     and later reloads the data to the registers when they are again needed. Spilling
@@ -68,6 +79,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 当编译器没有足够的寄存器生成高效的汇编时，会将寄存器[溢出到堆栈](https://johnnysswlab.com/decreasing-the-number-of-memory-accesses-the-compilers-secret-life-2-2/)，然后在再次需要时重新加载数据到寄存器。溢出可以在循环外完成，但重新加载需要在循环内完成。在我们的情况下，每次循环迭代都会重新加载常量。
 - en: With regards to reloading, reloading is a simple load instruction, but loads
     on AVX have a latency of 4 cycles, and similar number is for NEON. And constants
     are first candidates for the compiler to spill, since they are typically used
@@ -75,21 +87,25 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于重载，重载是一个简单的加载指令，但AVX上的加载延迟为4个周期，NEON上也是类似的。常量通常是编译器在每次循环迭代中首选溢出的候选项，因为它们通常仅在循环中使用一次或两次。
 - en: '*Like what you are reading? Follow us on [LinkedIn](https://www.linkedin.com/company/johnysswlab)
     , [Twitter](https://twitter.com/johnnysswlab) or [Mastodon](https://mastodon.online/@johnnysswlab)
     and get notified as soon as new content becomes available.'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: '*喜欢这篇文章吗？在[LinkedIn](https://www.linkedin.com/company/johnysswlab)，[Twitter](https://twitter.com/johnnysswlab)或[Mastodon](https://mastodon.online/@johnnysswlab)上关注我们，并在新内容推出时及时收到通知。'
 - en: Need help with software performance? [Contact us](https://johnnysswlab.com/contact/)!*
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要帮助优化软件性能？[联系我们](https://johnnysswlab.com/contact/)！
 - en: Avoiding Register Spills
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 避免寄存器溢出
 - en: Here we present a workaround on how to avoid register spills by decreasing the
     number of constants. The trick is to store constants in the vector register, but
     each lane should store a different constant. With this approach, you can rematerialize
@@ -99,6 +115,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里我们提出了一种方法来避免通过减少常量数量来减少寄存器溢出的方法。诀窍是将常量存储在向量寄存器中，但每个lane应存储不同的常量。采用这种方法，您可以比重新加载更快地在循环中重新生成常量。因此，根据我们之前的示例，我们将值tp存储在lane
+    0中，0.25存储在lane 1中，16.0存储在lane 2中，0.5存储在lane 3中。代码如下所示：
 - en: '[PRE2]'
   id: totrans-split-18
   prefs: []
