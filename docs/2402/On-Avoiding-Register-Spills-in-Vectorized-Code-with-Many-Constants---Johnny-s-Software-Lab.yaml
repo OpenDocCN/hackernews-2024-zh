@@ -38,6 +38,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'In this code, there is total of six constants: (1) 1\. / (2\. * M_PI), (2)
     0.25, (3) 16.0, (4) 0.5, (5) 0.225 and (6) 1.0\. When vectorizing this code, the
     straightforward approach is to store the constants to vector variables outside
@@ -49,6 +50,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In many cases this can be a good approach, but not in all of them. This kind
     of code reserves in total six registers to hold constants. On SSE/AVX this can
     be a big issue, since the number of registers is 16\. It is a bit less of a problem
@@ -101,6 +103,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We have stored constants like this, but most instructions don’t work with single
     lanes. We need to rematerialize the constants. By rematerializing, we mean loading
     the constant into all lanes of an available vector register to be used by subsequent
@@ -108,26 +111,31 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经像这样存储常数，但大多数指令不能处理单个轨道。我们需要重新材料化常数。通过重新材料化，我们的意思是将常数加载到可用矢量寄存器的所有轨道中，以供后续内在函数使用。
 - en: When in it comes to storing constants, notice that for AVX, the values are repeated,
     i.e. lane 0 and 4 have the same value, as well as lane 1 and 5, 2 and 6, and 3
     and 7\. We will explain later why this is the case.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在存储常数方面，注意对于 AVX，值是重复的，即轨道 0 和 4 有相同的值，轨道 1 和 5 也是如此，以此类推。我们稍后会解释这样做的原因。
 - en: Rematerialization on AVX
   id: totrans-split-21
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 在 AVX 上的材料化
 - en: 'On AVX, we use the fast `_mm256_shuffle_ps` intrinsic to rematerialize the
     constant, like this:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 AVX 上，我们使用快速的 `_mm256_shuffle_ps` 内在函数来材料化常数，就像这样：
 - en: '[PRE3]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Materialization of value in lane X is performed using `_mm256_shuffle_ps(constant,
     constant, _MM_SHUFFLE(X, X, X, X))`. You can also use `_mm256_permute_ps(constant,
     _MM_SHUFFLE(X, X, X, X)` intrinsic with the same effect. This intrinsic loads
@@ -137,6 +145,9 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `_mm256_shuffle_ps(constant, constant, _MM_SHUFFLE(X, X, X, X))` 材料化 X 轨道的值。您还可以使用具有相同效果的
+    `_mm256_permute_ps(constant, _MM_SHUFFLE(X, X, X, X)` 内在函数。这种内在函数将寄存器 `constant`
+    的轨道 X 加载到输出寄存器的所有轨道中。其延迟为 1 个周期，吞吐量为 0.5 个周期，比使用加载来重新材料化常数更快。
 - en: A question you might be asking yourselves is why don’t we store 8 different
     values instead of two pairs of identical four values. The reason is performance
     compromises in AVX. In AVX, there is a performance penalty if data is moved from
@@ -147,25 +158,31 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你们可能会问为什么我们不存储 8 个不同的值而是存储两对相同的四个值。原因在于 AVX 中的性能折衷。在 AVX 中，如果数据从 256 位寄存器的低半部分移动到高半部分，反之亦然，会产生性能损失。因此，我们有两个相同值的副本，一个在低
+    128 位部分，另一个在高 128 位部分。这就是为什么我们使用不跨越 128 位边界的内在函数。
 - en: Rematerialization on NEON
   id: totrans-split-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: NEON 上的材料化
 - en: 'On NEON, materialization is performed using `vdupq_laneq_f32` intrinsic like
     this:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 NEON 上，材料化使用 `vdupq_laneq_f32` 内在函数，像这样：
 - en: '[PRE4]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Rematerialization of lane X is performed using `vdupq_laneq_f32(constant, X)`.
     Again, this instruction has a lower latency than loading data from memory.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 重建 X 轨道的材料化使用 `vdupq_laneq_f32(constant, X)` 完成。再次，这条指令比从内存加载数据具有更低的延迟。
 - en: 'This code, however, is not optimal. On NEON, multiply (`vmul_XX`) and multiply-accumulate
     (`vmla_XX` and `vmls_XX`) operations have a scalar variant, which multiply lanes
     from register `a` with lane X from register `b`. So, instead of using `vdupq_laneq_f32`
@@ -174,20 +191,25 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这段代码并不是最优的。在 NEON 上，乘法 (`vmul_XX`) 和乘-累加 (`vmla_XX` 和 `vmls_XX`) 操作有一个标量变体，它们将寄存器
+    `a` 的轨道与寄存器 `b` 的轨道 X 相乘。因此，我们可以省略材料化并使用 `vmulq_laneq_f32`，像这样：
 - en: '[PRE5]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Intrinsic `vmulq_f32(x, c0, 0)` multiplies each lane of register `x` with lane
     0 from register `c0`.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 内在函数 `vmulq_f32(x, c0, 0)` 将寄存器 `x` 的每个轨道与寄存器 `c0` 的轨道 0 相乘。
 - en: Conclusion
   id: totrans-split-33
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: Simple codes will become a bit slower when using the above technique to reduce
     the number of needed registers, because rematerialization adds a small performance
     penalty. But, in case of complex loops, this approach yields better performance
@@ -195,6 +217,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用上述技术减少所需寄存器的简单代码会变得稍慢，因为材料化会增加一些性能开销。但是，在复杂循环的情况下，这种方法提供了更好的性能，因为材料化速度更快。
 - en: Being aware of constants and register spills is especially important if you
     are writing functions that accept and return vector arguments. In this case, the
     compiler will often inline the vector function, but code at the place of call
@@ -205,13 +228,16 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您正在编写接受和返回向量参数的函数，则特别需要注意常量和寄存器溢出情况。在这种情况下，编译器通常会内联向量函数，但调用处的代码可能相当复杂，导致编译器溢出寄存器。所述的技术将有助于降低寄存器压力，并允许编译器生成更有效的汇编代码。您可以选择查阅[编译器优化报告](https://johnnysswlab.com/loop-optimizations-interpreting-the-compiler-optimization-report/)，以确认是否确实发生了寄存器溢出。
 - en: '*Like what you are reading? Follow us on [LinkedIn](https://www.linkedin.com/company/johnysswlab)
     , [Twitter](https://twitter.com/johnnysswlab) or [Mastodon](https://mastodon.online/@johnnysswlab)
     and get notified as soon as new content becomes available.'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '*喜欢我们的内容吗？请在[LinkedIn](https://www.linkedin.com/company/johnysswlab)，[Twitter](https://twitter.com/johnnysswlab)或者[Mastodon](https://mastodon.online/@johnnysswlab)上关注我们，以便第一时间获取新内容通知。'
 - en: Need help with software performance? [Contact us](https://johnnysswlab.com/contact/)!*
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您需要软件性能方面的帮助，请[联系我们](https://johnnysswlab.com/contact/)！*
