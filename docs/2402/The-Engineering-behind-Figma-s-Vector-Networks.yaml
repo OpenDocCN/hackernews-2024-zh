@@ -2,41 +2,50 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:33:50'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日 14:33:50
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The Engineering behind Figma's Vector Networks
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Figma矢量网络背后的工程技术
 - en: 来源：[https://alexharri.com/blog/vector-networks](https://alexharri.com/blog/vector-networks)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://alexharri.com/blog/vector-networks](https://alexharri.com/blog/vector-networks)
 - en: <main class="css-fkkl8v">
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main class="css-fkkl8v">
 - en: The Engineering behind Figma's Vector Networks
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Figma矢量网络背后的工程技术
 - en: November 24, 2019
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2019年11月24日
 - en: Adobe Illustrator introduced the pen tool back in [1987](https://www.youtube.com/watch?v=sT8Y7o-zsVw)
     as a tool for creating and modifying paths. Since then the pen tool has become
     incredibly widespread, so much so that is has become the de facto icon of the
@@ -44,22 +53,26 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Adobe Illustrator在[1987年](https://www.youtube.com/watch?v=sT8Y7o-zsVw)引入了画笔工具，作为创建和修改路径的工具。自那时以来，画笔工具已经广泛使用，以至于它已经成为图形设计行业的事实标志。
 - en: The pen tool's functionality hasn't changed significantly in the 30 years since
     its introduction. Just click and drag to create smooth curves. Designers have
     learned to work with it, and around its idiosyncrasies.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 自其引入以来，画笔工具的功能在过去30年里并没有发生显著变化。只需点击和拖动即可创建平滑曲线。设计师们已经学会了如何使用它，并且在它的特殊性周围进行了工作。
 - en: The pen tool
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 画笔工具
 - en: But Figma felt like they could improve some aspects of how the pen tool worked,
     so they had a go at redesigning it. Instead of it being used to work with traditional
     paths, they improved the pen tool by creating what they call Vector Networks.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是Figma觉得他们可以改进一些关于画笔工具如何工作的方面，所以他们试图重新设计它。他们改进了画笔工具，不再仅仅用于处理传统路径，而是创建了他们称之为矢量网络的工具。
 - en: In this post we will go through what Vector Networks are and what problems they
     try to solve. After we've defined what Vector Networks are, we will take a look
     at some of the engineering challenges you would face if you were to take a stab
@@ -67,6 +80,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们将讨论什么是矢量网络以及它们试图解决的问题。在定义了矢量网络之后，我们将看看如果要实现它们，你可能面临的一些工程挑战。
 - en: This post can be thought of as an introduction to a really interesting problem
     space, and as a resource for people interesting in making use of some aspects
     of Vector Networks for future applications. I hope it succeeds in providing value
@@ -75,219 +89,266 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章可以被看作是一个对非常有趣的问题空间的介绍，同时也是对那些有兴趣利用矢量网络部分功能进行未来应用的人的资源。我希望它能成功地为那些初次接触新概念和想法的开发者，以及希望更多了解他们熟悉和热爱工具的设计师提供价值。
 - en: I will start off by laying out the core concepts behind the pen tool, and from
     there we will move onto Figma's Vector Networks.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将首先阐明画笔工具背后的核心概念，然后我们将转向Figma的矢量网络。
 - en: Paths
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 路径
 - en: The pen tool is used to create and manipulate paths.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 画笔工具用于创建和操作路径。
 - en: If you've every worked with graphics software like [Illustrator](https://www.adobe.com/products/illustrator.html)
     before, you've worked with paths. Paths are a series of lines and curves that
     may or may not form a loop.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你以前使用过像[Illustrator](https://www.adobe.com/products/illustrator.html)这样的图形软件，你就曾经使用过路径。路径是一系列可能形成或不形成循环的线条和曲线。
 - en: Some paths
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些路径
 - en: The path to the left loops, while the path to the right doesn't. Both of these
     are valid paths.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 左侧的路径是一个环路，而右侧的路径不是。这两者都是有效的路径。
 - en: The main characteristic of paths is that they form a single continuous unbroken
     chain. This means that each node can only be connected to one or two other nodes.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 路径的主要特征是它们形成一个单一连续的不间断链条。这意味着每个节点只能连接到一个或两个其他节点。
 - en: Not valid paths
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 无效的路径
 - en: However, you could construct these shapes from multiple paths if you position
     them correctly together.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，如果你将它们正确地放置在一起，你可以用多条路径构建这些形状。
 - en: Multiple paths are used to create more complex shapes
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用多条路径创建更复杂的形状
 - en: From a combination of paths, you can create any shape imaginable.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过组合多条路径，你可以创建任何想象得到的形状。
 - en: This beer glass, for example, is just a combination of five different paths
     positioned and scaled a certain way.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，这个啤酒杯只是五条不同路径的组合，经过特定的位置和缩放。
 - en: The building blocks of paths
   id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 路径的基本组成部分
 - en: A path is made up of two things, points and lines.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 一条路径由两个东西组成，即点和线。
 - en: Points and lines
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 点和线
 - en: The points are known as **nodes** (or vertices) and the lines are called **edges**.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 点被称为**节点**（或顶点），而线被称为**边**。
 - en: Together, they make a path
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 它们一起形成一条路径
 - en: Any path can be described as a list of nodes and edges.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何路径都可以被描述为一系列节点和边。
 - en: This path can be described as the series of nodes `(0, 1, 2, 3, 4)`. It could
     also be thought of as the series of the edges that composed it. That list of edges
     would be `(0, 1)`, `(1, 2)`, `(2, 3)`, `(3, 4)`, `(4, 0)`.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这条路径可以描述为节点序列`(0, 1, 2, 3, 4)`。它也可以被看作是构成它的边的序列。边的列表将是`(0, 1)`，`(1, 2)`，`(2,
+    3)`，`(3, 4)`，`(4, 0)`。
 - en: 'You can think of this like the [dot to dot puzzles](https://www.google.com/search?q=dot+to+dot+for+kids&tbm=isch)
     that you used to do as a kid: Draw the edges of the path in the order that the
     points lay out.'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以将其视为小时候玩的[连线游戏](https://www.google.com/search?q=dot+to+dot+for+kids&tbm=isch)：按照点的顺序绘制路径的边缘。
 - en: But instead of a kid drawing lines between numbered points on a paper, a cold
     calculating machine does it along the cartesian coordinate system.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是与孩童在纸上编号点之间画线不同，这是一台冷酷的计算机在笛卡尔坐标系上进行计算。
 - en: Edges
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 边
 - en: An edge is a connection between a pair of nodes. Visually, edges are a line
     from node `a` to node `b`.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 边是一对节点之间的连接。在视觉上，边是从节点`a`到节点`b`的一条线。
 - en: But that line can be drawn in a lot of different ways. How do you describe those
     different types of lines?
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是这条线可以用很多种不同的方式绘制。如何描述这些不同类型的线呢？
 - en: Edges fall into two categories, straight and curvy.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 边可以分为两类，直线和曲线。
 - en: Straight edges are as simple as they seem, just a line from `a` to `b`. But
     how are those curvy edges defined?
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 直边看起来很简单，只是从`a`到`b`的一条直线。但是曲边是如何定义的呢？
 - en: Bezier curves
   id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 贝塞尔曲线
 - en: Curvy edges are [bezier curves](https://en.wikipedia.org/wiki/B%C3%A9zier_curve).
     Bezier curves are a special type of curve defined by four points.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 曲边是[贝塞尔曲线](https://en.wikipedia.org/wiki/B%C3%A9zier_curve)。贝塞尔曲线是由四个点定义的一种特殊类型的曲线。
 - en: The positions of the two nodes in our edge make up the start and end points
     of the curve. Each of the two nodes has a *control point*.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们边的两个节点的位置构成了曲线的起点和终点。这两个节点各有一个*控制点*。
 - en: In most applications, these control points are shown as *handles* that extend
     from their respective node. These handles are used to control the shape of the
     curve.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在大多数应用程序中，这些控制点显示为从各自节点延伸出的*把手*。这些把手用于控制曲线的形状。
 - en: Bezier curves can be chained to make more complex shapes that a single curve
     can't draw on its own. They can also be combined with straight lines to make some
     cool designs.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 贝塞尔曲线可以链接在一起以创建单个曲线无法绘制的更复杂的形状。它们还可以与直线组合以创造一些酷炫的设计。
 - en: But what exactly are the handles doing? How do the handles tell the computer
     to draw the curve like it does?
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这些把手具体在做什么呢？它们如何告诉计算机绘制曲线的方式？
 - en: Computers draw curves by splitting them into straight lines and drawing the
     individual lines.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算机通过将曲线分割成直线并绘制各个线段来绘制曲线。
 - en: The more lines you split a curve into, the smoother the curve becomes.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将曲线分割为更多线段，曲线将变得更加平滑。
 - en: So to draw the curve we need to know how to get the different points that make
     up the curve. If we compute enough of them, we get a smooth curve.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，要绘制曲线，我们需要知道如何获得组成曲线的不同点。如果我们计算足够多的点，我们就能得到一条平滑的曲线。
 - en: Computing a point on a bezier curve
   id: totrans-split-50
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 计算贝塞尔曲线上的一个点
 - en: Let's compute the point at 25% point of the curve. We can start by connecting
     the control points with a third blue line.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们计算曲线的25%点。我们可以通过连接控制点绘制第三条蓝线来开始。
 - en: Then for each blue line, we draw a blue dot at the 25% point of the line.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后对于每条蓝线，我们在该线的25%点处画一个蓝点。
 - en: Next, draw two green lines between the three blue dots.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，在三个蓝点之间绘制两条绿线。
 - en: And we repeat the same step as we did with the blue dots. Draw green points
     at the 25% points of the green lines.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们重复与蓝点相同的步骤。在绿线的25%点处画绿点。
 - en: And then one more red line between the newly created green points.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后再加一条红线连接新创建的绿点。
 - en: Then we add a red point at the 25% point of the red line.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们在红线的25%点处添加一个红点。
 - en: And just like that, we've computed the point at the 25% point of the curve.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这样，我们计算出了曲线25%点的位置。
 - en: From now on we'll refer to points on curves through a `t` value, where `t` is
     a number from `0` to `1`. In the above example, the point would be at `t=0.25`
     (25%).
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 从现在开始，我们将通过`t`值来引用曲线上的点，其中`t`是从`0`到`1`的数字。在上面的例子中，点将在`t=0.25`（25%）处。
 - en: t=0.25, t=0.5 and t=0.75
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: t=0.25、t=0.5和t=0.75
 - en: This way of computing the point at `t` is called [De Casteljau's algorithm](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm)
     and can also be used to subdivide a bezier curve. Using the points we created
     along the way, we can also subdivide the bezier curve into two smaller bezier
@@ -295,12 +356,14 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算参数`t`处的点的这种方式称为[De Casteljau算法](https://en.wikipedia.org/wiki/De_Casteljau%27s_algorithm)，也可以用于细分贝塞尔曲线。使用我们沿途创建的点，我们还可以将贝塞尔曲线分成两个较小的贝塞尔曲线。
 - en: Bezier curves are pretty amazing things. Shaping the curve by adjusting the
     handles feels surprisingly natural, and chaining them together allows you to create
     detailed and complex shapes.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 贝塞尔曲线是非常神奇的东西。通过调整手柄来塑造曲线感觉非常自然，将它们链接在一起可以创建详细和复杂的形状。
 - en: And for computers, they're stable and inexpensive to compute. For this reason
     they're used for everything from [vector graphics](https://helpx.adobe.com/illustrator/using/drawing-pen-curvature-or-pencil.html#draw_curves_with_the_pen_tool)
     to [animation curves](https://www.austinsaylor.com/blog/2015/3/20/4-after-effects-graph-editor-basics-you-need-to-know)
@@ -308,29 +371,35 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于计算机而言，它们稳定且计算成本低廉。因此，它们被用于从[矢量图形](https://helpx.adobe.com/illustrator/using/drawing-pen-curvature-or-pencil.html#draw_curves_with_the_pen_tool)到[动画曲线](https://www.austinsaylor.com/blog/2015/3/20/4-after-effects-graph-editor-basics-you-need-to-know)和[汽车车身](https://en.wikipedia.org/wiki/Pierre_B%C3%A9zier#B%C3%A9zier_curve)的各种用途。
 - en: You can see an interactive demo of bezier curves at [Jason Davies' site](https://www.jasondavies.com/animated-bezier/).
     It's fascinating to watch a series of straight lines trace out a smooth curve.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在[Jason Davies的网站](https://www.jasondavies.com/animated-bezier/)看到贝塞尔曲线的交互演示。看着一系列直线追踪出平滑的曲线是非常迷人的。
 - en: From [https://jasondavies.com/animated-bezier](https://jasondavies.com/animated-bezier)
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 来自[https://jasondavies.com/animated-bezier](https://jasondavies.com/animated-bezier)
 - en: The creative constraints of paths
   id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 路径的创造性限制
 - en: Earlier in this post, paths were defined as a continuous series of lines and
     curves that may or may not form a loop.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文的早些时候，路径被定义为一系列可能形成环路的直线和曲线。
 - en: The fact that paths are a single continuous chain is a pretty big limitation.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 路径是单一连续链的事实是一个相当大的限制。
 - en: It means three way intersections are not possible using a single path. To create
     a three way intersection, two or more paths will have to be used. This means dealing
     with positioning and grouping different paths together. It also means that changes
@@ -338,6 +407,7 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着使用单一路径无法实现三路交叉。要创建三路交叉，必须使用两个或更多路径。这意味着处理不同路径的定位和分组。这也意味着对单一路径的更改可能会导致多个其他路径的更改。
 - en: But that's simply the routine. Seasoned designers know how paths behave, they
     can plan around it without really thinking about it. For a static design it doesn't
     really matter how many paths and layers you have to create if the piece is planned
@@ -345,40 +415,48 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 但那只是例行公事。经验丰富的设计师知道路径的行为，他们可以事先进行合理规划，而不必真正考虑它。对于静态设计，如果设计得当，创建多少路径和图层并不重要。
 - en: But for some situations the constraints that paths impose cause a lot of friction.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 但对于某些情况，路径所施加的约束会导致很多摩擦。
 - en: Vector Networks
   id: totrans-split-71
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 矢量网络
 - en: In 2016, Figma [introduced Vector Networks](https://www.figma.com/blog/introducing-vector-networks/).
     They lift the “single continuous” limitation by allowing any two nodes to be joined
     together without restrictions.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 2016年，Figma [推出了矢量网络](https://www.figma.com/blog/introducing-vector-networks/)。他们通过允许任意两个节点无限制地连接来解除了“单一连续”的限制。
 - en: “A vector network improves on the path model by allowing lines and curves between
     any two points instead of requiring that they all join up to form a single chain.”
   id: totrans-split-73
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “矢量网络通过允许任意两点之间的线条和曲线，改进了路径模型，而不要求它们全部连接成单一链。”
 - en: 'Source: [https://www.figma.com/blog/introducing-vector-networks/](https://www.figma.com/blog/introducing-vector-networks/)'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 来源：[https://www.figma.com/blog/introducing-vector-networks/](https://www.figma.com/blog/introducing-vector-networks/)
 - en: The cube is the quintessential example for demonstrating Vector Networks.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 立方体是展示矢量网络的典型例子。
 - en: Via traditional paths, you would have to create at minimum 3 different paths
     to describe this shape.
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过传统路径，您至少需要创建3条不同的路径来描述此形状。
 - en: This creates a lot of friction for a seemingly simple and common shape. To modify
     the cube, you would have to modify two or three different paths. But with Vector
     Networks you can simply grab an edge and move it around, and the shape behaves
@@ -526,141 +604,172 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 您应该能够计算出 24 个不同的三角形，具体取决于您选择包括哪些区域。
 - en: But that's not what we want. What we need to find are the 16 small areas.
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这不是我们想要的。我们需要找到的是 16 个小区域。
 - en: We need a way to find the *“small cycles”* in the graph.
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要一种方法来找到图中的*“小循环”*。
 - en: Minimal cycle basis
   id: totrans-split-109
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 最小循环基础
 - en: 'This [paper on Minimal Cycle Basis](https://www.geometrictools.com/Documentation/MinimalCycleBasis.pdf)
     is a bit less dense than most others academic papers (and it has pictures!). Its
     goal is:'
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇关于[最小循环基础](https://www.geometrictools.com/Documentation/MinimalCycleBasis.pdf)的论文比大多数其他学术论文少了一些内容（而且还有图片！）。其目标是：
 - en: …to compute a minimal number of cycles that form a cycle basis for the graph.
   id: totrans-split-111
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: …来计算形成图形循环基础的最小循环数。
 - en: What does “Minimal Cycle Basis” mean?
   id: totrans-split-112
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: “最小循环基础”是什么意思？
 - en: It's just a fancy way to refer to all of the “small areas” of a graph. You can
     think of these as the “visually distinct” areas of a graph. Enclosed areas.
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是一种指代图形的“小区域”的花哨方式。您可以把它们想象成图形的“视觉上不同”的区域。封闭区域。
 - en: Left or right?
   id: totrans-split-114
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 左边还是右边？
 - en: The main tool for finding the “minimal cycle basis” will be determining which
     edge to choose based on left- or rightness.
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到“最小循环基础”的主要工具将确定基于左或右选择哪条边。
 - en: Should we go to `a` or `b`?
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该去 `a` 还是 `b`？
 - en: We'll think of this in terms of clockwise and counter clockwise.
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将按照顺时针和逆时针来思考。
 - en: '`curr` for current, `prev` for previous'
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '`curr` 表示当前，`prev` 表示前一个'
 - en: When traveling left, we choose the counter clockwise most edge (CCW) relative
     to the previous one.
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 当向左行进时，我们选择相对于前一个边最逆时针的边（CCW）。
 - en: CCW
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 逆时针
 - en: When traveling right, we choose the clockwise most edge (CW) relative to the
     previous one.
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 在向右行进时，我们选择相对于前一个边最顺时针的边（CW）。
 - en: CW
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺时针
 - en: The algorithm
   id: totrans-split-123
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 算法
 - en: We will be finding the minimal cycle basis for the graph we saw earlier.
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将找到之前看到的图的最小循环基础。
 - en: The first step is choosing the leftmost node in the graph.
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一步是选择图中最左边的节点。
 - en: When traveling from the first node, we want to go clockwise (CW). But relative
     to which edge?
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 当从第一个节点出发时，我们希望顺时针走（CW）。但是相对于哪条边呢？
 - en: For the first node, we imagine that the previous edge is “below” the current
     one. We then pick the CW edge relative to that.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于第一个节点，我们想象前一个边“在”当前边的下方。然后我们选择相对于那个边的顺时针边。
 - en: In this case `a` is more CW relative to `prev` than `b`, so we'll walk to `a`.
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，相对于 `prev`，`a` 更顺时针，所以我们将走向 `a`。
 - en: After the first walk, we start picking the CCW edge.
   id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一次行走后，我们开始选择逆时针边。
 - en: In this case, that's `b`. We repeat the previous step and keep selecting the
     CCW edge until we reach the original node.
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，那是 `b`。我们重复之前的步骤，并继续选择逆时针边，直到我们达到原始节点。
 - en: When we reach the original node again, a cycle is found.
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们再次到达原始节点时，就找到了一个循环。
 - en: We now have the first small cycle in the graph.
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们在图中有了第一个小循环。
 - en: When a cycle has been found, the first edge of the cycle is then removed from
     the graph.
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到循环后，从图中移除循环的第一条边。
 - en: The first edge, `(n0 n1)`, is removed
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一条边 `(n0 n1)` 被移除了
 - en: Then, the *filaments* of the first two nodes in the cycle are removed.
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，去除循环中前两个节点的*纤维*。
 - en: In this case, we only have a single filament
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，我们只有一个单一的纤维
 - en: Filaments are nodes that only have one adjacent edge. Think of these as dead
     ends. When a filament is found, we also check whether or not the single adjacent
     node is a filament. This ensures that the first node of the next cycle has two
@@ -668,33 +777,40 @@
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 纤维是只有一个相邻边的节点。把它们想象成是死胡同。找到一个纤维时，我们还会检查单个相邻节点是否也是纤维。这确保了下一个循环的第一个节点有两个相邻节点。稍后我们会看到一个例子。
 - en: Now we pick the first node in the next cycle. In our graph, there are two equally
     left most nodes.
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们选择下一个循环中的第一个节点。在我们的图中，有两个同样左边的节点。
 - en: When this happens, we pick the bottom node, `n1` in this case.
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 当这种情况发生时，我们选择底部节点，这里是 `n1`。
 - en: We then repeat the process from before. CW from the bottom for the first node,
     then CCW from the previous node until we find the first node.
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们从之前的过程中重复。从底部的第一个节点顺时针，然后从前一个节点逆时针，直到找到第一个节点。
 - en: We find the cycle `(1, 2, 3)`.
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们找到了循环 `(1, 2, 3)`。
 - en: Now we have the cycles `(0, 1, 3, 4, 5, 6, 7)` and `(1, 2, 3)`.
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有循环 `(0, 1, 3, 4, 5, 6, 7)` 和 `(1, 2, 3)`。
 - en: Then we remove the first edge of the cycle and filaments like before. We start
     by removing the filaments connected to the first two nodes of the cycle.
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们去除循环的第一条边和之前的纤维。我们从去除与循环的前两个节点相连的纤维开始。
 - en: We keep going until there aren't any filaments left.
   id: totrans-split-144
   prefs: []
@@ -1030,124 +1146,150 @@
   id: totrans-split-215
   prefs: []
   type: TYPE_NORMAL
+  zh: 应该填充吗？当然，但如果我们移动线条，而不是上下移动，那么当线条不再分隔两个部分时，矩形应该填充还是清空？
 - en: Expanding the graph
   id: totrans-split-216
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扩展图形
 - en: This is how I believe Figma solves this problem. I call it “expanding the graph”,
     but the engineers at Figma probably use a different vocabulary to describe it.
   id: totrans-split-217
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我认为 Figma 解决这个问题的方式。我称之为“扩展图形”，但 Figma 的工程师可能使用不同的术语来描述它。
 - en: Expanding the graph means taking each intersection, creating a node at the point
     of the intersections, and then splitting the edges that intersected each other
     at that point.
   id: totrans-split-218
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩展图形意味着获取每个交点，创建一个节点在交点处，然后拆分在该点相交的边。
 - en: 'This is the original graph:'
   id: totrans-split-219
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是原始图形：
 - en: 'The edge `(0, 2)` intersects the edge `(1, 3)`. When expanded, the graph would
     look like so:'
   id: totrans-split-220
   prefs: []
   type: TYPE_NORMAL
+  zh: 边`(0, 2)`与边`(1, 3)`相交。在扩展后，图形将如下所示：
 - en: A new node, `5` would be added at the point of the intersection.
   id: totrans-split-221
   prefs: []
   type: TYPE_NORMAL
+  zh: 新节点`5`将被添加到交点处。
 - en: The edges `(0, 2)` and `(1, 3)` have been removed and replaced by the edges
     `(0, 5)`, `(5, 2)`, `(1, 5)`, and `(5, 3)`.
   id: totrans-split-222
   prefs: []
   type: TYPE_NORMAL
+  zh: 边`(0, 2)`和`(1, 3)`已被移除，并被边`(0, 5)`、`(5, 2)`、`(1, 5)`和`(5, 3)`替换。
 - en: The structure of the graph has been changed
   id: totrans-split-223
   prefs: []
   type: TYPE_NORMAL
+  zh: 图的结构已经改变了
 - en: Here's a graphic that should illustrate this a bit more clearly.
   id: totrans-split-224
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个示意图，应该更清晰地说明问题。
 - en: Expanding an intersection
   id: totrans-split-225
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩展交点
 - en: Multiple intersections
   id: totrans-split-226
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 多个交点
 - en: These steps are pretty simple for line edges with a single intersections. But
     each edge can have multiple other edges intersecting it, and two cubic bezier
     curves can create 9 intersections.
   id: totrans-split-227
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于具有单个交点的线边来说，这些步骤相当简单。但是每条边都可以有多个其他边与其相交，两条三次贝塞尔曲线可以创建9个交点。
 - en: This complicates things a bit. Let's take a look at a bezier-line intersection.
   id: totrans-split-228
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使事情变得有些复杂。让我们看看贝塞尔线交点的情况。
 - en: The best way to go about this is to treat the intersections for an edge as separate
     from the edge that intersected it.
   id: totrans-split-229
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理这个问题的最佳方法是将边的交点视为与其相交的边的独立部分。
 - en: The `t` values go from 0 at the start of the curve to 1 at the end of it
   id: totrans-split-230
   prefs: []
   type: TYPE_NORMAL
+  zh: '`t`值从曲线的起点0到终点1'
 - en: The line has two intersections at `t = 0.3` and `t = 0.7`. The bezier has two
     intersections, but at `t = 0.25` and `t = 0.75`.
   id: totrans-split-231
   prefs: []
   type: TYPE_NORMAL
+  zh: 线条在`t = 0.3`和`t = 0.7`处有两个交点。贝塞尔曲线有两个交点，但在`t = 0.25`和`t = 0.75`处。
 - en: Before we move on with this example, I want to introduce a different way of
     thinking about edges since I believe it will help with the overall understanding
     of the problem.
   id: totrans-split-232
   prefs: []
   type: TYPE_NORMAL
+  zh: 在继续这个示例之前，我想引入另一种边的思考方式，因为我相信这将有助于更好地理解问题。
 - en: Duplicate edges
   id: totrans-split-233
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 重复边
 - en: Two nodes may be connected multiple times by different edges.
   id: totrans-split-234
   prefs: []
   type: TYPE_NORMAL
+  zh: 两个节点可以通过不同的边连接多次。
 - en: In this graph, an edge represented by the node pair `(2, 3)` could represent
     either of the two edges that connect `n2` and `n3`.
   id: totrans-split-235
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个图中，由节点对`(2, 3)`表示的边可以表示连接`n2`和`n3`的两条边中的任意一条。
 - en: To get around this problem, we will give each edge a unique `id`.
   id: totrans-split-236
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，我们将为每条边分配一个唯一的`id`。
 - en: For most future examples, I will still refer to edges by the nodes they connect
     since I feel it's easier to think about. But for the next example it's better
     to separate nodes and edges.
   id: totrans-split-237
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于大多数未来的示例，我仍然会根据它们连接的节点来引用边，因为我觉得这样更容易理解。但对于下一个示例，最好分开节点和边。
 - en: Intersection map
   id: totrans-split-238
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 交点映射
 - en: 'We can structure the data for the intersections of the edges like so:'
   id: totrans-split-239
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以按以下方式组织边的交点数据：
 - en: Creating nodes at the intersection points of edges
   id: totrans-split-240
   prefs: []
   type: TYPE_NORMAL
+  zh: 在边的交点处创建节点
 - en: When we encounter an intersection, we create a node whose position is at the
     intersection. We then add intersections to an *intersection map* that will contain
     the intersections for each edge with a corresponding `t` value and a `nodeId`.
@@ -1155,6 +1297,7 @@
   id: totrans-split-241
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们遇到交点时，我们创建一个节点，其位置位于交点处。然后我们将交点添加到一个*交点映射*中，该映射将包含每条边的交点，对应一个`t`值和一个`nodeId`。这些交点按`t`值排序。
 - en: For the intersection with the lowest `t` value, we create an edge with the first
     *edge part* having the `nodeId` of the first edge part of the original edge. The
     second edge part should contain the `nodeId` of the intersection. This creates
@@ -1162,42 +1305,52 @@
   id: totrans-split-242
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于具有最低`t`值的交点，我们创建一个边，第一个*边部分*具有原始边的第一个边部分的`nodeId`。第二个边部分应包含交点的`nodeId`。这样创建了边`(2,
+    4)`。
 - en: Subsequent edges will have the first edge part's `nodeId` be the `nodeId` of
     the previous intersection and the second `nodeId` be the `nodeId` of the current
     intersection. In this example, that edge is `(4, 5)`.
   id: totrans-split-243
   prefs: []
   type: TYPE_NORMAL
+  zh: 后续边将使第一个边部分的`nodeId`成为前一个交点的`nodeId`，第二个`nodeId`成为当前交点的`nodeId`。在此示例中，该边是`(4,
+    5)`。
 - en: One additional edge will be created for each edge with any intersections.
   id: totrans-split-244
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于每条具有任何交点的边，将创建一个额外的边。
 - en: The first edge part's `nodeId` will be the `nodeId` of the last intersection
     and the second edge part's `nodeId` will be the `nodeId` of the second edge part
     of the original edge.
   id: totrans-split-245
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个边部分的`nodeId`将是最后一个交点的`nodeId`，第二个边部分的`nodeId`将是原始边的第二个边部分的`nodeId`。
 - en: This was a bit of a mouthful, so hopefully this graphic helps a bit with understanding
     that alphabet soup.
   id: totrans-split-246
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有点啰嗦，希望这张图有助于更好地理解那些字母串。
 - en: Separating the intersections of an edge from the edges that created those intersections
     makes it easier to think about. It alleviates some of the complexity that might
     arise from multiple edges intersecting with each other.
   id: totrans-split-247
   prefs: []
   type: TYPE_NORMAL
+  zh: 将边的交点与创建这些交点的边分开，使得思考变得更容易。这减轻了多个边相互交叉可能引起的复杂性。
 - en: Self-intersection
   id: totrans-split-248
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 自相交。
 - en: Cubic beziers can self-intersect.
   id: totrans-split-249
   prefs: []
   type: TYPE_NORMAL
+  zh: 三次贝塞尔曲线可以自相交。
 - en: This, unfortunately, means that every single cubic bezier edge has to be checked
     for self-intersection. It's an interesting problem that involves finding the two
     different `t` values that the bezier intersects itself at, but I won't be covering
@@ -1205,121 +1358,147 @@
   id: totrans-split-250
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，这意味着必须检查每一条三次贝塞尔边是否自相交。这是一个涉及查找贝塞尔曲线在哪两个不同的`t`值处相交的有趣问题，但我不会在这里详细介绍如何找到这些值。
 - en: 'Once you have the `t` values, a self-intersecting bezier can be expanded like
     so:'
   id: totrans-split-251
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦您有了`t`值，自相交贝塞尔曲线可以扩展如下：
 - en: The blue node should be invisible to the user
   id: totrans-split-252
   prefs: []
   type: TYPE_NORMAL
+  zh: 蓝色节点应对用户不可见。
 - en: We insert `n3` since having a node with an edge that has itself on both ends
     of the edge is problematic, but it should be hidden from the user.
   id: totrans-split-253
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们插入`n3`，因为具有边界的节点，在边界的两端都有自身的边界是有问题的，但应该对用户隐藏。
 - en: Intersecting the loop of a self-intersecting bezier
   id: totrans-split-254
   prefs: []
   type: TYPE_NORMAL
+  zh: 交错自相交贝塞尔的环。
 - en: Removing n3 at the first opportunity
   id: totrans-split-255
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一次机会时移除`n3`。
 - en: Curvy edges
   id: totrans-split-256
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 弯曲的边。
 - en: Earlier we covered the CW - CCW graph traversal algorithm to find the minimal
     cycle basis (small areas).
   id: totrans-split-257
   prefs: []
   type: TYPE_NORMAL
+  zh: 早些时候我们讨论了CW-CCW图遍历算法，以找到最小循环基（小区域）。
 - en: Finding the better (counter clockwise most) point adjacent to `curr`
   id: totrans-split-258
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到与`curr`相邻的更好的（逆时针最多的）点。
 - en: But the algorithm described in the paper was designed to work with nodes connected
     by straight lines that don't intersect. Introducing edges defined by cubic beziers
     introduces significant complexity.
   id: totrans-split-259
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是论文中描述的算法是设计用来处理由直线连接的不相交节点的。引入由三次贝塞尔定义的边增加了显著的复杂性。
 - en: Which edge to choose, blue or green?
   id: totrans-split-260
   prefs: []
   type: TYPE_NORMAL
+  zh: 选择哪条边，蓝色还是绿色？
 - en: In the example above, we can find out that the blue edge is better than the
     green one by using the determinant. We are stilling defining better to mean the
     CCW most edge.
   id: totrans-split-261
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的例子中，我们可以通过使用行列式找出蓝色边优于绿色边的信息。我们仍在定义更好来表示逆时针最多的边。
 - en: When working with cubic bezier curves, the naive solution would be to just convert
     the bezier to a line defined by the points at the start and end of the curve.
   id: totrans-split-262
   prefs: []
   type: TYPE_NORMAL
+  zh: 当处理三次贝塞尔曲线时，天真的解决方案是将贝塞尔曲线转换为由曲线起始点和结束点定义的线。
 - en: But that idea breaks down as soon as one edge curves over the other.
   id: totrans-split-263
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是当一个边曲线超过另一个边时，这个想法就会崩溃。
 - en: Oops
   id: totrans-split-264
   prefs: []
   type: TYPE_NORMAL
+  zh: 糟糕
 - en: Let's take a fresh look at a bezier curves and try to work from there.
   id: totrans-split-265
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们重新审视贝塞尔曲线并试着从那里工作。
 - en: Looking at this, we notice that the tangent at the start of the curve, `n0`,
     is parallel to the line from `n0` to `cp0`. So to get the direction at the start
     of the edge we can use the line `(n0, cp0)`.
   id: totrans-split-266
   prefs: []
   type: TYPE_NORMAL
+  zh: 观察到曲线起始处的切线`n0`与从`n0`到`cp0`的线平行。因此，为了得到边开始处的方向，我们可以使用线`(n0, cp0)`。
 - en: For clarity, the start of our edge, `n0`, is the same node as `curr`.
   id: totrans-split-267
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了清晰起见，我们边的开始`n0`与`curr`相同。
 - en: So by converting edges defined by cubic beziers into a line defined by `(n0,
     cp0)`, we get the *initial* angle of the curve.
   id: totrans-split-268
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，通过将由三次贝塞尔定义的边转换为由`(n0, cp0)`定义的线，我们得到曲线的*初始*角度。
 - en: This seems like a good solution when looking at the “curve around” case.
   id: totrans-split-269
   prefs: []
   type: TYPE_NORMAL
+  zh: 当看到“曲线周围”的情况时，这似乎是一个不错的解决方案。
 - en: Looks like we've solved the problem. Right?
   id: totrans-split-270
   prefs: []
   type: TYPE_NORMAL
+  zh: 看起来我们已经解决了这个问题。对吧？
 - en: No intersections
   id: totrans-split-271
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 没有交点。
 - en: Before we move on to further edge cases, it helps to understand that any solutions
     assume that no two edges may intersect when deciding which edge to travel.
   id: totrans-split-272
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们继续研究更多边缘情况之前，理解任何解决方案都假设在决定要遍历的边缘时不会有两条边相交是有帮助的。
 - en: This is not allowed
   id: totrans-split-273
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是不允许的
 - en: The edges of the graph we're traversing must not have any intersections when
     we compute the cycles (minimal cycle basis) of the graph.
   id: totrans-split-274
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们遍历的图的边缘在计算图的循环（最小循环基础）时不能有任何交点。
 - en: We can only operate on an *expanded graph*.
   id: totrans-split-275
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只能在*扩展的图*上操作。
 - en: Like we covered earlier, an expanded graph is a graph that has replaced all
     intersections with new nodes and edges. So if the original, user-defined graph
     has any intersections, they would have to be expanded before we can find the graph's
@@ -1327,151 +1506,184 @@
   id: totrans-split-276
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像我们前面讨论的那样，扩展图是一个用新节点和边替换所有交点的图。因此，如果原始的用户定义图有任何交点，它们必须在我们找到图的循环之前扩展。
 - en: The same edges as above, but expanded
   id: totrans-split-277
   prefs: []
   type: TYPE_NORMAL
+  zh: 与上述相同的边缘，但扩展了
 - en: Parallel edges
   id: totrans-split-278
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 平行边缘
 - en: The next edge case is two edges being parallel (pointing in the same direction).
   id: totrans-split-279
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个边缘情况是两条边平行（指向相同方向）。
 - en: If the lines go in the same direction, determining which is better is impossible
     without more information.
   id: totrans-split-280
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果线条方向相同，没有更多信息的情况下确定哪一个更好是不可能的。
 - en: Here are a few possible solutions for the cases where the control points of
     the curves are parallel.
   id: totrans-split-281
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有几种可能的解决方案，控制点为平行的情况。
 - en: Point at `t`
   id: totrans-split-282
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 在`t`处的点
 - en: What if we just take the point on the curve at, for example, `t = 0.1`?
   id: totrans-split-283
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们只是在曲线上取例如`t = 0.1`的点会怎样呢？
 - en: This produces the correct result for curves of a similar length, but we can
     easily break this with one curve being significantly bigger than the other.
   id: totrans-split-284
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对于长度相似的曲线产生了正确的结果，但如果一条曲线明显比另一条长，我们很容易就能打破这个结果。
 - en: This is effectively the same problem as the “curve around” case we saw earlier.
   id: totrans-split-285
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与我们之前看到的“曲线环绕”情况实际上是同一个问题。
 - en: Point at length
   id: totrans-split-286
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 在长度处的点
 - en: Instead of taking a point at a fixed `t` value, we could take a point at some
     length along the curve. The length would be determined by some point on the smaller
     curve, e.g. at `t=0.1`.
   id: totrans-split-287
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以考虑在曲线上某个长度处取一个固定`t`值的点。长度由较小曲线上的某点决定，例如在`t=0.1`处。
 - en: I have not tried implementing this since I have another working solution, but
     this could possibly be a viable and performant solution if it works for all edge
     cases.
   id: totrans-split-288
   prefs: []
   type: TYPE_NORMAL
+  zh: 我尚未尝试实施这一点，因为我有另一个有效的解决方案，但如果它能解决所有边缘情况，这可能是一个可行且高效的解决方案。
 - en: Lasers!
   id: totrans-split-289
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 激光！
 - en: The next solution is a bit esoteric but produces the correct result. This is
     the solution I'm currently using.
   id: totrans-split-290
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个解决方案有点神秘，但可以产生正确的结果。这是我目前正在使用的解决方案。
 - en: We begin by splitting each bezier at `t = 0.05` (image above is exaggerated).
     We then tesselate each part into n points.
   id: totrans-split-291
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们从每个贝塞尔曲线在`t = 0.05`处分割（上图夸大）。然后我们将每个部分tesselate成n个点。
 - en: Then, for each point of the tesselated bezier, we check whether a line from
     `n0` to that point intersects the other edge.
   id: totrans-split-292
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，对于tesselated bezier的每个点，我们检查从`n0`到该点的线是否与另一条边相交。
 - en: It's pretty hard to see what's going on at this scale, so let's zoom in a bit.
   id: totrans-split-293
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个尺度上很难看清楚发生了什么，所以让我们放大一点。
 - en: When a point intersects the other edge, we use the point before it.
   id: totrans-split-294
   prefs: []
   type: TYPE_NORMAL
+  zh: 当一个点与另一条边相交时，我们使用它之前的点。
 - en: Found an intersection
   id: totrans-split-295
   prefs: []
   type: TYPE_NORMAL
+  zh: 发现了一个交点
 - en: Let's zoom in a bit.
   id: totrans-split-296
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们放大一点。
 - en: The intersection close up
   id: totrans-split-297
   prefs: []
   type: TYPE_NORMAL
+  zh: 靠近交点
 - en: For the other edge, we have no intersection.
   id: totrans-split-298
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于另一条边，我们没有交点。
 - en: In that case, we just use the end of the edge as the direction line.
   id: totrans-split-299
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，我们只需使用边缘的末端作为方向线。
 - en: With this method we've produced lines that seem to represent their respective
     curves.
   id: totrans-split-300
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这种方法，我们生成了似乎代表各自曲线的线段。
 - en: And this also works for the “curve around” case.
   id: totrans-split-301
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也适用于“曲线环绕”情况。
 - en: But it fails for a “curve behind” case.
   id: totrans-split-302
   prefs: []
   type: TYPE_NORMAL
+  zh: 但对于“后面的曲线”情况却失败了。
 - en: This would produce the green edge as the more CCW edge, which is wrong.
   id: totrans-split-303
   prefs: []
   type: TYPE_NORMAL
+  zh: 这会产生绿色边缘作为更CCW边缘，这是错误的。
 - en: My solution to this problem is to shoot an infinite laser in the direction of
     the previous edge.
   id: totrans-split-304
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对这个问题的解决方案是向前一个边缘的方向射出无限激光。
 - en: We then check whether the points of the tesselated bezier intersect this laser.
   id: totrans-split-305
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们检查tesselated bezier的点是否与这个激光相交。
 - en: But a line from `n0` to the points would never intersect the laser.
   id: totrans-split-306
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是从`n0`到这些点的线永远不会与激光相交。
 - en: Passes right through
   id: totrans-split-307
   prefs: []
   type: TYPE_NORMAL
+  zh: 直接穿过
 - en: Instead, we can create a line from the current point to the previous point and
     use that for the intersection test.
   id: totrans-split-308
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，我们可以从当前点到前一个点创建一条线，并在交点测试中使用它。
 - en: When we intersect the laser, we use the previous point. The previous point will
     always be on the correct side of the laser.
   id: totrans-split-309
@@ -1786,26 +1998,31 @@
   id: totrans-split-375
   prefs: []
   type: TYPE_NORMAL
+  zh: 这可能看起来非常明显，但在我们继续之前，明确规定游戏规则是很好的。
 - en: Next we want to draw `c1`, the diamond in our graph. It was filled, just like
     the rectangle so we should draw it as well. But if we try to draw the diamond
     as well, we get the wrong result.
   id: totrans-split-376
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们想要绘制`c1`，也就是图中的钻石。它被填充了，就像矩形一样，所以我们也应该绘制它。但是，如果我们尝试绘制钻石，我们会得到错误的结果。
 - en: Our laser is intersecting two walls as a result of drawing both of the shapes
     when the have the same fill setting.
   id: totrans-split-377
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的激光在绘制两个形状时相交，当它们具有相同的填充设置时。
 - en: We intersect an even number of walls, so we're “outside” of the shape
   id: totrans-split-378
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们交叉了偶数个墙壁，所以我们处于形状的“外部”。
 - en: So to draw the image the user wanted we can simply skip drawing the diamond
     since the parent cycle implicitly draws direct subcycles with the same fill setting.
   id: totrans-split-379
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，为了绘制用户想要的图像，我们可以简单地跳过绘制钻石，因为父循环隐式地绘制了具有相同填充设置的直接子循环。
 - en: The hourglass, `c2`, is supposed to be empty. With that being the case, just
     not drawing it seems like a reasonable conclusion. But since the parent cycle
     (rectangle) has already drawn the hourglass as if it were filled we need to “flip”
@@ -1813,118 +2030,142 @@
   id: totrans-split-380
   prefs: []
   type: TYPE_NORMAL
+  zh: 沙漏`c2`应该是空的。在这种情况下，仅仅不绘制它似乎是一个合理的结论。但由于父循环（矩形）已经绘制了沙漏，好像它是填充的，我们需要通过绘制沙漏来“翻转”填充。
 - en: And again, if we try to use the laser intersection method we see that the number
     of intersections is 2, an even number. And with the even-odd rule, an even number
     of walls means you're “outside” of the shape.
   id: totrans-split-381
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次，如果我们尝试使用激光交叉法，我们看到交叉点的数量是2，一个偶数。根据偶数-奇数规则，偶数个墙壁意味着你处于形状的“外部”。
 - en: Now that we've drawn the rectangle and its direct subcycles, we can move onto
     the direct subcycles of those.
   id: totrans-split-382
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经绘制了矩形及其直接子循环，我们可以继续处理这些直接子循环的直接子循环。
 - en: When working with `c3` and `c4`, the direct subcycles of `c1`, we can treat
     them as if they're direct subcycles of `c0` since `c1` had the same fill setting.
   id: totrans-split-383
   prefs: []
   type: TYPE_NORMAL
+  zh: 当处理`c3`和`c4`时，即`c1`的直接子循环时，我们可以将它们视为`c0`的直接子循环，因为`c1`具有相同的填充设置。
 - en: For `c3`, we want to “flip” the fill setting so we draw it. But `c4` has the
     same fill setting as its parent cycle so we don't draw it.
   id: totrans-split-384
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于`c3`，我们想要“翻转”填充设置，因此我们将其绘制出来。但是对于`c4`，由于它与其父循环具有相同的填充设置，我们不绘制它。
 - en: Even number of intersections so we're outside of the shape
   id: totrans-split-385
   prefs: []
   type: TYPE_NORMAL
+  zh: 偶数个交叉点，所以我们在形状的外面。
 - en: And we can think of `c5`, `c6` and `c7` in the same way. We don't care whether
     they're filled or empty when rendering them. We care whether or not they have
     the same fill as their parent cycle.
   id: totrans-split-386
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以以相同的方式考虑`c5`、`c6`和`c7`。当渲染它们时，我们不在乎它们是填充的还是空的。我们在乎的是它们与父循环的填充是否相同。
 - en: We only need to draw cycles if their parent cycle has the opposite “fill setting”
     as themselves. If they have the same fill setting, we don't have to draw them.
   id: totrans-split-387
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们只需要绘制循环，如果它们的父循环与它们自身的填充设置相反。如果它们具有相同的填充设置，我们不必绘制它们。
 - en: This means that when drawing cycles, start by drawing the outermost “filled”
     cycle and then look at that cycle's subcycles. If a subcycle has the same fill
     setting as its parent cycle, it should not be drawn.
   id: totrans-split-388
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着在绘制循环时，首先绘制最外层的“填充”循环，然后查看该循环的子循环。如果一个子循环与其父循环具有相同的填充设置，则不应绘制它。
 - en: Contiguous cycles
   id: totrans-split-389
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 连续循环
 - en: A graph may have multiple “clusters” of cycles.
   id: totrans-split-390
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个图可能有多个“循环簇”。
 - en: I use the phrase *contiguous cycles* to describe the “togetherness” of the cycles,
     if you will. I often think of these contiguous groups of cycles as being in different
     colors.
   id: totrans-split-391
   prefs: []
   type: TYPE_NORMAL
+  zh: 我使用短语*连续循环*来描述这些循环的“紧密性”，如果可以这么说的话。我经常把这些连续的循环组想象成不同的颜色。
 - en: 'Finding these contiguous cycles can be done with a depth-first traversal:'
   id: totrans-split-392
   prefs: []
   type: TYPE_NORMAL
+  zh: 找到这些连续循环可以通过深度优先遍历完成：
 - en: Start at the first node of the cycle
   id: totrans-split-393
   prefs: []
   type: TYPE_NORMAL
+  zh: 从循环的第一个节点开始
 - en: Color each node you find
   id: totrans-split-394
   prefs: []
   type: TYPE_NORMAL
+  zh: 染上你找到的每个节点
 - en: But remember the *crossings*? In the search, you may not crawl to adjacent nodes
     by edges marked as crossings.
   id: totrans-split-395
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是记住*交叉*吗？在搜索中，您可能不会通过标记为交叉的边缘爬到相邻节点。
 - en: 'So in the end, our colors actually look like this:'
   id: totrans-split-396
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，最终，我们的颜色实际上是这样的：
 - en: 'Take this group of contiguous cycles nested inside another group of contiguous
     cycles:'
   id: totrans-split-397
   prefs: []
   type: TYPE_NORMAL
+  zh: 取这一组连续的循环，嵌套在另一组连续的循环中：
 - en: Because of the non-intersection rule we know that if one of the nodes in a group
     of contiguous cycles is inside of a cycle not in the group, all of them are.
   id: totrans-split-398
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于非交叉规则，我们知道如果一组连续循环中的一个节点位于不在该组中的循环内部，那么所有这些节点都在内部。
 - en: This “contiguous cycles” idea is maybe not the most interesting part of this
     post on the surface, but I've found it to be useful when working on Vector Networks.
   id: totrans-split-399
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个“连续循环”的想法表面上可能不是本文中最有趣的部分，但我发现在处理向量网络时它很有用。
 - en: Partial expansion
   id: totrans-split-400
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 部分展开
 - en: When hovering an area defined by intersections, we are showing a cycle of the
     expanded graph.
   id: totrans-split-401
   prefs: []
   type: TYPE_NORMAL
+  zh: 当悬停在由交点定义的区域时，我们显示了扩展图形的一个循环。
 - en: Take this triangle as an example.
   id: totrans-split-402
   prefs: []
   type: TYPE_NORMAL
+  zh: 以这个三角形为例。
 - en: If we hover over one of its areas, we see an area defined by nodes that don't
     exist yet.
   id: totrans-split-403
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们悬停在其区域之一上，我们会看到一个由尚不存在的节点定义的区域。
 - en: What the blue striped area represents is the area whose fill state would be
     “toggled” if the user clicks the left mouse button. This area does not exist on
     the graph as the user defined it. It exists as a cycle on the expanded version
@@ -1932,44 +2173,53 @@
   id: totrans-split-404
   prefs: []
   type: TYPE_NORMAL
+  zh: 蓝色条纹区域代表的是如果用户点击鼠标左键将“切换”其填充状态的区域。此区域不存在于用户定义的图形上，而是存在于原始图形的扩展版本上的一个循环中。
 - en: The expanded graph
   id: totrans-split-405
   prefs: []
   type: TYPE_NORMAL
+  zh: 展开的图
 - en: When the user clicks to toggle the fill state of the area, we would first have
     to expand the graph for the nodes and edges that make up that area to exist.
   id: totrans-split-406
   prefs: []
   type: TYPE_NORMAL
+  zh: 当用户点击以切换区域填充状态时，我们首先必须扩展用于存在的节点和边的图形。
 - en: The expanded graph
   id: totrans-split-407
   prefs: []
   type: TYPE_NORMAL
+  zh: 展开的图
 - en: But by doing that we've expanded two intersections that we didn't need to expand
     to be able to describe the area. These expansions are destructive in nature and
     should be avoided when possible.
   id: totrans-split-408
   prefs: []
   type: TYPE_NORMAL
+  zh: 但通过这样做，我们扩展了两个我们不需要扩展以描述区域的交叉点。这些扩展具有破坏性质，应尽可能避免。
 - en: Instead, we can *partially expand* the graph by only expanding the intersections
     that define the selected cycle.
   id: totrans-split-409
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，我们可以*部分展开*图形，只展开定义所选循环的交点。
 - en: Partially expanded graph
   id: totrans-split-410
   prefs: []
   type: TYPE_NORMAL
+  zh: 部分展开的图
 - en: This allows us to maintain as much of the original graph as possible while still
     being able to define the fill.
   id: totrans-split-411
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使我们能够尽可能保留原始图形，同时仍能定义填充。
 - en: Implementing partial expansions
   id: totrans-split-412
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 实现部分展开
 - en: The basic implementation is reasonably simple. When you create the expanded
     graph, just add a little metadata to each expanded node that tells you which two
     edges of the original graph were used to create it and at what `t` values those
@@ -1977,85 +2227,102 @@
   id: totrans-split-413
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本实现是相当简单的。当您创建扩展图形时，只需向每个扩展节点添加一些元数据，告诉您用于创建它的原始图形的哪两条边以及这些交点发生在什么`t`值。
 - en: Then when the cycle is clicked, iterate over each node. If the node exists in
     the expanded graph but not the original graph, add it to a new partially expanded
     graph.
   id: totrans-split-414
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后当点击循环时，迭代每个节点。如果节点存在于扩展图中但不存在于原始图中，则将其添加到一个新的部分展开的图中。
 - en: There are edge cases, but I will not be covering them here.
   id: totrans-split-415
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一些边缘案例，但我将不在此进行详细讨论。
 - en: Omitted topics
   id: totrans-split-416
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 被省略的主题
 - en: Here are some of the topics that I decided to omit for this post. Go have a
     stab at them yourself!
   id: totrans-split-417
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一些我决定在本文中省略的主题。去试试看吧！
 - en: Joins
   id: totrans-split-418
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 连接
 - en: Figma offers three types of joins. Round, pointy and square. How could these
     different types of joins be implemented?
   id: totrans-split-419
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma提供了三种连接类型。圆形、尖角和方形。如何实现这些不同类型的连接？
 - en: Stroke align
   id: totrans-split-420
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 描边对齐
 - en: 'Figma also offers three ways to align the stroke of a graph: center, inside
     and outside.'
   id: totrans-split-421
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma还提供了三种方式来对齐图形的描边：中心、内部和外部。
 - en: How do you determine inside- or outside-ness and what happens when the graph
     has no cycles?
   id: totrans-split-422
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何确定图中的内部或外部，当图中没有循环时会发生什么？
 - en: Boolean operations
   id: totrans-split-423
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 布尔运算
 - en: Figma, like most vector graphics tools, offers [boolean operations](https://help.figma.com/article/65-boolean-operations).
     How could those be implemented?
   id: totrans-split-424
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma，像大多数矢量图形工具一样，提供了[布尔运算](https://help.figma.com/article/65-boolean-operations)。如何实现这些？
 - en: '[Paper.js](http://paperjs.org/) is open source and has boolean operations for
     paths, maybe you can start there?'
   id: totrans-split-425
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Paper.js](http://paperjs.org/)是开源的，具有路径的布尔运算，也许你可以从这里开始？'
 - en: Future topics
   id: totrans-split-426
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 未来的主题
 - en: These are some of the more open-ended features and ideas I want to explore in
     the future.
   id: totrans-split-427
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些是我未来想要探索的一些更开放性的功能和想法。
 - en: A different way of working with fills
   id: totrans-split-428
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用填充的另一种工作方式
 - en: There are alternatives to how Figma allows the user to work with fills.
   id: totrans-split-429
   prefs: []
   type: TYPE_NORMAL
+  zh: 有几种方式可以替代Figma允许用户处理填充的方式。
 - en: One possible solution I'm interested in exploring is multiple different “fill
     layers” that use one vector object as a reference. This would solve the “[one
     graph, multiple colors](https://spectrum.chat/figma/feature-requests/paint-bucket-tool-with-multiple-colors~1b55179b-f911-468b-9355-fd361564fda0)”
@@ -2064,32 +2331,39 @@
   id: totrans-split-430
   prefs: []
   type: TYPE_NORMAL
+  zh: 我感兴趣探索的一个可能解决方案是使用多个不同的“填充层”，这些层使用一个矢量对象作为参考。这将解决“一个图形，多种颜色”的问题，而无需复制层并保持多个矢量对象同步，如果以后要进行更改。
 - en: Animating the graph
   id: totrans-split-431
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 给图形添加动画效果
 - en: Given an [expression](https://helpx.adobe.com/after-effects/using/expression-basics.html)
     and reference based system similar to After Effects, what could you achieve when
     you combine it with Vector Networks?
   id: totrans-split-432
   prefs: []
   type: TYPE_NORMAL
+  zh: 借助类似于 After Effects 的表达式和基于参考的系统，当你将它与矢量网络结合使用时，你可以实现什么？
 - en: Or maybe we could make use of a node editor similar to [Blender's shader editor](https://docs.blender.org/manual/en/latest/editors/shader_editor/index.html)
     or [Fusion's node based workflow](https://www.blackmagicdesign.com/products/fusion/visualeffects)?
   id: totrans-split-433
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许我们可以利用类似于[Blender 的着色器编辑器](https://docs.blender.org/manual/en/latest/editors/shader_editor/index.html)或[Fusion
+    的基于节点的工作流](https://www.blackmagicdesign.com/products/fusion/visualeffects)的节点编辑器？
 - en: There's a lot of exploration to be done here and I'm really excited to dive
     into this topic.
   id: totrans-split-434
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有很多探索的空间，我对深入研究这个主题非常兴奋。
 - en: In closing
   id: totrans-split-435
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: Thanks for reading this post! I hope it served as a good introduction to what
     I think is a really interesting problem space. I've been working on this problem
     alongside school and work for a good while. It's part of an animation editor plus
@@ -2098,6 +2372,7 @@
   id: totrans-split-436
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢阅读这篇文章！希望它作为对我认为非常有趣的问题空间的一个良好介绍。我在学校和工作之余一直在解决这个问题。这是我正在开发的 Web 动画编辑器加运行时的一部分。我打算将修改版的矢量网络作为几个功能的核心。
 - en: I've been working on implementing Vector Networks for a bit over half a year
     now. The vector editor is pretty robust when it comes to creating, modifying and
     expanding the graph. But the edge cases when modifying the fill state have been
@@ -2105,18 +2380,21 @@
   id: totrans-split-437
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经在实现矢量网络上工作了半年多。在创建、修改和扩展图形方面，这个矢量编辑器非常强大。但是在修改填充状态时遇到的边缘案例已经困扰我很长时间了。
 - en: I wanted to have a fully working demo before publishing this post, but it's
     going to be a few months until it's stable enough for it to be usable for people
     that are not me.
   id: totrans-split-438
   prefs: []
   type: TYPE_NORMAL
+  zh: 我希望在发布这篇文章之前能有一个完全可工作的演示版，但要使其对不是我自己的人可用，还需要几个月时间使其足够稳定。
 - en: The big idea behind the project is to be a piece of animation software that's
     tailor-made for creating and running dynamic animations on the web. I'll share
     more about this project at a later date.
   id: totrans-split-439
   prefs: []
   type: TYPE_NORMAL
+  zh: 项目背后的大思路是开发一款专门为 Web 上创建和运行动态动画而设计的动画软件。我将在稍后的时间分享更多关于这个项目的信息。
 - en: I also just think that Figma's Vector Networks are super cool and it's really
     hard to find material about it online. I hope this post helps fix the lack of
     information that I encountered when attempting to find information about Vector
@@ -2124,7 +2402,9 @@
   id: totrans-split-440
   prefs: []
   type: TYPE_NORMAL
+  zh: 我也觉得 Figma 的矢量网络非常酷，但在网上很难找到相关资料。我希望这篇文章能帮助弥补我在查找矢量网络信息时遇到的信息匮乏。
 - en: </main>
   id: totrans-split-441
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>
