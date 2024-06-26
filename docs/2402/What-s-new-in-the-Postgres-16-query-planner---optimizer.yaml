@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:44:18'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:44:18'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: What’s new in the Postgres 16 query planner / optimizer
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Postgres 16 查询规划器 / 优化器的新特性
 - en: 来源：[https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/](https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/](https://www.citusdata.com/blog/2024/02/08/whats-new-in-postgres-16-query-planner-optimizer/)
 - en: PostgreSQL 16 introduces quite a few improvements to the query planner and makes
     many SQL queries run faster than they did on previous versions of PostgreSQL.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 引入了多项查询规划器改进，使得许多 SQL 查询比在之前的 PostgreSQL 版本中运行得更快。
 - en: If you look at the [PG16 release notes](https://www.postgresql.org/docs/16/release-16.html),
     you’ll see some of these planner improvements. But with the volume of changes
     made in each PostgreSQL release, it’s not possible to provide enough detail about
@@ -37,6 +44,8 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您查看 [PG16 发布说明](https://www.postgresql.org/docs/16/release-16.html)，您将看到一些这些规划器改进。但是由于每个
+    PostgreSQL 版本的变更量很大，无法为每个变更提供足够详细的信息。因此，您可能需要更多详细信息，以了解每项变更的具体内容 —— 从而确定其是否与您相关。
 - en: In this blog post, assuming you’ve already got a handle on the [basics of EXPLAIN](https://www.postgresql.org/docs/16/using-explain.html#USING-EXPLAIN-BASICS),
     you’ll get a deep dive into the 10 improvements made in the PostgreSQL 16 query
     planner. For each of the improvements to the PG16 planner (the planner is often
@@ -46,60 +55,74 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本博客文章中，假设您已经掌握了 [EXPLAIN 的基础知识](https://www.postgresql.org/docs/16/using-explain.html#USING-EXPLAIN-BASICS)，您将深入了解
+    PostgreSQL 16 查询规划器中的 10 项改进。对于 PG16 规划器的每个改进（在其他关系数据库中通常称为优化器），您还将看到 PG15 和 PG16
+    规划器输出的比较 —— 以及自包含测试的示例，您可以自行尝试。
 - en: 'Let’s dive into these 10 improvements to the PostgreSQL planner in PG16:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们深入了解 PostgreSQL 16 查询规划器中的这 10 项改进：
 - en: '[Incremental sorts for DISTINCT queries](#distinct-queries)'
   id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[增量排序用于 DISTINCT 查询](#distinct-queries)'
 - en: '[Faster ORDER BY / DISTINCT aggregates](#faster-orderby-distinct)'
   id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[更快的 ORDER BY / DISTINCT 聚合](#faster-orderby-distinct)'
 - en: '[Memoize for UNION ALL queries](#union-all)'
   id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[UNION ALL 查询的记忆化](#union-all)'
 - en: '[Support Right Anti Join](#right-anti-join)'
   id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[支持右反连接](#right-anti-join)'
 - en: '[Parallel Hash Full and Right Joins](#parallel-hashfull-rightjoin)'
   id: totrans-split-14
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[并行 Hash 全连接和右连接](#parallel-hashfull-rightjoin)'
 - en: '[Optimize window function frame clauses](#frame-clauses)'
   id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[优化窗口函数框架子句](#frame-clauses)'
 - en: '[Optimize various window functions](#window-functions)'
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[优化各种窗口函数](#window-functions)'
 - en: '[JOIN removals for partitioned tables](#join-removals)'
   id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[为分区表优化 JOIN 移除](#join-removals)'
 - en: '[Short circuit trivial DISTINCT queries](#short-circuit)'
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[短路基本的 DISTINCT 查询](#short-circuit)'
 - en: '[Incremental Sort after Merge Join, in more cases](#merge-joins)'
   id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[合并连接后的增量排序，在更多情况下](#merge-joins)'
 - en: '[Incremental sorts](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=d2d8a229bc58a2014dce1c7a4fcdb6c5ab9fb8da)
     were first added in PostgreSQL 13\. These incremental sorts reduce the effort
     required to get sorted results. How? By exploiting the knowledge that some given
@@ -108,6 +131,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '[增量排序](https://git.postgresql.org/gitweb/?p=postgresql.git;a=commit;h=d2d8a229bc58a2014dce1c7a4fcdb6c5ab9fb8da)
+    首次在 PostgreSQL 13 中添加。这些增量排序减少了获取排序结果所需的工作量。如何实现？通过利用某些给定结果集已按一个或多个前导列排序的知识，仅对剩余列进行排序。'
 - en: For example, if there’s a btree index on column `a` and we need the rows ordered
     by `a`,`b`, then we can use the btree index (which provides presorted results
     on column `a`) and sort the rows seen so far only when the value of `a` changes.
@@ -116,6 +141,8 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果在列 `a` 上有 btree 索引，并且我们需要按 `a`, `b` 排序行，则可以使用 btree 索引（提供列 `a` 上的预排序结果），并且仅在
+    `a` 的值更改时才对到目前为止看到的行进行排序。使用 PostgreSQL 的快速排序算法，对许多较小的组进行排序比对一个大组进行排序更有效率。
 - en: The PostgreSQL 16 query planner now considers performing incremental sorts for
     `SELECT DISTINCT` queries. Prior to PG16, when the sorting method was chosen for
     `SELECT DISTINCT` queries, the planner only considered performing a full sort
@@ -123,6 +150,8 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器现在考虑为 `SELECT DISTINCT` 查询执行增量排序。在 PG16 之前，选择排序方法用于 `SELECT
+    DISTINCT` 查询时，规划器只考虑执行完整排序（比增量排序更昂贵）。
 - en: '[PRE0]'
   id: totrans-split-23
   prefs: []
@@ -133,6 +162,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 EXPLAIN 输出
 - en: '[PRE1]'
   id: totrans-split-25
   prefs: []
@@ -143,6 +173,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 EXPLAIN 输出
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
@@ -157,6 +188,9 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '在上述 PostgreSQL 16 的 `EXPLAIN` 输出中，您可以看到规划器选择使用 `a` 列上的 `distinct_test_a_idx`
+    索引，然后执行 `Incremental Sort` 来按 `b` 的所有相等值对 `a` 进行排序。`Presorted Key: a` 表示这一点。因为上面的
+    `INSERT` 语句仅为每个 `a` 值添加了单个 `b` 值，所以每个增量排序排序的元组批次仅包含单行。'
 - en: The `EXPLAIN` output for PostgreSQL 16 above shows that the `Peak Memory` for
     the `Incremental Sort` was just 26 kilobytes, whereas the hashing method used
     by PostgreSQL 15 needed much memory, so much so that it needed to spill about
@@ -164,6 +198,9 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述 PostgreSQL 16 的 `EXPLAIN` 输出显示，`Incremental Sort` 的 `Peak Memory` 仅为 26 千字节，而
+    PostgreSQL 15 使用的哈希方法需要更多内存，以至于需要将约 30 兆字节的数据溢出到磁盘。**在 PostgreSQL 16 上执行的查询速度提高了
+    63%**。
 - en: In PostgreSQL 15 and earlier, aggregate functions containing an `ORDER BY` or
     `DISTINCT` clause would result in the executor always performing a sort inside
     the `Aggregate` node of the plan. Because the sort was always performed, the planner
@@ -172,6 +209,8 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PostgreSQL 15 及更早版本中，包含 `ORDER BY` 或 `DISTINCT` 子句的聚合函数会导致执行器始终在计划的 `Aggregate`
+    节点内部执行排序。由于总是执行排序，规划器从不尝试形成一个计划，以提供按顺序预排序的输入来对行进行聚合。
 - en: The PostgreSQL 16 query planner now tries to form a plan which feeds the rows
     to the plan’s `Aggregate` node in the correct order. And the executor is now smart
     enough to recognize this and forego performing the sort itself when the rows are
@@ -179,6 +218,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器现在试图形成一个计划，以正确顺序将行提供给计划的 `Aggregate` 节点。执行器现在足够聪明，能够识别这一点，并在行已经按正确顺序预排序时放弃执行排序本身。
 - en: '[PRE3]'
   id: totrans-split-32
   prefs: []
@@ -189,6 +229,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 EXPLAIN 输出
 - en: '[PRE4]'
   id: totrans-split-34
   prefs: []
@@ -199,6 +240,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 EXPLAIN 输出
 - en: '[PRE5]'
   id: totrans-split-36
   prefs: []
@@ -211,6 +253,8 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了在 PostgreSQL 16 中执行的查询速度比 PG15 快两倍之外，在上述的 `EXPLAIN ANALYZE` 输出中，这种变化的唯一指示是在
+    PostgreSQL 16 输出中不存在的 `temp read=4540 written=4560`。在 PG15 中，这是隐式排序溢出到磁盘引起的。
 - en: '`Memoize` plan nodes were first introduced in PostgreSQL 14\. The `Memoize`
     plan node acts as a cache layer between a parameterized `Nested Loop` and the
     Nested Loop’s inner side. When the same value needs to be looked up several times,
@@ -219,11 +263,14 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Memoize` 计划节点首次在 PostgreSQL 14 中引入。`Memoize` 计划节点充当参数化 `Nested Loop` 和 Nested
+    Loop 内部之间的缓存层。当多次查找相同值时，Memoize 可以显著提高性能，因为当所需的行已经被查询并缓存时，它可以跳过执行其子节点。'
 - en: The PostgreSQL 16 query planner will now consider using `Memoize` when a `UNION
     ALL` query appears on the inner side of a parameterized `Nested Loop`.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器现在会考虑在参数化的 `Nested Loop` 的内部出现 `UNION ALL` 查询时使用 `Memoize`。
 - en: '[PRE6]'
   id: totrans-split-40
   prefs: []
@@ -234,6 +281,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 EXPLAIN 输出
 - en: '[PRE7]'
   id: totrans-split-42
   prefs: []
@@ -244,6 +292,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 EXPLAIN 输出
 - en: '[PRE8]'
   id: totrans-split-44
   prefs: []
@@ -384,6 +433,10 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 当查询包含诸如 `row_number()`、`rank()`、`dense_rank()`、`percent_rank()`、`cume_dist()`
+    和 `ntile()` 等窗口函数时，如果窗口子句没有指定 `ROWS` 选项，则 PostgreSQL 会始终使用默认的 `RANGE` 选项。`RANGE`
+    选项导致执行器向前查找，直到找到第一个“非对等”行。对等行是根据窗口子句的 `ORDER BY` 子句相等的窗口帧中的行。当没有 `ORDER BY` 子句时，窗口帧中的所有行都是对等行。在处理具有按窗口子句的
+    `ORDER BY` 子句等方式排序的许多行的记录时，用于识别这些对等行的额外处理可能会很昂贵。
 - en: The window functions mentioned above don’t behave any differently whether `ROWS`
     or `RANGE` is specified in the query’s window clause. However, the executor in
     PostgreSQL versions prior to 16 didn’t know that, and because **some** window
@@ -392,17 +445,21 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述提到的窗口函数在查询的窗口子句中指定 `ROWS` 或 `RANGE` 时不会有任何不同的行为。然而，在 PostgreSQL 16 之前的版本中，执行器并不知道这一点，因为**一些**窗口函数确实关心
+    `ROWS`/`RANGE` 选项，所以执行器必须在所有情况下执行对等行的检查。
 - en: The PostgreSQL 16 query planner knows which window functions care about the
     `ROWS`/`RANGE` option and it passes this information along to the executor so
     that it can skip the needless additional processing.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器知道哪些窗口函数关心 `ROWS`/`RANGE` 选项，并将此信息传递给执行器，以便它可以跳过不必要的额外处理。
 - en: This optimization works particularly well when `row_number()` is being used
     to limit the number of results in the query as shown in the example below.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 此优化在查询中使用 `row_number()` 来限制结果数量时特别有效，如下面的示例所示。
 - en: '[PRE15]'
   id: totrans-split-67
   prefs: []
@@ -413,6 +470,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 的 EXPLAIN 输出
 - en: '[PRE16]'
   id: totrans-split-69
   prefs: []
@@ -423,6 +481,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 的 EXPLAIN 输出
 - en: '[PRE17]'
   id: totrans-split-71
   prefs: []
@@ -437,6 +496,9 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: PG15 的 EXPLAIN 输出中的 `Index Scan` 节点显示，在执行之前需要从 `scores_score_idx` 索引中读取 50410
+    行。而在 PostgreSQL 16 中，只需读取 11 行，因为执行器意识到一旦 `row_number` 达到 11，就不会再有符合 `<= 10` 条件的行了。这和执行器使用
+    `ROWS` 窗口子句选项导致该查询在 PostgreSQL 16 上运行速度提高了 500 多倍。
 - en: This change expands on work done in PostgreSQL 15\. In PG15 the query planner
     was modified to allow the executor to stop processing `WindowAgg` executor nodes
     early. This can be done when an item in the `WHERE` clause filters a window function
@@ -444,18 +506,24 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 这一变更是对 PostgreSQL 15 中的工作的扩展。在 PG15 中，查询规划器被修改，允许执行器在窗口函数在 `WHERE` 子句中过滤的条件一旦变为
+    false 时，可以提前停止处理 `WindowAgg` 执行节点。
 - en: '`row_number()` is an example of a function which can offer such guarantees
     as it’s a monotonically increasing function, i.e. subsequent rows in the same
     partition will never have a row_number lower than the previous row.'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '`row_number()` 是一个函数的例子，它可以提供这样的保证，因为它是一个单调递增的函数，即同一分区中的后续行的 `row_number` 永远不会低于前一行。'
 - en: The PostgreSQL 16 query planner expands the coverage of this optimization to
     also cover `ntile()`, `cume_dist()` and `percent_rank()`. In PostgreSQL 15, this
     only worked for `row_number()`, `rank()`, `dense_rank()`, `count()` and `count(*)`.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器扩展了此优化的覆盖范围，还涵盖了 `ntile()`、`cume_dist()` 和 `percent_rank()`。在
+    PostgreSQL 15 中，这仅对 `row_number()`、`rank()`、`dense_rank()`、`count()` 和 `count(*)`
+    有效。
 - en: '[PRE18]'
   id: totrans-split-76
   prefs: []
@@ -466,6 +534,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 的 EXPLAIN 输出
 - en: '[PRE19]'
   id: totrans-split-78
   prefs: []
@@ -476,6 +545,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 的 EXPLAIN 输出
 - en: '[PRE20]'
   id: totrans-split-80
   prefs: []
@@ -490,12 +560,16 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据上面的 PostgreSQL 16 EXPLAIN 输出，您可以看到规划器能够将 `pr <= 0.01` 条件作为 `Run Condition`
+    使用，而在 PostgreSQL 15 中，此子查询中的条件作为 `Filter` 出现。在 PG16 中，运行条件用于提前中止 `WindowAgg` 节点的执行。这导致
+    PG16 的执行时间比 PG15 快了超过 4 倍。
 - en: For a long time now, PostgreSQL has been able to remove a `LEFT JOIN` where
     no column from the left joined table was required in the query and the join could
     not possibly duplicate any rows.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 长期以来，PostgreSQL 已能够移除 `LEFT JOIN`，其中左连接表的任何列都不在查询中需要，并且连接不可能复制任何行。
 - en: However, in versions prior to PostgreSQL 16, there was no support for left join
     removals on partitioned tables. Why? Because the proofs that the planner uses
     to determine if there’s any possibility any inner-side row could duplicate any
@@ -503,16 +577,19 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在 PostgreSQL 16 之前的版本中，对分区表的左连接移除没有支持。为什么？因为规划器用于确定是否存在任何可能使内侧行重复任何外侧行的证据在分区表中不存在。
 - en: The PostgreSQL 16 query planner now allows the `LEFT JOIN` removal optimization
     with partitioned tables.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 16 查询规划器现在允许对分区表进行 `LEFT JOIN` 移除优化。
 - en: This join elimination optimization is more likely to help with views, as it’s
     common that not all columns that exist in a view will always be queried.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 此连接消除优化更有可能帮助视图，因为视图中存在的所有列并不总是会被查询。
 - en: '[PRE21]'
   id: totrans-split-86
   prefs: []
@@ -523,6 +600,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 的 EXPLAIN 输出
 - en: '[PRE22]'
   id: totrans-split-88
   prefs: []
@@ -533,6 +611,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 的 EXPLAIN 输出
 - en: '[PRE23]'
   id: totrans-split-90
   prefs: []
@@ -543,6 +622,7 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里需要注意的重要一点是，PostgreSQL 16 计划不包括与 `part_tab` 的连接，这意味着只需扫描 `normal_table`。
 - en: The PostgreSQL query planner is able to avoid including plan nodes to de-duplicate
     the results when it can detect that all rows contain the same value. Detecting
     this is trivial and when the optimization can be applied it can result in huge
@@ -550,6 +630,7 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: PostgreSQL 查询规划器能够在能够检测到所有行包含相同值时避免包含计划节点以去重结果。检测这一点很简单，当优化可以应用时，可以获得巨大的性能提升。
 - en: '[PRE24]'
   id: totrans-split-93
   prefs: []
@@ -560,6 +641,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG15 的 EXPLAIN 输出
 - en: '[PRE25]'
   id: totrans-split-95
   prefs: []
@@ -570,6 +652,7 @@
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: PG16 的 EXPLAIN 输出
 - en: '[PRE26]'
   id: totrans-split-97
   prefs: []
@@ -586,6 +669,9 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果仔细查看 SQL 查询，您会注意到 `DISTINCT` 子句中的每列在 `WHERE` 子句中也具有等式条件。这意味着查询中的所有输出行在每列中都具有相同的值。PostgreSQL
+    16 查询规划器能够利用这一知识简单地将查询结果限制为 1 行。PostgreSQL 15 通过读取整个结果并使用 `Unique` 运算符将所有行减少到单行来产生相同的查询结果。PostgreSQL
+    16 的执行时间比 PostgreSQL 15 快了超过 1200 倍。
 - en: Before PostgreSQL 16, when the query planner considered performing a `Merge
     Join`, it would check if the sort order of the merge would suit any upper-level
     plan operation (such as `DISTINCT`, `GROUP BY` or `ORDER BY`) and only use that
@@ -596,6 +682,8 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 PostgreSQL 16 之前，当查询规划器考虑执行 `Merge Join` 时，它会检查合并的排序顺序是否适合任何上层计划操作（如 `DISTINCT`、`GROUP
+    BY` 或 `ORDER BY`），并且仅在它与上层要求完全匹配时才使用该顺序。这种选择有点过时，因为对于这些上层操作，可以使用增量排序，并且增量排序可以利用仅对一些前导列进行排序的结果。
 - en: The PostgreSQL 16 query planner adjusted the rule used when considering `Merge
     Join` orders from “the order of the rows must match exactly” to “there must be
     at least 1 leading column correctly ordered”. This allows the planner to use `Incremental
