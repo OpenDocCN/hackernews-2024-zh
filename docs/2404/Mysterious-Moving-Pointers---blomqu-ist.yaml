@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:11:10'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:11:10'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Mysterious Moving Pointers - blomqu.ist
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 神秘的指针移动问题 - blomqu.ist
 - en: 来源：[https://blomqu.ist/posts/2024/move/](https://blomqu.ist/posts/2024/move/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blomqu.ist/posts/2024/move/](https://blomqu.ist/posts/2024/move/)
 - en: At work, we have started the process of modernizing our codebase. We currently
     work with Visual Studio 2013 and are upgrading to Visual Studio 2022\. Like any
     modernization effort, changes in the language are likely to break existing software
@@ -33,14 +39,18 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在工作中，我们已经开始了现代化我们的代码库的过程。我们目前使用的是 Visual Studio 2013，并计划升级到 Visual Studio 2022。像任何现代化的努力一样，语言的变化可能会破坏现有的软件，因为某些功能被弃用并添加了新功能。有一款软件是专门为
+    Windows 构建的，在升级项目后，一个重要的类始终导致分段错误。
 - en: 'Here is a minimal example that describes the problem code:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是描述问题代码的最小示例：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In this graph, a node stores its connection to other nodes. When a connection
     is made, the pointer is known to be valid. And the node within a `std::list` is
     stable, a pointer to it should stay valid as long as the list and the node itself
@@ -49,14 +59,17 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个图中，一个节点存储其与其他节点的连接。当建立连接时，指针被认为是有效的。并且在`std::list`中的节点是稳定的，只要列表和节点本身存在，指向它的指针应该保持有效。但在某些时候，该指针失效，并且尝试访问它会导致分段错误。
 - en: 'First question: Why is this broken?'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个问题：为什么这会出错？
 - en: 'Second Question: How did this ever work in the first place?'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个问题：这在第一次如何工作？
 - en: The answer to the first question is a classic C++ footgun. When a `std::vector`
     grows larger than its capacity, it reallocates its backing store and has to put
     the existing elements into that store. The best way to do this would be to *move*
@@ -69,11 +82,14 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 对第一个问题的答案是一个经典的 C++ 陷阱。当`std::vector`增长超过其容量时，它重新分配其后备存储，并必须将现有元素放入该存储中。最好的方法是*移动*这些元素，最好的情况下实际上是一个`memcpy`。不幸的是，`std::vector`只会移动元素，如果类具有特性`is_nothrow_move_constructible`，通常通过声明移动构造函数为`noexcept`来表示。在
+    MSVC 中，`std::list`没有标记为这样，因此当向量重新分配时，列表被*复制*而不是移动。当列表被复制时，它的元素被复制，我们的指针失效了。
 - en: Now that we know why it's broken, we ask how it was able to work in the first
     place. How did the pointers stay valid if `std::vector` couldn't move its elements?
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们知道了它为什么会出错，我们问它在第一次能够工作的时候是如何工作的。如果`std::vector`不能移动它的元素，指针是如何保持有效的呢？
 - en: While MSVC is considered one of the most complete implementations of the standard
     as of 2022, this wasn't always the case. It wasn't until 2015 that Microsoft had
     a mostly complete implementation of C++11\. C++11 was a huge change to the language;
@@ -85,6 +101,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管截至2022年，MSVC被认为是标准的最完整实现之一，但这并非总是如此。直到2015年，微软才有了几乎完整的 C++11 实现。C++11 对语言产生了巨大的变化，引入了lambda、移动构造和`noexcept`等功能。2013年的
+    MSVC 具有移动构造，但没有`noexcept`。由于没有`noexcept`，`std::vector`的重新分配行为无法根据元素类型的特性而改变。它将无条件地使用元素的移动构造函数。
 - en: And so the second mystery is solved. Because of Microsoft's partial implementation
     of the standard pre-2015, we could rely on our nodes staying in the same spot
     because our vector would move the lists it contained. When we upgraded, the "correct"
@@ -93,6 +111,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，第二个谜团得以解开。由于微软在2015年之前部分实现标准，我们可以依赖于我们的节点保持在原处，因为我们的向量会移动其中包含的列表。当我们升级时，“正确”的行为破坏了我们的代码。在我们的情况下，最简单的解决方案是将`std::vector`更改为`std::list`，以保持一切稳定。
 - en: Personally, I found this to be a pretty interesting puzzle. That said, it should
     not take a detailed understanding of the standard and the history of its various
     implementations to find the source of a bug. Most languages are designed for writing
@@ -100,3 +119,5 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 就我个人而言，我觉得这是一个相当有趣的难题。话虽如此，要找到 bug 的源头并不需要详细了解标准及其各种实现的历史。大多数编程语言都是为编写软件而设计的。显然，C++
+    是为解决谜题而设计的。
