@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:46:34'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:46:34
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Introducing Ruzzy, a coverage-guided Ruby fuzzer | Trail of Bits Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 介绍 Ruzzy，一个覆盖引导的 Ruby 模糊测试工具 | Trail of Bits 博客
 - en: 来源：[https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/](https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/](https://blog.trailofbits.com/2024/03/29/introducing-ruzzy-a-coverage-guided-ruby-fuzzer/)
 - en: '*By Matt Schwager*'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '* Matt Schwager *'
 - en: Trail of Bits is excited to introduce [Ruzzy](https://github.com/trailofbits/ruzzy),
     a coverage-guided fuzzer for pure Ruby code and Ruby C extensions. Fuzzing helps
     find bugs in software that processes untrusted input. In pure Ruby, these bugs
@@ -38,6 +45,9 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Trail of Bits 非常激动地介绍 [Ruzzy](https://github.com/trailofbits/ruzzy)，这是一个针对纯
+    Ruby 代码和 Ruby C 扩展的覆盖引导模糊测试工具。模糊测试有助于发现处理不受信任输入的软件中的漏洞。在纯 Ruby 中，这些漏洞可能导致意外异常，进而可能导致拒绝服务，而在
+    Ruby C 扩展中，可能会导致内存损坏。值得注意的是，Ruby 社区一直缺少一个可以用来模糊测试此类漏洞的工具。我们决定填补这一空白，开发了 Ruzzy。
 - en: Ruzzy is heavily inspired by Google’s [Atheris](https://github.com/google/atheris),
     a Python fuzzer. Like Atheris, Ruzzy uses [libFuzzer](https://llvm.org/docs/LibFuzzer.html)
     for its coverage instrumentation and fuzzing engine. Ruzzy also supports [AddressSanitizer](https://clang.llvm.org/docs/AddressSanitizer.html)
@@ -46,6 +56,10 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Ruzzy 非常受 Google 的 [Atheris](https://github.com/google/atheris)（一个 Python 模糊测试工具）的启发。与
+    Atheris 类似，Ruzzy 使用 [libFuzzer](https://llvm.org/docs/LibFuzzer.html) 进行覆盖引导和模糊测试引擎。在模糊测试
+    C 扩展时，Ruzzy 还支持 [AddressSanitizer](https://clang.llvm.org/docs/AddressSanitizer.html)
+    和 [UndefinedBehaviorSanitizer](https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html)。
 - en: This post will go over our motivation behind building Ruzzy, provide a brief
     overview of installing and running the tool, and discuss some of its interesting
     implementation details. Ruby revelers rejoice, Ruzzy* is here to reveal a new
@@ -53,19 +67,24 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将介绍我们构建 Ruzzy 的动机，提供安装和运行该工具的简要概述，并讨论一些有趣的实现细节。Ruby 爱好者们欢呼吧，Ruzzy 已经来到，揭示了一个新时代的弹性
+    Ruby 代码库。
 - en: '* If you’re curious, Ruzzy is simply a portmanteau of Ruby and fuzz, or fuzzer.'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '* 如果你好奇，Ruzzy 简单地是 Ruby 和 fuzz 或者 fuzzer 的混成词。'
 - en: Bringing fuzz testing to Ruby
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将模糊测试引入 Ruby
 - en: 'The Trail of Bits Testing Handbook provides the following [definition of fuzzing](https://appsec.guide/docs/fuzzing/):'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Trail of Bits 测试手册提供了以下关于 [模糊测试的定义](https://appsec.guide/docs/fuzzing/)：
 - en: Fuzzing represents a dynamic testing method that inputs malformed or unpredictable
     data to a system to detect security issues, bugs, or system failures. We consider
     it an essential tool to include in your testing suite.
@@ -73,6 +92,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 模糊测试是一种动态测试方法，将畸形或不可预测的数据输入到系统中，以检测安全问题、漏洞或系统故障。我们认为这是必不可少的工具，应当包含在您的测试套件中。
 - en: Fuzzing is an important testing methodology when developing high-assurance software,
     even in Ruby. Consider AFL’s extensive [trophy case](https://lcamtuf.coredump.cx/afl/),
     `rust-fuzz`’s [trophy case](https://github.com/rust-fuzz/trophy-case), and [OSS-Fuzz’s
@@ -83,6 +103,10 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开发高保障软件时，即使在 Ruby 中，模糊测试是一种重要的测试方法。可以考虑 AFL 的广泛 [奖杯橱窗](https://lcamtuf.coredump.cx/afl/)，rust-fuzz
+    的 [奖杯橱窗](https://github.com/rust-fuzz/trophy-case)，以及 [OSS-Fuzz 的声称](https://google.github.io/oss-fuzz/#trophies)
+    ，它已经帮助发现并修复了超过 10,000 个安全漏洞和 36,000 个 bug。正如之前提到的，Python 有 Atheris。Java 有 [Jazzer](https://github.com/CodeIntelligenceTesting/jazzer/)。Ruby
+    社区也应当拥有一个高质量、现代化的模糊测试工具。
 - en: 'This isn’t to say that Ruby fuzzers haven’t been built before. They have: [kisaten](https://github.com/twistlock/kisaten),
     [afl-ruby](https://github.com/richo/afl-ruby), [FuzzBert](https://github.com/krypt/FuzzBert),
     and perhaps some we’ve missed. However, all these tools appear to be either unmaintained,
@@ -91,30 +115,36 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不是说以前没有构建过Ruby模糊测试工具。实际上有：[kisaten](https://github.com/twistlock/kisaten)，[afl-ruby](https://github.com/richo/afl-ruby)，[FuzzBert](https://github.com/krypt/FuzzBert)，或许还有一些我们遗漏了的工具。然而，所有这些工具似乎要么未维护，要么难以使用，要么功能不足，要么以上问题都有。为了解决这些挑战，Ruzzy基于三个原则构建：
 - en: Fuzz pure Ruby code and Ruby C extensions
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 模糊测试纯Ruby代码和Ruby C扩展
 - en: Make fuzzing easy by providing a RubyGems installation process and simple interface
   id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过提供一个RubyGems安装过程和简单界面，使模糊测试变得简单。
 - en: Integrate with the extensive libFuzzer ecosystem
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 与广泛的libFuzzer生态系统集成
 - en: With that, let’s give this thing a test drive.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们来试一下这个工具。
 - en: Installing and running Ruzzy
   id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装和运行Ruzzy
 - en: The [Ruzzy repository](https://github.com/trailofbits/ruzzy#ruzzy) is well documented,
     so this post will provide an abridged version of installing and running the tool.
     The goal here is to provide a quick overview of what using Ruzzy looks like. For
@@ -122,6 +152,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Ruzzy存储库](https://github.com/trailofbits/ruzzy#ruzzy)有很好的文档，因此本文将提供一个安装和运行工具的简要版本。本文的目标是快速概述使用Ruzzy的情况。如需更多信息，请查阅存储库。'
 - en: First things first, Ruzzy requires a Linux environment and a recent version
     of Clang (we’ve tested back to version 14.0.0). Releases of Clang can be found
     on its [GitHub releases](https://github.com/llvm/llvm-project/releases) page.
@@ -132,52 +163,64 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，Ruzzy需要Linux环境和最新版本的Clang（我们已测试到版本14.0.0）。Clang的发布版本可以在其[GitHub发布页面](https://github.com/llvm/llvm-project/releases)找到。如果您使用的是Mac或Windows计算机，则可以将Docker
+    Desktop用作您的Linux环境，Mac上的安装方法见[这里](https://docs.docker.com/desktop/install/mac-install/)，Windows上的安装方法见[这里](https://docs.docker.com/desktop/install/windows-install/)。然后，您可以使用Ruzzy的[Docker开发环境](https://github.com/trailofbits/ruzzy#developing)来运行该工具。现在，让我们开始吧。
 - en: 'Run the following command to install Ruzzy from [RubyGems](https://rubygems.org/gems/ruzzy):'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行以下命令从[RubyGems](https://rubygems.org/gems/ruzzy)安装Ruzzy：
 - en: '[PRE0]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: These environment variables ensure the tool is compiled and installed correctly.
     They will be explored in greater detail later in this post. Make sure to update
     the `/path/to` portions to point to your `clang` installation.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些环境变量确保工具正确编译和安装。稍后将更详细地探讨它们。请确保更新`/path/to`部分，以指向您的`clang`安装位置。
 - en: Fuzzing Ruby C extensions
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 模糊测试Ruby C扩展
 - en: To facilitate testing the tool, Ruzzy includes a [“dummy” C extension](https://github.com/trailofbits/ruzzy/blob/main/ext/dummy/dummy.c)
     with a heap-use-after-free bug. This section will demonstrate using Ruzzy to fuzz
     this vulnerable C extension.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了方便测试工具，Ruzzy包含一个[“虚拟”C扩展](https://github.com/trailofbits/ruzzy/blob/main/ext/dummy/dummy.c)，其中包含一个堆使用后释放漏洞。本节将演示如何使用Ruzzy对这个易受攻击的C扩展进行模糊测试。
 - en: 'First, we need to configure Ruzzy’s required [sanitizer options](https://github.com/google/sanitizers/wiki/SanitizerCommonFlags):'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要配置Ruzzy所需的[消毒器选项](https://github.com/google/sanitizers/wiki/SanitizerCommonFlags)。
 - en: '[PRE1]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: (See the [Ruzzy README](https://github.com/trailofbits/ruzzy#getting-started)
     for why these options are necessary in this context.)
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: （请参见[Ruzzy README](https://github.com/trailofbits/ruzzy#getting-started)，了解为何在此上下文中这些选项是必要的。）
 - en: 'Next, start fuzzing:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，开始模糊测试：
 - en: '[PRE2]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '`LD_PRELOAD` is required for the same reason that [Atheris requires](https://github.com/google/atheris/blob/master/native_extension_fuzzing.md#option-a-sanitizerlibfuzzer-preloads)
     it. That is, it uses a special shared object that provides access to libFuzzer’s
     sanitizers. Now that Ruzzy is fuzzing, it should quickly produce a crash like
@@ -185,15 +228,18 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '`LD_PRELOAD`之所以需要，与[Atheris需要的原因](https://github.com/google/atheris/blob/master/native_extension_fuzzing.md#option-a-sanitizerlibfuzzer-preloads)相同。也就是说，它使用了一个特殊的共享对象，提供了对libFuzzer消毒器的访问。现在Ruzzy正在进行模糊测试，应该很快产生像下面这样的崩溃：'
 - en: '[PRE3]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Fuzzing pure Ruby code
   id: totrans-split-35
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 模糊测试纯Ruby代码
 - en: 'Fuzzing pure Ruby code requires two Ruby scripts: a tracer script and a fuzzing
     harness. The tracer script is required due to an implementation detail of the
     Ruby interpreter. Every tracer script will look nearly identical. The only difference
@@ -201,14 +247,18 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于模糊化纯 Ruby 代码，需要两个 Ruby 脚本：一个跟踪器脚本和一个模糊化测试工具。由于 Ruby 解释器的实现细节，需要跟踪器脚本。每个跟踪器脚本看起来几乎相同。唯一的区别是您要跟踪的
+    Ruby 脚本的名称。
 - en: 'First, the tracer script. Let’s call it `test_tracer.rb`:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是跟踪器脚本。我们称之为 `test_tracer.rb`：
 - en: '[PRE4]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Next, the fuzzing harness. A fuzzing harness wraps a fuzzing target and passes
     it to the fuzzing engine. In this case, we have a simple fuzzing target that crashes
     when it receives the input “FUZZ.” It’s a contrived example, but it demonstrates
@@ -217,26 +267,33 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是模糊化测试工具。一个模糊化测试工具包裹一个模糊化目标并将其传递给模糊化引擎。在这种情况下，我们有一个简单的模糊化目标，当接收到“FUZZ”输入时会崩溃。这是一个刻意制造的示例，但它展示了
+    Ruzzy 发现最大化代码覆盖并产生崩溃的输入的能力。我们称这个工具为 `test_harness.rb`：
 - en: '[PRE5]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'You can start the fuzzing process with the following command:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以使用以下命令开始模糊化过程：
 - en: '[PRE6]'
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'This should quickly produce a crash like the following:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该快速产生像下面这样的崩溃：
 - en: '[PRE7]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Ruzzy used libFuzzer’s coverage-guided instrumentation to discover the input
     (“FUZZ”) that produces a crash. This is one of Ruzzy’s key contributions: coverage-guided
     support for pure Ruby code. We will discuss coverage support and more in the next
@@ -244,11 +301,13 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: Ruzzy 使用 libFuzzer 的覆盖导向仪器化来发现会导致崩溃的输入（“FUZZ”）。这是 Ruzzy 的一个关键贡献之一：支持纯 Ruby 代码的覆盖支持。我们将在下一节讨论覆盖支持及更多内容。
 - en: Interesting implementation details
   id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有趣的实现细节
 - en: 'You don’t need to understand this section to use Ruzzy, but fuzzing can often
     be more art than science, so we wanted to share some details to help demystify
     this dark art. We certainly learned a lot from the blog posts describing [Atheris](https://security.googleblog.com/2020/12/how-atheris-python-fuzzer-works.html)
@@ -260,17 +319,23 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 您不需要理解这一节就能使用 Ruzzy，但模糊化通常更像是艺术而不是科学，因此我们想分享一些细节来帮助揭开这种神秘的艺术。我们当然从描述 [Atheris](https://security.googleblog.com/2020/12/how-atheris-python-fuzzer-works.html)
+    和 [Jazzer](https://www.code-intelligence.com/blog/java-fuzzing-with-jazzer) 的博客文章中学到了很多，因此我们觉得应该继续分享。当然，创建这样一个工具涉及许多有趣的细节，但我们将专注于三个方面：创建
+    Ruby 模糊化测试工具，用 libFuzzer 编译 Ruby C 扩展，以及为纯 Ruby 代码添加覆盖支持。
 - en: Creating a Ruby fuzzing harness
   id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 创建一个 Ruby 模糊化测试工具
 - en: 'One of the first things you need when embarking on a fuzzing campaign is a
     fuzzing harness. The Trail of Bits Testing Handbook [defines a fuzzing harness](https://appsec.guide/docs/fuzzing/#terminology)
     as follows:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始模糊化活动时，首先需要的是一个模糊化测试工具。Trail of Bits 测试手册 [定义了模糊化测试工具](https://appsec.guide/docs/fuzzing/#terminology)
+    如下：
 - en: A harness handles the test setup for a given target. The harness wraps the software
     and initializes it such that it is ready for executing test cases. A harness integrates
     a target into a testing environment.
@@ -278,6 +343,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一个测试工具用于给定目标的测试设置。该工具包裹软件并初始化，使其准备好执行测试用例。一个测试工具集成目标到测试环境中。
 - en: 'When fuzzing Ruby code, naturally we want to write our fuzzing harness in Ruby,
     too. This speaks to goal number 2 from the beginning of this post: make fuzzing
     Ruby simple and easy. However, a problem arises when we consider that libFuzzer
@@ -287,6 +353,9 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 当模糊化 Ruby 代码时，我们自然也希望用 Ruby 编写我们的模糊化测试工具。这与本文开头的第二个目标相符：使模糊化 Ruby 简单而容易。然而，当考虑到
+    libFuzzer 是用 C/C++ 编写的时，会遇到一个问题。在 [使用 libFuzzer 作为库](https://llvm.org/docs/LibFuzzer.html#using-libfuzzer-as-a-library)
+    时，我们需要将一个 C 函数指针传递给 `LLVMFuzzerRunDriver` 来启动模糊化过程。如何将任意的 Ruby 代码传递给 C/C++ 库呢？
 - en: 'Using a foreign function interface (FFI) like [Ruby-FFI](https://github.com/ffi/ffi)
     is one possibility. However, FFIs are generally used to go the other direction:
     calling C/C++ code from Ruby. [Ruby C extensions](https://guides.rubygems.org/gems-with-extensions/)
@@ -298,6 +367,11 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用类似 [Ruby-FFI](https://github.com/ffi/ffi) 的外部函数接口（FFI）是一种可能性。但是，通常情况下 FFI
+    用于反向操作：从 Ruby 调用 C/C++ 代码。[Ruby C 扩展](https://guides.rubygems.org/gems-with-extensions/)
+    似乎是另一种可能性，但我们仍然需要找到一种方法将任意 Ruby 代码传递给 C 扩展。在深入研究 Ruby C 扩展 API 后，我们发现了 [`rb_proc_call`
+    函数](https://github.com/ruby/ruby/blob/v3_3_0/proc.c#L985-L986)。这个函数使我们能够使用 Ruby
+    C 扩展来连接 Ruby 代码和 libFuzzer C/C++ 实现之间的鸿沟。
 - en: 'In Ruby, a [`Proc`](https://ruby-doc.org/3.3.0/Proc.html) is “an encapsulation
     of a block of code, which can be stored in a local variable, passed to a method
     or another `Proc`, and can be called. `Proc` is an essential concept in Ruby and
@@ -307,10 +381,14 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Ruby 中，[`Proc`](https://ruby-doc.org/3.3.0/Proc.html) 是“一段代码块的封装，可以存储在局部变量中，传递给方法或另一个
+    `Proc`，并且可以被调用。” `Proc` 是 Ruby 中一个核心的函数式编程特性概念。非常完美，这正是我们需要的。在 Ruby 中，所有 lambda
+    函数也是 `Proc`，因此我们可以编写如下的模糊测试挂载：
 - en: '[PRE8]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'In this example, the `json_target` lambda function is passed to `Ruzzy.fuzz`.
     Behind the scenes Ruzzy uses two language features to bridge the gap between Ruby
     code and a C interface: Ruby `Proc`s and C function pointers. First, Ruzzy calls
@@ -322,16 +400,23 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，`json_target` lambda 函数被传递给 `Ruzzy.fuzz`。在幕后，Ruzzy 使用两种语言特性来连接 Ruby 代码和
+    C 接口：Ruby `Proc` 和 C 函数指针。首先，Ruzzy 使用函数指针调用 `LLVMFuzzerRunDriver`。然后，每当调用该函数指针时，它会调用
+    `rb_proc_call` 来执行 Ruby 目标。这使得 C/C++ 模糊引擎可以重复使用模糊数据调用 Ruby 目标。考虑上述例子，由于所有 lambda
+    函数都是 `Proc`，这实现了从 C/C++ 库调用任意 Ruby 代码的目标。
 - en: As with all good, high-level overviews, this is an oversimplification of how
     Ruzzy works. You can see the exact implementation in [`cruzzy.c`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/ext/cruzzy/cruzzy.c).
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 如同所有好的高层次概述一样，这是对 Ruzzy 工作原理的简化描述。您可以在 [`cruzzy.c`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/ext/cruzzy/cruzzy.c)
+    中查看确切的实现。
 - en: Compiling Ruby C extensions with libFuzzer
   id: totrans-split-57
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用 libFuzzer 编译 Ruby C 扩展
 - en: 'Before we proceed, it’s important to understand that there are two Ruby C extensions
     we are considering: the Ruzzy C extension that hooks into the libFuzzer fuzzing
     engine and the Ruby C extensions that become our fuzzing targets. The previous
@@ -341,6 +426,8 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在继续之前，重要的是要理解我们考虑的两个 Ruby C 扩展：连接到 libFuzzer 模糊引擎的 Ruzzy C 扩展以及成为我们模糊测试目标的 Ruby
+    C 扩展。前一节讨论了 Ruzzy C 扩展的实现。本节讨论了 Ruby C 扩展目标。这些是使用 Ruby C 扩展的第三方库，我们希望对其进行模糊测试。
 - en: To fuzz a Ruby C extension, we need a way to compile the extension with libFuzzer
     and its associated sanitizers. Compiling C/C++ code for fuzzing requires [special
     compile-time flags](https://llvm.org/docs/LibFuzzer.html#fuzzer-usage), so we
@@ -350,6 +437,8 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 要模糊测试一个 Ruby C 扩展，我们需要一种方法来使用 libFuzzer 和其相关的检查器编译扩展。为了进行模糊测试，需要在 C/C++ 代码的编译过程中添加[特殊的编译时标志](https://llvm.org/docs/LibFuzzer.html#fuzzer-usage)，因此我们需要一种方式动态地将这些标志注入到
+    C 扩展的编译过程中。动态添加这些标志是很重要的，因为我们希望在不修改底层代码的情况下安装和模糊测试 Ruby gems。
 - en: 'The [`mkmf`](https://ruby-doc.org/3.3.0/stdlibs/mkmf/MakeMakefile.html), or
     MakeMakefile, module is the primary interface for compiling Ruby C extensions.
     The `gem install` process calls a gem-specific Ruby script, typically named `extconf.rb`,
@@ -357,10 +446,14 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '[`mkmf`](https://ruby-doc.org/3.3.0/stdlibs/mkmf/MakeMakefile.html)，或者 MakeMakefile
+    模块，是编译 Ruby C 扩展的主要接口。`gem install` 过程调用一个特定于 gem 的 Ruby 脚本，通常命名为 `extconf.rb`，该脚本再调用
+    `mkmf` 模块。该过程大致如下：'
 - en: '[PRE9]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Unfortunately, by default `mkmf` does not respect common C/C++ compilation
     environment variables like `CC`, `CXX`, and `CFLAGS`. However, we can force this
     behavior by setting the following environment variable: `MAKE="make --environment-overrides"`.
@@ -370,10 +463,14 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，默认情况下，`mkmf` 不会遵循常见的 C/C++ 编译环境变量如 `CC`、`CXX` 和 `CFLAGS`。但是，我们可以通过设置以下环境变量来强制此行为：`MAKE="make
+    --environment-overrides"`。这告诉 `make` 环境变量优先于 `Makefile` 变量。有了这个设置，我们可以使用以下命令安装包含
+    C 扩展的 Ruby gem，并附加适当的模糊测试标志：
 - en: '[PRE10]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The gem we’re installing is `msgpack`, an example of a gem containing a [C extension
     component](https://github.com/msgpack/msgpack-ruby/tree/master/ext/msgpack). Since
     it deserializes binary data, it makes a great fuzzing target. From here, if we
@@ -382,17 +479,22 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们正在安装的 gem 是 `msgpack`，一个包含[C 扩展组件](https://github.com/msgpack/msgpack-ruby/tree/master/ext/msgpack)的示例。由于它可以反序列化二进制数据，因此非常适合作为模糊测试的目标。接下来，如果我们想对
+    `msgpack` 进行模糊测试，我们将创建一个 `msgpack` 模糊测试工具并启动模糊测试过程。
 - en: If you’d like to find more fuzzing targets, searching GitHub for [`extconf.rb`
     files](https://github.com/search?q=path%3A**%2Fextconf.rb&type=code) is one of
     the best ways we’ve found to identify good C extension candidates.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想找更多的模糊目标，可以搜索 GitHub 上的[`extconf.rb`文件](https://github.com/search?q=path%3A**%2Fextconf.rb&type=code)，这是我们发现优秀
+    C 扩展候选项的最佳方式之一。
 - en: Adding coverage support for pure Ruby code
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 为纯 Ruby 代码添加覆盖支持
 - en: Instead of Ruby C extensions, what if we want to fuzz pure Ruby code? That is,
     Ruby projects that do not contain a C extension component. If modifying install-time
     functionality via lengthy, not-officially-supported environment variables is a
@@ -401,6 +503,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果不是 Ruby C 扩展，而是想对纯 Ruby 代码进行模糊测试怎么办？也就是说，没有包含 C 扩展组件的 Ruby 项目。如果通过修改安装时功能来设置一些冗长且官方不支持的环境变量是一个巧妙的解决方案，那么接下来的内容可能就不适合胆小者了。但是，嘿，有一个能工作的解决方案，即使有些*艺术上的自由*也总比没有解决方案强。
 - en: First, we need to cover the motivation for coverage support. Fuzzers derive
     some of their [“smarts”](https://blog.trailofbits.com/2017/02/16/the-smart-fuzzer-revolution/)
     from analyzing coverage information. This is a lot like code coverage information
@@ -412,6 +515,8 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要解释覆盖支持的动机。模糊测试工具通过分析覆盖信息获得一些[“智能”](https://blog.trailofbits.com/2017/02/16/the-smart-fuzzer-revolution/)。这与单元测试和集成测试提供的代码覆盖信息非常相似。在模糊测试过程中，大多数模糊测试工具优先选择可以触发新代码分支的输入。这样做可以[增加发现](https://mboehme.github.io/paper/ICSE22.pdf)崩溃和错误的可能性。对于模糊测试
+    Ruby C 扩展，Ruzzy 可以将 C 代码的覆盖工具化处理交给 Clang。而对于纯 Ruby 代码，我们则无法这样做。
 - en: 'While implementing Ruzzy, we discovered one supremely useful piece of functionality:
     the Ruby [`Coverage`](https://ruby-doc.org/3.3.0/exts/coverage/Coverage.html)
     module. The problem is that it cannot easily be called in real time by C extensions.
@@ -425,6 +530,10 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实现 Ruzzy 过程中，我们发现了一个极其有用的功能：Ruby [`Coverage`](https://ruby-doc.org/3.3.0/exts/coverage/Coverage.html)
+    模块。问题在于，它不能轻易地被 C 扩展实时调用。回想一下，Ruzzy 使用自己的 C 扩展将模糊测试代码传递给 `LLVMFuzzerRunDriver`。为了实现我们的纯
+    Ruby 覆盖率“智能”，我们需要在模糊引擎执行时实时传递 Ruby 覆盖信息给 libFuzzer。`Coverage` 模块非常适合在执行的起始点和结束点已知时使用，但在需要持续收集覆盖信息并传递给
+    libFuzzer 时并不适用。不过，我们知道 `Coverage` 模块必须以某种方式实现，因此我们深入研究了 Ruby 解释器的 C 实现以了解更多。
 - en: Enter Ruby event hooking. The [`TracePoint`](https://ruby-doc.org/3.3.0/TracePoint.html)
     module is the official Ruby API for listening for certain types of events like
     calling a function, returning from a routine, executing a line of code, and many
@@ -436,6 +545,9 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: Ruby 事件挂钩登场。[`TracePoint`](https://ruby-doc.org/3.3.0/TracePoint.html) 模块是官方
+    Ruby API，用于监听特定类型的事件，例如调用函数、从例程返回、执行代码行等等。当这些事件触发时，您可以执行回调函数以任何您喜欢的方式处理事件。听起来很不错，正是我们所需的。当我们尝试跟踪覆盖信息时，我们真正想做的是监听分支事件。这正是
+    `Coverage` 模块正在做的，因此我们知道它必须在某个地方存在于底层。
 - en: 'Fortunately, the public Ruby C API provides access to this event hooking functionality
     via the [`rb_add_event_hook2` function](https://github.com/ruby/ruby/blob/v3_3_0/include/ruby/debug.h#L789).
     This function takes a list of events to hook and a callback function to execute
@@ -445,14 +557,20 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，公共 Ruby C API 通过 [`rb_add_event_hook2` 函数](https://github.com/ruby/ruby/blob/v3_3_0/include/ruby/debug.h#L789)
+    提供了访问此事件挂钩功能的途径。此函数接受要挂钩的事件列表以及每当其中一个事件触发时执行的回调函数。通过稍微查看源代码，我们发现可能事件列表与 [`TracePoint`
+    模块](https://ruby-doc.org/3.3.0/TracePoint.html#class-TracePoint-label-Events)
+    中的列表非常相似：
 - en: '[PRE11]'
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[Ruby event hook types](https://github.com/ruby/ruby/blob/v3_3_0/include/ruby/internal/event.h#L37-L40)'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Ruby 事件挂钩类型](https://github.com/ruby/ruby/blob/v3_3_0/include/ruby/internal/event.h#L37-L40)'
 - en: 'If you keep digging, you’ll notice a distinct lack of one type of event: coverage
     events. But why? The `Coverage` module appears to be handling these events. If
     you continue digging, you’ll find that there are in fact coverage events, and
@@ -461,14 +579,18 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您继续深入挖掘，您会注意到一种事件明显缺失：覆盖事件。但为什么呢？`Coverage` 模块似乎正在处理这些事件。如果您继续挖掘，您将发现实际上确实存在覆盖事件，这就是
+    `Coverage` 模块的工作原理，但您无法访问它们。它们被定义为 Ruby C API 的私有、内部专用部分：
 - en: '[PRE12]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '[Private coverage event hook types](https://github.com/ruby/ruby/blob/v3_3_0/vm_core.h#L2182-L2184)'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '[私有覆盖率事件挂钩类型](https://github.com/ruby/ruby/blob/v3_3_0/vm_core.h#L2182-L2184)'
 - en: That’s the bad news. The good news is that we can define the `RUBY_EVENT_COVERAGE_BRANCH`
     event hook ourselves and set it to the correct, constant value in our code, and
     `rb_add_event_hook2` will still respect it. So we can use Ruby’s built-in coverage
@@ -481,10 +603,12 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是个坏消息。好消息是，我们可以自定义`RUBY_EVENT_COVERAGE_BRANCH`事件钩子并在代码中设置正确的常量值，`rb_add_event_hook2`仍然会尊重它。因此，我们仍然可以使用Ruby内置的覆盖率跟踪！我们可以实时将这些数据输入到libFuzzer中，它将相应地进行模糊测试。讨论如何将这些数据输入到libFuzzer的具体方法超出了本文的范围，但如果你想了解更多信息，我们使用SanitizerCoverage的[内联8位计数器](https://clang.llvm.org/docs/SanitizerCoverage.html#inline-8bit-counters)，[PC-Table](https://clang.llvm.org/docs/SanitizerCoverage.html#pc-table)和[数据流追踪](https://clang.llvm.org/docs/SanitizerCoverage.html#tracing-data-flow)。
 - en: There’s just one more thing.
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有最后一件事情。
 - en: 'During our testing, even though we added the correct event hook, we still weren’t
     successfully hooking coverage events. The `Coverage` module must be doing something
     we’re not seeing. If we call `Coverage.start(branches: true)`, per the [`Coverage`
@@ -500,6 +624,9 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '在我们的测试过程中，即使我们添加了正确的事件钩子，我们仍然无法成功挂接覆盖事件。`Coverage`模块必须在做一些我们没有看到的事情。如果我们调用`Coverage.start(branches:
+    true)`，根据[`Coverage`文档](https://ruby-doc.org/3.3.0/exts/coverage/Coverage.html#module-Coverage-label-Branches+Coverage)，事情就会按预期工作。这里的细节涉及在Ruby解释器源代码中进行大量侦探工作，所以我们将直接说重点。据我们所知，调用`Coverage.start`实际上调用了`Coverage.setup`，在Ruby解释器中初始化了一些全局状态，从而允许挂接覆盖事件。这种初始化功能也是私有的、仅限内部使用的API的一部分。我们能想到的最简单的解决方案是在开始模糊测试之前调用`Coverage.setup(branches:
+    true)`。有了这个，我们开始如预期地成功挂接覆盖事件。'
 - en: Having coverage events included in the standard library made our lives a lot
     easier. Without it, we may have had to resort to much more invasive and cumbersome
     solutions like modifying the Ruby code the interpreter sees in real time. However,
@@ -508,6 +635,8 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 将覆盖事件包含在标准库中大大简化了我们的生活。如果没有这个功能，我们可能不得不采取更加侵入性和繁琐的解决方案，比如实时修改Ruby解释器看到的代码。然而，如果挂接覆盖事件是官方公开的Ruby
+    C API的一部分，我们的生活可能会更加轻松。我们目前正在跟踪此请求：[`trailofbits/ruzzy#9`](https://github.com/trailofbits/ruzzy/issues/9)。
 - en: Again, the information presented here is a slight oversimplification of the
     implementation details; if you’d like to learn more, then [`cruzzy.c`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/ext/cruzzy/cruzzy.c)
     and [`ruzzy.rb`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/lib/ruzzy.rb)
@@ -515,11 +644,13 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，这里提供的信息略微简化了实现细节；如果你想了解更多，请查看[`cruzzy.c`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/ext/cruzzy/cruzzy.c)和[`ruzzy.rb`](https://github.com/trailofbits/ruzzy/blob/v0.7.0/lib/ruzzy.rb)，这两个是很好的起点。
 - en: Find more Ruby bugs with Ruzzy
   id: totrans-split-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 使用Ruzzy找到更多的Ruby漏洞
 - en: We faced some interesting challenges while building this tool and attempted
     to hide much of the complexity behind a simple, easy to use interface. When using
     the tool, the implementation details should not become a hindrance or an annoyance.
@@ -530,6 +661,8 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在构建这个工具的过程中，我们面临了一些有趣的挑战，并试图将大部分复杂性隐藏在一个简单易用的界面背后。在使用该工具时，实现细节不应成为阻碍或烦恼。然而，在这里详细讨论它们可能会推动下一个模糊测试工具的实现或模糊测试社区的进步。如前所述，[Atheris](https://security.googleblog.com/2020/12/how-atheris-python-fuzzer-works.html)
+    和 [Jazzer](https://www.code-intelligence.com/blog/java-fuzzing-with-jazzer) 的文章对我们产生了很大的启发，所以我们决定将这种影响传递下去。
 - en: Building the tool is just the beginning. The real value comes when we start
     using the tool to find bugs. Like Atheris for Python, and Jazzer for Java before
     it, Ruzzy is an attempt to bring a higher level of software assurance to the Ruby
@@ -538,27 +671,33 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建工具只是开始。真正的价值在于我们开始使用工具找到漏洞。像Atheris为Python，以及之前的Jazzer为Java一样，Ruzzy试图为Ruby社区带来更高级别的软件保障。如果您使用Ruzzy找到了漏洞，请随时提交一个针对我们的[奖杯橱窗](https://github.com/trailofbits/ruzzy#trophy-case)的PR，附上问题链接。
 - en: 'If you’d like to read more about our work on fuzzing, check out the following
     posts:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想了解更多关于我们在模糊测试方面的工作，请查阅以下文章：
 - en: '[Contact us](https://www.trailofbits.com/contact/) if you’re interested in
     custom fuzzing for your project.'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '[联系我们](https://www.trailofbits.com/contact/) 如果您对为您的项目定制模糊测试感兴趣。'
 - en: 'Like this:'
   id: totrans-split-87
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 像这样：
 - en: Like Loading...
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 正在加载...
 - en: '*Related*'
   id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*相关*'
