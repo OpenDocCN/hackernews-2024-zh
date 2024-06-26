@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:00:54'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:00:54
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Serving a Website From a Git Repo Without Cloning It - mediocregopher's lil
     web corner
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从Git Repo提供网站而无需克隆 - mediocregopher的小小网络角落
 - en: 来源：[https://mediocregopher.com/posts/git-proxy](https://mediocregopher.com/posts/git-proxy)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://mediocregopher.com/posts/git-proxy](https://mediocregopher.com/posts/git-proxy)
 - en: '[PRE0]'
   id: totrans-split-6
   prefs: []
@@ -34,20 +40,25 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '**mediocregopher**的小小网络角落'
 - en: '[Home](/)  //  [Posts](/posts/)  /  [Follow](/follow)  /  [RSS](/feed.xml)
      //  [Source](https://dev.mediocregopher.com/mediocre-blog/)  /  [License](/static/wtfpl.txt)'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[主页](/)  //  [文章](/posts/)  /  [关注](/follow)  /  [RSS](/feed.xml)  //  [源码](https://dev.mediocregopher.com/mediocre-blog/)
+     /  [许可证](/static/wtfpl.txt)'
 - en: Serving a Website From a Git Repo Without Cloning It
   id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从Git Repo提供网站而无需克隆
 - en: '* * *'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: It's fairly common to use git repositories as a vehicle for serving websites.
     The webdev pushes their changes to some branch of a publicly available git repository,
     and some web server somewhere serves the current tip of that branch as the website.
@@ -55,6 +66,8 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用git存储库作为提供网站的工具是相当常见的。Webdev将更改推送到公共git存储库的某个分支，然后某个web服务器在某个地方将该分支的当前指向作为网站提供。Github
+    Pages将是其中最著名的例子。
 - en: The domani reverse proxy also supports serving a website from a git repository.
     It previously did so by automatically cloning the repository locally, and periodically
     pulling changes down. This worked fine enough, but I figured it could be simplified
@@ -64,15 +77,18 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: domani反向代理也支持从git存储库提供网站。以前是通过自动在本地克隆存储库，并定期拉取更改来实现的。这样工作得足够好，但我觉得可以进一步简化，以便除所需分支的当前哈希以外不需要任何本地状态。本文将首先通过git的内部来解释如何实现这一点。
 - en: '[Domani](https://code.betamike.com/micropelago/domani)'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Domani](https://code.betamike.com/micropelago/domani)'
 - en: 'Git Branches: What Are They?'
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Git分支：它们是什么？
 - en: 'The first thing to understand is what git branches actually are; they are a
     kind of "ref" (reference). Git tags are another kind of ref. A ref is nothing
     more than a name which points to an object hash, most likely a commit hash. You
@@ -82,6 +98,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先要了解的是git分支到底是什么；它们是一种“ref”（引用）。Git标签是引用的另一种类型。引用不过是一个指向对象哈希的名称，很可能是提交哈希。甚至在没有git工具的情况下，您也可以轻松查看git项目的引用。例如，`main`分支的当前指向可以在`.git/refs/heads/main`文件中找到：
 - en: '[PRE1]'
   id: totrans-split-16
   prefs: []
@@ -94,16 +111,19 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: Ref文件，因此分支文件，只是包含单个对象哈希的纯文本文件。当分支的当前指向发生更改时，在文件系统上唯一真正发生的变化是更改其引用文件的内容。在其核心，git实际上是一个相当简单的工具。
 - en: 'Git Objects: Friend or Foe?'
   id: totrans-split-18
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 'Git对象：朋友还是敌人？ '
 - en: We've established that a git branch points to a git object via the hash of that
     object, but what does that really mean?
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们已经确定了git分支通过该对象的哈希指向一个git对象，但这到底意味着什么？
 - en: 'There are four kinds of git object: blob, tree, commit, and tag. Regardless
     of the object''s kind, it is stored in a file named after the SHA1 of the object
     within the `.git/objects` directory. Objects are always stored compressed using
@@ -111,6 +131,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 有四种git对象：blob、tree、commit和tag。无论对象的种类如何，都存储在名为`.git/objects`的目录中的对象SHA1的文件中。对象总是使用zlib进行压缩存储，但使用的是它们的未压缩形式进行哈希计算。
 - en: This example computes the hash of the object pointed to from our previous example.
     You can see the output SHA1 is the same as the object's file name (with the first
     two characters used for a directory name, otherwise the `objects` directory would
@@ -118,6 +139,8 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 此示例计算了前面示例指向的对象的哈希。您可以看到输出的SHA1与对象的文件名相同（前两个字符用作目录名，否则`objects`目录会变得太大）。请注意使用`pigz
+    -d`进行zlib解压缩。
 - en: '[PRE2]'
   id: totrans-split-22
   prefs: []
@@ -129,6 +152,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个git提交对象的主体多多少少是纯文本，除了一个空字节用于分隔头字符串和对象内容，所以我们可以直接查看它：
 - en: '[PRE3]'
   id: totrans-split-24
   prefs: []
@@ -141,6 +165,8 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 如从标题中所见，问题中的对象是一个提交（但我们已知道这一点）。`264`表示标题后文件剩余部分的大小。跟随`264`的将是一个空字节，但是空字节已被`tr
+    '\0' '\n'`替换为换行符。
 - en: Most of the rest of the file should be familiar. The author is listed, along
     with the commit's description which makes up the tail of the file. The parent
     refers to the previous commit in the chain by its object hash. The tree is perhaps
@@ -149,6 +175,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 文件的大部分其余内容应该是熟悉的。列出了作者以及组成文件尾部的提交描述。父提交引用了链中前一个提交的对象哈希。除非你之前已经深入研究过git的内部，否则树可能不太熟悉，但它对于我们的目的来说是最有趣的部分。
 - en: Contrary to how git usually presents commits to its users, git commits do not
     actually contain a diff from the previous to the current state of the repository.
     Each commit instead contains a reference to a tree, where each tree fully describes
@@ -158,11 +185,14 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 与git通常向其用户展示提交的方式相反，git提交实际上并不包含从先前状态到当前存储库状态的差异。每个提交都包含对一个树的引用，其中每个树都完整描述了存储库文件在该提交时的状态。当您执行像`git
+    show`这样的操作时看到的是实时生成的前后树之间的差异。
 - en: 'As mentioned, trees are themselves another kind of git object, and so are referenced
     and queried just like commits. Let''s look at the tree for our commit:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如提到的，树本身是另一种git对象，因此像提交一样被引用和查询。让我们来看看我们提交的树：
 - en: '[PRE4]'
   id: totrans-split-29
   prefs: []
@@ -174,6 +204,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 哎呀，看起来树并不像提交那样简单。幸运的是，git附带了一个方便的工具`cat-file`，用于直接查看对象并漂亮打印其内容：
 - en: '[PRE5]'
   id: totrans-split-31
   prefs: []
@@ -186,6 +217,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 好多了。我们可以看到树包含一个条目列表，每个条目表示一个文件（blob）或子目录（tree），以及文件/子目录的权限和名称。查看`static`子目录对象的内容时，我们发现又一个树：
 - en: '[PRE6]'
   id: totrans-split-33
   prefs: []
@@ -202,17 +234,20 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 从中我们可以看出git树是如何用来描述存储库的全部内容的，只需一个单一的哈希。如果存储库中的任何文件发生更改，那么其相关的blob对象的哈希将发生变化，这将改变其所在树中的相关条目，进而改变树对象的哈希，这将改变树的父目录中的条目，依此类推。变化向上传播到根树对象及其哈希。然后将此哈希存储在提交中，这使得每个提交能够轻松表示整个存储库的状态。
 - en: (This pattern of using a recursively hashed tree to uniquely identify an arbitrarily
     large amount of hierarchical data is called a Merkle tree.)
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: （使用递归哈希树来唯一标识任意大量层次数据的这种模式称为默克尔树。）
 - en: 'Anyway, let''s get to the goods: how do we view the files themselves? Each
     file stored as a blob object. Let''s check out the `foo.html` blob we found in
     our last example:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 不管怎样，让我们看看实际内容：我们如何查看文件本身？每个文件存储为一个blob对象。让我们来查看我们上一个示例中找到的`foo.html` blob：
 - en: '[PRE7]'
   id: totrans-split-37
   prefs: []
@@ -223,20 +258,24 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: Blob对象与提交对象类似，易于解析；只需一个标题，一个空字节，然后是文件内容。
 - en: That's all there really is to git objects (ignoring tags, we don't need them
     today). Armed with this knowledge we can continue on towards our ultimate goal.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是git对象的全部内容（忽略标签，今天我们不需要它们）。掌握了这些知识，我们可以继续朝着我们的最终目标前进。
 - en: Remote Repositories
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 远程存储库
 - en: 'When cloning a git repository you''ve probably done something like:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 当克隆git存储库时，您可能做过类似的操作：
 - en: '[PRE8]'
   id: totrans-split-42
   prefs: []
@@ -354,10 +393,12 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想看一个关于这个想法的实现示例，可以查看我为 Domani 编写的 rust 实现：
 - en: '[git.rs](https://code.betamike.com/micropelago/domani/src/commit/e416a766682af3b78538854da09eee62baaf3762/src/origin/git.rs)'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '[git.rs](https://code.betamike.com/micropelago/domani/src/commit/e416a766682af3b78538854da09eee62baaf3762/src/origin/git.rs)'
 - en: Note that I was able to take advantage of the excellent gix crate to help me
     with decoding git objects. If your language of choice doesn't have a git object
     parsing library available you'll have to parse the objects manually, but honestly
@@ -365,14 +406,17 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，我能够利用出色的 gix crate 来帮助我解码 git 对象。如果你选择的编程语言没有可用的 git 对象解析库，你就必须手动解析这些对象，但老实说，这并不应该太难。
 - en: 'Finally, here''s a sample website being served using this technique:'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，这里是使用这种技术提供的一个示例网站：
 - en: '[Link](https://test.domani.micropelago.net/)'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '[链接](https://test.domani.micropelago.net/)'
 - en: That's it! Even if this is a pretty niche use-case and doesn't change the world,
     I hope you still found it useful as an introduction to git's internals, and perhaps
     as a jumping off point for your own ideas of how git can be abused to do interesting
@@ -380,19 +424,24 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样！即使这是一个相当小众的用例，并且并没有改变世界，我希望你仍然觉得它对理解 git 的内部机制有所帮助，并且可能会作为你自己想要滥用 git 进行有趣实验的一个起点。
 - en: '*Published 2024-02-17*'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '*发布于 2024-02-17*'
 - en: '* * *'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'This site can also be accessed via the gemini protocol: [gemini://mediocregopher.com/](gemini://mediocregopher.com/)'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 该网站也可以通过**gemini 协议**访问：[gemini://mediocregopher.com/](gemini://mediocregopher.com/)
 - en: '[What is gemini?](/posts/gemspace-tour)'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '[什么是 gemini?](/posts/gemspace-tour)'
