@@ -2,41 +2,50 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 13:21:15'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 13:21:15'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Robust generic functions on slices - The Go Programming Language
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 切片上的健壮通用函数 - Go编程语言
 - en: 来源：[https://go.dev/blog/generic-slice-functions](https://go.dev/blog/generic-slice-functions)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://go.dev/blog/generic-slice-functions](https://go.dev/blog/generic-slice-functions)
 - en: Robust generic functions on slices
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 切片上的健壮通用函数
 - en: Valentin Deleplace
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 瓦伦丁·德莱普拉斯
 - en: 22 February 2024
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年2月22日
 - en: The [slices](/pkg/slices) package provides functions that work for slices of
     any type. In this blog post we’ll discuss how you can use these functions more
     effectively by understanding how slices are represented in memory and how that
@@ -45,46 +54,55 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[切片](/pkg/slices)包提供了适用于任何类型切片的函数。在本博文中，我们将讨论如何通过理解切片在内存中的表示以及对垃圾回收器的影响，更有效地使用这些函数，并且我们将介绍我们最近如何调整这些函数以使其更少令人惊讶。'
 - en: 'With [Type parameters](/blog/deconstructing-type-parameters) we can write functions
     like [slices.Index](/pkg/slices#Index) once for all types of slices of comparable
     elements:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 借助[类型参数](/blog/deconstructing-type-parameters)，我们可以为所有可比较元素类型的切片编写像[slices.Index](/pkg/slices#Index)这样的函数：
 - en: '[PRE0]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: It is no longer necessary to implement `Index` again for each different type
     of element.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 不再需要为每种不同类型的元素重新实现`Index`。
 - en: 'The [slices](/pkg/slices) package contains many such helpers to perform common
     operations on slices:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '[切片](/pkg/slices)包包含许多这样的辅助函数，用于执行切片的常见操作：'
 - en: '[PRE1]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Several new functions (`Insert`, `Replace`, `Delete`, etc.) modify the slice.
     To understand how they work, and how to properly use them, we need to examine
     the underlying structure of slices.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 几个新函数（`Insert`、`Replace`、`Delete`等）修改了切片。为了理解它们的工作原理以及如何正确使用它们，我们需要检查切片的基本结构。
 - en: A slice is a view of a portion of an array. [Internally](/blog/slices-intro),
     a slice contains a pointer, a length, and a capacity. Two slices can have the
     same underlying array, and can view overlapping portions.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 切片是数组的一部分视图。[内部](/blog/slices-intro)，一个切片包含一个指针、长度和容量。两个切片可以有相同的底层数组，并且可以查看重叠的部分。
 - en: 'For example, this slice `s` is a view on 4 elements of an array of size 6:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，这个切片`s`是一个大小为6的数组的4个元素的视图：
 - en: If a function changes the length of a slice passed as a parameter, then it needs
     to return a new slice to the caller. The underlying array may remain the same
     if it doesn’t have to grow. This explains why [append](/blog/slices) and `slices.Compact`
@@ -92,6 +110,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个函数改变了作为参数传递的切片的长度，则需要向调用者返回一个新的切片。如果不需要增长底层数组，它可能保持不变。这解释了为什么[append](/blog/slices)和`slices.Compact`返回一个值，但仅仅重新排序元素的`slices.Sort`则不返回值。
 - en: 'Consider the task of deleting a portion of a slice. Prior to generics, the
     standard way to delete the portion `s[2:5]` from the slice `s` was to call the
     [append](/ref/spec#Appending_and_copying_slices) function to copy the end portion
@@ -99,38 +118,46 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑删除切片部分的任务。在泛型之前，从切片`s`中删除部分`s[2:5]`的标准方法是调用[append](/ref/spec#Appending_and_copying_slices)函数将末端部分复制到中间部分：
 - en: '[PRE2]'
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The syntax was complex and error-prone, involving subslices and a variadic
     parameter. We added [slice.Delete](/pkg/slices#Delete) to make it easier to delete
     elements:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 语法复杂且容易出错，涉及子切片和可变参数。我们添加了[slice.Delete](/pkg/slices#Delete)以使删除元素变得更容易：
 - en: '[PRE3]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The one-line function `Delete` more clearly expresses the programmer’s intent.
     Let’s consider a slice `s` of length 6 and capacity 8, containing pointers:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个一行的函数`Delete`更清晰地表达了程序员的意图。让我们考虑一个长度为6且容量为8的切片`s`，包含指针：
 - en: 'This call deletes the elements at `s[2]`, `s[3]`, `s[4]` from the slice `s`:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个调用从切片`s`中删除了索引为`2`、`3`、`4`的元素：
 - en: '[PRE4]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The gap at the indices 2, 3, 4 is filled by shifting the element `s[5]` to the
     left, and setting the new length to `3`.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 索引为2、3、4的间隙由将元素`s[5]`向左移动来填充，并将新长度设置为`3`。
 - en: '`Delete` need not allocate a new array, as it shifts the elements in place.
     Like `append`, it returns a new slice. Many other functions in the `slices` package
     follow this pattern, including `Compact`, `CompactFunc`, `DeleteFunc`, `Grow`,
@@ -138,6 +165,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '`Delete`不需要为新数组分配空间，因为它在原地移动元素。与`append`类似，它返回一个新切片。`slices`包中的许多其他函数也遵循这种模式，包括`Compact`、`CompactFunc`、`DeleteFunc`、`Grow`、`Insert`和`Replace`。'
 - en: 'When calling these functions we must consider the original slice invalid, because
     the underlying array has been modified. It would be a mistake to call the function
     but ignore the return value:'
@@ -148,6 +176,7 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: A problem of unwanted liveness
   id: totrans-split-30
   prefs:
@@ -249,6 +278,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: then you may incorrectly assume that `s` does not contain any nil pointer. [Example
     in the Go Playground](/play/p/NDHuO8vINHv).
   id: totrans-split-47
@@ -262,6 +292,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: then you may incorrectly assume that `s` is properly sorted and compacted. [Example](/play/p/eFQIekiwlnu).
   id: totrans-split-50
   prefs: []
@@ -275,6 +306,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: then you may incorrectly assume that `s` does not contain any nil pointer. [Example](/play/p/rDxWmJpLOVO).
   id: totrans-split-53
   prefs: []
@@ -288,6 +320,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: then you may incorrectly assume that `s` does not contain any nil pointer. [Example](/play/p/KSpVpkX8sOi).
   id: totrans-split-56
   prefs: []
