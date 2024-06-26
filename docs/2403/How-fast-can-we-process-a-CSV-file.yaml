@@ -2,41 +2,50 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:45:43'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:45:43
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How fast can we process a CSV file
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我们能多快地处理一个 CSV 文件
 - en: 来源：[https://datapythonista.me/blog/how-fast-can-we-process-a-csv-file](https://datapythonista.me/blog/how-fast-can-we-process-a-csv-file)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://datapythonista.me/blog/how-fast-can-we-process-a-csv-file](https://datapythonista.me/blog/how-fast-can-we-process-a-csv-file)
 - en: 'Follow me for more content or contact for work opportunities:'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 关注我获取更多内容或联系获取工作机会：
 - en: '[Twitter](https://twitter.com/datapythonista) / [LinkedIn](https://www.linkedin.com/in/datapythonista/)'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[推特](https://twitter.com/datapythonista) / [领英](https://www.linkedin.com/in/datapythonista/)'
 - en: Introduction
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 介绍
 - en: 'Comma-separated values (CSV) are an extremely popular format to store tabular
     data because of their simplicity and how easy is to write them. The file can be
     directly read by a human, as opposed to more efficient binary formats like parquet,
@@ -44,6 +53,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 逗号分隔值（CSV）因其简单性和人类易读性而成为存储表格数据的极其流行的格式，相比更高效的二进制格式如 Parquet，它可以直接被人类阅读：
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
@@ -56,12 +66,15 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为任何数据专业人士或爱好者在某个时刻都必须处理过 CSV 文件，无论是用于练习数据集（如泰坦尼克号或鸢尾花数据集），还是用于客户从电子表格中导出的数据或其他用途。
 - en: If you care about performance, you may want to avoid CSV files. But since our
     data sources are often like our family, we can't make a choice, we'll see in this
     blog post how to process a CSV file as fast as possible.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您关心性能，可能要避免使用 CSV 文件。但由于我们的数据源通常如同我们的家人，我们不能选择，我们将在这篇博文中看到如何尽可能快地处理一个 CSV
+    文件。
 - en: 'Since I''ve been in the pandas core development team for more than 5 years,
     and a pandas user for much longer than that, I''m very biased on thinking that
     the de facto standard for many people to process a CSV file is something like
@@ -69,6 +82,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我在 pandas 核心开发团队已经超过 5 年，并且作为 pandas 用户的时间更长，我对于认为处理 CSV 文件的事实标准类似于这样有非常大的偏见：
 - en: '[PRE1]'
   id: totrans-split-14
   prefs: []
@@ -79,10 +93,12 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我认为今天这仍然是一个合理的选择，但在这篇博文中，我将展示许多其他选择，特别关注速度。
 - en: 'Before I continue, I need to make two **important disclaimers**:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我继续之前，我需要做两个**重要的声明**：
 - en: Execution speed is not always what you care about. Having clear and maintainable
     code is quite often more important. Time to market can also be a bigger priority.
     Remember what Donald Knuth said, "premature optimization is the root of all evil".
@@ -90,6 +106,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 执行速度并不总是您关心的问题。拥有清晰且易维护的代码通常更为重要。市场时间可能也更为重要。记住唐纳德·克努斯（Donald Knuth）所说的：“过早优化是万恶之源”。
 - en: Benchmarks don't extrapolate well. The fastest approach for the problem I'm
     solving, is probably not fastest approach for your problems. Saying "tool X is
     the fastest" is in general meaningless unless you have the context of what exactly
@@ -99,23 +116,28 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 基准测试不具有很好的推广性。对于我正在解决的问题来说，最快的方法可能不是您问题的最快方法。一般而言，说“工具 X 是最快的”是没有意义的，除非您了解确切测量的任务内容、数据量、其分布以及所使用的硬件……
 - en: The problem
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 问题
 - en: For this blog post I defined a simple CSV file and a single task. The CSV has
     one million rows, a first column with an id that we will ignore, and 8 columns
     with integer random numbers in the range -2e16 to 2e16.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这篇博文，我定义了一个简单的 CSV 文件和一个单一的任务。CSV 文件有一百万行，第一列是一个我们将忽略的 ID，还有 8 列整数随机数，范围是
+    -2e16 到 2e16。
 - en: 'The numbers represent the coordinates of points in an 8-D space, and the task
     is to find how many of them are closer than 1e16 units to the origin. In practice,
     this is as simple as computing:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些数字代表一个 8-D 空间中点的坐标，任务是找出有多少个点距离原点不超过 1e16 单位。在实践中，这就像计算：
 - en: '[PRE2]'
   id: totrans-split-22
   prefs: []
@@ -126,6 +148,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个任务的理念是进行一些 CPU 计算，但不要太多，因此阅读和解析文件仍然非常重要。
 - en: As mentioned earlier, this task can be very different from the tasks you perform.
     For example, adding one extra column with a very long text that we don't need
     for the task would increase the amount of time the computer will be reading from
@@ -234,53 +257,68 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 也许有趣的是，pandas 还包括第三个引擎，即`python`引擎，它完全用纯 Python 实现。是的，就是我说我们不想为了速度而做的事情。但是对于一些用户来说可能有我不太了解的原因，他们避免使用
+    Python 的 C 扩展，所以这就是原因。
 - en: 'The time to execute our task with the different Python and pandas options is
     next:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用不同的 Python 和 pandas 选项执行我们任务的时间如下：
 - en: '| Description | File / Function | Time (seconds) |'
   id: totrans-split-39
   prefs: []
   type: TYPE_TB
+  zh: '| 描述 | 文件 / 函数 | 时间（秒） |'
 - en: '| --- | --- | --- |'
   id: totrans-split-40
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Pure Python looping with csv module using int types | pure_python_int | 3.4547557830810547
     |'
   id: totrans-split-41
   prefs: []
   type: TYPE_TB
+  zh: '| 使用 int 类型，纯 Python 循环和 csv 模块 | pure_python_int | 3.4547557830810547 |'
 - en: '| Pure Python looping with csv module using float types | pure_python_float
     | 3.8738009929656982 |'
   id: totrans-split-42
   prefs: []
   type: TYPE_TB
+  zh: '| 使用 float 类型，纯 Python 循环和 csv 模块 | pure_python_float | 3.8738009929656982
+    |'
 - en: '| pandas with C engine | pandas_c | 1.50089430809021 |'
   id: totrans-split-43
   prefs: []
   type: TYPE_TB
+  zh: '| pandas 使用 C 引擎 | pandas_c | 1.50089430809021 |'
 - en: '| pandas with Python engine | pandas_python | 8.328583478927612 |'
   id: totrans-split-44
   prefs: []
   type: TYPE_TB
+  zh: '| pandas 使用 Python 引擎 | pandas_python | 8.328583478927612 |'
 - en: '| pandas with PyArrow engine and NumPy dtypes | pandas_pyarrow | 0.31276631355285645
     |'
   id: totrans-split-45
   prefs: []
   type: TYPE_TB
+  zh: '| pandas 使用 PyArrow 引擎和 NumPy 数据类型 | pandas_pyarrow | 0.31276631355285645 |'
 - en: '| pandas with PyArrow engine and PyArrow dtypes | pandas_pyarrow_arrow | 0.29172492027282715
     |'
   id: totrans-split-46
   prefs: []
   type: TYPE_TB
+  zh: '| pandas 使用 PyArrow 引擎和 PyArrow 数据类型 | pandas_pyarrow_arrow | 0.29172492027282715
+    |'
 - en: We can see in the table that the differences are huge. Just changing our `read_csv(engine=...)`
     parameter from `engine="python"` to `engine="pyarrow"` makes pandas around 30x
     times faster to perform the same exact task.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到表格中的差异是巨大的。仅仅通过将我们的 `read_csv(engine=...)` 参数从 `engine="python"` 改为 `engine="pyarrow"`，就使得
+    pandas 在执行完全相同任务时快了约30倍。
 - en: Also, changing from the default C engine to using the PyArrow engine makes the
     task 5x times faster. If you are wondering why pandas doesn't make the much faster
     engine the default, we may actually make it in pandas 3.0, but the topic it's
@@ -293,66 +331,85 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样地，从默认的 C 引擎更改为使用 PyArrow 引擎使得任务变快了约5倍。如果你想知道为什么 pandas 没有将更快的引擎设为默认值，我们实际上可能会在
+    pandas 3.0 中做出改变，但这个话题仍在讨论中。由于这个改变涉及要求始终将 PyArrow 与 pandas 一起安装，并且 PyArrow 会使
+    pandas 的安装大小增加约100 Mb，这可能并不适合所有人（考虑到 WebAssembly 中的 pandas、Lambda、树莓派等）。至少目前来说，如果你关心更快地读取
+    CSV 文件，你可能希望手动安装 PyArrow，并在调用 `read_csv` 时使用 `engine="pyarrow"`。
 - en: Other Python options
   id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 其他 Python 选项
 - en: 'For many years pandas was almost the only option for processing a CSV file
     in the Python world. But luckily this is changing quickly, and more options exist
     now. Here there is a comparison including other tools:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 多年来，pandas 几乎是处理 Python 世界中 CSV 文件的唯一选择。但幸运的是，这种情况正在迅速改变，现在存在更多的选择。这里有一个包含其他工具的比较：
 - en: '| Description | File / Function | Time (seconds) |'
   id: totrans-split-51
   prefs: []
   type: TYPE_TB
+  zh: '| 描述 | 文件 / 函数 | 时间（秒） |'
 - en: '| --- | --- | --- |'
   id: totrans-split-52
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| pandas with C engine | pandas_c | 1.50089430809021 |'
   id: totrans-split-53
   prefs: []
   type: TYPE_TB
+  zh: '| pandas 使用 C 引擎 | pandas_c | 1.50089430809021 |'
 - en: '| pandas with PyArrow engine and PyArrow dtypes | pandas_pyarrow_arrow | 0.29172492027282715
     |'
   id: totrans-split-54
   prefs: []
   type: TYPE_TB
+  zh: '| pandas 使用 PyArrow 引擎和 PyArrow 数据类型 | pandas_pyarrow_arrow | 0.29172492027282715
+    |'
 - en: '| NumPy with loadtxt function | numpy_loadtxt | 1.8354885578155518 |'
   id: totrans-split-55
   prefs: []
   type: TYPE_TB
+  zh: '| NumPy 的 loadtxt 函数 | numpy_loadtxt | 1.8354885578155518 |'
 - en: '| DuckDB 0.9.2 with SQL API | duckdb_sql | 0.8167853355407715 |'
   id: totrans-split-56
   prefs: []
   type: TYPE_TB
+  zh: '| DuckDB 0.9.2 使用 SQL API | duckdb_sql | 0.8167853355407715 |'
 - en: '| DuckDB 0.10.0 with SQL API | duckdb_sql | 0.288881778717041 |'
   id: totrans-split-57
   prefs: []
   type: TYPE_TB
+  zh: '| DuckDB 0.10.0 使用 SQL API | duckdb_sql | 0.288881778717041 |'
 - en: '| DataFusion with SQL API | datafusion_sql | 0.20633697509765625 |'
   id: totrans-split-58
   prefs: []
   type: TYPE_TB
+  zh: '| DataFusion 使用 SQL API | datafusion_sql | 0.20633697509765625 |'
 - en: '| Polars in eager mode | polars_eager | 0.11399054527282715 |'
   id: totrans-split-59
   prefs: []
   type: TYPE_TB
+  zh: '| Polars 使用急切模式 | polars_eager | 0.11399054527282715 |'
 - en: '| Polars in lazy mode | polars_lazy | 0.10555672645568848 |'
   id: totrans-split-60
   prefs: []
   type: TYPE_TB
+  zh: '| Polars 懒惰模式 | polars_lazy | 0.10555672645568848 |'
 - en: '| Polars in streaming mode | polars_streaming | 0.11504125595092773 |'
   id: totrans-split-61
   prefs: []
   type: TYPE_TB
+  zh: '| Polars 流式模式 | polars_streaming | 0.11504125595092773 |'
 - en: '| Polars with SQL API | polars_sql | 0.09796714782714844 |'
   id: totrans-split-62
   prefs: []
   type: TYPE_TB
+  zh: '| Polars 使用 SQL API | polars_sql | 0.09796714782714844 |'
 - en: We can see how NumPy performs similar to the default pandas engine, datafusion
     performs quite well, but the clear winner is Polars, performing 3x times faster
     than the fastest pandas engine. The results with DuckDB are surprising, as DuckDB
@@ -367,6 +424,10 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到 NumPy 的表现类似于默认的 pandas 引擎，Datafusion 表现相当不错，但最大赢家是 Polars，其性能比最快的 pandas
+    引擎快 3 倍。DuckDB 的结果令人惊讶，因为 DuckDB 总体上的性能与 Polars 相似。在撰写本文之前，DuckDB 的 CSV 解析器经历了一次重大重构。新版本似乎快得多，并且其性能类似于带有
+    PyArrow 的 pandas。在其他基准测试中（我猜这些测试对于 CSV 文件的读取和解析速度影响较小），DuckDB 通常是最快的实现之一，速度与 Polars
+    相似。至少在 [TPCH 基准套件](https://pola.rs/posts/benchmarks/) 中是如此。正如我之前所说，对于这种特定用例更快（或更慢）并不意味着始终更快或更慢，尽管它们之间肯定存在相关性。
 - en: For people not familiar with these libraries, DuckDB is an analytics database
     that doesn't require a running server (the SQLite of analytics it's usually called).
     Datafusion is an engine to build analytics databases or dataframelibraries on
@@ -375,15 +436,19 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于不熟悉这些库的人来说，DuckDB 是一个分析型数据库，不需要运行服务器（通常被称为分析界的 SQLite）。Datafusion 是一个用于构建分析型数据库或数据框架库的引擎。而
+    Polars 则主要是 pandas 的替代品，但总体上更快，其 API 更类似于 Spark 或 R，并且在 Python 以外的世界也可用。
 - en: The code to run these benchmarks can be found in [this repository](https://github.com/datapythonista/bench_csv).
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以在 [此存储库](https://github.com/datapythonista/bench_csv) 中找到运行这些基准测试的代码。
 - en: Non-Python options
   id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 非 Python 选项
 - en: There are surely many options outside of the Python world (and also inside the
     Python world), and I can't try each of them. For example I don't think it makes
     sense to try some of them, like distributed systems such as Spark or Dask, which
@@ -392,11 +457,14 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 以外的世界肯定有很多选项（也包括 Python 内部），我无法尝试每一个。例如，我认为尝试某些选项并不合理，比如分布式系统如 Spark
+    或 Dask，这些系统设计用于处理更大的数据。但有一个值得尝试，那就是 R，因为它是这项任务的非常常见的选择。
 - en: 'While my knowledge of R isn''t great, seems like it can be implemented with
     this simple command:'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我对 R 的了解不深，似乎可以通过这个简单的命令来实现：
 - en: '[PRE6]'
   id: totrans-split-69
   prefs: []
@@ -406,64 +474,79 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果令人惊讶，因为 R 看起来非常慢：
 - en: '| Description | Time (seconds) |'
   id: totrans-split-71
   prefs: []
   type: TYPE_TB
+  zh: '| 描述 | 时间（秒） |'
 - en: '| --- | --- |'
   id: totrans-split-72
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| Pure Python looping with csv module using int types | 3.486 |'
   id: totrans-split-73
   prefs: []
   type: TYPE_TB
+  zh: '| 使用整型类型的纯 Python 循环和 csv 模块 | 3.486 |'
 - en: '| pandas with C engine | 2.061 |'
   id: totrans-split-74
   prefs: []
   type: TYPE_TB
+  zh: '| 使用 C 引擎的 pandas | 2.061 |'
 - en: '| pandas with Python engine | 8.823 |'
   id: totrans-split-75
   prefs: []
   type: TYPE_TB
+  zh: '| 使用 Python 引擎的 pandas | 8.823 |'
 - en: '| pandas with PyArrow engine and PyArrow dtypes | 0.902 |'
   id: totrans-split-76
   prefs: []
   type: TYPE_TB
+  zh: '| 带有 PyArrow 引擎和 PyArrow 数据类型的 pandas | 0.902 |'
 - en: '| Polars with SQL API (Python) | 0.300 |'
   id: totrans-split-77
   prefs: []
   type: TYPE_TB
+  zh: '| 使用 SQL API（Python）的 Polars | 0.300 |'
 - en: '| R | 31.547 |'
   id: totrans-split-78
   prefs: []
   type: TYPE_TB
+  zh: '| R | 31.547 |'
 - en: '| R with data.table / fread | 0.722 |'
   id: totrans-split-79
   prefs: []
   type: TYPE_TB
+  zh: '| 使用 data.table / fread 的 R | 0.722 |'
 - en: Note that the results are different than in the previous table because previous
     results didn't account for the time to launch the Python interpreter, but to make
     the comparison with R fair, it needs to be accounted now.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，结果与前表不同，因为之前的结果未计算启动 Python 解释器的时间，但为了与 R 进行公平比较，现在需要计算这部分时间。
 - en: So based on this use case and implementation, Polars is 100x times faster than
     R, and R seems to be more than 3x times slower than the slowest Python implementation
     we considered (the `python` engine of pandas).
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，基于这个用例和实现，Polars 比 R 快 100 倍，而 R 看起来比我们考虑的最慢的 Python 实现慢了三倍以上（即 pandas 的
+    `python` 引擎）。
 - en: Can we be faster than Polars?
   id: totrans-split-82
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我们能比 Polars 更快吗？
 - en: Until this point, we can conclude that for this use case Polars is the fastest
     option of the tools I'm aware of. But can we be even faster?
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们可以得出结论，对于这个用例，Polars 是我所知道的工具中最快的选项。但我们能做得更快吗？
 - en: And the answer is yes, since Polars is a generic tool that supports most CSV
     files, but I can implement an algorithm targeted at this particular file. For
     example, Polars supports unicode files, files delimited by semicolon, quoted text...
@@ -471,15 +554,18 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是肯定的，因为Polars是一个通用工具，支持大多数CSV文件，但我可以实现一个针对特定文件的算法。例如，Polars支持Unicode文件、分号分隔的文件、带引号的文本……这些在这个任务中并不需要。
 - en: The second question is, is it easy to implement an algorithm faster than Polars
     in a low level language? The answer is clearly no.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个问题是，在低级语言中是否容易实现比Polars更快的算法？答案显然是否定的。
 - en: 'A first implementation of my CSV parser in Rust is next:'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的Rust CSV解析器的首个实现如下：
 - en: '[PRE7]'
   id: totrans-split-87
   prefs: []
@@ -493,6 +579,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 如你所见，这个实现相当简单，而且尽管Rust在许多情况下是一种极快的低级语言，但代码像Python一样易读。这并不是使用Rust的唯一原因，可能最大的优势在于语言设计和智能编译器，在编译时能够捕获大多数bug，特别是那些可能导致C/C++程序段错误的bug。
 - en: 'To make the comparison with Polars meaningful, we need to move Polars outside
     of the Python world. The nice thing is that Polars is also built in Rust and we
     can run Polars code without the need of the Python interpreter, which would add
@@ -502,6 +589,8 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了使与Polars的比较具有意义，我们需要将Polars移出Python的世界。好消息是，Polars也是用Rust构建的，我们可以在不需要Python解释器的情况下运行Polars代码，这会大大减少额外开销。这是我们使用其SQL
+    API在Polars中实现任务的实现（Polars在Rust世界中也有类似Python的DataFrame API，但我将在此处使用SQL API）：
 - en: '[PRE8]'
   id: totrans-split-90
   prefs: []
@@ -513,41 +602,50 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，定义模式并非真正必要，没有定义模式的代码会显著更短。但当与我的自定义实现进行比较时，让Polars推断数据类型会显得不公平。
 - en: 'Comparing the times of both implementations I get these results:'
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 比较两种实现的时间，我得到了以下结果：
 - en: '| Description | Time (seconds) |'
   id: totrans-split-93
   prefs: []
   type: TYPE_TB
+  zh: '| 描述 | 时间（秒） |'
 - en: '| --- | --- |'
   id: totrans-split-94
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| My implementation | 0.563 |'
   id: totrans-split-95
   prefs: []
   type: TYPE_TB
+  zh: '| 我的实现 | 0.563 |'
 - en: '| Polars 1 CPU core | 0.483 |'
   id: totrans-split-96
   prefs: []
   type: TYPE_TB
+  zh: '| Polars 1 CPU核 | 0.483 |'
 - en: '| Polars all CPU cores | 0.150 |'
   id: totrans-split-97
   prefs: []
   type: TYPE_TB
+  zh: '| Polars所有CPU核 | 0.150 |'
 - en: The interesting part here is that Polars is not only faster than my very simple
     solution, but it's still faster when forcing Polars to use only one CPU (my implementation
     only uses one CPU, but Polars by default will use all avaialble ones).
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有趣的部分是，Polars不仅比我的非常简单的解决方案更快，而且在强制Polars仅使用一个CPU核时仍然更快（我的实现只使用一个CPU核，但Polars默认会使用所有可用的核）。
 - en: Luckily, this is not the end. There are some reasons why a generic implementation
     like Polars is faster, and some things that can be done to improve my implementation.
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，这还不是结束。有一些原因使得像Polars这样的通用实现更快，还有一些可以改进我的实现的方法。
 - en: After some analysis, I found out that the way Rust is processing the file with
     the `csv` crate / package causes a much higher number of branch mispredictions
     than iterating the file character by character. To briefly explain what a branch
@@ -566,6 +664,9 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过一些分析，我发现 Rust 处理使用 `csv` crate / package 处理文件时，分支误判的次数比逐字符迭代文件要高得多。简单地解释一下分支误判是什么，假设
+    CPU 有一个队列，其中包含它需要执行的所有指令，因此下一个指令在一个完成后准备好。但是，代码中有条件语句（一个 `if`），只有当条件为 `true` 或
+    `false` 时才能成为队列中的下一个。因此，在填充队列时，操作系统会在评估条件之前进行猜测，看起来最有可能成为下一个的指令。当猜测错误时，从 CPU 外部将实际需要运行的代码添加到队列中需要一些时间。当我们在这种低级别编写代码并且关心毫秒级性能时，我们希望帮助编译器和操作系统尽可能准确地猜测，以便队列尽可能包含正确的代码，并且尽可能少的时间丢失。
 - en: Another factor is how the file is accessed from disk. There are different options,
     like loading all the file into memory before parsing it, loading one row at a
     time... The fastest option for this kind of operation is using a memory map. Memory
@@ -579,6 +680,9 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个因素是文件从磁盘访问的方式。有不同的选择，比如在解析之前将整个文件加载到内存中，逐行加载... 这种操作的最快选项是使用内存映射。内存映射是操作系统的一个特性（系统调用），其中内核将虚拟内存地址映射到磁盘上的文件。使用内存映射时，Linux
+    内核在需要之前会相当聪明地预加载数据到内存，以及将数据预加载到内存缓存中。如果我们在设置内存映射时告诉内核这些内存将如何被访问，内核甚至可以更加智能化。在我们的情况下，我们将按顺序访问文件，因此如果我们在设置内存映射时告知
+    Linux 内核这一点，内核将显著加快我们的程序速度。
 - en: A more obvious factor is paralellization. Modern computers will in general have
     multiple CPUs, and we can split the work the CPU needs to do among them. So, if
     we have work for 1 second of CPU, but we have 4 CPUs, we can get our program finish
@@ -590,6 +694,9 @@
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个更明显的因素是并行化。现代计算机通常有多个 CPU，我们可以将 CPU 需要执行的工作分配给它们中的多个。因此，如果我们有 1 秒钟的 CPU 工作量，但有
+    4 个 CPU，我们可以让我们的程序在 0.25 秒内完成。实际上，时间会比 0.25 秒长得多，但我们肯定可以显著加快事情的进展。此外，许多现代 CPU
+    通过 SIMD 操作在单个 CPU 中提供并行性。在这种操作中，可以同时应用于多个值。我在这里的测试中没有实现 SIMD，但这可能是另一个选择。
 - en: Finally, there is one last optimization we could perform. In general, when processing
     a CSV we want to first extract each value as a string, and then cast it to the
     appropriate type. In this case, since I was mostly parsing integer values, I can
@@ -604,39 +711,48 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们可以进行最后一个优化。一般来说，在处理CSV文件时，我们希望首先将每个值提取为字符串，然后将其转换为适当的类型。在这种情况下，由于我主要解析整数值，我可以在读取字符时构建数字。因此，如果我首先找到`"2"`，我只需将其转换为整数。如果之后我找到`"4"`，我将上一个值`2`乘以`10`并加上刚找到的`4`，以获得24。如果我一直重复此操作，直到找到逗号，我已经解析了数字。这种方法似乎比从整个字符串引用解析数字要快得多。在这种特殊情况下更好的是，因为我将对所有数字进行平方，所以我不关心它们是正数还是负数，我完全可以忽略符号。
 - en: 'After implementing those optimizations, I managed to achieve the next execution
     times:'
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实施这些优化后，我设法实现了以下执行时间：
 - en: '| Description | Time (seconds) |'
   id: totrans-split-105
   prefs: []
   type: TYPE_TB
+  zh: '| 描述 | 时间（秒） |'
 - en: '| --- | --- |'
   id: totrans-split-106
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| My original implementation | 0.563 |'
   id: totrans-split-107
   prefs: []
   type: TYPE_TB
+  zh: '| 我的原始实现 | 0.563 |'
 - en: '| Polars 1 CPU core | 0.483 |'
   id: totrans-split-108
   prefs: []
   type: TYPE_TB
+  zh: '| Polars 1 CPU核心 | 0.483 |'
 - en: '| Polars all CPU cores | 0.150 |'
   id: totrans-split-109
   prefs: []
   type: TYPE_TB
+  zh: '| Polars所有CPU核心 | 0.150 |'
 - en: '| My optimized implementation single core | 0.241 |'
   id: totrans-split-110
   prefs: []
   type: TYPE_TB
+  zh: '| 我的单核优化实现 | 0.241 |'
 - en: '| My optimized implementation multicore | 0.070 |'
   id: totrans-split-111
   prefs: []
   type: TYPE_TB
+  zh: '| 我的多核优化实现 | 0.070 |'
 - en: So, whether using a single CPU or all, my final implementation is 2x times faster
     than Polars. Obviously, using Polars or another generic tool makes more sense
     in most cases, as the development time of implementing the pipeline is a fraction
@@ -646,6 +762,7 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，无论是使用单个CPU还是全部CPU，我的最终实现都比Polars快2倍。显然，在大多数情况下，使用Polars或其他通用工具更有意义，因为实现整个解析的开发时间只是实现整个管道的一小部分。但是在性能是最重要因素的情况下，这些结果似乎表明，与更快的通用实现相比，可以显著更快地处理CSV文件。
 - en: I hope you enjoyed this post, feel free to follow me on [Twitter](https://twitter.com/datapythonista)
     to stay updated of future posts. And feel free to connect and contact me on [LinkedIn](https://www.linkedin.com/in/datapythonista/)
     if you think the article needs fixes, or if your company needs help with related
@@ -653,11 +770,14 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望您喜欢这篇文章，请随时在[Twitter](https://twitter.com/datapythonista)关注我，以获取未来文章的更新。如果您认为文章需要修正，或者您的公司需要相关工作的帮助，或者您想讨论工作机会，请随时在[LinkedIn](https://www.linkedin.com/in/datapythonista/)上联系我。
 - en: 'Follow me for more content or contact for work opportunities:'
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 关注我获取更多内容或联系工作机会：
 - en: '[Twitter](https://twitter.com/datapythonista) / [LinkedIn](https://www.linkedin.com/in/datapythonista/)'
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Twitter](https://twitter.com/datapythonista) / [LinkedIn](https://www.linkedin.com/in/datapythonista/)'
