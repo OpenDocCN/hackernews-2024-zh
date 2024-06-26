@@ -117,22 +117,26 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 使源码在现代系统上可编译还不足以获得一个可工作的编译器。正如你可能知道的，GNU工具链包括其他工具，比如汇编器和链接器，与编译器互动。幸运的是，生成的汇编代码的语法与现代版本的GNU汇编器完全兼容（除了调试信息）。至于链接器，则需要一些调整来适应所谓的链接器规范（即GCC驱动程序使用的命令行选项）。
 - en: With these fixes applied, we now have a compiler able to produce valid `elf`
     binaries.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用了这些修复之后，现在我们有一个能够生成有效的`elf`二进制文件的编译器。
 - en: Bootstrapping
   id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 引导
 - en: 'A quick reminder: bootstrapping a compiler means compiling it using itself.
     For more details please refer to the "[Bootstrapping (compilers)](https://en.wikipedia.org/wiki/Bootstrapping_(compilers))"
     Wikipedia article.'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 快速提醒一下：引导一个编译器意味着使用自身来编译它。更多详情请参考维基百科上的"[引导（编译器）](https://zh.wikipedia.org/wiki/%E5%BC%95%E5%AF%BC_(%E7%BC%96%E8%AF%91%E5%99%A8))"条目。
 - en: 'The first minor problem with bootstrap comes from glibc headers: modern versions
     of glibc assume that the compiler supports 64-bit integral types, which is not
     true for GCC 1.27\. The culprit is `/usr/include/bits/byteswap.h`. It’s inclusion
@@ -140,6 +144,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 引导的第一个小问题来自于glibc头文件：现代版本的glibc假设编译器支持64位整型，而对于GCC 1.27来说这并不成立。罪魁祸首是`/usr/include/bits/byteswap.h`。可以通过向编译器传递`-D_BITS_BYTESWAP_H`标志来轻松禁用它。
 - en: 'Now, attempting to bootstrap the compiler leads to a failure during compilation
     of a file named `cccp.c` related to the C preprocessor: the compiler crashes with
     a segmentation fault. After digging a bit into the cause of this failure, I managed
@@ -147,10 +152,12 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，尝试引导编译器导致在名为`cccp.c`的文件的编译过程中失败：编译器因为段错误而崩溃。经过一番调查失败原因，我使用[C-Reduce](https://embed.cs.utah.edu/creduce/)成功制作出一个最小化的失败测试案例：
 - en: '[PRE0]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The compiler crashes attempting to dereference a null pointer while translating
     expression `a = fn1()` from an AST into its intermediate representation (RTL).
     Apperently the i386 back end has a bug in the code dealing with calls to functions
@@ -158,109 +165,131 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器在尝试将表达式`a = fn1()`从AST翻译成其中间表示（RTL）时，由于i386后端在处理返回结构体类型函数调用的代码时存在错误，导致尝试解引用空指针而崩溃。
 - en: It turned out that fixing this bug is relatively straightforward. Adding a single
     check, which is present in GCC 1.31 fixes the bug and bootstrap now succeeds.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 修复这个错误其实相对来说很简单。添加一个单一的检查，这在GCC 1.31中已经存在，可以修复这个错误并且现在可以成功地启动引导过程。
 - en: By the way, this could mean that no one have ever tried to bootstrap GCC 1.27
     on x86 before.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一句，这可能意味着之前没有人尝试在x86上引导GCC 1.27。
 - en: 'Moreover, I managed to perform bootstrap comparison, i.e. to build:'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我成功进行了引导比较，即构建：
 - en: stage 1 compiler, i.e. GCC 1.27 compiled by the host compiler (GCC 4.9.2)
   id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第1阶段编译器，即由主机编译器（GCC 4.9.2）编译的GCC 1.27
 - en: stage 2 compiler, i.e. GCC 1.27 compiled by the stage 1 compiler
   id: totrans-split-32
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第2阶段编译器，即由主机编译器（GCC 4.9.2）编译的GCC 1.27
 - en: stage 3 compiler, i.e. GCC 1.27 compiled by the stage 2 compiler
   id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第3阶段编译器，即由第2阶段编译器编译的GCC 1.27
 - en: As I expected stage 2 and stage 3 were identical.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如我预料的那样，第2阶段和第3阶段是相同的。
 - en: Playing around
   id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 玩耍
 - en: 'I tried to find some code (besides GCC itself) to compile and play with. Remember:
     we need code written in so-called K&R C (because the ANSI C89 Standard did not
     exist back then).'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我试图找一些代码（除了GCC本身）来编译和测试。记住：我们需要用所谓的K&R C编写的代码（因为当时还不存在ANSI C89标准）。
 - en: For example, I used a [program](https://people.sc.fsu.edu/~jburkardt/c_src/mandelbrot_ascii/mandelbrot_ascii.html)
     that produces an ASCII image of the Mandelbrot set (unfortunately, I failed to
     find out who the author of this code is).
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，我使用一个[程序](https://people.sc.fsu.edu/~jburkardt/c_src/mandelbrot_ascii/mandelbrot_ascii.html)，它可以生成Mandelbrot集的ASCII图像（不幸的是，我没能找到这段代码的作者是谁）。
 - en: 'Here is the code, formatted for better readability:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是为了更好地可读性而格式化的代码：
 - en: '[PRE1]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: As you can see, it involves quite complex control flow and floating point arithmetic.
     GCC 1.27 compiles it without errors and the output matches that of the same code
     compiled by a modern version of GCC.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您所见，它涉及相当复杂的控制流和浮点运算。GCC 1.27在编译时没有错误，并且与现代版本的GCC编译的相同代码输出相匹配。
 - en: 'GCC 1.27 includes many features typical for modern compilers, such as:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: GCC 1.27包含许多现代编译器典型的功能，例如：
 - en: Compiler warnings
   id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编译器警告
 - en: Optimizations
   id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 优化
 - en: Debug information output
   id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 调试信息输出
 - en: Instrumentation for code profiling
   id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 用于代码分析的仪器化
 - en: Command-line flags controlling all of the above
   id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 控制上述所有内容的命令行标志
 - en: Exploring the GCC source code
   id: totrans-split-47
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 探索GCC源代码
 - en: Another thing that surprised me, is that a lot of ideas and even much of the
     code of these old versions of GCC are still used today.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一件让我惊讶的事情是，这些旧版本的GCC中许多想法甚至大部分代码仍然在今天使用。
 - en: Multiple back ends are supported in the compiler by means of switchable header
     files (i.e., `config-i386v.h` is used on i386 System V, and `config-sparc.h` is
     used on Sparc Sun). Machine description `.md` files describe CPU instruction patterns.
@@ -272,12 +301,14 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器通过可切换的头文件（例如，在i386 System V上使用`config-i386v.h`，在Sparc Sun上使用`config-sparc.h`）支持多个后端。机器描述`.md`文件描述了CPU指令模式。在构建阶段，它们被解析并转换为C源文件，稍后与编译器链接。当然，在过去的几十年里，`.md`的DSL已经发展，但原理仍然相同。此外，LLVM编译器基础设施[使用](http://llvm.org/docs/CodeGenerator.html#using-tablegen-for-target-description)了类似的技术。
 - en: The two ubiquitous data types `tree` and `rtl` which are used for representing
     the program in the compiler front end and back end respectively still serve their
     purpose.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 两种无处不在的数据类型`tree`和`rtl`分别用于表示编译器前端和后端中的程序，仍然发挥着它们的作用。
 - en: Of course this does not mean that current versions of GCC are stuck in the eighties.
     Despite some similarities, the number of major enhancements is really huge and
     I won’t bother listing them (it’s a good topic for a post with some benchmarks,
@@ -285,6 +316,7 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，这并不意味着当前版本的GCC停留在80年代。尽管有些相似之处，但主要增强的数量确实非常庞大，我不打算逐一列举它们（这是一篇带有一些基准测试、图表和信息图的好文章主题）。
 - en: Old versions of GCC did not have a bug-tracker site, so instead, a list of bugs
     and enhancement requests was kept in a file called `PROBLEMS`. As of version 1.27
     it contains 27 entries with many gaps in numbering. Actually, the last item has
@@ -293,3 +325,4 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 旧版本的GCC没有故障跟踪站点，因此，故障和增强请求的列表存储在名为`PROBLEMS`的文件中。截至1.27版本，其中包含27个条目，编号间有很多空缺。实际上，最后一项编号为122。这可能意味着在此版本发布之前，其余的95个问题已经修复。
