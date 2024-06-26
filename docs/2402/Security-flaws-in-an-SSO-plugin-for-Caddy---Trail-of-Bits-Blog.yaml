@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:50:22'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:50:22
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Security flaws in an SSO plugin for Caddy | Trail of Bits Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Caddy的SSO插件存在的安全漏洞 | Trail of Bits博客
 - en: 来源：[https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/](https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/](https://blog.trailofbits.com/2023/09/18/security-flaws-in-an-sso-plugin-for-caddy/)
 - en: '*By Maciej Domanski, Travis Peters, and David Pokora*'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*作者：Maciej Domanski、Travis Peters和David Pokora*'
 - en: We identified 10 security vulnerabilities within the [caddy-security plugin](https://github.com/greenpau/caddy-security)
     for the [Caddy](https://github.com/caddyserver/caddy) web server that could enable
     a variety of high-severity attacks in web applications, including client-side
@@ -35,6 +42,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们在[Caddy Web服务器的caddy-security插件](https://github.com/greenpau/caddy-security)中发现了10个安全漏洞，这些漏洞可能导致Web应用程序中的多种高危攻击，包括客户端代码执行、OAuth重放攻击和未经授权访问资源。
 - en: During our evaluation, Caddy was deployed as a reverse proxy to provide access
     to several of our internal services. We explored a plugin configuration that would
     allow us to handle authentication and authorization with our Google SSO so that
@@ -42,6 +50,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的评估过程中，Caddy被部署为反向代理，用于访问我们内部几个服务。我们探索了一种插件配置，可以让我们使用Google SSO处理认证和授权，这样我们就不必在每个应用程序上实现这些功能。
 - en: In this blog post, we will briefly explore the security vulnerabilities we identified
     in the caddy-security plugin and discuss their potential impact. As with our typical
     security assessments, for each issue we identified, we present a recommendation
@@ -50,6 +59,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本博文中，我们将简要探讨我们在caddy-security插件中发现的安全漏洞，并讨论它们可能带来的影响。与我们典型的安全评估一样，对于我们发现的每个问题，我们提出了立即修复问题的建议，以及更长远的、更具战略性的建议，以预防类似问题并改进整体安全姿态。
 - en: As security experts, our goal is not only to identify vulnerabilities in specific
     software but also to contribute to the larger community by sharing our recommendations
     for fixing these problems. We believe that these recommendations can help developers
@@ -57,11 +67,13 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为安全专家，我们的目标不仅仅是识别特定软件中的漏洞，还包括通过分享我们的建议来为更大的社区贡献。我们相信这些建议可以帮助开发人员在其他SSO系统中克服类似的挑战，并提升其安全性。
 - en: Caddy Background
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Caddy 背景
 - en: '[Caddy](https://caddyserver.com/) (a.k.a. Caddy Server or Caddy 2) is a modern,
     open-source web server written in Golang that is designed to be easy to use and
     highly configurable. Caddy is built to streamline the process of hosting web applications
@@ -70,6 +82,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Caddy](https://caddyserver.com/)（又名Caddy服务器或Caddy 2）是一个现代化的开源Web服务器，用Golang编写，旨在易于使用且高度可配置。Caddy旨在简化托管Web应用程序的过程，同时优先考虑安全性和性能。它旨在减少配置和部署Web服务器时的复杂性。'
 - en: The caddy-security plugin is a middleware plugin for the Caddy web server. It
     provides various security-related functionalities to enhance the overall security
     posture of web applications. Some of the key features offered by the caddy-security
@@ -79,20 +92,25 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: caddy-security 插件是Caddy Web服务器的一个中间件插件。它提供各种安全相关的功能，以增强Web应用程序的整体安全性。caddy-security
+    插件提供的一些关键功能包括用于实现基于表单、基本、本地、LDAP、OpenID Connect、OAuth 2.0、SAML认证的认证插件，以及基于JWT/PASETO令牌的HTTP请求授权插件。
 - en: Findings
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 发现
 - en: 'Issue #1: Reflected Cross-Site Scripting (XSS)'
   id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '问题 #1：反射型跨站脚本（XSS）'
 - en: '*Severity: High*'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：高*'
 - en: Reflected XSS occurs when an application includes untrusted data in the HTML
     response sent to the user’s browser. In this case, the provided `/admin%22%3E%3Cscript%3Ealert(document.domain)%3C/script%3E/admin/login`
     or `/settings/mfa/delete/<img%20src=x%20onerror=alert(document.domain)>` API calls
@@ -102,17 +120,21 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 反射性XSS发生在应用程序将不受信任的数据包含在发送给用户浏览器的HTML响应中时。在此情况下，提供的`/admin%22%3E%3Cscript%3Ealert(document.domain)%3C/script%3E/admin/login`或`/settings/mfa/delete/<img%20src=x%20onerror=alert(document.domain)>`
+    API调用会触发警报。攻击者可以利用此漏洞在目标用户的浏览器中执行任意JavaScript代码，可能导致进一步的攻击，如会话劫持。
 - en: To immediately address this issue, strategically treat all string values as
     potentially untrustworthy, regardless of their source, and escape them properly
     (using the `safehtml/template` package that generates output-safe HTML).
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了立即解决此问题，战略性地将所有字符串值视为可能不可信，无论它们的来源如何，并适当地进行转义（使用生成输出安全HTML的`safehtml/template`包）。
 - en: 'In addition to that remediation, we also suggest a few different ways to improve
     defense in depth:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了纠正之外，我们还建议采用几种不同的方法来加强深度防御：
 - en: Extend unit tests with potentially malicious XSS payloads. Refer to the [Cross-site
     scripting (XSS) cheat sheet](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)
     for various attack vectors.
@@ -120,6 +142,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扩展单元测试，使用潜在恶意的XSS负载。参考[跨站脚本（XSS）防御手册](https://portswigger.net/web-security/cross-site-scripting/cheat-sheet)了解各种攻击向量。
 - en: Consider using the Active Scanner from Burp Suite Professional in a testing
     environment for all API calls. Additionally, use the [scanning with a live task](https://portswigger.net/burp/documentation/desktop/automated-scanning/live-tasks)
     strategy to have underlying requests scanned automatically when interacting with
@@ -128,6 +151,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 考虑在测试环境中为所有API调用使用Burp Suite Professional的Active Scanner。此外，使用[实时任务扫描](https://portswigger.net/burp/documentation/desktop/automated-scanning/live-tasks)策略，在与Web界面交互时自动扫描底层请求。
 - en: Expand the caddy-security documentation to promote security headers—especially
     the Content Security Policy (CSP) header that controls which resources can be
     loaded by the browser, limiting the impact of potential XSS attacks.
@@ -135,15 +159,18 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扩展caddy-security文档以提升安全头部，特别是内容安全策略（CSP）头部，它控制浏览器可以加载哪些资源，从而限制潜在的XSS攻击的影响。
 - en: 'Issue #2: Insecure Randomness'
   id: totrans-split-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃2：不安全的随机性
 - en: '*Severity: High*'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：高*'
 - en: The caddy-security plugin uses the `math/rand` Golang library with a seed based
     on the Unix timestamp to generate strings for three security-critical contexts
     in the application, which could possibly be predicted via a brute-force search.
@@ -154,16 +181,19 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: caddy-security插件使用基于Unix时间戳的种子来生成应用程序中三个安全关键上下文的字符串，可能可通过暴力搜索预测。攻击者可能利用用于OAuth流程中身份验证目的的可能可预测的一次性值来执行OAuth重放攻击。此外，在数据库包中生成多因素认证（MFA）密钥时使用不安全的随机性。
 - en: To immediately mitigate this vulnerability, use a cryptographically secure random
     number generator for generating the random strings. Golang’s library `crypto/rand`
     is designed for secure random number generation.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了立即缓解此漏洞，请使用密码学安全的随机数生成器生成随机字符串。Golang的`crypto/rand`库专为生成安全随机数而设计。
 - en: 'In addition to that fix, we recommend considering the following long-term recommendations:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了修复之外，我们建议考虑以下长期建议：
 - en: Review the application for other instances where the `math/rand` package is
     used for secure context. Create secure wrapping functions and use them throughout
     the code to serve a cryptographically secure string with the requested length.
@@ -171,6 +201,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 审查应用程序中其他使用`math/rand`包进行安全上下文的实例。创建安全的包装函数，并在整个代码中使用它们来生成所需长度的密码学安全字符串。
 - en: Avoid duplicating code. Having a single function, such as `secureRandomString`,
     rather than multiple duplicate functions makes it easier to audit and verify the
     system’s security. It also prevents future changes to the codebase from reintroducing
@@ -179,6 +210,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 避免重复代码。只有一个函数，例如`secureRandomString`，而不是多个重复函数，可以更轻松地审核和验证系统的安全性。它还可以防止将来对代码库的更改重新引入问题。
 - en: Implement Semgrep in the CI/CD. The `math-random-used` Semgrep rule will catch
     instances where `math/rand` is used. Refer to our [Testing Handbook on Semgrep](https://appsec.guide/docs/static-analysis/semgrep/)
     for more information.
@@ -186,27 +218,32 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在CI/CD中实施Semgrep。`math-random-used` Semgrep规则将捕捉使用`math/rand`的实例。更多信息请参考我们的[关于Semgrep的测试手册](https://appsec.guide/docs/static-analysis/semgrep/)。
 - en: Read textbooks such as *Real World Cryptography*, as it is a great resource
     for practical cryptographic considerations.
   id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 阅读《实用密码学》等教材，这是实际密码学考虑的重要资源。
 - en: 'Issue #3: IP Spoofing via X-Forwarded-For Header'
   id: totrans-split-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃3：通过X-Forwarded-For头部进行IP欺骗
 - en: '*Severity: Medium*'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：中等*'
 - en: By manipulating the `X-Forwarded-For` header, an attacker can spoof an IP address
     used in the user `identity` module (`/whoami` API endpoint). This could lead to
     unauthorized access if the system trusts this spoofed IP address.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过操纵`X-Forwarded-For`头部，攻击者可以欺骗用户身份模块(`/whoami` API端点)中使用的IP地址。如果系统信任此伪造的IP地址，则可能导致未经授权的访问。
 - en: To resolve this vulnerability, reimplement the application to not rely on user-provided
     headers when obtaining a user’s IP address. If user-provided headers are required
     (e.g., `X-Forwarded-For` for logging purposes), ensure the header is properly
@@ -216,23 +253,27 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决此漏洞，重新实现应用程序，不依赖于获取用户IP地址时提供的用户提供的头部。如果需要用户提供的头部（例如用于日志记录目的的`X-Forwarded-For`），确保头部经过适当验证（即值与IP地址格式一致，通过正则表达式）或者清理（避免[CRLF日志注入攻击](https://owasp.org/www-community/vulnerabilities/CRLF_Injection)，例如）。
 - en: 'In addition to this immediate fix, we recommend considering these long-term
     recommendations:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了这个即时修复，我们建议考虑以下长期建议：
 - en: Implement appropriate checks for potential IP spoofing and `X-` headers on the
     unit testing level. Consider [other headers that can rewrite IP sources](https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers#headers-to-change-location).
   id: totrans-split-37
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在单元测试级别实现适当的检查，以防止潜在的IP欺骗和`X-`头部。考虑[其他可以重写IP来源的头部](https://book.hacktricks.xyz/network-services-pentesting/pentesting-web/special-http-headers#headers-to-change-location)。
 - en: Cover the IP spoofing scenarios and user-provided header processing in Golang’s
     native fuzz tests.
   id: totrans-split-38
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Golang的本机模糊测试中覆盖IP欺骗场景和用户提供的头部处理。
 - en: Use the dynamic testing approach with Burp Suite Professional and the [Param
     Miner](https://portswigger.net/bappstore/17d2949a985c4b7ca092728dba871943) extension
     to identify the processing of hidden headers.
@@ -240,6 +281,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用Burp Suite Professional和[Param Miner](https://portswigger.net/bappstore/17d2949a985c4b7ca092728dba871943)扩展的动态测试方法来识别隐藏头部的处理。
 - en: Expand the caddy-security documentation to increase user awareness of this type
     of threat; show an example of misconfiguration, how to resolve, and how to test
     it.
@@ -247,15 +289,18 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扩展caddy-security文档，增加用户对此类威胁的认识；展示配置错误的示例，解决方法以及测试方法。
 - en: 'Issue #4: Referer-Based Header XSS'
   id: totrans-split-41
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃4：基于Referer头部的跨站脚本攻击（XSS）
 - en: '*Severity: Medium*'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：中等*'
 - en: An XSS vulnerability can be triggered by rewriting the `Referer` header. Although
     the `Referer` header is sanitized by escaping some characters that can allow XSS
     (e.g., [`&`], [`<`], [`>`], [`"`], [`'`]), it does not account for the attack
@@ -266,19 +311,24 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过重写`Referer`头部可以触发XSS漏洞。虽然`Referer`头部通过转义一些字符（例如[`&`], [`<`], [`>`], [`"`],
+    [`'`])进行了清理，但未考虑基于JavaScript URL方案的攻击（例如`javascript:alert(document.domain)//`负载）。利用此漏洞可能并不轻松，但可能导致在目标用户浏览器中执行恶意脚本，从而危及用户会话。
 - en: 'The mitigation for this issue is identical to issue #1.'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 此问题的缓解措施与问题＃1相同。
 - en: 'Issue #5: Open Redirection Vulnerability'
   id: totrans-split-45
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃5：开放重定向漏洞
 - en: '*Severity: Medium*'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：中等*'
 - en: When a logged-in user clicks on a specially crafted link with a `redirect_url`
     parameter, the user can be redirected to an external website. The user must take
     an action, such as clicking on a portal button or using the browser’s back button,
@@ -287,16 +337,19 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 当已登录用户单击具有`redirect_url`参数的特制链接时，用户可以被重定向到外部网站。用户必须采取行动，例如单击门户按钮或使用浏览器的返回按钮来触发重定向。这可能导致钓鱼攻击，攻击者通过制作令人信服的URL来诱使用户访问恶意网站。
 - en: To mitigate this vulnerability, perform proper `redirect_url` parameter validation
     to ensure that the redirection URLs are allowed only within the same domain or
     from trusted sources.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 要减轻此漏洞，执行适当的`redirect_url`参数验证，确保重定向URL仅允许在同一域内或来自受信任的来源。
 - en: 'In addition, we also recommend the following long-term fixes:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我们还建议以下长期修复：
 - en: Implement robust unit tests with different bypassing scenarios of `redirect_url`
     parameter validation. Refer to the potential [URL Format Bypasses](https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-request-forgery/url-format-bypass).
     Keep in mind that different components can use different URI parsers, which can
@@ -305,11 +358,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 实施健壮的单元测试，涵盖了`redirect_url`参数验证的不同绕过场景。参考可能的[URL格式绕过](https://book.hacktricks.xyz/pentesting-web/ssrf-server-side-request-forgery/url-format-bypass)。请注意，不同组件可能使用不同的URI解析器，这可能导致[parsing
+    confusion](https://snyk.io/blog/url-confusion-vulnerabilities/)。
 - en: 'Use Burp Suite Professional with a scanner with both these settings enabled:'
   id: totrans-split-51
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用Burp Suite Professional与启用了以下两个设置的扫描器：
 - en: 'Audit coverage – maximum: to use the most extensive set of payload variations
     and insertion point options'
   id: totrans-split-52
@@ -317,21 +373,25 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 审计覆盖 - 最大：使用最广泛的负载变化和插入点选项
 - en: 'Audit coverage – thorough: to try more payload variations'
   id: totrans-split-53
   prefs:
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 审计覆盖 - 彻底：尝试更多的负载变化
 - en: 'Issue #6: X-Forwarded-Host Header Manipulation'
   id: totrans-split-54
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃6：X-Forwarded-Host头部操纵
 - en: '*Severity: Medium*'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：中*'
 - en: The caddy-security plugin processes the `X-Forwarded-Host` header, which could
     lead to various security vulnerabilities (web cache poisoning, business logic
     flaws, routing-based server-side request forgery [SSRF], and classic server-side
@@ -340,37 +400,44 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: caddy-security插件处理`X-Forwarded-Host`头部，这可能导致各种安全漏洞（Web缓存污染、业务逻辑缺陷、基于路由的服务器端请求伪造[SSRF]和经典的服务器端漏洞）。此外，caddy-security插件基于此头部生成QR码，扩展了攻击面。
 - en: To mitigate this issue, do not rely on the `Host` and `X-Forwarded-Host` headers
     in the caddy-security plugin logic. Instead, use the current domain manually specified
     in the configuration file to generate a QR code.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了减轻这个问题，请勿在caddy-security插件逻辑中依赖于`Host`和`X-Forwarded-Host`头。而是手动使用配置文件中当前指定的域来生成QR码。
 - en: 'In addition, we recommend the following:'
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我们建议以下操作：
 - en: Use Burp Suite Professional with the Param Miner extension to identify the processing
     of hidden headers.
   id: totrans-split-59
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用Burp Suite Professional与Param Miner扩展来识别隐藏头部的处理。
 - en: Extend the caddy-security documentation to increase user awareness of the [HTTP
     `Host` header attacks](https://portswigger.net/web-security/host-header/exploiting).
   id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 扩展caddy-security文档以增强用户对[HTTP `Host`头部攻击](https://portswigger.net/web-security/host-header/exploiting)的意识。
 - en: 'Issue #7: X-Forwarded-Proto Header Manipulation'
   id: totrans-split-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃7：X-Forwarded-Proto头部操纵
 - en: '*Severity: Low*'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：低*'
 - en: The processing of the `X-Forwarded-Proto` header results in redirection to the
     injected protocol. While this scenario may have limited impact, improper handling
     of such headers could result in unpredictable security risks, such as bypass of
@@ -378,25 +445,30 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理`X-Forwarded-Proto`头部会导致重定向到注入的协议。虽然此场景可能影响有限，但不正确处理此类头部可能导致安全机制绕过或处理TLS时的混乱，可能导致不可预测的安全风险。
 - en: To address this issue, do not rely on the `X-Forwarded-Proto` header. If it
     is required, validate the value of the `X-Forwarded-Proto` header against an allowlist
     of accepted protocols (e.g., HTTP/HTTPS) and reject unexpected values.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 要解决此问题，请勿依赖于`X-Forwarded-Proto`头部。如果需要，应针对接受的协议白名单（例如HTTP/HTTPS）验证`X-Forwarded-Proto`头部的值，并拒绝意外的值。
 - en: 'In addition, consider the long-term recommendations from issue #3.'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，考虑长期建议从问题＃3开始。
 - en: 'Issue #8: 2FA Bypass by Brute-Forcing Verification Codes'
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 问题＃8：通过暴力破解验证代码绕过2FA
 - en: '*Severity: Low*'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：低*'
 - en: The current implementation of the application’s two-factor authentication (2FA)
     lacks sufficient protection against brute-force attacks. Although the application
     blocks the user after several failed attempts to provide 2FA codes, attackers
@@ -405,6 +477,7 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用程序的当前实现的两因素认证（2FA）缺乏足够的保护，以防范暴力破解攻击。尽管应用程序在多次未能提供2FA代码后阻止用户，攻击者可以通过自动化应用程序的完整多步骤2FA过程来绕过此阻止机制。
 - en: To address this issue effectively, enforce a minimum six-digit code length in
     the MFA configuration. Additionally, to reduce the risk of automated brute-forcing,
     implement an account locking mechanism that triggers after a specified number
@@ -418,15 +491,19 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了有效解决这个问题，在MFA配置中强制执行最小六位代码长度。此外，为了减少自动暴力破解的风险，在一定数量的无效2FA代码尝试后实施帐户锁定机制。最后，在涉及敏感帐户信息或安全设置的关键操作中，强制重新验证。对于诸如更改密码或禁用2FA等操作，用户应要求重新验证，可以使用密码或2FA令牌。如果用户在过去的10分钟内已登录，则可以豁免重新验证。更多信息请查看[2019年正确使用2FA](https://blog.trailofbits.com/2019/06/20/getting-2fa-right-in-2019/)在Trail
+    of Bits Blog上。
 - en: 'Issue #9: Lack of User Session Invalidation on Logout'
   id: totrans-split-70
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '问题 #9：注销时缺乏用户会话失效'
 - en: '*Severity: Low*'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：低*'
 - en: The caddy-security plugin lacks proper user session invalidation upon clicking
     the “Sign Out” button; user sessions remain valid even after requests are sent
     to `/logout` and `/oauth2/google/logout`. Attackers who gain access to an active
@@ -435,27 +512,32 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 在点击“登出”按钮后，caddy-security插件缺乏适当的用户会话失效；即使在发送到`/logout`和`/oauth2/google/logout`的请求后，用户会话仍然有效。获取激活但被假定为已注销的会话的攻击者可以代表用户执行未经授权的操作。
 - en: To address this issue, review the sign-out process to identify the cause of
     the unexpected behavior. Ensure that the `/oauth2/google/logout` endpoint correctly
     terminates the user session and invalidates the associated tokens.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这个问题，审查登出过程以确定意外行为的原因。确保`/oauth2/google/logout`端点正确终止用户会话并使相关令牌失效。
 - en: For more defense in depth, use the [OWASP Application Security Verification
     Standard (V3 Session Management)](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x12-V3-Session-management.md#v3-session-management)
     to check whether the implementation handles sessions securely.
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了更深入的防御，使用[OWASP应用程序安全性验证标准（V3会话管理）](https://github.com/OWASP/ASVS/blob/master/4.0/en/0x12-V3-Session-management.md#v3-session-management)检查实现是否安全处理会话。
 - en: 'Issue #10: Multiple Panics when Parsing Caddyfile'
   id: totrans-split-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '问题 #10：解析Caddyfile时发生多个Panic'
 - en: '*Severity: Low*'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '*严重性：低*'
 - en: Multiple parsing functions do not validate whether their input values are `nil`
     before attempting to access elements, which can lead to a panic (`index` `out`
     `of` `range`). Panics during the parsing of a Caddyfile may not be perceived as
@@ -465,21 +547,25 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 多个解析函数在尝试访问元素之前不验证其输入值是否为`nil`，这可能导致Panic（索引超出范围）。在解析Caddyfile期间的Panic可能不被视为即时漏洞，但它们可能表明未正确执行的安全控制（例如，不充分的数据验证），这可能导致其他代码路径中的问题。
 - en: To address these issues, integrate `nil` checks for input values before element
     access across all relevant functions.
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了解决这些问题，在所有相关功能中，在元素访问之前，集成对输入值的`nil`检查。
 - en: To prevent similar issues of this type, add Golang’s native fuzz tests for Caddyfile
     parsing functions.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了防止类似类型的问题，为Caddyfile解析功能添加Golang原生模糊测试。
 - en: Golang Security for the Community
   id: totrans-split-80
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 针对社区的Golang安全性
 - en: We *love* writing and reviewing Golang codebases at Trail of Bits. Indeed, we
     are constantly working on Golang-related [(Semgrep) resources](https://appsec.guide/docs/static-analysis/semgrep/),
     [rules](https://github.com/trailofbits/semgrep-rules/tree/main/go), and [blog
@@ -489,34 +575,40 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Trail of Bits，我们*热爱*编写和审查Golang代码库。事实上，我们一直在处理与Golang相关的[(Semgrep) 资源](https://appsec.guide/docs/static-analysis/semgrep/)、[规则](https://github.com/trailofbits/semgrep-rules/tree/main/go)和[博客文章](https://blog.trailofbits.com/?s=go&submit=Search)，并期待着参与像这样的宠物审计以及[客户项目](https://github.com/trailofbits/publications#security-reviews)，在这些项目中我们会检查Golang代码库。
 - en: Our aim in publishing our findings is to help protect others who may consider
     implementing a solution similar to the one we explored and to help them make informed
     decisions about their security infrastructure.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们发布发现的目的是帮助保护那些考虑实施类似我们探索的解决方案的其他人，并帮助他们就安全基础设施做出知情决策。
 - en: If you’re actively implementing a codebase in Golang or have questions, concerns,
     or other recommendations on open-source software you think we should look at,
     please [contact us](https://www.trailofbits.com/contact/).
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您正在积极地实施Golang代码库或者有关于开源软件的问题、疑虑或其他建议，您认为我们应该关注，请[联系我们](https://www.trailofbits.com/contact/)。
 - en: Coordinated Disclosure Timeline
   id: totrans-split-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 协调披露时间表
 - en: 'As part of the disclosure process, we reported the vulnerabilities to the caddy-security
     plugin maintainers first. The timeline of disclosure is provided below:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为披露过程的一部分，我们首先向caddy-security插件的维护者报告了这些漏洞。披露的时间线如下：
 - en: 'August 7, 2023: We reported our findings to the caddy-security plugin maintainers.'
   id: totrans-split-86
   prefs:
   - PREF_UL
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 2023年8月7日：我们向caddy-security插件的维护者报告了我们的发现。
 - en: 'August 23, 2023: The caddy-security plugin maintainers confirmed that there
     were no near-term plans to act on the reported vulnerabilities.'
   id: totrans-split-87
@@ -524,6 +616,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 2023年8月23日：caddy-security插件的维护者确认目前没有近期计划来处理报告的漏洞。
 - en: 'September 18, 2023: The disclosure blog post was released and issues were filed
     with the original project repository.'
   id: totrans-split-88
@@ -531,17 +624,21 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 2023年9月18日：披露博客文章发布，并在原始项目存储库中提交了问题。
 - en: 'Like this:'
   id: totrans-split-89
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 就像这样：
 - en: Like Loading...
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 载入中...
 - en: '*Related*'
   id: totrans-split-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '*相关*'
