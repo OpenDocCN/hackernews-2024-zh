@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:37:49'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:37:49'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Lezer
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Lezer
 - en: 来源：[https://marijnhaverbeke.nl/blog/lezer.html](https://marijnhaverbeke.nl/blog/lezer.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://marijnhaverbeke.nl/blog/lezer.html](https://marijnhaverbeke.nl/blog/lezer.html)
 - en: I keep coming across people who consider parser technology a forbidding, scary
     field of programming. This is nonsense—a small parser can be [very, very simple](http://eloquentjavascript.net/12_language.html#h_cpTTNxAWkQ),
     and provide a wholesome exercise in recursive thinking. At the same time, it is
@@ -34,12 +40,14 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常遇到一些认为解析技术是一门令人生畏的编程领域的人。这是无稽之谈——一个小小的解析器可以是[非常简单的](http://eloquentjavascript.net/12_language.html#h_cpTTNxAWkQ)，并且可以提供一个很好的递归思维练习。同时，事实上确实可以让解析变得非常复杂。大多数情况下，这种情况发生在你将解析技术泛化到不同语法上时。由于编译器教材通常描述了解析的通用方法，他们可能是为人们对解析感到畏惧负责的原因。
 - en: This post describes a [new parsing system](https://lezer.codemirror.net) I wrote
     for [CodeMirror](https://codemirror.net), a source code editor. It frames the
     system with some history, and digresses into some neat architectural details.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章描述了我为[CodeMirror](https://codemirror.net)写的一个[新的解析系统](https://lezer.codemirror.net)，它用一些历史背景框定了系统，并深入探讨了一些精彩的架构细节。
 - en: Editor features like syntax highlighting, bracket matching, code folding, and
     autocompletion all involve some level of parsing. Unfortunately, since editors
     have to handle many different languages, they require a generalized approach to
@@ -47,6 +55,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 编辑器功能，如语法高亮、括号匹配、代码折叠和自动完成，都涉及一定程度的解析。不幸的是，由于编辑器必须处理许多不同的语言，它们需要一种通用的解析方法。
 - en: CodeMirror is in the process of being rewritten, and I wanted to improve the
     way it parses its content. Parsing inside of an editor comes with its own unique
     set of constraints, which can be hard to satisfy. Though I had been planning new
@@ -54,16 +63,19 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: CodeMirror正在被重写，我希望改进它解析内容的方式。在编辑器内部进行解析带来了自己独特的一套约束条件，这些条件很难满足。虽然多年来我一直在计划新的方法，但到目前为止，我所能展示的仅仅是一堆死胡同。
 - en: 'The constraints that make the parsing problem in a code editor hard are roughly
     these:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让代码编辑器中的解析问题变得困难的约束条件大致如下：
 - en: The document is constantly changing.
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 文件在不断变化。
 - en: You can't do anything expensive. If the parsing works takes too long, it'll
     introduce latency that makes editing feel [slugglish](https://input-delay.glitch.me/)
     and unresponsive.
@@ -71,6 +83,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你不能做什么昂贵的事情。如果解析过程太耗时，将会导致编辑感觉[迟缓](https://input-delay.glitch.me/)和无响应。
 - en: The input is often not in a finished, syntactically correct form. But you still
     have to make some sense of it—nobody wants an editor where most features stop
     working when you have a syntax error in your document.
@@ -78,21 +91,25 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 输入通常不是最终的、语法正确的形式。但你仍然需要对其进行一些处理——没有人希望在文档中存在语法错误时，大多数功能都无法正常工作的编辑器。
 - en: You often want to be able to mix several languages/grammars in a single document
     (think HTML with JavaScript and CSS embedded in it).
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你经常希望能够在单个文档中混合多种语言/语法（比如在HTML中嵌入JavaScript和CSS）。
 - en: Keeping those in mind, let's go over the approaches I've tried.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 记住这些，让我们来看看我尝试过的方法。
 - en: A Brief History of CodeMirror Parsing
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: CodeMirror解析简史
 - en: The system in as it exists in CodeMirror 5 now (which is pretty much what we've
     been using from the very beginning) is a [simple one](http://marijnhaverbeke.nl/blog/codemirror-mode-system.html).
     For each language, you write a tokenizer which splits the input into pieces, and
@@ -102,6 +119,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在的CodeMirror 5系统（基本上从一开始就在使用的系统）是一个[简单的系统](http://marijnhaverbeke.nl/blog/codemirror-mode-system.html)。对于每种语言，你编写一个分词器，将输入分成片段，并为每个片段打上一些语法类别的标签（如`variable`、`keyword`或`number`）。分词器可以是有状态的，这使它们可以偷偷地成为完整的解析器，如果它们愿意的话。
 - en: This state must by copyable, so that the editor can strategically store tokenizer
     states from a previous run, and after a change, resume one close to that change
     to avoid re-tokenizing the entire document. Because we are usually only interested
@@ -172,6 +190,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我花了几个月的时间构建一个解析系统，它采用类似 PEG 的语法，将其编译为状态机，并使其能够作为 CodeMirror 语言模式运行。
 - en: This [system](https://github.com/codemirror/grammar-mode) is a marvel. It uses
     a moderately sophisticated [optimizing compiler](https://www.youtube.com/watch?v=1qIee0aHOhY)
     to generate the state machines. The result works quite well, and is used in several
@@ -180,6 +199,8 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个 [系统](https://github.com/codemirror/grammar-mode) 是一种奇迹。它使用了一种相当复杂的 [优化编译器](https://www.youtube.com/watch?v=1qIee0aHOhY)
+    来生成状态机。结果运行相当顺利，并且今天在几个实际系统中使用。但不幸的是，如果我真诚地说，这是一个可悲地走得太远的坏主意。
 - en: Parsing expression grammars are parsed by backtracking. And as such, they are
     very poorly suited for implementing a stateful tokenizer. In a backtracking system,
     you never know when you've *definitely* parsed a piece of content—later input
@@ -190,6 +211,8 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析表达式语法通过回溯进行解析。因此，它们非常不适合实现具有状态的标记器。在回溯系统中，您永远不知道何时*绝对*解析了一段内容——后续的输入可能要求您再次回溯。因此，我最终得到的实际上根本不是
+    PEG，而是一种需要显式注释解析器应该向前查看的系统。尽管以这种方式编写的语法相对可读，但它们涉及大量琐碎、容易出错的修补程序以解决局部歧义。
 - en: Also, parsing PEG is just really inefficient. Such grammars are “scannerless”
     meaning they don't make a distinction between tokenizing and parsing. When parsing
     in that way naively, you basically have to run your whole parsing logic for every
@@ -200,21 +223,25 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，解析 PEG 实际上非常低效。这样的语法是“无扫描器”的，意味着它们不区分标记和解析。在这种天真的解析方式中，您基本上必须为每个输入字符运行整个解析逻辑。由于回溯，可能要多次运行。编译器中的许多魔法旨在恢复语法中隐含的标记，以提高一些效率。但从速度上讲，该系统从未接近手写语言模式。
 - en: Tree-sitter
   id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Tree-sitter
 - en: So, though I knew I needed a new approach, I went into the CodeMirror 6 rewrite
     without any specific idea on what that approach would look like.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，尽管我知道我需要一个新的方法，但在 CodeMirror 6 重写中，我没有任何具体的想法会是什么样子。
 - en: And then I saw [tree-sitter](http://tree-sitter.github.io/tree-sitter/), and
     was enlightened.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我发现了 [tree-sitter](http://tree-sitter.github.io/tree-sitter/)，并得到了启发。
 - en: 'Tree-sitter is a parser system written with the code editor use case in mind,
     and is in the process of being integrated into the [Atom editor](https://atom.io/).
     It takes a much more ambitious approach to what a parser inside an editor should
@@ -222,6 +249,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Tree-sitter 是一种专为代码编辑器设计的解析器系统，正在被集成到 [Atom 编辑器](https://atom.io/) 中。它对编辑器内的解析器应该做的事情采取了更加雄心勃勃的方法：为内容构建完整准确的语法树。
 - en: You can do so much more with an actual syntax tree than with a sequence of tokens.
     Whereas tokens, possibly augmented with some information stored in the tokenizer
     state, allow you to sort of approximate understanding some aspects of the code's
@@ -229,12 +257,15 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 用实际的语法树比用一系列标记能做的事情多得多。而标记，可能还加上一些存储在标记器状态中的信息，允许您大致理解代码结构的某些方面，而树通常会精确地给出您需要的信息。
 - en: Most of the ideas that tree-sitter uses aren't new, in fact a [paper](https://www.researchgate.net/profile/SL_Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)
     from 2000 describes a somewhat similar system. But as far as I know, tree-sitter
     is the first system that puts them all together into a practical piece of software.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: Tree-sitter 使用的大多数想法并不新鲜，实际上，[2000 年的一篇论文](https://www.researchgate.net/profile/SL_Graham/publication/2377179_Efficient_and_Flexible_Incremental_Parsing/links/004635294e13f23ef1000000/Efficient-and-Flexible-Incremental-Parsing.pdf)
+    描述了一个类似的系统。但据我所知，tree-sitter 是第一个将它们集成到一个实用软件中的系统。
 - en: Unfortunately, tree-sitter is written in C, which is still awkward to run in
     the browser (and CodeMirrror targets non-WASM browsers). It also generates very
     hefty grammar files because it makes the size/speed trade-off in a different way
@@ -242,16 +273,19 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，tree-sitter是用C编写的，在浏览器中运行起来仍然很笨拙（而CodeMirror针对非WASM浏览器）。它还生成非常庞大的语法文件，因为它以一种不同于Web系统的方式进行大小/速度权衡。
 - en: But good ideas can be ported. [Lezer](https://lezer.codemirror.net) is a JavaScript-based
     system heavily inspired by tree-sitter.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 但好的想法可以移植。[Lezer](https://lezer.codemirror.net)是一个受树-sitter启发的基于JavaScript的系统。
 - en: LR Parsing and Context-Free Grammars
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: LR解析与无上下文语法
 - en: For a long time, I was firmly convinced that classical parser system based on
     context-free grammars and [LL](https://en.wikipedia.org/wiki/LL_parser) or [LR](https://en.wikipedia.org/wiki/LR_parser)
     parsing algorithms were just not suitable for the editor use case. My arguments
@@ -259,12 +293,14 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 长时间以来，我坚信基于无上下文语法和[LL](https://en.wikipedia.org/wiki/LL_parser)或[LR](https://en.wikipedia.org/wiki/LR_parser)解析算法的经典解析器系统对编辑器用例并不适用。我之前的论点是...
 - en: '*Context-free grammars are a limiting abstraction that breaks down as soon
     as the language does anything funky. Needing the grammar to be LR or LL to please
     the parser generator further pins you into a corner.*'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '*无上下文语法是一种有限制的抽象，只要语言做一些奇怪的事情，它就会崩溃。需要语法是LR或LL以满足解析器生成器的需求，会进一步将你钉在角落里。*'
 - en: This is not wrong. Expressing operator precedence in a pure context-free grammar
     requires writing a silly formulaic rule for each level of precedence. And when
     you need to implement something like automatic semicolon insertion or whitespace-sensitivity,
@@ -273,39 +309,46 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不是错的。在纯无上下文语法中表达操作符优先级需要为每个优先级级别编写一个愚蠢的公式规则。当你需要实现类似于自动分号插入或对空格敏感的功能时，在手写语法中可能只需要几行代码，但在这里无法直接表达，必须以某种方式逃脱无上下文抽象。
 - en: Making such a grammar suitable for an LR parser generator can be even more tricky,
     and often requires you to have a rather deep understanding of how the parser generator
     works.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 使这样的语法适合LR解析器生成器甚至更加棘手，通常需要你对解析器生成器的工作原理有相当深入的理解。
 - en: But like many things, once you get to know them, they aren't that bad. Parser
     generators can support precedence declarations, which make operator parsing a
     lot less terrible. They can even output decent error messages.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 但就像很多事情一样，一旦你了解它们，它们并不那么糟糕。解析器生成器可以支持优先级声明，这使得操作符解析不再那么可怕。它们甚至可以输出不错的错误信息。
 - en: Supporting dynamic resolution of ambiguities through something like [GLR parsing](https://en.wikipedia.org/wiki/GLR_parser)
     can provide a practical way out of situations that parser generators are traditionally
     bad at.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过像[GLR解析](https://en.wikipedia.org/wiki/GLR_parser)这样的动态解决歧义的支持，可以提供传统上解析器生成器处理不好的情况的实际解决方案。
 - en: And contrary to some of the abstractions I mentioned before, this one actually
     gets us something. Context-free grammars, when combined with a proper parser generator,
     really do give us fast parsers from readable, compact grammar declarations.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 与我之前提到的一些抽象相反，这个实际上确实给了我们一些东西。与适当的解析器生成器结合使用时，无上下文语法确实可以从可读性强、紧凑的语法声明中快速生成解析器。
 - en: '*A strict separation between the tokenizer and parser is problematic.*'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '*令人困扰的是，分词器和解析器之间的严格分离。*'
 - en: It is, in many languages (think of JavaScript's ambiguity between regular expressions
     and the division operator). It also tends to make mixed-language parsing harder.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在许多语言中（比如JavaScript在正则表达式和除号运算符之间的模糊性）。它还倾向于使混合语言解析更加困难。
 - en: But just because this type of parser is traditionally ran with a completely
     separate tokenizer doesn't mean it has to be. Having the parse state drive the
     tokenizer is largely unproblematic. You can even have the parser generator set
@@ -313,20 +356,24 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 但仅仅因为这种类型的解析器传统上与完全独立的分词器一起运行并不意味着它必须这样。让解析状态驱动分词器在很大程度上并不成问题。你甚至可以让解析器生成器[自动设置](#contextual-tokens)，无需用户参与。
 - en: '*Generated parsers are way too big.*'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '*生成的解析器太大了。*'
 - en: A naively generated LR parser is *huge*, and many tools spit out embarrassingly
     big files. But with careful parser state deduplication and table compression such
     a parser can be made about as compact as a hand-written one.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个天真生成的LR解析器是*庞大*的，许多工具生成的文件令人尴尬地大。但通过精心的解析器状态去重和表压缩，可以使这样的解析器几乎与手写的解析器一样紧凑。
 - en: '*Making such a parser error-tolerant is extremely cumbersome.*'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '*使这样的解析器具有误差容忍性非常麻烦*。'
 - en: If you search the scholarly literature for approaches to error-tolerance in
     LR parser systems, you get a lot of results, with a lot of different approaches,
     but none of them are very practical. Most require the grammar writer to explicitly
@@ -335,6 +382,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在学术文献中搜索LR解析器系统的错误容忍方法，你会得到大量结果，有许多不同的方法，但没有一个是非常实用的。大多数方法要求语法编写者显式地使用错误恢复策略注释语法，这使得语法变得臃肿，并将正确性的责任放在每个语法作者身上。
 - en: Tree-sitter ingeniously abuses [GLR parsing](https://en.wikipedia.org/wiki/GLR_parser),
     where the parser can try multiple interpretations simultaneously, to integrate
     automatic error-correction without a lot of extra complexity. Lezer copies [this
@@ -342,11 +390,13 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: Tree-sitter巧妙地滥用[GLR解析](https://en.wikipedia.org/wiki/GLR_parser)，其中解析器可以同时尝试多个解释，以集成自动错误修正而不需要额外的复杂性。Lezer复制了[这种方法](#error-recovery)。
 - en: Lezer
   id: totrans-split-52
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Lezer
 - en: I called my tree-sitter copycat project [Lezer](https://lezer.codemirror.net),
     which is the Dutch word for *reader* (and pronounced a lot like *laser*). It is
     a bit less advanced than tree-sitter in some areas, a bit more advanced in others,
@@ -355,12 +405,14 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将我的树坐者克隆项目命名为[Lezer](https://lezer.codemirror.net)，这是荷兰语中的*阅读者*（而且发音很像*laser*）。在某些方面，它比tree-sitter不那么先进，在其他方面则更为先进，并且在很多点上完全不同，这些差异源于不同的优先级和口味设定。
 - en: CodeMirror 6 will retain the ability to run a classical stateful tokenizer,
     but its recommended way to define a language mode is to write a Lezer grammar
     and wrap it in a CodeMirror-specific packages that adds some editor-related metadata.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: CodeMirror 6将保留运行经典的有状态分词器的能力，但定义语言模式的推荐方式是编写一个Lezer语法，并将其包装在添加了一些编辑器相关元数据的CodeMirror特定包中。
 - en: Lezer is an [LR](https://en.wikipedia.org/wiki/LR_parser) (with opt-in [GLR](https://en.wikipedia.org/wiki/GLR_parser))
     parser generator. It has support for incremental parsing, where you can cheaply
     re-parse a document after local changes have been made to it by reusing pieces
@@ -370,6 +422,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: Lezer是一个[LR](https://en.wikipedia.org/wiki/LR_parser)（具有选择性使用[GLR](https://en.wikipedia.org/wiki/GLR_parser)）解析器生成器。它支持增量解析，您可以便宜地在局部更改后重新解析文档，方法是重复使用旧解析树的部分。当解析器遇到语法错误时，它会自动尝试恢复并继续解析，并在输出树中留下标记，指示恢复发生的位置。
 - en: Lezer consists of an off-line parser generator tool, which takes a grammar description
     and outputs a JavaScript module containing a parser for that grammar, and a parser
     run-time system (which such output files depend on) to do the actual parsing.
@@ -377,12 +430,14 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: Lezer包括一个离线解析器生成工具，它接受语法描述并输出包含该语法解析器的JavaScript模块，以及一个解析器运行时系统（依赖于这些输出文件），用于实际解析。编辑器只需加载运行时系统和生成的解析器。
 - en: The parser outputs non-abstract syntax trees, meaning that it just creates a
     raw tree structure containing the constructs it parsed (with information on where
     it found them), without organizing them into a clean, easy-to-use data structure.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析器输出非抽象语法树，意味着它只创建一个原始树结构，其中包含它解析的构造（以及它们的位置信息），而不是将它们组织成一个干净、易于使用的数据结构。
 - en: The system is optimized for compactness, both in parser table size and syntax
     tree size. It needs to be practical to ship a bunch of parsers to a user on the
     web without producing megabytes of network traffic, and it needs to be realistic
@@ -390,6 +445,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 该系统针对紧凑性进行了优化，无论是解析表大小还是语法树大小。必须可以将一堆解析器实际传送到Web用户，而不会产生大量网络流量，并且可以保持大型文档的语法树在内存中而不会耗尽内存。
 - en: The [Lezer guide](https://lezer.codemirror.net/docs/guide/) provides a more
     thorough introduction, as well as a description of its grammar notation. In this
     blog post, I want to go into the neat implementation details that aren't relevant
@@ -397,16 +453,19 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Lezer指南](https://lezer.codemirror.net/docs/guide/)提供了更全面的介绍，以及其语法符号的描述。在本博客文章中，我想深入介绍一些在用户文档中不相关的精彩实现细节。'
 - en: Error Recovery
   id: totrans-split-60
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 错误恢复
 - en: The point where I became convinced that I definitely needed to use or copy tree-sitter
     was when I understood its error recovery strategy.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我理解到它的错误恢复策略时，我确信我绝对需要使用或复制tree-sitter。
 - en: Say you reach a point where you can no longer proceed normally because there
     is a syntax error. The rest of the input, after the error, is probably full of
     meaningful constructs that could still be parsed. We want those constructs in
@@ -415,30 +474,35 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你达到了一个无法正常进行的点，因为有语法错误。错误之后的输入可能充满了仍然可以解析的有意义结构。我们希望将这些结构放入我们的语法树中。但是我们的常规解析过程卡住了——它不知道如何从错误中恢复到可以继续解析的状态。
 - en: I definitely did not want to require the grammar author to add error recovery
     hints to their grammar. These tend to clutter up the grammar and are error-prone
     to write. Writing a grammar is hard enough without that distraction.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我绝对不想要求语法作者在他们的语法中添加错误恢复提示。这些倾向于混乱语法并且很容易写错。编写语法已经很难了，不需要这样的干扰。
 - en: You can see error recovery as a search problem. There might be a parse state
     and input position (past the error) where the parse can meaningfully continue.
     We just have to find it.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以将错误恢复视为一个搜索问题。可能存在一个解析状态和输入位置（超出错误）可以有意义地继续解析。我们只需找到它。
 - en: The actions encoded in the parse tables, along with some recovery-specific actions
     that the parser wouldn't normally take, provide a kind of search tree. You start
     at the state(s) where the error occurred, and keep exploring new states from there.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析表中编码的动作，以及解析器通常不会采取的一些特定恢复动作，提供了一种搜索树。您从错误发生的状态开始，并从那里继续探索新的状态。
 - en: But what does the accept condition look like? When do you know that you've found
     an acceptable solution? You could define that precisely, for example as the state
     that can handle the next N tokens without further errors. But we can also be vague.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是接受条件是什么样子呢？您如何知道已经找到了可接受的解决方案？您可以精确定义它，例如作为可以处理下N个标记而不再出现错误的状态。但我们也可以模棱两可地定义。
 - en: The solution found by [Max Brunsfeld](https://github.com/maxbrunsfeld) in tree-sitter
     is to use the same mechanism that's used to parse ambiguous grammars. A GLR parser
     can split its parse stack and run both sides alongside each other for a while
@@ -446,12 +510,14 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在tree-sitter中，[Max Brunsfeld](https://github.com/maxbrunsfeld)发现的解决方案是使用解析模棱两可语法所使用的相同机制。GLR解析器可以将其解析栈分割并在一段时间内并行运行两侧，直到清楚哪一侧有效。
 - en: That's pretty much exactly what a search algorithm does—it tracks a number of
     branches that it still has to explore, and continues to explore them, possibly
     pruning unpromising branches with some heuristic, until it finds a solution.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 这几乎正是搜索算法所做的——它跟踪它仍然必须探索的一些分支，并继续探索它们，可能使用一些启发式方法修剪不太有希望的分支，直到找到解决方案。
 - en: To be able to get good results, or at least *some* result, in messy situations
     like longer stretches of invalid input, each branch has a badness score associated
     with it, which is increased (linearly) each time a recovery action is taken, and
@@ -459,6 +525,7 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了能够在混乱的情况下，如较长的无效输入串中获得良好或至少*一些*结果，每个分支都与一个坏度分数相关联，每次采取恢复操作时线性增加，并在能够正常消耗一个标记时渐近减少。
 - en: What we want to do is, after an error, try all kinds of possible recovery tricks,
     which recursively branch off a large amount of states. But then, after a bit of
     that, we should consolidate to one or, at most, a few parse states again, because
@@ -466,6 +533,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们想要做的是，在出现错误后，尝试所有可能的恢复技巧，这些技巧会递归地分支出大量的状态。但是，在进行了一段时间之后，我们应该再次合并到一个或者最多几个解析状态，因为以多种方式解析输入是昂贵的。
 - en: To get this effect, Lezer forbids states with a badness higher than a given
     multiple of the best state's badness (or some maximum threshold) from applying
     further recovery actions, effectively dropping those branches when they can't
@@ -477,15 +545,18 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了达到这种效果，Lezer禁止具有比最佳状态的坏度的给定倍数更高（或某个最大阈值）的状态继续应用恢复动作，从而有效地丢弃那些无法正常进行的分支。在一个分支找到继续的良好方法的情况下，该分支的坏度将会收敛到零，并最终停止所有更糟糕的分支。在输入继续毫无意义的情况下，所有分支最终将获得超过最大值的坏度分数，解析器将仅继续其中一个。
 - en: 'The recovery strategies used are:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用的恢复策略包括：
 - en: Skip the next token, and try again with the same state after that.
   id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 跳过下一个令牌，然后在此之后再试一次。
 - en: Invent a token—take any of the tokens that are valid in this state, and continue
     to the state that consuming them would produce. This is the main source of branching,
     since many states allow a lot of tokens.
@@ -493,11 +564,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 发明一个令牌——使用此状态中有效的任何令牌，并继续到将消耗它们的状态。这是分支的主要来源，因为许多状态允许许多令牌。
 - en: Force the end of the innermost production that's currently being parsed.
   id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 强制结束当前正在解析的最内部产生式。
 - en: There are situations where the result of this approach isn't entirely optimal,
     but it usually does well. The important thing is that it always keeps parsing,
     and does so in a way that remains tractable (exponential searches are quickly
@@ -507,17 +580,20 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些情况下，这种方法的结果并非完全理想，但通常表现良好。重要的是它始终保持解析，并以一种保持可控的方式进行（指数搜索迅速减弱）。系统有点倾向于跳过令牌规则，因此如果一切都失败了，它将继续跳过令牌，直到碰巧遇到可以继续解析的情况。
 - en: Post-Order Parser Output
   id: totrans-split-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 后序解析器输出
 - en: When you have a parser that may be splitting its state—a lot—and build up parts
     of the tree multiple times, that duplicate tree building and the bookkeeping involved
     in it can cause a lot of unnecessary work.
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您有一个可能多次分割其状态并多次构建树的解析器时，这种重复的树构建及其所涉及的簿记工作可能会导致大量不必要的工作。
 - en: 'The order in which an LR parser creates nodes is inner-to-outer. It will, for
     example, first create the node for the operands, and then later the node for the
     operator expression. This suggests an approach: What if, instead of building a
@@ -527,6 +603,7 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: LR解析器创建节点的顺序是从内向外。例如，它首先创建操作数节点，然后稍后创建操作符表达式节点。这提出了一种方法：如果不立即构建树结构，而是让解析器仅保持所创建的节点的平面日志，那么这可以是一个数组，在其中节点按[后序顺序](https://en.wikipedia.org/wiki/Tree_traversal#Post-order_(LRN))排列，子节点在父节点之前。
 - en: The parser just appends to this array. When splitting the state, one state keeps
     the existing array, and the other gets a new empty array along with a pointer
     to the state that has the rest of the array, and the length of that array at the
@@ -534,11 +611,13 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析器只是将内容附加到此数组中。在分割状态时，一个状态保留现有的数组，另一个状态获得一个新的空数组，以及指向具有其余数组的状态的指针，以及分割时数组的长度。
 - en: Now splitting involves no node copying at all. You do need to copy the state
     stack, which LR parser use to track context, but that is generally shallow.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在分割根本不涉及任何节点复制。您确实需要复制状态栈，LR解析器用于跟踪上下文，但通常这是浅层的。
 - en: In addition, node allocation becomes as cheap as appending a few numbers to
     an array. For actions that don't result in tree nodes (Lezer allows you to mark
     rules as uninteresting, to keep the tree small), you don't have to do anything
@@ -547,6 +626,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，节点分配变得像将几个数字附加到数组一样便宜。对于不产生树节点的操作（Lezer允许您将规则标记为不感兴趣，以保持树的小型化），您根本不必执行任何操作。控制栈在每个规则开始时存储输出数组位置，并可以使用它来发出足够的数据以后重建父子关系。
 - en: After a parse finishes successfully, the final state's parent-array pointers
     can be used to find all the nodes that make up the tree, and construct an actual
     tree structure out of them.
@@ -649,11 +729,13 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 tree-sitter 类似，Lezer 将语法中重复的结果（由 `*` 和 `+` 操作符生成）存储为平衡的子树。这意味着，除非您的输入是病态的（例如连续一千次应用单个二进制运算符），否则您往往会得到浅层、平衡的语法树，这样的树在搜索时成本低廉且允许有效重用。
 - en: Contextual Tokens
   id: totrans-split-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 上下文 token
 - en: Depending on the grammar's complexity, an LR parser generator creates between
     a dozen and a few thousand parse states for your grammar. These represent syntactic
     positions like “after the opening paren of an argument list” or “after an expression,
@@ -661,12 +743,14 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据语法的复杂性，LR 解析器生成器为您的语法创建了十几到几千个解析状态。这些状态表示语法位置，比如“在参数列表的开括号后”或“在表达式之后，可能期望一些表达式后缀”。
 - en: The parser generator can figure out which tokens are valid in a given state.
     It can also, for tokens specified as part of the grammar, automatically determine
     which tokens conflict (match the same input, or some prefix of each other).
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 解析生成器可以找出在给定状态下哪些 token 是有效的。它还可以自动确定作为语法一部分指定的 token 中哪些 token 冲突（匹配相同的输入或彼此的某些前缀）。
 - en: A well-known example of conflicting tokens is the division operator versus regular
     expression syntax in JavaScript. But others are keywords that can also appear
     as property names, and the bitwise right shift operator (`>>`) versus two closing
@@ -674,18 +758,22 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 冲突 token 的一个著名例子是 JavaScript 中的除法运算符与正则表达式语法。但其他例子还包括关键字也可能出现为属性名称，以及位右移操作符
+    (`>>`) 与 C++ 中两个闭角括号的冲突。
 - en: Lezer will not complain about overlapping tokens if the tokens do not appear
     in the same parse states. This implicitly resolves the regular expression and
     property name issues, without any user interaction.
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: Lezer 如果 token 在不同的解析状态下出现，就不会抱怨重叠的 token。这种隐含地解决了正则表达式和属性名称的问题，而不需要用户进行任何交互。
 - en: When conflicting tokens do appear in the same place, such as division operators
     and C-style comments, you have to specify an explicit precedence ordering (comments
     take precedence) to tell the tool that you know what you're doing.
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 当冲突的 token 出现在同一位置时，比如除法操作符和 C 风格的注释，您必须指定一个显式的优先顺序（注释优先），以告诉工具您知道自己在做什么。
 - en: Contextual tokenization is implemented with a concept called token groups. Tokens
     that have unresolved conflicts with other tokens are assigned to one or more groups,
     where each group contains only non-conflicting tokens. Each state is assigned
@@ -697,6 +785,9 @@
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 上下文的标记化通过称为 token 组的概念来实现。具有与其他 token 冲突的未解决冲突的 token 被分配到一个或多个组中，每个组仅包含非冲突的
+    token。每个状态被分配一个单一的组（如果它期望冲突的 token 那是一个错误）。分词器传递该组，然后仅返回属于该组或不与任何其他 token 冲突的
+    token。通过将组成员资格存储在位集中并查看是否使用二进制 *和* 设置了正确的位，这种检查得到了优化。
 - en: Tokens are compiled down to a single deterministic state machine, which is ran
     on the input character stream. In cases like the regexp-versus-division issue,
     you don't want the machine to go running through regexp-specific states in a situation
@@ -707,23 +798,28 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: token 被编译为单个确定性状态机，该状态机在输入字符流上运行。在像正则表达式与除法之间的问题中，您不希望该机器在仅允许除法的情况下通过正则表达式特定的状态，因为那样会很浪费。因此，每个分词器状态还标记有一个位集，告诉您从该状态可达的
+    token 属于哪些组，并且当遇到一个与解析状态的允许 token 没有重叠的状态时，分词器会停止运行。
 - en: Skip Expressions
   id: totrans-split-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 跳过表达式
 - en: Almost all programming languages have special syntactic elements like whitespace
     and comments that may occur between any tokens. Encoding these directly in the
     grammar is extremely tedious for most languages.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 几乎所有编程语言都有特殊的语法元素，比如空白和注释，可以出现在任何 token 之间。对大多数语言来说，直接在语法中对其进行编码是极其乏味的。
 - en: Traditionally, tokenizer just skip such elements when reading the next token.
     That works well in most contexts, but makes it awkward to include the elements
     in the parse tree.
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统上，标记器在读取下一个标记时会跳过这样的元素。这在大多数情况下效果很好，但在将这些元素包含在解析树中时会显得有些别扭。
 - en: Lezer treats skipped things like they are part of the grammar (though in an
     optimized way to avoid increasing the size of the parse tables). It is possible
     to skip things that aren't single tokens (to implement something like nestable
@@ -732,6 +828,7 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: Lezer 将跳过的元素视为语法的一部分（尽管以优化的方式以避免增加解析表的大小）。可以跳过不是单个标记的元素（例如实现类似可嵌套注释的内容，或确保您的块注释节点由较小的节点组成，以便可以逐步解析巨大的块注释）。
 - en: Each rule or group of rules may have its own set of skipped expressions, so
     that you can express different sublanguages in a grammar, for example something
     like the content of interpolated strings, without allowing spacing in places where
@@ -739,6 +836,7 @@
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个规则或规则组可能有其自己的跳过表达式集，这样您就可以在语法中表达不同的子语言，例如插值字符串的内容，而不允许语言不允许的地方插入空格。
 - en: Each parse state has a pointer to a (shared) set of skip actions, which, for
     the skipped tokens or tokens that start a compound skipped expression, contains
     the actions to take for those tokens. For single-token skipped elements, that
@@ -748,11 +846,13 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个解析状态都有一个指向（共享的）跳过动作集的指针，用于跳过标记或开始复合跳过表达式的标记的动作。对于单个标记跳过元素，该动作只告诉解析器跳过标记并保持在相同状态。对于复合元素，则会将处理其余元素的状态推送到控制栈上。
 - en: Tree Node Tagging
   id: totrans-split-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 树节点标记
 - en: The languages that a tool like Lezer needs to handle are wildly different, from
     JavaScript to Haskell to CSS to YAML. As such, it is difficult to find a cross-language
     vocabulary to describe their constructs. In fact, it seems like that would be
@@ -760,11 +860,13 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: Lezer 需要处理的语言类型差异很大，从 JavaScript 到 Haskell 再到 CSS 和 YAML。因此，很难找到一个跨语言的词汇来描述它们的构造。事实上，这似乎需要一个单独的多年项目，并且引入了大量复杂性。
 - en: Yet it would be nice if the parser output comes with some information that can
     be interpreted without knowing what language you are working with.
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，如果解析器输出带有一些信息，而无需知道您正在使用的语言，那将是很好的。
 - en: After several iterations, what I decided on was a system where nodes have *names*,
     which only have a meaning within the language, and *props*, which are values associated
     with tags defined by external code. Integrating a language grammar into CodeMirror
@@ -774,12 +876,16 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 在几次迭代后，我决定采用一种系统，其中节点具有*名称*（仅在语言内有意义），以及*props*，这些是与外部代码定义的标签相关联的值。将语言语法集成到
+    CodeMirror 中涉及为语言使用的节点类型分配某些 props 的值，例如语法高亮样式信息以及如何进行 [缩进](indent-from-tree.html)
+    这些节点。
 - en: Since the number of node types in a language is limited, we can allocate an
     object for each node type to hold this information, and have all nodes of that
     type point to the same object.
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于语言中节点类型的数量有限，我们可以为每种节点类型分配一个对象以保存这些信息，并且所有该类型的节点都指向同一个对象。
 - en: To allow code outside the grammar to add props without mutating global state,
     parser instances can be extended with additional props, creating a copy that will
     output nodes with the props attached. This is especially useful in the context
@@ -787,6 +893,7 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了允许语法外的代码在不变更全局状态的情况下添加 props，可以通过扩展解析器实例来创建附加 props 的副本，从而输出带有附加 props 的节点。在混合语言树的上下文中，这是特别有用的。
 - en: Lezer has support for a limited form of grammar nesting. If language A can appear
     inside a document in language B, and the end of the region covered by A can be
     unambiguously found by scanning for a specific token, Lezer can temporarily switch
@@ -794,9 +901,11 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: Lezer 支持有限形式的语法嵌套。如果语言 A 可以出现在语言 B 的文档中，并且可以通过扫描特定标记明确找到 A 覆盖的区域的末端，Lezer 可以在解析这样的区域时暂时切换到另一组解析表。
 - en: The syntax tree will then contain nodes from both grammars. Having props directly
     attached to the nodes makes it much easier to work with such trees (as opposed
     to using a language-specific table that associates node names with metadata).
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 语法树将包含来自两种语法的节点。直接附加到节点的属性使得处理这样的树变得更加容易（而不是使用将节点名称与元数据关联的特定于语言的表格）。
