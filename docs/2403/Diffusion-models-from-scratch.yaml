@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:49:17'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:49:17
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Diffusion models from scratch
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 从头实现扩散模型
 - en: 来源：[https://www.chenyang.co/diffusion.html](https://www.chenyang.co/diffusion.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.chenyang.co/diffusion.html](https://www.chenyang.co/diffusion.html)
 - en: '\[\newcommand{\Kset}{\mathcal{K}} \newcommand{\distK}{ {\rm dist}_{\Kset} }
     \newcommand{\projK}{ {\rm proj}_{\Kset} } \newcommand{\eps}{\epsilon} \newcommand{\Loss}{\mathcal{L}}
     \newcommand{\norm}[1]{\left\lVert #1 \right\lVert} \newcommand{\R}{\mathbb{R}}
@@ -31,14 +37,20 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '\[\newcommand{\Kset}{\mathcal{K}} \newcommand{\distK}{ {\rm dist}_{\Kset} }
+    \newcommand{\projK}{ {\rm proj}_{\Kset} } \newcommand{\eps}{\epsilon} \newcommand{\Loss}{\mathcal{L}}
+    \newcommand{\norm}[1]{\left\lVert #1 \right\lVert} \newcommand{\R}{\mathbb{R}}
+    \DeclareMathOperator{\softmin}{softmin} \DeclareMathOperator{\distop}{dist}\]'
 - en: '[Paper (ICML 2024)](https://arxiv.org/abs/2306.04848)   [Code (Github)](https://github.com/yuanchenyang/smalldiffusion)'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '[论文（ICML 2024）](https://arxiv.org/abs/2306.04848)   [代码（Github）](https://github.com/yuanchenyang/smalldiffusion)'
 - en: '[Discussion on HackerNews](https://news.ycombinator.com/item?id=39672450)'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[HackerNews 上的讨论](https://news.ycombinator.com/item?id=39672450)'
 - en: Diffusion models have recently produced impressive results in generative modeling,
     in particular sampling from multimodal distributions. Not only has diffusion models
     seen widespread adoption in text-to-image generation tools such as [Stable Diffusion](https://github.com/Stability-AI/stablediffusion),
@@ -49,6 +61,9 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，扩散模型在生成建模中取得了令人印象深刻的结果，特别是从多模态分布中抽样。扩散模型不仅在文本到图像生成工具（如[Stable Diffusion](https://github.com/Stability-AI/stablediffusion)）中广泛采用，它们还在其他应用领域表现出色，比如[音频](https://text-to-audio.github.io/)
+    / [视频](https://openai.com/research/video-generation-models-as-world-simulators/)
+    / [3D](https://zero123.cs.columbia.edu/) 生成，[蛋白质设计](https://www.nature.com/articles/s41586-023-06415-8)，[机器人路径规划](https://diffusion-policy.cs.columbia.edu/)，所有这些都需要从多模态分布中抽样。
 - en: This tutorial aims to introduce diffusion models from an optimization perspective
     as introduced in [our paper](https://arxiv.org/abs/2306.04848) (joint work with
     [Frank Permenter](https://www.mit.edu/~fperment/)). It will go over both theory
@@ -58,6 +73,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本教程旨在从优化的角度介绍扩散模型，如我们在[我们的论文](https://arxiv.org/abs/2306.04848)中介绍的（与[Frank
+    Permenter](https://www.mit.edu/~fperment/)合作）。它将介绍理论和代码，使用理论来解释如何从头实现扩散模型。在教程结束时，您将学会为玩具数据集实现训练和抽样代码，这也适用于更大的数据集和模型。
 - en: In this tutorial we will mainly reference code from [`smalldiffusion`](https://github.com/yuanchenyang/smalldiffusion).
     For pedagogical purposes, the code presented here will be simplified from the
     [original library code](https://github.com/yuanchenyang/smalldiffusion/blob/main/src/smalldiffusion/),
@@ -65,11 +82,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将主要参考来自[`smalldiffusion`](https://github.com/yuanchenyang/smalldiffusion)的代码。出于教学目的，这里呈现的代码将简化自[原始库代码](https://github.com/yuanchenyang/smalldiffusion/blob/main/src/smalldiffusion/)，原始库本身有详细的注释，易于阅读。
 - en: Training diffusion models
   id: totrans-split-12
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 训练扩散模型
 - en: Diffusion models aim to generate samples from a set that is learned from training
     examples, which we will denote by \(\mathcal{K}\). For example, if we want to
     generate images, \(\mathcal{K} \subset \mathbb{R}^{c\times h \times w}\) is the
@@ -79,59 +98,74 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 扩散模型旨在从训练样例学到的集合中生成样本，我们将其表示为 \(\mathcal{K}\)。例如，如果我们想生成图像，\(\mathcal{K} \subset
+    \mathbb{R}^{c\times h \times w}\) 是对应于真实图像的像素值集合。扩散模型还适用于除图像之外的 \(\mathcal{K}\)，例如音频、视频、机器人轨迹，甚至离散域如文本生成。
 - en: 'In a nutshell, diffusion models are trained by:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，扩散模型的训练方法为：
 - en: Sampling \(x_0 \sim \mathcal{K}\), noise level \(\sigma \sim [\sigma_\min, \sigma_\max]\),
     noise \(\epsilon \sim N(0, I)\)
   id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 抽样 \(x_0 \sim \mathcal{K}\)，噪声水平 \(\sigma \sim [\sigma_\min, \sigma_\max]\)，噪声
+    \(\epsilon \sim N(0, I)\)
 - en: Generating noisy data \(x_\sigma = x_0 + \sigma \epsilon\)
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 生成带噪数据 \(x_\sigma = x_0 + \sigma \epsilon\)
 - en: Predicting \(\epsilon\) (direction of noise) from \(x_\sigma\) by minimizing
     squared loss
   id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过最小化平方损失从 \(x_\sigma\) 预测 \(\epsilon\)（噪声的方向）
 - en: This amounts to training a \(\theta\)-parameterized neural network \(\epsilon_\theta(x,
     \sigma)\), by minimizing the loss function
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这相当于通过最小化损失函数训练一个参数化为 \(\theta\) 的神经网络 \(\epsilon_\theta(x, \sigma)\)。
 - en: \[\Loss(\theta) = \mathop{\mathbb{E}} \lVert\epsilon_\theta(x_0 + \sigma_t \epsilon,
     \sigma_t) - \epsilon \lVert^2\]
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\Loss(\theta) = \mathop{\mathbb{E}} \lVert\epsilon_\theta(x_0 + \sigma_t \epsilon,
+    \sigma_t) - \epsilon \lVert^2\]
 - en: 'In practice, this is done by the following simple `training_loop`:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实践中，这通过以下简单的 `training_loop` 完成：
 - en: '[PRE0]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The training loop iterates over batches of `x0`, then samples noise level `sigma`
     and noise vector `eps` using `generate_train_sample`:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 训练循环迭代处理 `x0` 的批次，然后使用 `generate_train_sample` 来采样噪声水平 `sigma` 和噪声向量 `eps`：
 - en: '[PRE1]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Noise schedules
   id: totrans-split-24
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: 噪声时间表
 - en: 'In practice, \(\sigma\) is not sampled uniformly from the interval \([\sigma_\min,
     \sigma_\max]\), instead this interval is discretized into \(N\) distinct values
     called a *\(\sigma\) schedule*: \(\{ \sigma_t \}_{t=1}^N\), and \(\sigma\) is
@@ -141,33 +175,43 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在实践中，\(\sigma\) 并不是从区间 \([\sigma_\min, \sigma_\max]\) 均匀采样的，而是将此区间离散化为 \(N\)
+    个不同值的一个 *\(\sigma\) 时间表*：\(\{ \sigma_t \}_{t=1}^N\)，在训练期间从此列表中均匀采样。我们定义了封装了可能的
+    `sigmas` 列表的 `Schedule` 类，并在训练过程中从此列表中采样。
 - en: '[PRE2]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'In this tutorial, we will use a log-linear schedule defined below:'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将使用下面定义的对数线性时间表：
 - en: '[PRE3]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Other commonly used schedules include `ScheduleDDPM` for pixel-space diffusion
     models and `ScheduleLDM` for latent diffusion models such as Stable Diffusion.
     The following plot compares these three schedules with default parameters.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他常用的时间表包括像素空间扩散模型的 `ScheduleDDPM` 和 Latent Diffusion 模型如 Stable Diffusion 的
+    `ScheduleLDM`。下面的图表比较了这三种时间表的默认参数。
 - en: A comparison plot of different diffusion schedules
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 不同扩散时间表的比较图
 - en: Toy example
   id: totrans-split-31
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: 玩具示例
 - en: 'In this tutorial we will start with a toy dataset used in one of the first
     diffusion papers [[Sohl-Dickstein et.al. 2015]](https://arxiv.org/abs/1503.03585),
     where \(\Kset \subset \R^2\) are points sampled from a spiral. We first construct
@@ -175,23 +219,29 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本教程中，我们将从最早的扩散论文之一中使用的玩具数据集开始 [[Sohl-Dickstein et.al. 2015]](https://arxiv.org/abs/1503.03585)，其中
+    \(\Kset \subset \R^2\) 是从螺旋中抽样的点。我们首先构建并可视化该数据集：
 - en: '[PRE4]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Swissroll toy dataset
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 瑞士卷玩具数据集
 - en: 'For this simple dataset, we can implement the denoiser using a multi-layer
     perceptron (MLP):'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这个简单的数据集，我们可以使用多层感知器（MLP）来实现去噪器：
 - en: '[PRE5]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'The MLP takes the concatenation of \(x \in \R^2\) and an embedding of the noise
     level \(\sigma\), then predicts the noise \(\epsilon \in \R^2\). Although many
     diffusion models use a sinusoidal positional embedding for \(\sigma\), the simple
@@ -199,33 +249,43 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: MLP 接受 \(x \in \R^2\) 的串联和噪声水平 \(\sigma\) 的嵌入，然后预测噪声 \(\epsilon \in \R^2\)。虽然许多扩散模型使用正弦位置嵌入来表示
+    \(\sigma\)，但简单的二维嵌入同样有效：
 - en: Two-dimensional \(\sigma_t\) embedding
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 二维 \(\sigma_t\) 嵌入
 - en: Now we have all the ingredients to train a diffusion model.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们具备了训练扩散模型的所有要素。
 - en: '[PRE6]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Training loss over 15000 epochs, smoothed with moving average
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 15000 个 epoch 的训练损失，用移动平均平滑
 - en: The learned denoiser \(\eps_\theta(x, \sigma)\) can be visualized as a vector
     field parameterized by the noise level \(\sigma\), by plotting \(x - \sigma \eps_\theta(x,
     \sigma)\) for different \(x\) and levels of \(\sigma\).
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 学得的去噪器 \(\eps_\theta(x, \sigma)\) 可以被视为由噪声水平 \(\sigma\) 参数化的向量场，通过为不同的 \(x\)
+    和 \(\sigma\) 绘制 \(x - \sigma \eps_\theta(x, \sigma)\) 来进行可视化。
 - en: Plot of predicted \(\hat{x}_0 = x - \sigma \eps_\theta(x, \sigma)\) for different
     \(x\) and \(\sigma\)
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于不同的 \(x\) 和 \(\sigma\)，预测的 \(\hat{x}_0 = x - \sigma \eps_\theta(x, \sigma)\)
+    的绘图
 - en: In the plots above, the arrows point from each noisy datapoint \(x\) to the
     “clean” datapoint predicted by the denoiser with noise level \(\sigma\). At high
     levels of \(\sigma\), the denoiser tends to predict the mean of the data, but
@@ -234,6 +294,8 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述图中，箭头从每个带噪数据点 \(x\) 指向由噪声水平 \(\sigma\) 预测的“干净”数据点。在高噪声水平下，去噪器倾向于预测数据的均值，但在低噪声水平下，如果其输入
+    \(x\) 也接近数据，则去噪器预测实际数据点。
 - en: How do we interpret what the denoiser is learning, and how do we create a procedure
     to sample from diffusion models? We will next build a theory of diffusion models,
     then draw on this theory to derive sampling algorithms.
@@ -338,6 +400,8 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\eps^*(x_\sigma, \sigma) = \frac{\sum_{x_0 \in \Kset} (x_\sigma-x_0) \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}
+    {\sigma \sum_{x_0 \in \Kset} \exp(-\norm{x_\sigma-x_0}^2/2\sigma^2)}\]
 - en: 'From the above expression, we see that the ideal denoiser points towards a
     weighted mean of all the datapoints in \(\Kset\), where the weight for each \(x_0
     \in \Kset\) determines the distance to \(x_0\). Using this expression, we can
@@ -346,38 +410,48 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 从上述表达式中，我们看到理想去噪器指向 \(\Kset\) 中所有数据点的加权平均，其中每个 \(x_0 \in \Kset\) 的权重决定到 \(x_0\)
+    的距离。使用这个表达式，我们还可以实现计算上可行的小数据集理想去噪器：
 - en: '[PRE7]'
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'For our toy dataset, we can plot the direction of \(\epsilon^*\) as predicted
     by the ideal denoiser for different noise levels \(\sigma\):'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的玩具数据集，我们可以绘制由理想去噪器预测的 \(\epsilon^*\) 方向，以展示不同噪声水平 \(\sigma\) 下的情况：
 - en: Plot of direction of \(\eps^*(x, \sigma)\) for different \(x\) and \(\sigma\)
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: \(\eps^*(x, \sigma)\) 的方向图，用于不同的 \(x\) 和 \(\sigma\) 值的绘图
 - en: From our plots we see that for large values of \(\sigma\), \(\epsilon^*\) points
     towards the mean of the data, but for smaller values of \(\sigma\), \(\epsilon^*\)
     points towards the nearest data-point.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 从我们的图表中可以看出，对于较大的 \(\sigma\) 值，\(\epsilon^*\) 指向数据的均值，但对于较小的 \(\sigma\) 值，\(\epsilon^*\)
+    指向最近的数据点。
 - en: 'One insight from our paper is that the ideal denoiser for a fixed \(\sigma\)
     is equivalent to the gradient of a \(\sigma\)-smoothed squared-distance function:'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们论文的一个见解是，对于固定的 \(\sigma\)，理想去噪器等价于平滑的平方距离函数的梯度：
 - en: '**Theorem** For all \(\sigma > 0\) and \(x \in \R^n\), we have'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: \*\*定理\*\* 对于所有 \(\sigma > 0\) 和 \(x \in \R^n\)，我们有
 - en: \[\frac{1}{2} \nabla_x \distop^2_\Kset(x, \sigma) = \sigma \eps^*(x, \sigma).\]
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\frac{1}{2} \nabla_x \distop^2_\Kset(x, \sigma) = \sigma \eps^*(x, \sigma).\]
 - en: This tells us that the ideal denoiser found by minimizing the diffusion training
     objective \(\Loss(\theta)\) is in fact the gradient of a smoothed squared-distance
     function to the underlying data manifold \(\Kset\). This connection is key to
@@ -385,11 +459,14 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 这告诉我们，通过最小化扩散训练目标函数 \(\Loss(\theta)\) 找到的理想去噪器实际上是平滑的平方距离函数到底层数据流形 \(\Kset\)
+    的梯度。这种联系是激发我们解释去噪器是近似投影的关键。
 - en: Relative error model
   id: totrans-split-73
   prefs:
   - PREF_H5
   type: TYPE_NORMAL
+  zh: 相对误差模型
 - en: In order to analyze the convergence of diffusion sampling algorithms, we introduced
     a relative error model which states that the projection predicted by the denoiser
     \(x-\sigma \epsilon_{\theta}( x, \sigma)\) well approximates \(\projK(x)\) when
@@ -398,38 +475,47 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了分析扩散抽样算法的收敛性，我们引入了一个相对误差模型，该模型表明由去噪器预测的投影 \(x-\sigma \epsilon_{\theta}( x,
+    \sigma)\) 在输入到去噪器的 \(\sigma\) 良好估计 \(\distK(x)/\sqrt{n}\) 时很好地逼近 \(\projK(x)\)。对于常数
+    \(1 > \eta \ge 0\) 和 \(\nu \ge 1\)，我们假设
 - en: \[\norm{ x-\sigma \epsilon_{\theta}( x, \sigma) - \projK(x)} \le \eta \distK(x)\]
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\norm{ x-\sigma \epsilon_{\theta}( x, \sigma) - \projK(x)} \le \eta \distK(x)\]
 - en: when \((x, \sigma)\) satisfies \(\frac{1}{\nu}\distK(x) \le \sqrt{n}\sigma \le
     \nu \distK(x)\). In addition to the discussion about ideal denoisers above, this
     error model is motivated by the following observations.
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 当 \((x, \sigma)\) 满足 \(\frac{1}{\nu}\distK(x) \le \sqrt{n}\sigma \le \nu \distK(x)\)。除了上述关于理想去噪器的讨论外，这种误差模型的动机来自以下观察。
 - en: '*Low noise* When \(\sigma\) is small and the manifold hypothesis holds, denoising
     approximates projection because most of the added noise is orthogonal to the data
     manifold.'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '*低噪声* 当 \(\sigma\) 很小时，且流形假设成立时，去噪近似于投影，因为大部分添加的噪声与数据流形正交。'
 - en: When added noise is small, most of noise is orthogonal to tangent space of manifold.
     Under the manifold hypothesis, denoising is approximately projection.
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 当添加的噪声较小时，大部分噪声与流形的切空间正交。在流形假设下，去噪近似于投影。
 - en: '*High noise* When \(\sigma\) is large relative to the diameter of \(\Kset\),
     then any denoiser predicting any weighted mean of the data \(\Kset\) has small
     relative error.'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '*高噪声* 当 \(\sigma\) 相对于 \(\Kset\) 的直径较大时，那么预测任何 \(\Kset\) 数据的加权平均的任何去噪器都具有较小的相对误差。'
 - en: When added noise is large compared to diameter of data, denoising and projection
     point in the same direction
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 当添加的噪声相对于数据直径较大时，去噪和投影点在同一个方向上。
 - en: We also perform empirical tests of our error model for pre-trained diffusion
     models on image datasets. The CIFAR-10 dataset is small enough for tractable computation
     of the ideal denoiser. Our experiments show that for this dataset, the relative
@@ -438,26 +524,32 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还对图像数据集上预训练的扩散模型的误差模型进行了实证测试。CIFAR-10 数据集足够小，可以计算理想去噪器。我们的实验表明，对于这个数据集，采样轨迹上的精确投影与理想去噪器输出之间的相对误差很小。
 - en: Ideal denoiser well-approximates projection onto the CIFAR-10 dataset under
     relative-error model
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 理想的去噪器很好地近似了在相对误差模型下对 CIFAR-10 数据集的投影
 - en: Sampling from diffusion models
   id: totrans-split-83
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 从扩散模型中采样
 - en: Given a learned denoiser \(\epsilon_\theta(x, \sigma)\), how do we sample from
     it to obtain a point \(x_0 \in \Kset\)? Given noisy \(x_t\) and noise level \(\sigma_t\),
     the denoiser \(\eps_\theta(x_t, \sigma_t)\) predicts \(x_0\) via
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 给定学习得到的去噪器 \(\epsilon_\theta(x, \sigma)\)，我们如何从中采样以获得 \(\Kset\) 中的点 \(x_0\)？给定嘈杂的
+    \(x_t\) 和噪声水平 \(\sigma_t\)，去噪器 \(\eps_\theta(x_t, \sigma_t)\) 通过以下方式预测 \(x_0\)：
 - en: \[\hat x_0^t := x_t - \sigma_t \eps_\theta(x_t, \sigma_t)\]
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\hat x_0^t := x_t - \sigma_t \eps_\theta(x_t, \sigma_t)\]
 - en: Intuition from the relative error assumption tells us that we want to start
     with \((x_T, \sigma_T)\) where \(\distK(x_T)/\sqrt{n} \approx \sigma_T\). This
     is achieved by choosing \(\sigma_T\) to be large relative to the diameter of \(\Kset\),
@@ -466,6 +558,9 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 从相对误差假设的直觉告诉我们，我们希望从 \((x_T, \sigma_T)\) 开始，其中 \(\distK(x_T)/\sqrt{n} \approx
+    \sigma_T\)。这通过选择 \(\sigma_T\) 相对于 \(\Kset\) 的直径足够大，并且从方差为 \(\sigma_T\) 的 \(N(0,
+    \sigma_T)\) 独立同分布采样的 \(x_T\) 来实现。这确保了 \(x_T\) 离 \(\Kset\) 很远。
 - en: Although \(\hat x_0^T = x_T - \sigma_T \eps_\theta(x_T, \sigma_T)\) has small
     relative error, the absolute error \(\distK(\hat x_0^T)\) can still be large as
     \(\distK(x_T)\) is large. In fact, at high noise levels, the expression of the
@@ -475,20 +570,27 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管 \(\hat x_0^T = x_T - \sigma_T \eps_\theta(x_T, \sigma_T)\) 的相对误差很小，但绝对误差
+    \(\distK(\hat x_0^T)\) 可能仍然很大，因为 \(\distK(x_T)\) 很大。事实上，在高噪声水平下，理想去噪器的表达告诉我们 \(\hat
+    x_0^T\) 应该接近数据的均值 \(\Kset\)。我们无法通过单次调用去噪器获得接近 \(\Kset\) 的样本。
 - en: Sampling process iteratively calls the denoiser based on \(\sigma_t\) schedule.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 采样过程根据 \(\sigma_t\) 的调度迭代地调用去噪器。
 - en: Thus we want to *iteratively call the denoiser* to obtain a sequence \(x_T,
     \ldots, x_t, \ldots x_0\) using a pre-specified schedule of \(\sigma_t\), hoping
     that \(\distK(x_t)\) decreases in concert with \(\sigma_t\).
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们希望通过预定的 \(\sigma_t\) 调度 *迭代地调用去噪器*，以获得序列 \(x_T, \ldots, x_t, \ldots, x_0\)，希望
+    \(\distK(x_t)\) 随着 \(\sigma_t\) 的变化而减少。
 - en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t-1}) \eps_\theta(x_t, \sigma_t)\]
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t-1}) \eps_\theta(x_t, \sigma_t)\]
 - en: This is exactly the deterministic [DDIM sampling algorithm](https://arxiv.org/abs/2010.02502),
     though presented in different coordinates through a change of variable. See [Appendix
     A of our paper](https://arxiv.org/abs/2306.04848) for more details and a proof
@@ -496,21 +598,27 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 这正是确定性的 [DDIM 采样算法](https://arxiv.org/abs/2010.02502)，尽管通过变量的改变在不同坐标系中呈现。详情请参见我们论文的
+    [附录 A](https://arxiv.org/abs/2306.04848)。
 - en: Diffusion sampling as distance minimization
   id: totrans-split-92
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 作为距离最小化的扩散采样
 - en: We can interpret the diffusion sampling iterations as gradient descent on the
     squared-distance function \(f(x) = \frac{1}{2} \distK(x)^2\). In a nutshell,
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以将扩散采样迭代解释为在平方距离函数 \(f(x) = \frac{1}{2} \distK(x)^2\) 上的梯度下降。简言之，
 - en: '**DDIM is approximate gradient descent on \(f(x)\) with stepsize \(1- \sigma_{t-1}/\sigma_t\),
     with \(\nabla f(x_t)\) estimated by \(\eps_\theta(x_t, \sigma_t)\).**'
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '**DDIM 是在 \(f(x)\) 上使用步长 \(1- \sigma_{t-1}/\sigma_t\) 近似梯度下降，其中 \(\nabla f(x_t)\)
+    由 \(\eps_\theta(x_t, \sigma_t)\) 估计得到。**'
 - en: How should we choose the \(\sigma_t\) schedule? This determines the number and
     size of gradient steps we take during sampling. If there are too few steps, \(\distK(x_t)\)
     might not decrease and the algorithm may not converge. On the other hand, if we
@@ -519,6 +627,7 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们应该如何选择 \(\sigma_t\) 的调度？这决定了我们在采样过程中采取的梯度步数和大小。如果步数太少，\(\distK(x_t)\) 可能不会减少，算法可能不会收敛。另一方面，如果我们采取许多小步，我们需要多次评估去噪器，这是一个计算昂贵的操作。这促使我们定义了可接受的调度。
 - en: '**Definition** An *admissible schedule* \(\{ \sigma_t \}_{t=0}^T\) ensures
     \(\frac{1}{\nu} \distK(x_t) \le \sqrt{n} \sigma_t \le \nu \distK(x_t)\) holds
     at each iteration. In particular, a geometrically decreasing (i.e. log-linear)
@@ -526,6 +635,8 @@
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: '**定义** 一个*可接受的调度* \(\{ \sigma_t \}_{t=0}^T\) 确保在每次迭代中都满足 \(\frac{1}{\nu} \distK(x_t)
+    \le \sqrt{n} \sigma_t \le \nu \distK(x_t)\)。特别地，几何递减（即对数线性）的 \(\sigma_t\) 序列是一个可接受的调度。'
 - en: Our main theorem states that if \(\{\sigma_t\}_{t=0}^T\) is an admissible schedule
     and \(\epsilon_\theta(x_t, \sigma_t)\) satisfies our relative error model, the
     relative error can be controlled, and the sampling procedure aiming to minimize
@@ -533,36 +644,45 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的主要定理表明，如果 \(\{\sigma_t\}_{t=0}^T\) 是一个可接受的调度，并且 \(\epsilon_\theta(x_t, \sigma_t)\)
+    满足我们的相对误差模型，那么可以控制相对误差，采样过程旨在最小化距离收敛。
 - en: '**Theorem** Let \(x_t\) denote the sequence generated by DDIM and suppose that
     \(\nabla \distK(x)\) exists for all \(x_t\) and \(\distK(x_T) = \sqrt n \sigma_T\).
     Then'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '**定理** 让 \(x_t\) 表示由DDIM生成的序列，并假设对所有 \(x_t\) 都存在 \(\nabla \distK(x)\)，并且 \(\distK(x_T)
+    = \sqrt n \sigma_T\)。那么'
 - en: \(x_t\) is generated by gradient descent on the squared-distance function with
     stepsize \(1 - \sigma_{t-1}/\sigma_{t}\)
   id: totrans-split-99
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: \(x_t\) 是通过梯度下降在带有步长 \(1 - \sigma_{t-1}/\sigma_{t}\) 的平方距离函数上生成的
 - en: \(\distK(x_{t})/\sqrt{n} \approx \sigma_{t}\) for all \(t\)
   id: totrans-split-100
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对所有 \(t\)，\(\distK(x_{t})/\sqrt{n} \approx \sigma_{t}\)
 - en: 'Coming back to our toy example, we can find an admissible schedule by subsampling
     from the original log-linear schedule, and implement the DDIM sampler as follows:'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到我们的玩具示例，我们可以通过从原始对数线性调度中进行子采样来找到一个可接受的调度，并按以下方式实现DDIM采样器：
 - en: '[PRE8]'
   id: totrans-split-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Samples from 20-step DDIM
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 从20步DDIM中采样
 - en: We see that most samples lie close to the original data, but there is room for
     improvement. One way is to increase the number of DDIM steps, but this incurs
     an additional computational cost. Next, we use our interpretation of diffusion
@@ -570,49 +690,61 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到大多数样本都接近原始数据，但还有改进的空间。一种方法是增加DDIM步数，但这会增加额外的计算成本。接下来，我们使用扩散模型的解释来推导一个更高效的采样器。
 - en: Improved sampler with gradient estimation
   id: totrans-split-105
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 使用梯度估计改进采样器
 - en: 'Since \(\nabla \distK(x)\) is invariant between \(x\) and \(\projK(x)\), we
     aim to minimize estimation error \(\sqrt{n} \nabla \distK(x) - \epsilon_{\theta}(x_t,
     \sigma_t)\) with the update:'
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 \(\nabla \distK(x)\) 在 \(x\) 和 \(\projK(x)\) 之间是不变的，我们的目标是通过更新来最小化估计误差 \(\sqrt{n}
+    \nabla \distK(x) - \epsilon_{\theta}(x_t, \sigma_t)\)：
 - en: \[\bar\eps_t = \gamma \eps_{\theta}(x_t, \sigma_t) + (1-\gamma) \eps_{\theta}(x_{t+1},
     \sigma_{t+1})\]
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: \[\bar\eps_t = \gamma \eps_{\theta}(x_t, \sigma_t) + (1-\gamma) \eps_{\theta}(x_{t+1},
+    \sigma_{t+1})\]
 - en: 'Intuitively, this update corrects any error made in the previous step using
     the current estimate:'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 直觉上，此更新使用当前估计来纠正前一步骤中的任何错误：
 - en: Our gradient estimation update step
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的梯度估计更新步骤
 - en: This leads to faster convergence compared to the DDIM sampler, as seen from
     the samples on our toy model lying closer to the original data.
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 与DDIM采样器相比，这导致更快的收敛，因为我们玩具模型上的样本更接近原始数据。
 - en: Samples from 20-step gradient estimation sampler
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 从20步梯度估计采样器中采样
 - en: Compared to the default DDIM sampler, our sampler can be interpreted as adding
     momentum, causing the trajectory to potentially overshoot but converge faster.
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 相对于默认的DDIM采样器，我们的采样器可以被解释为添加动量，导致轨迹有可能超过但更快地收敛。
 - en: Sampling trajectories varying momentum term \(\gamma\)
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 采样轨迹变化的动量项 \(\gamma\)
 - en: Empirically, adding noise during the generation process also improves the sampling
     quality. In order to do so while sticking to our original \(\sigma_t\) schedule,
     we need to denoise to a smaller \(\sigma_{t'}\) then add back noise \(w_t \sim
@@ -620,11 +752,15 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 实证上，在生成过程中添加噪声也能提高采样质量。为了在保持原始 \(\sigma_t\) 调度的同时实现这一点，我们需要将噪声去噪到较小的 \(\sigma_{t'}\)，然后再添加回噪声
+    \(w_t \sim N(0, I)\)。
 - en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \epsilon_\theta(x_t, \sigma_t) +
     \eta w_t\]
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \epsilon_\theta(x_t, \sigma_t) +
+    \eta w_t\]
 - en: If we assume that \(\mathop{\mathbb{E}}\norm{w_t}^2 = \norm{\epsilon_\theta(x_t,
     \sigma_t)}^2\), we should choose \(\eta\) so that the norm of the update is constant
     in expectation. This leads to the choice of \(\sigma_{t-1} = \sigma_t^\mu \sigma_{t'}^{1-\mu}\)
@@ -635,33 +771,43 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们假设 \(\mathop{\mathbb{E}}\norm{w_t}^2 = \norm{\epsilon_\theta(x_t, \sigma_t)}^2\)，我们应该选择
+    \(\eta\)，使得更新的范数在期望中保持恒定。这导致了选择 \(\sigma_{t-1} = \sigma_t^\mu \sigma_{t'}^{1-\mu}\)，其中
+    \(0 \le \mu < 1\)（按定义，\(\sigma_{t'} \le \sigma_{t-1} \le \sigma_t\)），以及 \(\eta
+    = \sqrt{\sigma_{t-1}^2 - \sigma_{t'}^2}\)。当 \(\mu = \frac{1}{2}\) 时，我们确切地恢复了[DDPM抽样器](https://arxiv.org/abs/2006.11239)（参见[我们论文的附录A](https://arxiv.org/abs/2306.04848)进行推导）。
 - en: Sampling trajectories varying amount of noise added during sampling
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 采样轨迹在采样过程中添加不同数量的噪声
 - en: Our gradient estimation update can be combined with adding noise during sampling.
     In summary, our full update step is
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的梯度估计更新可以与采样过程中添加噪声相结合。总之，我们的完整更新步骤是
 - en: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \bar\eps_t + \eta w_t\]
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: \[x_{t-1} = x_t - (\sigma_t - \sigma_{t'}) \bar\eps_t + \eta w_t\]
 - en: The full sampler that generalizes DDIM (`gam=1, mu=0`), DDPM (`gam=1, mu=0.5`)
     and our gradient estimation sampler (`gam=2, mu=0`) is implemented below.
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面实现了完全泛化DDIM（`gam=1, mu=0`）、DDPM（`gam=1, mu=0.5`）和我们的梯度估计抽样器（`gam=2, mu=0`）。
 - en: '[PRE9]'
   id: totrans-split-121
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Large-scale examples
   id: totrans-split-122
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 大规模示例
 - en: 'The training code above not only works for our toy dataset, they can also be
     used to train image diffusion models from scratch. See [this example](https://github.com/yuanchenyang/smalldiffusion/blob/main/examples/fashion_mnist.py)
     for an example of training on the FashionMNIST dataset to get a second-place FID
@@ -669,37 +815,45 @@
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述训练代码不仅适用于我们的玩具数据集，还可用于从头开始训练图像扩散模型。请参见[此示例](https://github.com/yuanchenyang/smalldiffusion/blob/main/examples/fashion_mnist.py)，了解在[FashionMNIST数据集上训练以在[此排行榜](https://paperswithcode.com/sota/image-generation-on-fashion-mnist)上获得第二名FID分数的示例：
 - en: Samples from a diffusion model trained on the FashionMNIST dataset
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 从在FashionMNIST数据集上训练的扩散模型中采样样本
 - en: 'The sampling code works without modifications to sample from state-of-the-art
     pretrained latent diffusion models:'
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 采样代码可以在不修改的情况下工作，从最先进的预训练潜在扩散模型中进行采样：
 - en: '[PRE10]'
   id: totrans-split-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: We can visualize the different effects of our momentum term \(\gamma\) on high
     resolution text-to-image generation.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过动量项 \(\gamma\) 可视化对高分辨率文本到图像生成的不同效果。
 - en: Text-to-image samples using Stable Diffusion
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用稳定扩散进行文本到图像样本生成
 - en: Other resources
   id: totrans-split-129
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 其他资源
 - en: 'Also recommended are the following blog posts on diffusion models:'
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样推荐以下有关扩散模型的博客文章：
 - en: '[What are diffusion models](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)
     introduces diffusion models from the discrete-time perspective of reversing a
     Markov process'
@@ -707,6 +861,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[什么是扩散模型](https://lilianweng.github.io/posts/2021-07-11-diffusion-models/)从反转马尔可夫过程的离散时间视角引入了扩散模型'
 - en: '[Generative modeling by estimating gradients of the data distribution](https://yang-song.net/blog/2021/score/)
     introduces diffusion models from the continuous time perspective of reversing
     a stochastic differential equation'
@@ -714,22 +869,27 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[通过估计数据分布梯度进行生成建模](https://yang-song.net/blog/2021/score/)介绍了从反向随机微分方程的连续时间视角引入扩散模型'
 - en: '[The annotated diffusion model](https://huggingface.co/blog/annotated-diffusion)
     goes over a pytorch implementation of a diffusion model in detail'
   id: totrans-split-133
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[注释扩散模型](https://huggingface.co/blog/annotated-diffusion)详细介绍了扩散模型的PyTorch实现'
 - en: Citation
   id: totrans-split-134
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 引文
 - en: 'If you found this blog useful, please consider citing our paper:'
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您发现本博客有用，请考虑引用我们的论文：
 - en: '[PRE11]'
   id: totrans-split-136
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
