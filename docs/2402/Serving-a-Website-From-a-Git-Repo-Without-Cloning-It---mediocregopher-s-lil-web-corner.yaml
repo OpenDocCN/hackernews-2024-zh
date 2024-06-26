@@ -29,6 +29,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '**mediocregopher**''s lil web corner'
   id: totrans-split-7
   prefs: []
@@ -85,6 +86,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Ref files, and therefore branch files, are just plaintext files containing a
     single object hash. When the current tip of a branch is changed the only real
     change which takes place on the filesystem is to change the content of its ref
@@ -120,6 +122,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The body of a git commit object is more or less plaintext, save for a single
     null byte which separates a header string from the object''s contents, so we can
     just look at it directly:'
@@ -130,6 +133,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: As we can see from the header, the object in question is a commit (but we knew
     that). The `264` denotes the size of the rest of the file after the header. Following
     the `264` would be a null byte, except that the null byte was replaced with a
@@ -163,6 +167,7 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Welp, it looks like trees aren''t so simple to look at as commits. Luckily
     git ships with a handy utility, `cat-file`, for directly viewing objects and pretty-printing
     their contents:'
@@ -173,6 +178,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Much better. We can see that the tree contains a list of entries, where each
     entry denotes a file (blob) or sub-directory (tree), along with the permissions
     and name of the file/sub-directory. Looking at the contents of the `static` sub-directory''s
@@ -184,6 +190,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: We can see from this how git trees are used to describe the full contents of
     a repository from just a single hash. If any file in the repository were to change
     then the hash of its associated blob object would change, which would change the
@@ -210,6 +217,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Blob objects are like commit objects, nice and easy to parse; just a header,
     a null byte, and then the content of the file as-is.
   id: totrans-split-38
@@ -233,11 +241,13 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Git then went and did a bunch of magical stuff, and afterwards the repo was
     fully cloned locally. But how did your git tool do that, given just a URL?
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后git进行了一些神奇的操作，之后仓库就完全在本地克隆了。但是你的git工具是如何做到的，仅仅给出了一个URL？
 - en: 'The answer is: it''s complicated. There are actually two different protocols
     with which git might clone a repo over HTTPS: the smart protocol and the dumb
     protocol. The smart protocol is fast but requires a special purpose HTTP client
@@ -247,10 +257,12 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案是：这很复杂。实际上，git可能会通过两种不同的协议来克隆一个仓库：智能协议和哑协议。智能协议速度很快，但需要一个专门的HTTP客户端才能工作。哑协议比智能协议慢，但不需要一个特殊的HTTP客户端；它只是按原样提供文件，没有任何特殊的逻辑。
 - en: We're going to use the dumb protocol.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用哑协议。
 - en: 'Let''s return to the beginning and remember our actual goal here: we want to
     serve a website using the contents of a git repository, and specifically the contents
     of the tip of a specific branch of a git repository. To do this we need to know
@@ -259,10 +271,12 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回到开始，记住我们的真正目标：我们想要使用git仓库的内容来提供一个网站，特别是要使用git仓库的特定分支的最新内容。为了做到这一点，我们需要知道该分支当前指向的提交是哪个。我们可以通过发出一个简单的GET请求来发现这个：
 - en: '[PRE9]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'This repo only has a single branch (and no tags), so only a single line is
     returned. And would you look at that, it''s the same commit hash as we saw in
     our local copy! Let''s now query that commit object, and see how objects are queried
@@ -270,29 +284,35 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个仓库只有一个分支（没有标签），所以只返回了一行。你看，它的提交哈希值与我们本地副本中看到的一样！现在让我们查询该提交对象，看一下一般情况下如何查询对象：
 - en: '[PRE10]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'As you can see objects are returned in the exact same way they are stored locally.
     No surprises. While trees are difficult to look at without the `git cat-file`
     tool (which won''t work for remote objects), blobs are still easy:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以看到对象以与本地存储的方式完全相同的方式返回。没有什么意外。虽然树在没有`git cat-file`工具（对于远程对象不起作用）的情况下难以查看，但blob仍然很容易：
 - en: '[PRE11]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: It works exactly like the local git repo.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的工作原理与本地git仓库完全一样。
 - en: Putting It All Together
   id: totrans-split-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起
 - en: Given all this, how would my special reverse proxy handle a request for `/static/foo.html`?
     Well, first it would need to query the repository server for the commit (using
     `/info/refs`), and then fetch the commit object in order to pull out the root
@@ -300,6 +320,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到所有这一切，我的特殊反向代理如何处理对`/static/foo.html`的请求呢？首先，它需要向仓库服务器查询提交（使用`/info/refs`），然后获取提交对象以提取根树哈希，然后获取根树对象。
 - en: From there the server would need to look in the root tree object and check that
     it sees a tree entry called `static`, and fetch its tree object. The server would
     then check `static`'s tree object for a blob entry called `foo.html`, and finally
@@ -308,6 +329,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 从那里，服务器需要查看根树对象，并检查是否看到了一个叫做`static`的树条目，并获取其树对象。服务器然后需要检查`static`的树对象是否有一个叫做`foo.html`的blob条目，最后它会获取这个blob，并将其内容返回作为原始请求的响应（在剥离git对象头之后）。
 - en: This sounds like a lot of steps to serve a single file, but there's two key
     optimizations which can be made. The first is to cache the root tree's hash in
     memory, which skips two lookups right at the beginning. The root tree's hash will
@@ -317,6 +339,7 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这听起来像是为了提供单个文件而进行了很多步骤，但有两个关键的优化可以实现。首先是在内存中缓存根树的哈希值，这样可以跳过最开始的两次查找。只有当分支的最新提交发生变化时，根树的哈希值才会改变，所以将其缓存在内存中，并有一个单独的后台进程定期重新检查最新提交即可。
 - en: The second optimization is to cache tree objects in-memory using their hash
     as a key. The object identified by a hash never changes, so this cache is easy
     to manage, and by caching the tree objects in memory (perhaps with an LRU cache
@@ -325,6 +348,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个优化是使用它们的哈希作为键在内存中缓存树对象。由哈希标识的对象永远不会改变，所以这个缓存很容易管理，通过在内存中缓存树对象（如果内存使用是一个问题，可以使用LRU缓存），所有到远程服务器的往返都可以消除，除了最后一个往返用于文件本身。
 - en: 'If you''d like to see an example implementation of this idea you can check
     out my rust implementation for Domani:'
   id: totrans-split-58
