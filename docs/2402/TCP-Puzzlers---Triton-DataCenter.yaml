@@ -127,6 +127,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: (Remember, in these examples, I'm using `truss` to print out the system calls
     that `nc` makes. The `-d` flag prints a relative timestamp and the `-t` flag selects
     which system calls we want to see.)
@@ -145,6 +146,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Over on kodos, we see:'
   id: totrans-split-26
   prefs: []
@@ -157,6 +159,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'At this point, the TCP connections are in state ESTABLISHED and both processes
     are in `poll`. We can see this using the `netstat` tool on each system:'
   id: totrans-split-29
@@ -170,6 +173,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Client
   id: totrans-split-32
   prefs: []
@@ -178,6 +182,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The question is, **when we shut down one of these processes, what happens in
     the other process?** Does it find out? How? Try to predict the specific syscall
     behavior and explain why each system call does what it does.
@@ -196,6 +201,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Here''s what we see on `kang`:'
   id: totrans-split-38
   prefs: []
@@ -208,6 +214,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'What happened here? Let''s be specific:'
   id: totrans-split-41
   prefs: []
@@ -284,6 +291,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: There's no output for this connection at all on kang.
   id: totrans-split-55
   prefs: []
@@ -334,6 +342,7 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Client
   id: totrans-split-64
   prefs: []
@@ -342,6 +351,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Now I'll use VMware's "reboot" function to power-cycle the system. It's important
     that this be an actual power cycle (or OS panic) — anything that causes a graceful
     shut down will look more like the first case above.
@@ -360,6 +370,7 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'We tend to believe that TCP''s job is to maintain a consistent abstraction
     (namely, the TCP connection) across multiple systems, so it''s surprising to discover
     cases where the abstraction is broken like this. And lest you think this is some
@@ -376,6 +387,7 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: We can leave this forever without touching it and kang will *never* figure out
     that kodos rebooted.
   id: totrans-split-73
@@ -397,6 +409,7 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'When I type the message and hit enter, kodos gets woken up, reads the message
     from stdin, and sends it over the socket. *The `write` call completes successfully!*
     `nc` goes back to poll to wait for another event, eventually finds out that the
@@ -410,6 +423,7 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The [illumos read(2) man page](http://illumos.org/man/read.2) provides a little
     more context:'
   id: totrans-split-80
@@ -419,6 +433,7 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: This error doesn't mean that something specific to the `read` call went wrong,
     but rather that the socket itself is disconnected. Most other socket operations
     would fail the same way at that point.
@@ -487,6 +502,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Client
   id: totrans-split-94
   prefs: []
@@ -495,6 +511,7 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Now, I''ll cut power to kodos abruptly and attempt to send data from kang:'
   id: totrans-split-96
   prefs: []
@@ -507,6 +524,7 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'The `write` completes normally, and I don''t see anything for quite a while.
     Just over 5 minutes later, I see this:'
   id: totrans-split-99
@@ -520,6 +538,7 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'This looks similar to the case where the system was power-cycled instead of
     powered off, except for two things: it took 5 minutes for the system to notice,
     and the error reported was ETIMEDOUT. Note that again, it''s not that the `read`
@@ -603,6 +622,7 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: Client
   id: totrans-split-114
   prefs: []
@@ -611,6 +631,7 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Now let''s verify the connections are in the `ESTABLISHED` state we expect
     on both sides:'
   id: totrans-split-116
@@ -624,6 +645,7 @@
   id: totrans-split-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Client
   id: totrans-split-119
   prefs: []
@@ -632,6 +654,7 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Now, let''s CTRL-C the `nc` process on kodos:'
   id: totrans-split-121
   prefs: []
@@ -644,6 +667,7 @@
   id: totrans-split-123
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'We immediately see this on kang:'
   id: totrans-split-124
   prefs: []
@@ -656,6 +680,7 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'Now let''s look at the TCP connection states:'
   id: totrans-split-127
   prefs: []
@@ -668,6 +693,7 @@
   id: totrans-split-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Client
   id: totrans-split-130
   prefs: []
@@ -676,6 +702,7 @@
   id: totrans-split-131
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'This makes sense: kodos sent a FIN to kang. `FIN_WAIT_2` indicates that kodos
     received an ACK from kang for the FIN that it sent, and `CLOSE_WAIT` indicates
     that kang received the FIN *but has not sent a FIN back*. **This is a perfectly
@@ -699,6 +726,7 @@
   id: totrans-split-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'What happened here? We hit a lesser-known special case in the TCP stack: when
     an application has closed a socket, the TCP stack has sent a FIN, and the remote
     TCP stack has acknowledged the FIN, the local TCP stack waits a fixed period of
@@ -712,20 +740,26 @@
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里发生了什么？我们遇到了 TCP 栈中一个不太为人知的特殊情况：当应用程序关闭了一个套接字后，TCP 栈发送了一个 FIN，远程 TCP 栈确认了 FIN，本地
+    TCP 栈等待了一个固定的时间，然后 *关闭连接*。为什么要这样做呢？以防远程端重新启动。这种情况实际上类似于上面一个情况，其中一方有一个 `ESTABLISHED`
+    连接，而另一方却不知道。不同之处在于，在这种特定情况下，应用程序已经关闭了套接字，因此没有其他组件可以处理这个问题。结果是，TCP 栈等待了一段固定的时间，然后关闭连接（而不向另一端发送任何内容）。
 - en: 'Follow-up question: **what happens if kang sends data to kodos at this point?**
     Remember, kang still thinks the connection is open, but it''s been torn down on
     kodos.'
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 跟进问题：**如果 kang 在这一点向 kodos 发送数据会发生什么？**请记住，kang 仍然认为连接是打开的，但在 kodos 上已经被拆除。
 - en: Client
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 客户端
 - en: '[PRE28]'
   id: totrans-split-139
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'This is the same as we saw in case Puzzler 1: the `write()` actually succeeds,
     since the TCP stack doesn''t know that the connection is closed yet. But it does
     get a RST, which wakes up the thread in `poll()`, and the subsequent `read()`
@@ -733,16 +767,20 @@
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与我们在谜题1中看到的情况相同：`write()` 实际上成功了，因为 TCP 栈还不知道连接已经关闭。但它确实收到了一个 RST，这会唤醒 `poll()`
+    中的线程，随后的 `read()` 返回 ECONNRESET。
 - en: '**Conclusions:**'
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: '**结论：**'
 - en: It's possible for two sides to disagree about the state of the connection *even
     when there's been no OS, network, or hardware failure at all*.
   id: totrans-split-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 甚至在没有任何操作系统、网络或硬件故障的情况下，两个方面对于连接的状态可能会产生分歧。
 - en: In a case like the one above, it's not possible for kang to distinguish between
     the case where kodos is attentively waiting to receive data or kodos has closed
     the socket and isn't listening (at least, not without sending a packet). For this
@@ -752,11 +790,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在像上面那种情况下，kang 不可能区分 kodos 是在专心等待接收数据，还是 kodos 已经关闭了套接字而不再监听（至少，没有发送数据包的情况下）。因此，也许设计一个在正常操作期间使用这些半开放状态的套接字的系统并不是一个好主意。
 - en: Conclusions
   id: totrans-split-144
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: 'TCP is typically presented as a protocol for maintaining a consistent abstraction
     — the "TCP connection" — across two systems. We know that in the face of certain
     types of network and software problems, connections will fail, but it''s not always
@@ -765,18 +805,21 @@
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: TCP 通常被描述为在两个系统之间维护一致的抽象——"TCP 连接"——的协议。我们知道，在面对某些类型的网络和软件问题时，连接会失败，但并不总是明显地看到抽象失败的情况，即两个系统在连接状态上有分歧。具体而言：
 - en: It's possible for one system to think it has a working, established TCP connection
     to a remote system, while the remote system knows nothing about that connection.
   id: totrans-split-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有可能一个系统认为它与远程系统有一个正常工作的已建立的 TCP 连接，而远程系统对这个连接一无所知。
 - en: This is possible even when there has been no failure of the network, hardware,
     or operating system.
   id: totrans-split-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 即使在没有网络、硬件或操作系统故障的情况下，这种情况也是可能的。
 - en: These behaviors do not reflect deficiencies in TCP. Quite the contrary, in all
     of these cases, the TCP implementation appears to behave as reasonably as it could
     given the situation. If we were tempted to implement our own communication mechanism
@@ -786,6 +829,8 @@
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些行为并不反映 TCP 的缺陷。恰恰相反，在所有这些情况中，TCP 的实现似乎都表现得尽可能合理。如果我们试图实现自己的通信机制而不使用 TCP，这些情况的存在可能会提醒我们底层问题的复杂性。这些都是分布式系统的固有问题，而
+    TCP 连接本质上就是一个分布式系统。
 - en: That said, the single most important lesson in all of this is that **the notion
     of a TCP connection that spans multiple systems is a convenient fiction.** When
     it goes wrong, it's critical to think about it as two separate state machines
@@ -795,6 +840,7 @@
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，所有这些中最重要的一课是**跨多个系统的TCP连接这一概念是一个方便的虚构**。当出现问题时，关键是将其视为两个独立的状态机，它们同时操作以尝试维护连接的一致视图。应用程序有责任处理这些不同之处（通常使用保持活动机制）。
 - en: Furthermore, there's a disconnect between the application's file descriptor
     and the underlying TCP connection. TCP connections exist (in various states related
     to closing) even after an application has closed the file descriptor, and a file
@@ -803,10 +849,12 @@
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，应用程序的文件描述符与底层的TCP连接之间存在断开。即使应用程序关闭了文件描述符，TCP连接（与关闭相关的各种状态）仍然存在，并且由于故障，当底层TCP连接关闭时文件描述符可以打开。
 - en: 'Other lessons to keep in mind:'
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他需要牢记的教训包括：
 - en: Ungraceful reboot of a system (as happens when the OS crashes) is not the same
     as a userland process exiting or closing its socket. It's important to test this
     case specifically. Reboot, when the remote system comes back online before the
@@ -815,6 +863,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 系统的非优雅重新启动（当操作系统崩溃时会发生）与用户进程退出或关闭其套接字不同。特别是要测试这种情况。在远程系统在连接超时之前重新上线时重启，与关机也是不同的。
 - en: There's no proactive notification from the kernel when a TCP socket is torn
     down. You only find this out when you call `read()`, `write()`, or some other
     socket operation on the socket file descriptor. If your program doesn't do this
@@ -823,16 +872,19 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当TCP套接字关闭时，内核没有主动通知。你只有在对套接字文件描述符调用 `read()`、`write()` 或其他套接字操作时才能发现这一点。如果由于某种原因你的程序没有这样做，你将永远不会发现连接失败。
 - en: 'Some related notes that I''ve found aren''t so commonly known:'
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些相关的笔记，我发现并不那么常见：
 - en: '`ECONNRESET` is a socket error you can see from `read()`, `write()`, and other
     operations that indicates that the remote peer has sent a RST.'
   id: totrans-split-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ECONNRESET` 是一个套接字错误，你可以在 `read()`、`write()` 和其他操作中看到，表明远程对等方已发送RST。'
 - en: '`ETIMEDOUT` is a socket error you can see from `read()`, `write()`, and other
     operations that indicates that some timeout associated with the connection has
     elapsed. The cases I''ve seen most are when the remote side did not acknowledge
@@ -842,18 +894,22 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`ETIMEDOUT` 是一个套接字错误，你可以在 `read()`、`write()` 和其他操作中看到，表明连接相关的某个超时已经过去。我见过的情况大多数是远程端太长时间没有确认某个数据包。这些通常是数据包、FIN包或者KeepAlive探测。'
 - en: Importantly, neither of these errors means that there was anything wrong with
     the read or write operation that you tried to do — just that the socket itself
     is closed.
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 更重要的是，这些错误都不意味着你尝试做的读取或写入操作有任何问题 — 只是套接字本身已关闭。
 - en: If you made it this far, and this sort of problem sounds interesting to you,
     [we're hiring](https://www.joyent.com/about/careers)!
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经阅读到这里，并且这类问题听起来对你有趣，[我们正在招聘](https://www.joyent.com/about/careers)!
 - en: '*Post written by Dave Pacheco*'
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Dave Pacheco 撰写*'
