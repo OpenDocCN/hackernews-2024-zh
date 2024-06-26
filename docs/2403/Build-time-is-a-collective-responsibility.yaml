@@ -2,45 +2,54 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:38:00'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:38:00
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Build time is a collective responsibility
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 构建时间是集体的责任
 - en: 来源：[https://yoyo-code.com/build-time-is-collective-responsibility/](https://yoyo-code.com/build-time-is-collective-responsibility/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://yoyo-code.com/build-time-is-collective-responsibility/](https://yoyo-code.com/build-time-is-collective-responsibility/)
 - en: There's been some talk about Rust's compile time again recently. I feel like
     there's a mismatch of expectations when it comes to this topic in general. I want
     to address that, and Rust is especially good example to illustrate this.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近又有关于Rust的编译时间的讨论。我觉得在这个主题上总体期望存在一种不匹配。我想解决这个问题，而Rust是一个特别好的例子来说明这一点。
 - en: You have to do your part [🔗](#you-have-to-do-your-part)
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 你必须尽自己的一份[🔗](#you-have-to-do-your-part)
 - en: At my previous job, I became pretty frustrated with slow builds of our C++ codebase.
     From the frontend world, I was used to seeing my code changes reflected in the
     browser in ~1s, so 5-minute build time was a bit too much for me.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的上一份工作中，我对我们的C++代码库的构建速度慢感到非常沮丧。从前端的世界来看，我习惯于在浏览器中看到代码更改大约在~1s内反映出来，所以5分钟的构建时间对我来说有点太长了。
 - en: 'When I asked one developer about this, my concerns were more or less dismissed.
     I was told to just accept this as reality and move on. There was a sense of avoiding
     responsibility: "this is not our problem, it''s been inflicted on us, we''re a
@@ -49,34 +58,40 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我询问一位开发者时，我的担忧多多少少被忽视了。有人告诉我只是接受这个现实并继续前进。有一种回避责任的感觉：“这不是我们的问题，这是强加给我们的，我们是一个本地项目，我们必须编译大量的代码。”但是当我深入研究构建系统时，我发现了一堆琐碎的问题：
 - en: the heaviest part of the codebase was built twice
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 代码库中最重的部分被构建了两次
 - en: single big header file was included almost everywhere and compiled more than
     100x times
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 单个大头文件几乎被包含在每个地方，并编译了100多次
 - en: many unnecessary includes that created spurious build time dependencies
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 许多不必要的包含创建了虚假的构建时间依赖关系
 - en: Severely limited parallelism because of a single (avoidable) bottleneck in the
     build graph
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 由于构建图中一个（可避免的）瓶颈，严重限制了并行性
 - en: Fixing them was often just about changing few lines in `CMakeLists.txt` or moving
     some code around between different files. I shaved off minutes of build time in
     the end.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 修复它们通常只需在`CMakeLists.txt`中更改几行或在不同文件之间移动一些代码。最终我减少了几分钟的构建时间。
 - en: Curiously, one problem wasn't even a build system problem. I was told to use
     `make -j <target>`, which actually bricks the computer for a while. Somehow everybody
     on the team just assumed that `-j` is a shorthand for `-j <num_cpus>`, but it's
@@ -85,6 +100,8 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 令人好奇的是，一个问题甚至不是一个构建系统的问题。我被告知要使用`make -j <target>`，这实际上会使计算机一段时间内变砖。不知何故，团队中的每个人都认为`-j`是`-j
+    <num_cpus>`的速记，但实际上它是`-j <infinity>`的速记。这是一个用户问题，但也说明了我的观点。
 - en: We could go rant about many inherent compile time problems of C++, about confusing
     `make` defaults, some `CMake` constructs not doing what you'd expect, but the
     thing is - this is our program, our build configuration, our responsibility. **Part
@@ -92,20 +109,24 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以抱怨C++许多固有的编译时间问题，关于令人困惑的`make`默认值，一些`CMake`结构并不按您期望的方式运行，但问题是-这是我们的程序，我们的构建配置，我们的责任。**我们责任的一部分是理解这些工具并正确使用它们。**
 - en: Builder is an interpreter [🔗](#builder-is-an-interpreter)
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建器是一个解释器[🔗](#builder-is-an-interpreter)
 - en: 'Here''s the thing:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是问题所在：
 - en: Build time will never be simply fast. Build is just a program, like any other
     one and has all the problematic properties of programs.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 构建时间永远不会简单快速。构建只是一个程序，就像任何其他程序一样，具有所有程序的问题属性。
 - en: Rust is a perfect example here, because it has a turing-complete type system,
     so your code can be thought of as a combination of multiple programs layered on
     top of each other. One program will be run by your users, but another program
@@ -113,6 +134,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust在这里是一个完美的例子，因为它具有图灵完备的类型系统，所以你的代码可以被视为在其上层叠加了多个程序。一个程序将由用户运行，但另一个程序将在构建期间由Rust的类型系统解释。
 - en: You don't have to use a turing-complete build system, though. Even if your build
     system doesn't allow arbitrary computation, it probably has some way you can give
     it a lot of work to do. Regex also doesn't have to be Turing complete to run practically

@@ -2,45 +2,54 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:03:43'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:03:43'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'XL: An extensible programming language'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: XL：一种可扩展的编程语言
 - en: 来源：[https://xlr.sourceforge.io/](https://xlr.sourceforge.io/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://xlr.sourceforge.io/](https://xlr.sourceforge.io/)
 - en: The lifetime of a value is the amount of time during which the value exists
     in the program, in other words the time between its [creation](#creation) and
     its [destruction](#destruction).
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个值的生命周期是其存在于程序中的时间长度，换句话说，是其 [创建](#creation) 到 [销毁](#destruction) 之间的时间。
 - en: An entity is said to be *live* if it was created but not yet destroyed. It is
     said to be *dead* otherwise.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果实体已创建但尚未销毁，则称其为 *存活*。否则称其为 *死亡*。
 - en: '|  | Some entities may be live but not accessible from within the current context
     because they are not visible. This is the case for variables declared in the caller’s
     context. |'
   id: totrans-split-8
   prefs: []
   type: TYPE_TB
+  zh: '|  | 有些实体可能在当前上下文中存活但无法从中访问，因为它们不可见。这适用于声明在调用者上下文中的变量的情况。'
 - en: The lifetime information known by the compiler about entity `X` is represented
     as compile-time constant `lifetime X`. The lifetime values are equipped with a
     partial order `<`, such that the expression `lifetime X < lifetime Y` being `true`
@@ -52,10 +61,15 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器关于实体 `X` 的生命周期信息表示为编译时常量 `lifetime X`。生命周期值带有部分顺序 `<`，使得表达式 `lifetime X <
+    lifetime Y` 为 `true`，是编译器保证 `Y` 在 `X` 存活期间始终存活的保证。`lifetime X > lifetime Y` 或
+    `lifetime X < lifetime Y` 都可能为假。这种 `lifetime` 特性用于实现类似 [Rust](https://doc.rust-lang.org/1.8.0/book/ownership.html)
+    的 [访问类型限制](#lifetime)，即以零运行时成本实现内存安全的一种方式。
 - en: 'The lifetime of XL values fall in one of the following categories:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: XL 值的生命周期可归类为以下几种：
 - en: '*global values* become live during the [declaration phase](#declaration-phase)
     of the program, just before its [evaluation phase](#evaluation-phase), and they
     remain live until the end of that evaluation phase. Global values are typically
@@ -65,6 +79,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*全局值* 在程序的 [声明阶段](#declaration-phase) 开始，正好在其 [评估阶段](#evaluation-phase) 之前变得存活，并且在该评估阶段结束之前保持存活。全局值通常在程序评估之前静态预分配在内存的保留区域中，由一个称为链接器的程序执行。'
 - en: '*local values* become live during the [local declaration phase](#nested-declarations)
     of the bodies of the declarations corresponding to patterns [being matched](#pattern-matching)
     during the evaluation phase. Local values are typically allocated dynamically
@@ -75,6 +90,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*本地值* 在评估阶段与 [模式匹配](#pattern-matching) 相对应的声明体的 [局部声明阶段](#nested-declarations)
+    中变为存活。本地值通常动态分配在为每个线程分配的 [调用栈](https://en.wikipedia.org/wiki/Call_stack) 上。该栈具有有限的
+    "深度"，这可能限制程序允许的递归深度。'
 - en: '*dynamic values* are dynamically allocated using a "heap", and remain live
     as long as some other value [owns them](#ownership). That owning value may itself
     be a global, local or dynamic value. The heap is typically the largest available
@@ -85,6 +103,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*动态值* 是使用 "堆" 动态分配的，并且只要某些其他值 [拥有它们](#ownership)，它们就会保持存活。拥有它们的值可以是全局值、本地值或动态值。堆通常是程序中最大的可用内存空间。XL
+    提供了多种设施来帮助您管理动态分配，包括在这是有效管理策略时构建 [垃圾收集器](#garbage-collection) 的设施。'
 - en: '*temporary values* are created during evaluation of expressions, and can be
     discarded as soon as they have been consumed. For example, assuming a definition
     for `x+y`, the expression `a+b+c+d` will be processed as `((a+b)+c)+d`, and the
@@ -94,14 +114,18 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*临时值* 在表达式评估期间创建，并且在被使用后可以立即丢弃。例如，假设 `x+y` 已定义，则表达式 `a+b+c+d` 将被处理为 `((a+b)+c)+d`，并且在评估
+    `(a+b)+c` 后，评估 `a+b` 的结果可以被销毁。临时值通常也分配在堆栈上。'
 - en: 'For example, consider the following piece of code:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑以下代码片段：
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '******| ***1*** | The `use` statements import global values defined in other
     files. Here, the `XL` module, its sub-module `XL.CONSOLE`, and a third-level sub-module
     `XL.CONSOLE.TEXT_IO` are all imported by the first statement, and similarly, `XL.TEXT`
@@ -110,6 +134,9 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '******| ***1*** | `use` 语句导入其他文件中定义的全局值。在这里，第一个语句导入了 `XL` 模块及其子模块 `XL.CONSOLE`
+    和第三级子模块 `XL.CONSOLE.TEXT_IO`，第二个语句导入了 `XL.TEXT` 和 `XL.TEXT.FORMAT`（假设 `XL` 已经被导入）
+    |'
 - en: '| ***2*** | The declaration of `print` is a global value [defined](#print)
     in `XL.CONSOLE.TEXT_IO`. This `print` statement is the first thing to be executed
     during program evaluated. Its evaluation will call code for an implementation
@@ -118,6 +145,9 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_TB
+  zh: '| ***2*** | `print` 的声明是在 `XL.CONSOLE.TEXT_IO` 中定义的全局值。这个 `print` 语句是程序评估期间执行的第一件事。它的评估将调用
+    `print` 实现的代码，从而在调用堆栈上增加一个新的上下文。正如我们之前指出的（见[#print_instances](#print_instances)），这可能涉及进一步调用，使调用堆栈更深
+    |'
 - en: '| ***3*** | The three definitions with `fib` as a prefix are three distinct
     global values, even if, thanks to dynamic dispatch, they may be considered as
     implementing a single entity. Evaluating `fib N` or `fib I` may require considering
@@ -125,6 +155,8 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_TB
+  zh: '| ***3*** | 带有 `fib` 前缀的三个定义是三个不同的全局值，即使由于动态调度的原因，它们可能被认为是实现单一实体。评估 `fib N`
+    或 `fib I` 可能需要考虑所有三个全局值作为候选。'
 - en: '| ***4*** | The evaluation of the expression `(fib(N-1)+fib(N-2))` will need
     to create a number of temporaries, for example to compute `N-1` or `N-2`. Temporaries
     may be [destroyed](#destruction) as soon as they are no longer needed. For example,
@@ -133,14 +165,18 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '| ***4*** | 表达式 `(fib(N-1)+fib(N-2))` 的评估将需要创建一些临时变量，例如计算 `N-1` 或 `N-2`。临时变量可能会在不再需要时被销毁。例如，评估表达式的代码可能类似于以下代码，其中
+    `tmp1`、`tmp2`、`tmp3`、`tmp4` 和 `tmp5` 是所需的临时变量：'
 - en: '[PRE1]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '| ***5*** | The `for` loop creates a local variable named `I` that will successively
     take values `1`, `2`, `3`, `4`, `5`. The value for `I` will only be live within
     one iteration of the loop. In other words, the execution will be identical to
@@ -148,14 +184,18 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '| ***5*** | `for` 循环创建了一个名为 `I` 的局部变量，该变量将依次取值 `1`、`2`、`3`、`4`、`5`。`I` 的值只在循环的一个迭代中有效。换句话说，执行将与以下内容相同（对于不同值的
+    `I` 使用一个[closure](#closure)）：'
 - en: '[PRE2]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '| ***6*** | The value defined by `F is fib I` is a local value that will be
     live for the duration of the evaluation of the enclosing block. It will be destroyed
     the end of each block. In other words, a more accurate description for `tmpBody`
@@ -163,14 +203,18 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '| ***6*** | `F is fib I` 定义的值是一个局部值，将在评估封闭块的持续时间内有效。它将在每个块的末尾被销毁。换句话说，在上面例子中，对
+    `tmpBody` 的更准确的描述将在末尾有一个 `delete F` 语句，如下所示：'
 - en: '[PRE3]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '|'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '| ***7*** | It may come as a suprise to people coming from C or C++ that XL
     does not *require* the call to `fib I` to be done before this point. The definition
     `F is fib I` can be read as either a constant initialized with `fib I`, or as
@@ -181,6 +225,9 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_TB
+  zh: '| ***7*** | 对于习惯于 C 或 C++ 的人来说，可能会感到惊讶的是，XL 并不要求在这一点之前调用 `fib I`。定义 `F is fib
+    I` 可以解读为常量初始化为 `fib I`，或者作为返回 `fib I` 的函数。如果编译器可以确定调用评估 `F` 的结果始终相同，则允许实现记忆化，即在类似
+    `F+F` 的表达式中存储第一次计算 `F` 的值 |'
 - en: '|  | Typically, a good compiler also makes use of machine *registers*, very
     fast storage in the processor itself, as a cache for values that are logically
     part of the call stack. In general, we will only talk about the stack, with the
@@ -191,108 +238,132 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '|  | 通常，优秀的编译器还会利用机器 *寄存器*，作为处理器中非常快速的存储，作为逻辑上属于调用栈的值的缓存。一般来说，我们只会讨论堆栈，理解上包括适用的寄存器。
+    |******  *******创建* 是为使用准备值的过程。XL 语言规则保证在值存活时，通过在适当时间调用由程序员提供的代码来保证值永不未定义。'
 - en: The lifetime of a value `V` begins by implicitly evaluating a *creation* statement
     `create V`. This happens in particular if you create a local variable without
     initializing it.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 值 `V` 的生命周期始于隐式评估 *创建* 语句 `create V`。特别是当您创建一个未初始化的局部变量时会发生这种情况。
 - en: 'For example, consider the following code:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，请考虑以下代码：
 - en: '[PRE4]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The code above is really equivalent to the following, where the implicitly-generated
     code has been put between parentheses:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码实际上等同于以下代码，其中隐式生成的代码已放在括号内：
 - en: '[PRE5]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Values in [containers](#generic-containers) receive well-defined values through
     creation. For example, if you create an `array[1..5] of complex`, the 5 `complex`
     values are created before you can access them.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过创建，[容器](#generic-containers) 中的值通过创建接收到明确定义的值。例如，如果创建一个 `array[1..5] of complex`，则在访问它们之前，这
+    5 个 `complex` 值已经被创建。
 - en: 'A `create` operation must take a single `out` argument. All the values in this
     `out` argument are themselves created before the body of the definition begins.
     For example, consider the following:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '`create` 操作必须带有单一的 `out` 参数。定义体开始前，所有该 `out` 参数中的值都已被创建。例如，请考虑以下内容：'
 - en: '[PRE6]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'This code does not lead to uninitialized values, because it is really equivalent
     to the following:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 此代码不会导致未初始化的值，因为实际上等同于以下内容：
 - en: '[PRE7]'
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'The `create` operator for [basic types](#basic-types) is said to *zero initialize*
     them as follows:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '[基本类型](#basic-types) 的 `create` 操作被称为 *零初始化* 它们，如下所示：'
 - en: '`type` and `nil` values receive `nil`.'
   id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`type` 和 `nil` 值接收 `nil`。'
 - en: All integer types receive value `0`
   id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有整数类型接收值 `0`。
 - en: All real types receive value `0.0`
   id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有实数类型接收值 `0.0`。
 - en: All character types receive `character 0`.
   id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 所有字符类型接收 `character 0`。
 - en: '`text` receive `""`.'
   id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`text` 接收 `""`。'
 - en: '`boolean` receive `false`.'
   id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`boolean` 接收 `false`。'
 - en: The `create` operation can be called by the programmer, and therefore must behave
     correctly if it is called multiple times. This is true by default because of the
     rule that `out` parameters are [destroyed](#destruction) before a call.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序员可以调用 `create` 操作，因此如果多次调用它，它必须表现正确。这是因为默认情况下 `out` 参数在调用之前会被[销毁](#destruction)。
 - en: 'For example, if you explicitly call `create` as in the following code:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果你显式调用 `create` 如下代码：
 - en: 'this is really equivalent to the following, where implicit statements are between
     parentheses:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这实际上等同于以下代码，其中隐式语句放在括号内：
 - en: '[PRE8]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The compiler may be able to elide some of these calls in such cases. Another
     important case where a compiler should elide creation calls is called *construction*,
     and is based on the shape defined for types. When you define a type, you need
@@ -300,10 +371,13 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器可能能够在这些情况下省略一些调用。另一个重要的情况是编译器应该省略创建调用的情况，称为 *构造*，基于为类型定义的形状。例如，我们如下定义了一个
+    `complex` 类型：
 - en: '[PRE9]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: This means that a shape like `complex(2.3, 5.6)` is a `complex`. This also means
     that the *only* elementary way to build an arbitrary `complex` value is by creating
     such a shape. It is therefore not possible to have an uninitialized element in
@@ -312,12 +386,15 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着类似 `complex(2.3, 5.6)` 的形状是一个 `complex`。这也意味着 *唯一* 构建任意 `complex` 值的基本方法是创建这样的形状。因此，不可能在
+    `complex` 中有未初始化的元素，例如 `complex(X, Y)` 除非 `X` 和 `Y` 都是有效的 `real` 值。
 - en: However, there are contexts where it is desirable to *default initialize* a
     complex value, for example when creating a container, and this is where the `create`
     operation is necessary.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在某些情况下，*默认初始化* 复杂值是有必要的，例如创建容器时，这时 `create` 操作就显得必要。
 - en: Using the shape explicitly given for the type is called the *constructor* for
     the type, and can be used in definitions or in variable declarations with an initial
     value. A constructor can never fail nor build a partial object. If an argument
@@ -327,31 +404,37 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 明确使用类型给定的形状称为该类型的*构造函数*，可以在定义中或在具有初始值的变量声明中使用。构造函数永远不会失败或构建部分对象。如果在评估过程中一个参数返回[error](#errors)，那么该`error`值将无法匹配预期的参数，除非构造函数被编写为接受`error`值。
 - en: Often, developers will offer alternate ways to create values of a given type.
     These alternate helpers are nothing else than regular definitions that return
     a value of the type.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 开发者经常会提供创建给定类型值的替代方法。这些替代助手除了返回该类型的值外，并无其他不同。
 - en: For example, for the `complex` type, you may create an imaginary unit, `i`,
     but you need a constructor to define it. You can also recognize common expressions
     such as `2+3i` and turn them into constructors.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，对于`complex`类型，你可以创建一个虚数单位`i`，但需要一个构造函数来定义它。你还可以识别常见的表达式，如`2+3i`并将其转换为构造函数。
 - en: '[PRE10]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'The fact that the only elementary way to create a type is through the constructor
     is illustrated by the following code:'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 唯一创建类型的基本方法是通过构造函数来说明，如下面的代码所示：
 - en: '[PRE11]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: The `A:large` and `B:large` initializations are acceptable, because it is possible
     to validate that the initial values match the `large` pattern. The `C:large` definition,
     however, is not acceptable, despite the presence of a `create` operation. The
@@ -361,16 +444,20 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '`A:large`和`B:large`的初始化是可接受的，因为可以验证初始值是否匹配`large`模式。然而，`C:large`的定义是不可接受的，尽管存在`create`操作。原因是无法`create
+    V.N`，首先因为无法推断要使用的类型，其次因为如果选择像`integer`这样的类型，那么默认初始值`0`将不会匹配模式。'
 - en: 'The code above can be fixed, however, by using a constructor for the `large`
     type inside the creator, which means supplying a value that matches the type’s
     pattern. The following is an almost acceptable version of the `create` function:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，通过在创建者内部使用`large`类型的构造函数，可以修复上述代码，这意味着提供与类型模式匹配的值。以下是`create`函数的几乎可接受版本：
 - en: '[PRE12]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '|  | The above is only *almost* acceptable because it calls `print`, which
     may fail. Returning an `error` is not allowed by default by the signature of `create`
     for efficiency reasons. If this is desirable, then you must explicitly mark `create`
@@ -378,6 +465,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_TB
+  zh: '|  | 上述内容*几乎*可以接受，因为它调用了`print`，而`print`可能会失败。出于效率原因，默认情况下不允许`create`的签名返回`error`。如果有必要，你必须显式地标记`create`为返回`mayfail`。'
 - en: 'A type implementation may be *hidden* in a [module interface](#modules), in
     which case the module interface should also provide some functions to create elements
     of the type. The following example illustrates this for a `file` interface based
@@ -385,10 +473,12 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 类型实现可能会*隐藏*在[模块接口](#modules)中，在这种情况下，模块接口还应该提供一些函数来创建该类型的元素。以下示例说明了基于Unix风格文件描述符的`file`接口：
 - en: '[PRE13]'
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: If the interface provides a `create` operation, it must be ready to accept default-created
     values as input in all other functions of the module. In the module above, however,
     the only way to get a value of the `file` type is by using the `open` function.
@@ -397,6 +487,7 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果接口提供了`create`操作，那么它必须准备接受所有其他模块函数中以默认创建的值为输入。然而，在上述模块中，获取`file`类型的唯一方法是使用`open`函数。这也意味着你不能在未初始化的情况下创建`file`类型的变量。
 - en: '|  | **RATIONALE** This mechanism is similar to *elaboration* in Ada or to
     *constructors* in C++. It makes it possible for programmers to provide strong
     guarantees about the internal state of values before they can be used. This is
@@ -406,6 +497,8 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_TB
+  zh: '|  | **RATIONALE** 这种机制类似于Ada语言中的*elaboration*或C++中的*constructors*。它使得程序员能够在值被使用之前提供关于内部状态的强有力保证。这是诸如封装、编程契约或[RAII](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)等编程技术的基本组成部分。
+    |'
 - en: When the lifetime of a value `V` terminates, the statement `delete V` automatically
     evaluates. Declared entites are destroyed in the reverse order of their declaration.
     A `delete X:T` definition is called a *destructor* for type `T`. It often has
@@ -415,36 +508,47 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 当值 `V` 的生命周期结束时，语句 `delete V` 会自动评估。声明的实体按其声明顺序的相反顺序销毁。一个 `delete X:T` 的定义被称为类型
+    `T` 的 *析构函数*。它通常有一个[inout](#inout)参数用于销毁值，以便能够修改其参数，即析构函数通常具有如 `delete X:inout
+    T` 的签名。
 - en: Symmetrical to [creation](#field-creation), the body of a `delete V` automatically
     invokes `delete V.X` for any field `X` in `V` at exit of the body of the definition.
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于 [creation](#field-creation) 的对称性，在定义体的退出时，`delete V` 会自动调用 `delete V.X` 来删除
+    `V` 中的任何字段 `X`。
 - en: 'For example, consider the definition below:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑下面的定义：
 - en: '[PRE14]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'That definition is actually equivalent to the definition below:'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 该定义实际上等价于以下定义：
 - en: '[PRE15]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'There is a built-in default definition of that statement that has no effect
     and matches any value, and which only deletes the fields:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于该语句，有一个内置的默认定义，其没有效果并匹配任何值，并且仅删除字段：
 - en: '[PRE16]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: There may be multiple destructors that match a given expression. When this happens,
     normal lookup rules happen. This means that, unlike languages like C++, a programmer
     can deliberately override the destruction of an object, and remains in control
@@ -453,16 +557,19 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能有多个与给定表达式匹配的析构函数。当发生这种情况时，将遵循普通的查找规则。这意味着，与像 C++ 这样的语言不同，程序员可以有意地覆盖对象的销毁，并控制销毁过程。更重要的是，这意味着销毁过程遵循全局类型语义。
 - en: 'Consider for example the deletion of the `file` type defined in the `MY_FILE`
     module above. Since there is a special case for negative values, that might be
     reflected in the implementation as follows:'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，考虑上面 `MY_FILE` 模块中定义的 `file` 类型的删除。由于负值的特殊情况，实现可能如下所示：
 - en: '[PRE17]'
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: However, this also means that the programmer could create a `valid_file` type
     corresponding to the case where `F.fd<0` is false. If you have a `valid_file`
     value to `delete`, normal type system and lookup rules ensure that the second
@@ -470,14 +577,18 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这也意味着程序员可以创建一个 `valid_file` 类型，对应于 `F.fd<0` 为假的情况。如果有一个要 `delete` 的 `valid_file`
+    值，正常的类型系统和查找规则确保将选择第二种情况。
 - en: 'Consider another interesting example, where you have the following declarations:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑另一个有趣的例子，您有以下声明：
 - en: '[PRE18]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: In this example, we create an `integers` type based on `string of integers`,
     for which we implement the `N>0` operator to mean that all elements in the `string`
     are positive. This in turn means that some values that have type `integers` also
@@ -486,30 +597,40 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这个例子中，我们创建了一个基于 `string of integers` 的 `integers` 类型，为其实现 `N>0` 操作符，意味着 `string`
+    中的所有元素都是正数。这反过来意味着某些具有 `integers` 类型的值也具有 `positive` 类型。在 `example` 的体中，`A` 是
+    `positive`，但 `B` 不是。
 - en: 'If one consider [implicit inheritance](#implicit-inheritance) and the implicitly
     inserted field destruction, the code for the `integers` type and `delete` operations
     above is really equivalent to the following:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果考虑 [implicit inheritance](#implicit-inheritance) 和隐式插入字段销毁，则上述 `integers`
+    类型和 `delete` 操作的代码实际上等价于以下内容：
 - en: '[PRE19]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'As a result, the output of this program should be something like:'
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，该程序的输出应该类似于：
 - en: '[PRE20]'
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '******| ***1*** | This is deleting local variable `B` using type `integers`,
     knowing that it failed to pass the test for `positive` because of value `-1`.
     |'
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '******| ***1*** | 这是使用类型 `integers` 删除本地变量 `B`，知道它因值 `-1` 未通过 `positive` 测试。
+    |'
 - en: '| ***2*** | This is deleting values in the `string of integer` container in
     local variable `B`, starting with the last one. Containers can destroy their values
     in any order, but for `string`, an efficient algorithm may start with the end
@@ -521,27 +642,33 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_TB
+  zh: '| ***2*** | 这删除了局部变量`B`中`string of integer`容器中的值，从最后一个开始。容器可以以任何顺序销毁其值，但对于`string`，一个有效的算法可能从容器的末尾开始，以便能够通过改变`string`中的“项目数量”在每个元素被简单移除之前截断。局部的`delete`定义对于在`example`结尾处进行的`string
+    of integer`类型的调用的`delete`实例是可见的。值`5`的第一个匹配定义是为`positive`类型。'
 - en: '| ***3*** | This is implicitly deleting the `integer` value called `P.N` in
     the code above. |'
   id: totrans-split-91
   prefs: []
   type: TYPE_TB
+  zh: '| ***3*** | 这实际上删除了上述代码中称为`P.N`的`integer`值。'
 - en: '| ***4*** | For value `0` in the `string of integer` value held in `B`, the
     `positive` test failed, so that the first destructor that works is for `integer`.
     |'
   id: totrans-split-92
   prefs: []
   type: TYPE_TB
+  zh: '| ***4*** | 对于`B`中的`string of integer`值中的`0`值，`positive`测试失败，因此第一个可用的析构函数是为`integer`。'
 - en: '| ***5*** | This is deleting local variable `A`. Since `A` is positive, the
     destructor for positive is called. |'
   id: totrans-split-93
   prefs: []
   type: TYPE_TB
+  zh: '| ***5*** | 这会删除局部变量`A`。由于`A`是正数，因此调用了正数的析构函数。'
 - en: '| ***6*** | Unlike what happened for `B`, the destructor for `integers` is
     not called directly for `B` but implicitly for `P.N`. |'
   id: totrans-split-94
   prefs: []
   type: TYPE_TB
+  zh: '| ***6*** | 与`B`发生的情况不同，对于`B`，`integers`的析构函数不是直接调用的，而是隐式调用的`P.N`。'
 - en: It is possible to create local destructor definitions. When such a local definition
     exists, it is possible for it to override a more general definition. The general
     definition can be accessed using link:#enclosing context[`super` lookup], and
@@ -549,18 +676,22 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以创建局部析构函数定义。当存在这样的局部定义时，它可以覆盖更一般的定义。可以使用link:#enclosing context[`super` lookup]访问一般定义，并且通常应该这样做以保留语言语义。
 - en: '[PRE21]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'This should output something similar to the following:'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该输出类似于以下内容：
 - en: '[PRE22]'
   id: totrans-split-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: The first value being output is the temporary value created by the necessary
     implicit conversion of `X` from `integer` to `real`. Note that additional temporary
     values may appear depending on the optimizations performed by the compiler. The
@@ -569,21 +700,25 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出的第一个值是由于从`integer`到`real`的必要隐式转换而创建的临时值。注意，根据编译器执行的优化，可能会出现额外的临时值。函数返回的值不应被销毁，因为它会传递给调用者。
 - en: 'Any destruction code must be able to be called multiple times with the same
     value, if only because you cannot prevent a programmer from writing:'
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何销毁代码都必须能够以相同的值被多次调用，仅因为你不能阻止程序员编写：
 - en: In that case, `Value` will be destroyed twice, once by the explicit `delete`,
     and a second time when `Value` goes out of scope. There is obviously no limit
     on the number of destructions that an object may go through.
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这种情况下，`Value`将被销毁两次，一次是显式的`delete`，第二次是当`Value`超出范围时。显然，对象可能经历无数次的销毁。
 - en: '[PRE23]'
   id: totrans-split-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'Also, remember that passing a value as an `out` argument implicitly destroys
     it. This is in particular the case for the target of an assignment.******  ******Errors
     in XL are represented by values with the `error` type, or any type that [inherits](#inheritance)
@@ -592,47 +727,57 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 还要记住，将一个值作为`out`参数传递会隐式销毁它。这在特定情况下特别适用于赋值的目标。******  ******在XL中，错误由具有`error`类型的值或从错误继承的任何类型表示。错误类型具有一个构造函数，它接受一个简单的错误消息或一个简单的消息和一个负载。
 - en: '[PRE24]'
   id: totrans-split-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'The message is typically a localizable format text taking elements in the payload
     as numbered argument in a way similar to the [`format` function](#text-format):'
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 消息通常是一个本地化的格式文本，以类似于[`format`函数](#text-format)的方式使用负载中的元素作为编号参数：
 - en: '[PRE25]'
   id: totrans-split-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'A function that may fail will often have a `T or error` return value. There
     is a specific shortcut for that, `mayfail T`:'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能失败的函数通常会有一个`T 或 error`的返回值。对此，有一个特定的快捷方式，即`mayfail T`：
 - en: '[PRE26]'
   id: totrans-split-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'For example, a logarithm returns an error for non-positive values, so that
     the signature of the `log` functions is:'
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，对于非正值，对数函数会返回错误，因此`log`函数的签名是：
 - en: '[PRE27]'
   id: totrans-split-110
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'If possible, error detection should be pushed to the interface of the function.
     For the `log` function, it is known to fail only for negative or null values,
     so that a better interface would be:'
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果可能的话，错误检测应该推迟到函数的接口。对于 `log` 函数，已知仅在负值或空值时失败，因此更好的接口是：
 - en: '[PRE28]'
   id: totrans-split-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'With the definitions above, the type of `log X` will be `real` if it is known
     that `X > 0.0`, `error` if it is known that the condition is false, and `real
     or error`, i.e. `mayfail real`, in the more general case. A benefit of writing
@@ -641,10 +786,13 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据上述定义，如果已知 `X > 0.0`，`log X` 的类型将是 `real`，如果已知条件为假，则是 `error`，在更一般的情况下是 `real
+    or error`，即 `mayfail real`。以这种方式编写代码的好处是编译器可以更轻松地确定以下代码是正确的，不需要任何形式的错误处理：
 - en: '[PRE29]'
   id: totrans-split-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: '|  | **RATIONALE** By returning an `error` for failure conditions, XL forces
     the programmer to deal with errors simply to satisfy the type system. They cannot
     simply be ignored like C return values or C++ exceptions can be. Errors that may
@@ -653,11 +801,14 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_TB
+  zh: '|  | **RATIONALE** 通过返回错误来处理失败条件，XL 强制程序员简单地处理错误以满足类型系统的要求。它们不像 C 返回值或 C++
+    异常可以被简单地忽略。可能从函数返回的错误是其类型的基本部分，错误处理不是可选的。 |'
 - en: 'A number of types [derive](#inheritance) from the base `error` type to feature
     additional properties:'
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些类型从基本 `error` 类型[派生](#inheritance)，以具备额外的属性：
 - en: A `range_error` indicates that a given value is out of range. The default message
     provided is supplemented with information comparing the value with the expected
     range.
@@ -665,22 +816,26 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`range_error` 表示给定值超出范围。提供的默认消息会补充有关将值与期望范围进行比较的信息。'
 - en: '[PRE30]'
   id: totrans-split-118
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: A `logic_error` indicates an unexpected condition in the program, and can be
     returned by contract checks like `assert`, `require` and `ensure`.
   id: totrans-split-119
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`logic_error` 表示程序中的意外条件，并且可以通过像 `assert`、`require` 和 `ensure` 这样的合约检查返回。'
 - en: '[PRE31]'
   id: totrans-split-120
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: A `storage_error` is returned whenever a [dynamic value](#dynamic_value) is
     created, notably each time an `own T` object is created, but also when additional
     storage is needed for containers.
@@ -688,23 +843,27 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`storage_error` 每当创建一个[动态值](#dynamic_value)时返回，尤其是每次创建一个 `own T` 对象时，但也是为容器需要额外存储时返回。'
 - en: '[PRE32]'
   id: totrans-split-122
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: A `file_error` reports when there is an error opening a file, for example because
     a file does not exist.
   id: totrans-split-123
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`file_error` 报告在打开文件时出错，例如因为文件不存在。'
 - en: A `permission_error` reports when a resource access is denied, whether it’s
     a file or any other resource.
   id: totrans-split-124
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`permission_error` 报告资源访问被拒绝的情况，无论是文件还是其他资源。'
 - en: A `compile_error` helps the compiler emit better diagnostic for situations which
     would lead to an invalid program. All errors can be emitted at compile-time if
     the compiler can detect that they will occur unconditionally, but `compile_error`
@@ -714,17 +873,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`compile_error` 帮助编译器为导致无效程序的情况提供更好的诊断。如果编译器能够检测到它们将无条件发生，则所有错误都可以在编译时发出，但
+    `compile_error` 明确表明这意味着意图在编译时检测到错误。变体 `compile_warning` 发出消息但允许编译继续。'
 - en: '[PRE33]'
   id: totrans-split-126
   prefs:
   - PREF_IND
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: A value is said to be *mutable* if it can change during its lifetime. A value
     that is not mutable is said to be *constant*. A mutable named entity is called
     a *variable*. An immutable named entity is called a *named constant*.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个值在其生命周期中可以更改，则称其为*可变*。如果一个值不可变，则称其为*常量*。称为*变量*的可变命名实体。称为*命名常量*的不可变命名实体。
 - en: The `X:T` type annotations indicates that `X` is a mutable value of type `T`,
     unless type `T` is explicitly marked as constant. When `X` is a name, the annotation
     declares that `X` is a variable. The `X as T` type annotation indicates that `X`
@@ -734,20 +897,25 @@
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: '`X:T` 类型注释表示 `X` 是类型 `T` 的可变值，除非类型 `T` 明确标记为常量。当 `X` 是名称时，该注释声明 `X` 是一个变量。`X
+    as T` 类型注释表示 `X` 是类型 `T` 的常量值，除非类型 `T` 明确标记为变量。当 `X` 是名称时，这可能声明一个命名常量或者一个没有参数的函数，这取决于主体的形状。'
 - en: '[PRE34]'
   id: totrans-split-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: A mutable value can be initialized or modified using the `:=` operator, which
     is called an [*assignment*](##assignments-and-moves). There are a number of derived
     operators, such as `+=`, that combine a frequent arithmetic operation and an assignment.
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 可变值可以使用`:=`操作符进行初始化或修改，这被称为[*赋值*](##assignments-and-moves)。还有一些派生操作符，如`+=`，结合了频繁的算术操作和赋值。
 - en: '[PRE35]'
   id: totrans-split-131
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: Some entities may give [access](#access-types) to individual inner values. For
     example, a `text` value is conceptually made of a number of individual `character`
     values that can be accessed individually. This is true irrespective of how `text`
@@ -757,22 +925,26 @@
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些实体可能会提供[访问](#access-types)到单独内部值的方式。例如，`text`值在概念上由多个可以单独访问的`character`值组成。这一点是无论`text`如何表示都成立的。此外，`text`值的`slice`本身也是一个`text`值。`text`值的可变性显然会影响对`text`中访问的元素的可变性。
 - en: The following example shows how `text` values can be mutated directly (1), using
     a computed assignment (2), by changing a slice (3) or by changing an individual
     element (4).
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下示例展示了如何直接改变`text`值（1）、使用计算赋值（2）、通过更改一个`slice`（3）或更改一个单独元素（4）来修改可变值。
 - en: '[PRE36]'
   id: totrans-split-134
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: None of these operations would be valid on a constant text such as `Person`
     in the code above. For example, `Person[3]:='a'` is invalid, since `Person` is
     a constant value.
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些操作中的任何一种都不适用于代码中的常量`Person`等文本。例如，`Person[3]:='a'`是无效的，因为`Person`是一个常量值。
 - en: '|  | In the case (3) above, modifying a `text` value through an access type
     can change its length. This is possible because `Greeting[0..4]` is not an independent
     value, but an access type, specifically a `slice`, which keeps track of both the
@@ -781,6 +953,7 @@
   id: totrans-split-136
   prefs: []
   type: TYPE_TB
+  zh: '|  | 在情况（3）中，通过访问类型修改`text`值可以改变其长度。这是因为`Greeting[0..4]`不是一个独立的值，而是一个访问类型，具体是一个`slice`，它跟踪`text`（这里是`Greeting`）和索引范围（在这种情况下是`0..4`），带有一个`:=`操作符来修改访问的`text`值。'
 - en: A constant value does not change over its lifetime, but it may change over the
     lifetime of the program. More precisely, the lifetime of a constant is at most
     as long as the lifetime of the values it is computed from. For example, in the
@@ -789,10 +962,12 @@
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 常量值在其生命周期内不会改变，但在程序的生命周期内可能会改变。更精确地说，常量的生命周期最多与计算其值的生命周期一样长。例如，在下面的代码中，常量`K`在循环的每次迭代中具有不同的值，但常量`L`在所有`I`的迭代中具有相同的值。
 - en: '[PRE37]'
   id: totrans-split-138
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: '|  | **RATIONALE** There is no syntactic difference between a constant and
     a function without parameters. An implementation should be free to implement a
     constant as a function if this is more effective, or to use smarter strategies
@@ -800,12 +975,14 @@
   id: totrans-split-139
   prefs: []
   type: TYPE_TB
+  zh: '|  | **RATIONALE** 常量和无参数函数在语法上没有区别。如果更有效，实现可以自由地将常量实现为函数，或者在适当时使用更智能的策略。'
 - en: 'Some data types can be represented by a fixed number of contiguous memory locations.
     This is the case for example of `integer` or `real`: all `integer` values take
     the same number of bytes. Such data types are called *compact*.'
   id: totrans-split-140
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些数据类型可以由固定数量的连续内存位置表示。例如，`integer`或`real`就是这种情况：所有`integer`值占用相同数量的字节。这些数据类型被称为*紧凑*。
 - en: On the other hand, a `text` value can be of any length, and may therefore require
     a variable number of bytes to represent values such as `"Hi"` and `"There once
     was a time where text was represented in languages such as Pascal by fixed-size
@@ -815,6 +992,10 @@
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，`text`值可以是任意长度，因此可能需要可变数量的字节来表示诸如`"Hi"`和`"There once was a time where text
+    was represented in languages such as Pascal by fixed-size character array with
+    a byte representing the length. This meant that you could not process text that
+    was longer than, say, 255 characters. More modern languages have lifted this restriction."`等值。这些值被称为*散布的*。
 - en: Scattered types are always built by *interpreting* compact types. For example,
     a representation for text could be made of two values, the memory address of the
     first character, and the size of the text. This is not the only possible representation,
@@ -823,12 +1004,14 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 散列类型总是通过*解释*紧凑类型来构建。例如，文本的表示可以由两个值组成，即第一个字符的内存地址和文本的大小。当然，这不是唯一可能的表示，但任何表示都要求解释固定大小的内存位置并为其提供逻辑结构。
 - en: Although this is not always the case, the assignment for compact types generally
     does a [copy](#copy), while the assignment for scattered types typically does
     a [move](#move).
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这不总是情况，紧凑类型的赋值通常进行[复制](#copy)，而散列类型的赋值通常进行[移动](#move)。
 - en: 'Computers offer a number of *resources*: memory, files, locks, network connexions,
     devices, sensors, actuators, and so on. A common problem with such resources is
     to control their *ownership*. In other words, who is responsible for a given resource
@@ -836,6 +1019,7 @@
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算机提供多种*资源*：内存、文件、锁、网络连接、设备、传感器、执行器等。此类资源的常见问题是控制它们的*所有权*。换句话说，在任何给定时间，谁对给定资源负责。
 - en: In XL, like in languages like Rust or C++, ownership is largely determined by
     the type system, and relies heavily on the guarantees it provides, in particular
     with respect to [creation](#creation) and [destruction](#destruction). In C++,
@@ -848,6 +1032,8 @@
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 XL 中，就像在 Rust 或 C++ 中一样，所有权主要由类型系统确定，并且在很大程度上依赖于它提供的保证，特别是关于[创建](#creation)和[销毁](#destruction)的保证。在
+    C++ 中，该机制称为[RAII](https://en.wikipedia.org/wiki/RAII)，即资源获取即初始化。其核心思想是，在值的生命周期内资源的所有权是不变的。换句话说，在构造期间，值获取资源的所有权，并在销毁期间释放此所有权。这在模块`MY_FILE`的`file`类型中有所体现[之前给出](#my_file)。
 - en: Types designed to own the associated value are called *owner types*. There is
     normally at most one live owner at any given time for each controlled resource,
     that acquired the resource at construction time, and will release it at destruction
@@ -855,11 +1041,14 @@
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 设计用于拥有相关值的类型称为*所有者类型*。通常每个受控资源在任何给定时间最多有一个活跃的所有者，该所有者在构造时获取资源，并在销毁时释放它。可能可以通过`delete
+    Value`提前释放所拥有的资源。
 - en: 'The [standard library](#standard-library) provides a number of types intended
     to own common classes of resources, including:'
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: '[标准库](#standard-library)提供了多种旨在拥有常见类资源的类型，包括：'
 - en: An `own` value owns a single item allocated in dynamic storage. Note that the
     value `nil` is not a valid `own` value (except for `own nil`). If you need `nil`
     as a value, you must use `own T or nil`.
@@ -867,12 +1056,15 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 拥有（`own`）值拥有在动态存储中分配的单个项目。请注意，值`nil`不是有效的`own`值（除了`own nil`）。如果需要`nil`作为值，则必须使用`own
+    T or nil`。
 - en: An `array`, a `buffer` and a `string` all own a contiguous sequence of items
     of the same type.
   id: totrans-split-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数组（`array`）、缓冲区（`buffer`）和字符串（`string`）都拥有相同类型的连续项目序列。
 - en: An `array` has a fixed size during its lifetime and allocates items directly,
     e.g. on the execution stack.
   id: totrans-split-150
@@ -880,6 +1072,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 数组（`array`）在其生命周期内具有固定大小，并直接分配项目，例如在执行栈上。
 - en: A `buffer` has a fixed size during its lifetime, and allocates items dynamically,
     typically from a heap.
   id: totrans-split-151
@@ -887,6 +1080,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 缓冲区（`buffer`）在其生命周期内具有固定大小，并且动态分配项目，通常来自堆。
 - en: A `string` has a variable size during its lifetime, and consequently may move
     items around in memory as a result of specific operations.
   id: totrans-split-152
@@ -894,49 +1088,58 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 字符串（`string`）在其生命周期内大小可变，因此可能会在特定操作的结果下在内存中移动项目。
 - en: A `text` owns a variable number of `character` items, and inherits from the
     `string of character` type.
   id: totrans-split-153
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 文本（`text`）拥有可变数量的`character`项目，并继承自`string of character`类型。
 - en: A `file` owns an open file.
   id: totrans-split-154
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 文件（`file`）拥有一个打开的文件。
 - en: A `mutex` owns execution by a single thread while it’s live.
   id: totrans-split-155
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 互斥体（`mutex`）在其活动期间由单个线程拥有执行。
 - en: A `timer` owns a resource that can be used to measure time and schedule execution.
   id: totrans-split-156
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 定时器（`timer`）拥有可用于测量时间和调度执行的资源。
 - en: A `thread` owns an execution thread and the associated call stack.
   id: totrans-split-157
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 线程（`thread`）拥有执行线程和相关的调用堆栈。
 - en: A `task` owns an operation to perform that can be dispatched to one of the available
     threads of execution.
   id: totrans-split-158
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`task`拥有一个操作，可以分派给可用线程执行之一。
 - en: A `process` owns an operating system process, including its threads and address
     space.
   id: totrans-split-159
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`process`拥有一个操作系统进程，包括其线程和地址空间。
 - en: A `context` captures an execution context.
   id: totrans-split-160
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`context`捕获一个执行上下文。
 - en: Not all types are intended to be owner types. Many types delegate ownership
     to another type. Such types are called *access types*. When an access type is
     destroyed, the resources that it accesses are *not* disposed of, since the access
@@ -945,6 +1148,7 @@
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 并非所有类型都意图成为所有者类型。许多类型将所有权委托给另一种类型。这些类型称为*访问类型*。当访问类型被销毁时，它所访问的资源*不会*被处理，因为访问类型不拥有该值。访问类型的值仅仅提供对关联所有者类型的特定值的*访问*。
 - en: For example, if `T` is a `text` value and if `A` and `B` are `integer` values,
     then `T[A..B]` is a particular kind of access value called a *slice*, which denotes
     the fragment of text between `0`-based positions `A` and `B`. By construction,
@@ -955,6 +1159,7 @@
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果`T`是一个`text`值，如果`A`和`B`是`integer`值，那么`T[A..B]`是一种特定的访问值，称为*slice*，表示基于从`0`开始的位置`A`和`B`之间的文本片段。根据构造，`T[A..B]`只能访问`T`，而不能访问任何其他`text`值。类似地，可以轻松实现对`A`和`B`的边界检查，以确保没有操作会访问`T`之外的任何`character`值。因此，这种访问值是完全安全的。
 - en: Access types generalize *pointers* or *references* found in other languages,
     because they can describe a much wider class of access patterns. A pointer can
     only access a single element, whereas access types have no such restriction, as
@@ -963,6 +1168,7 @@
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 访问类型泛化了在其他语言中找到的*指针*或*引用*，因为它们可以描述一类更广泛的访问模式。指针只能访问单个元素，而访问类型没有这样的限制，正如`T[A..B]`的示例所示。访问类型还可以强制执行比简单指针更严格的所有权规则。
 - en: '|  | The C language worked around the limitation that pointers access a single
     element by abusing so-called "pointer arithmetic", in particular to implement
     arrays. In C, `A[I]` is merely a shortcut for `*(A+I)`. This means that `3[buffer]`
@@ -975,16 +1181,19 @@
   id: totrans-split-164
   prefs: []
   type: TYPE_TB
+  zh: '|  | C语言通过滥用所谓的“指针算术”来解决指针仅访问单个元素的限制，特别是用来实现数组。在C中，`A[I]`仅仅是`*(A+I)`的一种快捷方式。这意味着在C中，`3[buffer]`是访问`buffer`第三个元素的有效方式，并且存在`ptr[-1]`这样的情况，以访问`ptr`之前的元素。不幸的是，这种技巧在机器只有32K内存时可能很聪明，现在却成为一类编程错误的根源，称为*缓冲区溢出*，这在很大程度上导致C语言完全没有内存安全性的声誉。'
 - en: 'The [standard library](#standard-library) provides a number of types intended
     to access common owner types, including:'
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '[标准库](#standard-library)提供了许多用于访问常见所有者类型的类型，包括：'
 - en: A `ref` is a reference to a live `own` value.
   id: totrans-split-166
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`ref`是对一个活动的`own`值的引用。
 - en: A `slice` can be used to access range of items in contiguous sequences, including
     `array`, `buffer` or `string` (and therefore `text` considered as a `string of
     character`).
@@ -992,24 +1201,29 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`slice`可以用来访问连续序列中的一系列项，包括`array`、`buffer`或`string`（因此`text`被视为`string of
+    character`）。
 - en: A `reader` or a `writer` can be used to access a `file` either for reading or
     writing.
   id: totrans-split-168
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`reader`或`writer`可以用来访问一个`file`，无论是用来读取还是写入。
 - en: A `lock` takes a `mutex` to prevent multiple threads from executing a given
     piece of code.
   id: totrans-split-169
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 一个`lock`使用一个`mutex`来防止多个线程执行给定的代码片段。
 - en: Several types such as `timing`, `dispatch`, `timeout` or `rendezvous` will combine
     `timer`, `thread`, `task` and `context` values.
   id: totrans-split-170
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 几种类型，如`timing`、`dispatch`、`timeout`或`rendezvous`，将结合`timer`、`thread`、`task`和`context`值。
 - en: The `in`, `out` and `inout` type expressions can sometimes be equivalent to
     an access types if that is the most efficient way to pass an argument around.
     However, this is mostly invisible to the programmer.
@@ -1017,6 +1231,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`in`、`out` 和 `inout` 类型表达式有时可以等同于访问类型，如果这是传递参数的最有效方式。然而，这对程序员来说大多数情况下是看不见的。'
 - en: An `XL.SYSTEM.MEMORY.address` references a specific address in memory, and is
     the closest there is in XL to a raw C pointer. It is purposely verbose and cumbersome
     to use, so as to discourage its use when not absolutely necessary.
@@ -1024,6 +1239,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`XL.SYSTEM.MEMORY.address` 引用内存中特定的地址，它是 XL 中最接近原始 C 指针的表达方式。它特意冗长且不方便使用，以避免在非绝对必要时使用它。'
 - en: 'A type is said to *inherit* another type, called its *base type*, if it can
     use all its operations. The type is then said to *derive* from the base type.
     In XL, this is achieved simply by providing an *implicit conversion* between the
@@ -1031,10 +1247,13 @@
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个类型 *继承* 另一个类型（称为其 *基础类型*），则它可以使用所有其操作。然后该类型被称为从基础类型 *派生* 出来。在 XL 中，这通过在派生类型和基础类型之间提供
+    *隐式转换* 来实现：
 - en: '[PRE38]'
   id: totrans-split-174
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: As a consequence of this approach, a type can derive from any number of other
     types, a feature sometimes called *multiple inheritance*. There is also no need
     for the base and derived type to share any specific data representation, although
@@ -1044,6 +1263,8 @@
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据这种方法，一个类型可以从任意数量的其他类型派生，有时这种特性被称为 *多重继承*。此外，基础类型和派生类型之间也没有必要共享任何特定的数据表示，尽管这在实践中经常发生（参见[#data-inheritance](#data-inheritance)）。例如，虽然
+    `i16` 和 `i32` 的机器表示不同，但在 XL 中可以说 `i16` 派生自 `i32`。
 - en: 'Sometimes, it is necessary to denote a type that inherits from a specific type.
     For example, if you want to create a constrained generic type for `complex`, you
     might want it to accept only `number` for its type argument. The following code
@@ -1052,10 +1273,13 @@
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时需要表示派生自特定类型的类型。例如，如果要为 `complex` 创建一个受限泛型类型，您可能希望它仅接受 `number` 作为其类型参数。以下代码是不正确的做法，因为它创建了一个仅接受
+    `number` *值* 作为参数的类型，即它将接受 `complex[3.5]` 但不接受 `complex[real]`：
 - en: '[PRE39]'
   id: totrans-split-177
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: 'To denote a type that derives from a base type, one can use the `derived like
     base` notation. The correct way to implement the above restriction is as follows,
     which indicates that the argument is a type, not a value, and that the type must
@@ -1063,10 +1287,13 @@
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 要表示派生自基础类型的类型，可以使用 `derived like base` 符号。实现上述限制的正确方法如下，指示参数是一种类型而不是值，并且该类型必须派生自
+    `number`：
 - en: '[PRE40]'
   id: totrans-split-179
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: 'The precedence of `like` is lower than that of `:`, so that the above really
     parses as `(real:type) like number`. The `like` operator can be applied to specify
     inheritance at any place in a declaration, and notably in scopes. An alternate
@@ -1077,7 +1304,11 @@
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: '`like` 的优先级低于 `:`，因此上述实际解析为 `(real:type) like number`。`like` 操作符可以应用于声明的任何位置，特别是在作用域中。`like`
+    的另一种拼写是 `inherits`，在全局范围内通常更易读。例如，您可以指示 `complex` 类型本身继承自 `arithmetic`（提供算术操作）以及从
+    `compact`（使用连续内存范围）继承，如下所示：'
 - en: '[PRE41]************'
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: '[PRE41]************'
