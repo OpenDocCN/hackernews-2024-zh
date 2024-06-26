@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:05:34'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:05:34'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Look ma, I wrote a new JIT compiler for PostgreSQL – Pinaraf's website
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 看妈，我为 PostgreSQL 写了一个新的 JIT 编译器 – Pinaraf 的网站
 - en: 来源：[https://www.pinaraf.info/2024/03/look-ma-i-wrote-a-new-jit-compiler-for-postgresql/](https://www.pinaraf.info/2024/03/look-ma-i-wrote-a-new-jit-compiler-for-postgresql/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.pinaraf.info/2024/03/look-ma-i-wrote-a-new-jit-compiler-for-postgresql/](https://www.pinaraf.info/2024/03/look-ma-i-wrote-a-new-jit-compiler-for-postgresql/)
 - en: Sometimes, I don’t know why I do things. It’s one of these times. A few months
     ago, Python 3.13 got its JIT engine, built with a new JIT compiler construction
     methodology (copy-patch, cf. [research paper](https://arxiv.org/pdf/2011.13127.pdf)).
@@ -35,6 +41,9 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时候，我不知道为什么会去做一些事情。这就是其中之一。几个月前，Python 3.13 获得了它的 JIT 引擎，使用了一种新的 JIT 编译器构建方法（copy-patch，参见[研究论文](https://arxiv.org/pdf/2011.13127.pdf)）。在阅读了这篇论文之后，我被深深吸引，不得不尝试将其与
+    PostgreSQL 结合起来。迄今为止，这是一段非常有趣的旅程。本博客文章不会涵盖一切，我更喜欢其他沟通方式，但我想介绍一下 pg-copyjit，这是最新、最闪亮的方式来~~毁灭和导致段错误~~加速您的
+    PostgreSQL 服务器。
 - en: 'Before going any further, a mandatory warning: all code produced here is experimental.
     Please. I want to hear reports from you, like “ho it’s fun”, “ho I got this performance
     boost”, “hey maybe this could be done”, but not “hey, your extension cost me hours
@@ -44,11 +53,13 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在继续之前，有一个强制性的警告：这里生成的所有代码都是实验性的。请。我希望听到您的反馈，像“哦，这太有趣了”，“哦，我得到了这个性能提升”，“嘿，也许可以这样做”，但不要是“嘿，你的扩展让我的业务关键应用停机了几个小时”。无论如何，它当前的状态适用于专业黑客，我希望您比信任实验性代码用于生产服务器更懂得更好。
 - en: In the beginning, there was no JIT, and then came the LLVM JIT compiler
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 起初，没有 JIT，然后 LLVM JIT 编译器诞生了
 - en: In a PostgreSQL release a long time ago, in a galaxy far far away, Andres Freund
     introduced the PostgreSQL world to the magics of JIT compilation, using LLVM.
     They married and there was much rejoicing. Alas, darkness there was in the bright
@@ -56,6 +67,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在很久以前的一个 PostgreSQL 发布版本中，在一个遥远的星系，安德烈斯·弗洛伊德向 PostgreSQL 社区介绍了 JIT 编译的魔力，使用了
+    LLVM。它们结合在一起，带来了很多欢乐。然而，这个光明的城堡中有黑暗存在，因为 LLVM 是一个非常苛刻的“丈夫”。
 - en: 'LLVM is a great compilation framework. Its optimizer produces very good and
     efficient code, and Andres went further than what anybody else would have thought
     and tried in order to squeeze the last microsecond of performance in his JIT compiler.
@@ -77,6 +90,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: LLVM是一个很棒的编译框架。它的优化器产生非常出色和高效的代码，Andres走得比任何人都更远，并且试图在他的JIT编译器中挤出每一微秒性能。这是一个了不起的工作，我不知道如何表达我对这种对性能执着的疯狂的爱。但是LLVM有一个很大的缺点：它并非为JIT编译而建立。至少不是像PostgreSQL将要使用它的方式：LLVM优化器非常昂贵，但不使用它可能比根本不编译更糟糕。为了仅编译好的东西，可以享受性能提升的查询，使用典型的查询成本估计。这就是PostgreSQL的缺点，使整个过程几乎不可能：在PostgreSQL中，成本并不是设计为具有任何意义的。它们是为了相互比较而设计的，但不意味着任何关于真实执行时间的东西。一个成本为100的查询可能在1秒钟内运行，而另一个成本为1000的查询可能在100毫秒内运行。这不是一个错误，这是一个设计决策。这就是为什么很多人（包括我在内）最终关闭了JIT编译器的原因：我生产系统上的大多数，如果不是全部的查询都无法从性能提升中获得足够的补偿来抵消LLVM优化器的成本。如果我可以让查询快10毫秒但是需要50毫秒来进行优化，那就是纯粹的损失。
 - en: 'There is one way to make the LLVM JIT compiler more usable, but I fear it’s
     going to take years to be implemented: being able to cache and reuse compiled
     queries. I will not dig further into that topic in this post, but trust me, it’s
@@ -84,11 +98,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一种方法可以使LLVM JIT编译器更加可用，但我担心需要多年时间来实现：能够缓存和重复使用已编译的查询。我不会在这篇文章中进一步探讨这个话题，但请相信我，这不是一个小小的壮举。
 - en: And in 2021, copy-and-patch was described…
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 并且在2021年，复制和补丁被描述出来…
 - en: So, what can we do? We need fast enough code generated the fastest way possible.
     Fast enough code mean at least a bit faster than the current interpreter… But
     writing a compiler is painful, writing several code generators (for different
@@ -96,11 +112,13 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我们能做什么呢？我们需要以尽可能最快的方式生成足够快的代码。足够快的代码至少比当前的解释器快一点…但编写编译器是痛苦的，编写几个代码生成器（例如不同的ISA）甚至更糟…
 - en: This is where the innovation of copy-and-patch comes into play and saves the
     day.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是复制和补丁创新的地方，并且拯救了当天。
 - en: With copy-patch, you write stencils in C. These stencils are functions with
     holes, and they are compiled by your typical clang compiler (gcc support pending,
     too complicated to explain here). Then when you want to compile something, you
@@ -109,11 +127,13 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用复制和补丁，你在C中编写模具。这些模具是带有空白的函数，并且由你典型的clang编译器（gcc支持待定，这里太复杂，无法解释）。然后，当你想要编译某些内容时，你将模具拼接在一起，填充空白，并直接跳转到你全新的“编译”函数中。
 - en: And this is it. This is the magic of copy-and-patch. You only copy the stencils
     in a new memory area, patch the holes, and voilà.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是复制和补丁的魔力。你只需将模具复制到一个新的内存区域，修补空白，并完成。
 - en: Of course, you can go further. You can figure out what computation can be done
     at compilation time, you can split loops in several stencils to unroll them, you
     can merge several stencils together to optimize them in one go (creating kind
@@ -121,16 +141,19 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，你可以进一步。你可以弄清楚在编译时可以进行哪些计算，可以将循环分成几个模具来展开它们，可以将几个模具合并在一起以一次性优化它们（创建一种类似的元模具…）
 - en: This paper caught the eyes of the Faster-CPython team, they implemented it in
     CPython 3.13, and this is when more people (including me) discovered it.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇论文引起了更快CPython团队的注意，他们在CPython 3.13中实现了它，这时更多的人（包括我在内）开始了解它。
 - en: Bringing copy-and-patch to PostgreSQL
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将复制和补丁带到PostgreSQL
 - en: So, what does it take to build a new JIT engine in PostgreSQL? Hopefully, not
     that much, otherwise I would likely not be blogging about this.
   id: totrans-split-20
@@ -170,6 +193,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: op is declared as extern ExprEvalStep op; (and NEXT_OP is a bit harder to explain,
     I won’t dig into it here). When building this to a single .o file, the compiler
     will leave a hole in the assembly code, where the address for op will have to
@@ -213,6 +237,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 它在我使用的PostgreSQL 16版本的电脑上运行良好。在旧版上应该也可以正常运行。它仅支持AMD64，因为这是我拥有的硬件，我无法一次性支持所有平台。稍后我将添加对ARM64的支持，我也很愿意有些时间来支持一些有趣的目标平台，比如POWER64或S390x（这些可能需要一些编译器补丁，遗憾的是，以及访问这样的计算机，挠挠头，眨眨眼）...
 - en: Performance-wise, well, keeping in mind that I’ve spent almost no time optimizing
     it, the results are great. Code generation is done in a few hundreds microseconds,
     making it usable even for short queries, where LLVM is simply out of the game.
@@ -224,6 +249,8 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 就性能而言，考虑到我几乎没有花时间对其进行优化，结果非常好。代码生成只需几百微秒，使其即使对于短查询也可用，而LLVM则显然无法胜任。在简单的SELECT
+    42;查询中，不使用JIT花费0.3毫秒，使用copyjit则需要0.6毫秒，LLVM无优化则需要1.6毫秒，优化LLVM需要6.6毫秒。当然，LLVM可以生成非常快速的代码，但这里的整体思想是快速生成足够快的代码，因此比较这两种工具并没有太多意义。
 - en: But still, you are all waiting for a benchmark, so here we go, benchmarking
     two queries on a simple non-indexed 90k rows table. This benchmark is done on
     a laptop and my trust in such a benchmark setup is moderate at best, a proper
@@ -233,30 +260,37 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，你们仍在等待基准测试，所以我们来看看，在一个简单的非索引的9万行表上对两个查询进行基准测试。这个基准测试是在笔记本电脑上进行的，我对这样的基准测试设置的信任度最多是中等程度的，稍后会在没有任何热量包围骗局的台式机上进行一次合适的基准测试。而且我的编译器还没有优化，它仍然相当愚蠢，有很多事情可以做，也必须做。
 - en: '| **Query** | **Min/max (ms)** | **Median (ms) and stdev** |'
   id: totrans-split-33
   prefs: []
   type: TYPE_TB
+  zh: '| **查询** | **最小/最大值（毫秒）** | **中位数（毫秒）和标准偏差** |'
 - en: '| select * from b; — no JIT | 10.340/14.046 | 10.652/0.515 |'
   id: totrans-split-34
   prefs: []
   type: TYPE_TB
+  zh: '| select * from b; — no JIT | 10.340/14.046 | 10.652/0.515 |'
 - en: '| select * from b; — JIT | 10.326/14.613 | 10.614/0.780 |'
   id: totrans-split-35
   prefs: []
   type: TYPE_TB
+  zh: '| select * from b; — JIT | 10.326/14.613 | 10.614/0.780 |'
 - en: '| select i, j from b where i < 10; — no JIT | 3.348/4.070 | 3.7333/0.073 |'
   id: totrans-split-36
   prefs: []
   type: TYPE_TB
+  zh: '| select i, j from b where i < 10; — no JIT | 3.348/4.070 | 3.7333/0.073 |'
 - en: '| select i, j from b where i < 10; — JIT | 3.210/4.701 | 3.519/0.107 |'
   id: totrans-split-37
   prefs: []
   type: TYPE_TB
+  zh: '| select i, j from b where i < 10; — JIT | 3.210/4.701 | 3.519/0.107 |'
 - en: Stupid benchmark on a laptop running non-optimized code, don’t trust these…
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 在一台运行非优化代码的笔记本上进行愚蠢的基准测试，不要轻信这些结果...
 - en: As you can see, even in the current unfinished state, as soon as there is CPU
     work to do (here it’s the where clause), performance relative to the interpreter
     get better. It’s only logical, and what is important here is that even if the
@@ -265,12 +299,14 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您所见，即使在当前未完成的状态下，一旦需要CPU工作（这里是where子句），相对于解释器的性能会有所提升。这是很合乎逻辑的，而重要的是，即使JIT是额外的、稍微耗时的步骤，它所花费的时间如此之少，以至于即使这些查询可以快几个百分点。
 - en: Note that even if I’ve implemented only a small handful of opcodes, I can run
     any query on my server, the JIT engine will only complain loudly about it and
     let the interpreter run the query…
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，即使我只实现了一小部分操作码，我可以在我的服务器上运行任何查询，JIT引擎只会大声抱怨并让解释器运行查询...
 - en: For the more curious, the code is [dumped there on github](https://github.com/pinaraf/pg-copyjit).
     I said dumped because I focus only on the code and not on the clarity of my git
     history nor on wrapping it in a nice paper with flying colors and pretty flowers,
@@ -281,11 +317,14 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于更感兴趣的人，代码可以在[github这里](https://github.com/pinaraf/pg-copyjit)找到。我说“可以找到”是因为我只关注代码本身，而不关注git历史的清晰度，也不会为其添加漂亮的封面和花哨的花朵，这些是在代码完成后做的事情，而这个代码目前还没有完成...
+    如果你想构建它，首先必须手动运行build-stencils.sh文件。但再次强调，我还没有为此进行任何文档工作，因为在目前的状态下我根本无法为这段代码提供任何支持。
 - en: TODO…
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 待办事项…
 - en: This is a proof of concept. I’ve not worked on making it easy to build, on making
     it possible to package it… The build scripts are Debian and PostgreSQL 16 specific.
     And, well, to be honest, at this point, I don’t care much and it will not trouble
@@ -293,6 +332,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个概念验证。我还没有着手让它易于构建，或者说让它可以打包……构建脚本针对的是Debian和PostgreSQL 16。而且，说实话，目前我并不太在意，这不会困扰我，因为我的重点是实现更多的操作码，并寻找优化方法。
 - en: I really hope I will reach a point where I can safely package this and deploy
     it on my production servers. This way, I’ll keep using the LLVM JIT on the server
     that can use it (a GIS server where queries are worth the optimization) and use
@@ -301,6 +341,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我真的希望能够达到一个安全打包并在生产服务器上部署它的时候。这样，我将继续在可以使用LLVM JIT的服务器上使用它（一个GIS服务器，查询值得优化），并在我的Web应用程序数据库上使用这个JIT，其中短查询时间是必需的，而LLVM优化最终会适得其反。
 - en: I am also dead serious on porting this to other architectures. I love the old
     days of Alpha, Itanium, Sparc, M68k and other different architectures. I am not
     going to use this kind of system, but I miss the diversity, and I really don’t
@@ -308,23 +349,27 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我也非常认真地考虑将这个移植到其他架构上。我热爱Alpha、Itanium、Sparc、M68k和其他不同的架构的旧日子。我不打算使用这种系统，但我怀念那种多样性，我真的不想成为这里单一文化问题的一部分。
 - en: Thanks
   id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 谢谢
 - en: First, huge thanks to my current day-job employer, Entr’ouvert. We are a small
     french SaaS company, free-software focused, and my colleagues simply let me toy
     on this between tickets and other DBA or sysadmin tasks.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，非常感谢我的现任雇主Entr’ouvert。我们是一家小型法国SaaS公司，专注于自由软件，我的同事们简直让我在解决问题和其他DBA或系统管理员任务之间嬉戏不已。
 - en: 'I would like to thank my DBA friends for supporting me and motivating me into
     doing this (won’t give their names, they know who they are). BTW: use [PoWA](https://powa.readthedocs.io/en/latest/),
     great tool, tell your friends…'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想感谢我的DBA朋友们，他们支持我，并激励我去做这件事（不会透露他们的名字，他们知道他们是谁）。顺便说一句：使用[Powa](https://powa.readthedocs.io/en/latest/)，是个很棒的工具，告诉你的朋友们……
 - en: 'Also, quick question: they suggest I shall go to PGConf.dev to show this, but
     it’s too late for the schedule and since I live in France I did not intend to
     go there. If you think it’s important or worth it, please, please, say so (comments
@@ -333,3 +378,4 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有个小问题：他们建议我去PGConf.dev展示这个，但时间安排已经太晚了，而且我住在法国，我并没有打算去那里。如果你认为这很重要或者值得，拜托，请告诉我（评论下面，或者我的邮箱是p@this.domain），否则我们在未来的欧洲PG活动见🙂
