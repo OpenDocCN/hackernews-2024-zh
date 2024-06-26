@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:32:03'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:32:03'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: OpenBSD system-call pinning [LWN.net]
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: OpenBSD系统调用固定 [LWN.net]
 - en: 来源：[https://lwn.net/SubscriberLink/959562/0578b8e463f790c1/](https://lwn.net/SubscriberLink/959562/0578b8e463f790c1/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lwn.net/SubscriberLink/959562/0578b8e463f790c1/](https://lwn.net/SubscriberLink/959562/0578b8e463f790c1/)
 - en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
     made this article — and everything that surrounds it — possible. If you appreciate
     our content, please [buy a subscription](/subscribe/) and make the next set of
@@ -31,14 +37,17 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_TB
+  zh: '| **这篇文章由LWN订户赞助**LWN.net的订户使本文及其周边内容成为可能。如果您喜欢我们的内容，请[订阅](/subscribe/)并支持我们推出更多文章。'
 - en: By **Daroc Alden**
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: By **Daroc Alden**
 - en: January 31, 2024
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年1月31日
 - en: '[Return-oriented programming](https://en.wikipedia.org/wiki/Return-oriented_programming)
     (ROP) attacks are hard to defend against. Partial mitigations such as address-space
     layout randomization, stack canaries, and other techniques are commonly deployed
@@ -51,6 +60,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[返回导向编程](https://en.wikipedia.org/wiki/Return-oriented_programming) (ROP) 攻击难以防御。诸如地址空间布局随机化、堆栈哨兵和其他技术的部分缓解措施通常被部署以试图挫败ROP攻击。现在，OpenBSD正在尝试一种新的缓解措施，使攻击者更难进行系统调用，尽管一些安全研究人员对其有效阻止真实世界攻击的效果表示怀疑。在他的公告中，Theo
+    de Raadt表示这项工作"<q>在OpenBSD上使一些具体的低级攻击方法变得不可行，这将迫使使用其他方法。</q>"'
 - en: Return-oriented programming is one of a family of techniques that use indirect
     jumps to call bits of code that already exist in a process's address space in
     an attacker-controlled order. The original attack involved overwriting the stack
@@ -60,6 +71,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 返回导向编程是一种利用间接跳转来调用进程地址空间中已存在的代码片段的技术家族之一，以攻击者控制的顺序。最初的攻击涉及用精心选择的地址覆盖堆栈，使函数“返回”到一个新位置。自最初的发现以来，已开发出其他相关攻击，这些攻击利用函数指针、信号和其他间接跳转进行跳转。
 - en: In December, De Raadt sent a [patch](/Articles/959664/) to the OpenBSD mailing
     list expanding OpenBSD's restrictions on the locations from which a process can
     make system calls. [A previous commit](https://github.com/openbsd/src/commit/83762a71f74848f4d09174ce350838b4204957c5)
@@ -73,11 +85,14 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 12月份，De Raadt向OpenBSD邮件列表发送了一个[补丁](/Articles/959664/)，扩展了OpenBSD对进程可以进行系统调用的位置的限制。[之前的提交](https://github.com/openbsd/src/commit/83762a71f74848f4d09174ce350838b4204957c5)添加了一个声明新的ELF段的代码，该段指定了程序中特定系统调用的位置，以便内核在程序试图从错误位置调用系统调用时进行检测。由于OpenBSD没有稳定的系统调用接口（而是建议程序通过C库进行稳定接口调用），新的段不需要显式添加到大多数二进制程序中。现在该补丁已经[合并](/Articles/959883/)，完成了De
+    Raadt表示已经历时五年的过程。
 - en: Background
   id: totrans-split-12
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 背景
 - en: 'OpenBSD [already restricted](/Articles/806776/) where programs can make system
     calls. In 2019, De Raadt added code to ensure that system calls could only be
     made from four locations: in the text of a static binary (that links the C library
@@ -89,6 +104,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenBSD已经限制了程序可以进行系统调用的位置。2019年，De Raadt添加了代码以确保系统调用只能从四个位置进行：在静态二进制的文本中（静态链接C库，因此在运行时没有单独的部分）、在信号跳转区（系统调用需要从信号处理程序返回）、在`ld.so`的文本中（动态链接器需要进行系统调用以设置进程的地址空间）、在`libc.so`的文本中（OpenBSD系统调用存根所在的地方）。
 - en: This code relied on a new [`msyscall()`](https://man.openbsd.org/msyscall) system
     call to let the linker inform the kernel of where `libc.so` (the shared object
     for the system's C library) is mapped within the address space. In February 2023,
@@ -100,15 +116,19 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这段代码依赖于新的[`msyscall()`](https://man.openbsd.org/msyscall)系统调用，以便让链接器告知内核`libc.so`（系统C库的共享对象）在地址空间中的映射位置。2023年2月，De
+    Raadt通过引入[`pinsyscall()`](https://man.openbsd.org/OpenBSD-7.4/pinsyscall)来扩展这些保护措施，用于指定进程允许调用[`execve()`](https://man.openbsd.org/execve.2)的二进制中的位置。这两个系统调用只能由给定进程调用一次，由动态链接器完成。
 - en: '[PRE0]'
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Despite its more generic signature, `pinsyscall()` only supports specifying
     a location for `execve()` calls.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管其签名更通用，`pinsyscall()`仅支持指定`execve()`调用的位置。
 - en: These mechanisms were also intended to make it harder for ROP attacks to gain
     a foothold. Requiring the address from which a system call is made to be within
     the `msyscall()` block ensures that an attack cannot make use of any ROP gadgets
@@ -120,6 +140,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些机制还旨在增加ROP攻击的难度。要求系统调用的地址必须在`msyscall()`块内确保攻击不能利用任何存在于专门指定区域之外的ROP小工具。要求`execve()`调用来自一个特定位置也旨在增加攻击者找到调用位置的难度，因为调用`execve()`以执行攻击者控制的程序是攻击中常见的步骤之一。
 - en: The new work obsoletes both of these mechanisms, with De Raadt [suggesting](/Articles/959666)
     that once the new code had been adopted for a release or two, they could "<q>turn
     msyscall() and the less powerful pinsyscall(2) into NOPs, and eventually remove
@@ -127,20 +148,24 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的工作使得这两种机制变得过时，De Raadt建议一旦新代码在一个或两个发布中被采纳，“<q>将msyscall()和功能较弱的pinsyscall(2)变成NOP，并最终移除它们</q>”。
 - en: The patch
   id: totrans-split-19
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 补丁
 - en: 'The new work adds a new [`pinsyscalls()`](https://man.openbsd.org/pinsyscalls.2)
     system call:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 新的工作增加了一个新的[`pinsyscalls()`](https://man.openbsd.org/pinsyscalls.2)系统调用：
 - en: '[PRE1]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '`pinsyscalls()` sends a "pintable" specifying from where in the process''s
     address space each possible system call is expected to be made. The kernel uses
     the information in the table to check on entry to the kernel whether it is being
@@ -154,6 +179,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pinsyscalls()`发送一个“pintable”，指定进程地址空间中预期进行每个可能系统调用的位置。内核使用表中的信息，在进入内核时检查是否从指定位置调用。此检查旨在防止ROP攻击设置系统调用号，然后直接跳转到对应于不同系统调用的系统调用CPU指令。例如，希望进行`execve()`调用的攻击需要跳转到已添加到该调用allowlist的C库中的特定指令，而不是其他存根或仅仅作为系统调用指令解码的无关指令中间。'
 - en: 'When setting up a new process, the dynamic linker uses `pinsyscalls()` to inform
     the kernel about from where the process expects to make system calls. The new
     work adds an "openbsd.syscalls" ELF section to select programs: `ld.so`, `libc.so`,
@@ -167,6 +193,8 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在设置新进程时，动态链接器使用`pinsyscalls()`通知内核该进程期望从哪里进行系统调用。新工作为选择的程序（`ld.so`、`libc.so`和`libc.a`）添加了一个“openbsd.syscalls”
+    ELF部分。新的ELF部分包含一个程序偏移和系统调用号的数组，指示每个位置期望的系统调用。动态链接器读取此部分并用于向内核提供适当的pintable。链接到C库的程序因此可以立即从这项新保护中受益，而无需更改构建过程。与Linux不同，OpenBSD同时开发内核和用户空间组件，因此这项工作的用户空间组件已经就绪。
 - en: Security researchers have expressed doubt about how useful this check is at
     preventing compromises. One researcher, "stein", [noted](https://isopenbsdsecu.re/mitigations/pinsyscall/)
     that "<q>an attacker able to perform ROP can simply use the libc stub, instead
@@ -180,6 +208,8 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 安全研究人员对这种检查在防止妥协方面的实用性表示怀疑。一位名叫"stein"的研究人员[指出](https://isopenbsdsecu.re/mitigations/pinsyscall/)：“攻击者如果能够执行ROP，可以简单地使用libc存根，而不是直接发出原始系统调用”，这指的是攻击可能直接跳转到为特定系统调用的allowlist中添加的指令。另一位研究人员Saagar
+    Jha在新补丁上[评论道](https://federated.saagarjha.com/notice/AcmzyfPcwc8KDVlOqm)：“如果你把这个逻辑推到其极致，那就是‘应用程序应指定使用哪些系统调用’，这实际上就是plegde所做的，由内核强制执行，而不是某种奇怪的IP到系统调用号查找方案”。
 - en: OpenBSD does have existing mitigations designed to make it difficult for ROP
     attacks to determine the location of the C library system call stubs. One such
     protection is [address-space layout randomization](https://en.wikipedia.org/wiki/Address_space_layout_randomization)
@@ -198,6 +228,8 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenBSD确实存在现有的缓解措施，旨在使ROP攻击难以确定C库系统调用存根的位置。其中一种保护是[地址空间布局随机化](https://en.wikipedia.org/wiki/Address_space_layout_randomization)（ASLR），许多操作系统长期以来都已标准化。OpenBSD通过在启动时还对C库的各个部分重新以随机顺序进行链接，进一步随机化程序的地址空间，这意味着攻击不仅需要确定C库在内存中的偏移量，还需要确定希望跳转到库内特定代码的偏移量。不幸的是，动态链接的程序必须在符号重定位表中具有此信息，以允许对共享对象的调用。因此，可以构建一种读取内存的方法的攻击经常会泄漏足够的偏移量信息来规避这些保护措施。De
+    Raadt在2023年的CanSecWest上发表了关于OpenBSD中ROP缓解措施的[演讲](https://twitter.com/i/broadcasts/1kvJpmkYkaZxE)（附有[幻灯片](https://www.openbsd.org/papers/csw2023.pdf)），其中包括设计用于增加程序内容泄露难度的几种其他保护措施。
 - en: Unlike `pledge()`, this patch has the advantage of securing an application even
     if the developer does not make any special effort. However, this protection is
     most useful to programs that statically link OpenBSD's C library; programs that
@@ -208,6 +240,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 与`pledge()`不同，此补丁的优势在于即使开发人员没有特别努力，也可以确保应用程序的安全。然而，这种保护对静态链接OpenBSD的C库的程序最为有用；使用动态链接的程序仍将在其地址空间中具有C库使用的所有系统调用。`pledge()`还允许在启动后丢弃不必要的权限，从而允许应用程序使用比`pinsyscalls()`静态防御更为严格的权限集。
 - en: 'This work was difficult to bring to completion. One of the largest obstacles
     were programs written in Go. In his announcement that the new work had been merged,
     De Raadt said: "<q>The direct-syscalls-inside-the-binary model used by go (and
@@ -217,6 +250,8 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这项工作难以完成。其中最大的障碍之一是使用Go编写的程序。在宣布新工作已合并的公告中，De Raadt说道：“<q>go独有的二进制内直接系统调用模型（在Unix软件历史中，只有go这样做）对这一努力提供了最大的阻力</q>”。他特别感谢Joel
+    Sing在使Go生态系统与这些变化兼容方面的工作。
 - en: Since Linux permits programs to make system calls directly, without going through
     a wrapper from a blessed C library, and is unlikely to change this policy, additional
     steps would be needed to incorporate a similar mechanism there. Some Linux programs
@@ -227,11 +262,13 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于Linux允许程序直接进行系统调用，而无需通过受赞同的C库包装器，且不太可能改变此策略，因此需要采取额外步骤来在那里整合类似的机制。某些Linux程序直接进行系统调用以避免依赖特定的C库，但其他程序则直接进行系统调用以使用尚未由系统C库包装的新功能；OpenBSD没有这个问题，因为其C库和内核是同步开发的。
 - en: Conclusion
   id: totrans-split-29
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 结论
 - en: OpenBSD has a long history of adding novel mitigations, some of which are adopted
     by other projects and some of which are not. This work seems unlikely to be adopted
     elsewhere, given the doubts around the practical benefit and the costs of adding
@@ -242,19 +279,24 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenBSD有着长期的历史，不断添加新颖的缓解措施，其中一些被其他项目采纳，而另一些则没有。考虑到对实际效益的质疑以及增加系统调用复杂性成本，这项工作似乎不太可能被其他地方采纳。然而，这项工作确实为在OpenBSD上构建ROP攻击增加了另一个屏障，对于仅使用少量系统调用且尚未使用承诺（pledge）的静态链接程序似乎尤为有益。
 - en: '* * *'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: (
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: (
 - en: '[Log in](https://lwn.net/Login/?target=/Articles/959562/)'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '[登录](https://lwn.net/Login/?target=/Articles/959562/)'
 - en: to post comments)
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: to post comments)
