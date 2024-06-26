@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:25:39'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:25:39
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: An exploration of SBCL internals - simonsafar.com
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SBCL 内部的探索 - simonsafar.com
 - en: 来源：[https://simonsafar.com/2020/sbcl/](https://simonsafar.com/2020/sbcl/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://simonsafar.com/2020/sbcl/](https://simonsafar.com/2020/sbcl/)
 - en: An exploration of SBCL internals
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SBCL 内部的探索
 - en: 2020/07/10
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 2020/07/10
 - en: '[SBCL](http://www.sbcl.org) is a Common Lisp implementation, with a performant
     compiler and support for a wide range of platforms. It has excellent [documentation](http://www.sbcl.org/manual/),
     and even a [guide to internals](http://sbcl.org/sbcl-internals/) (... this is
@@ -42,6 +50,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: '[SBCL](http://www.sbcl.org) 是一种Common Lisp实现，具有高效的编译器，支持广泛的平台。它有出色的[文档](http://www.sbcl.org/manual/)，甚至有一个[内部指南](http://sbcl.org/sbcl-internals/)（...这是写给那些已经对其工作原理有很多了解的人的）。关于SBCL相当独特的构建过程的[这篇论文](https://research.gold.ac.uk/2336/1/sbcl.pdf)也值得一读。'
 - en: The main goal of this article (... it might even turn into a series of articles)
     is to give a tour of the internals of SBCL (... as an example of how a Lisp system
     looks like from the inside) while not assuming a lot of implementation-specific
@@ -51,10 +60,12 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文的主要目标（...它甚至可能变成一系列文章）是介绍SBCL的内部结构（...作为一个展示Lisp系统内部工作原理的例子），同时不假设读者对其实现细节有很多了解。这也是一个“公共学习”的实验；在开始写作时，我实际上并不太了解SBCL的工作原理。我们将一起来理解这一点。
 - en: 'We''re going to try answering the following questions:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将试图回答以下问题：
 - en: How are Lisp objects represented in memory, at runtime? Where we do we store
     a string's length? What's a function object like? How about just a number? Or
     a Lisp symbol?
@@ -62,22 +73,26 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行时如何表示Lisp对象？我们在哪里存储字符串的长度？函数对象是什么样的？数字或Lisp符号呢？
 - en: Where is actual compiled Lisp code? What kind of machine code do we generate?
     If a function calls another function, how do we resolve what we're calling into?
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 编译后的Lisp代码在哪里？我们生成什么样的机器码？如果一个函数调用另一个函数，我们如何解析我们要调用的内容？
 - en: Where in memory are bindings for special variables? Or thread-locals?
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 内存中特殊变量的绑定在哪里？或者线程本地变量呢？
 - en: Where is the REPL (... the actual loop) implemented?
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: REPL（...实际循环）的实现位置在哪里？
 - en: When we evaluate a **defun**, how do we call the compiler? Can we call into
     the compiler directly, to turn a Lisp form into machine code? Can we take a machine
     code blob, turn it into a proper Lisp function by manually creating objects, and
@@ -86,18 +101,21 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当我们评估**defun**时，我们如何调用编译器？我们能直接调用编译器，将Lisp形式转换为机器码吗？我们可以通过手动创建对象将机器码块转换为适当的Lisp函数，然后调用它吗？
 - en: Where is the memory allocator? How do ordinary functions call into it? Where
     does it call down into the OS?
   id: totrans-split-16
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 内存分配器在哪里？普通函数如何调用它？它如何调用操作系统？
 - en: What's the rough theory behind the GC? How does it track pointers? Does it relocate
     memory?
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 垃圾回收背后的基本理论是什么？它如何跟踪指针？它是否重新定位内存？
 - en: Lisp systems generally start up by loading entire Lisp "cores". How do these
     files look like? Do we map them 1:1 to memory? Can we enumerate all the objects
     in them?
@@ -105,27 +123,32 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Lisp系统通常通过加载整个Lisp“核心”来启动。这些文件是什么样子的？我们是否将它们1:1映射到内存？我们能枚举它们所有的对象吗？
 - en: What's "Genesis" or cold start, often encountered in SBCL source code?
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"Genesis"或冷启动在SBCL源代码中经常遇到是什么？'
 - en: To follow along, we're assuming that you're reasonably familiar with Lisp, you're
     optimally not overly new to x86 assembly, and have SBCL installed (... my setup
     also includes Emacs and SLIME, but feel free to use whatever fits you best).
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 要跟随我们的进展，我们假设您对Lisp有一定了解，最好不是对x86汇编过于陌生，并且已经安装了SBCL（...我的设置还包括Emacs和SLIME，但请随意选择最适合您的工具）。
 - en: Disassembly
   id: totrans-split-21
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 反汇编
 - en: 'Let''s start with a fairly basic tool: the disassembler. Let''s write a really
     basic function:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从一个相当基本的工具开始：反汇编器。让我们编写一个真正基本的函数：
 - en: '[PRE0]'
   id: totrans-split-23
   prefs: []
@@ -135,6 +158,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以通过以下方式调用反汇编器：
 - en: '[PRE1]'
   id: totrans-split-25
   prefs: []
@@ -144,6 +168,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们得到的内容大致如下
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
@@ -158,6 +183,8 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们要寻找的有趣部分是"MOV EDI, 66"。显然，RDX和RDI是"GENERIC-+"的两个参数，所以正在发生的是我们取两个参数，将它们相加，然后我们用第三个参数填充EDI，并再加上那个参数。由于我们目前还不知道的原因，我们将该整数向左移动一位，所以我们有66而不是33...
+    但该值显然与我们输入的常量有关。
 - en: 'So... let''s try hacking this a little bit, to check this assumption. If you
     look at the actual machine code on the left: "BF420000..."... you might notice
     that 0x42 is 66 in decimal. (Well, the value has to come from *somewhere*?) How
@@ -167,11 +194,14 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以... 让我们尝试稍微改动一下，来检查这个假设。如果你看一下左边的实际机器代码："BF420000..."... 你可能会注意到0x42在十进制中是66。（好吧，这个值必须要从*某处*获取？）如何调整代码中的实际值，使其读取比如0x50？（...这是80作为十进制数...
+    所以如果我们调用*(testfunc 0 0)*，我们期望它返回40，而不是当前的33。
 - en: 'So... we need a way of actually writing to memory locations. We even know *where*
     we''d want to write: at the top of the code listing, we can see'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以... 我们需要一种实际写入内存位置的方法。我们甚至知道*在哪里*我们想要写入：在代码列表的顶部，我们可以看到
 - en: '[PRE3]'
   id: totrans-split-31
   prefs: []
@@ -185,6 +215,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 表明起源，并为每条指令提供有用的起始点。因此，我们的"0x42"字节位于**0x100244024d**（...因为...4C是第一个字节，...4D是第二个）。SBCL提供了一种从整数创建指针值的方式：[sb-sys:int-sap](http://www.sbcl.org/manual/#Untyped-memory)正是这样做的，我们可以通过调用来读取
 - en: '[PRE4]'
   id: totrans-split-33
   prefs: []
@@ -195,6 +226,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: （零值是相对于内存地址的偏移量）。这正是我们预期的。然后，我们可以*setf*相同的字节为我们想要的东西：
 - en: '[PRE5]'
   id: totrans-split-35
   prefs: []
@@ -205,6 +237,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们现在反汇编我们的函数，我们可以看到确实进行了修改：
 - en: '[PRE6]'
   id: totrans-split-37
   prefs: []
@@ -214,6 +247,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 而且，再次尝试我们的功能：'
 - en: '[PRE7]'
   id: totrans-split-39
   prefs: []
@@ -223,20 +257,24 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，Lisp毕竟不是魔法！
 - en: Memory layout
   id: totrans-split-41
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 内存布局
 - en: Let's now look at how Lisp objects are laid out in memory! How does, for example,
     a cons cell look like? How about a symbol? Or a string?
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们看看Lisp对象在内存中的布局！例如，一个cons单元是什么样子的？符号呢？或者一个字符串？
 - en: 'We can use our trusty tool the disassembler to obtain addresses of things:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用我们信赖的反汇编工具来获取事物的地址：
 - en: '[PRE8]'
   id: totrans-split-44
   prefs: []
@@ -246,6 +284,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '... 比这更简单的方法我们找不到。我们得到的是...'
 - en: '[PRE9]'
   id: totrans-split-46
   prefs: []
@@ -257,6 +296,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以... 呃... 那个字符串"hello world"应该与... [RIP-122]相关联？好吧，这很令人困惑。让我们尝试其他方法；我们将在本文末尾再回到这里。
 - en: 'At this point we can also introduce yet another really useful SBCL tool: **sb-kernel:get-lisp-obj-address**.
     I have not yet found actual documentation for this (... so I guess it''s subject
     to change any time); I actually learned about it from [a Stack Overflow answer
@@ -266,12 +306,15 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我们还可以介绍另一个非常有用的SBCL工具：**sb-kernel:get-lisp-obj-address**。我尚未找到关于它的实际文档（...所以我猜它随时可能会改变）；我实际上是从[Stack
+    Overflow上*sds*的答案](https://stackoverflow.com/a/50613440/391376)中了解到它的。他的建议是*不要*在生产环境中使用它。但用来玩耍是完全可以的。
 - en: Yet another tool is to actually dump out memory contents. There *might* be such
     a thing around, but it also doesn't take a lot of time to just write something
     that can dump out memory contents at a specified address.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个工具是实际上倾倒内存内容。可能会有这样的东西，但写一个能够倾倒指定地址内存内容的东西也不需要花费很多时间。
 - en: '[PRE10]'
   id: totrans-split-50
   prefs: []
