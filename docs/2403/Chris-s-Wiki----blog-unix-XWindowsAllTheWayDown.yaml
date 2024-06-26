@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:41:26'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:41:26'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Chris''s Wiki :: blog/unix/XWindowsAllTheWayDown'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Chris''s Wiki :: 博客/unix/XWindowsAllTheWayDown'
 - en: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/XWindowsAllTheWayDown](https://utcc.utoronto.ca/~cks/space/blog/unix/XWindowsAllTheWayDown)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://utcc.utoronto.ca/~cks/space/blog/unix/XWindowsAllTheWayDown](https://utcc.utoronto.ca/~cks/space/blog/unix/XWindowsAllTheWayDown)
 - en: Every window system has windows, as an entity. Usually we think of these as
     being used for, well, windows and window like things; application windows, those
     extremely annoying pop-up modal dialogs that are always interrupting you at the
@@ -34,6 +40,9 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个窗口系统都有窗口作为一个实体。通常，我们认为这些被用于窗口和类似窗口的东西；应用程序窗口，那些总是在你不方便的时候打断你的极其恼人的弹出模态对话框，甚至可能像弹出菜单这样的东西。在其原始状态下，X
+    拥有比这更多的窗口。X 之所以能够做到这一点的部分原因是，X 允许窗口嵌套在彼此内部，在一个窗口树中，你今天仍然可以通过 '`xwininfo -root
+    -tree`' 看到这一点。
 - en: One of the reasons that X has copious nested windows is that X was designed
     with a particular model of writing X programs in mind, and that model made everything
     into a (nested) window. Seriously, everything. In an old fashioned X application,
@@ -44,6 +53,8 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: X 拥有大量嵌套窗口的一个原因是，X 设计时考虑了特定的编写 X 程序的模型，并且该模型使所有东西都成为（嵌套的）窗口。真的，一切都是窗口。在老式的 X
+    应用程序中，窗口随处可见。按钮是窗口（或者如果是单选按钮之类的，则是几个窗口），文本区域是窗口，菜单条目在菜单窗口内部分别是自己的窗口，可见的东西的容器是窗口（内部还有更多的窗口），等等。
 - en: This copious use of windows allows a lot of things to happen on the server side,
     because various things (like mouse cursors) are defined on a per-window basis,
     and also [windows can be created with things like server-set borders](https://www.x.org/releases/X11R7.7/doc/xproto/x11protocol.html#requests:CreateWindow).
@@ -59,6 +70,8 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种大量使用窗口允许服务器端发生许多事情，因为各种事物（如鼠标指针）是基于每个窗口定义的，而且[窗口可以使用服务器设置的边框等创建](https://www.x.org/releases/X11R7.7/doc/xproto/x11protocol.html#requests:CreateWindow)。因此，X
+    服务器可以渲染子窗口边框，为你的按钮加上轮廓，并在鼠标移入和移出子窗口时自动更改光标，而无需客户端做任何事情。通常，像鼠标点击或按键等输入事件可以特别绑定到某个子窗口，因此你的程序无需在其部件几何结构中搜索被点击的内容。还有更多技巧；例如，当鼠标进入或离开（子）窗口时，你可以得到“进入”和“离开”事件，程序可以利用这些事件在光标下突出显示当前的东西（即子窗口），而不必每次追踪鼠标移动并计算在光标下的部件是什么的全部成本。
 - en: The old, classical X toolkits like [Xt](https://en.wikipedia.org/wiki/X_Toolkit_Intrinsics)
     and [the Athena widget set (Xaw)](https://en.wikipedia.org/wiki/X_Athena_Widgets)
     heavily used this 'tree of nested windows' approach, and you can still see large
@@ -76,6 +89,11 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 老式经典的 X 工具包，如[Xt](https://en.wikipedia.org/wiki/X_Toolkit_Intrinsics)和[雅典娜小部件集
+    (Xaw)](https://en.wikipedia.org/wiki/X_Athena_Widgets)大量使用了这种“嵌套窗口树”的方法，当您将其应用于具有许多可见按钮的旧应用程序时，您仍然可以看到大量窗口树，例如“xfontsel”是一个例子。即使是受尊敬的
+    xterm 通常也包含一个嵌套窗口（用于滚动条，我相信它部分使用它自动更改 X 光标当您将鼠标移动到滚动条中时）。然而，这似乎并非普遍适用；当我查看[一个使用
+    Xaw 的应用程序](/~cks/space/blog/sysadmin/ToolsXrun)时，我手边有的，它似乎并不使用子窗口，尽管它有[一个可以点击的列表小部件](https://www.x.org/releases/current/doc/libXaw/libXaw.html#List_Widget)。很可能在
+    Xaw 和 Xt 中，这取决于您使用的窗口部件类型，某些窗口部件使用子窗口，而其他窗口部件则不使用。
 - en: This approach fell out of favour for various reasons, but certainly one significant
     one is that it's strongly tied to [X's server side rendering](/~cks/space/blog/unix/XRenderingVsWaylandRendering).
     Because these subwindows are 'on top of' their parent (sub)windows, they have
@@ -90,6 +108,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 出于各种原因，这种方法逐渐不被青睐，但其中一个显著原因肯定是它与[X 的服务器端渲染](/~cks/space/blog/unix/XRenderingVsWaylandRendering)紧密相关。因为这些子窗口位于它们的父（子）窗口上方，它们必须单独渲染；否则它们将覆盖在父窗口中渲染的内容（并且它们自然会将渲染到它们的可见边界的内容裁剪）。如果您向服务器发送渲染命令，那么这只是对哪些窗口以及在哪些坐标上绘制的问题，但如果在客户端上渲染，则必须传输大量的小缓冲区（每个子窗口一个）而不是一个大缓冲区用于整个窗口，实际上，您可能会发送额外的数据（被子窗口覆盖的所有父窗口的部分）。
 - en: So in modern toolkits, the top level window and everything in it is generally
     only one X window with no nested subwindows, and all buttons and other UI elements
     are drawn by the client directly into that window (usually with client side drawing).
@@ -101,12 +120,16 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在现代工具包中，顶层窗口及其所有内容通常只是一个 X 窗口，没有嵌套的子窗口，所有按钮和其他 UI 元素都由客户端直接绘制到该窗口中（通常使用客户端端绘制）。客户端本身跟踪鼠标指针，并在鼠标指针进入和离开应该具有不同鼠标指针的
+    UI 元素时向服务器发送“更改光标为 <X>”的请求，并且在接收到事件时，客户端会搜索其自己的窗口部件层次结构以决定由谁处理这些事件（可能包括[客户端端窗口装饰
+    (CSD)](https://en.wikipedia.org/wiki/Client-side_decoration)）。
 - en: (I think toolkits may create some invisible sub-windows for event handling reasons.
     Gnome-terminal and other Gnome applications appear to create a 1x1 sub-window,
     for example.)
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: （我认为工具包可能会为了事件处理原因创建一些不可见的子窗口。例如，Gnome 终端和其他 Gnome 应用程序似乎会创建一个 1x1 的子窗口。）
 - en: As a side note, another place you can still find this many-window style is in
     some old fashioned X window managers, such as [fvwm](https://fvwm.org/). When
     fvwm puts a frame around a window (such as the ones visible on windows on [my
