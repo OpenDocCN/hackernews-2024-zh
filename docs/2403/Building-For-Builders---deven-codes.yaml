@@ -78,6 +78,9 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我开始使用`sundew`之前，我正在处理一个大型单元测试套件，覆盖率高但运行速度非常缓慢，并且仍然让许多显而易见的bug滑过到消费者手中。我刚刚完成了一个“用Python进行测试驱动的Web开发”书籍俱乐部，(3)7/10，如果你想要[加强你的测试技能](https://www.obeythetestinggoat.com/pages/book.html)，我大部分推荐，并且无法停止问自己，“我如何让测试更快
+    *且* 更有效？肯定有更好的办法！”。我知道我需要我的测试套件更**快**，因为在开发软件时，快速反馈循环会带来复利效应，但我也需要它在代码传递给客户之前更**有效**地捕捉bug。此外，我不想花几个小时来打造完美的测试来实现这些目标，我需要我的测试框架也要**智能**
+    🧠。
 - en: 'It’s easy to start building a framework or other project with a statement like,
     “I’m going to build a better testing framework!”, but if you stop and think about
     it, what does that really tell you about what you plan to build? My experience
@@ -87,11 +90,14 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 开始构建一个框架或其他项目时，可能会说，“我要构建一个更好的测试框架！”，但如果停下来想一想，这究竟告诉你关于你计划构建的内容？我的经验是，`sundew`
+    之所以变得强大，是因为我从一个问题开始。更具体地说，在写代码之前，我认为你可以问自己的最好问题是：
 - en: What is the **problem** I want to solve?
   id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 我想解决的**问题**是什么？
 - en: When you ask yourself this, be as specific as you can be. Generic, theoretical
     problems lead to generic, theoretical solutions that are going to have a much
     harder time standing the trials of the real world (more on this later). Focus
@@ -104,6 +110,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你问自己这个问题时，尽可能具体。泛泛的理论问题导致的解决方案往往难以经受现实世界的考验（稍后详述）。专注于你直接经历过的痛点，或者*至少*直接听说过的痛点。你应该能够列出几个非常具体的例子，说明你或你认识的人遇到了这个问题及其造成的*痛苦*。`sundew`
+    的核心概念源于测试套件运行缓慢、不完整的痛苦，而不是一种“比现有选择做得更好”的泛泛愿望。
 - en: As another example, `pk` was born when my team recognized a growing need for
     queue worker services that were well modeled as streaming data pipelines. We knew
     that we wanted to **reduce rework** and the support burden that comes from multiple
@@ -118,21 +126,25 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个例子，`pk` 的诞生是因为我的团队意识到队列工作者服务的需求不断增长，这些服务可以很好地建模为数据流水线。我们知道我们想要**减少重复工作**以及由多个服务重复使用数据处理步骤而导致的支持负担，尽管这些服务在*某些方面*略有不同。我们还想要保持和改进我们构建**健壮**和**高性能**管道的标准。最后，我们希望能够**更快地构建新的管道**！我们从未说过“我们需要为Python构建一个Actor模型框架！”，我们是从需要解决的问题出发，问自己如何最好地解决这些问题。我们的需求和限制自然而然地导致了我们构建了一个Actor模型框架，这被证明是一个非常合适的解决方案。
 - en: Define your anti-goals. [#](#define-your-anti-goals)
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 定义你的反目标。[#](#define-your-anti-goals)
 - en: “Explicit is better than implicit”
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “显式优于隐式”
 - en: Tim Peters, The Zen of Python
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Tim Peters，《Python之禅》
 - en: Depending on the scope of your problem, you’re likely to find lots of sub-problems,
     or closely-related problems that you could easily tackle as well. If you aren’t
     careful, the list of problems you are solving becomes large, and your framework
@@ -143,6 +155,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据您问题的范围，您可能会发现许多子问题或密切相关的问题，这些问题您也可以轻松解决。如果不小心的话，您要解决的问题列表会变得很长，而您的框架变得过于一般化，无法成为原始问题的*最佳*解决方案。这就是为什么在项目开始时，我喜欢在目标旁边定义**反目标**。这些是您明确地不会解决的事情，并非因为它们不重要，而是因为它们会分散您的注意力或者使范围扩展得太远。
 - en: In my experience this is most effective when you are building with/for a team
     of engineers who may all have their own opinions on the scope of the framework
     you are building. Being clear upfront where the boundaries are for what you’ll
@@ -152,6 +165,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据我的经验，当您与一组工程师一起构建或为其构建框架时，这种方式最有效。在项目开始时明确界限，定义您将构建和支持的内容，有助于获得一致性。当您设定的边界与团队成员最初的期望不符时，它们也会引发有益的讨论。“显性胜于隐性”，特别是在设定边界时。
 - en: Anti-goals are helpful for focusing your effort, but they can be even more helpful
     for defining how you built your framework. Anti-goals represent the closely related
     problems *you* choose not to tackle, but there’s a good chance these are the same
@@ -169,6 +183,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 反目标有助于集中您的努力，但它们甚至可以更有助于定义您如何构建框架。反目标代表您选择不解决的密切相关问题，但很可能这些问题将是未来用户将遇到并需要解决的问题。考虑到这一点，您的反目标可以作为指导，指导您在框架中需要正确处理的扩展点。例如，在构建`pk`时，我们事先确定我们将基于actor模型构建框架，但它不会成为任何共享actor的主页，也不会容纳超出小型预定义核心集之外的外部数据连接器。这意味着事先承认并同意，尽管跨管道共享actor和定义新数据连接器很重要，但它们需要由用户在单独的模块中构建。这不仅为我们构建框架设定了明确的界限，而且明确表明，构建可共享的actor和定义新数据连接器将是我们需要在项目开始时正确处理的扩展点。
 - en: Finally, remember that just like goals, anti-goals are not set in stone. They
     can change and evolve over time as your project matures and you learn more. Keep
     revisiting them to add new boundaries where needed, or remove old ones when your
@@ -176,21 +191,25 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，请记住，与目标一样，反目标并非一成不变。随着您的项目成熟和知识增长，它们可以随时改变和演变。定期回顾它们，根据需要增加新的界限，或者在用户需求超过扩展范围成本时删除旧的界限。
 - en: Know what already exists [#](#know-what-already-exists)
   id: totrans-split-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 了解已有内容 [#](#know-what-already-exists)
 - en: ”Everything that can be invented has been invented.”
   id: totrans-split-22
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: ”一切可以被发明的东西都已经被发明了。”
 - en: Punch Magazine, vol 116, 1899
   id: totrans-split-23
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 《Punch Magazine》，第116卷，1899年
 - en: If you’ve gotten clear about the problem you are solving, and you’ve fleshed
     out our anti-goals it’s time to write some code, right? Well.. almost! Now that
     we know what we want to build, it’s a good idea to make sure someone hasn’t already
@@ -202,6 +221,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你已经明确了你要解决的问题，并且已经详细阐述了我们的反目标，现在是时候写些代码了，对吧？嗯...几乎是这样！既然我们知道想要构建什么，确保没有人已经构建了它是个好主意。如果这是一个有价值的问题，你可能不是第一个遇到并考虑解决它的人，因此，虽然解决自己的问题很有趣和有回报，但确保你没有在重复造轮子是值得的。你可以考虑解决你列表中的下一个最重要的问题。话虽如此，我建议有几种方法*不*去处理这个过程。
 - en: The first wrong way to do this, is to do a search, find a library/framework
     that says it’ll solve your problem in its tagline, throw up your hands because
     ”everything that can be invented *has* been invented”, and give up. We just went
@@ -218,6 +238,8 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个过程中第一个错误的方式是做一个搜索，找到一个库/框架声称它会在其标语中解决你的问题，然后举手投降，因为“一切可以发明的*已经*被发明了”，放弃。我们刚刚经历了**很多艰苦的工作**来非常具体地解决我们的问题。所以多花几分钟深入挖掘，确保这个库或框架确实符合需求。通常情况下，该框架的开发者可能有他们自己非常具体的问题要解决，这些问题可能与你的问题不太重叠，或者他们陷入了上述陷阱之一，并解决了太普遍的问题，以至于不适合你的需求。深入挖掘并找出来。如果它正是你需要的，那太完美了！不要绝望，感谢开源维护者们节省了你3-12个月的工作，并继续进行`pip/npm/cargo/whatever
+    install`你新发现的解决方案！还有更多工作要做，还有其他未解决的问题可以让你去思考。
 - en: The other bad way to go about this is to immediately nitpick every solution
     you find, to convince yourself it couldn’t *possibly* solve your problems. NIH
     (Not-Invented-Here) Syndrome is real and a lot of humans struggle with it   (4)myself
@@ -233,6 +255,9 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个错误的方式是立即吹毛求疵地评估你找到的每个解决方案，让自己相信它根本不可能解决你的问题。NIH（非本地病毒）综合征是真实存在的，很多人都在与之斗争，包括我自己
+    ✋。我们想要一种所有权感，一种“嘿，*我*解决了那个”感觉，而软件是一个非常容易满足这种愿望的方式。然而，正如我所说的，你可能有很多其他重要的问题要解决，所以如果没有必要，不要阻止自己解决这个问题。如果你找到一个可能很合适的现有框架，那就欣喜吧！如果它已经99%完成，并且是开源的，请考虑贡献你需要的1%（或者至少打开一个
+    PR 询问！）。最好的软件是通过合作完成的，通常依附于别人的车轮上更容易高效地达到目标。
 - en: Once you’ve given everything you find a fair shot, and determine they are still
     missing the mark in significant ways, *then* it’s time to begin the long journey
     of building your very own framework. Consider adding these to a “Prior Art” section
@@ -240,22 +265,27 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你给予了所有你认为公平的机会，然后确定它们在重大方面仍然没有达到预期，*那么*就是开始建立你自己框架的漫长旅程的时候了。考虑现在将这些加入到你的 README
+    的“先前艺术”部分，并准备开始建设 🔨
 - en: Consider your interface first [#](#consider-your-interface-first)
   id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 首先考虑你的接口 [#](#consider-your-interface-first)
 - en: Design is really an act of communication, which means having a deep understanding
     of the person with whom the designer is communicating.
   id: totrans-split-29
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 设计实际上是一种沟通行为，这意味着设计师必须深入了解与其沟通的人。
 - en: Donald A. Norman, The Design of Everyday Things Quotes
   id: totrans-split-30
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 道格拉斯·诺曼，《日常物品的设计》引用
 - en: 'It’s finally time to code! But where do we start? At this point, I highly recommend
     starting by designing the right interface. This is the “frontend” of your framework,
     and it’s what we mean when we say “Developer Experience” (DX). The way it feels
@@ -267,6 +297,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在终于可以开始编码了！但我们从何处开始呢？此时，我强烈建议首先设计正确的界面。这是您框架的“前端”，也是我们所说的“开发者体验”（DX）。使用您的框架的感觉将成为其被采用的重要因素，*假设您关心其他人使用它的话*。我发现，我最喜欢做的第一件事情是模拟并探索某人在框架的假设完成状态下可能使用它的方式。这有助于开始回答以下问题：
 - en: 'As I start landing on a possible interface, the next question I explore is,
     “What are **other** interfaces I could build instead?”. It’s easy to take the
     first interface that came to mind and run with it; you’ve got a solution, let’s
@@ -276,6 +307,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我开始确定可能的接口时，我探索的下一个问题是：“我还能建立哪些 *其他* 接口？”。当您想到第一个接口并试图运行时，这很容易；您已经有了解决方案，让我们开始编码吧！我理解您，当您有很多事情要做时，花时间考虑框架的替代接口似乎是在浪费时间，但请考虑以下可能性之一：
 - en: Your first solution might not be your best 🤷. Remember you are building this
     framework for other developers too, and what is immediately obvious to you may
     not resound for your eventual users. Take some time to come up with at least 2
@@ -285,6 +317,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您的第一个解决方案可能不是最好的 🤷。请记住，您正在为其他开发人员构建这个框架，对您来说显而易见的解决方案可能并不适合最终的用户。花些时间想想至少2或3种其他开发人员可能希望与您的框架交互的方式，然后并排评估它们的优点。
 - en: Your first solution *is* the best one 🎉. That’s great, good work! However, it’s
     your users that have to be convinced that you’re on the best path forward. Take
     the time to consider 2 or 3 other approaches, and solidify your opinions about
@@ -296,6 +329,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您的第一个解决方案 *就是* 最佳的解决方案 🎉。那很棒，做得好！然而，说服用户选择您的路径是一个很大的挑战。花些时间考虑另外2或3种方法，并巩固您认为第一种方法更好的理由。这会在用户提出他们对未来解决方案的看法时为您提供更坚实的依据。这也会增强对您选择的解决方案的信心，而信心通常会转化为专注力。
 - en: I’ll note this is an exercise I go through, not just when beginning the framework,
     but before every big new feature or rearchitecture. Anything that has the potential
     to dramatically change the way your users can/will use your framework is worth
@@ -303,11 +337,13 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我要注意的是，这是我在开始框架之前以及在每次引入重大新功能或重新设计之前都要经历的一项练习。任何有可能显著改变用户使用您的框架方式的事情，值得额外的前期设计时间来确保正确。
 - en: Use it before it’s ready [#](#use-it-before-its-ready)
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在准备就绪之前就开始使用它 [#](#use-it-before-its-ready)
 - en: Let’s fast forward juuust a bit. You’ve written hours of code (maybe spread
     out over the span of a few weeks) and your framework is starting to do *something*
     like what you dreamed. It’s still clunky, doesn’t generalize at all, can’t handle
@@ -316,6 +352,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们快进一点。您可能已经写了几个小时的代码（也许是几周的时间），您的框架开始实现了一些您梦想的功能。它仍然笨拙不堪，完全不能泛化，无法处理任何一个边缘情况，并且所有关于如何使用这一切的文档都在您的脑海中（最好的情况）。现在是您开始使用它的时候了！
 - en: “But wait Deven! This is but a whisper of the final product it’ll be. This *barely*
     solves just a part of the problem I worked so hard to define. It’s definitely
     not **ready**”, you protest. That’s perfect, it’s exactly where you want it to
@@ -331,6 +368,8 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: “但是等等 Deven！这只是最终产品的一点点雏形。这*勉强*解决了我努力定义的问题的一部分。它绝对不**准备好**”，你抗议道。这很完美，当你开始使用它时，它就在你希望它的地方。你不必立刻与其他人分享它，但现在是时候将你的框架`pip/npm/cargo/whatever
+    install`到另一个项目中，并开始*使用*它了。我不是指一个作为夸大的功能测试的琐碎虚构项目。我指的是一个真正有现实用例可以为某人提供价值的项目；如果这是已经在提供价值的现有项目，那就更好了。我之所以这么说，是因为现在你已经到了第一个可以确定你的理论解决方案是否有机会解决你真实问题的时刻。如果不能，你希望尽早知道，因为转向的痛苦从现在起将永远不会比现在更低。
 - en: I mentioned in the opening that I started an open source testing framework called
     `sundew`, but what I didn’t share is that currently, `sundew` doesn’t have any
     users 😞. It’s not because `sundew` isn’t good, it has features I would kill to
@@ -350,6 +389,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在开头提到我开始了一个名为`sundew`的开源测试框架，但我没有分享的是，目前，`sundew`没有任何用户 😞。并不是因为`sundew`不好，它拥有我在常规测试设置中渴望拥有的功能，以及我在任何其他框架中都未曾遇到过的功能。它确实解决了我在构建时遇到的核心问题，我对找到的解决方案感到自豪。但是，在当前形式下，它只是无法使用。我在如何使用`sundew`编写测试时采取了一个有主见的立场，我以为通过使用`sundew`编写的优秀测试来评估我的主观解决方案。然而，直到我发布了第一个公共版本之后，我才开始使用`sundew`进行其他非平凡项目。那时我意识到，它对真实世界的测试需求来说太过僵化。它能修复吗？当然可以！但是现在重新架构`sundew`的摩擦力比在开发过程中早期意识到并进行调整要大得多。这种摩擦力会扼杀动力，尤其是对于你在业余时间构建的项目而言，可能是致命打击。
 - en: '`pk` is a counter example. Notice in my opening I said, that while it is still
     under development, it is actively used in **production**. Myself and a team member
     started using it for two non-trivial, customer-facing projects as soon as the
@@ -365,11 +405,14 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '`pk` 是一个反例。请注意，在我的开篇中，我说，尽管它仍在开发中，但它已经积极地用于**生产**中。我和一个团队成员在基本功能刚刚到位时开始将其用于两个非常规的、面向客户的项目。这些经验带来的学习是非常宝贵的，自那时以来，我们已经迅速成熟了框架并为用户提供了价值。这些都是未计划的转变，如果我们等到“v1.0”才开始使用它，就不会被识别出来，也会更难以进行转变。现在，我们已经将框架的使用扩展到团队的其他成员和额外的产品中，甚至在发布
+    v1.0 之前。在流程早期部署和获得反馈使我能够以较低的成本进行调整，并提高了我长期建立高质量解决方案的机会。'
 - en: Sample size of 1 isn’t significant [#](#sample-size-of-1-isnt-significant)
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 1 个样本大小不具备显著性 [#](#sample-size-of-1-isnt-significant)
 - en: Using your framework yourself early on will tell you if your solution is viable,
     but it won’t be a good test for if your framework can generalize or if it’s actually
     enjoyable to anyone else. You are naturally building the solution that makes the
@@ -382,6 +425,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 早期使用你的框架将告诉你你的解决方案是否可行，但这不是一个能测试你的框架是否可以泛化或者对其他人是否真正愉悦的好方法。你自然而然地在为你心目中特定问题寻找最合理的解决方案。然而，根据定义，如果你花时间构建一个框架，这不是一个一次性的问题，你需要将其泛化到足以在你的问题范围内有意义地使用。在这一点上，摆脱自己的想法并开始让早期采用者使用你的框架是很好的。
 - en: 'These may be coworkers, developer friends, or strangers on the internet who
     happen to have the exact problem you have. Doesn’t really matter where you find
     them, and you don’t need a lot of them, but you do need *at least* 2 or 3 people
@@ -396,21 +440,26 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能是同事、开发者朋友，或者是网上的陌生人，他们恰好遇到了与你完全相同的问题。不管你在哪里找到他们，也不需要很多人，但你至少需要**至少** 2 或 3
+    个愿意尝试你目前所构建内容的人，并且对此感到兴奋。你希望尽早找到这些人，所以确保他们理解，这并不像完全成熟的答案那样有着精雕细琢和生产保证。你还要确保这些人确实存在你想解决的问题，并且有一个真实的使用案例，可以用你的框架来尝试。然后，一旦他们加入，你就希望从他们那里获得尽可能多的反馈。他们使用你这个半成品解决方案的奖励是，他们对最终成品将会是什么样子有影响力。询问他们这样的问题：
 - en: What isn’t intuitive to you?
   id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你觉得不直观的是什么？
 - en: What works, but is painful?
   id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 什么功能有效，但是很痛苦？
 - en: What doesn’t work that you *need* to work?
   id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 哪些功能不起作用，但你*需要*它们起作用？
 - en: Also make sure you find out “What do you love about it?”. Criticism can be hard,
     but if you are driven by a building a great product it’s also easier to get caught
     up in all the things you can fix or make better. We’ve all come across products
@@ -420,6 +469,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 还要确保你了解“你为什么喜欢它？”批评可能很难接受，但如果你想要建立一个伟大的产品，理解所有可以修复或改进的事情也会变得更加容易。我们都遇到过我们曾经喜欢的产品，最终变得“更好”，但最终失去了我们最初喜欢的东西。确保你花时间了解*真正有效*的地方，并在解决问题时保持它。
 - en: Writing software is, and always will be, a series of trade-offs. Not all trade-offs
     are equal though, and losing the things your users love to solve the minorly unintuitive
     is rarely worth it. Find another path forward that preserves the good and eases
@@ -432,11 +482,13 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 编写软件始终是一系列的权衡。然而，并非所有的权衡都是平等的，为了解决微小的不直观问题而失去用户喜爱的东西很少是值得的。找到另一种前进的道路，保留好的东西并减少不好的东西，或者在某些情况下，坚持自己的观点并且接受它并不是每个人都会接受的。只要确保无论你选择什么，你都是基于你从实际用户那里学到的东西有意识地做出的选择。我学会了尽快让我建造的东西面向人们展示，我相信如果我当初做到了，`pk`就会有更多的初期成功，我相信`sundew`也会有更多的初期成功。
 - en: Document, document, document [#](#document-document-document)
   id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 文档，文档，文档 [#](#document-document-document)
 - en: This is the Curse of Knowledge. Once we know something, we find it hard to imagine
     what it was like not to know it. Our knowledge has “cursed” us. And it becomes
     difficult for us to share our knowledge for others, because we can’t really re-create
@@ -445,11 +497,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这就是知识的诅咒。一旦我们知道某事，我们发现很难想象过去不知道它的情况。我们的知识“诅咒”了我们。而且，对我们来说，很难为他人分享我们的知识，因为我们无法真正再现我们听众的思维状态。
 - en: Chip Heath & Dan Heath, Made to Stick, p.20
   id: totrans-split-51
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Chip Heath & Dan Heath，《留下深刻印象》，第20页
 - en: 'The final thing I want to cover seems to also be the bane of many developer’s
     existence: documentation. Great software documentation regularly gets praised
     in software engineer circles, but as soon as it’s time to write some no one seems
@@ -460,6 +514,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想要最后讨论的事情似乎也是许多开发者存在的祸根：文档。在软件工程师圈子里，优秀的软件文档经常受到赞扬，但一旦是写文档的时候，似乎没有人愿意自愿去做。我们喜欢认为我们写了“自我说明”的代码，或者“使用它会很明显”，但现实是，如果你希望其他人使用你的框架，你必须付出努力来创建文档。最好是**好的**文档。
 - en: If you’ve ever searched GitHub, found a repo that sounds like it may be what
     you need, and then found it has zero documentation (sometimes not even a README)
     then you know the frustration of being on the receiving end of undocumented software.
@@ -472,6 +527,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你曾经在GitHub上搜索过，找到一个看起来可能是你需要的仓库，然后发现它没有任何文档（有时甚至没有README），那么你就知道接收到未记录软件的一方面的沮丧感。即使它对你的需求是完美的解决方案，理解别人的代码并确定它是否真正符合你的需求的成本太高了。很少有人愿意付出这个代价，老实说，我们不应该要求他们这样做。编写文档可能看起来是一项巨大的前期投资，但在未来，在你的框架被采纳和减少重复回答同样问题的支持负担方面的回报是巨大的。
 - en: I’ll wrap up by acknowledging that writing good documentation is *hard*, and
     I believe that the “Curse of Knowledge” gives us a clue as to why that is. As
     the creators of a thing, we are de facto the most knowledgeable people in the
