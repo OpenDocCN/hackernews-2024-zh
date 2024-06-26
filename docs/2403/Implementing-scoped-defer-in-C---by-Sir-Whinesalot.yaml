@@ -2,44 +2,53 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:49:23'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:49:23'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Implementing scoped defer in C - by Sir Whinesalot
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 C 中实现作用域延迟 - 由 Sir Whinesalot
 - en: 来源：[https://btmc.substack.com/p/implementing-scoped-defer-in-c](https://btmc.substack.com/p/implementing-scoped-defer-in-c)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://btmc.substack.com/p/implementing-scoped-defer-in-c](https://btmc.substack.com/p/implementing-scoped-defer-in-c)
 - en: '*Note: Before reading this post, you should read my post on [implementing generators
     in C](https://btmc.substack.com/p/implementing-generators-yield-in) because I’ll
     be relying on similar techniques here.*'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注：在阅读本文之前，你应该阅读我的文章[在 C 中实现生成器](https://btmc.substack.com/p/implementing-generators-yield-in)，因为我将在这里依赖类似的技术。*'
 - en: 'Error handling and resource management in C can be a total pain in the butt.
     Consider for example a program that needs to split a log file into three separate
     files for “info”, “warning” and “error” logs respectively:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 C 中的错误处理和资源管理可能非常麻烦。例如，考虑一个需要将日志文件分割成三个独立文件（“info”、“warning” 和 “error”）的程序：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Copy-pasting those `fclose` calls around everywhere is not only annoying but
     extremely error prone. The above is the *simplest* example. Imagine we only want
     to create the various output files if one of the corresponding log type lines
@@ -49,15 +58,18 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 到处复制粘贴 `fclose` 调用不仅很烦人，而且极易出错。上面是最*简单*的例子。想象一下，如果我们只想在原始文件中出现相应日志类型行时创建各种输出文件，或者仅在设置了某个配置选项时创建并写入其中一个文件。可能会在这些操作之间进行内存管理（malloc/free）。
 - en: In this post I’m going to show you a really neat macro trick that makes dealing
     with *resource* management as pleasant as it can get in *standard* C.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我将向你展示一个非常巧妙的宏技巧，使得在标准 C 中处理*资源*管理尽可能愉快。
 - en: Most programming languages provide a built-in mechanism for resource management.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数编程语言提供了内置的资源管理机制。
 - en: C++ and Rust have [scope-based resource management](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization),
     where each type may have an associated “destructor” (called `drop` in rust) that
     is implicitly inserted by the compiler at the end of the scope where the variable
@@ -66,12 +78,15 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: C++ 和 Rust 都支持[基于作用域的资源管理](https://en.wikipedia.org/wiki/Resource_acquisition_is_initialization)，其中每种类型可能都有一个相关的“析构函数”（在
+    Rust 中称为 `drop`），由编译器隐式地插入到存储资源的变量所在作用域的末尾。当作用域结束时，无论是自然结束、异常还是返回语句，资源都会被清理。
 - en: This solution is particularly nice because there is nothing for the consumer
     of the API to worry about, it just works, but it requires that object lifetimes
     be tied to scopes.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种解决方案特别好，因为 API 的使用者无需担心任何问题，它只是工作而已，但需要将对象生命周期与作用域绑定。
 - en: 'Languages like C#, Java and Python have special resource handling blocks: `using`
     statements in C#, `try-with-resource` statements in Java, and `with` statements
     in python, which implicitly call a cleanup function at the end of their scope.
@@ -80,37 +95,46 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 像 C#、Java 和 Python 这样的语言有特殊的资源处理块：在 C# 中是 `using` 语句，在 Java 中是 `try-with-resource`
+    语句，在 Python 中是 `with` 语句，它们在作用域结束时隐式调用清理函数。在 C# 中还可以使 `using` 语句不引入新的作用域，而是将资源绑定到*当前*作用域。
 - en: 'Instead of calling the destructor, a specific method from the language’s “cleanup
     protocol” is called: `Dispose()` in C#, `close()` in Java and `__exit__()` in
     Python.'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 不是调用析构函数，而是调用语言“清理协议”的特定方法：在 C# 中是 `Dispose()`，在 Java 中是 `close()`，在 Python
+    中是 `__exit__()`。
 - en: This solution has the disadvantage that the consumer of the API must remember
     to use the resource handling statement for cleanup to occur, but it allows regular
     objects to be managed in a non-scope oriented manner.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种解决方案的缺点是 API 的使用者必须记住使用资源处理语句才能进行清理，但允许以非作用域导向的方式管理常规对象。
 - en: 'Languages like Go, Zig, Odin, and C3 support a `defer` statement that allows
     to specify the cleanup action, rather than implicitly invoking some standard cleanup
     protocol method or destructors:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 像 Go、Zig、Odin 和 C3 这样的语言支持 `defer` 语句，允许指定清理操作，而不是隐式调用某些标准清理协议方法或析构函数：
 - en: '[PRE1]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This solution has the disadvantage that the user of the API must not only remember
     to use defer, but also to know which specific function to call.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种解决方案的缺点是 API 的使用者不仅必须记住使用 defer，还必须知道调用哪个特定的函数。
 - en: '* * *'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'An important thing to note is that Go’s defer works differently from the other
     languages mentioned. The defer of the other languages is very simple: it can be
     understood as “copy-pasting” the cleanup code right before the scope ends (including
@@ -118,6 +142,8 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要注意的重要一点是，Go 的 defer 与其他提到的语言工作方式不同。其他语言的 defer 非常简单：可以理解为在作用域结束之前（包括如果由 return
+    语句退出）将清理代码“复制粘贴”进去。
 - en: Go’s defer is more of an imperative command. The block of code it will execute
     works like a closure, capturing the values of the referenced variables at the
     time of the defer statement’s execution (not at cleanup!). It also runs the cleanup
@@ -127,24 +153,30 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Go 的 defer 更像是一个命令式的指令。它将要执行的代码块工作类似于闭包，捕获引用变量在 defer 语句执行时的值（而不是在清理时！）。它还会在函数结束时而不是作用域结束时运行清理代码，因此需要额外的存储空间。例如，在循环中执行
+    10 次 defer 语句将向“清理堆栈”添加 10 条清理指令。
 - en: Go’s style of defer is less efficient and its behavior can be surprising.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: Go 的 defer 风格效率较低，其行为可能会令人意外。
 - en: '* * *'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The advantage of defer is that it is fully explicit and gives the user the most
     control.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: defer 的优点在于它完全明确，并且给用户最大的控制权。
 - en: 'Fully explicit? Most control? Sounds like C to me. There are already some existing
     implementations of defer for C but I’m not happy with any of them:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 完全明确？最大的控制？听起来像是 C 语言。已经有一些现有的 defer 实现用于 C，但我对它们都不满意：
 - en: The [reference implementation](https://gustedt.gitlabpages.inria.fr/defer/)
     of the [N2895 defer proposal](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2895.htm)
     is needlessly complicated, to the point of requiring an extra preprocessor. It
@@ -154,6 +186,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '[参考实现](https://gustedt.gitlabpages.inria.fr/defer/) 的 [N2895 defer 提案](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n2895.htm)
+    太过复杂，甚至需要额外的预处理器。它依赖于 GCC 扩展和 setjmp + longjmp。需要所有这些复杂性来支持没有人要求的功能，依我看。它是“Go
+    风格”的。'
 - en: ceraii’s [implementation](https://github.com/seleznevae/ceraii/blob/master/src/ceraii.h)
     is also quite complicated (though not to the same extent) and relies on setjmp
     + longjmp. It is “Go style”.
@@ -161,6 +196,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: ceraii 的 [实现](https://github.com/seleznevae/ceraii/blob/master/src/ceraii.h)
+    也相当复杂（虽然不至于那么极端），并依赖于 setjmp + longjmp。它是“Go 风格”的。
 - en: moon-chilled’s [Defer macro](https://github.com/moon-chilled/Defer/blob/master/defer.h)
     is the simplest but also requires either GCC extensions or setjmp + longjmp, plus
     a 32 element buffer at the start of each function to store the defers. It is “Go
@@ -169,25 +206,32 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: moon-chilled 的 [Defer 宏](https://github.com/moon-chilled/Defer/blob/master/defer.h)
+    是最简单的，但也需要使用 GCC 扩展或者 setjmp + longjmp，以及每个函数开始时需要一个 32 元素缓冲区来存储 defer。它是“Go 风格”的。
 - en: I don’t want any of this, I want a simple and efficient scoped defer like Zig,
     Odin, C3 and D have, but in pure standard C. I want the scoped defer of the [N3199
     proposal](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3199.htm).
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不想要这些，我想要一个像 Zig、Odin、C3 和 D 中那样简单高效的作用域 defer，但是要在纯标准 C 中实现。我想要 [N3199 提案](https://www.open-std.org/jtc1/sc22/wg14/www/docs/n3199.htm)
+    的作用域 defer。
 - en: So until that gets accepted (i.e. never), it is time to get our hands dirty.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以直到那被接受（即永远不会），现在是动手的时候了。
 - en: 'The classic solution to do resource management in C is to (ab)use goto statements
     to organize things a little:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 C 中进行资源管理的经典解决方案是（滥用）使用 goto 语句来稍微整理一下事情：
 - en: '[PRE2]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: We avoid the copy-paste problem, but this has its own issues. The resource cleanup
     has to be explicitly written in last-in-first-out order at the end of the function.
     Instead of using return, it’s now necessary to use goto to jump to the correct
@@ -197,49 +241,61 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们避免了复制粘贴问题，但这也有其自身的问题。资源清理必须明确地以后进先出的顺序写在函数末尾。现在不再使用 return，而是需要使用 goto 来跳转到正确的清理点。当某些资源在内部作用域内分配和释放时，事情变得更加复杂。这种技术也部分地导致了
+    [goto fail](https://www.imperialviolet.org/2014/02/22/applebug.html)。
 - en: 'Having only one resource cleanup call and the ability to jump around opens
     up some options. Lets reorganize the code a little:'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在只有一个资源清理调用，并且能够跳转，这打开了一些选择。让我们稍微重新组织一下代码：
 - en: '[PRE3]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Yikes that looks even worse! But this was an important change, now the cleanup
     code is right next to the initialization code, right where defer would be.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 天哪，这看起来甚至更糟！但这是一个重要的改变，现在清理代码就在初始化代码旁边，就在 `defer` 应该在的地方。
 - en: 'Lets try making some macros:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试制作一些宏：
 - en: '[PRE4]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Better, but not good enough. Having to manually count the defers like this is
     really annoying. We need to get fancier.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 更好了，但还不够好。像这样手动计数 `defer` 真的很烦人。我们需要更高级的技巧。
 - en: There’s no good way to “count” in the C preprocessor to avoid the issue above.
     The closest thing we have is the __LINE__ macro which stores the current line,
     but there’s no way to refer to the “last line” in which we deferred.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 C 预处理器中没有好方法来“计数”以避免上述问题。我们最接近的东西是 `__LINE__` 宏，它存储当前行，但没有办法引用我们延迟的“上一行”。
 - en: 'Rather than trying to do everything at the preprocessor level, we’ll shift
     some of the work to runtime. Let’s rework the example above to use a duff’s device-like
     switch statement instead of straight gotos:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不再试图在预处理器级别完成所有工作，而是将部分工作移到运行时。让我们重新设计上面的示例，使用类似于 Duff's 设备的 `switch` 语句而不是直接使用
+    `goto`：
 - en: '[PRE5]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Much better, now we only need 1 count in the defers. The basic idea is that
     each call to defer sets the defer count (`_d`) equal to I. It also adds an `if(0)`
     block that has the corresponding switch case label in its body. Inside the body
@@ -247,44 +303,56 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们只需要在 `defer` 中进行 1 次计数就可以了。基本思路是每次调用 `defer` 都将 `defer` 计数（`_d`）设为 I。它还添加了一个
+    `if(0)` 块，该块在其主体中具有相应的 `switch case` 标签。在主体内部执行操作，递减 `_d`，并再次跳转到 `switch`。
 - en: So once the first jump back to the switch occurs, the defer blocks get executed
     in reverse order, until `_d` becomes 0 which isn’t a valid case and the switch
     stops.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，一旦第一次跳回到 `switch` 发生，`defer` 块将按照相反的顺序执行，直到 `_d` 变为 0，这不是一个有效的情况，`switch`
+    将停止。
 - en: 'The syntax:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 语法：
 - en: '[PRE6]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'is modeled after:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 的模型是：
 - en: '[PRE7]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Which I personally find makes it quite easy to understand. But this is still
     not good enough! If a user writes the wrong value in the defer count, all hell
     breaks loose. We’re also missing inner scope support for proper scoped defer.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我个人认为这样做很容易理解。但这还不够好！如果用户在 `defer` 计数中写入错误的值，一切都会乱套。我们还缺少适当作用域 `defer` 的内部支持。
 - en: 'Rather than track the current defer by incrementing and decrementing, we’ll
     track where the defers occur by storing their `__LINE__`, and we’ll track the
     previous defer through an auxiliary variable called `_d_p`:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不再通过增加和减少来跟踪当前的 `defer`，而是通过存储它们的 `__LINE__` 来跟踪 `defer` 发生的位置，并通过名为 `_d_p`
+    的辅助变量跟踪上一个 `defer`：
 - en: '[PRE8]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The `_d_p` (defer previous) variable is declared inside a new scope, such that
     it shadows any previous usage of the variable. It remembers the last value of
     `_d`, before `_d` is set to the current line. Now we can use the line as the case
@@ -295,14 +363,19 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '`_d_p`（上一个 `defer`）变量声明在一个新的作用域内，以遮蔽任何先前使用的变量。它记住 `_d` 在设置为当前行之前的最后一个值。现在我们可以使用行作为
+    `case` 常量，避免显式的 `defer` 计数。而不是递减，我们通过 `_d_p` 将 `_d` 设置回其先前的值。我们需要确保的最后一件事是，当第一个
+    `_d_p` 被设置时，它指向“无处”，这样 `switch` 就会结束，我们通过在 `switch` 开始后立即将 `_d` 设置为一个不可能的行来实现这一点：'
 - en: '[PRE9]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: We’ve now gotten a single level of defer working with no manual counting.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经让单层 `defer` 工作了，而不需要手动计数。
 - en: The last thing we want to support are nested scopes, where you can execute a
     subset of defers for a particular scope without running the whole thing. We also
     need `defer_return` to run every defer from the current scope all the way to the
@@ -310,15 +383,19 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们想要支持的最后一件事是嵌套作用域，您可以在特定作用域中执行一部分 `defer` 而无需运行整个代码。我们还需要使 `defer_return` 能够运行当前作用域到顶级
+    `defer` 块的每个 `defer`。
 - en: 'The first thing to do is introduce a way to open a new defer scope. We’ll do
     this with the most complicated trick so far:'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先要做的是引入一种方法来打开新的 `defer` 作用域。我们将使用到目前为止最复杂的技巧来实现这一点：
 - en: '[PRE10]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'We factor out the logic of defer into a `_DEFER_SNAPSHOT` macro which is shared
     with `defer_scope`. The idea is that `defer_scope` behaves like defer, in that
     it creates a “jump point”, but rather than executing an action, it makes a decision
@@ -326,64 +403,78 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将延迟的逻辑提取到一个`_DEFER_SNAPSHOT`宏中，该宏与`defer_scope`共享。其思想是，`defer_scope`的行为类似于defer，它创建一个“跳转点”，但不是执行动作，而是根据新的`_d_r`（延迟返回）变量做出决定：
 - en: If `_d_r` is true, it continues the “unwinding” process.
   id: totrans-split-60
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果`_d_r`为true，则继续“展开”过程。
 - en: If `_d_r` is false, it jumps out of its `do {} while(0)` loop with `continue`.
   id: totrans-split-61
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果`_d_r`为false，则通过`continue`跳出其`do {} while(0)`循环。
 - en: 'This variable is set by the updated `defer_return`. We also add a `defer_break`
     alternative which is used to end only the current scope:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 此变量由更新的`defer_return`设置。我们还添加了`defer_break`的替代方案，用于仅结束当前作用域：
 - en: '[PRE11]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'We make a small change to run_deferred, such that it works for both the top
     level defer block and the inner defer scopes:'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们对`run_deferred`进行了一点改动，使其适用于顶层延迟块和内部延迟作用域：
 - en: '[PRE12]'
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: For the inner scopes, the `while(0)` ends the `do` loop. For the top level block,
     it’s just an extra `while(0)` that does nothing.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于内部作用域，`while(0)`结束`do`循环。对于顶层块，它只是一个额外的`while(0)`，什么也不做。
 - en: 'Lastly, we need to initialize the `_d_r` variable when we start the defer_block:'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们需要在开始defer_block时初始化`_d_r`变量：
 - en: '[PRE13]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'And we’re done, scoped defer:'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 至此，我们完成了作用域延迟：
 - en: '[PRE14]'
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Unlike the little macro I used to implement generators in C, this one is a bit…
     much. But it’s also substantially simpler and more efficient than the longjmp
     based approaches, so if you want to have defer in C, try this out.
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 与我用来在C中实现生成器的小宏不同，这个有点…过于了。但它比基于longjmp的方法简单得多，效率也更高，所以如果你想在C中使用延迟，请试试这个方法。
 - en: If you are ok with sticking to GCC (or clang), then [__attribute__((cleanup))](https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute)
     is the way to go, it just works, even if it only allows calling a function with
     a specific prototype rather than an arbitrary block of code.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你可以接受使用GCC（或clang），那么[__attribute__((cleanup))](https://gcc.gnu.org/onlinedocs/gcc/Common-Variable-Attributes.html#index-cleanup-variable-attribute)就是最佳选择，它非常有效，即使它只允许调用具有特定原型的函数，而不是任意代码块。
