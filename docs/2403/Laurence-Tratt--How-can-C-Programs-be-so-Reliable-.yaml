@@ -88,6 +88,11 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对 Converge 虚拟机的经验并不完全符合我的先入为主的偏见。我曾经默认认同这样一种观念，即 C 程序会随机崩溃，丢失数据，并且通常表现得像维京人在林迪斯法恩度假一样；相比之下，用更高级的语言编写的程序据说会以良好、可预测的方式失败。渐渐地，我意识到我日常使用的几乎所有软件
+    - 那些我委托处理最重要数据的软件 - 都是用 C 语言编写的。而且我想不起来上次这些软件中出现重大问题是什么时候了 - 它们在不崩溃的意义上是可靠的，同时也在处理轻微失败时表现得可靠。当然，我对使用的软件非常挑剔（我已经使用
+    OpenBSD 大约 9 年了，而且软件的质量几乎没有比这更好的了），并且有一些明显的原因可以解释为什么它们如此可靠：它们被（相对）大量的人使用，这有助于发现
+    bug；这些软件已经在很长一段时间内开发，因此之前的版本承担了大部分的 bug；而且，说实话，只有相当称职的程序员才会首选使用 C 语言。但问题的根本仍然存在：为什么我使用的这么多
+    C 语言编写的软件如此可靠？
 - en: 'After a dark period of paper writing, I’ve recently been doing a little bit
     of C programming. As someone who, at some points, spends far too much time away
     from home, reliably sending e-mail has always been an issue. For several years
@@ -109,6 +114,12 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在经历了一段黑暗的论文写作时期后，我最近开始了一些 C 编程。作为一个经常离家的人，可靠地发送电子邮件一直是个问题。多年来，我一直通过 `ssh` 将邮件发送到远程机器上的
+    `sendmail` 进程来解决这个问题。虽然这解决了几个问题（例如黑名单），但在许多网络（特别是无线网络）上会出现许多意外断开的网络连接。检查每封电子邮件是否发送成功是一个令人沮丧的过程。因此，在对其设计深思熟虑了一段时间后，我决定创建一个简单的实用程序，通过
+    ssh 可靠地发送电子邮件。最终的程序 - [extsmail](http://tratt.net/laurie/src/extsmail/) - 拥有比我最初预期的更多功能，但基本想法很简单：通过诸如
+    ssh 这样的外部命令重试发送消息，直到消息成功发送。我还希望该实用程序在资源上尽可能节约，并尽可能具备可移植性。这不可避免地导致 extsmail 用 C
+    语言编写。然后我决定，作为一次实验，尽可能地按照传统的 UNIX 方式编写它：只依赖于所有合理的 UNIX 克隆中找到的特性，并且对失败具有鲁棒性。在这样做的过程中，我对使用
+    C 语言编写软件做出了两个对我来说新的观察。
 - en: The first observation is semi-obvious. Because software written in C can fail
     in so many ways, I was much more careful than normal when writing it. In particular,
     anything involved in manipulating chunks of memory raises the prospect of off-by-one
@@ -121,6 +132,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 第一个观察结果显而易见。因为用C语言编写的软件可能以多种方式失败，所以在编写时我比平时更加小心。特别是任何涉及操作内存块的地方都可能引发一种一字之差的错误——这在C语言中尤其危险。在高级语言中，我可能会懒得去思考：“嗯，我在索引数组时需要将这个值减1吗？让我们运行一下试试。”但在C语言中，我会认为好吧，让我们坐下来认真思考一下。具有讽刺意味的是，运行和发现所花费的时间似乎并不比坐下来思考的时间多太多——只是后者在心理上更为耗费精力。
 - en: The second observation is something I had not previously considered. In C there
     is no exception handling. If, as in the case of extsmail, one wants to be robust
     against errors, one has to handle all possible error paths oneself. This is extremely
@@ -139,6 +151,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个观察结果是我之前从未考虑过的。在C语言中，没有异常处理。如果像在extsmail的情况下，想要对错误具有强韧性，就必须自己处理所有可能的错误路径。在某种程度上，这是非常痛苦的——extsmail中有相当大一部分（我猜至少40%）的代码专门用于检测和从错误中恢复——尽管UNIX函数总是仔细说明它们将何时以及如何失败，这使得情况稍微好一些。换句话说，当一个像`stat`这样的函数在C中被调用时，文档列出了*所有*的失败条件；然后用户可以轻松地选择他希望程序从哪些错误条件中恢复，哪些是导致程序无法继续执行的致命错误（在extsmail中，内存耗尽错误几乎是唯一的致命错误）。这与基于异常的语言的思维方式有很大不同，在那些语言中，典型的哲学是正常编写代码，只偶尔插入`try
+    ... catch`块以从特定错误中恢复（这些错误只有零星地记录）。Java因其受检异常采取了不同的方法，告诉用户在调用此函数时必须尝试捕获这些特定异常。
 - en: 'What I realised is that neither exception-based approach is appropriate when
     one wishes to make software as robust as possible. What one needs is to know exactly
     which errors / exceptions a function can return / raise, and then deal with each
@@ -161,6 +175,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我意识到的是，当希望使软件尽可能健壮时，异常处理的任何一种方法都不合适。我们需要知道每个函数可能返回/引发的确切错误/异常，并针对每种情况进行处理。虽然现代IDE可能（实际上，我不知道，它们可能确实如此）自动显示给定函数可能引发的某些异常，但这只能做到这么多。从理论上讲，在面向对象语言中，子类化和多态性意味着预编译库不能确定给定函数调用可能引发哪些异常（因为子类可以重载函数，然后引发不同的异常）。从实际的角度来看，我怀疑许多函数会声称引发许多不同的异常，以至于用户会感到不知所措：相比之下，UNIX函数非常清楚它们需要将返回给用户的错误最小化，要么通过从内部故障中恢复，要么通过分组错误。我进一步怀疑许多依赖异常处理的库需要进行大幅重写，以减少它们引发的异常数量至合理水平。此外，调用函数的人需要确定哪些错误是次要的，可以从中恢复，哪些会导致更根本的问题，可能导致程序退出；检查异常会迫使调用者处理某些异常，但这里的关键是错过了。
 - en: Henry Spencer said, “Those who don’t understand UNIX are doomed to reinvent
     it, poorly”. And that’s probably why so many of the programs written in C are
     more reliable than our prejudices might suggest — the UNIX culture, the oldest
@@ -172,56 +187,70 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 亨利·斯宾塞说：“那些不理解UNIX的人注定会拙劣地重新发明它。” 这可能是为什么那么多用C语言编写的程序比我们的偏见所暗示的更可靠——UNIX文化，作为主流计算的最古老和最智慧的文化，已经找到了将C语言的一些限制和缺陷转化为优势的方法。正如我的经验表明的那样，我也是又一个慢慢意识到这一点的人。尽管如此，我不建议在没有充分考虑的情况下使用C语言——由此产生的软件可能是可靠的，但制作它可能需要大量的人力。
 - en: '[Newer](/laurie/blog/2009/good_programmers_are_good_sysadmins_are_good_programmers.html)'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '[更新](/laurie/blog/2009/good_programmers_are_good_sysadmins_are_good_programmers.html)'
 - en: 2008-11-11 08:00
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 2008-11-11 08:00
 - en: '[Older](/laurie/blog/2008/free_text_geocoding.html)'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '[更早](/laurie/blog/2008/free_text_geocoding.html)'
 - en: 'If you’d like updates on new blog posts: follow me on'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想获取新博客文章的更新：请关注我
 - en: '[Mastodon](https://mastodon.social/@ltratt)'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Mastodon](https://mastodon.social/@ltratt)'
 - en: or
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 或者
 - en: '[Twitter](https://twitter.com/laurencetratt)'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Twitter](https://twitter.com/laurencetratt)'
 - en: ; or
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: ; 或者
 - en: '[subscribe to the RSS feed](../blog.rss)'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '[订阅RSS源](../blog.rss)'
 - en: ; or
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: ; 或者
 - en: '[subscribe to email updates](/laurie/newsletter/)'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[订阅电子邮件更新](/laurie/newsletter/)'
 - en: ':'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: ：
 - en: Comments
   id: totrans-split-27
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 评论
