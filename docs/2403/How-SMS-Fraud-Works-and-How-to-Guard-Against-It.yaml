@@ -107,16 +107,19 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 更糟糕的是，许多服务使用标准化的端点发送短信。这使得Bob更容易找到要攻击的网站。例如，如果服务使用第三方进行用户认证和发送2FA或OTP代码，如Auth0，那么发送短信的端点大多是已知的：Bob只需找出一种方法来发现用于Web服务的Auth0的ID（因为Web服务的前端发出包含此ID的请求），然后他就可以攻击*所有*使用该第三方服务的站点。
 - en: Finally, Bob makes the service send thousands of SMSs to his premium phone numbers.
     The web service loses 💵💵💵, and Bob profits.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，Bob让服务向他的高费电话号码发送数千条短信。Web服务损失了💵💵💵，而Bob获利。
 - en: 'There’s no one silver bullet to prevent SMS fraud. But here are a few ideas
     that could work:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 防止短信欺诈没有单一的解决方案。但这里有几个可能有效的想法：
 - en: If using a third-party service to authenticate users, such as Auth0, you could
     obfuscate the endpoint used to send SMSs. Whilst this won’t prevent an attack
     outright, it does make it much harder to discover that an attack is possible.
@@ -124,6 +127,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果使用第三方服务对用户进行身份验证，例如Auth0，您可以对用于发送短信的端点进行混淆。虽然这不会完全防止攻击，但会使发现攻击可能性变得更加困难。
 - en: Similar to how a bike thief targets the easiest to steal bikes, a good hacker
     would move onto web services that are easier to hack. My hunch is that this approach
     would work for well enough for the [long tail](https://en.wikipedia.org/wiki/Long_tail)
@@ -132,6 +136,7 @@
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 类似于自行车贼选择最容易偷的自行车，一个优秀的黑客将转向更容易入侵的Web服务。我预感这种方法对应用程序的[长尾](https://zh.wikipedia.org/wiki/%E9%95%B7%E5%B0%BE)可能会相当有效。
 - en: Block all requests from IPs that originate in cloud providers, fraudulent ISPs,
     or are otherwise sketchy. This should be fairly simple to implement — many services
     exist that allow you to rate the quality of an IP address — and would probably
@@ -140,6 +145,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 阻止所有来自云提供商、欺诈性ISP或其他可疑来源的IP请求。这应该相当容易实现——存在许多服务允许您评估IP地址的质量——并且可能非常有效。
 - en: Add IP-based [rate-limiting](https://en.wikipedia.org/wiki/Rate_limiting) to
     the endpoint that sends out SMS to block Bob’s attack. If set up correctly, this
     won’t affect legitimate users. However, this only works against a simple attack.
@@ -149,6 +155,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为发送短信的端点添加基于IP的[速率限制](https://zh.wikipedia.org/wiki/%E9%99%90%E9%80%9F)，以阻止Bob的攻击。如果设置正确，这不会影响合法用户。但是，这仅适用于简单攻击。如果Bob设计他的攻击从多个IP地址发送请求——一个*分布式*攻击——那么这将无效。
 - en: 'Only send an SMS to a specific phone number a small number of times before
     blocking that phone number for a cool-off period. We could do this on the front-end,
     but if Bob is determined, he could figure out the backend endpoint to attack instead.
@@ -158,6 +165,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在封锁特定电话号码之前，仅向特定电话号码发送少量的短信，以冷却期阻止该电话号码。我们可以在前端执行此操作，但如果Bob决心攻击，他可以找出要攻击的后端端点。在后端封锁电话号码更难：需要记录电话号码及其最近的登录尝试。
 - en: Force the user to solve a CAPTCHA before sending them an SMS. Whilst this approach
     works well at blocking attackers — solving the CAPTCHA is hard and expensive to
     do at scale — it does degrade the user’s experience of the service.
@@ -165,6 +173,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在发送短信之前强制用户解决CAPTCHA。虽然这种方法在阻止攻击者方面效果很好——解决CAPTCHA在规模上很难且昂贵——但会降低用户对服务的体验。
 - en: Identify and block *premium* rate phone numbers, using [libphonenumber](https://github.com/google/libphonenumber).
     Whilst this seems promising, I don’t know how reliable the data and how effective
     this approach is.
@@ -172,6 +181,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用[libphonenumber](https://github.com/google/libphonenumber)识别和阻止*高费*电话号码。虽然这看起来很有前途，但我不知道数据的可靠性以及这种方法的有效性。
 - en: Only send text messages to paid accounts. This is the approach Twitter has gone
     with. It’s not a bad option, but as you can see from the list above, there’re
     many other approaches you could take.
@@ -179,6 +189,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 仅向付费账户发送文本消息。这是Twitter采用的方法。这不是一个坏选择，但正如您从上面的列表中看到的那样，您还可以采取许多其他方法。
 - en: Block mobile phone network operators with a high number of fraudulent users.
     This would block clearly bad network operators, but wouldn’t work well if the
     network has many legitimate users.
@@ -186,33 +197,39 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 封锁有大量欺诈用户的移动电话网络运营商。这将封锁明显的糟糕网络运营商，但如果网络有许多合法用户，则效果不佳。
 - en: Use WhatsApp to send messages instead. WhatsApp is free unlike SMS, but not
     all users across the world use WhatsApp.
   id: totrans-split-31
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用WhatsApp发送消息。 WhatsApp是免费的，不像短信，但并非全世界的所有用户都使用WhatsApp。
 - en: A good solution would make use of enough of the approaches above, prioritising
     by time investment and effectiveness, until the attackers move onto easier targets.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个好的解决方案将利用上述方法中足够的内容，通过时间投入和效果进行优先排序，直到攻击者转向更容易的目标为止。
 - en: I’ve got some personal experience implementing the above measures, and have
     a story or two to share about how my team handled the fallout. But that’s a story
     for another time… 👨‍💻
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我有一些个人经验来实施上述措施，并有一两个关于我团队如何处理后果的故事。但那是另一个故事了... 👨‍💻
 - en: 'This brings me to my final point:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: '这带我到最后一个观点： '
 - en: IMO, Twilio — a dominant SMS API — has a **huge**  **opportunity** to offer
     SMS fraud protection as a (free? 🙏) add-on to their standard APIs.
   id: totrans-split-35
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: IMO，Twilio — 一个主导的SMS API — 有一个**巨大的机会**，可以作为一个（免费的？🙏）附加功能提供SMS诈骗保护。
 - en: Since Twilio has data on fraudulent phone numbers and carriers across all their
     accounts, Twilio are in the unique position to block bad numbers and carriers
     *fast* — before they becomes a big issue for multiple web services.
@@ -220,6 +237,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 由于Twilio在所有账户中都有关于欺诈电话号码和运营商的数据，Twilio处于独特的位置可以快速地封锁不良号码和运营商*之前*它们成为多个Web服务的重大问题。
 - en: Twilio can even detect invalid phone numbers outright using [Silent Network
     Auth](https://www.twilio.com/docs/verify/sna) — a next-generation authentication
     mechanism — and it feels like this utility ought to be *shared* between their
@@ -228,16 +246,21 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Twilio甚至可以直接使用[Silent Network Auth](https://www.twilio.com/docs/verify/sna)
+    — 一种下一代认证机制 — 来检测无效的电话号码，感觉这种实用性应该在他们的用户之间*共享*。
 - en: I’d love to hear any other thoughts, ideas and approaches folks have used —
     please share by writing a comment below, and we can all learn.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我很想听听其他人有什么想法、想法和方法 — 请通过在下面写评论来分享，我们都可以学到。
 - en: That’s it for now — protect those endpoints, and have a great week!
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这些了 — 保护这些端点，并祝您有一个美好的一周！
 - en: '*There’s an excellent discussion on [HackerNews](https://news.ycombinator.com/item?id=34972712).*'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: '*在[HackerNews](https://news.ycombinator.com/item?id=34972712)上有一个很好的讨论。*'
