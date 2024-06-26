@@ -96,6 +96,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '|'
   id: totrans-split-20
   prefs: []
@@ -104,6 +105,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
   id: totrans-split-22
   prefs: []
@@ -120,6 +122,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
   id: totrans-split-26
   prefs: []
@@ -128,6 +131,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '|'
   id: totrans-split-28
   prefs: []
@@ -195,191 +199,235 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 针对静态和线程存储期变量的退出时析构函数可能是不希望的，因为
 - en: 'Unnecessary overhead and complexity: This includes operating system kernels
     and memory-constrained systems.'
   id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不必要的开销和复杂性：包括操作系统内核和内存受限系统。
 - en: 'Potential race conditions: Destructors might execute during thread termination,
     while other threads still attempt to access the object. Examples: [webkit](https://bugs.webkit.org/show_bug.cgi?id=21810)'
   id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 潜在的竞态条件：在线程终止期间，析构函数可能会执行，而其他线程仍然尝试访问对象。例如：[webkit](https://bugs.webkit.org/show_bug.cgi?id=21810)
 - en: Clang provides `-Wexit-time-destructors` (disabled by default) to warn about
     exit-time destructors.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: Clang 提供了 `-Wexit-time-destructors`（默认情况下禁用），用于警告退出时析构函数。
 - en: '|'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE4]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '|'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE5]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '|'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Disabling exit-time destructors
   id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 禁用退出时析构函数
 - en: Then, I will describe some approaches to disable exit-time destructors.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我将描述一些禁用退出时析构函数的方法。
 - en: Pointer/reference to a dynamically-allocated object
   id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 指向动态分配对象的指针/引用
 - en: We can use a reference or pointer that refers to a dynamically-allocated object.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用引用或指针来引用动态分配的对象。
 - en: '|'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE6]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '|'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE7]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '|'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: This approach prevents the destructor from running at program exit, as pointers
     and references have a trivial destructor. Note that this does not create a memory
     leak, since the pointer/reference is part of the root set.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 该方法防止析构函数在程序退出时运行，因为指针/引用具有平凡析构函数。请注意，这不会导致内存泄漏，因为指针/引用是根集的一部分。
 - en: The primary downside is unnecessary pointer indirection when accessing the object.
     Additionally, this approach uses a mutable pointer in the data segment and requires
     a memory allocation.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要的缺点是在访问对象时产生不必要的指针间接性。此外，此方法在数据段中使用一个可变指针并需要内存分配。
 - en: '|'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE8]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '|'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE9]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '|'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Class template with an empty destructor
   id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 具有空析构函数的类模板
 - en: 'A common approach, as outlined in [P1247](https://wg21.link/p1247), is to use
     a class template with an empty destructor to prevent exit-time destruction:'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个常见的方法，如 [P1247](https://wg21.link/p1247) 所述，是使用一个空析构函数的类模板来防止退出时析构：
 - en: '|'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE10]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '|'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE11]'
   id: totrans-split-70
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '|'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: libstdc++ employs a variant that uses a union member.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: libstdc++ 使用了一个使用联合成员的变体。
 - en: '|'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE12]'
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '|'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE13]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '|'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: 'C++20 will support constexpr destructor:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: C++20 将支持 constexpr 析构函数：
 - en: '|'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE14]'
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '|'
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE15]'
   id: totrans-split-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '|'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: Libraries like [`absl::NoDestructor`](https://github.com/abseil/abseil-cpp/blob/master/absl/base/no_destructor.h)
     and [`folly::Indestructible`](https://github.com/facebook/folly/blob/main/folly/Indestructible.h)
     offer similar functionality. The absl version optimizes for trivially destructible
@@ -387,52 +435,67 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似 [`absl::NoDestructor`](https://github.com/abseil/abseil-cpp/blob/master/absl/base/no_destructor.h)
+    和 [`folly::Indestructible`](https://github.com/facebook/folly/blob/main/folly/Indestructible.h)
+    的库提供类似功能。absl 版本针对可平凡析构类型进行了优化。
 - en: Compiler optimization for no-op destructors
   id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 用于无操作析构函数的编译器优化
 - en: 'Ideally, compilers should optimize out exit-time destructors for empty user-provided
     destructors:'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 理想情况下，编译器应该优化用户提供的空析构函数以排除退出时析构函数：
 - en: '|'
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE16]'
   id: totrans-split-88
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '|'
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: '[PRE17]'
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '|'
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: '|'
 - en: LLVM has addressed this [since 2011](https://github.com/llvm/llvm-project/commit/ee6bc70d2f1c2434ca9ca8092216bdeab322c7e5).
     Its GlobalOpt pass eliminates `__cxa_atexit` calls related to empty destructors,
     along with other global variable optimizations.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: LLVM 自 2011 年以来已解决了这个问题 [commit link](https://github.com/llvm/llvm-project/commit/ee6bc70d2f1c2434ca9ca8092216bdeab322c7e5)。其
+    GlobalOpt 通过消除与空析构函数相关的 `__cxa_atexit` 调用来优化其他全局变量。
 - en: In contrast, GCC has an [open feature request](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=19661)
     for this optimization since 2005.
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 相比之下，自 2005 年以来，GCC 一直有一个 [开放的功能请求](https://gcc.gnu.org/bugzilla/show_bug.cgi?id=19661)
+    来优化这一点。
 - en: '`no_destroy` attribute'
   id: totrans-split-94
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '`no_destroy` 属性'
 - en: 'Clang supports `[[clang::no_destroy]]` (alternative form: `__attribute__((no_destroy))`)
     to disable exit-time destructors for variables of static or thread storage duration.
     Its `-fno-c++-static-destructors` option allows disabling exit-time destructors
@@ -440,21 +503,26 @@
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: Clang 支持 `[[clang::no_destroy]]`（替代形式：`__attribute__((no_destroy))`）来禁用静态或线程存储期变量的退出时析构函数。其
+    `-fno-c++-static-destructors` 选项允许全局禁用退出时析构函数。
 - en: Standardization efforts for this attribute are underway [P1247R0](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1247r0.html).
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 此属性的标准化工作正在进行中 [P1247R0](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p1247r0.html)。
 - en: I recently encountered a scenario where the `no_destroy` attribute would have
     been beneficial. I've filed a GCC feature request ([PR114357](https://gcc.gnu.org/PR114357))
     after I learned that GCC doesn't have the attribute.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我遇到了一个场景，其中 `no_destroy` 属性将会很有用。我在了解到 GCC 不具备该属性后，已经提交了一个 GCC 功能请求 ([PR114357](https://gcc.gnu.org/PR114357))。
 - en: Case study
   id: totrans-split-98
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 案例研究
 - en: LLVM provides `ManagedStatic` to construct an object on-demand (good for reducing
     startup time) and make destruction explicitly through `llvm_shutdown`. `ManagedStatic`
     is intended to be used at namespace scope. A prime example is LLVM's statistics
@@ -462,29 +530,36 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: LLVM 提供了 `ManagedStatic` 以便按需构造对象（有助于减少启动时间），并通过 `llvm_shutdown` 明确进行销毁。`ManagedStatic`
+    旨在在命名空间范围内使用。一个典型示例是 LLVM 的统计机制（`-stats` 和 `-time-passes`）。
 - en: Programs using LLVM can strategically avoid calling `llvm_shutdown` for fast
     teardown by skipping some destructors. The lld linker employs this approach unless
     the `LLD_IN_TEST` environment variable is set to a non-zero integer.
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 LLVM 的程序可以通过跳过一些析构函数来战略性地避免调用 `llvm_shutdown` 以进行快速拆卸。lld 链接器采用了这种方法，除非将
+    `LLD_IN_TEST` 环境变量设置为非零整数。
 - en: 'DSO plugin users requiring library unloading may [find `ManagedStatic` unsuitable](https://discourse.llvm.org/t/making-llvm-play-nice-r-when-used-as-a-shared-library-in-a-plugin-setting/63306).
     This is because:'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要库卸载的 DSO 插件用户可能会发现 [使用 `ManagedStatic` 不合适](https://discourse.llvm.org/t/making-llvm-play-nice-r-when-used-as-a-shared-library-in-a-plugin-setting/63306)。这是因为：
 - en: A DSO may not be able to determine if other active LLVM users exist within the
     process, making it unsafe to call `llvm_shutdown`.
   id: totrans-split-102
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: DSO 可能无法确定进程中是否存在其他活动的 LLVM 用户，因此调用 `llvm_shutdown` 可能是不安全的。
 - en: If `llvm_shutdown` is deferred until around program exit, executing destructors
     becomes unsafe once the DSO's code has been removed.
   id: totrans-split-103
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如果将 `llvm_shutdown` 推迟到程序退出时附近，一旦 DSO 的代码被移除，执行析构函数就变得不安全。
 - en: The mold linker improves perceived linking speed by spawning a separate process
     for the linking task. This allows the parent process (the one launched from the
     shell or other programs) to exit early. This approach eliminates overhead associated
@@ -492,3 +567,4 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: '`mold`链接器通过为链接任务生成一个单独的进程来提高链接速度的感知。这允许父进程（从 shell 或其他程序启动的进程）尽早退出。这种方法消除了与静态析构函数和其他操作相关的开销。'
