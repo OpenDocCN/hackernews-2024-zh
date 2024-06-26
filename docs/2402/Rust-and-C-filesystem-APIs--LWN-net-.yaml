@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:02:25'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024年05月27日 15:02:25
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Rust and C filesystem APIs [LWN.net]
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust 和 C 文件系统 API [LWN.net]
 - en: 来源：[https://lwn.net/Articles/958072/](https://lwn.net/Articles/958072/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lwn.net/Articles/958072/](https://lwn.net/Articles/958072/)
 - en: '| **This article brought to you by LWN subscribers**Subscribers to LWN.net
     made this article — and everything that surrounds it — possible. If you appreciate
     our content, please [buy a subscription](/subscribe/) and make the next set of
@@ -31,32 +37,40 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_TB
+  zh: '| **本文由 LWN 订阅者支持**LWN.net 的订阅者使这篇文章 — 以及其周边的一切 — 成为可能。如果您欣赏我们的内容，请[订阅](/subscribe/)，支持接下来的文章。
+    |'
 - en: By **Jonathan Corbet**
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 由 **Jonathan Corbet** 提供
 - en: January 15, 2024
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年01月15日
 - en: As the
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如
 - en: '[Rust-for-Linux project](https://rust-for-linux.com/)'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Rust-for-Linux 项目](https://rust-for-linux.com/)'
 - en: advances, the kernel is gradually accumulating abstraction layers that enable
     Rust code to interface with the existing C code. As the discussion around the
     set of
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着内核不断累积抽象层，使得 Rust 代码能够与现有的 C 代码接口。随着围绕一组
 - en: '[filesystem abstractions](/ml/linux-fsdevel/20231018122518.128049-1-wedsonaf@gmail.com/)'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '[文件系统抽象](/ml/linux-fsdevel/20231018122518.128049-1-wedsonaf@gmail.com/)'
 - en: posted by Wedson Almeida Filho in December shows, though, there is some tension
     between two approaches to the design of those abstractions. The approach favored
     by most of the kernel's C programmers looks set to win out, but this is a discussion
@@ -64,12 +78,15 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 由 Wedson Almeida Filho 在十二月发布的文章显示，尽管如此，对于这些抽象设计方法存在一些张力。大多数内核的 C 程序员偏爱的方法似乎将会胜出，但随着
+    Rust 在内核中的使用增加，这是一个可能会反复讨论的问题。
 - en: 'If a Rust developer wants to implement a filesystem using the posted abstractions,
     their job will be to put together an implementation that looks like this example
     taken from the cover letter:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 Rust 开发者希望使用发布的抽象实现文件系统，他们的工作将是组合一个看起来像这个封面信件中的示例的实现：
 - en: '[PRE0]'
   id: totrans-split-15
   prefs: []
@@ -82,6 +99,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里定义的函数执行内核可能要求文件系统实现的任务：例如 `read_dir()` 用于读取目录内容，或者 `lookup()` 用于在目录中查找文件名。所有这些操作都定义为一个称为
+    `FileSystem` 的单一特性。
 - en: This organization differs from how the API is defined for C code, where file
     and filesystem-related operations are spread out across a wide range of object
     types. A filesystem as a whole is defined by [`struct super_block`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1192),
@@ -98,6 +117,16 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 C 代码中 API 定义的方式不同，这里的组织方式将文件和文件系统相关操作分布在多种对象类型中。一个文件系统作为一个整体由 [`struct super_block`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1192)
+    定义，它具有一组关联操作在 [`struct super_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L2059)
+    中。但文件系统实现了许多其他对象类型和相关操作，包括索引节点 ([`inode`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L639),
+    [`inode_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1968))、目录条目
+    ([`dentry`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/dcache.h#L82),
+    [`dentry_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/dcache.h#L128))、文件
+    ([`file`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L992),
+    [`file_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L1916))
+    和地址空间 ([`address_space`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L448),
+    [`address_space_operations`](https://elixir.bootlin.com/linux/v6.7/source/include/linux/fs.h#L404))。
 - en: As an example of how the object model works on the C side, consider that `lookup()`
     is an inode operation, `iterate_shared()` (used to implement the `read_dir()`
     function defined in the Rust trait) is a file operation, and `read_folio()` is
