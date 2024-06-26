@@ -152,6 +152,10 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们通过 `rustPlatform.buildRustPackage` 构建了一个 Rust 包（`alejandra` 是用 Rust 编写的）。为此，我们用
+    `pname = "alejandra"` 和 `version = "3.0.0";` 声明了软件包名称和版本。然后，我们通过 `fetchFromGitHub`
+    从其仓库获取了 `alejandra` 的源代码，并使用 `hash = "sha256-xFumnivtVwu5fFBOrTxrv6fv3geHKF04RGP23EsDVaI=";`
+    将其固定到特定的提交版本。
 - en: Next, we see `cargoHash = "sha256-tF8E9mnvkTXoViVss9cNjpU4UkEsARp4RtlxKWq55hc=";`.
     It is needed to guarantee the full reproducibility. To be completely sure that
     you're using the same source code all the time, and there are no changes introduced
@@ -162,28 +166,35 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们看到 `cargoHash = "sha256-tF8E9mnvkTXoViVss9cNjpU4UkEsARp4RtlxKWq55hc=";`。这是为了确保完全的可重现性。为了确保始终使用相同的源代码，且在不同构建之间不会引入更改，我们在构建说明中指定了哈希值。这个哈希值是从
+    tarball（包含源代码的下载文件）中生成的。如果源代码发生变化，哈希值也会变化，构建将因检测到不匹配而失败。
 - en: '`buildRustPackage` requires either the `cargoSha256` or the `cargoHash` attribute
     which is computed over all crate sources of this package.'
   id: totrans-split-26
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`buildRustPackage` 要求 `cargoSha256` 或 `cargoHash` 属性之一，它是计算此软件包所有 crate 源代码的哈希值。'
 - en: Full documentation for `rustPlatform.buildRustPackage` is available at [Nixpkgs
     Manual](https://nixos.org/manual/nixpkgs/unstable/#compiling-rust-applications-with-cargo).
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rustPlatform.buildRustPackage` 的完整文档可以在 [Nixpkgs 手册](https://nixos.org/manual/nixpkgs/unstable/#compiling-rust-applications-with-cargo)
+    找到。'
 - en: 'The remaining things are self-explanatory: `passthru.tests` runs the tests,
     and the `meta =` declares the metadata of this package, such as description, mainteners''
     names, and license.'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 其余的事情都很明了：`passthru.tests` 运行测试，而 `meta =` 则声明了此软件包的元数据，如描述、维护者姓名和许可证。
 - en: 'Since we''re working with the source code, we''re going to add the following
     lines:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们正在处理源代码，我们将添加以下行：
 - en: '[PRE2]'
   id: totrans-split-30
   prefs: []
@@ -195,12 +206,14 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: Nix 自带一个很好的内置函数叫做 `substituteInPlace`。它允许我们在必要时在文件中用其他行替换一行，而无需自己编写 Shell 脚本。
 - en: '`postPatch` is a build step that instructs our builder to "apply patches",
     or, in this case, to modify the fetched source in place before compiling the Rust
     package.'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: '`postPatch` 是一个构建步骤，指示我们的构建器“应用补丁”，或者在本例中，在编译 Rust 包之前就地修改获取的源代码。'
 - en: 'Since we have modified `alejandra`''s indent level, we should get broken tests
     now. But it is safe to assume if `alejandra` passed tests successfully for `2`
     spaces indent already, `alejandra` should also be okay with `4` spaces after such
@@ -212,12 +225,15 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我们修改了 `alejandra` 的缩进级别，现在应该会出现测试失败。但可以放心假设如果 `alejandra` 在 `2` 个空格缩进下已经成功通过了测试，那么在这样一个小改动后增加到
+    `4` 个空格也应该没问题。我们不打算修改整个测试套件。相反，我们只需注释掉现在不相关的部分：通过注释掉 `passthru.tests`，我们将阻止构建器运行测试，这将节省一些包编译和实现时间，也不会导致实际构建失败。
 - en: 'We''re also going to remove the folder containing tests by adding the following
     line to `postPatch`, so it won''t be copied to the nix store, saving us some storage
     space:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还将通过向 `postPatch` 添加以下行来删除包含测试的文件夹，以便它不会复制到 Nix 存储中，从而节省一些存储空间：
 - en: '[PRE3]'
   id: totrans-split-35
   prefs: []
@@ -227,6 +243,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是最终的结果：
 - en: '[PRE4]'
   id: totrans-split-37
   prefs: []
@@ -237,23 +254,28 @@
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '[](#using-patchfiles-in-builder)在构建器中使用补丁文件'
 - en: 'Once we build this via `nix build`, we discover that the resulting binary is
     named `./result/bin/alejandra`. We would like to change that to `alejandra4`.
     You may try to adjust the `pname = "alejandra";`, but you''ll soon discover that:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦我们通过 `nix build` 构建了这个项目，我们发现生成的二进制文件被命名为 `./result/bin/alejandra`。我们希望将其改为
+    `alejandra4`。你可以尝试调整 `pname = "alejandra";`，但很快你会发现：
 - en: change to `pname = "alejandra4` has no effect on the name of the compiled binary;
   id: totrans-split-40
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更改到 `pname = "alejandra4` 并不会影响编译后二进制文件的名称；
 - en: you would also receive a hash mismatch for `cargoSha256` attribute. Supplying
     the proper hash still has no effect on the binary's name.
   id: totrans-split-41
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`cargoSha256` 属性的哈希值不匹配，你也会收到一个哈希值不匹配的通知。提供正确的哈希值仍然对二进制文件的名称没有影响。'
 - en: The actual name of the binary is coming from the inner workings of the `rustPlatform.buildRustPackage`,
     which defines it to match the name of crate in `Cargo.toml`. `alejandra`'s source
     repo uses a Rust workplace layout with 2 crates - `alejandra` and `alejandra_cli`,
@@ -262,48 +284,62 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际的二进制文件名称来自 `rustPlatform.buildRustPackage` 的内部工作，它定义为与 `Cargo.toml` 中的 crate
+    名称匹配。 `alejandra` 的源仓库使用了一个包含 2 个 crate 的 Rust 工作空间布局 - `alejandra` 和 `alejandra_cli`，后者依赖于前者。经过一些试验和错误后，我们了解到，我们需要在
+    [src/alejandra_cli/Cargo.toml](https://github.com/kamadorueda/alejandra/blob/main/src/alejandra_cli/Cargo.toml)
+    中更改名称。
 - en: With such a necssesity arising, we can now also learn how to apply a "true"
     patch.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 随着这种需要的出现，我们现在还可以学习如何应用一个“真正的”补丁。
 - en: '`rustPlatform.buildRustPackage` provides a `cargoPatches`, which you may use
     with `Cargo.lock` (not `Cargo.toml`!) to provide newer versions of dependencies
     for a potentially outdated `Cargo.lock`.'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rustPlatform.buildRustPackage` 提供了 `cargoPatches`，您可以将其与 `Cargo.lock`（而不是
+    `Cargo.toml`！）一起使用，以为可能已过时的 `Cargo.lock` 提供更新的依赖项版本。'
 - en: However, to patch `Cargo.toml` you would need to use an "escape hatch" - a `patches
     = [ ./some.patch ];` inside the `rustPlatform.buildRustPackage` attrset.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，要修补 `Cargo.toml`，你需要使用一个“逃生口”——在 `rustPlatform.buildRustPackage` 属性集内部的 `patches
+    = [ ./some.patch ];`。
 - en: 'To get the actual patch, we would do the following:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 要获取实际的补丁，我们应该执行以下操作：
 - en: clone the `alejandra`'s repo - `git clone https://github.com/kamadorueda/alejandra`
   id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 克隆 `alejandra` 的仓库 - `git clone https://github.com/kamadorueda/alejandra`
 - en: modify the 2nd line `src/alejandra_cli/Cargo.toml` - change `name = "alejandra"`
     to `name = "alejandra4"`
   id: totrans-split-48
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 修改第二行 `src/alejandra_cli/Cargo.toml` - 将 `name = "alejandra"` 更改为 `name = "alejandra4"`
 - en: '`git add src/alejandra_cli/Cargo.toml`, so git includes the modified file to
     uncomitted tracked changes'
   id: totrans-split-49
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`git add src/alejandra_cli/Cargo.toml`，这样 git 就会包括修改后的文件到未提交的已跟踪更改中。'
 - en: '`git diff` to produce the diff, which looks like the following:'
   id: totrans-split-50
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 `git diff` 生成补丁，它看起来像这样：
 - en: '[PRE5]'
   id: totrans-split-51
   prefs: []
@@ -315,6 +351,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是标准 Unix 补丁文件应该具备的结构，但我们还应该删除由 git 附加的前两行：
 - en: '[PRE6]'
   id: totrans-split-53
   prefs: []
@@ -328,10 +365,13 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 您也可以通过简单复制文件、修改副本，然后运行 `diff original.toml modified.toml` 来生成此类补丁文件，而不使用 `git`，但是您不会获得正确的路径头部，其中包含了被补丁文件的正确路径，包括任意的顶级不同目录名称
+    - `a` 和 `b`
 - en: 'Without these paths, build would error at the patching step with the message:'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有这些路径，构建会在补丁步骤中报错并显示以下消息：
 - en: '[PRE7]'
   id: totrans-split-56
   prefs: []
@@ -343,6 +383,8 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 将补丁保存为 `patch-name.diff`，与修补后的源构建器定义文件放在同一个目录下，并通过 `patches = [./name-patch.diff];`
+    在构建器内部包含它：
 - en: '[PRE8]'
   id: totrans-split-58
   prefs: []
@@ -352,25 +394,32 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该能完成任务，并且 `alejandra4` 现在有了正确的名称。
 - en: '[](#conclusion)Conclusion'
   id: totrans-split-60
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: '[](#conclusion)结论'
 - en: And that was it! You can now use `alejandra4`, e.g. as part of your devShell,
     or as part of your `environment.systemPackages`.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样了！现在你可以使用 `alejandra4`，例如作为你的 devShell 的一部分，或作为你的 `environment.systemPackages`
+    的一部分。
 - en: For the ease of access to the newly "created" `alejandra4` formatter, I am also
     providing a flake, which is published [at my GitHub](https://github.com/drakerossman/alejandra4).
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了方便访问新创建的 `alejandra4` 格式化程序，我还提供了一个 flake，它发布在 [我的 GitHub](https://github.com/drakerossman/alejandra4)
+    上。
 - en: 'Example of using said flake with a devShell:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用开发Shell的示例：
 - en: '[PRE9]'
   id: totrans-split-64
   prefs: []
@@ -380,3 +429,4 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文中的所有 Nix 代码都使用 `alejandra4` 进行格式化 🙂
