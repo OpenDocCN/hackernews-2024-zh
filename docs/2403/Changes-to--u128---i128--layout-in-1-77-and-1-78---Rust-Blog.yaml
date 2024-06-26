@@ -2,55 +2,66 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:50:16'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:50:16
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Changes to `u128`/`i128` layout in 1.77 and 1.78 | Rust Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 变更到 `u128`/`i128` 布局在 1.77 和 1.78 版本 | Rust 博客
 - en: 来源：[https://blog.rust-lang.org/2024/03/30/i128-layout-update.html](https://blog.rust-lang.org/2024/03/30/i128-layout-update.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.rust-lang.org/2024/03/30/i128-layout-update.html](https://blog.rust-lang.org/2024/03/30/i128-layout-update.html)
 - en: Rust has long had an inconsistency with C regarding the alignment of 128-bit
     integers on the x86-32 and x86-64 architectures. This problem has recently been
     resolved, but the fix comes with some effects that are worth being aware of.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust 长期以来与 C 在 x86-32 和 x86-64 架构上关于 128 位整数对齐的不一致性问题。这个问题最近已经得到解决，但解决方案带来了一些值得注意的影响。
 - en: 'As a user, you most likely do not need to worry about these changes unless
     you are:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为用户，你大多数情况下无需担心这些变更，除非你是：
 - en: Assuming the alignment of `i128`/`u128` rather than using `align_of`
   id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 假设 `i128`/`u128` 的对齐而不使用 `align_of`
 - en: Ignoring the `improper_ctypes*` lints and using these types in FFI
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 忽略 `improper_ctypes*` 的 lints，并在 FFI 中使用这些类型
 - en: There are also no changes to architectures other than x86-32 and x86-64\. If
     your code makes heavy use of 128-bit integers, you may notice runtime performance
     increases at a possible cost of additional memory use.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了 x86-32 和 x86-64 架构外，其他架构没有变化。如果你的代码大量使用 128 位整数，你可能会注意到运行时性能提高，但可能会增加额外的内存使用成本。
 - en: This post documents what the problem was, what changed to fix it, and what to
     expect with the changes. If you are already familiar with the problem and only
     looking for a compatibility matrix, jump to the [Compatibility](#compatibility)
@@ -58,11 +69,14 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章记录了问题的本质，解决方案的变更以及变更的预期影响。如果你已经熟悉这个问题，只想找兼容性矩阵，请跳到 [兼容性](#compatibility)
+    部分。
 - en: Background
   id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 背景
 - en: Data types have two intrinsic values that relate to how they can be arranged
     in memory; size and alignment. A type's size is the amount of space it takes up
     in memory, and its alignment specifies which addresses it is allowed to be placed
@@ -70,12 +84,15 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据类型有两个内在值，它们与它们在内存中的布局有关；大小和对齐。类型的大小是它在内存中占用的空间量，它的对齐指定了它允许放置在哪些地址上。
 - en: The size of simple types like primitives is usually unambiguous, being the exact
     size of the data they represent with no padding (unused space). For example, an
     `i64` always has a size of 64 bits or 8 bytes.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 像原始类型这样的简单类型的大小通常是明确的，即它们代表的数据的确切大小，没有填充（未使用的空间）。例如，一个 `i64` 的大小始终为 64 位或 8
+    字节。
 - en: 'Alignment, however, can vary. An 8-byte integer *could* be stored at any memory
     address (1-byte aligned), but most 64-bit computers will get the best performance
     if it is instead stored at a multiple of 8 (8-byte aligned). So, like in other
@@ -84,24 +101,30 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，对齐可能会有所不同。一个 8 字节整数 *可能* 存储在任何内存地址上（1 字节对齐），但大多数 64 位计算机如果存储在 8 的倍数地址上会获得最佳性能（8
+    字节对齐）。所以，就像其他语言一样，Rust 中的原始类型默认具有最高效的对齐方式。这种效果在创建复合类型时可以看到（[playground 链接](https://play.rust-lang.org/?version=beta&mode=debug&edition=2021&gist=52f349bdea92bf724bc453f37dbd32ea)）：
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'Output:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出：
 - en: '[PRE1]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: We see that within a struct, a type will always be placed such that its offset
     is a multiple of its alignment - even if this means unused space (Rust minimizes
     this by default when `repr(C)` is not used).
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们看到在结构体内部，类型始终会被放置在其偏移量是其对齐倍数的位置上 - 即使这意味着未使用的空间（当未使用 `repr(C)` 时，Rust 默认会尽量减少这种情况）。
 - en: 'These numbers are not arbitrary; the application binary interface (ABI) says
     what they should be. In the x86-64 [psABI](https://www.uclibc.org/docs/psABI-x86_64.pdf)
     (processor-specific ABI) for System V (Unix & Linux), *Figure 3.1: Scalar Types*
@@ -109,91 +132,113 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些数字并非随意的；应用二进制接口（ABI）定义了它们应该是什么。在 x86-64 [psABI](https://www.uclibc.org/docs/psABI-x86_64.pdf)（处理器特定
+    ABI）中的 System V（Unix 和 Linux）中，*图 3.1：标量类型* 告诉我们原始类型应该如何表示：
 - en: '| C type | Rust equivalent | `sizeof` | Alignment (bytes) |'
   id: totrans-split-21
   prefs: []
   type: TYPE_TB
+  zh: '| C 类型 | Rust 对等类型 | `sizeof` | 对齐（字节） |'
 - en: '| --- | --- | --- | --- |'
   id: totrans-split-22
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
 - en: '| `char` | `i8` | 1 | 1 |'
   id: totrans-split-23
   prefs: []
   type: TYPE_TB
+  zh: '| `char` | `i8` | 1 | 1 |'
 - en: '| `unsigned char` | `u8` | 1 | 1 |'
   id: totrans-split-24
   prefs: []
   type: TYPE_TB
+  zh: '| `unsigned char` | `u8` | 1 | 1 |'
 - en: '| `short` | `i16` | 2 | 2 |'
   id: totrans-split-25
   prefs: []
   type: TYPE_TB
+  zh: '| `short` | `i16` | 2 | 2 |'
 - en: '| **`unsigned short`** | **`u16`** | **2** | **2** |'
   id: totrans-split-26
   prefs: []
   type: TYPE_TB
+  zh: '| **`unsigned short`** | **`u16`** | **2** | **2** |'
 - en: '| `long` | `i64` | 8 | 8 |'
   id: totrans-split-27
   prefs: []
   type: TYPE_TB
+  zh: '| `long` | `i64` | 8 | 8 |'
 - en: '| **`unsigned long`** | **`u64`** | **8** | **8** |'
   id: totrans-split-28
   prefs: []
   type: TYPE_TB
+  zh: '| **`unsigned long`** | **`u64`** | **8** | **8** |'
 - en: The ABI only specifies C types, but Rust follows the same definitions both for
     compatibility and for the performance benefits.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: ABI仅指定了C类型，但Rust对于兼容性和性能优势遵循相同的定义。
 - en: The Incorrect Alignment Problem
   id: totrans-split-30
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 不正确的对齐问题
 - en: 'If two implementations disagree on the alignment of a data type, they cannot
     reliably share data containing that type. Rust had inconsistent alignment for
     128-bit types:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果两个实现在数据类型的对齐上存在分歧，它们将无法可靠地共享包含该类型的数据。Rust对于128位类型的对齐不一致：
 - en: '[PRE2]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '[PRE4]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '[PRE5]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '([Godbolt link](https://godbolt.org/z/h94Ge1vMW)) Looking back at the [psABI](https://www.uclibc.org/docs/psABI-x86_64.pdf),
     we can see that Rust has the wrong alignment here:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: （[Godbolt链接](https://godbolt.org/z/h94Ge1vMW)）回顾一下[psABI](https://www.uclibc.org/docs/psABI-x86_64.pdf)，我们可以看到Rust在这里的对齐是错误的：
 - en: '| C type | Rust equivalent | `sizeof` | Alignment (bytes) |'
   id: totrans-split-37
   prefs: []
   type: TYPE_TB
+  zh: '| C类型 | Rust等价类型 | `sizeof` | 对齐（字节） |'
 - en: '| --- | --- | --- | --- |'
   id: totrans-split-38
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- |'
 - en: '| `__int128` | `i128` | 16 | 16 |'
   id: totrans-split-39
   prefs: []
   type: TYPE_TB
+  zh: '| `__int128` | `i128` | 16 | 16 |'
 - en: '| `unsigned __int128` | `u128` | 16 | 16 |'
   id: totrans-split-40
   prefs: []
   type: TYPE_TB
+  zh: '| `unsigned __int128` | `u128` | 16 | 16 |'
 - en: 'It turns out this isn''t because of something that Rust is actively doing incorrectly:
     layout of primitives comes from the LLVM codegen backend used by both Rust and
     Clang, among other languages, and it has the alignment for `i128` hardcoded to
@@ -201,6 +246,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果表明，这并不是因为Rust主动做错了什么：基本类型的布局来自于LLVM代码生成后端，它由Rust和Clang等语言使用，并且将`i128`的对齐硬编码为8字节。
 - en: Clang uses the correct alignment only because of a workaround, where the alignment
     is manually set to 16 bytes before handing the type to LLVM. This fixes the layout
     issue but has been the source of some other minor problems. Rust does no such
@@ -208,17 +254,20 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: Clang仅因为一个变通方法而使用了正确的对齐，其中在将类型传递给LLVM之前手动设置了16字节的对齐。这修复了布局问题，但也引发了一些其他小问题。Rust没有进行这样的手动调整，因此在[https://github.com/rust-lang/rust/issues/54341](https://github.com/rust-lang/rust/issues/54341)上报告了问题。
 - en: The Calling Convention Problem
   id: totrans-split-43
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 调用约定问题
 - en: 'There is an additional problem: LLVM does not always do the correct thing when
     passing 128-bit integers as function arguments. This was a [known issue in LLVM](https://github.com/llvm/llvm-project/issues/41784),
     before its [relevance to Rust was discovered](https://github.com/rust-lang/rust/issues/54341#issuecomment-1064729606).'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一个额外的问题：LLVM在将128位整数作为函数参数传递时并不总是做正确的事情。这在LLVM中是一个已知问题，在其[GitHub问题](https://github.com/llvm/llvm-project/issues/41784)中被发现与Rust的相关性。
 - en: 'When calling a function, the arguments get passed in registers (special storage
     locations within the CPU) until there are no more slots, then they get "spilled"
     to the stack (the program''s memory). The ABI tells us what to do here as well,
@@ -226,6 +275,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 在调用函数时，参数被传递到寄存器（CPU内的特殊存储位置），直到没有更多的槽位，然后它们被“spill”到堆栈（程序的内存）。ABI也告诉我们在这里要做什么，在第*3.2.3参数传递*部分：
 - en: 'Arguments of type `__int128` offer the same operations as INTEGERs, yet they
     do not fit into one general purpose register but require two registers. For classification
     purposes `__int128` is treated as if it were implemented as:'
@@ -233,23 +283,27 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 类型为`__int128`的参数提供了与INTEGER相同的操作，但它们不能放入一个通用寄存器，而是需要两个寄存器。为了分类目的，`__int128`被视为：
 - en: '[PRE6]'
   id: totrans-split-47
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: with the exception that arguments of type `__int128` that are stored in memory
     must be aligned on a 16-byte boundary.
   id: totrans-split-48
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 除了存储在内存中的类型为`__int128`的参数必须对齐在16字节边界上。
 - en: We can try this out by implementing the calling convention manually. In the
     below C example, inline assembly is used to call `foo(0xaf, val, val, val)` with
     `val` as `0x11223344556677889900aabbccddeeff`.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过手动实现调用约定来尝试这个。在下面的C示例中，内联汇编用于调用`foo(0xaf, val, val, val)`，其中`val`为`0x11223344556677889900aabbccddeeff`。
 - en: x86-64 uses the registers `rdi`, `rsi`, `rdx`, `rcx`, `r8`, and `r9` to pass
     function arguments, in that order (you guessed it, this is also in the ABI). Each
     register fits a word (64 bits), and anything that doesn't fit gets `push`ed to
@@ -257,46 +311,56 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: x86-64使用寄存器`rdi`、`rsi`、`rdx`、`rcx`、`r8`和`r9`按顺序传递函数参数（你猜对了，这也是ABI中的一部分）。每个寄存器可以容纳一个字（64位），超出部分将被`push`到堆栈中。
 - en: '[PRE7]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Running the above with GCC prints the following expected output:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用GCC运行上述内容将打印出以下预期的输出：
 - en: '[PRE8]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'But running with Clang 17 prints:'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在Clang 17运行时，会打印：
 - en: '[PRE9]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Surprise!
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 惊喜！
 - en: 'This illustrates the second problem: LLVM expects an `i128` to be passed half
     in a register and half on the stack when possible, but this is not allowed by
     the ABI.'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这说明了第二个问题：LLVM希望在可能的情况下将`i128`一半存入寄存器，一半存入栈，但是这不符合ABI的规定。
 - en: Since the behavior comes from LLVM and has no reasonable workaround, this is
     a problem in both Clang and Rust.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这种行为来自LLVM并且没有合理的解决方法，这在Clang和Rust中都是一个问题。
 - en: Solutions
   id: totrans-split-59
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 解决方案
 - en: 'Getting these problems resolved was a lengthy effort by many people, starting
     with a patch by compiler team member Simonas Kazlauskas in 2017: [D28990](https://reviews.llvm.org/D28990).
     Unfortunately, this wound up reverted. It was later attempted again in [D86310](https://reviews.llvm.org/D86310)
@@ -305,6 +369,8 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决这些问题是许多人长时间努力的结果，始于2017年的编译器团队成员Simonas Kazlauskas的一次补丁：[D28990](https://reviews.llvm.org/D28990)。
+    不幸的是，这次被撤销了。 后来由LLVM贡献者Harald van Dijk在2023年10月实现的[D86310](https://reviews.llvm.org/D86310)再次尝试了这一点，这是最终实现的版本。
 - en: Around the same time, Nikita Popov fixed the calling convention issue with [D158169](https://reviews.llvm.org/D158169).
     Both of these changes made it into LLVM 18, meaning all relevant ABI issues will
     be resolved in both Clang and Rust that use this version (Clang 18 and Rust 1.78
@@ -312,6 +378,8 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 大约在同一时间，Nikita Popov通过[D158169](https://reviews.llvm.org/D158169)修复了调用规约的问题。
+    这些改变都已经进入了LLVM 18，这意味着所有相关的ABI问题将在使用这一版本的Clang和Rust（Clang 18和Rust 1.78在使用捆绑的LLVM时）中得到解决。
 - en: However, `rustc` can also use the version of LLVM installed on the system rather
     than a bundled version, which may be older. To mitigate the chance of problems
     from differing alignment with the same `rustc` version, [a proposal](https://github.com/rust-lang/compiler-team/issues/683)
@@ -320,18 +388,24 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，`rustc`也可以使用系统上安装的LLVM版本，而不是打包的版本，后者可能较老。为了减少出现相同`rustc`版本的对齐不一致而导致问题的几率，
+    [提议](https://github.com/rust-lang/compiler-team/issues/683)引入了手动修正对齐方式的方法，就像Clang一直在做的一样。
+    这是由Matthew Maurer在[#116672](https://github.com/rust-lang/rust/pull/116672/)中实现的。
 - en: 'Since these changes, Rust now produces the correct alignment:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 自这些改变以来，Rust现在产生了正确的对齐方式：
 - en: '[PRE10]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '[PRE11]'
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'As mentioned above, part of the reason for an ABI to specify the alignment
     of a datatype is because it is more efficient on that architecture. We actually
     got to see that firsthand: the [initial performance run](https://github.com/rust-lang/rust/pull/116672/#issuecomment-1858600381)
@@ -344,11 +418,13 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如上所述，ABI规定数据类型的对齐方式的部分原因是因为在该架构上更有效率。我们实际上已经亲眼见证了这一点：手动调整对齐方式后，[初始性能运行](https://github.com/rust-lang/rust/pull/116672/#issuecomment-1858600381)显示出对编译器性能的显著改进（这主要依赖于对整数文字进行处理的128位整数）。增加对齐方式的缺点是复合类型不一定总是能完美地放在一起，导致使用增加。不幸的是，这意味着一些性能提升需要牺牲以避免增加内存占用。
 - en: Compatibility
   id: totrans-split-67
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 兼容性
 - en: 'The most imporant question is how compatibility changed as a result of these
     fixes. In short, `i128` and `u128` with Rust using LLVM 18 (the default version
     starting with 1.78) will be completely compatible with any version of GCC, as
@@ -357,72 +433,89 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 最重要的问题是这些修复导致的兼容性如何改变。简而言之，使用LLVM 18的Rust的`i128`和`u128`（从1.78版本开始的默认版本）将与任何版本的GCC完全兼容，并且与Clang
+    18及以上版本（2024年3月发布）完全兼容。其他所有组合都有一些不兼容的情况，总结在下表中：
 - en: '| Compiler 1 | Compiler 2 | status |'
   id: totrans-split-69
   prefs: []
   type: TYPE_TB
+  zh: '| 编译器 1 | 编译器 2 | 状态 |'
 - en: '| --- | --- | --- |'
   id: totrans-split-70
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Rust ≥ 1.78 with bundled LLVM (18) | GCC (any version) | Fully compatible
     |'
   id: totrans-split-71
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.78 with bundled LLVM (18) | GCC（任意版本） | 全兼容 |'
 - en: '| Rust ≥ 1.78 with bundled LLVM (18) | Clang ≥ 18 | Fully compatible |'
   id: totrans-split-72
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.78 with bundled LLVM (18) | Clang ≥ 18 | 全兼容 |'
 - en: '| Rust ≥ 1.77 with LLVM ≥ 18 | GCC (any version) | Fully compatible |'
   id: totrans-split-73
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.77 with LLVM ≥ 18 | GCC（任意版本） | 全兼容 |'
 - en: '| Rust ≥ 1.77 with LLVM ≥ 18 | Clang ≥ 18 | Fully compatible |'
   id: totrans-split-74
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.77 with LLVM ≥ 18 | Clang ≥ 18 | 全兼容 |'
 - en: '| Rust ≥ 1.77 with LLVM ≥ 18 | Clang < 18 | Storage compatible, has calling
     bug |'
   id: totrans-split-75
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.77 with LLVM ≥ 18 | Clang < 18 | 存储兼容，存在调用错误 |'
 - en: '| Rust ≥ 1.77 with LLVM < 18 | GCC (any version) | Storage compatible, has
     calling bug |'
   id: totrans-split-76
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.77 with LLVM < 18 | GCC（任意版本）| 存储兼容，存在调用错误 |'
 - en: '| Rust ≥ 1.77 with LLVM < 18 | Clang (any version) | Storage compatible, has
     calling bug |'
   id: totrans-split-77
   prefs: []
   type: TYPE_TB
+  zh: '| Rust ≥ 1.77 with LLVM < 18 | Clang（任意版本）| 存储兼容，存在调用错误 |'
 - en: '| Rust < 1.77 | GCC (any version) | Incompatible |'
   id: totrans-split-78
   prefs: []
   type: TYPE_TB
+  zh: '| Rust < 1.77 | GCC（任意版本）| 不兼容 |'
 - en: '| Rust < 1.77 | Clang (any version) | Incompatible |'
   id: totrans-split-79
   prefs: []
   type: TYPE_TB
+  zh: '| Rust < 1.77 | Clang（任意版本）| 不兼容 |'
 - en: '| GCC (any version) | Clang ≥ 18 | Fully compatible |'
   id: totrans-split-80
   prefs: []
   type: TYPE_TB
+  zh: '| GCC（任意版本）| Clang ≥ 18 | 完全兼容 |'
 - en: '| GCC (any version) | Clang < 18 | Storage compatible with calling bug |'
   id: totrans-split-81
   prefs: []
   type: TYPE_TB
+  zh: '| GCC（任意版本）| Clang < 18 | 存储兼容，存在调用错误 |'
 - en: Effects & Future Steps
   id: totrans-split-82
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 影响与未来步骤
 - en: As mentioned in the introduction, most users will notice no effects of this
     change unless you are already doing something questionable with these types.
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如介绍中所述，除非您已经对这些类型进行了某些可疑操作，否则大多数用户不会注意到此更改的任何影响。
 - en: Starting with Rust 1.77, it will be reasonably safe to start experimenting with
     128-bit integers in FFI, with some more certainty coming with the LLVM update
     in 1.78\. There is [ongoing discussion](https://github.com/rust-lang/lang-team/issues/255)
@@ -432,3 +525,4 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 从Rust 1.77开始，使用128位整数进行FFI实验将是相当安全的，随着1.78中LLVM更新的确定性更加明显。有关[持续讨论](https://github.com/rust-lang/lang-team/issues/255)计划在即将发布的版本中取消警告，但我们希望谨慎行事，避免对那些使用较旧LLVM构建的Rust编译器的用户引入潜在破坏。
