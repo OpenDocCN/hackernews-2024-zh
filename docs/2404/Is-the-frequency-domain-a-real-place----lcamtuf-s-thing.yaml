@@ -103,16 +103,20 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你记得 DCT 的操作，这个视觉应该很容易理解。第一行 *(k=0)* 对应于直流分量 — 即，一个在 0 Hz 处运行的余弦波，永远固定在 +1.00。下一行包含一个完成半个周期的余弦波，在
+    *k=2* 处是一个完整的周期，在 *k=3* 处是一个半周期，依此类推。
 - en: 'So, how does one go about building a new basis function that splits signals
     not into sine frequencies, but into square waves? Foreshadowing a bit, the answer
     appears almost ridiculously simple:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，如何构建一个新的基函数，将信号分成方波而不是正弦频率？稍微预示一下，答案似乎非常简单：
 - en: '*The Walsh matrix for N=16.*'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '*N=16* 的 Walsh 矩阵。'
 - en: 'This is known as the Walsh matrix. It essentially consists of square waves
     running at different speeds, although with some complex symmetries thrown in.
     And yes: every multiplier is just a +1 or a -1, so the computation boils down
@@ -120,6 +124,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是 Walsh 矩阵。它本质上由以不同速度运行的方波组成，尽管还有一些复杂的对称性。是的：每个乘数只是 +1 或 -1，因此计算归结为在输入数据中翻转一些符号，然后求和。
 - en: The matrix looks fairly trivial, but its design is involved. To capture all
     frequency and phase information, the rows have increasing *sequency* — that is,
     each next row has just one more sign flip than the one before. Further, the pattern
@@ -129,16 +134,20 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 矩阵看起来相当微不足道，但其设计很复杂。为了捕捉所有频率和相位信息，行具有递增的 *序列性* — 每个下一行比前一行多一个符号翻转。此外，模式被精心设计以确保
+    *正交性* — 这种脆弱的输入-输出对称性允许在频率表示和原始时间序列数据之间无缝转换。
 - en: 'Because of its complex structure, the most practical way to construct the Walsh
     matrix is to start by generating something known as the Hadamard matrix. For *N=16*,
     this intermediate matrix looks the following way:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于其复杂的结构，构造 Walsh 矩阵的最实用方法是从生成所谓的 Hadamard 矩阵开始。对于 *N=16*，这个中间矩阵看起来如下所示：
 - en: '*The Hadamard matrix for N=16\. Huh?*'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '*N=16* 的 Hadamard 矩阵。嗯？'
 - en: 'At a glance, the plot looks chaotic, but it’s simply a reordering of the Walsh
     layout. For example, row #15 is moved to #1, while the original #1 now sits at
     #8\. But importantly, unlike Walsh, this fractal-esque pattern is actually fairly
@@ -146,15 +155,19 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 乍一看，绘图看起来混乱，但它只是 Walsh 布局的重新排序。例如，第 15 行移动到第 1 行，而原始的第 1 行现在位于第 8 行。但是重要的是，与
+    Walsh 不同，这种类似分形的模式实际上相当容易从头开始创建。
 - en: 'To get the ball rolling with Hadamard, we start with the following trivial
     1×1 array:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 要开始 Hadamard 的运算，我们从以下微不足道的 1×1 数组开始：
 - en: \(H_0 = \begin{bmatrix} +1 \end{bmatrix}\)
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: \(H_0 = \begin{bmatrix} +1 \end{bmatrix}\)
 - en: 'From there, we iteratively extend it by taking the array generated in the previous
     step (*H[n-1]*) and tiling four copies of it on a grid with twice the original
     dimensions. The first three copies are verbatim, and the final one — bottom right
@@ -162,35 +175,45 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，通过取前一步骤生成的数组 (*H[n-1]*) 并在原始尺寸的两倍网格上铺设四个副本来迭代地扩展它。前三个副本完全相同，最后一个 — 右下角 —
+    所有符号都翻转。这种扩展的数学表示如下：
 - en: \(H_{n} = H_{n-1} \otimes \begin{bmatrix} +1 & +1 \\ +1 & -1 \end{bmatrix}\)
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: \(H_{n} = H_{n-1} \otimes \begin{bmatrix} +1 & +1 \\ +1 & -1 \end{bmatrix}\)
 - en: 'The fancy operator (⊗) is known as the *Kronecker product*, but it’s really
     just glorified copy-and-paste. The first extension — consisting of four copies
     of *H[0]* — looks the following way:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个花式运算符 (⊗) 被称为 *Kronecker 乘积*，但实际上只是一个炫耀的复制粘贴。第一个扩展 — 由四个 *H[0]* 的副本组成 — 看起来如下所示：
 - en: \(H_1 = \begin{bmatrix} \begin{array}{c | c } +1 & +1 \\ \hline +1 & -1 \end{array}\end{bmatrix}
     \)
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: \(H_1 = \begin{bmatrix} \begin{array}{c | c } +1 & +1 \\ \hline +1 & -1 \end{array}\end{bmatrix}
+    \)
 - en: 'Another iteration makes four copies of *H[1]*, producing this layout:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个迭代产生四个 *H[1]* 的副本，生成这样的布局：
 - en: \(H_2 = \begin{bmatrix} \begin{array}{c c | c c} +1 & +1 & +1 & +1 \\ +1 & -1
     & +1 & -1 \\ \hline +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 \end{array} \end{bmatrix}\)
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: \(H_2 = \begin{bmatrix} \begin{array}{c c | c c} +1 & +1 & +1 & +1 \\ +1 & -1
+    & +1 & -1 \\ \hline +1 & +1 & -1 & -1 \\ +1 & -1 & -1 & +1 \end{array} \end{bmatrix}\)
 - en: …and so on. The size of the resulting Hadamard matrix is always *2^n×2^n,* where
     *n* is the number of construction steps we went through.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: …等等。生成的Hadamard矩阵的大小始终是*2^n×2^n*，其中*n*是我们经历的构造步骤数量。
 - en: 'On a computer, the matrix can be computed by following this tiling algorithm,
     but there’s a cute bitwise arithmetic trick we can employ instead: as it turns
     out, the value of the Hadamard function at a particular cell can be divined by
@@ -200,22 +223,26 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 在计算机上，可以通过以下平铺算法计算矩阵，但是我们可以使用一种巧妙的位运算技巧：事实证明，通过计算*x & y*，然后检查结果中设置的位数是偶数还是奇数，可以推断特定单元格中Hadamard函数的值。以下C代码正是如此，并在屏幕上显示了一个8×8的Hadamard矩阵：
 - en: '[PRE0]'
   id: totrans-split-35
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In principle, this matrix is sufficient to construct a frequency-domain transform.
     That said, its ordering of the frequency bins is unintuitive, so let’s try to
     fix that before we leave.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 原则上，此矩阵足以构建频域变换。尽管如此，其频率箱的排序不直观，所以在离开之前让我们试着修复它。
 - en: To turn the Hadamard matrix in the nicely-ordered flavor showcased earlier,
     we need to sort the rows based on their sequency.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 要将之前展示的有序Hadamard矩阵转换为漂亮的形式，我们需要根据它们的序列性对行进行排序。
 - en: 'The most straightforward way, found in just about every reference implementation,
     is just to count the number of sign changes in each row. That said, [a reader](https://icosahedron.website/@gaditb/112228725360149921)
     pointed out another clever bit-twiddling hack: for an array with *2^n*rows, Hadamard
@@ -225,85 +252,102 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单的方式，在几乎每个参考实现中都可以找到，只需计算每行中符号更改的数量。尽管如此，[一位读者](https://icosahedron.website/@gaditb/112228725360149921)指出另一个巧妙的位操作技巧：对于一个具有*2^n*行的数组，Hadamard行映射可以通过将Walsh行号与其自身向右移动一个位并反转最后*n*位的顺序来计算。
 - en: 'Here’s an implementation that does just that and prints a sorted 8×8 array
     on the screen:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个执行此操作并在屏幕上打印排序后的8×8数组的实现：
 - en: '[PRE1]'
   id: totrans-split-40
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Equipped with this, we can gut the DCT implementation and make a “discrete
     square transform” and its inverse:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 带有此技术，我们可以深入DCT实现并制作“离散方形变换”及其逆变换：
 - en: '[PRE2]'
   id: totrans-split-42
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Technically, this is called the *Walsh–Hadamard transform* (WHT), but never
     mind. Let’s confirm that it works:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 技术上，这被称为*华尔什-哈达玛变换*（WHT），但不要紧。让我们确认它是否有效：
 - en: '[PRE3]'
   id: totrans-split-44
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The input is a square-wave-ish sequence of numbers: 1 1 1 1 5 5 5 5\. The output
     from DFT or DCT would be a bunch of harmonics across multiple frequency bins:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 输入是一串类似方波的数字序列：1 1 1 1 5 5 5 5。从DFT或DCT的输出将会是跨越多个频率箱的多个谐波：
 - en: '[PRE4]'
   id: totrans-split-46
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'In contrast, the frequency-domain representation generated by the program shows
     non-zero components only in *F[0]* (DC) and *F[1]*, confirming that we have an
     algorithm that deconstructs the signal into pure square waves:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 相比之下，由程序生成的频域表示仅显示在*F[0]*（DC）和*F[1]*中的非零分量，证实我们有一种可以将信号分解为纯方波的算法：
 - en: '[PRE5]'
   id: totrans-split-48
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Finally, we can verify that the inverse function — *isqft() —* transforms the
     frequency domain back to what we started with:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，我们可以验证逆函数——*isqft()——*将频域转换回我们起始的内容：
 - en: '[PRE6]'
   id: totrans-split-50
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'I couldn’t find any visual comparisons of the algorithms’ outputs, so I prepared
     my own. Here’s the quasi-conventional DCT spectrogram of an [🔈 11-second clip](https://lcamtuf.coredump.cx/dare.mp3)
     from “DARE” by Gorillaz:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 我找不到算法输出的可视化比较，所以我准备了自己的。这是“DARE” by Gorillaz的[🔈 11秒片段](https://lcamtuf.coredump.cx/dare.mp3)的准传统DCT频谱图：
 - en: '*Your old-fashioned, family-friendly sine spectrogram.*'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: '*你老式、家庭友好的正弦波频谱图*。'
 - en: '…and here’s the cool-looking Walsh-Hadamard equivalent:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: …这是华尔什-哈达玛的酷炫等效图：
 - en: '*A world premiere of the square-wave spectrogram.*'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '*方波频谱图的世界首秀*。'
 - en: The Walsh-Hadamard transform, being computationally efficient and well-suited
     for certain types of data, finds uses in a couple of niches. The point isn’t that
     it needs to be used more; it’s just that discrete Fourier doesn’t have a monopoly
@@ -311,7 +355,9 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 华尔什-哈达玛变换因其计算效率高且适用于某些数据类型而在某些领域中得到应用。重点不在于它需要更多使用；只是离散傅里叶变换并非唯一的真理。
 - en: '*For more articles on electronics, click [here](https://lcamtuf.coredump.cx/offsite.shtml).*'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: '*更多有关电子学的文章，请点击[这里](https://lcamtuf.coredump.cx/offsite.shtml)*。'
