@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 14:29:40'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:29:40
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'RISC-V Assembler: Arithmetic - Project F'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: RISC-V 汇编器：算术 - 项目 F
 - en: 来源：[https://projectf.io/posts/riscv-arithmetic/](https://projectf.io/posts/riscv-arithmetic/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://projectf.io/posts/riscv-arithmetic/](https://projectf.io/posts/riscv-arithmetic/)
 - en: “RISC architecture is going to change everything.” — [Acid Burn](https://tvtropes.org/pmwiki/pmwiki.php/Film/Hackers)
   id: totrans-split-6
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “RISC 架构将改变一切。” — [酸性烧伤](https://tvtropes.org/pmwiki/pmwiki.php/Film/Hackers)
 - en: In the last few years, we’ve seen an explosion of RISC-V CPU designs, especially
     on FPGA. Thankfully, RISC-V is ideal for assembly programming with its compact,
     easy-to-learn instruction set. This series will help you learn and understand
@@ -38,57 +45,70 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在过去几年里，我们看到了 RISC-V CPU 设计的爆炸式增长，特别是在 FPGA 上。幸运的是，RISC-V 以其紧凑、易学的指令集非常适合汇编编程。本系列将帮助您学习和理解
+    32 位 RISC-V 指令（RV32）和 RISC-V ABI。第一部分将介绍加载立即数、加法和减法。我们还将涵盖符号扩展和伪指令。
 - en: Share your thoughts with @WillFlux on [Mastodon](https://mastodon.social/@WillFlux)
     or [Twitter](https://twitter.com/WillFlux). If you like what I do, [sponsor me](https://github.com/sponsors/WillGreen).
     🙏
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 @WillFlux 在 [Mastodon](https://mastodon.social/@WillFlux) 或 [Twitter](https://twitter.com/WillFlux)
+    分享您的想法。如果您喜欢我的工作，请 [赞助我](https://github.com/sponsors/WillGreen)。 🙏
 - en: RISC-V Instruction Sets
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: RISC-V 指令集
 - en: 'RISC-V handles processors of different sizes with separate but consistent instruction
     sets:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: RISC-V 使用单独但一致的指令集处理不同大小的处理器：
 - en: '**RV32** - 32-bit RISC-V with 32 general-purpose registers'
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**RV32** - 32 位 RISC-V，具有 32 个通用寄存器'
 - en: '**RV64** - 64-bit RISC-V with 32 general-purpose registers'
   id: totrans-split-12
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**RV64** - 64 位 RISC-V，具有 32 个通用寄存器'
 - en: '**RV32E** - Reduced 32-bit RISC-V with 16 general-purpose registers'
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**RV32E** - 精简版 32 位 RISC-V，具有 16 个通用寄存器'
 - en: I’ll be focusing on RV32, but the other instruction sets work in a similar way.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将专注于 RV32，但其他指令集的工作方式类似。
 - en: The base **integer** instruction set for RV32 is **RV32I** ("**I**" stands for
     integer). RV32I contains the essential RISC-V instructions, such as arithmetic,
     memory access, and branching.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: RV32 的基本**整数**指令集为 RV32I（“I” 代表整数）。RV32I 包含了基本的 RISC-V 指令，如算术、内存访问和分支。
 - en: CPU Registers
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: CPU 寄存器
 - en: 'RV32I has 32 general-purpose registers: **x0** to **x31**. These registers
     are 32 bits wide.'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: RV32I 具有 32 个通用寄存器：**x0** 到 **x31**。这些寄存器宽度为 32 位。
 - en: '**x0** is hard-wired to **0** (zero). You can use the other registers as you
     see fit, but there is an **ABI** (application binary interface) to make life easier
     for programmers and allow code from different developers to interoperate. My examples
@@ -98,37 +118,47 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**x0** 被硬编码为 **0**（零）。您可以自由使用其他寄存器，但有一个应用程序二进制接口（ABI），使得程序员生活更加轻松，并允许来自不同开发者的代码互操作。我的示例使用临时寄存器
+    **t0-t6**。我将在我的关于 [函数](/posts/riscv-jump-function#rv32-abi-registers) 的文章中涵盖所有
+    ABI 寄存器，但现在您不需要担心它们。'
 - en: With that briefest of introductions out of the way, let’s get started on the
     instructions.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 介绍结束后，让我们开始学习这些指令。
 - en: 'It’s simple to load an immediate (constant) value into a register with load
     immediate **li**:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用加载立即指令 **li** 将常量值加载到寄存器中非常简单：
 - en: '**rd** is the destination register, and **imm** is a 32-bit immediate.'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '**rd** 是目标寄存器，**imm** 是 32 位立即数。'
 - en: 'Load immediate examples:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 立即加载示例：
 - en: '[PRE0]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '*ProTip: Hexadecimal literals are prefixed with **0x**.*'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: '*专业提示：十六进制字面量以 **0x** 为前缀。*'
 - en: Pseudoinstructions
   id: totrans-split-25
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 伪指令
 - en: RISC-V registers are 32 bits wide. RISC-V instructions are 32 bits wide. An
     instruction needs room for an opcode and registers, so it can’t hold a 32-bit
     immediate. How does **li** manage it? Load immediate is not a RISC-V instruction
@@ -136,6 +166,8 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: RISC-V 寄存器宽度为 32 位。RISC-V 指令也是 32 位宽。指令需要空间来存放操作码和寄存器，因此无法容纳 32 位立即数。那么 **li**
+    如何处理呢？加载立即数不是一个 RISC-V 指令，而是一个**伪指令**。
 - en: Pseudoinstructions are translated into one or more real instructions by the
     assembler. Pseudoinstructions are syntactic sugar that makes assembly code easier
     to write *and* easier to understand. We’ll see many examples in this series, and
@@ -162,6 +194,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Where **rd** is the destination register, **rs rs1 rs2** are source registers,
     and **imm** is a 12-bit immediate.
   id: totrans-split-32
@@ -175,6 +208,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Examples of adding an immediate to a register:'
   id: totrans-split-35
   prefs: []
@@ -183,6 +217,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '**addi** can add an immediate value in the range -2048 to 2047\. RISC-V has
     no increment or decrement instructions; **addi** handles them too.'
   id: totrans-split-37
@@ -197,6 +232,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: The **mv** (move) instruction copies one register to another. **mv** is **addi**
     with an immediate value of 0, so nothing is added. The move instruction can only
     copy between registers, it can’t access memory.
@@ -211,6 +247,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The **nop** instruction advances the program counter but makes no other changes.
     We have a standard **nop** encoding to make programmer intent clear and avoid
     the instruction being optimised away.
@@ -269,6 +306,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The **neg** pseudoinstruction negates a register value: positive numbers become
     negative and vice-versa. Negate only takes one source register because it uses
     **sub** with the zero register **x0** as the first source.'
@@ -283,6 +321,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '*ProTip: the destination register comes first in RISC-V assembler.*'
   id: totrans-split-58
   prefs: []
@@ -299,152 +338,186 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 加载上位立即数将一个寄存器的前20位设置为立即值并将低12位清零。从另一个角度看**lui**，它将立即数左移12位。
 - en: '[PRE8]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'This is best seen with some examples:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 这在一些例子中最为明显：
 - en: '[PRE9]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '**lui** accepts immediates in the range 0x00000-0xFFFFF.'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: '**lui**接受范围在0x00000-0xFFFFF的立即数。'
 - en: Your assembler will error if you use numbers outside this range, including negative
     numbers.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果使用超出此范围的数字，包括负数，你的汇编器会报错。
 - en: '[PRE10]'
   id: totrans-split-66
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'If out of range, GNU assembler returns `Error: lui expression not in range
     0..1048575`'
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: '如果超出范围，GNU汇编器会返回`Error: lui expression not in range 0..1048575`'
 - en: Now we’ve met **addi** and **lui**, we’re ready to deconstruct **li**.
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经了解了**addi**和**lui**，我们准备好解构**li**了。
 - en: Load upper immediate **lui** sets the upper 20 bits and add immediate **addi**
     adds a 12-bit immediate. Together these two instructions can load a 32-bit immediate
     into a register.
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 加载上位立即数**lui**设置前20位并且加上立即数**addi**。这两条指令一起可以将一个32位立即数加载到一个寄存器中。
 - en: 'Let’s see how the assembler does this for our earlier **li** examples:'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看汇编器如何处理我们之前的**li**例子：
 - en: '[PRE11]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The first three examples fit into 12 bits, so they only need **addi**:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 前三个例子适合12位，因此只需要**addi**：
 - en: '[PRE12]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Remember that the **x0** register is hard-wired to 0 (zero).
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 记住，**x0**寄存器是硬连接到0（零）的。
 - en: 'The **t3** (0x100000) example fits in the upper 20 bits, so it only needs **lui**:'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '**t3**（0x100000）的例子适合前20位，因此只需要**lui**：'
 - en: 'The **t4** (4100) example is a little too large for 12 bits (2^(12) + 4 = 4100),
     so we need **lui** then **addi**:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**t4**（4100）的例子稍微大了一点超出了12位（2^(12) + 4 = 4100），因此我们需要**lui**然后**addi**：'
 - en: '[PRE13]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The **t5** (0xFACE) example is a sneaky one:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '**t5**（0xFACE）的例子很棘手：'
 - en: '[PRE14]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The obvious answer of adding 0xACE to 0xF won’t work because **addi** sign
     extends the 12-bit immediate. Looking at 0xACE in binary, we see the most significant
     bit is 1:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 很明显，将0xACE加上0xF的答案是不行的，因为**addi**会对12位立即数进行符号扩展。查看0xACE的二进制表示，我们可以看到最高位是1：
 - en: '`1010 1100 1110 -> 1111 1111 1111 1111 1111 1010 1100 1110`'
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '`1010 1100 1110 -> 1111 1111 1111 1111 1111 1010 1100 1110`'
 - en: 'The result of the sign extension is negative: -1330 (-0x532).'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 符号扩展的结果为负数：-1330（-0x532）。
 - en: '`0xF000 - 0x532 = 0xEACE`'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '`0xF000 - 0x532 = 0xEACE`'
 - en: 'To correct for the sign extension, we need to add 1 to the **lui** immediate:
     `0xF + 0x1 = 0x10`.'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 要校正符号扩展，我们需要将**lui**的立即数加1：`0xF + 0x1 = 0x10`。
 - en: Any 12-bit immediate whose most significant bit is 1 will suffer from this issue.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 任何最高有效位为1的12位立即数都会遇到这个问题。
 - en: 'However, the solution is simple: use **li** and the assembler will take care
     of it for you. :)'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，解决方案很简单：使用**li**，汇编器会为你处理它。:)
 - en: What’s Next?
   id: totrans-split-87
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 接下来做什么？
 - en: If you enjoyed this post, please [sponsor me](https://github.com/sponsors/WillGreen).
     Sponsors help me create more FPGA and RISC-V projects for everyone, *and* they
     get early access to blog posts and source code. 🙏
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你喜欢这篇文章，请[赞助我](https://github.com/sponsors/WillGreen)。赞助者帮助我为大家创建更多的FPGA和RISC-V项目，*并且*他们可以提前访问博客文章和源代码。🙏
 - en: The second part of *RISC-V Assembler* covers **[Logical Instructions](/posts/riscv-logical)**.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '*RISC-V Assembler*的第二部分涵盖了**[逻辑指令](/posts/riscv-logical)**。'
 - en: 'Other parts of this series include: [Load Store](/posts/riscv-load-store/)
     and [Branch Set](/posts/riscv-branch-set/). Or check out all my [FPGA & RISC-V
     Tutorials](/tutorials/) and my series on early [Macintosh History](https://systemtalk.org/post/macintosh-history-8510/).'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 本系列的其他部分包括：[加载存储](/posts/riscv-load-store/)和[分支集](/posts/riscv-branch-set/)。或查看所有我的[FPGA和RISC-V教程](/tutorials/)以及早期的[Macintosh历史](https://systemtalk.org/post/macintosh-history-8510/)系列。
 - en: Acknowledgements
   id: totrans-split-91
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 致谢
 - en: Thanks to [jtruk](https://mastodon.social/@jtruk) and [Daniel Mangum](http://danielmangum.com)
     for suggestions and corrections.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢[jtruk](https://mastodon.social/@jtruk)和[Daniel Mangum](http://danielmangum.com)提供的建议和修正。
 - en: References
   id: totrans-split-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 参考资料
