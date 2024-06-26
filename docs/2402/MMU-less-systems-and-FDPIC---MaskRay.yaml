@@ -301,6 +301,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于共享库支持的工具似乎称为eXtended FLAT（XFLAT）。这是一种限制的共享库方案，不允许全局变量共享。引用[XFLAT FAQ](https://xflat.sourceforge.net/XFlatFAQ.html)：
 - en: XFLAT provides an alternative mechanism to bind and relocate functions using
     a thunk layer that is inserted between each inter-module function call. However,
     without a GOT it is not possible to bind and relocate data. In short, with no
@@ -310,11 +311,13 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: XFLAT提供了一种替代机制，用于通过插入在每个模块间函数调用之间的Thunk层来绑定和重定位函数。然而，没有GOT，无法绑定和重定位数据。简而言之，没有GOT，XFLAT无法支持程序和共享库模块之间的全局变量共享。
 - en: FDPIC
   id: totrans-split-54
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: FDPIC
 - en: FDPIC can be seen as an extended `-mno-pic-data-is-text-relative` mode that
     utilizes function descriptors to support PIC register changes for dynamic linking.
     A FDPIC executable can be loaded using either the regular Linux ELF loader for
@@ -326,14 +329,18 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: FDPIC可以看作是一种扩展的`-mno-pic-data-is-text-relative`模式，它利用函数描述符支持动态链接的PIC寄存器更改。FDPIC可执行文件可以使用常规的Linux
+    ELF加载器加载到MMU系统或使用`fs/binfmt_elf_fdpic.c`加载到无MMU系统中。自2002年以来，`fs/binfmt_elf_fdpic.c`一直[可用](https://git.kernel.org/pub/scm/linux/kernel/git/tglx/history.git/commit/?id=be3e0ada7b264efa8714b1ff6203c2c29fcc61c5)。它支持MMU和NOMMU配置，但不支持NOMMU模式下的`ET_EXEC`可执行文件。支持FDPIC的每个架构都定义了一个要由加载器检查的`EI_OSABI`值。
 - en: Several architectures define a FDPIC ABI.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 几种架构定义了FDPIC ABI。
 - en: Here is a summary.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是一个摘要。
 - en: The read-only sections, which can be shared, are commonly referred to as the
     "text segment", whereas the writable sections are non-shared and commonly referred
     to as the "data segment". Functions and certain data symbols (`.rodata`) reside
@@ -342,6 +349,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以共享的只读段通常称为“文本段”，而可写段是非共享的，通常称为“数据段”。函数和某些数据符号（`.rodata`）驻留在文本段中，而其他数据符号和GOT驻留在数据段中。特殊条目称为“规范函数描述符”也驻留在GOT中。
 - en: A call-clobbered register is reserved as the FDPIC register, used to access
     the data segment. Upon entry to a function, the FDPIC register holds the address
     of `_GLOBAL_OFFSET_TABLE_`. The text segment can be referenced using PC-relative
@@ -352,6 +360,7 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个被调用破坏的寄存器作为FDPIC寄存器保留，用于访问数据段。进入函数时，FDPIC寄存器保存了`_GLOBAL_OFFSET_TABLE_`的地址。文本段可以使用PC相对寻址引用。包括GOT在内的数据段使用间接FDPIC寄存器相对寻址引用。稍后我们将看到，有时不确定一个不可抢占符号驻留在文本段还是数据段，此时必须使用带有FDPIC寄存器的GOT间接寻址。
 - en: A function call is called external if the destination may reside in another
     module, which has a different data segment and therefore needs a different FDPIC
     register value. Therefore, an external function call needs to update the FDPIC
@@ -363,6 +372,7 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数调用称为外部调用，如果目标可能驻留在另一个模块中，该模块具有不同的数据段，因此需要不同的FDPIC寄存器值。因此，外部函数调用需要更新FDPIC寄存器以及改变程序计数器（PC）。如果调用者需要稍后引用数据段，则FDPIC寄存器可以溢出到堆栈插槽或调用保存的寄存器。FDPIC寄存器被调用破坏，以[允许外部尾调用](/blog/2021-09-19-all-about-procedure-linkage-table#got-setup-is-expensive-without-pc-relative-addressing)，并避免PLT保存该寄存器。
 - en: Calling a function pointer, including calling a PLT entry, also sets both the
     FDPIC register and PC. When the address of a function is taken, the address of
     its canonical function descriptor is obtained, not that of the entry point. The
@@ -390,6 +400,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '|'
   id: totrans-split-66
   prefs: []
@@ -398,6 +409,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '|'
   id: totrans-split-68
   prefs: []
@@ -433,6 +445,7 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '|'
   id: totrans-split-75
   prefs: []
@@ -441,6 +454,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '|'
   id: totrans-split-77
   prefs: []
@@ -461,6 +475,7 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '|'
   id: totrans-split-81
   prefs: []
@@ -469,6 +484,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '|'
   id: totrans-split-83
   prefs: []
@@ -492,6 +508,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '|'
   id: totrans-split-88
   prefs: []
@@ -500,6 +517,7 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '|'
   id: totrans-split-90
   prefs: []
@@ -512,6 +530,7 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: '|'
   id: totrans-split-93
   prefs: []
@@ -520,6 +539,7 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '|'
   id: totrans-split-95
   prefs: []
@@ -576,6 +596,7 @@
   id: totrans-split-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '|'
   id: totrans-split-106
   prefs: []
@@ -584,6 +605,7 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '|'
   id: totrans-split-108
   prefs: []
@@ -608,6 +630,7 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '|'
   id: totrans-split-113
   prefs: []
@@ -616,6 +639,7 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '|'
   id: totrans-split-115
   prefs: []
@@ -633,6 +657,7 @@
   id: totrans-split-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: '|'
   id: totrans-split-119
   prefs: []
@@ -641,6 +666,7 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: '|'
   id: totrans-split-121
   prefs: []
@@ -678,6 +704,7 @@
   id: totrans-split-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: '|'
   id: totrans-split-129
   prefs: []
@@ -686,6 +713,7 @@
   id: totrans-split-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: '|'
   id: totrans-split-131
   prefs: []
@@ -707,6 +735,7 @@
   id: totrans-split-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '|'
   id: totrans-split-136
   prefs: []
@@ -715,6 +744,7 @@
   id: totrans-split-137
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '|'
   id: totrans-split-138
   prefs: []
@@ -727,6 +757,7 @@
   id: totrans-split-140
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '|'
   id: totrans-split-141
   prefs: []
@@ -735,6 +766,7 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: '|'
   id: totrans-split-143
   prefs: []
@@ -751,6 +783,7 @@
   id: totrans-split-146
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: '|'
   id: totrans-split-147
   prefs: []
@@ -759,6 +792,7 @@
   id: totrans-split-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: '|'
   id: totrans-split-149
   prefs: []
@@ -782,6 +816,7 @@
   id: totrans-split-153
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: '|'
   id: totrans-split-154
   prefs: []
@@ -790,6 +825,7 @@
   id: totrans-split-155
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '|'
   id: totrans-split-156
   prefs: []
@@ -843,6 +879,7 @@
   id: totrans-split-165
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: '|'
   id: totrans-split-166
   prefs: []
@@ -851,6 +888,7 @@
   id: totrans-split-167
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: '|'
   id: totrans-split-168
   prefs: []
@@ -966,6 +1004,7 @@
   id: totrans-split-188
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: '|'
   id: totrans-split-189
   prefs: []
@@ -974,6 +1013,7 @@
   id: totrans-split-190
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: '|'
   id: totrans-split-191
   prefs: []
@@ -991,6 +1031,7 @@
   id: totrans-split-194
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: '|'
   id: totrans-split-195
   prefs: []
@@ -999,6 +1040,7 @@
   id: totrans-split-196
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: '|'
   id: totrans-split-197
   prefs: []
@@ -1057,6 +1099,7 @@
   id: totrans-split-208
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: '|'
   id: totrans-split-209
   prefs: []
@@ -1065,6 +1108,7 @@
   id: totrans-split-210
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: '|'
   id: totrans-split-211
   prefs: []
@@ -1138,6 +1182,7 @@
   id: totrans-split-225
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: '|'
   id: totrans-split-226
   prefs: []
@@ -1146,6 +1191,7 @@
   id: totrans-split-227
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: '|'
   id: totrans-split-228
   prefs: []
@@ -1163,6 +1209,7 @@
   id: totrans-split-231
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: '|'
   id: totrans-split-232
   prefs: []
@@ -1171,6 +1218,7 @@
   id: totrans-split-233
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: '|'
   id: totrans-split-234
   prefs: []
@@ -1188,6 +1236,7 @@
   id: totrans-split-237
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: '|'
   id: totrans-split-238
   prefs: []
@@ -1196,6 +1245,7 @@
   id: totrans-split-239
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE39]'
 - en: '|'
   id: totrans-split-240
   prefs: []
@@ -1227,6 +1277,7 @@
   id: totrans-split-245
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE40]'
 - en: '|'
   id: totrans-split-246
   prefs: []
@@ -1235,6 +1286,7 @@
   id: totrans-split-247
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE41]'
 - en: '|'
   id: totrans-split-248
   prefs: []
@@ -1252,6 +1304,7 @@
   id: totrans-split-251
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE42]'
 - en: '|'
   id: totrans-split-252
   prefs: []
@@ -1260,6 +1313,7 @@
   id: totrans-split-253
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE43]'
 - en: '|'
   id: totrans-split-254
   prefs: []
@@ -1277,6 +1331,7 @@
   id: totrans-split-257
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE44]'
 - en: '|'
   id: totrans-split-258
   prefs: []
@@ -1285,6 +1340,7 @@
   id: totrans-split-259
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE45]'
 - en: '|'
   id: totrans-split-260
   prefs: []
@@ -1320,6 +1376,7 @@
   id: totrans-split-266
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE46]'
 - en: '|'
   id: totrans-split-267
   prefs: []
@@ -1328,6 +1385,7 @@
   id: totrans-split-268
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE47]'
 - en: '|'
   id: totrans-split-269
   prefs: []
