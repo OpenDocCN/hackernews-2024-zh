@@ -122,6 +122,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Cool, now what should we do if want to handle multiple clients concurrently?
     While one client is being handled, another tries to `connect` to our server, without
     ever succeeding, as our server reaches the `accept` call only once it is done
@@ -142,6 +143,7 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The first problem with threads is how the OS allocates a stack for a new thread.
     The stack is allocated virtual memory (10mb on linux by default), and physical
     pages are only commited once the pages are actually written to. This is really
@@ -170,6 +172,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Just the files I showed you might not be enough for your system, for example
     `systemd` also sets maximums.
   id: totrans-split-34
@@ -230,6 +233,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: A bit lengthy, don't try to understand everything, just that we are dealing
     with a lot of different tasks "at once". For a compilable version, click [here](https://github.com/tontinton/echod-hog/blob/master/main.c).
   id: totrans-split-45
@@ -302,6 +306,7 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Main takeaway is that select is limited to `FD_SETSIZE` number of fds to monitor,
     which is usually 1024 (glibc). Another thing to note is that when a FD becomes
     ready, it scans all its registered FDs (`O(n)`), so when you have a lot of FDs,
@@ -404,6 +409,7 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Yeah, that''s it, just look at `libuv`''s `uv_run`:'
   id: totrans-split-74
   prefs: []
@@ -412,6 +418,7 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'And here''s `uv__run_pending` without omitting any details:'
   id: totrans-split-76
   prefs: []
@@ -420,6 +427,7 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Pretty awesome huh? This is what all Node.js applications are running on.
   id: totrans-split-78
   prefs: []
@@ -437,40 +445,48 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 考验时间：像`setTimeout`这样的东西在事件循环中是如何实现的？如果脑海中什么也没有，请尝试克隆`libuv`并阅读`src/timer.c`中`uv__run_timers`的实现。
 - en: Event Driven Development
   id: totrans-split-81
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 事件驱动开发
 - en: The programming model when using an event loop is inherently event driven, with
     each registered event having a callback to execute once it is ready.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用事件循环时的编程模型本质上是事件驱动的，每个注册事件都有一个准备好时执行的回调函数。
 - en: 'Let''s see how `echod` would look like using an imaginary event loop library
     instead (start with `serve` from the bottom):'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看使用虚构的事件循环库时`echod`会是什么样子（从底部的`serve`开始）：
 - en: '[PRE8]'
   id: totrans-split-84
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: If you worked with javascript before, this should look familiar to you.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你之前使用过 JavaScript，这看起来应该很熟悉。
 - en: 'The code will be very lightweight in terms of performance, and highly concurrent,
     but is often criticized for being:'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 从性能上来说，代码将非常轻量化，并且高度并发，但通常因以下原因而受到批评：
 - en: '**Not intuitive** - Complex for most programmers who are used to reading and
     writing synchronous code, see ["Callback Hell"](http://callbackhell.com).'
   id: totrans-split-87
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**不直观** - 对于大多数习惯于阅读和编写同步代码的程序员而言，看起来很复杂，参见["回调地狱"](http://callbackhell.com)。'
 - en: '**Hard to debug** - The call stack is very short and will not show you the
     flow of how you got to a specific breakpoint. The caller of each callback will
     always be `uv_run` in `libuv`, or `run_event_loop` in our example.'
@@ -478,50 +494,60 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**难以调试** - 调用堆栈非常短，不会显示你如何到达特定断点的流程。每个回调的调用者始终是`libuv`中的`uv_run`，或者我们示例中的`run_event_loop`。'
 - en: A lot of modern programming languages and runtimes try to solve these problems
     by letting you write code that looks synchronous while being fully asynchronous.
     In the next chapter, we're gonna learn how.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多现代编程语言和运行时试图通过让你编写看起来是同步的代码，同时实际上是完全异步的来解决这些问题。在下一章中，我们将学习如何实现。
 - en: Preemption
   id: totrans-split-90
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 抢占
 - en: Have you ever wondered how is it that you can run more than 1 thread on a computer
     with just a single CPU core?
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有没有想过，只有一个CPU核心的计算机上如何运行多个线程？
 - en: In this section, we'll go over the secret technique that enables this magic,
     called **preemption**.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本节中，我们将介绍一种称为**抢占**的秘密技术，它使这种魔术成为可能。
 - en: 'Let''s say we have the following two tasks we would like to execute concurrently:'
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们要同时执行以下两个任务：
 - en: '[PRE9]'
   id: totrans-split-94
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: What should `run_all` do to make sure that both tasks run **concurrently**?
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: '`run_all`应该做什么以确保这两个任务**并发**运行？'
 - en: If we had 2 CPU cores, we could have simply run 1 task on 1 core, which would
     mean we would run the two tasks **parallelly**, or in other words the two tasks
     run at the same time in the *real* world (at least the one we base physics on).
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们有两个CPU核心，我们可以简单地在一个核心上运行一个任务，这意味着我们可以**并行**运行两个任务，或者换句话说，在*真实*世界中（至少是我们基于物理学的世界）这两个任务同时运行。
 - en: A **concurrent** program deals with running multiple things at once, just not
     at the same time, thus they may seem **parallel** even if they're really not.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: '**并发**程序处理同时运行多个事物，但并非同时进行，因此它们可能看起来是**并行**的，即使实际上并非如此。'
 - en: One way `run_all` can achieve **concurrency** is by running 1 task for some
     amount of time, pause, and then resume running the next task, forever in a loop
     until all tasks exit for example. To magically make it appear as if it's **parallel**,
@@ -530,14 +556,17 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '`run_all`实现**并发**的一种方式是在某段时间内运行一个任务，暂停，然后继续运行下一个任务，并且永远循环，直到所有任务退出为止。为了像**并行**一样神奇地展现出来，你只需配置暂停之前的时间相对于人类经验来说非常短（例如100μs？）即可。'
 - en: '[PRE10]'
   id: totrans-split-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: But how do you pause and resume execution of code?
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，如何暂停和恢复代码的执行呢？
 - en: The answer lies in programs being deterministic state machines, as long as you
     give a program's executor (e.g. CPU for native code) the same inputs (e.g. registers,
     memory, etc...), it doesn't matter if it executes today or in a few years, the
@@ -545,11 +574,13 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案在于程序是确定性状态机，只要向程序的执行者（例如本机代码的CPU）提供相同的输入（例如寄存器、内存等），它无论是今天执行还是几年后执行，输出都将相同。
 - en: Basically, pausing a task can be implemented as copying the current state of
     the program, and resuming a task can be implemented by loading that saved state.
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本上，暂停任务可以通过复制程序的当前状态来实现，恢复任务可以通过加载保存的状态来实现。
 - en: It doesn't matter if the program runs on a real CPU or a virtual one like in
     `python`'s bytecode or on the `JVM` for example, they are all deterministic state
     machines. As long as you copy all the necessary state, the task will resume as
@@ -558,6 +589,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 程序运行在真实 CPU 上或像 `python` 的字节码或 `JVM` 这样的虚拟 CPU 上都没有关系，它们都是确定性状态机。只要复制所有必要的状态，任务将会继续进行，就像从未暂停过一样。
 - en: To make it easy to understand how you might implement preemption (saving and
     loading of program state), let's look at `setjmp.h`, which implements saving and
     loading program state in a lot of different CPU architectures, and is part of
@@ -565,43 +597,53 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了便于理解如何实现抢占（保存和加载程序状态），让我们看看 `setjmp.h`，它在许多不同的 CPU 架构中实现了保存和加载程序状态，并且是 `libc`
+    的一部分。
 - en: 'See the following example (copied directly from [wikipedia](https://en.wikipedia.org/wiki/Setjmp.h)):'
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 参见以下示例（直接从 [wikipedia](https://en.wikipedia.org/wiki/Setjmp.h) 复制）：
 - en: '[PRE11]'
   id: totrans-split-106
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Running it will output:'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 运行它将输出：
 - en: '[PRE12]'
   id: totrans-split-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: '`setjmp` saves the program state (in `buf`), and `longjmp` loads whatever is
     in `buf` to the CPU.'
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: '`setjmp` 保存程序状态（在 `buf` 中），而 `longjmp` 将 `buf` 中的任何内容加载到 CPU 中。'
 - en: 'Let''s look behind the curtains, the following is the `x86_64` assembly code
     for `setjmp` and `longjmp` in [musl](https://musl.libc.org/) (a popular `libc`
     implementation):'
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看幕后的情况，以下是 `musl`（一个流行的 `libc` 实现）中 `x86_64` 汇编代码的 `setjmp` 和 `longjmp`：
 - en: '[PRE13]'
   id: totrans-split-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Don't stress it if you don't understand assembly. The point is that saving and
     loading program state is pretty short and simple.
   id: totrans-split-112
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 如果你不理解汇编语言也不要紧。关键是保存和加载程序状态非常简短和简单。
 - en: '`setjmp` saves all callee-saved registers into `jmp_buf`. Callee-saved registers
     are registers used to hold long-lived values that should be preserved across function
     calls. `longjmp` restores the callee-saved registers stored inside a `jmp_buf`
@@ -609,6 +651,8 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '`setjmp` 将所有被调用保存的寄存器保存到 `jmp_buf` 中。被调用保存的寄存器用于保存长期存在的值，在函数调用之间应该保留。`longjmp`
+    直接将保存在 `jmp_buf` 中的被调用保存的寄存器恢复到 CPU 寄存器中。'
 - en: To the curious, the reason caller-saved registers (like `rcx` for example) are
     not saved, is because to the compiler `setjmp` is just another function call,
     meaning it will not use caller-saved registers to hold state. It assumes just
@@ -617,84 +661,103 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 对于好奇的人，不保存调用者保存的寄存器（例如 `rcx`）的原因是因为对编译器而言 `setjmp` 只是另一个函数调用，这意味着它不会使用调用者保存的寄存器来保存状态。它假定像任何函数调用一样，这些寄存器可能会被修改。
 - en: Non-Preemptive Schedulers
   id: totrans-split-115
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 非抢占调度程序
 - en: Already, we have a solid foundation to start running multiple tasks concurrently.
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们已经有了一个坚实的基础，可以开始同时运行多个任务了。
 - en: 'Instead of relying on time to pause execution of a running task, we can instead
     assume the programmer manually inserts calls to `longjmp`, see example (this time
     in C for `setjmp.h`):'
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 不依赖时间来暂停正在运行的任务，我们可以假设程序员手动插入调用 `longjmp`，参见示例（这次是 C 语言的 `setjmp.h`）：
 - en: '[PRE14]'
   id: totrans-split-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Let''s run it:'
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们运行它：
 - en: '[PRE15]'
   id: totrans-split-120
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Cool, but... There's actually a hidden bug (can you find it?).
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 很酷，但是... 实际上有一个隐藏的 bug（你能找到吗？）。
 - en: 'Let''s change `task_0` to hold some state on the stack:'
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们修改 `task_0`，在堆栈上保存一些状态：
 - en: '[PRE16]'
   id: totrans-split-123
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'Run it again:'
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次运行它：
 - en: '[PRE17]'
   id: totrans-split-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'Whoops... Because all our tasks share the same stack, each task (including
     our `main` function) may overwrite whatever is in the stack. See the following
     illustration:'
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 糟糕... 因为所有任务共享同一个堆栈，每个任务（包括我们的 `main` 函数）可能会覆盖堆栈中的任何内容。请参见下面的示例：
 - en: '[PRE18]'
   id: totrans-split-127
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: '[PRE19]'
   id: totrans-split-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: '[PRE20]'
   id: totrans-split-129
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: '[PRE21]'
   id: totrans-split-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'The fix is to create a stack for each task, and switch to it right before calling
     the task function:'
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决方法是为每个任务创建一个堆栈，并在调用任务函数之前切换到该堆栈：
 - en: '[PRE22]'
   id: totrans-split-132
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: The reason for saving the task function in the register `rax`, was to not lookup
     `tasks[i]` inside the stack, as we just changed the stack to some other memory
     location. The `asm` syntax is fully documented [here](https://gcc.gnu.org/onlinedocs/gcc/extensions-to-the-c-language-family/how-to-use-inline-assembly-language-in-c-code.html).
@@ -702,18 +765,23 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 保存任务函数在寄存器 `rax` 中的原因是为了避免在堆栈内查找 `tasks[i]`，因为我们刚刚将堆栈更改为其他内存位置。`asm` 语法在 [这里](https://gcc.gnu.org/onlinedocs/gcc/extensions-to-the-c-language-family/how-to-use-inline-assembly-language-in-c-code.html)
+    全面记录。
 - en: 'Run it one last time:'
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后再运行一次：
 - en: '[PRE23]'
   id: totrans-split-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: We have successfully implemented a user mode non-preemptive scheduler!
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们成功实现了用户模式非抢占调度程序！
 - en: In real non-preemptive (also called cooperative) systems, the runtime should
     yield when it knows that the CPU has nothing useful to do anymore in the current
     task, for example waiting on I/O. They do that by registering for I/O and move
@@ -724,10 +792,13 @@
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 在真正的非抢占式（也称为协作式）系统中，运行时应在知道 CPU 在当前任务中没有更多有用工作时让出，例如等待 I/O。他们通过注册 I/O 并将任务移动到不同的队列来做到这一点，该队列保存阻塞任务（调度器跳过运行）。一旦有了
+    I/O，他们将任务从阻塞队列移回常规队列以执行。例如，可以通过与事件循环集成来完成此操作。
 - en: 'Here are some examples of non-preemptive schedulers in popular mainstream runtimes:'
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一些流行主流运行时中的非抢占式调度器示例：
 - en: '**Rust''s [tokio](https://tokio.rs/)** - To yield, you either call `tokio::task::yield_now()`,
     or run until blocking (e.g. waiting on I/O or `tokio::time::sleep()`). In version
     0.3.1 they introduced an [automatic yield](https://tokio.rs/blog/2020-04-preemption).'
@@ -735,6 +806,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Rust 的 [tokio](https://tokio.rs/)** - 要进行让步，你可以调用`tokio::task::yield_now()`，或者运行直到阻塞（例如等待
+    I/O 或 `tokio::time::sleep()`）。在版本 0.3.1 中，他们引入了[自动让步](https://tokio.rs/blog/2020-04-preemption)。'
 - en: '**Go (prior to 1.14)** - At release (version 1.0), to yield, you would either
     call `runtime.Gosched()`, or run until blocking. In version 1.2 the scheduler
     is also invoked occasionally upon entry to a function.'
@@ -742,6 +815,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Go（1.14 版本之前）** - 在发布（版本 1.0）时，要进行让步，你可以调用`runtime.Gosched()`，或者运行直到阻塞。在版本
+    1.2 中，调度器也偶尔会在函数入口处被调用。'
 - en: '**Erlang** - In [BEAM](https://blog.stenmans.org/theBeamBook/) (erlang''s awesome
     runtime), the scheduler is invoked at function calls. Since there are no other
     loop constructs than recursion and list comprehensions, there is no way to loop
@@ -751,25 +826,31 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**Erlang** - 在[BEAM](https://blog.stenmans.org/theBeamBook/)（erlang 的强大运行时）中，调度器在函数调用时被调用。由于除了递归和列表推导没有其他循环结构，没有办法无限循环而不进行函数调用。不过，你可以通过运行本地的
+    C 代码来作弊，使用`NIF`（本地实现函数）。'
 - en: 'Non-preemptive schedulers are risky, as we assume developers remember to put
     `yield` calls when doing long computations:'
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 非抢占式调度器是有风险的，因为我们假设开发人员在进行长时间计算时记得放置`yield`调用：
 - en: '[PRE24]'
   id: totrans-split-143
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Preemptive Schedulers
   id: totrans-split-144
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 抢占式调度器
 - en: A preemptive scheduler context switches (yields) once in a while, even without
     a developer inserting yield calls.
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 抢占式调度器偶尔进行上下文切换（让出），即使没有开发人员插入让出调用。
 - en: Most modern operating systems utilize timer interrupts. The CPU receives an
     interrupt once every X amount of time is passed. The interrupt stops execution
     of whatever is currently running, and the interrupt handler calls the scheduler
@@ -777,45 +858,55 @@
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数现代操作系统使用定时器中断。CPU 每隔一段时间收到一个中断。中断停止当前正在运行的任何内容，并且中断处理程序调用调度器，决定是否进行上下文切换。
 - en: That's cool and all, but user mode applications can't register to interrupts,
     so what can we do if we want to implement a preemptive scheduler in user mode?
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 这很酷，但用户模式应用程序不能注册中断，那么如果我们想在用户模式中实现抢占式调度器，我们该怎么做呢？
 - en: One simple solution would be to utilize the kernel's preemptive scheduler. Create
     a thread that periodically sends a signal to threads running our scheduler.
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个简单的解决方案是利用内核的抢占式调度器。创建一个线程，定期向运行我们的调度器的线程发送信号。
 - en: This is exactly how Go made their scheduler preemptive in version 1.14\. By
     periodically sending signals from their monitoring thread ([runtime.sysmon](https://sobyte.net/post/2021-12/golang-sysmon/))
     to the scheduler threads running goroutines.
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 这正是 Go 在版本 1.14 中使他们的调度器变为抢占式的方式。通过周期性地从他们的监控线程（[runtime.sysmon](https://sobyte.net/post/2021-12/golang-sysmon/)）向运行
+    goroutines 的调度器线程发送信号。
 - en: 'For more info on their solution, I recommend you watch ["Pardon the Interruption:
     Loop Preemption in Go 1.14"](https://youtube.com/watch?v=1I1WmeSjRSw).'
   id: totrans-split-150
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '想了解更多关于他们解决方案的信息，我建议你观看["Pardon the Interruption: Loop Preemption in Go 1.14"](https://youtube.com/watch?v=1I1WmeSjRSw)。'
 - en: Stackful vs Stackless
   id: totrans-split-151
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 堆栈式 vs 无堆栈式
 - en: Up until now, I have been calling them tasks to not confuse you, but they have
     many different names like fibers, greenlets, user mode threads, green threads,
     virtual threads, coroutines and goroutines.
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 直到现在，我一直称它们为任务，以免让你困惑，但它们有许多不同的名称，如纤程（fibers）、greenlets、用户模式线程、绿色线程、虚拟线程、协程和
+    goroutines。
 - en: When people say threads, they usually mean OS threads (managed by the kernel
     scheduler).
   id: totrans-split-153
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 当人们说线程时，通常指的是操作系统线程（由内核调度程序管理）。
 - en: 'A coroutine is simply a program that can be paused and resumed. There are mainly
     two ways to implement them: either you allocate a stack for each coroutine (stackful),
     or you make each function marked as `async` return an object that can hold all
@@ -846,6 +937,7 @@
   id: totrans-split-157
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: '**Stackless** - If you have ever used a language with `async` & `await`, you
     used a stackless implementation. Examples include Rust and Python''s `asyncio`.
     Rust''s `async` transforms a block of code into a state machine that is not run
@@ -862,6 +954,7 @@
   id: totrans-split-159
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'Rust started with stackful prior to release, but ultimately ended up switching
     to stackless: ["Why async rust?"](https://without.boats/blog/why-async-rust/).'
   id: totrans-split-160
@@ -922,41 +1015,48 @@
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你有一个必须每5毫秒运行一次的任务，即使时间很短也必须运行怎么办？例如，在音频编程中，你需要填充一个信号（如`sin(x)`）到缓冲区中，音频设备以某个间隔从中读取。如果错过了填充此缓冲区，将导致听起来像爆裂噪音的随机信号，可能会破坏整个乐团的录音。
 - en: These kind of programs are usually called soft real time programs. Hard real
     time means missing a deadline will result in the whole system failing, for example
     autopilot and spacecrafts.
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种类型的程序通常称为软实时程序。硬实时意味着错过截止日期将导致整个系统失败，例如自动驾驶和航天器。
 - en: 'Linux has a nice answer for soft real time systems called `SCHED_DEADLINE`,
     where each thread sets the amount of time until their deadline, and the scheduler
     always runs the task that is closest to reaching the deadline:'
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: Linux 对软实时系统有一个很好的解决方案，称为`SCHED_DEADLINE`，其中每个线程设置到其截止时间的时间量，调度器始终运行接近达到截止时间的任务：
 - en: The **green** progress circle is how much time is left until the deadline.
   id: totrans-split-173
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**绿色**进度圆圈显示距离截止时间还剩多少时间。'
 - en: Follow the **pink** circle, it has a short deadline, making it run a lot more
     than others.
   id: totrans-split-174
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 关注**粉色**圆圈，它有一个短期限，使其比其他圆圈运行更频繁。
 - en: '`SCHED_FIFO` and `SCHED_RR` can also be used in soft real time systems because
     of their deterministic nature, depending on the problem you need to solve.'
   id: totrans-split-175
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`SCHED_FIFO`和`SCHED_RR`也可用于软实时系统，因为它们具有确定性质，取决于您需要解决的问题。'
 - en: To guarantee all tasks are able to run according to their configured deadline,
     `SCHED_DEADLINE` calculates and rejects threads with a configuration that will
     steal too much run time. You can learn more about it on lwn's ["Deadline scheduling"](https://lwn.net/Articles/743740/).
   id: totrans-split-176
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保证所有任务能够按其配置的截止时间运行，`SCHED_DEADLINE`计算并拒绝具有会夺取过多运行时间的配置的线程。您可以在lwn的["截止日期调度"](https://lwn.net/Articles/743740/)上了解更多信息。
 - en: For general purpose workloads, like a laptop running arbitrary processes, you
     usually want fairness. Fairness can be achieved by continuously tracking which
     processes have gotten less CPU time than others, and always run the task with
@@ -967,33 +1067,40 @@
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于像笔记本电脑运行任意进程这样的通用工作负载，通常希望公平性。公平性可以通过持续跟踪哪些进程的 CPU 时间比其他进程少，并始终运行具有最低已跟踪运行时间的任务来实现。Linux
+    的默认调度器`SCHED_OTHER`，也称为`CFS`（完全公平调度器），正是这样做的。您还可以通过设置`nice`值为进程配置优先级，其中`nice`值较低的进程将被更频繁地调度。
 - en: '`CFS` has served well for the last 26 years, but in v6.6, the new default scheduling
     algorithm is [EEVDF](https://lwn.net/Articles/925371/).'
   id: totrans-split-178
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '`CFS`已经服务了26年，但在v6.6中，新的默认调度算法是[EEVDF](https://lwn.net/Articles/925371/)。'
 - en: Multi-Core
   id: totrans-split-179
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 多核
 - en: So far, I have pretty much ignored the fact that modern machines have more than
     1 CPU core.
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我基本上忽略了现代计算机拥有多个 CPU 核心的事实。
 - en: 'The simplest way to achieve multi-core scheduling, is to do exactly as before.
     Having a global queue of tasks that are ready to run, and run them once a core
     is ready:'
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 实现多核调度的最简单方法是继续像以前一样。拥有一个全局任务队列，其中包含准备运行的任务，并在核心准备就绪后运行它们：
 - en: You just need to ensure that the task queue is thread-safe for `MPMC` operations
     (multi-producer multi-consumer), by using atomics or locks.
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 您只需确保任务队列在`MPMC`操作（多生产者多消费者）时是线程安全的，可以通过原子操作或锁来实现。
 - en: '`MPMC` queues are a lot slower than the more restrictive `SPMC` (single-producer
     multi-consumer) queues, which is why Go decided to have a fixed size `SPMC` queue
     for each scheduler (Go runs a scheduler per core configured by `GOMAXPROCS`),
@@ -1001,39 +1108,47 @@
   id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
+  zh: '`MPMC`队列比更严格的`SPMC`（单生产者多消费者）队列慢得多，这就是为什么 Go 选择为每个调度器配置一个固定大小的`SPMC`队列（Go 使用`GOMAXPROCS`配置每个核心运行一个调度器），并在`SPMC`队列满时推送到全局`MPSC`队列。'
 - en: To ensure all cores are fully utilized, when a core is free to run but has nothing
     in its local queue and there are no tasks in the global queue, it **steals** tasks
     from other local queues (which is why they are multi-consumer).
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 要确保所有核心充分利用，当一个核心处于空闲状态但本地队列中没有任务并且全局队列中也没有任务时，它会**窃取**其他本地队列的任务（这就是它们为什么是多消费者的原因）。
 - en: 'Go''s solution is so good, tokio borrowed a lot from it. I highly recommend
     reading it on their blog: ["Making the Tokio scheduler 10x faster"](https://tokio.rs/blog/2019-10-scheduler).'
   id: totrans-split-185
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: Go的解决方案非常出色，tokio从中借鉴了很多。我强烈推荐在他们的博客上阅读相关内容：["使Tokio调度器快10倍"](https://tokio.rs/blog/2019-10-scheduler)。
 - en: Conclusion
   id: totrans-split-186
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: Congratulations 🥳! You are a real hero reaching the end, hopefully you have
     learned a thing or two.
   id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 祝贺 🥳！你是一个真正的英雄，到达了终点，希望你有所收获。
 - en: The topic has a lot more to cover, the links left throughout this post are a
     great place to start exploring the endless rabbit hole of concurrency and parallelism.
   id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个主题还有很多内容需要涵盖，本文中留下的链接是探索并发和并行性无尽兔子洞的绝佳起点。
 - en: If you want to play around with the animations yourself, here's a link to the
     [code](https://github.com/tontinton/sched_animation).
   id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想自己玩弄这些动画，请点击这里查看[代码](https://github.com/tontinton/sched_animation)。
 - en: Click here to scroll back to the animation at the top.
   id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
+  zh: 点击这里返回顶部的动画。
