@@ -2,49 +2,59 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:37:44'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:37:44'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: How an empty S3 bucket can make your AWS bill explode | by Maciej Pocwierz |
     Apr, 2024 | Medium
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何一空的S3存储桶让您的AWS账单飙升 | Maciej Pocwierz | 2024年4月 | Medium
 - en: 来源：[https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1](https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1](https://medium.com/@maciej.pocwierz/how-an-empty-s3-bucket-can-make-your-aws-bill-explode-934a383cb8b1)
 - en: How an empty S3 bucket can make your AWS bill explode
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 如何一空的S3存储桶让您的AWS账单飙升
 - en: '**Update 7.05.2024** The S3 team is working on a fix:'
   id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**更新于2024年7月5日** S3团队正在修复中：'
 - en: '[https://twitter.com/jeffbarr/status/1785386554372042890](https://twitter.com/jeffbarr/status/1787844682216792163)'
   id: totrans-split-8
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[https://twitter.com/jeffbarr/status/1785386554372042890](https://twitter.com/jeffbarr/status/1787844682216792163)'
 - en: Imagine you create an empty, private AWS S3 bucket in a region of your preference.
     What will your AWS bill be the next morning?
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下，您在您偏好的地区创建了一个空的私有AWS S3存储桶。第二天早上，您的AWS账单会是多少？
 - en: A few weeks ago, I began working on a PoC of a document indexing system for
     my client. I created a single S3 bucket in the *eu-west-1* region and uploaded
     some files there for testing. Two days later, I checked my AWS billing page, primarily
@@ -54,15 +64,19 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 几周前，我开始为我的客户开发一个文档索引系统的PoC。我在*eu-west-1*地区创建了一个单独的S3存储桶，并在那里上传了一些文件进行测试。两天后，我检查了我的AWS账单页面，主要是为了确保我的操作在免费使用层限额内。但显然并不是。我的账单超过了1300美元，计费控制台显示仅在一天内就执行了将近1亿次S3
+    PUT请求！
 - en: My billed S3 usage per day, per region
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 每天每个地区我的S3账单使用情况
 - en: Where were these requests coming from?
   id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 这些请求来自哪里？
 - en: By default, AWS doesn’t log requests executed against your S3 buckets. However,
     such logs can be enabled using [AWS CloudTrail](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging.html)
     or [S3 Server Access Logging](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html).
@@ -71,11 +85,14 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 默认情况下，AWS不会记录针对您的S3存储桶执行的请求。但是，您可以使用[AWS CloudTrail](https://docs.aws.amazon.com/AmazonS3/latest/userguide/cloudtrail-logging.html)或[S3
+    Server Access Logging](https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html)来启用这些日志。启用CloudTrail日志后，我立即观察到来自多个账户或完全不属于AWS的数千次写入请求。
 - en: But why would some third parties bombard my S3 bucket with unauthorised requests?
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 但为什么会有第三方用未经授权的请求轰炸我的S3存储桶呢？
 - en: Was it some kind of DDoS-like attack against my account? Against AWS? As it
     turns out, **one of the popular open-source tools had a default configuration
     to store their backups in S3\. And, as a placeholder for a bucket name, they used…
@@ -85,46 +102,55 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的账户遭受了某种类似于DDoS的攻击吗？是针对AWS的吗？事实证明，**一个流行的开源工具**有一个默认配置，将它们的备份存储在S3中。而且，作为存储桶名称的占位符，它们竟然使用了……和我自己的存储桶相同的名称。这意味着每次使用默认配置值部署这个工具时，它们都试图将备份存储在我的S3存储桶中！
 - en: 'Note: I can’t disclose the name of the tool I’m referring to, as that would
     put the impacted companies at risk of data leak (as explained further).'
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 注意：我不能透露我所指的工具名称，因为这可能会使受影响的公司面临数据泄露的风险（详细解释见后文）。
 - en: 'So, a horde of misconfigured systems is attempting to store their data in my
     private S3 bucket. But why should I be the one paying for this mistake? Here’s
     why:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，一群配置错误的系统正试图将它们的数据存储在我的私人S3存储桶中。但为什么我应该为这个错误买单呢？原因如下：
 - en: S3 charges you for unauthorized incoming requests
   id: totrans-split-18
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: S3对未经授权的进入请求收费
 - en: 'This was confirmed in my exchange with AWS support. As they wrote:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这在我与AWS支持的交流中得到了确认。他们写道：
 - en: Yes, S3 charges for unauthorized requests (4xx) as well[1]. That’s expected
     behavior.
   id: totrans-split-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 是的，S3对未经授权的请求（4xx）收费[1]。这是预期的行为。
 - en: 'So, if I were to open my terminal now and type:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，如果我现在打开终端并键入：
 - en: '[PRE0]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: I would receive an *AccessDenied* error, but you would be the one to pay for
     that request. And I don’t even need an AWS account to do so.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我会收到一个*AccessDenied*错误，但实际上是您要为该请求付费。而我甚至不需要一个AWS账户来执行这些操作。
 - en: 'Another question was bugging me: why was over half of my bill coming from the
     *us-east-1* region? I didn’t have a single bucket there! The answer to that is
     that **the S3 requests without a specified region default to *us-east-1* and are
@@ -132,11 +158,13 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一个问题一直困扰着我：为什么我账单的一半以上来自*us-east-1*区域？我根本没有一个存储桶在那里！答案是，**未指定区域的S3请求默认为*us-east-1*并根据需要重定向。存储桶的所有者为此重定向请求额外支付费用。**
 - en: The security aspect
   id: totrans-split-25
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 安全方面
 - en: We now understand why my S3 bucket was bombarded with millions of requests and
     why I ended up with a huge S3 bill. At that point, I had one more idea I wanted
     to explore. If all those misconfigured systems were attempting to back up their
@@ -147,17 +175,20 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们现在理解了为什么我的S3存储桶被数百万次请求轰炸，以及为什么我最终面对巨额S3账单。那时，我有一个想要探索的新想法。如果所有这些配置错误的系统都试图将其数据备份到我的S3存储桶中，为什么不让它们这样做呢？**我为公开写入打开了我的存储桶，并在不到30秒的时间内收集了超过10GB的数据**。当然，我不能透露这些数据的来源。但这让我惊讶于一个无辜的配置失误如何导致危险的数据泄露！
 - en: What did I learn from all this?
   id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 我从这一切中学到了什么？
 - en: 'Lesson 1: Anyone who knows the name of any of your S3 buckets can ramp up your
     AWS bill as they like.'
   id: totrans-split-28
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第一课：任何人只要知道你的任何S3存储桶的名称，就可以随意增加你的AWS账单。
 - en: Other than deleting the bucket, there’s nothing you can do to prevent it. You
     can’t protect your bucket with services like CloudFront or WAF when it’s being
     accessed directly through the S3 API. Standard S3 PUT requests are priced at just
@@ -166,31 +197,38 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了删除存储桶之外，你无法做任何事情来防止这种情况发生。当通过S3 API直接访问时，你无法通过CloudFront或WAF等服务来保护你的存储桶。标准的S3
+    PUT请求仅需[$0.005每1000次请求](https://aws.amazon.com/s3/pricing/)，但单台机器可以轻松执行数千次此类请求。
 - en: 'Lesson 2: Adding a random suffix to your bucket names can enhance security.'
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第二课：向你的存储桶名称添加随机后缀可以增强安全性。
 - en: This practice reduces vulnerability to misconfigured systems or intentional
     attacks. At least avoid using short and common names for your S3 buckets.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种做法可以减少系统配置错误或有意攻击的风险。至少避免使用短且常见的S3存储桶名称。
 - en: 'Lesson 3: When executing a lot of requests to S3, make sure to explicitly specify
     the AWS region.'
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第三课：当执行大量的对S3的请求时，确保明确指定AWS区域。
 - en: This way you will avoid additional costs of S3 API redirects.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样你将避免额外的S3 API重定向费用。
 - en: 'Aftermath:'
   id: totrans-split-34
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 事后反思：
 - en: I reported my findings to the maintainers of the vulnerable open-source tool.
     They quickly fixed the default configuration, although they can’t fix the existing
     deployments.
@@ -198,6 +236,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我向易受攻击的开源工具的维护者报告了我的发现。他们很快修复了默认配置，尽管无法修复现有的部署。
 - en: I notified the AWS security team. I suggested that they restrict the unfortunate
     S3 bucket name to protect their customers from unexpected charges, and to protect
     the impacted companies from data leaks. But they were unwilling to address misconfigurations
@@ -206,20 +245,24 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我已经通知了AWS安全团队。我建议他们限制不幸的S3存储桶名称，以保护他们的客户免受意外收费，并保护受影响的公司免受数据泄露。但是他们不愿意解决第三方产品的配置错误。
 - en: I reported the issue to two companies whose data I found in my bucket. They
     did not respond to my emails, possibly considering them as spam.
   id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我向两家在我的存储桶中发现其数据的公司报告了这个问题。他们没有回复我的邮件，可能将其视为垃圾邮件。
 - en: AWS was kind enough to cancel my S3 bill. However, they emphasized that this
     was done as an exception.
   id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: AWS很友好地取消了我的S3账单。然而，他们强调这是一次例外。
 - en: Thank you for taking the time to read my post. I hope it will help you steer
     clear of unexpected AWS charges!
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢您抽出时间阅读我的帖子。希望这能帮助您避免意外的AWS费用！
