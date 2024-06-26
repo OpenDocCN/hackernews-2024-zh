@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 15:02:29'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 15:02:29
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: WebKitGTK and WPEWebKit Switching to Skia for 2D Graphics Rendering | Carlos
     Garcia Campos
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: WebKitGTK 和 WPEWebKit 将转向 Skia 进行 2D 图形渲染 | Carlos Garcia Campos
 - en: 来源：[https://blogs.igalia.com/carlosgc/2024/02/19/webkit-switching-to-skia-for-2d-graphics-rendering/](https://blogs.igalia.com/carlosgc/2024/02/19/webkit-switching-to-skia-for-2d-graphics-rendering/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blogs.igalia.com/carlosgc/2024/02/19/webkit-switching-to-skia-for-2d-graphics-rendering/](https://blogs.igalia.com/carlosgc/2024/02/19/webkit-switching-to-skia-for-2d-graphics-rendering/)
 - en: In recent years we have had an ongoing effort to improve graphics performance
     of the WebKit GTK and WPE ports. As a result of this we shipped features like
     threaded rendering, the DMA-BUF renderer, or proper vertical retrace synchronization
@@ -34,6 +40,8 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 近年来，我们一直在努力提高 WebKit GTK 和 WPE 端口的图形性能。由此，我们推出了线程渲染、DMA-BUF 渲染器以及垂直重帧同步（VSync）等功能。尽管这些改进有助于使
+    WebKit 在某些场景下保持竞争力甚至表现优于其他引擎，但我们很久以前就清楚，基于 CPU 的 2D 渲染器已经接近极限。
 - en: There was an attempt at making Cairo support GPU rendering, which did not work
     particularly well due to the library being designed around stateful operation
     based upon the PostScript model—resulting in a convenient and familiar API, great
@@ -43,6 +51,8 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 有过一次尝试使开罗支持 GPU 渲染，但由于该库设计基于基于后置脚本模型的有状态操作，效果并不尤为理想——尽管提供了便利且熟悉的 API，出色的输出质量，但重定向困难，且在某些特别慢的情况下表现不佳。与此同时，其他网络引擎已将更多工作转移到
+    GPU 上，包括 2D 渲染，在这些操作中速度显著提升。
 - en: We checked all the available 2D rendering libraries we could find, but none
     of them met all our requirements, so we decided to try writing our own library.
     At the beginning it worked really well, with impressive results in performance
@@ -58,6 +68,9 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们检查了所有可用的 2D 渲染库，但没有一个符合我们所有的要求，因此我们决定尝试编写我们自己的库。起初它表现非常出色，甚至在与其他基于 GPU 的替代方案比较时也有惊人的性能表现。然而，找到性能和渲染质量之间的平衡证明是一项挑战，因此在继续开发之前，我们决定尝试其他替代方案。我们的下一个选择一直是
+    Skia。我们最初没有选择 Skia 的主要原因是它没有提供一个公共的具有 API 稳定性的库，这样发行版可以打包和我们可以像大多数依赖项一样使用。它仍然不是我们想要的，但现在我们在
+    WebKit 中维护像 ANGLE 和 libwebrtc 这样的第三方依赖项已经积累了更多经验，因此这也不再是一个阻碍。
 - en: In December 2023 we made the decision of giving Skia a try internally and see
     if it would be worth the effort of maintaining the project as a third party module
     inside WebKit. In just one month we had implemented enough features to be able
@@ -78,6 +91,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2023年12月，我们决定在内部试用Skia，看看是否值得将项目作为WebKit的第三方模块进行维护。仅仅一个月内，我们已经实现了足够多的功能，能够运行所有MotionMark测试。桌面端的结果非常令人印象深刻，全局MotionMark得分提高了一倍。我们仍然需要在嵌入式设备上进行更多测试，因为WPE的实际目标是这些设备，但很明显，至少在桌面端，即使这个非常初步的实现（甚至没有进行优化，我们保持了当前为CPU渲染优化的架构），我们的结果要比CPU渲染好得多。因此，我们决定选择Skia，继续在嵌入式设备上进行更多测试和工作。在我们尝试的板子上，与CPU渲染相比，我们也获得了更好的结果，尽管差距没有那么大，这意味着在较低功率GPU和当前为CPU渲染设计的架构下，我们离CPU渲染并不遥远。这就是为什么我们设法保持WPE在嵌入式设备上具有竞争力的原因，但Skia不仅会带来性能提升，还将简化代码，并允许我们实现新功能。因此，我们已经有足够的数据做出最终决定，选择Skia。
 - en: In February 2024 we reached a point in which our Skia internal branch was in
     an “upstreamable” state, so there was no reason to continue working privately.
     We met with several teams from Google, Sony, Apple and Red Hat to discuss with
@@ -90,6 +104,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2024年2月，我们的Skia内部分支已经达到了“可上游”的状态，因此没有理由继续私下工作。我们与来自Google、索尼、苹果和红帽的几个团队会面，讨论了我们从Cairo转向Skia的意图，并尽快将现有工作上游化。他们都给予了非常积极的反馈，所以我们向WebKit开发者邮件列表发送了一封公开邮件。同样，我们也只收到了积极的反馈，因此我们开始准备将Skia导入WebKit的补丁，并为已经在主分支上实现的WPE端口添加CMake集成和初始Skia实现。
 - en: We will continue working on the Skia implementation in upstream WebKit, and
     we also have plans to change our architecture to better support the GPU rendering
     case in a more efficient way. We don’t have a deadline, it will be ready when
@@ -100,3 +115,4 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将继续在上游WebKit中开发Skia实现，并计划改进我们的架构，以更高效地支持GPU渲染。我们没有截止日期，当我们实现了当前由Cairo支持的所有功能时，它将准备就绪，我们不打算在切换时出现退步。目前我们专注于WPE端口，但是在某个时候我们也会开始在GTK上工作，其他使用cairo的端口最终也会开始获得Skia支持。
