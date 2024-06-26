@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:46:19'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:46:19'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Architecture Pitfalls: Don’t use your ORM entities for everything — embrace
     the SQL!'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 架构陷阱：不要把你的ORM实体用于一切 —— 接受SQL吧！
 - en: 来源：[https://www.blackparrotlabs.io/post/architecture-pitfalls-dont-use-your-orm-entities-for-everything](https://www.blackparrotlabs.io/post/architecture-pitfalls-dont-use-your-orm-entities-for-everything)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.blackparrotlabs.io/post/architecture-pitfalls-dont-use-your-orm-entities-for-everything](https://www.blackparrotlabs.io/post/architecture-pitfalls-dont-use-your-orm-entities-for-everything)
 - en: When designing an application with JPA/Hibernate, I’ve encountered a common
     pattern that suggests developers should channel as many of their interactions
     as possible with their database via their persistence entities and ORM, avoiding
@@ -32,89 +38,107 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 当设计一个应用程序时，使用JPA/Hibernate时，我遇到了一个常见的模式，建议开发人员尽可能通过它们的持久性实体和ORM与他们的数据库进行交互，尽量避免编写SQL。
 - en: ‍
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: This mostly seems to stem from a belief that this approach will maximise model
     flexibility and database portability. Sometimes it's also an aversion to learning
     SQL.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 这主要源于一种信念，即这种方法将最大化模型的灵活性和数据库的可移植性。有时这也是对学习SQL的厌恶。
 - en: ‍
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: There’s a grain of truth to the portability argument, but in practice, restricting
     yourself so significantly is usually a bad decision for a few reasons that I'll
     outline in this post.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于可移植性的论点有一定的真实性，但实际上，因为几个原因，将自己限制得如此严格通常是一个不好的决定，我将在这篇文章中详细阐述。
 - en: ‍
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: '**Will you actually need to change between fundamentally different database
     technologies?**'
   id: totrans-split-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**你真的需要在完全不同的数据库技术之间切换吗？**'
 - en: ‍
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: It can be helpful to survey a few business and technical aspects of the project
     to see what latitude you can grant yourself.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过调查项目的几个商业和技术方面，看看你可以给自己多大的自由度可能会有所帮助。
 - en: ‍
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Validate whether you really need portability between SQL and NoSQL databases.
     If you assess that a relational data model is a good match for your requirements,
     it's quite unlikely you will change to a completely different model later on.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 验证一下你是否真的需要在SQL和NoSQL数据库之间实现可移植性。如果你评估出关系数据模型与你的需求非常匹配，那么很可能你不会在以后完全转换到一个完全不同的模型。
 - en: ‍
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Usually, it is not worth spending too much effort trying to preserve the ability
     to switch to an alternative storage technology (unless you are absolutely certain
     you need it).
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，花费过多的精力来保留切换到替代存储技术的能力是不值得的（除非你非常确定你需要它）。
 - en: ‍
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Decisions in this area may fall to your technical architects and product management.
     You should make them aware of the burdens they are imposing with requirements
     like this.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一领域的决策可能会由你的技术架构师和产品管理来决定。你应该让他们意识到，他们对这些要求所施加的负担。
 - en: ‍
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: A much more common real-world requirement is portability between different SQL
     databases and versions — especially if you are an application vendor with multiple
     customers who might prefer to use different databases. More on this later.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 更常见的实际需求是在不同的SQL数据库和版本之间实现可移植性 —— 特别是如果你是一个拥有多个客户可能更喜欢使用不同数据库的应用程序供应商。稍后再详细讨论。
 - en: ‍
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: As an aside, good architectural practices (such as the use of [Hexagonal Architecture](https://jmgarridopaz.github.io/content/hexagonalarchitecture.html))
     will make it possible for you to refactor to a new storage technology in future
     without breaking public interfaces, which will almost certainly be a better approach
@@ -124,19 +148,23 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 顺便说一句，良好的架构实践（如使用[六边形架构](https://jmgarridopaz.github.io/content/hexagonalarchitecture.html)）将使您能够在将来对新的存储技术进行重构而不会破坏公共接口，这几乎肯定比试图完全将实现代码从其底层持久性技术抽象出来要好得多。
 - en: ‍
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: '**Don’t run away from SQL, embrace it!**'
   id: totrans-split-26
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**不要逃避SQL，拥抱它吧！**'
 - en: ‍
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: I suspect one of the greatest lies ever told in web application development
     is that if you use an ORM you can avoid writing and understanding SQL, “it’s just
     an implementation detail”. That might be true at first, but once you go beyond
@@ -144,49 +172,60 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我怀疑在Web应用程序开发中曾经讲过的最大谎言之一是，如果你使用ORM，你可以避免编写和理解SQL，“这只是一个实现细节”。起初这可能是真的，但一旦你超越基础知识，这个说法很快就会不复存在。
 - en: ‍
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: As an example, I quite commonly see the *findAll* plus filter antipattern. This
     is when you fetch all records from a collection and then use your application
     to perform some simple filtering to include/exclude records.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 举例来说，我经常看到*findAll*加过滤器反模式。这是当你从集合中获取所有记录，然后使用应用程序执行一些简单的过滤以包含/排除记录时。
 - en: ‍
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: It’s much better to let the database do this kind of filtering. After all, it’s
     what all of the clever folk who work on databases spend a lot of time and effort
     optimising.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 更好的做法是让数据库执行这种类型的过滤。毕竟，所有致力于数据库工作的聪明人花了大量时间和精力来优化这个过程。
 - en: ‍
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: For most ORMs you have the option of writing analogues to SQL which can get
     you quite a long way. For example, JPA has JPQL and Hibernate has HQL. These let
     you build abstracted queries that should work on all databases that your ORM supports.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于大多数 ORM，你可以选择编写类似于 SQL 的语言，这可以让你走得更远。例如，JPA 有 JPQL，Hibernate 有 HQL。它们允许你构建抽象的查询，在所有
+    ORM 支持的数据库上都能工作。
 - en: ‍
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: The implication of this is that your team needs to embrace SQL and understand
     how to use it, rather than avoiding it by using application code instead.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着你的团队需要接受 SQL，并理解如何使用它，而不是通过应用程序代码来避免它。
 - en: ‍
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: 'To dispel a common source of anxiety on this: you don’t need to be a SQL guru
     to get started and become familiar with what you will need for the vast majority
     of your implementation requirements. There are also excellent resources and books
@@ -194,56 +233,69 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 要消除这种普遍的焦虑源：你并不需要成为 SQL 大师才能开始并熟悉你在大多数实现需求中需要的内容。还有很多优秀的资源和书籍可供参考，下面我会提供一些链接。
 - en: ‍
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: Contrary to some hyperbolic claims in the past, SQL isn’t going anywhere and
     is not just a legacy technology. Basic SQL knowledge is a good investment in your
     career and you will find it useful all over the place.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 与过去一些夸张的说法相反，SQL 并没有消失，也不仅仅是传统技术。掌握基础的 SQL 知识对你的职业生涯是一个良好的投资，在很多地方你会发现它非常有用。
 - en: ‍
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: '**Escaping the Native SQL trap **'
   id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**避免陷入本地 SQL 陷阱**'
 - en: ‍
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: ORM SQL analogues like JPQL will only get you so far, once you start doing more
     complex stuff you will find that you are straying beyond what is possible (your
     mileage will vary on this, depending on which ORM and version you are using).
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: ORM SQL 类似语言如 JPQL 只能帮你走得更远，一旦你开始做更复杂的事情，你会发现你超出了 ORM 和版本所支持的范围（这取决于你使用的 ORM
+    和版本，结果可能有所不同）。
 - en: ‍
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: For example, if you want to create a materialised view, triggers, more complex
     query structures, etc, you usually won’t find this in your ORM.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果你想创建一个物化视图、触发器、更复杂的查询结构等，你通常在 ORM 中找不到这些功能。
 - en: ‍
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: 'There are broadly two reasonable solutions to this:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般有两种合理的解决方案：
 - en: ‍
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: 1) Write strictly standards-compliant native SQL. This can work reasonably well
     for simpler situations, but many databases are not fully SQL standard compliant,
     so you will get some unwelcome surprises that require refactoring to find the
@@ -251,10 +303,12 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 1) 严格遵守标准的本地 SQL 编写。对于较简单的情况，这可能效果还不错，但许多数据库并不完全符合 SQL 标准，因此你可能会遇到一些意想不到的问题，需要重构以找到最低公共分母。
 - en: ‍
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: 2) Use a fluent SQL builder like [jOOQ](https://www.jooq.org) to handle the
     problem of “what SQL should I produce for this statement” on your behalf. This
     lets you write your query the way you prefer to write it, and jOOQ will figure
@@ -263,10 +317,13 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 2) 使用像[jOOQ](https://www.jooq.org)这样的流畅 SQL 构建工具来代表你处理“这个语句应该生成什么 SQL”。这样你可以按照自己喜欢的方式编写查询，而
+    jOOQ 将为你的目标数据库和版本找到正确的 SQL 语句。其他语言也存在类似的替代品。
 - en: ‍
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: As of today, I would say that the latter approach is better if you can go that
     direction — getting stuck maintaining native SQL can be a real hassle if you need
     to support multiple databases. If possible, let a library like jOOQ handle it
@@ -274,29 +331,36 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为如果可能的话，后一种方法更好 —— 如果你可以朝这个方向发展的话。维护本地 SQL 可能会很麻烦，特别是如果你需要支持多个数据库。如果可能，让像
+    jOOQ 这样的库来处理吧！
 - en: ‍
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: '**Programmatic query building**'
   id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '**编程式查询构建**'
 - en: ‍
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: This is Java-specific, but I strongly recommend avoiding the JPA Criteria API.
     By modern standards, the design of the criteria builder is byzantine, and people
     find it extremely difficult to comprehend and maintain the code.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这与 Java 相关，但我强烈建议避免使用 JPA Criteria API。按现代标准来看，这个查询构建器的设计复杂且难以理解和维护。
 - en: ‍
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
 - en: 'Thankfully, there are now some great alternatives that won’t give you a headache.
     Again, two solutions that I can personally recommend are: [jOOQ](https://www.jooq.org)
     and [BlazePersistence](https://persistence.blazebit.com).'
