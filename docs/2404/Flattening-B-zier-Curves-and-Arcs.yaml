@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: Unclassified'
 - en: 'date: 2024-05-27 13:05:24'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:05:24'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Flattening Bézier Curves and Arcs
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 展平贝塞尔曲线和圆弧
 - en: 来源：[https://minus-ze.ro/posts/flattening-bezier-curves-and-arcs/](https://minus-ze.ro/posts/flattening-bezier-curves-and-arcs/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://minus-ze.ro/posts/flattening-bezier-curves-and-arcs/](https://minus-ze.ro/posts/flattening-bezier-curves-and-arcs/)
 - en: Intro
   id: totrans-split-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 简介
 - en: When processing curves it’s much easier to convert them to a simpler form and
     work with that, instead of manipulating the curves directly. In this blog post
     I will present three easy ways to convert quadratics, cubics, and elliptical arcs
@@ -43,6 +50,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在处理曲线时，将其转换为更简单的形式并处理，要比直接操作曲线容易得多。在本文中，我将介绍三种简单的方法将二次、三次和椭圆弧转换为线段序列。这些线段几乎可以轻松解决计算[弧长](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/pathLength)或[虚线偏移](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-dashoffset)等问题。如果您的渲染器已经能够处理由折线封闭的路径，这些线段还可以简化曲线的渲染过程，这比直接渲染曲线要容易得多。如果您希望了解贝塞尔曲线的一般信息，请参阅[贝塞尔曲线入门](https://pomax.github.io/bezierinfo/)或[贝塞尔曲线的美丽](https://www.youtube.com/watch?v=aVwxzDHniEw)。
 - en: 'While it’s a pretty niche area, I actually needed a memory-efficient algorithm
     for curve flattening when I was working with a vector renderer on a microcontroller.
     The default implementation was using way too much memory: it generated a ton of
@@ -53,6 +61,8 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管这是一个相当小众的领域，但我实际上在与微控制器上的矢量渲染器合作时，确实需要一个内存高效的曲线展平算法。默认实现使用了太多内存：它生成了大量线条并将它们全部存储在数组中。对于每个曲线，都会存储数百条线，这远远超出了我的承受能力
+    - 即使是非常基本的场景，客户的内存也会不够用。更不用说整个过程也非常慢。
 - en: 'That was because the library was using the reference implementation of OpenVG!
     In there, a whopping 256 lines are generated for every quadratic/cubic Bézier
     curve, and the same applies to arcs too. OpenVG-RI simply samples the curves at
@@ -67,39 +77,46 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 那是因为该库使用的是OpenVG的参考实现！在这里，每个二次/三次贝塞尔曲线以及圆弧都生成了惊人的256条线。OpenVG-RI简单地在均匀分布的t值处对曲线进行采样，并从那里生成线条。证明：[这里](https://github.com/eendeego/openvg-ri/blob/952aaf2699729203731e8a28eefacd2d47366d50/ri/src/riDefs.h#L118)，[这里](https://github.com/eendeego/openvg-ri/blob/952aaf2699729203731e8a28eefacd2d47366d50/ri/src/riPath.cpp#L2012)，[这里](https://github.com/eendeego/openvg-ri/blob/952aaf2699729203731e8a28eefacd2d47366d50/ri/src/riPath.cpp#L2076)和[这里](https://github.com/eendeego/openvg-ri/blob/952aaf2699729203731e8a28eefacd2d47366d50/ri/src/riPath.cpp#L2244)。作为一个参考实现，理所当然地不可能是某种高效方法。它更注重确保正确地渲染事物，而不是效率。
 - en: Thankfully though, it turns out we can flatten curves with far fewer segments
     without even sacrificing quality that much. And all of that without needing recursive
     subdivisions!
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，事实证明我们可以用更少的线段来展平曲线，甚至在不牺牲太多质量的情况下。而且所有这些都不需要递归细分！
 - en: Flattening Quadratic Bézier Curves
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 展平二次贝塞尔曲线
 - en: 'The case of flattening quadratics has already been taken care of by Raph Levien.
     He [presents](https://raphlinus.github.io/graphics/curves/2019/12/23/flatten-quadbez.html)
     a method that:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于平面化二次曲线的情况已经由 Raph Levien 处理过。他[介绍了](https://raphlinus.github.io/graphics/curves/2019/12/23/flatten-quadbez.html)一种方法：
 - en: Can tell you up-front how many segments it will generate beforehand.
   id: totrans-split-13
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可以提前告知您将生成多少段。
 - en: Can generate each segment completely independently, without any state to keep
     track of.
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可以完全独立地生成每个段，无需跟踪任何状态。
 - en: 'Is adaptive: it doesn’t just split the curve in half repeatedly.'
   id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 是自适应的：它不只是重复将曲线分成两半。
 - en: Lets you tune the quality and performance by decreasing the tolerance parameter
     for higher quality output, or increasing the tolerance parameter to generate fewer
     segments.
@@ -107,6 +124,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 允许您通过减少容差参数来提高输出质量和性能，或增加容差参数以生成更少的段。
 - en: Is not recursive, unlike the [usual approach](https://hcklbrrfnn.files.wordpress.com/2012/08/bez.pdf)
     in which a De Casteljau subdivision is used. The consequence of the recursive
     nature of the De Casteljau subdivision is that you don’t know in advance how many
@@ -117,6 +135,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 不像[通常的方法](https://hcklbrrfnn.files.wordpress.com/2012/08/bez.pdf)那样是递归的，其中使用
+    De Casteljau 细分。De Casteljau 细分的递归性质的结果是，您无法预先知道将生成多少段，而计算这些段也不是独立的过程。您必须以某种方式存储\(
+    t \) 值，仅在此之后才能处理它们。
 - en: Play around with it by moving the control points and changing the tolerance
     value, which I have named \(\varepsilon\). Keep in mind that for demonstration
     purposes the curve is actually stroked using the generated lines, which makes
@@ -127,6 +148,7 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过移动控制点和更改命名为\( \varepsilon \)的容差值进行调整。请记住，出于演示目的，实际上将使用生成的线条来描边曲线，这使得其看起来比使用它们来渲染填充路径时要差。实际上，即使将容差设置为0.25，质量也非常好。[这里是](/glyph_36_smart_subdivision_test.png)使用容差设置为0.25渲染的`@`字形的一个示例（字形的所有曲线均为二次曲线）。依我看来，这已经足够好看了。
 - en: 'I had to tweak the original algorithm a bit: if you draw the quadratic in a
     way that all its points are collinear and the end point is between the start point
     and control point, then a straight line between the start and end point will be
@@ -140,6 +162,8 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不得不稍微调整原算法：如果您绘制的二次曲线上的所有点共线，并且终点位于起点和控制点之间，那么将绘制起点和终点之间的直线。不管容差设置为多少，都会发生这种情况，这实际上并不正确。对此的一个快速解决方法是在仅生成一个段时检查，计算二次曲线导数为0的\(
+    t \) 值，并使用该值生成两个或三个段。这种解决方法仍然不完全准确，但在大多数情况下提供了很好的估计。如果需要更高的精度，可以使用传统的递归方法。即使使用非常小的容差，生成的段也不会很多，因此成本不高。
 - en: This flattening method is not only memory-efficient but also has excellent performance.
     The code is simple too. If you want to see the code for all the solutions in this
     blog post, you can do that [here](/flattening-bezier-curves-and-arcs.js). Keep
@@ -150,11 +174,13 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种平面化方法不仅内存效率高，而且性能也非常优秀。代码也很简单。如果您想看到本博文所有解决方案的代码，可以在[此处](/flattening-bezier-curves-and-arcs.js)查看。请记住，对于每个展示的方法，完全可以创建一个迭代器，在需求时计算线条，而无需额外内存。我将它们存储在数组中，以简化处理。如果愿意，您也可以将它们全部写成一个大的`fold`。
 - en: Flattening Cubic Bézier Curves
   id: totrans-split-21
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 平面化立方贝塞尔曲线
 - en: 'When it comes to cubics, there is [this old Caffeine Owl post](https://web.archive.org/web/20150403003715/http://www.caffeineowl.com/graphics/2d/vectorial/cubic2quad01.html)
     that explains an algorithm which maintains pretty much all good properties of
     the one for quadratics. More precisely, we can convert a cubic to a sequence of
@@ -163,30 +189,38 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 当涉及到立方体时，有 [这篇旧的 Caffeine Owl 帖子](https://web.archive.org/web/20150403003715/http://www.caffeineowl.com/graphics/2d/vectorial/cubic2quad01.html)
+    解释了一个算法，保持了几乎所有好的属性，正如之前的二次型那样。更确切地说，我们可以将一个立方体转换为一系列二次型，然后使用之前的方法将它们转换为线段。考虑一个立方体贝塞尔曲线的多项式形式：
 - en: $$B(t) = a + b t + c t^2 + d t^3$$
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: $$B(t) = a + b t + c t^2 + d t^3$$
 - en: 'With:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 'With:'
 - en: $$a = P_0$$
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: $$a = P_0$$
 - en: $$b = 3 (P_1 - P_0)$$
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: $$b = 3 (P_1 - P_0)$$
 - en: $$c = 3 (P_2 - 2 P_1 + P_0)$$
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: $$c = 3 (P_2 - 2 P_1 + P_0)$$
 - en: $$d = P_3 - 3 P_2 + 3 P_1 - P_0$$
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: $$d = P_3 - 3 P_2 + 3 P_1 - P_0$$
 - en: 'Where \(0.0 \le t \le 1.0\) is the parameter along the curve, \(P_0\) is the
     start point of the cubic, \(P_1\) and \(P_2\) are the control points, and \(P_3\)
     is the end point. If the third degree term is close enough to zero, then we can
@@ -196,29 +230,36 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中 \(0.0 \le t \le 1.0\) 是曲线上的参数，\(P_0\) 是立方体的起点，\(P_1\) 和 \(P_2\) 是控制点，\(P_3\)
+    是终点。如果三次项足够接近于零，我们可以很好地用二次型近似我们的立方体。我们可以利用这个事实，并根据第三次项导出一个基于误差的度量，正如上述链接的帖子所解释的：
 - en: $$err = |P_3 - 3 P_2 + 3 P_1 - P_0|$$
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: $$err = |P_3 - 3 P_2 + 3 P_1 - P_0|$$
 - en: $$|P(x, y)| = \sqrt{x^2 + y^2}$$
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: $$|P(x, y)| = \sqrt{x^2 + y^2}$$
 - en: 'Using this metric can estimate how many cubics we’ll need. Given some tolerance
     parameter, we can obtain:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这个度量可以估计我们需要多少个立方体。根据一些公差参数，我们可以得到：
 - en: $$n = \left(\frac{x^2 + y^2}{\frac{36^2}{3} tolerance^2}\right)^\frac{1}{6}$$
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: $$n = \left(\frac{x^2 + y^2}{\frac{36^2}{3} tolerance^2}\right)^\frac{1}{6}$$
 - en: As the number of quadratics we need. The math is a bit arcane, but thankfully
     smart people have already done it for us and we can use it for what we want to
     achieve.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像我们需要的二次型数量一样。数学有些晦涩，但幸运的是聪明的人已经为我们做好了，我们可以用它来实现我们想要的目标。
 - en: 'Now we can use this number to split the cubic at every \(\frac{1}{n}\) step
     as the \(t\) value, obtaining smaller cubics. And then each of these smaller cubics
     can be approximated by a quadratic. To get the cubic Bézier curve between two
@@ -230,12 +271,17 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们可以使用这个数字来在每个 \(\frac{1}{n}\) 步作为 \(t\) 值拆分立方体，获取更小的立方体。然后，每个这些更小的立方体可以通过二次型进行近似。为了获取两个参数
+    \([t_0, t_1]\) 之间的立方体贝塞尔曲线，可以使用开花，正如[这里](https://math.stackexchange.com/a/4173517)所解释的。开花只是
+    De Casteljau 细分算法的扩展，在这个算法中，我们计算对我们有用的所有相关点，这些点不过是一系列线性插值。我们可以同时显示两次细分的运行，分别针对
+    \(t_0\) 和 \(t_1\)，从中直观地获取中间的立方体：
 - en: The essence is computing the interpolation for each line on which the points
     on the curve evaluated at \(t_0\) and \(t_1\) reside, but for the other \(t\)
     value. This will give us the control points for the cubic in the middle.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 本质上是计算插值，对于曲线上的每一条线，评估在 \(t_0\) 和 \(t_1\) 处的点，但对于其他 \(t\) 值。这将为我们提供中间立方体的控制点。
 - en: Then converting a cubic to a quadratic can be done by getting the intersection
     point between the lines formed by \(P_0P_1\) and \(P_3P_2\), and using that as
     the control point for our new quadratic. Of course this approximation only really
@@ -244,11 +290,13 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，通过获取由 \(P_0P_1\) 和 \(P_3P_2\) 形成的线的交点来将立方体转换为二次型，并将其用作新二次型的控制点。当然，这种近似只有在立方体足够接近二次型时才有效。由于我们只在细分步骤中执行此操作，这样做是可以接受的。
 - en: 'Flattening quadratics has already been covered. All that remains is putting
     all the pieces together:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 平铺二次型已经讨论过了。现在要做的就是把所有的片段组合起来：
 - en: Play around with the curve, its tolerance value (\(\varepsilon_c\)), and the
     tolerance value for the quadratics generated inside of it (\(\varepsilon_q\)).
     I remind you again that result will look a bit worse here compared to real use
@@ -256,11 +304,13 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 调整曲线、其公差值（\(\varepsilon_c\)）以及其中生成的二次曲线的公差值（\(\varepsilon_q\)）。我再次提醒您，由于生成的线段是描边的，所以结果在这里看起来可能会比实际用例稍逊色。
 - en: Flattening Arcs
   id: totrans-split-40
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扁平化弧线
 - en: 'Another graphics primitive that is frequently used is the elliptical arc. In
     the [SVG arc notation](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#arcs)
     the arc is described as fitting an ellipse with certain parameters where two user
@@ -270,22 +320,26 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个经常使用的图形原语是椭圆弧。在[SVG弧线符号](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths#arcs)中，弧线被描述为符合某些参数的椭圆，其中两个用户坐标位于其上。给定这两个点，可以绘制四种可能的弧线。以下是描述如何构造椭圆弧的参数，最终决定渲染哪种四种可能的弧线：
 - en: \((x_1, y_1), (x_2, y_2)\) - the points which lie on the underlying ellipse.
   id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: \((x_1, y_1), (x_2, y_2)\) - 椭圆上的两个点。
 - en: \((r_x, r_y)\) - the horizontal and vertical radius for the ellipse. If \(r_x
     = r_y\) then the arc will be circular.
   id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: \((r_x, r_y)\) - 椭圆的水平和垂直半径。如果 \(r_x = r_y\) ，则弧线是圆形的。
 - en: \(\theta\) - the rotation of the underlying ellipse, described as x-axis rotation.
   id: totrans-split-44
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: \(\theta\) - 椭圆的旋转角度，描述为相对于 x 轴的旋转。
 - en: '`large-arc-flag` - a boolean that tells whether the larger or smaller arcs
     should be chosen. \(1\) is for large, \(0\) is for small. Large means more than
     \(180^\circ\).'
@@ -293,6 +347,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`large-arc-flag` - 一个布尔值，指示选择更大还是更小的弧。\(1\) 表示选择大的，\(0\) 表示选择小的。大意味着超过 \(180^\circ\)
+    。'
 - en: '`sweep-flag` - a boolean which tells whether the arc should move clockwise
     or counter-clockwise. \(1\) is for counter-clockwise, where the angle increases
     from \((x_1, y_1)\) until the arc reaches \((x_2, y_2)\). \(0\) is for clockwise,
@@ -301,6 +357,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`sweep-flag` - 一个布尔值，指示弧线应该顺时针还是逆时针移动。\(1\) 表示逆时针，角度从 \((x_1, y_1)\) 增加直到弧线达到
+    \((x_2, y_2)\) 。\(0\) 表示顺时针，角度从 \((x_1, y_1)\) 减少直到弧线达到 \((x_2, y_2)\) 。'
 - en: '[The SVG spec](https://www.w3.org/TR/SVG11/paths.html#PathDataEllipticalArcCommands)
     contains an illustration that shows how `large-arc` and `sweep` flags decide which
     arc is chosen out of the four possible elliptical arcs. This notation is intuitive
@@ -312,6 +370,8 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[SVG规范](https://www.w3.org/TR/SVG11/paths.html#PathDataEllipticalArcCommands)
+    包含一个图示，展示了 `large-arc` 和 `sweep` 标志如何决定从四个可能的椭圆弧中选择哪一个。这种表示对用户来说很直观：你知道有两个点，你在它们之间画一条弧线。不幸的是，当渲染这些弧线时，这种表示方式并不那么有用。在这种情况下，将此表示转换为中心参数化更为有用。我们计算椭圆的中心，从第一个点开始的起始角度，以及到达第二个点之前的角度偏移量。'
 - en: '[The SVG spec](https://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter)
     gives us the way to convert to a center parametrization. We can then approximate
     arcs of the unit circle and scale the resulted points by the ellipse’s radiuses.
@@ -324,6 +384,9 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '[SVG规范](https://www.w3.org/TR/SVG/implnote.html#ArcConversionEndpointToCenter)
+    给出了转换为中心参数化的方法。然后我们可以通过单位圆的弧度来近似椭圆弧，并将结果点按椭圆的半径进行缩放。部分数学在[这里](https://pomax.github.io/bezierinfo/#circles_cubic)解释。虽然贝塞尔曲线无法精确表示椭圆弧，但长达
+    \(\frac{\pi}{4}\) 的弧可以通过三次贝塞尔曲线很好地近似。因为展平三次贝塞尔曲线已经被讨论过，现在需要做的是再次将这些片段组合起来：'
 - en: You can again play around with the arc points, the tolerance for the cubics
     (\(\varepsilon_c\)) and quadratics (\(\varepsilon_q\)) that are used to approximate
     the elliptical arc, the radiuses for the underlying ellipse (\(r_x\) and \(r_y\)),
@@ -331,11 +394,13 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以再次调整弧点、用于近似椭圆弧的三次（\(\varepsilon_c\)）和二次（\(\varepsilon_q\)）的容差，椭圆底部的半径（\(r_x\)和\(r_y\)），旋转（\(\theta\)），以及相应的`large-arc`和`sweep`标志。
 - en: Conclusion
   id: totrans-split-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: This post illustrates three simple, efficient ways to flatten Bézier curves
     and elliptical arcs into line segments. While the [code](/flattening-bezier-curves-and-arcs.js)
     is made to be simple and easy to read, in a real scenario you can implement flattening
@@ -346,6 +411,7 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 此帖子说明了将贝塞尔曲线和椭圆弧展平为线段的三种简单高效方法。虽然[代码](/flattening-bezier-curves-and-arcs.js)设计得简单易读，但在实际场景中，你可以为这些图形原语中的每一个实现展平作为一个大的`fold`，而无需将结果存储在临时列表中。如果你愿意，甚至可以并行生成这些线段，从而使这些算法适用于GPU实现，可能是在几何着色器或计算着色器中。
 - en: 'It’s possible to work with curves analytically too, at least quadratics, like
     it’s done in [Loop-Blinn](https://www.microsoft.com/en-us/research/wp-content/uploads/2005/01/p1000-loop.pdf),
     [RAVG](https://hhoppe.com/proj/ravg/), [MPVG](https://w3.impa.br/~diego/projects/GanEtAl14/),
@@ -356,3 +422,4 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 你也可以分析曲线，至少是二次曲线，就像在[Loop-Blinn](https://www.microsoft.com/en-us/research/wp-content/uploads/2005/01/p1000-loop.pdf)，[RAVG](https://hhoppe.com/proj/ravg/)，[MPVG](https://w3.impa.br/~diego/projects/GanEtAl14/)，[`NV_path_rendering`](https://developer.download.nvidia.com/devzone/devcenter/gamegraphics/files/opengl/gpupathrender.pdf)，或[Slug](https://jcgt.org/published/0006/02/02/)中所做的那样。不过，展平仍然是一个相关选项：易于实现，几乎免费提供路径长度，而且可以做到高效，正如我们在这里看到的。
