@@ -2,39 +2,47 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:05:52'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:05:52'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Deep Bug @ marginalia.nu
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 深度 Bug @ marginalia.nu
 - en: 来源：[https://www.marginalia.nu/log/a_104_dep_bug/](https://www.marginalia.nu/log/a_104_dep_bug/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.marginalia.nu/log/a_104_dep_bug/](https://www.marginalia.nu/log/a_104_dep_bug/)
 - en: The project has been haunted by a mysterious bug since sometime February. It
     relates to the code that constructs the index, particularly the code that merges
     partial indices.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 从二月某个时候开始，项目一直受到一个神秘 bug 的困扰。它与构建索引的代码有关，特别是与合并部分索引的代码相关。
 - en: In short the search engine constucts the reverse index through successive merging
     of smaller indices, which reduces the overall memory requirement.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 简言之，搜索引擎通过逐步合并较小的索引来构建反向索引，从而降低整体内存需求。
 - en: You can conceptualize the revese index itself as two files, one with offset
     pointers into another file, which has sorted numbers. This code runs after each
     partition finishes crawling and processing its data, and has a run time of about
@@ -42,16 +50,20 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以将反向索引本身构想为两个文件，一个文件中包含指向另一个文件的偏移指针，该文件包含排序数字。此代码在每个分区完成抓取和处理数据后运行，大约需要 4
+    小时运行时间。
 - en: Suddenly the code that merges the indexes started to randomly fail.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 突然间，合并索引的代码开始随机失败。
 - en: What failed was the code that copies sorted numbers from one of the older indices
     to one of the newer, in the case when a keyword is present in only one of the
     indexes and no actual merging of sorted lists is needed.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 失败的地方是从旧索引之一复制排序数字到较新索引之一的代码，当一个关键词仅存在于一个索引中时，不需要实际合并排序列表。
 - en: If code suddenly starts acting up when the amount of data increases, all my
     intuition screams that this must be a 32 bit integer overflow. The index construction
     does all of its work in the bermuda triangle of 32 bit errors that is 1-32 GB
@@ -59,6 +71,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果代码在数据量增加时突然开始出现问题，我的直觉告诉我这一定是 32 位整数溢出。索引构建在 32 位错误的百慕大三角区域内完成其所有工作，因此看起来确实是一个非常可能的嫌疑对象。
 - en: I went over the code looking for such a thing, and found nothing. I added a
     bunch of guard clauses and assertions to get some hint about what was going on,
     but these didn’t turn up much other than the copy operation attempting to copy
@@ -66,12 +79,14 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我检查了代码寻找这样的问题，但什么也没发现。我添加了一堆守卫条件和断言，希望能获取一些关于发生了什么的线索，但除了复制操作尝试超出文件范围之外，并没有发现什么。
 - en: To my surprise, while doing this the construction process suddenly went through!
     The index it constructed was sane. Had I fixed it by perturbing the code somehow?
     I ran it again and it failed.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 令我惊讶的是，在执行这一过程时，构建过程突然顺利完成了！它构建的索引是合理的。我是否通过某种方式扰乱了代码来修复它？我再次运行它，结果失败了。
 - en: 'Some non-determinism is expected since the indexes are merged in parallel,
     so the order they’re merged in is a bit random even if the merging itself is completely
     deterministic. I felt this explained the random success: I got lucky with the
@@ -79,6 +94,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于索引并行合并，它们的合并顺序有些随机性，因此会存在一定的非确定性，即使合并过程本身是完全确定的。我觉得这解释了随机成功的原因：在排序上我运气好，得到了一个有序的结果。
 - en: Since I had a work-around I left this be for a while. I had other work that
     was more pressing. The seven remaining partitions were coaxed through by just
     hitting the restart button until it worked, taking one or more days of hammering
@@ -86,11 +102,13 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我有一个解决方法，我让它保持这样一段时间。我有其他更紧迫的工作。剩下的七个分区通过不断重启来完成，只是不停地重启按钮，直到它起作用，需要一天甚至更多时间。虽然很烦人和耗时，但它起作用了。
 - en: This week the final partition came through, and I had a moment to look deeper
     into this enigma.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这周，最后一个分区终于完成，我有时间更深入地研究这个谜题。
 - en: Maybe it wasn’t an integer overflow? I checked the git log for any suspect changes
     between December when it worked and February when it didn’t work, and I found
     nothing. Again I combed over the code looking for integer overflows, and still
@@ -98,6 +116,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许这不是整数溢出？我检查了 git 日志，寻找从工作正常的十二月到不工作的二月之间是否有任何可疑更改，但什么也没发现。我再次仔细检查代码，寻找整数溢出，但仍然一无所获。
 - en: I did find a function that shrinks the merged index, which is initially allocated
     to be the total size of the inputs. Since the merge function removes duplicates,
     the merged index is often smaller than the sum of its parts, but it’s impossible
@@ -105,30 +124,36 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我找到了一个缩小合并索引的函数，最初分配的大小为输入的总大小。由于合并函数会删除重复项，合并后的索引通常比其各部分的总和小，但在实际合并之前，不可能知道有多小。
 - en: This seemed like a plausible explanation, since if the files were truncated
     too hard, it would explain the files seemingly being “too small”. I disabled the
     truncation, and still got errors.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这似乎是一个合理的解释，因为如果文件被截断得太厉害，就可以解释文件看起来“太小”的现象。我已禁用了截断，但仍然出现错误。
 - en: 'In investigating this, I stumbled on a very curious aberration. I’ll sketch
     out the gist of it:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在调查这个问题时，我偶然发现了一个非常奇怪的异常情况。我将大致描述一下：
 - en: '[PRE0]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: All this runs in sequence on the same thread, and nothing writes to `counts`
     other than this code.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些都在同一个线程上按顺序运行，除了这段代码，没有其他东西写入 `counts`。
 - en: The assertion would fail.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 断言会失败。
 - en: Alright, so it is an integer overflow! &mldr; you might think. Nope. These are
     all 64 bit longs, and the values being added are small and few enough not to overflow
     a 32 bit integer. At this point I could reliably isolate the particular inputs
@@ -136,10 +161,12 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，这是一个整数溢出问题！&mldr; 你可能会这样认为。不是的。这些都是 64 位 long 型，被加的值又小又少，不会溢出 32 位整数。在这一点上，我可以可靠地确定触发行为的特定输入，所以我就那样做了。
 - en: There are four lights, damnit!
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 确实有四盏灯，该死的！
 - en: At this point I patched production so that if this assertion were to fail, the
     input files were copied over to a separate directory. This gave me a 2 GB set
     of test-data that had been known to trigger the error that I could exfiltrate
@@ -147,6 +174,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这一点上，我对生产进行了补丁，以便如果此断言失败，输入文件将被复制到单独的目录。这给了我一个已知能触发错误的 2 GB 测试数据集，我可以本地检查和审查。
 - en: The bug of course did not re-appear when I ran this code in isolation, but that
     actually says something important. I’d reduced the problem down to deterministic
     code being non-deterministic and outputting logical contradictions. This feels
@@ -154,17 +182,20 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我单独运行此代码时，bug 当然不会再次出现，但这实际上传达了一个重要信息。我已将问题减少到确定性代码不确定性运行并输出逻辑矛盾。这感觉像是质疑程序逻辑以外的其他事情的一个很好的理由。
 - en: It’s probably safe to assume the problem is either the JVM, the linux kernel,
     or the hardware, in decreasing order of likelihood.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以大胆假设问题要么是 JVM、Linux 内核或硬件引起的，按照可能性递减的顺序排列。
 - en: The JVM is at the top of the suspect list since one of the things that *had*
     in fact changed since the bug appeared was that the project migrated over to graalvm
     from openjdk.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: JVM 处于可疑名单的首位，因为自 bug 出现以来变化的其中一件事是项目从 openjdk 迁移到 graalvm。
 - en: Hardware errors typically don’t target only a specific function over and over,
     except I guess if you have some Homer-style divine grudge going on. Having not
     skipped over any libations, enraged gods could probably be ruled out, and to further
@@ -176,6 +207,8 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 硬件错误通常不会一次又一次地专门针对一个特定的函数，除非你有某种荷马式的神灵仇恨。未经过滤的数据不足以排除愤怒的神灵，进一步怀疑这一点，我能在另一台机器上重现错误，而不是通过获取的数据，而是通过重复重新索引维基百科的数据。这也可能排除了某种
+    Linux 内核 bug，因为这些内核版本有所不同；一台机器是 SMP，另一台不是，一台有 ECC，一台没有等等。
 - en: So at this point the only remaining suspect on my list was the graalvm JDK.
     I migrated the project to the latest graalvm version, from jdk-21 to jdk-22 through
     oracle’s official docker images. This did absolutely nothing to address the problem.
@@ -184,6 +217,8 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在这一点上，我名单上仅剩的嫌疑对象是 graalvm JDK。我将项目从 jdk-21 迁移到了最新的 graalvm 版本，从 oracle 的官方
+    docker 镜像。这对解决问题没有任何帮助。我将 docker 构建过程切换到使用 temurin（openjdk）镜像，然后&mldr; 问题解决了！从那时起，它一次又一次地正常工作。
 - en: At this point I’d love to file a bug report, although I’m having trouble isolating
     the problem enough to do so. “Doesn’t work” is famously not an error description.
     The relevant process is something like 5 KLOC, and the smallest dataset that triggers
@@ -191,6 +226,8 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，我很想提交一个 bug 报告，尽管我很难将问题孤立出来。“不起作用”显然不是一个错误描述。相关的流程大约有 5 KLOC，触发问题的最小数据集大小约为
+    54 GB，而且相对可靠地触发了 bug。
 - en: I’ve isolated the code that manifests the bug and run it 50,000 times on the
     data exfiltrated from production on a machine that’s previously been able to trigger
     the problem, and it’s run without a hitch, so there appears to be some sort of
@@ -200,6 +237,7 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我已经找出了能够显现出这个 bug 的代码，并在一个之前能够触发问题的机器上运行了 50,000 次生产数据，一切顺利，看起来有某种远距离的奇怪作用正在发生。我尝试过多种方式来扰动它，比如引入页面错误等，因为这在生产环境中经常发生，但都没有效果。
 - en: In general I’d argue you haven’t fixed a bug unless you understand why it happened
     and why your fix worked, which makes this frustrating, since every indication
     is that the bug exists within proprietary code that is out of my reach. This feels
@@ -207,17 +245,22 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，我认为除非你理解为什么会发生错误以及你的修复如何起作用，否则你并没有修复 bug，这让人感到沮丧，因为一切迹象表明 bug 存在于我无法接触的专有代码中。尽管错误名义上已经被纠正，但这感觉像是一个僵局，而不是一个解决方案。
 - en: I can at least say make statements about what hasn’t caused the error.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 至少我可以说出一些没有导致错误的声明。
 - en: '* * *'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '**Update**: This post got some attention on Hacker News, and as a result of
     the visibility I found myself in contact with a dev at Oracle who is looking into
     the problem as a possible compiler bug. [GH issue](https://github.com/oracle/graal/issues/8747).'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '**更新**：这篇文章在 Hacker News 上引起了一些关注，结果我联系上了 Oracle 的一位开发人员，他正在调查可能是编译器 bug 的问题。[GH
+    issue](https://github.com/oracle/graal/issues/8747)。'
