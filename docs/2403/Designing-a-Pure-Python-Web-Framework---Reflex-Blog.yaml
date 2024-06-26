@@ -2,54 +2,65 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:34:30'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:34:30'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Designing a Pure Python Web Framework · Reflex Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 设计纯 Python Web 框架 · Reflex 博客
 - en: 来源：[https://reflex.dev/blog/2024-03-21-reflex-architecture/](https://reflex.dev/blog/2024-03-21-reflex-architecture/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://reflex.dev/blog/2024-03-21-reflex-architecture/](https://reflex.dev/blog/2024-03-21-reflex-architecture/)
 - en: We started Reflex a year ago so that anyone who knows Python can easily build
     web apps and share them with the world, without needing to learn a new language
     and piecing together a bunch of different tools.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们一年前开始开发 Reflex，以便任何懂 Python 的人都可以轻松构建 Web 应用并与世界分享，而无需学习新语言并拼凑一堆不同的工具。
 - en: In this post, I'll share more about what makes Reflex different, and how it
     works under the hood.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这篇文章中，我将分享更多关于 Reflex 的特点，以及其内部工作原理。
 - en: We'll use the following basic app that displays Github profile images as an
     example to explain the different parts of the architecture.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用以下基本应用程序作为示例，显示 Github 个人资料图像，以解释体系结构的不同部分。
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Web development is one of the most popular use cases for programming. Python
     is one of the most popular programming languages in the world. So why can't we
     build web apps in Python?
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Web 开发是编程中最受欢迎的应用之一。Python 是全球最流行的编程语言之一。那么为什么我们不能用 Python 构建 Web 应用呢？
 - en: Before working on Reflex, I worked on AI projects at a startup and then at a
     big tech company. On these teams, we used Python for everything from data analysis
     to machine learning to backend services. But when it came to building user interfaces
@@ -58,17 +69,21 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始 Reflex 之前，我曾在一家初创公司和一家大型科技公司的 AI 项目上工作。在这些团队中，我们从数据分析到机器学习再到后端服务都使用 Python。但是，当涉及到构建用户界面或应用以便其他人使用我们的工作时，没有一个好的选择能保持在
+    Python 中。突然间，我们不得不切换到 JavaScript 并学习一个全新的生态系统。
 - en: Making a UI should be simple, but even though we had great engineers on our
     team, the overhead of learning a new language and tools was a huge barrier. Often
     making a UI was harder than the actual work we were doing!
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 制作 UI 应该很简单，但即使我们的团队有很棒的工程师，学习新语言和工具的开销仍是一个巨大的障碍。通常，制作 UI 比我们实际工作更难！
 - en: There were a few ways already to build apps in Python, but none of them fit
     our needs.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 以前已经有几种方法可以在 Python 中构建应用程序，但没有一种符合我们的需求。
 - en: On the one hand, there are frameworks like [Django](https://www.djangoproject.com/)
     and [Flask](https://flask.palletsprojects.com/) that are great for building production-grade
     web apps. But they only handle the backend - you still need to use JavaScript
@@ -77,6 +92,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，像[Django](https://www.djangoproject.com/)和[Flask](https://flask.palletsprojects.com/)这样的框架非常适合构建生产级
+    Web 应用程序。但它们仅处理后端 - 您仍然需要使用 JavaScript 和前端框架，并编写大量样板代码来连接前端和后端。
 - en: On the other hand, pure Python libraries like [Dash](https://dash.plotly.com/)
     and [Streamlit](https://streamlit.io/) can be great for small projects, but they
     are limited to a specific use case and don't have the features and performance
@@ -87,38 +104,47 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，像[Dash](https://dash.plotly.com/)和[Streamlit](https://streamlit.io/)这样的纯
+    Python 库可能非常适合小型项目，但它们仅限于特定用例，并且缺乏构建完整 Web 应用所需的功能和性能。随着您的应用程序功能和复杂性的增长，您可能会发现自己受到框架的限制，到达此时，您要么限制自己的想法以适应框架，要么放弃您的项目，并使用“真正的
+    Web 框架”重建它。
 - en: We wanted to bridge this gap by creating a framework that is easy and intuitive
     to get started with, while remaining flexible and powerful to support any app.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望通过创建一个易于上手且直观的框架来填补这一差距，同时保持灵活性和强大性，以支持任何应用程序。
 - en: '**Pure Python**: Use one language for everything.'
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**纯 Python**：一种语言处理一切。'
 - en: '**Easy to get started**: Build your ideas easily without needing web development
     experience.'
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**轻松上手**：轻松构建您的想法，无需网页开发经验。'
 - en: '**Full flexibility**: Web apps should match the customizability and performance
     of traditional web frameworks.'
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**完全灵活性**：Web 应用程序应该匹配传统 Web 框架的可定制性和性能。'
 - en: '**Batteries included**: Handle the full-stack from the frontend, to the backend,
     to deployment.'
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**电池包含**：从前端到后端再到部署，一站式解决。'
 - en: Now let's dive into how we built Reflex to meet these goals.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们深入了解我们如何构建 Reflex 以实现这些目标。
 - en: Full-stack web apps are made up of a frontend and a backend. The frontend is
     the user interface, and is served as a web page that runs on the user's browser.
     The backend handles the logic and state management (such as databases and APIs),
@@ -126,6 +152,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 全栈Web应用程序由前端和后端组成。前端是用户界面，作为运行在用户浏览器上的Web页面提供服务。后端处理逻辑和状态管理（如数据库和API），并在服务器上运行。
 - en: In traditional web development, these are usually two separate apps, and are
     often written in different frameworks or languages. For example, you may combine
     a Flask backend with a React frontend. With this approach, you have to maintain
@@ -134,6 +161,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 在传统的Web开发中，这些通常是两个单独的应用程序，并且通常使用不同的框架或语言编写。例如，您可以将Flask后端与React前端结合使用。使用这种方法，您必须维护两个独立的应用程序，并且最终编写大量的样板代码来连接前端和后端。
 - en: We wanted to simplify this process in Reflex by defining both the frontend and
     backend in a single codebase, while using Python for everything. Developers should
     only worry about their app's logic and not about the low-level implementation
@@ -141,6 +169,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望在 Reflex 中简化这个过程，通过在单个代码库中定义前端和后端，同时全部使用 Python。开发者只需关注其应用的逻辑，而不必担心底层实现细节。
 - en: Under the hood, Reflex apps compile down to a [React](https://react.dev) frontend
     app and a [FastAPI](https://github.com/tiangolo/fastapi) backend app. Only the
     UI is compiled to Javascript; all the app logic and state management stays in
@@ -150,53 +179,66 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在幕后，Reflex 应用程序编译成一个 [React](https://react.dev) 前端应用程序和一个 [FastAPI](https://github.com/tiangolo/fastapi)
+    后端应用程序。只有UI编译为Javascript；所有应用程序逻辑和状态管理都保留在Python中，并在服务器上运行。Reflex 使用 [WebSockets](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+    从前端向后端发送事件，并从后端向前端发送状态更新。
 - en: The diagram below provides a detailed overview of how a Reflex app works. We'll
     go through each part in more detail in the following sections.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图详细说明了 Reflex 应用程序的工作原理。我们将在接下来的章节中更详细地讨论每个部分。
 - en: We wanted Reflex apps to look and feel like a traditional web app to the end
     user, while still being easy to build and maintain for the developer. To do this,
     we built on top of mature and popular web technologies.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望 Reflex 应用程序在最终用户看来看起来和感觉像传统的Web应用程序，同时对于开发者来说易于构建和维护。为此，我们构建在成熟和流行的Web技术之上。
 - en: When you `reflex run` your app, Reflex compiles the frontend down to a single-page
     [Next.js](https://nextjs.org) app and serves it on a port (by default `3000`)
     that you can access in your browser.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您运行 `reflex run` 您的应用程序时，Reflex 将前端编译为一个单页 [Next.js](https://nextjs.org) 应用程序，并在端口（默认为
+    `3000`）上提供服务，您可以在浏览器中访问它。
 - en: The frontend's job is to reflect the app's state, and send events to the backend
     when the user interacts with the UI. No actual logic is run on the frontend.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 前端的任务是反映应用程序的状态，并在用户与UI交互时向后端发送事件。前端不会运行实际的逻辑。
 - en: Reflex frontends are built using components that can be composed together to
     create complex UIs. Instead of using a templating language that mixes HTML and
     Python, we just use Python functions to define the UI.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: Reflex 前端使用可以组合在一起创建复杂UI的组件构建。我们不使用将HTML和Python混合的模板语言，而只是使用Python函数定义UI。
 - en: '[PRE1]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'def index():'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 'def index():'
 - en: return rx.hstack(
   id: totrans-split-33
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: return rx.hstack(
 - en: rx.link(
   id: totrans-split-34
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: rx.link(
 - en: rx.avatar(src=GithubState.profile_image),
   id: totrans-split-35
   prefs:
@@ -204,6 +246,7 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: rx.avatar(src=GithubState.profile_image),
 - en: href=GithubState.url,
   id: totrans-split-36
   prefs:
@@ -211,18 +254,21 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: href=GithubState.url,
 - en: ),
   id: totrans-split-37
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ),
 - en: rx.input(
   id: totrans-split-38
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: rx.input(
 - en: placeholder="Your Github username",
   id: totrans-split-39
   prefs:
@@ -230,6 +276,7 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: placeholder="你的Github用户名",
 - en: on_blur=GithubState.set_profile,
   id: totrans-split-40
   prefs:
@@ -237,21 +284,25 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: on_blur=GithubState.set_profile,
 - en: ),
   id: totrans-split-41
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ),
 - en: )
   id: totrans-split-42
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: )
 - en: '[PRE2]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: In our example app, we have components such as `rx.hstack`, `rx.avatar`, and
     `rx.input`. These components can have different **props** that affect their appearance
     and functionality - for example the `rx.input` component has a `placeholder` prop
@@ -259,87 +310,105 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的示例应用程序中，我们有诸如`rx.hstack`、`rx.avatar`和`rx.input`等组件。这些组件可以具有不同的**props**，影响它们的外观和功能
+    - 例如，`rx.input`组件具有一个`placeholder` prop来显示默认文本。
 - en: We can make our components respond to user interactions with events such as
     `on_blur`, which we will discuss more below.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过事件（如`on_blur`）使我们的组件响应用户交互，我们将在下面更详细地讨论这个问题。
 - en: 'Under the hood, these components compile down to React components. For example,
     the above code compiles down to the following React code:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 在幕后，这些组件编译成React组件。例如，上述代码编译成以下React代码：
 - en: '[PRE3]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: <HStack>
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: <HStack>
 - en: <Link href={GithubState.url}>
   id: totrans-split-49
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <Link href={GithubState.url}>
 - en: <Avatar src={GithubState.profile_image}/>
   id: totrans-split-50
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <Avatar src={GithubState.profile_image}/>
 - en: </Link>
   id: totrans-split-51
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: </Link>
 - en: <Input
   id: totrans-split-52
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: <Input
 - en: placeholder="Your Github username"
   id: totrans-split-53
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: placeholder="您的Github用户名"
 - en: // This would actually be a websocket call to the backend.
   id: totrans-split-54
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: // 实际上这将是一个向后端发起的WebSocket调用。
 - en: onBlur={GithubState.set_profile}
   id: totrans-split-55
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: onBlur={GithubState.set_profile}
 - en: '>'
   id: totrans-split-56
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '>'
 - en: </HStack>
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: </HStack>
 - en: '[PRE4]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Many of our core components are based on [Radix](https://radix-ui.com/) , a
     popular React component library. We also have many other components for graphing,
     datatables, and more.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们许多核心组件基于[Radix](https://radix-ui.com/)，这是一个流行的React组件库。我们还有许多其他组件用于图表、数据表格等。
 - en: We chose React because it is a popular library with a huge ecosystem. Our goal
     isn't to recreate the web ecosystem, but to make it accessible to Python developers.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们选择React，因为它是一个拥有庞大生态系统的流行库。我们的目标不是重新创建Web生态系统，而是使其对Python开发者更加友好。
 - en: This also lets our users bring their own components if we don't have a component
     they need. Users can [wrap their own React components](/docs/wrapping-react/overview)
     and then [publish them](/docs/custom-components/overview) for others to use. Over
@@ -348,17 +417,20 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也使我们的用户可以在我们没有需要的组件时使用自己的组件。用户可以[包装他们自己的React组件](/docs/wrapping-react/overview)，然后[发布它们](/docs/custom-components/overview)供他人使用。随着时间的推移，我们将建立起我们的[第三方组件生态系统](/docs/custom-components)，使用户可以轻松地找到和使用其他人构建的组件。
 - en: We wanted to make sure Reflex apps look good out of the box, while still giving
     developers full control over the appearance of their app.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们希望确保Reflex应用程序在开箱即用时看起来良好，同时仍然给开发人员完全控制其应用程序外观的能力。
 - en: We have a core [theming system](/docs/styling/theming) that lets you set high
     level styling options such as dark mode and accent color throughout your app to
     give it a unified look and feel.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们拥有一个核心[主题系统](/docs/styling/theming)，可以让您设置高级别的样式选项，如深色模式和强调色，以在整个应用程序中提供统一的外观和感觉。
 - en: Beyond this, Reflex components can be styled using the full power of CSS. We
     leverage the [Emotion](https://emotion.sh/docs/introduction) library to allow
     "CSS-in-Python" styling, so you can pass any CSS prop as a keyword argument to
@@ -367,10 +439,12 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，Reflex组件可以利用CSS的全部功能进行样式化。我们利用[Emotion](https://emotion.sh/docs/introduction)库允许"CSS-in-Python"样式化，因此您可以将任何CSS属性作为组件的关键字参数传递。这包括通过传递值列表来使用[响应式属性](/docs/styling/responsive)。
 - en: Now let's look at how we added interactivity to our apps.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们看看如何为我们的应用程序添加互动性。
 - en: In Reflex only the frontend compiles to Javascript and runs on the user's browser,
     while all the state and logic stays in Python and is run on the server. When you
     `reflex run`, we start a FastAPI server (by default on port `8000`) that the frontend
@@ -378,50 +452,61 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Reflex中，只有前端编译成JavaScript并在用户浏览器上运行，而所有的状态和逻辑都保留在Python中，并在服务器上运行。当您`reflex
+    run`时，我们会启动一个FastAPI服务器（默认端口为`8000`），前端通过WebSocket连接到该服务器。
 - en: All the state and logic are defined within a `State` class.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有的状态和逻辑都定义在一个`State`类中。
 - en: '[PRE5]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'class GithubState(rx.State):'
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 'class GithubState(rx.State):'
 - en: 'url: str = "https://github.com/reflex-dev"'
   id: totrans-split-70
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'url: str = "https://github.com/reflex-dev"'
 - en: 'profile_image: str = ('
   id: totrans-split-71
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'profile_image: str = ('
 - en: '"https://avatars.githubusercontent.com/u/104714959"'
   id: totrans-split-72
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '"https://avatars.githubusercontent.com/u/104714959"'
 - en: )
   id: totrans-split-73
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: )
 - en: 'def set_profile(self, username: str):'
   id: totrans-split-74
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 'def set_profile(self, username: str):'
 - en: 'if username == "":'
   id: totrans-split-75
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 如果用户名为空
 - en: return
   id: totrans-split-76
   prefs:
@@ -429,12 +514,14 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 返回
 - en: github_data = requests.get(
   id: totrans-split-77
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: github_data = requests.get(
 - en: f"https://api.github.com/users/{username}"
   id: totrans-split-78
   prefs:
@@ -442,38 +529,45 @@
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: f"https://api.github.com/users/{username}"
 - en: ).json()
   id: totrans-split-79
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: ).json()
 - en: self.url = github_data["url"]
   id: totrans-split-80
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: self.url = github_data["url"]
 - en: self.profile_image = github_data["avatar_url"]
   id: totrans-split-81
   prefs:
   - PREF_IND
   - PREF_IND
   type: TYPE_NORMAL
+  zh: self.profile_image = github_data["avatar_url"]
 - en: '[PRE6]'
   id: totrans-split-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The state is made up of **vars** and **event handlers**.
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 状态由**变量（vars）**和**事件处理程序（event handlers）**组成。
 - en: Vars are any values in your app that can change over time. They are defined
     as class attributes on your `State` class, and may be any Python type that can
     be serialized to JSON. In our example, `url` and `profile_image` are vars.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 变量是应用程序中随时间可以更改的任何值。它们被定义为`State`类的类属性，并且可以是可以序列化为JSON的任何Python类型。在我们的示例中，`url`和`profile_image`是变量。
 - en: Event handlers are methods in your `State` class that are called when the user
     interacts with the UI. They are the only way that we can modify the vars in Reflex,
     and can be called in response to user actions, such as clicking a button or typing
@@ -482,16 +576,19 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件处理程序是您的`State`类中的方法，当用户与UI交互时会调用它们。它们是我们可以修改Reflex中变量的唯一方式，并且可以响应用户操作调用，例如点击按钮或在文本框中输入。在我们的例子中，`set_profile`是一个事件处理程序，用于更新`url`和`profile_image`变量。
 - en: Since event handlers are run on the backend, you can use any Python library
     within them. In our example, we use the `requests` library to make an API call
     to Github to get the user's profile image.
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于事件处理程序在后端运行，您可以在其中使用任何Python库。在我们的例子中，我们使用`requests`库向Github发起API调用以获取用户的个人资料图片。
 - en: Now we get into the interesting part - how we handle events and state updates.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们进入有趣的部分 - 如何处理事件和状态更新。
 - en: Normally when writing web apps, you have to write a lot of boilerplate code
     to connect the frontend and backend. With Reflex, you don't have to worry about
     that - we handle the communication between the frontend and backend for you. Developers
@@ -500,109 +597,132 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常在编写Web应用程序时，您需要编写大量样板代码来连接前端和后端。使用Reflex，您不必担心这些问题 - 我们为您处理前端和后端之间的通信。开发人员只需编写他们的事件处理逻辑，并在变量更新时，UI会自动更新。
 - en: You can refer to the diagram above for a visual representation of the process.
     Let's walk through it with our Github profile image example.
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以参考上面的图表，了解这个过程的视觉表示。让我们用我们的Github个人资料图片示例来详细了解一下。
 - en: The user can interact with the UI in many ways, such as clicking a button, typing
     in a text box, or hovering over an element. In Reflex, we call these **event triggers**.
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户可以以多种方式与UI交互，例如点击按钮、在文本框中输入或悬停在元素上。在Reflex中，我们称这些为**事件触发器**。
 - en: '[PRE7]'
   id: totrans-split-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: rx.input(
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: rx.input(
 - en: placeholder="Your Github username",
   id: totrans-split-93
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: placeholder="您的Github用户名",
 - en: on_blur=GithubState.set_profile,
   id: totrans-split-94
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: on_blur=GithubState.set_profile，
 - en: )
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: )
 - en: '[PRE8]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: In our example we bind the `on_blur` event trigger to the `set_profile` event
     handler. This means that when the user types in the input field and then clicks
     away, the `set_profile` event handler is called.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的例子中，我们将`on_blur`事件触发器绑定到`set_profile`事件处理程序。这意味着当用户在输入字段中键入然后单击离开时，将调用`set_profile`事件处理程序。
 - en: 'On the frontend, we maintain an event queue of all pending events. An event
     consists of three major pieces of data:'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前端，我们维护一个包含所有待处理事件的事件队列。一个事件包括三个主要数据部分：
 - en: '**client token**: Each client (browser tab) has a unique token to identify
     it. This let''s the backend know which state to update.'
   id: totrans-split-99
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**客户端令牌**：每个客户端（浏览器标签）都有一个唯一的令牌用于识别它。这让后端知道要更新哪个状态。'
 - en: '**event handler**: The event handler to run on the state.'
   id: totrans-split-100
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**事件处理程序**：在状态上运行的事件处理程序。'
 - en: '**arguments**: The arguments to pass to the event handler.'
   id: totrans-split-101
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**参数**：传递给事件处理程序的参数。'
 - en: 'Let''s assume I type my username "picklelo" into the input. In this example,
     our event would look something like this:'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我在输入框中输入我的用户名“picklelo”。在这个示例中，我们的事件看起来会是这样的：
 - en: '[PRE9]'
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '{'
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: '{'
 - en: 'client_token: "abc123",'
   id: totrans-split-105
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 客户端令牌："abc123"
 - en: 'event_handler: "GithubState.set_profile",'
   id: totrans-split-106
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 事件处理程序："GithubState.set_profile"
 - en: 'arguments: ["picklelo"]'
   id: totrans-split-107
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: 参数：["picklelo"]
 - en: '}'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '}'
 - en: '[PRE10]'
   id: totrans-split-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: On the frontend, we maintain an event queue of all pending events.
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 在前端，我们维护一个包含所有待处理事件的事件队列。
 - en: When an event is triggered, it is added to the queue. We have a `processing`
     flag to make sure only one event is processed at a time. This ensures that the
     state is always consistent and there aren't any race conditions with two event
@@ -610,15 +730,18 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 当事件被触发时，它会被添加到队列中。我们有一个`processing`标志，以确保一次只处理一个事件。这确保了状态始终一致，并且没有两个事件处理程序在同一时间修改状态的竞争条件。
 - en: Once the event is ready to be processed, it is sent to the backend through a
     WebSocket connection.
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦事件准备好处理，它会通过WebSocket连接发送到后端。
 - en: Once the event is received, it is processed on the backend.
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦接收到事件，它将在后端上进行处理。
 - en: Reflex uses a **state manager** which maintains a mapping between client tokens
     and their state. By default, the state manager is just an in-memory dictionary,
     but it can be extended to use a database or cache. In production we use Redis
@@ -626,6 +749,7 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: Reflex使用一个**状态管理器**，它维护客户端令牌和它们的状态之间的映射关系。默认情况下，状态管理器只是一个内存中的字典，但可以扩展为使用数据库或缓存。在生产环境中，我们使用Redis作为我们的状态管理器。
 - en: Once we have the user's state, the next step is to run the event handler with
     the arguments.
   id: totrans-split-115
@@ -635,6 +759,7 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'def set_profile(self, username: str):'
   id: totrans-split-117
   prefs: []
@@ -680,6 +805,7 @@
   id: totrans-split-125
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: In our example, the `set_profile` event handler is run on the user's state.
     This makes an API call to Github to get the user's profile image, and then updates
     the state's `url` and `profile_image` vars.
@@ -707,6 +833,7 @@
   id: totrans-split-130
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: '{'
   id: totrans-split-131
   prefs: []
@@ -729,6 +856,7 @@
   id: totrans-split-135
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: We store the new state in our state manager, and then send the state update
     to the frontend. The frontend then updates the UI to reflect the new state. In
     our example, the new Github profile image is displayed.
