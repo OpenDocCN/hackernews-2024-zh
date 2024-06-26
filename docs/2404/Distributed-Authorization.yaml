@@ -112,10 +112,12 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: If your authorization logic isn’t much more complicated than that, this works
     just fine. But over time, authorization questions and logic both tend to become
     more complex.
@@ -206,6 +208,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'We’ve specified the entities we’re interested in: `User` and `Organization`.
     We’ve defined the conditions that allow a given `User` to `read` an `Organization`,
     in terms of the `member` role. Finally, we’ve asserted that `alice` has the `member`
@@ -244,6 +247,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The beauty of this was that as your authorization logic gets more complicated,
     the application code stayed just this simple. You expressed the authorization
     logic in a .polar file, where you could version and inspect it alongside your
@@ -252,21 +256,25 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个优势在于，随着授权逻辑变得更加复杂，应用程序代码仍然保持简单。您可以在 `.polar` 文件中表达授权逻辑，在这里您可以对其进行版本控制和检查，与应用程序代码并列。当您需要询问特定用户是否被授权执行特定操作时，您总是用完全相同的术语询问同一个问题：
 - en: '[PRE4]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: As powerful as this was, over time we learned that the library approach has
     some significant downsides.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然这样做非常强大，但随着时间的推移，我们发现图书馆方法存在一些显著的缺点。
 - en: The library got access to application data via a [foreign function interface](https://doc.rust-lang.org/nomicon/ffi.html)
     (FFI). This was clever (and fun) engineering, but the mental model tripped up
     a lot of developers, and made things hard to debug.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 该库通过 [外部函数接口](https://doc.rust-lang.org/nomicon/ffi.html)（FFI）访问应用程序数据。这是一个巧妙（而有趣）的工程设计，但这种心智模型让许多开发人员感到困惑，并且使调试变得困难。
 - en: There was no standard data model. This was part of the point – we built the
     library to operate over your data. As convenient as it was to have direct access
     to that data, in practice we observed performance issues and inconsistent behavior
@@ -276,17 +284,20 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有标准数据模型。这正是问题的一部分——我们建立该库来操作您的数据。尽管直接访问数据非常方便，但我们观察到性能问题和由我们无法看到或更改的底层数据模型细节引起的不一致行为。这种标准化缺失还使我们难以在库上构建新的功能能力。
 - en: 'But the main problem was this: the library was a great solution if you have
     a single service. A lot of people, however, have more than one service! For these
     people, the library approach only solved a piece of the puzzle.'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 但主要问题是：如果您只有一个服务，该库是一个很好的解决方案。然而，许多人有多个服务！对于这些人来说，库方法只解决了问题的一部分。
 - en: 'Oso Cloud: Authorization for Microservices'
   id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Oso 云：微服务授权
 - en: When your application is a monolith, it’s straightforward to implement your
     authorization logic with something like the Oso library. You write your logic
     in a `.polar` file that lives in the same repository as all the rest of your code.
@@ -296,6 +307,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您的应用程序是单块时，使用像 Oso 库这样的方式实现授权逻辑非常简单。您在与所有其余代码存放在同一个仓库中的 `.polar` 文件中编写逻辑。然后在初始化客户端时加载它。最后，对加载的策略发出授权请求。您不必担心数据，因为所有数据都在一个所有代码都可以访问的单个数据库中。
 - en: But when you break your application up into multiple services, you introduce
     new questions. Which service should own the authorization model? There’s no good
     answer, because the model needs data to be effective, and that data is now split
@@ -305,6 +317,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，当您将应用程序分解为多个服务时，您会引入新的问题。哪个服务应该拥有授权模型？没有好的答案，因为模型需要数据才能发挥效果，而这些数据现在分布在各个服务中。每个服务可以有自己的模型吗？不行，因为授权问题通常涉及多个服务。让我们回到决定`alice`是否可以处理`Issue`的问题。
 - en: The Issue service knows whether `alice` created the issue. The Repository service
     knows whether `alice` has the `triage` role on the repository, and the User service
     knows whether `alice` has the `triage` role on the organization. So now you’re
@@ -312,34 +325,41 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: Issue 服务知道`alice`是否创建了该问题。Repository 服务知道`alice`在存储库上是否具有`triage`角色，而 User 服务知道`alice`在组织上是否具有`triage`角色。因此，现在您需要进行多次
+    API 调用来确定`alice`是否可以`triage`这个问题。
 - en: The design that ends up making the most sense is to have a dedicated service
     for authorization, but now you have to build your own APIs, create your own data
     model, figure out how to design change control. It’s a lot of work.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 最终最合理的设计是专门为授权创建一个服务，但现在您必须构建自己的 API，创建自己的数据模型，找出如何设计变更控制。这是一项艰巨的工作。
 - en: 'So our next step was to take that work on. We designed Oso Cloud to solve authorization
     in multi-service environments. This let us address two persistent issues in the
     library model:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们的下一步是继续努力。我们设计了Oso Cloud来解决多服务环境中的授权问题。这让我们解决了图书馆模型中的两个持久问题：
 - en: We built a hosted solution that could be shared by all services in an application.
   id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们构建了一个托管解决方案，可以由应用程序中的所有服务共享。
 - en: We defined a consistent data model for authorization data.
   id: totrans-split-58
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们为授权数据定义了一致的数据模型。
 - en: The Oso Cloud data model is called [facts](https://www.osohq.com/docs/concepts/oso-cloud-data-model).
     Facts are a lightweight, flexible format that can represent any authorization
     data in your application.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: Oso Cloud的数据模型称为[facts](https://www.osohq.com/docs/concepts/oso-cloud-data-model)。Facts是一种轻量、灵活的格式，可以表示应用程序中的任何授权数据。
 - en: 'Oso Cloud brings the benefits of policy as code to multi-service applications.
     You can make your authorization logic explicit, share it amongst all of your services,
     and represent your authorization data in a standard format that’s optimized for
@@ -348,11 +368,13 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: Oso Cloud为多服务应用程序带来了策略即代码的好处。您可以使您的授权逻辑明确化，并在所有服务之间共享它，并使用优化了授权操作的标准格式来表示您的授权数据。但现在，我们正重新创造出我们想要解决的问题：您必须将应用程序数据同步到我们的服务中。
 - en: 'Authorization as a Service: Excessive Centralization'
   id: totrans-split-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 授权作为服务：过度集中化
 - en: Let’s take a look back at why we started down this road. Our application got
     brittle because the application logic and the authorization logic were intertwined.
     We wanted to make authorization logic explicit, and in order to do that in a way
@@ -361,12 +383,14 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们回顾一下为什么我们走上这条路。我们的应用程序变得脆弱，因为应用程序逻辑和授权逻辑交织在一起。我们希望使授权逻辑明确化，为了在微服务中有效地实现这一目标，我们创建了一个通过API提供Polar好处的托管服务。
 - en: To answer authorization questions, we need more than logic. We also need data.
     And in that respect, Oso Cloud suffers from the same limitation that all centralized
     authorization services do. It needs that data to exist *in the service*.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 要回答授权问题，我们需要的不仅仅是逻辑。我们还需要数据。在这方面，Oso Cloud遭受着所有集中式授权服务都会遭受的同样限制。它需要这些数据存在于*服务中*。
 - en: 'But that’s our problem, not yours. You already have that data where you need
     it: in your application. By requiring you to convert it to facts and synchronize
     it to Oso Cloud, we’re making our lives easier at the cost of making yours harder.
@@ -376,16 +400,19 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这是我们的问题，而不是您的问题。您已经在需要的地方拥有这些数据：在您的应用程序中。通过要求您将其转换为事实并将其同步到Oso Cloud，我们在以简化我们的生活为代价使您的生活更加艰难。现在，您必须处理潜在的大规模初始数据加载、分布式事务、同步和复制过程以及检测漂移。这些都不容易。
 - en: We know it’s not easy, because you’ve told us it isn’t. The good news is that
     this was never the end state for us.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们知道这并不容易，因为您告诉过我们它不容易。好消息是，对我们来说，这从未是最终状态。
 - en: 'Distributed Authorization: Microservices done right'
   id: totrans-split-66
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 分布式授权：正确执行的微服务
 - en: 'What we really want to do is let you centralize your authorization logic without
     centralizing all of your authorization data. To do this, we have to let go of
     a fundamental assumption of Authorization as a Service: that the service has to
@@ -394,6 +421,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们真正想做的是让您集中您的授权逻辑，而不是集中您所有的授权数据。为了做到这一点，我们必须放弃作为服务的授权的一个基本假设：该服务必须独立回答问题。正是这一要求使得授权服务必须拥有*您的所有应用程序数据*。
 - en: What if, instead, you could centralize your logic and your common authorization
     data (things like roles) in the authorization service, and then distribute the
     evaluation of authorization questions between the server and the client? That’s
@@ -402,6 +430,8 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反地，您可以将逻辑和常见授权数据（如角色等）集中在授权服务中，然后在服务器和客户端之间分配授权问题的评估。这就是分布式授权。与仅回答`yes`或`no`不同，Oso
+    Cloud现在可以以`yes, if`来回答授权问题。
 - en: That `yes, if` is followed by a list of conditions that are evaluated at the
     client using your local data. You give the Oso Cloud client a configuration file
     that tells it how to test those conditions by converting your application data
@@ -411,11 +441,14 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 那个`yes, if`后面跟着一系列条件，在客户端使用你的本地数据进行评估。你需要给 Oso Cloud 客户端提供一个配置文件，告诉它如何通过将你的应用程序数据转换为事实来测试这些条件。在授权时，Oso
+    Cloud 服务会评估它所知道的请求的尽可能多的部分，然后将剩余部分交给你的应用程序中的 Oso Cloud 客户端处理。
 - en: 'A Practical Application: Filtering Lists'
   id: totrans-split-70
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 实际应用：列表过滤
 - en: 'One area where this shines is filtering lists of authorized data. We’ve already
     talked about how painful it can be to get your application data into a centralized
     authorization service. It can also be painful to get it back out. If you want
@@ -424,25 +457,30 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个功能特别适合于过滤授权数据列表。我们已经谈论过如何将应用程序数据传输到集中式授权服务中的痛点。将数据从中心化授权服务中取回同样也可能是一件困难的事情。如果你想要生成`alice`可以`triage`的问题列表，并且你所有的数据都集中在授权服务中，那么操作看起来就像这样：
 - en: Ask the service for a list of Issue IDs that `alice` can `triage`
   id: totrans-split-72
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向服务请求一个`alice`可以`triage`的问题 ID 列表
 - en: Get the full list of IDs back from the service
   id: totrans-split-73
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 从服务获取完整的 ID 列表
 - en: Use the list of IDs to query your local database for Issue data
   id: totrans-split-74
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 使用 ID 列表查询本地数据库获取问题数据
 - en: This is how the `oso.list` command works, and it works great in a lot of cases.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '`oso.list` 命令的工作方式就是这样，它在许多情况下都非常出色。'
 - en: For users who belong to multiple organizations, or who belong to organizations
     with very active repositories, that list of Issues can get very long! It's not
     hard to envision situations where a user has access to hundreds or thousands of
@@ -451,6 +489,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于属于多个组织或者活跃度很高的组织的用户来说，问题列表可能会变得非常长！可以很容易想象到，用户可能会访问数百甚至数千个问题。在你能够在应用程序中使用这些数据之前，这些数据需要通过互联网传输。
 - en: Oso Cloud now supports [List Filtering using Distributed Data](https://www.osohq.com/docs/guides/integrate/filter-lists).
     When you use local data to generate lists of authorized resources, rather than
     returning the full list of resources, Oso Cloud instead returns a (much shorter)
@@ -462,11 +501,15 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在 Oso Cloud 支持使用分布式数据进行[列表过滤](https://www.osohq.com/docs/guides/integrate/filter-lists)。当你使用本地数据生成授权资源列表时，Oso
+    Cloud 不会返回完整的资源列表，而是向客户端返回一个（更短的）查询过滤器。然后客户端使用这个过滤器从本地存储的数据构建完整的列表。你可以更快地从 Oso
+    获取响应，并且因为你在本地数据库中生成列表，所以可以使用已有工具来处理大量应用程序数据进行排序和分页。
 - en: Bringing our Vision into Focus
   id: totrans-split-78
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 聚焦我们的视野
 - en: “Our team was looking for a new authorization system. We assessed a number of
     technologies (plus building our own) and Oso's distributed architecture, in-depth
     auth knowledge, and 99.99% uptime were key reasons why we chose Oso.” – Guhan
@@ -475,6 +518,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “我们的团队正在寻找一个新的授权系统。我们评估了许多技术（包括自己构建的）和 Oso 的分布式架构、深入的授权知识以及99.99%的可用性是我们选择 Oso
+    的关键原因。” – Guhan Venguswamy，平台工程师负责人，Jasper.ai
 - en: With Distributed Authorization, you get the the benefits of explicit authorization
     logic without the penalty of centralizing all your authorization data. It’s Authorization
     as a Service that works with your application, rather than forcing you to rework
@@ -482,6 +527,7 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用分布式授权，你可以获得显式授权逻辑的好处，而不需要集中所有的授权数据。它是一种与你的应用程序一起工作的授权服务，而不是强迫你重新设计应用程序以适应它。
 - en: This is a major milestone for us, but we know the job’s not done. We’re continuing
     to make it easier for you to centralize the data that you do want to keep in Oso
     Cloud. We’re enhancing Polar to make it even more flexible and robust. And we
@@ -490,24 +536,30 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对我们来说是一个重要里程碑，但我们知道工作还没有结束。我们继续致力于简化您在Oso Cloud中集中您想要保留的数据的方式。我们将Polar进行增强以使其更加灵活和坚固。而且，我们也没有忘记巨型企业——尽管Oso库现已过时，我们也在努力为您带来这些功能!
 - en: In the coming weeks, we’ll be sharing more on how Distributed Authorization
     works under the hood, and the different ways customers like Headway and Jasper.ai
     are already using it.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来几周，我们将分享更多关于分布式授权的底层工作原理，以及客户如Headway和Jasper.ai如何已经在使用它的方式。
 - en: If you’d like to learn more about how to use it in your app, [check our our
     docs for Distributed Authorization and List Filtering](https://www.osohq.com/docs/guides/integrate/filter-lists?utm_content=distributedauthz_launchpost#list-filtering-with-decentralized-data).
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 如需了解更多如何在您的应用中使用该功能，请[查看我们的分布式授权和列表筛选文档](https://www.osohq.com/docs/guides/integrate/filter-lists?utm_content=distributedauthz_launchpost#list-filtering-with-decentralized-data)。
 - en: Do you have questions or want to share your thoughts? [Reach out to us on Slack](https://join-slack.osohq.com/)
     or [Schedule a 1x1 with an Engineer](https://calendly.com/osohq/oso-cloud-1-on-1?utm_content=distributed_authz_launchpost)!
     We’d love to talk with you.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 您有问题或想分享想法吗？在[Slack上联系我们](https://join-slack.osohq.com/) 或者[预约与工程师一对一](https://calendly.com/osohq/oso-cloud-1-on-1?utm_content=distributed_authz_launchpost)!
+    我们很愿意与您交流。
 - en: ‍
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: ‍
