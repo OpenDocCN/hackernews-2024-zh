@@ -495,6 +495,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我“有争议的”观点是，在今天和时代，我觉得真正的问题实际上是你是否可以在性能上承受得起，而不是它是否过于复杂。这种持久化历史的具体实现可能并不快速，但概念上很简单：每当你对表执行操作时，该操作都会存储在历史表中。原始表故意与你所熟悉的完全相同。如果你真的不喜欢潜在的GiST冲突，你可以放宽约束条件，以获得与你所熟悉的完全相同的行为。在这种情况下，唯一的区别是插入/删除/更新的性能。
 - en: Yes, there are many cases where it’s clearly bonkers to retain the history,
     but I also think many people assume storing the history is costlier than it actually
     is^(. If you’re not sure, try it and see how it goes. Since your original table
@@ -502,11 +503,13 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，有许多情况下明显保留历史是荒唐的，但我也认为许多人认为存储历史的成本比实际要高得多^(如果你不确定，试一试，看看效果如何。因为你的原始表不会受影响，所以回滚并不困难。)
 - en: 'For me, there are two reasons I think you should consider it, even if you have
     no immediate plans to expose this to your users:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 对我来说，有两个原因我认为你应该考虑它，即使你没有立即计划将其暴露给你的用户：
 - en: First, there will be a time when a specific customer needs their data rolled
     back to an earlier version. That could either be because of accidental deletes,
     rogue actors, or even a bad deployment that corrupted data for certain customers.
@@ -515,6 +518,7 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，将会有一个时间点，特定客户需要将他们的数据回滚到较早的版本。这可能是由于意外删除、恶意行为，甚至是损坏了某些客户数据的糟糕部署。虽然这远远不能替代备份，但它更快速、更容易执行。
 - en: '[PRE10]'
   id: totrans-split-74
   prefs: []
@@ -528,11 +532,13 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，在实践中，这可能会比那更加复杂，这取决于数据模型和你想要多细粒度的操作。但这比设置备份服务器、与外部数据封装器进行桥接，最后以完全相同的方式执行插入要少努力，之后清理备份服务器。
 - en: There are other cases too, like debugging a transient issue one of your users
     had. I could go on, but it feels like repeating the sales pitch for [Datomic](https://www.datomic.com/).
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有其他情况，比如调试用户之一遇到的瞬时问题。我可以继续，但感觉像是在重复为[Datomic](https://www.datomic.com/)做销售演示。
 - en: 'The second reason relates to the gut reaction of saying “We don’t need it”:
     If you don’t have time travel abilities readily available, you can’t explore and
     play with them. This, in turn, means you won’t really think of them when developing
@@ -542,37 +548,44 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 第二个原因与说“我们不需要它”的直觉反应有关：如果你没有即时可用的时间旅行能力，你就无法探索和玩耍。这反过来意味着在为客户开发新功能时，你不会真正考虑它们。冒险听起来像是一个技术极客：我认为这抑制了创新。你*真的*认为将来你的系统中没有它的价值吗？
 - en: Yeah, yeah, this sounds a lot like future-proofing. To be clear, YAGNI isn’t
     wrong, but I only think it only applies when there’s either
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，是的，这听起来很像未来的证明。明确地说，YAGNI并没有错，但我只认为它在以下情况下才适用：
 - en: significant overhead (either in terms of implementation complexity or system
     performance)
   id: totrans-split-79
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 有显著的开销（无论是在实施复杂性还是系统性能方面）
 - en: something that can be retroactively implemented (i.e. no data loss)
   id: totrans-split-80
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 可以事后实施的事情（即没有数据丢失）
 - en: and system-versioned tables are neither.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且系统版本化的表也不是。
 - en: '… well, uh, let me clarify here. The current implementation I’ve shown you
     requires a lot of work when you make new tables. Which is a good transition to
     my next point:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: …嗯，呃，让我在这里澄清一下。我展示给你的当前实现在你创建新表时需要大量工作。这是关于我的下一个观点的良好过渡：
 - en: Use a Database Suited for the Task
   id: totrans-split-83
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 使用适合任务的数据库。
 - en: Writing all of these long triggers yourself just because Postgres doesn’t support
     it is a bit stupid. If you want an open-source alternative, perhaps MariaDB isn’t
     too bad? It supports [SQL:2011](https://mariadb.com/kb/en/system-versioned-tables/)
