@@ -282,22 +282,26 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 当使用 S3 时，我有两个存储桶——一个用于注册图像，一个用于备份——它们都使用相同的 AWS 密钥和密钥进行身份验证。这可能不是很好（也许我应该为备份使用不同的凭据），但根据我的经验，对于小型站点来说，只有一个密钥也是相当典型的。
 - en: When using Tigris, you get a new key and secret for each bucket you create.
     So I had to make a minor code change to add two new S3-related environment variables.
     A few lines of code later, backups were working.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 当使用 Tigris 时，您会为创建的每个存储桶获得新的密钥和密钥。因此，我不得不进行一些代码调整，以添加两个新的与 S3 相关的环境变量。几行代码后，备份开始正常工作。
 - en: Copying files, and “shadow buckets”
   id: totrans-split-44
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 复制文件和“影子存储桶”
 - en: Now that everything was working in my test environment, I wanted to switch the
     production site over.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，在我的测试环境中一切正常运行后，我想要将生产站点切换过来。
 - en: For migrating from S3, Tigris has this cool feature called [shadow buckets](https://www.tigrisdata.com/docs/migration/),
     which allows you to point your Tigris bucket at the original S3 bucket, and it
     will seamlessly pull from the “shadow bucket” if the file is missing from the
@@ -305,12 +309,15 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于从 S3 迁移，Tigris 有一个很酷的功能叫做[影子存储桶](https://www.tigrisdata.com/docs/migration/)，它允许您将
+    Tigris 存储桶指向原始 S3 存储桶，如果 Tigris 存储桶中缺少文件，则会无缝从“影子存储桶”中获取文件（并将文件复制到 Tigris，以便将来的请求可用）。
 - en: I probably should have tried this feature, but I decided not to, as I only have
     a few hundred files in my largest bucket, and I wanted to do a clean switchover
     and avoid the dependency on S3 entirely when I was done.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我可能应该尝试一下这个功能，但我决定不这样做，因为我的最大存储桶中只有几百个文件，而且我希望在完成后进行干净的切换，避免对 S3 的依赖。
 - en: So I used the `aws s3 sync` command to copy the files from S3 to my local drive,
     and then copy them from there to the new Tigris bucket. My site is very small
     scale, so the likelihood of missing any during the few minutes of switchover was
@@ -318,17 +325,21 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我使用 `aws s3 sync` 命令将文件从 S3 复制到本地驱动器，然后从本地复制到新的 Tigris 存储桶。我的站点规模非常小，所以在切换期间几分钟内几乎不可能遗漏任何文件。
 - en: I created two `aws` CLI profiles with the credentials for the new Tigris buckets,
     called `gifty-registry-images` and `gifty-backup`. The default profile still points
     to Amazon S3.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 我创建了两个 `aws` CLI 配置文件，分别用于新的 Tigris 存储桶的凭证，称为 `gifty-registry-images` 和 `gifty-backup`。默认配置文件仍然指向
+    Amazon S3。
 - en: 'Here are the commands I used to copy from S3 to Tigris (I used the handy `--dryrun`
     option first):'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我从 S3 复制到 Tigris 所使用的命令（我首先使用了方便的 `--dryrun` 选项）：
 - en: '[PRE6]'
   id: totrans-split-51
   prefs: []
@@ -339,16 +350,19 @@
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据库迁移
 - en: As long as I keep paying AWS, the existing S3 URLs will keep working fine. However,
     as mentioned, I wanted to remove the dependency on S3.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 只要我继续支付 AWS 费用，现有的 S3 URL 将继续正常工作。但是如前所述，我希望摆脱对 S3 的依赖。
 - en: 'I store the full image URL in the site’s SQLite database. So after copying
     the files, I updated the image URLs in the database using a simple SQLite query:'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在站点的 SQLite 数据库中存储完整的图像 URL。所以在复制文件后，我使用简单的 SQLite 查询更新了数据库中的图像 URL：
 - en: '[PRE7]'
   id: totrans-split-55
   prefs: []
@@ -358,16 +372,19 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 之后，该站点完全迁移到了 Tigris 和 Fly.io，完全不再使用 AWS！
 - en: Final thoughts
   id: totrans-split-57
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 最后的想法
 - en: Performance
   id: totrans-split-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 性能
 - en: I did a quick, unscientific test comparing the time taken to fetch an image
     from the old AWS bucket versus the new Tigris one. Tigris buckets are “global
     by default”, so they can use the nearest Fly.io region (Sydney), which is much
@@ -375,17 +392,22 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我进行了一个快速的、不科学的测试，比较了从旧的 AWS 存储桶和新的 Tigris 存储桶中获取图像所需的时间。Tigris 存储桶“默认为全球”，因此它们可以使用最近的
+    Fly.io 地区（悉尼），这比 AWS 存储桶所在的 `us-west-1` 地区更接近新西兰。
 - en: 'As expected, I saw significantly faster download times from Tigris: for a small
     image, about 1s on AWS compared to 300ms on Tigris. For medium-sized images, I
     was seeing more like 1.3s on AWS compared to 600ms on Tigris.'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如预期的那样，从 Tigris 下载速度明显更快：对于小图像，AWS 大约需要 1 秒，而 Tigris 只需 300 毫秒。对于中等大小的图像，AWS
+    大约需要 1.3 秒，而 Tigris 只需 600 毫秒。
 - en: Pricing
   id: totrans-split-61
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 定价
 - en: 'My AWS bill for Gifty – which was solely S3 usage at this point – is a few
     cents per month. I’m sure I cost them more in admin overhead than what I actually
     paid them. So pricing was not a concern for me, but still, Tigris pricing is similar
@@ -393,6 +415,8 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我为 Gifty 的 AWS 账单——目前仅使用 S3——每月只有几美分。我相信，他们在管理开销上花费的比我实际支付的还要多。所以对我来说，定价并不是一个问题，但是，Tigris
+    的定价与 S3 类似：
 - en: '[Tigris](https://www.tigrisdata.com/docs/pricing/): storage is $0.02 per GB
     per month, GET requests are $0.0005 per 1000.'
   id: totrans-split-63
