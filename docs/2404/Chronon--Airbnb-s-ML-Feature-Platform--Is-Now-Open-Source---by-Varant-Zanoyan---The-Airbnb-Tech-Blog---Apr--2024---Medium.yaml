@@ -109,17 +109,22 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Chronon 方法允许同时拥有最佳的两种情况。Chronon 要求机器学习从业者仅定义他们的特性一次，既能为模型训练的离线流程提供动力，也能为模型推断的在线流程提供动力。此外，Chronon
+    还提供了强大的工具，用于特性链接、可观察性和数据质量、特性共享和管理。
 - en: How It Works
   id: totrans-split-19
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 工作原理
 - en: Below we explore the main components that power most of Chronon’s functionality
     using a simple example derived from the [quickstart guide](https://chronon.ai/getting_started/Tutorial.html).
     You can follow that guide to run this example.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面我们通过从[快速入门指南](https://chronon.ai/getting_started/Tutorial.html)中衍生的一个简单示例来探索支持
+    Chronon 大部分功能的主要组件。您可以按照该指南运行此示例。
 - en: Let’s assume that we’re a large online retailer, and we’ve detected a fraud
     vector based on users making purchases and later returning items. We want to train
     a model to predict whether a given transaction is likely to result in a fraudulent
@@ -127,11 +132,13 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们是一家大型在线零售商，我们已经检测到一种基于用户购买后退货的欺诈风险。我们希望训练一个模型来预测某个交易是否可能导致欺诈性退货。每当用户开始结账流程时，我们都会调用这个模型。
 - en: Defining Features
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 定义特性
 - en: '**Purchases Data:** We can aggregate the purchases log data to the user level
     to give us a view into this user’s previous activity on our platform. Specifically,
     we can compute SUMs, COUNTs and AVERAGEs of their previous purchase amounts over
@@ -139,20 +146,25 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '**购买数据：** 我们可以将购买日志数据按用户级别聚合，以查看用户在我们平台上的先前活动。具体来说，我们可以计算他们在各种时间窗口内的购买金额的 SUM、COUNT
+    和 AVERAGE。'
 - en: '[PRE0]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '*This creates a `GroupBy` which transforms the `purchases` event data into
     useful features by aggregating various fields over various time windows, with
     `user_id` as a primary key.*'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这会创建一个 `GroupBy`，通过在各种时间窗口内对各种字段进行聚合，以 `user_id` 作为主键，将 `purchases` 事件数据转换为有用特性。*'
 - en: This transforms raw purchases log data into useful features at the user level.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将原始购买日志数据转换为用户级别的有用特性。
 - en: '**User Data:** Turning User data into features is a littler simpler, primarily
     because we don’t have to worry about performing aggregations. In this case, the
     primary key of the source data is the same as the primary key of the feature,
@@ -160,15 +172,18 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '**用户数据：** 将用户数据转换为特性稍微简单些，主要因为我们不必担心执行聚合操作。在这种情况下，源数据的主键与特性的主键相同，因此我们只需提取列值，而不必在行上执行聚合操作：'
 - en: '[PRE1]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '*This creates a `GroupBy` which extracts dimensions from the `data.users` table
     for use as features, with `user_id` as a primary key.*'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这会创建一个 `GroupBy`，从 `data.users` 表中提取维度作为特性，以 `user_id` 作为主键。*'
 - en: '**Joining these features together:** Next, we need to combine the previously
     defined features into a single view that can be both backfilled for model training
     and served online as a complete vector for model inference. We can achieve this
@@ -176,6 +191,8 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: '**将这些特性组合在一起：** 接下来，我们需要将先前定义的特性组合成一个单一视图，既可以用于模型训练时的数据回填，也可以作为模型推断时的完整向量服务在线提供。我们可以通过使用
+    Join API 来实现这一点。'
 - en: For our use case, it’s very important that features are computed as of the correct
     timestamp. Because our model runs when the checkout flow begins, we want to use
     the corresponding timestamp in our backfill, such that feature values for model
@@ -183,27 +200,32 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的用例，特别重要的是要在正确的时间戳下计算特性。因为我们的模型在结账流程开始时运行，我们希望在回填中使用相应的时间戳，以便模型训练时的特性值逻辑上匹配在线推断中模型将看到的内容。
 - en: Here’s what the definition would look like. Note that it combines our previously
     defined features in the right_parts portion of the API (along with another feature
     set called returns).
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是定义的样子。请注意，它将我们之前在 API 的 right_parts 部分定义的特性组合在一起（还有另一个称为 returns 的特性集）。
 - en: '[PRE2]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Backfills/Offline Computation
   id: totrans-split-34
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 数据回填/离线计算
 - en: 'The first thing that a user would likely do with the above Join definition
     is run a backfill with it to produce historical feature values for model training.
     Chronon performs this backfill with a few key benefits:'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 用户可能会首先使用上述 Join 定义运行回填，以生成用于模型训练的历史特性值。Chronon 在执行此回填时具有一些关键优势：
 - en: '**Point-in-time accuracy:** Notice the source that is used as the “left” side
     of the join above. It is built on top of the “data.checkouts” source, which includes
     a “ts” timestamp on each row that corresponds to the logical time of that particular
@@ -214,43 +236,51 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**时间点准确性：** 注意作为上述连接“左”侧使用的源。它建立在“data.checkouts”源之上，每行都包括一个“ts”时间戳，对应于该特定结账的逻辑时间。每个特性计算都保证与该时间戳的窗口准确对应。因此，对于前用户购买总额的一个月求和，每一行将根据左侧源提供的时间戳进行计算。'
 - en: '**Skew handling:** Chronon’s backfill algorithms are optimized for handling
     highly skewed datasets, avoiding frustrating OOMs and hanging jobs.'
   id: totrans-split-37
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**偏斜处理：** Chronon 的回填算法经过优化，用于处理高度偏斜的数据集，避免令人沮丧的内存溢出和挂起作业。'
 - en: '**Computational efficiency optimizations:** Chronon is able to bake in a number
     of optimizations directly into the backend, reducing compute time and cost.'
   id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**计算效率优化：** Chronon 能够直接在后端内置多种优化，减少计算时间和成本。'
 - en: Online Computation
   id: totrans-split-39
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在线计算
 - en: Chronon abstracts away a lot of complexity for online feature computation. In
     the above examples, it would compute features based on whether the feature is
     a batch feature or a streaming feature.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: Chronon 在在线特性计算中抽象了大量复杂性。在上述示例中，它将根据特性是批处理特性还是流处理特性进行计算。
 - en: '**Batch features (for example, the User features above)**'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '**批处理特性（例如上述的用户特性）**'
 - en: Because the User features are built on top of a batch table, Chronon will simply
     run a daily batch job to compute the new feature values as new data lands in the
     batch data store and upload them to the online KV store for serving.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于用户特性是建立在批处理表之上，Chronon 将简单地运行每日批处理作业，计算新的特性数值，随着新数据进入批处理数据存储，并将其上传到在线 KV 存储以提供服务。
 - en: '**Streaming features (for example, the Purchases features above)**'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '**流处理特性（例如上述的购买特性）**'
 - en: 'The Purchases features are built on a source that includes a streaming component,
     as indicated by the inclusion of a “topic” in the source. In this case, Chronon
     will still run a batch upload in addition to a streaming job for real time updates.
@@ -258,12 +288,14 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 购买特性建立在包括流组件的源上，源中包含“topic”，表明Chronon将除了实时更新的流作业外，仍然运行批处理上传作业。批处理作业负责：
 - en: '**Seeding the values:** For long windows, it wouldn’t be practical to rewind
     the stream and play back all raw events.'
   id: totrans-split-45
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**种子值设定：** 对于长时间窗口，回放所有原始事件并不实际。'
 - en: '**Compressing “the middle of the window” and providing tail accuracy:** For
     precise window accuracy, we need raw events at both the head and the tail of the
     window.'
@@ -271,16 +303,19 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '**压缩“窗口中部”并提供尾部准确性：** 为了精确窗口准确性，我们需要在窗口的头部和尾部都有原始事件。'
 - en: The streaming job then writes updates to the KV store to keep feature values
     up to date at fetch time.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，流作业将更新写入 KV 存储，以保持在获取时特性值的最新状态。
 - en: Online Serving / Fetch API
   id: totrans-split-48
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在线服务 / 抓取 API
 - en: 'Chronon offers an API to fetch features with low latency. We can either fetch
     values for individual GroupBys (i.e. the Users or Purchases features defined above)
     or for a Join. Here’s an example of what one such request and response for a Join
@@ -288,40 +323,48 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: Chronon 提供了一个 API 来以低延迟获取特性。我们可以为单个 GroupBy（例如上述的用户或购买特性）或进行连接获取值。以下是一个这样的连接请求和响应的示例：
 - en: '[PRE3]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: '*Java code that fetches all features for user 123\. The return type is a map
     of feature name to feature value.*'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Java 代码，用于获取用户123的所有特性。返回类型是特性名称到特性值的映射。*'
 - en: 'The above example uses the Java client. There is also a Scala client and a
     Python CLI tool for easy testing and debugging:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述示例使用了 Java 客户端。还有 Scala 客户端和 Python CLI 工具，用于简便测试和调试：
 - en: '[PRE4]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '*Utilizes the run.py CLI tool to make the same fetch request as the Java code
     above. run.py is a convenient way to quickly test Chronon workflows like fetching.*'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '*利用 run.py CLI 工具来执行与上述 Java 代码相同的获取请求。run.py 是快速测试 Chronon 工作流（如获取）的便捷方式。*'
 - en: Another option is to wrap these APIs into a service and make requests via a
     REST endpoint. This approach is used within Airbnb for fetching features in non-Java
     environments such as Ruby.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一种选择是将这些 API 封装成一个服务，并通过 REST 端点进行请求。这种方法在 Airbnb 中用于在非 Java 环境（如 Ruby）中获取特性。
 - en: Online-Offline Consistency
   id: totrans-split-56
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在线-离线一致性
 - en: Chronon not only helps online-offline accuracy, it also offers a way to measure
     it. The measurement pipeline starts with the logs of the online fetch requests.
     These logs include the primary keys and timestamp of the request, along with the
@@ -408,31 +451,38 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们提到了创建一个平台的目标，该平台可以自动运行实验，使用新数据来识别改进模型的方法。这样的平台还可以通过允许机器学习从业者提出问题来帮助数据管理，比如“在建模这个用例时，哪些特征类型通常最有用？”或“哪些数据源可以帮助我创建捕捉与此目标有关的信号的特征？”一个能够回答这些问题的平台代表了智能自动化的下一个层次。
 - en: Getting Started
   id: totrans-split-71
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 入门指南
 - en: Here are some resources to help you get started or to evaluate if Chronon is
     a good fit for your team.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一些资源，可以帮助您开始或评估Chronon是否适合您的团队。
 - en: Interested in this type of work? Check out our open roles [here](https://careers.airbnb.com/)
     — we’re hiring.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 对这种类型的工作感兴趣吗？请查看我们的空缺职位[这里](https://careers.airbnb.com/) — 我们正在招聘。
 - en: Acknowledgements
   id: totrans-split-74
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 致谢
 - en: '**Sponsors:** [Henry Saputra](mailto:henry.saputra@airbnb.com) [Yi Li](mailto:yi.li@airbnb.com)
     [Jack Song](mailto:jack.song@airbnb.com)'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: '**赞助商：** [Henry Saputra](mailto:henry.saputra@airbnb.com) [李毅](mailto:yi.li@airbnb.com)
+    [宋杰](mailto:jack.song@airbnb.com)'
 - en: '**Contributors:** [Pengyu Hou](mailto:pengyu.hou@airbnb.com) [Cristian Figueroa](mailto:cristian.figueroa@airbnb.com)
     [Haozhen Ding](mailto:haozhen.ding@airbnb.com) [Sophie Wang](mailto:sophie.wang@airbnb.com)
     [Vamsee Yarlagadda](mailto:vamsee.y@airbnb.com) [Haichun Chen](mailto:haichun.chen@airbnb.com)
@@ -442,3 +492,9 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '**贡献者：** [侯鹏宇](mailto:pengyu.hou@airbnb.com) [Cristian Figueroa](mailto:cristian.figueroa@airbnb.com)
+    [丁浩臻](mailto:haozhen.ding@airbnb.com) [王若男](mailto:sophie.wang@airbnb.com) [Vamsee
+    Yarlagadda](mailto:vamsee.y@airbnb.com) [陈海春](mailto:haichun.chen@airbnb.com)
+    [张东涵](mailto:donghan.zhang@airbnb.com) [岑昊](mailto:hao.cen@airbnb.com) [韩雨莉](mailto:yuli.han@airbnb.com)
+    [Evgenii Shapiro](mailto:evgeny.shapiro@airbnb.com) [Atul Kale](http://atul.kale@airbnb.com)
+    Patrick Yoon'
