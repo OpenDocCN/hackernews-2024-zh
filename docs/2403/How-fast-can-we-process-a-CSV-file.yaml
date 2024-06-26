@@ -48,6 +48,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: I don't think I'm wrong to think that any data professional or enthusiast had
     to process a CSV file at some point, whether it's for practice datasets like the
     Titanic or Iris datasets, for data exported by a client from a spreadsheet or
@@ -72,6 +73,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: While I think this is still today a reasonable choice, in this blog post I will
     show many other options, with a particular focus on speed.
   id: totrans-split-15
@@ -118,6 +120,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The idea with this task is to have some CPU computations, but not so many so
     reading and parsing the file is still very significant.
   id: totrans-split-23
@@ -132,30 +135,36 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如前面提到的，这个任务可能与你执行的任务非常不同。例如，添加一个我们不需要的非常长的文本列会增加计算机从磁盘读取数据的时间，与 CPU 使用时间相比，结果将有所不同。虽然这个任务可能有些随意，但我认为它可以教会我们很多关于性能的知识。
 - en: Back to the basics
   id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 回到基础知识
 - en: 'I said before that using pandas is, at least in my point of view, kind of de
     facto standard. This is how this particular task could look like when addressed
     in pandas:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 我之前说过，在我的观点中，使用 pandas 是一种事实上的标准。这是当用 pandas 处理此特定任务时的示例：
 - en: '[PRE3]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'One first question is, why pandas? Since we are already using Python, why don''t
     simply implement this in Python? A solution in pure Python could look like this:'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先一个问题是，为什么选择 pandas？既然我们已经在使用 Python，为什么不在 Python 中简单实现这个？在纯 Python 中的解决方案可能如下所示：
 - en: '[PRE4]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: This implementation has around the same number of lines of code than the pandas
     version, and would save us from learning the not very intuitive pandas API. So,
     it seems like a very reasonable option, right? The main reason we don't usually
@@ -165,6 +174,8 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个实现的代码行数大约与 pandas 版本相同，并且会避免我们学习不太直观的 pandas API。因此，这似乎是一个非常合理的选择，对吧？我们通常不这样做的主要原因实际上是速度，因为
+    Python 在数据处理方面非常慢。这主要是因为 Python 的优先级一直是其简单性和灵活性，而不是数据处理速度。
 - en: While other approaches like using the PyPy interpreter exist, modern data processing
     in Python has mostly converged in using Python as a wrapper to call faster functions
     written in faster languages. So, when using Python for processing data of significant
@@ -177,26 +188,34 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然存在使用 PyPy 解释器等其他方法，但是现代 Python 中的数据处理大多数时候都会使用 Python 作为调用更快函数的包装器。因此，当使用
+    Python 处理大规模数据时，我们大多数情况下会避免使用循环，并且会寻找 pandas（或类似工具）函数，其中有人用 C 或其他低级语言实现了循环。例如，`df.pow(2)`
+    将遍历数据帧中的每个项并将其平方，但我们不会在 Python 中循环，而是告诉 pandas 执行这个操作，pandas 将调用一个 C 函数，它比 Python
+    更快地执行循环和操作。在这种情况下，循环是由 pandas 使用的 NumPy 实现的。
 - en: CSV parsing in pandas
   id: totrans-split-32
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 在 pandas 中解析 CSV
 - en: Now that it's hopefully clear that we don't want to implement our processing
     ourselves, but instead use a tool that provides the algorithms we need with a
     fast language, let's have a look at some of the main options in the Python world.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，希望已经明确了我们不想自己实现处理过程，而是使用一个提供所需算法的工具以及一种快速语言，让我们来看看 Python 世界中的一些主要选项。
 - en: 'The first one I''m going to discuss is also part of pandas, the PyArrow engine.
     The code would be exactly like before, making just one change:'
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将讨论的第一个也是 pandas 的一部分，即 PyArrow 引擎。代码与之前完全相同，只需进行一个更改：
 - en: '[PRE5]'
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: For the final users, it simply involves adding an extra parameter to the `read_csv`
     call. But internally, the algorithm used to read the CSV changes completely from
     the original CSV parsing implemented as part of pandas in Cython (a Python-like
@@ -206,6 +225,8 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于最终用户来说，它只需在 `read_csv` 调用中添加一个额外的参数。但在内部，用于读取 CSV 的算法从最初作为 pandas 的一部分在 Cython
+    中实现的原始 CSV 解析完全改变为 Arrow 库中用 C++ 实现的较新的多线程 CSV 解析，并通过 PyArrow 包提供给 Python 生态系统使用。
 - en: It's probably interesting to know that pandas also includes a third engine,
     the `python` engine which is implemented in pure Python. Yes, exactly what I said
     we don't want to do for speed. But there may be reasons I'm mostly unaware of
@@ -380,6 +401,7 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'The results are surprising, as R seems to be very slow:'
   id: totrans-split-70
   prefs: []
@@ -462,6 +484,7 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: As you can see, the implementation is quite simple, and while Rust is an extremely
     fast low level language in many cases the code is as readable as Python. This
     is not the only reason to use Rust, as probably the biggest advantage is the language
@@ -483,6 +506,7 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Note that defining the schema is not really needed, and the code would be significantly
     shorter without it. But making Polars infer the data types would be unfair when
     comparing with my custom implementation.
