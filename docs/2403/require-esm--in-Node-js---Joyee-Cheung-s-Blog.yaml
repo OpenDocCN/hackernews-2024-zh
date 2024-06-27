@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:33:00'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:33:00'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: require(esm) in Node.js | Joyee Cheung's Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 在 Node.js 中使用 require(esm) | Joyee Cheung's Blog
 - en: 来源：[https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/](https://joyeecheung.github.io/blog/2024/03/18/require-esm-in-node-js/)
 - en: Recently I landed experimental [support for `require()`-ing synchronous ES modules
     in Node.js](https://github.com/nodejs/node/pull/51977), a feature that has been
     long overdue. In the pull request, [I commented](https://github.com/nodejs/node/pull/51977#issuecomment-1994837735)
@@ -32,6 +38,8 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我实现了对在 Node.js 中同步 `require()` ES 模块的实验性支持，这是一个早就应该有的功能。在这个拉取请求中，[我评论道](https://github.com/nodejs/node/pull/51977#issuecomment-1994837735)关于为什么在此之前（2024
+    年之前的这个拉取请求）这种支持没有早点出现的理解。这篇文章对那条评论进行了更详细的扩展。
 - en: The opinions in this post are my own and reflect my perception of the ESM development
     in Node.js as a long-time bystander. I do not represent any group or the project
     here - representation of the Node.js project only comes from consensus among the
@@ -40,11 +48,13 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章中的观点是我个人的，并反映了我作为长期旁观者对 Node.js 中 ESM 发展的看法。我在这里不代表任何团体或项目 - Node.js 项目的代表只能来自协作者的共识。没有特定的个人可以独自为该项目发言。
 - en: The headaches of `ERR_REQUIRE_ESM`
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '`ERR_REQUIRE_ESM` 的头痛'
 - en: It might be obvious for those who have been dealing with `ERR_REQUIRE_ESM` why
     supporting loading ESM in `require()` is something long overdue, but in case there’s
     any non-Node.js user who just stumbled upon this post by chance, here’s my understanding
@@ -53,6 +63,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于那些一直在处理 `ERR_REQUIRE_ESM` 的人来说，支持在 `require()` 中加载 ESM 为何是一件早就该做的事情可能是显而易见的，但如果有任何非
+    Node.js 用户碰巧偶然发现了这篇文章，这里是我对 Node.js 中 ESM 情况的理解，以及我（和许多其他人）为什么认为这个拉取请求是必要的。
 - en: Since ESM was shipped in Node.js, for many years, it was possible to `import
     cjs`, but not possible to `require(esm)`. The frustration of `ERR_REQUIRE_ESM`
     has bothered many and probably has been the primary source of wasted hours in
@@ -64,6 +76,9 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于 ESM 已经在 Node.js 中发布，多年来，可以 `import cjs`，但不能 `require(esm)`。`ERR_REQUIRE_ESM`
+    的沮丧困扰了许多人，可能是 Node.js 生态系统中浪费时间的主要来源。如果包作者希望确保 CJS 和 ESM 用户都能使用他们的包，他们要么继续将他们的模块作为
+    CJS 发布，要么发布 CJS 和 ESM 两个版本，即双模块（这可能会导致一些问题，但这已经是一种非常普遍的做法），在他们的 package.json 中使用条件导出信息。
 - en: Meanwhile, many transpilers (e.g. the TypeScript compiler) are still configured
     to generate CJS code as their final output (probably also to maximize consumption).
     Users of these transpilers write their code in ESM syntax but they don’t not necessarily
@@ -74,26 +89,33 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，许多转译器（例如 TypeScript 编译器）仍然配置为生成 CJS 代码作为最终输出（可能也是为了最大程度地消耗）。这些转译器的用户用 ESM
+    语法编写他们的代码，但他们不一定知道他们的代码最终由 Node.js 以 CJS 运行。当他们的代码使用无法 `require()` 的第三方真正的 ESM
+    模块时，他们会看到 `ERR_REQUIRE_ESM`。这可能非常令人困惑，因为他们可能会认为他们的代码是作为真正的 ESM 运行的。
 - en: The synchronicity of ESM
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ESM 的同步性
 - en: 'Naturally, one might ask: why can’t `require()` just support loading ESM?'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 自然而然地，人们可能会问：为什么 `require()` 不能支持加载 ESM？
 - en: 'For a very long time, the answer from the Node.js project had been something
     like this (to quote the documentation before my pull request):'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 很长一段时间以来，Node.js 项目的答案一直类似于这样（引用我的拉取请求之前的文档）：
 - en: Using require to load an ES module is not supported because ES modules have
     asynchronous execution.
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 使用 require 加载 ES 模块是不支持的，因为 ES 模块具有异步执行。
 - en: That had also come up in several semi-official communications. And it was always
     talked about in such an affirmative tone, so that was what I believed, too - despite
     being a long-time Node.js contributor, ESM or the user module loader in Node.js
