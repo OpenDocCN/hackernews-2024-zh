@@ -2,32 +2,39 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:46:58'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:46:58
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: the Apple curl security incident 12604 | daniel.haxx.se
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 苹果的 curl 安全事件 12604 | daniel.haxx.se
 - en: 来源：[https://daniel.haxx.se/blog/2024/03/08/the-apple-curl-security-incident-12604/](https://daniel.haxx.se/blog/2024/03/08/the-apple-curl-security-incident-12604/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://daniel.haxx.se/blog/2024/03/08/the-apple-curl-security-incident-12604/](https://daniel.haxx.se/blog/2024/03/08/the-apple-curl-security-incident-12604/)
 - en: 'tldr: Apple thinks it is fine. I do not.'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: tldr：苹果认为这没问题，但我不这么认为。
 - en: On December 28 2023, [bugreport 12604](https://github.com/curl/curl/issues/12604)
     was filed in the curl issue tracker. We get a lot issues filed most days so this
     fact alone was hardly anything out of the ordinary. We read the reports, investigate,
@@ -35,18 +42,22 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 2023 年 12 月 28 日，[bugreport 12604](https://github.com/curl/curl/issues/12604)
+    在 curl 问题跟踪器中被提出。我们每天收到很多问题反馈，因此单凭这个事实本身并不算出乎意料。我们阅读报告，调查问题，提出跟进问题，看看我们能学到什么，需要解决什么问题。
 - en: 'The title stated of the problem in this case was quite clear: *[flag –cacert
     behavior isn’t consistent between macOS and Linux](https://github.com/curl/curl/issues/12604)*,
     and it was filed by Yuedong Wu.'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本例中问题的标题非常清楚：*[flag –cacert 行为在 macOS 和 Linux 之间不一致](https://github.com/curl/curl/issues/12604)*，由吴悦东提出。
 - en: The friendly reporter showed how the curl version bundled with macOS behaves
     differently than curl binaries built entirely from open source. Even when running
     the same curl version on the same macOS machine.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 友好的报告者展示了 macOS 捆绑的 curl 版本与完全从开源构建的 curl 二进制文件在同一 macOS 机器上运行时表现不同。
 - en: The curl command line option `[--cacert](https://curl.se/docs/manpage.html#--cacert)`
     provides a way for the user to say to curl that **this is the exact set of CA
     certificates to trust** when doing the following transfer. If the TLS server cannot
@@ -55,6 +66,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: curl 命令行选项`[--cacert](https://curl.se/docs/manpage.html#--cacert)`为用户提供了一种方式，告诉
+    curl **这是要信任的确切 CA 证书集**，在进行以下传输时。如果 TLS 服务器无法提供可以使用该证书集验证的证书，则应该失败并返回错误。
 - en: This particular behavior and functionality in curl has been established since
     many years (this option was added to curl in December 2000) and of course is provided
     to allow users to know that it communicates with a known and trusted server. A
@@ -62,6 +75,8 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: curl 中的这种特定行为和功能已经存在多年（该选项于 2000 年 12 月添加到 curl 中），当然是为了让用户知道它正在与已知和可信的服务器通信。这实际上是
+    TLS 所做的一个非常基本的部分。
 - en: When this command line option is used with curl on macOS, *the version shipped
     by Apple*, **it seems to fall back and checks the system CA store in case the
     provided set of CA certs fail the verification**. A *secondary check* that was
@@ -71,25 +86,31 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 当在 macOS 上使用 curl 这个命令行选项时，*由苹果提供的版本*，**它似乎会退回并检查系统的 CA 存储，以防所提供的 CA 证书集在验证失败时**。这是一个未请求的*次要检查*，没有文档记录，而且真的让人大吃一惊。因此，当用户使用修剪过的专用
+    CA 证书文件运行检查时，如果系统的 CA 存储包含可以验证服务器的证书，它将不会失败！
 - en: This is a security problem because now **suddenly certificate checks pass that
     should not pass.**
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个安全问题，因为现在**突然间通过了本不应该通过的证书检查**。
 - en: I reported this as a security problem in an email sent to Product Security at
     Apple on December 29 2023, 08:30 UTC. It’s not a major problem, but it is an issue.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在 2023 年 12 月 29 日 08:30 UTC 发送的电子邮件中报告了这个安全问题。这不是一个主要问题，但确实存在问题。
 - en: Apple’s says it is fine
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 苹果说这没问题。
 - en: 'On March 8, 2024 Apple Product Security responded with their wisdom:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 2024 年 3 月 8 日，苹果产品安全团队做出了他们的回应：
 - en: '[PRE0]'
   id: totrans-split-17
   prefs: []
@@ -99,21 +120,25 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 事件解决。
 - en: I disagree
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我不同意。
 - en: Obviously I think differently. This *undocumented feature* makes CA cert verification
     with curl on macOS totally unreliable and inconsistent with documentation. It
     tricks users.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，我持不同意见。这个*未记录的功能*使得在 macOS 上使用 curl 进行 CA 证书验证变得完全不可靠，并且与文档不一致。它会误导用户。
 - en: Be aware.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意。
 - en: Since this is not a security vulnerability in the curl version we ship, we have
     not issued a CVE or anything for this problem. The problem is strictly speaking
     not even in curl code. It comes with the version of LibreSSL that Apple ships
