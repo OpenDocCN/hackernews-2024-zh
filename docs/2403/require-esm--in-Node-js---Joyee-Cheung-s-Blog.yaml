@@ -102,6 +102,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 那也在几次半官方的通信中提到过。并且总是以如此肯定的语气谈论，所以那也是我所相信的 - 尽管我是长期的 Node.js 贡献者，ESM 或 Node.js
+    中的用户模块加载器从未是我的菜。当涉及到我自己并不十分熟悉的组件时，我会像其他人一样只相信文档中所说的。
 - en: But this was one of the situations where the documentation and other communications
     were misleading - maybe they were only talking what happened in Node.js’s ESM,
     not what the ESM itself was designed to be. Last year when I was browsing [the
@@ -113,6 +115,10 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这是文档和其他通信误导的情况之一 - 也许他们只是在谈论Node.js的ESM发生了什么，并非ESM本身的设计。去年当我在浏览 [V8 代码](https://chromium.googlesource.com/v8/v8/+/7276abbe09fbe4d7ecff3ea48b3e8bcaae677d2d/src/objects/source-text-module.cc#712)
+    来修复 [一个内存泄漏](https://joyeecheung.github.io/blog/2023/12/30/fixing-nodejs-vm-apis-2/)
+    时，我偶然发现ESM本身并非设计为无条件异步。相反，它 [设计为仅在条件满足时异步](https://tc39.es/ecma262/#sec-moduleevaluation)
+    - [仅当图表包含顶层 `await` 时](https://tc39.es/ecma262/#sec-source-text-module-record-execute-module)。
 - en: Then it would seem very natural for `require()` to at least support ESM graphs
     that contains no top-level `await`. While some libraries might have valid reasons
     to use top-level `await`, it’s probably not that common a thing - indeed, when
@@ -123,16 +129,21 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后 `require()` 至少支持不包含顶层 `await` 的ESM图表似乎是非常自然的。虽然一些库可能有使用顶层 `await` 的合理理由，这可能并不是那么普遍的事情
+    - 实际上，当我后来在 npm 注册表中高影响的仅ESM包上测试了我的 `require(esm)` PR 时，我测试的约30个包中没有一个包含顶层 `await`
+    - 并且在 `require()` 中支持同步模块可能已经足以解决生态系统中许多问题。
 - en: But ESM has been designed like this for a very long time. There must’ve been
     other people who realized this before me, right? Well yes, of course.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是ESM设计已经很长时间了。在我之前肯定有其他人意识到这一点，对吧？嗯，当然。
 - en: Synchronous `require(esm)` in 2019
   id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 2019 年同步 `require(esm)`
 - en: The idea of supporting synchronous ESM graphs in `require()` was by no means
     new. I later found out that it was already brought up in 2019 in [a pull request
     that tried adding support for `require()`-ing .mjs files](https://github.com/nodejs/node/pull/30891).
@@ -148,6 +159,10 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持同步ESM图表在 `require()` 中的想法绝非新鲜事物。我后来发现，这在2019年已经在 [尝试添加对`.mjs`文件的 `require()`
+    支持的一个拉取请求中](https://github.com/nodejs/node/pull/30891) 提出过。该拉取请求本身尝试通过在加载器中旋转事件循环来处理顶层的
+    `await` （这种方法是不安全的，这也是为什么它被关闭的原因）。虽然提到只支持同步图表而不是旋转循环 [曾经被提到](https://github.com/nodejs/node/pull/30891#issuecomment-565604651)，但拉取请求似乎已经偏离了这个方向，最终未能实现。此后，至少在我找到的形式为拉取请求的尝试中，再也没有尝试同步
+    `require(esm)`。
 - en: The theoretical foundation for syntax-based synchronous evaluation of ESM on
     the specification side [was already settled in 2019](https://github.com/tc39/proposal-top-level-await/pull/61).
     When I later talked to (non-Node.js) people who work on ESM stuff, it seemed to
@@ -162,16 +177,22 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 在规范方面，基于语法的同步评估 ESM 已经在 2019 年就已经定案。当我后来与（非 Node.js 的）从事 ESM 工作的人交谈时，这似乎是共识。随着时间的推移，在
+    Node.js 中形成了一个神话：“ESM 是异步的，CJS 是同步的，所以 CJS 不能加载 ESM”，而在标准机构中，ES 规范特别注意确保 ESM 只有在特定条件下是异步的，并且
+    W3C 规范使用它来确保 Service Workers 仅允许同步模块评估。如果在 2019 年后更广泛地了解基于语法的同步性规范，可能会有更多尝试，并且文档不会像无条件地讨论
+    ESM 是异步的那样。
 - en: But then why was this relatively unknown to those who didn’t work on ESM in
     Node.js?
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，为什么那些不在 Node.js 中从事 ESM 工作的人对此相对较少了解呢？
 - en: The ESM silo
   id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ESM 的信息孤岛
 - en: After dwelling on this a bit, I think the reason why the synchronicity of ESM
     didn’t lead to a synchronous `require(esm)` in Node.js sooner was more cultural
     than technical. There seemed to be a [silo problem](https://en.wikipedia.org/wiki/Information_silo)
@@ -180,6 +201,8 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 经过稍作思考，我认为 ESM 的同步性没有更早在 Node.js 中导致同步的 `require(esm)`，原因更多是文化上的而非技术上的。在从事 ESM
+    实现和与标准机构沟通的人员与其他人之间似乎存在着信息孤岛问题。
 - en: Normally in Node.js, most decision making is done based on consensus among 100+
     collaborators i.e. committers who gained their status through a nomination process
     based on contributions to the project. When consensus cannot be reached within
@@ -189,6 +212,8 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，在 Node.js 中，大多数决策都是基于 100 多名合作者之间的共识进行的，即通过贡献项目获得其地位的提交者。当在合作者之间无法达成共识时，决策交给
+    Node.js TSC。Node.js TSC 是更活跃的 Node.js 合作者的一个子集，它可以通过简单投票并以简单多数获胜的选项做出决策。
 - en: The early development of ESM in Node.js, however, used a different process.
     The implementation and the decisions making of ESM in Node.js were delegated to
     the modules group, which consisted of not only Node.js collaborators but also
@@ -198,6 +223,8 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Node.js 中，ESM 的早期开发采用了不同的流程。ESM 在 Node.js 中的实施和决策由模块组负责，该组不仅包括 Node.js 的合作者，还包括社区成员（例如包作者、标准机构参与者以及其他类型的利益相关者）。当涉及
+    ESM 决策时，Node.js TSC 大多只是对他们的共识进行了一种橡皮图章的作用。
 - en: Due to the nature of the topic, the discussions in the modules group tended
     to end up very heated. While the composition of the group intended to make the
     decision making more inclusive, the separated setup and all the heated discussion
@@ -208,6 +235,8 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于讨论主题的性质，模块组的讨论往往变得非常激烈。尽管组成该组的目的是使决策更具包容性，但分离的设置和激烈的讨论使得在组外的合作者（和 TSC 成员）更难跟上那里发生的事情或参与其中。在那个时候，我个人绝对试图远离
+    Node.js 中的 ESM —— 看起来他们已经得到了足够多的意见。
 - en: As a result, silos were developed. If a debate was never escalated out of the
     group, it can become a niche knowledge among those who worked on ESM in Node.js,
     or even just among those who were in that specific debate. I think that was what
@@ -219,6 +248,8 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，出现了信息孤岛。如果一场辩论从未升级到团队层面，它可能会成为在 Node.js 中从事 ESM 的人士中的一个小众知识，甚至仅限于那些参与特定辩论的人之间。我认为这就是关于同步
+    `require(esm)` 的辩论发生这种情况的原因。至少据我所记得，关于同步 `require(esm)` 的辩论从未被提升到 TSC 层面。参与辩论的人未能达成一致意见，这个话题似乎只在知情者之间逐渐消逝，其他人开始认为这是不可能的事情。
 - en: Another factor in the delay of synchronous `require(esm)` was that changes to
     the ESM loader in Node.js tend to attract more debates than any other systems,
     which could drive contributors away. I’ve been contributing to Node.js for 7 years,
@@ -232,17 +263,23 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 导致同步 `require(esm)` 延迟的另一个因素是，对 Node.js 中 ESM 加载器的更改往往比其他系统引起更多争论，这可能会驱使贡献者远离。我已经为
+    Node.js 做出了 7 年的贡献，但直到去年我才很少接触 ESM 加载器——去年我只是修复了一些不具争议的错误/内存泄漏，而不是改变 ESM 在 Node.js
+    中的工作方式，这通常会引起争议。这可能也阻止了更多的人参与到加载器的开发中，从而更早地实现 `require(esm)`。至少在去年我开始研究 `require(esm)`
+    时，我肯定不希望在技术进展之前就引起不必要的争论。
 - en: The ESM loader
   id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: ESM 加载器
 - en: While I said that I think a synchronous `require(esm)` in Node.js didn’t happen
     earlier mostly because of cultural reasons, some smaller technical factors probably
     also contributed to the delay.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管我说过，我认为 Node.js 中的同步 `require(esm)` 之所以没有更早出现主要是因为文化原因，一些较小的技术因素可能也对延迟起到了贡献作用。
 - en: The ESM loader itself is quite a beast at this point. When I started contributing
     to Node.js I found the CJS loader to be really difficult to grok - that was before
     Node.js had a ESM loader. A few years later, when I happened to be fixing some
@@ -255,6 +292,9 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: ESM 加载器本身在当前阶段已经相当复杂。当我开始为 Node.js 做贡献时，我发现 CJS 加载器确实很难理解——这是在 Node.js 拥有 ESM
+    加载器之前。几年后，当我偶然修复了一些与 ESM 整合导致的 vm API 内存泄漏时（我在[之前的博客文章](https://joyeecheung.github.io/blog/2023/12/30/fixing-nodejs-vm-apis-3/)中提到过），我第一次真正深入研究了
+    Node.js 中的 ESM 加载器。我惊讶地发现，ESM 加载器比 CJS 加载器更复杂（几乎多了三倍的代码）。这可能是由于加载器多年来的有机增长，看起来确实需要进行一些清理工作。
 - en: The ESM loader was implemented largely in JavaScript - while I do think JavaScript
     has its advantages when implementing certain APIs like streams, this could really
     work against you if you try to use it to implement a core part of JavaScript itself
@@ -272,6 +312,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: ESM加载器在很大程度上是用JavaScript实现的 - 尽管我确实认为JavaScript在实现诸如流这样的某些API时有其优势，但如果你试图在运行时使用它来实现JavaScript本身的核心部分，如ESM加载器，这可能会对你产生不利影响。为了防止原型污染，Node.js内部使用JavaScript代码中JavaScript内置对象的特殊副本，这大大降低了可读性。加载器以一种导致到处都是循环依赖的方式分割成多个文件，并且部分代码需要积极防御[TDZs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let#temporal_dead_zone_tdz)，使代码变得更加难以阅读。复杂的JavaScript代码库还使ESM加载器在加载过程中施加了许多随机的、不必要的异步性。ESM支持的大部分功能由V8提供，仅通过C++/JS绑定层向JavaScript层暴露。似乎随着时间的推移，JavaScript部分开始限制自己所能提供的内容，而不是充分利用V8提供的功能。
 - en: These technical issues in the ESM loader also have other consequences - e.g.
     in performance. Some may assume that being able to always load asynchronously
     (and, in parallel if the module contain multiple `import`s) would make the loading
@@ -281,11 +322,14 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: ESM加载器中的这些技术问题还会带来其他后果 - 例如性能。有些人可能会认为，总是异步加载（并且如果模块包含多个 `import` 的话，还可以并行加载）会使加载速度更快。但当我在大约30个仅ESM的npm包上测试了`require(esm)`并与`import
+    esm`进行比较时，前者（使用专用同步例程）[实际上快了约1.22倍](https://github.com/nodejs/node/pull/51977#issuecomment-1995209126)。
 - en: Restarting synchronous `require(esm)`
   id: totrans-split-36
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 重启同步 `require(esm)`
 - en: Around the end of last year, after I found out that the evaluation of ESM can
     be synchronous based on syntax, and it was only Node.js throwing the asynchronicity
     into the loading process, @GeoffreyBooth and I started to talk about restarting
@@ -296,6 +340,8 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 去年年底左右，当我发现ESM的评估可以根据语法是同步的，而只有Node.js将异步性引入到加载过程中时，@GeoffreyBooth和我开始讨论重新启动同步
+    `require(esm)`。对我来说，即使到今天，Node.js中的ESM仍然是一个非常可怕的主题，但是 `ERR_REQUIRE_ESM` 的痛苦已经如此严重，以至于似乎值得冒这些繁琐的争论来重新开始。
 - en: That said I wouldn’t take the risk if it’s a very high-hanging fruit - which
     was what I thought before I really looked into the ESM loader. At that time there
     was an ongoing effort to “make the ESM loader the only loader in Node.js”, and
@@ -306,6 +352,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，如果这是一个非常高的难度，我不会冒险 - 这正是我在真正深入研究ESM加载器之前的想法。当时，正在努力将ESM加载器变成Node.js中唯一的加载器，由于前面提到的复杂性，估计需要相当长的时间来重构ESM加载器以支持这一点。因此，我宁愿把这个任务留给那些更熟悉ESM加载器的人去重构。
 - en: In late February in 2024, when I was working on [a ccache-like thing for both
     the CJS and ESM loaders](https://github.com/nodejs/node/issues/47472) and digging
     into them again, I noticed that there seemed to be a simpler way to implement
@@ -316,6 +363,8 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 在2024年2月底，当我正在为[CJS和ESM加载器](https://github.com/nodejs/node/issues/47472)工作一个类似于ccache的东西，并再次深入研究它们时，我注意到实现它似乎有一个更简单的方法
+    - 只需放弃“使ESM加载器成为Node.js中唯一加载器”的想法（我已经对此表示怀疑），并实现一些专用的例程来支持同步`require(esm)`的CJS加载器。使用的现有ESM加载器代码越少，实现起来就越容易。
 - en: So that led to [this PR](https://github.com/nodejs/node/pull/51977). The major
     difference between this and the PR in 2019 was that this tried to keep the scope
     of `require(esm)` small and only supported loading synchronous ESM. As it turned
@@ -326,16 +375,19 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以导致了[这个PR](https://github.com/nodejs/node/pull/51977)。这次与2019年的PR的主要区别在于，这次试图将`require(esm)`的范围保持小，并且仅支持同步加载ESM。事实证明，在合作者/技术委员会中，这并不是一个有争议的想法，没有遇到太多阻力（由于关于加载器钩子的讨论有些偏离，但至少我们同意钩子支持可以留待后续，而`require(esm)`本身应该回到正轨）。
 - en: What’s next?
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 接下来是什么？
 - en: The feature is still experimental under the flag `--experimental-require-module`
     and there is still some work that needs to be done before it goes out of experiments.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 此功能仍处于标志`--experimental-require-module`下的实验阶段，还有一些工作需要在实验结束之前完成。
 - en: There probably still are some edge cases that it needs to take care of. I tried
     to test a bunch of edge cases in the PR, but obviously there are just too many
     possibility of module graphs to test them all in one PR. The initial iteration
@@ -344,6 +396,8 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 可能仍然存在一些边缘情况需要处理。我在PR中尝试了一堆边缘情况的测试，但显然，模块图的可能性太多了，无法在一个PR中全部测试完。初始迭代已足以加载我测试过的大多数高影响的仅ESM
+    npm包。随着用户反馈的不断完善，我们可以继续优化这一点。
 - en: Another thing that needs to be solved is support for custom loader hooks. The
     current loader hooks are again unconditionally async. This imposes a tremendous
     overhead via the use of workers to make the main thread block on the loaders.
@@ -358,6 +412,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个需要解决的问题是对自定义加载器钩子的支持。当前的加载器钩子再次是无条件的异步。这通过使用工作线程使主线程在加载器上阻塞带来了巨大的开销。虽然这比根本没有加载器钩子要好，但就性能和功能而言，这远不及`require()`的猴子补丁提供的功能。`require()`的猴子补丁已被许多流行的包使用，我认为我们确实需要为用户提供一个可比的迁移替代方案。在我看来，下一步应该是开发一个支持`require()`和`import`的线程内同步变体的加载器钩子。这可能使`require()`的猴子补丁不再必要，并使更多用户能够从CJS迁移到ESM。
 - en: 'Currently `require(esm)` only supports ESM explicitly labeled as ESM - either
     via the `.mjs` extension, or a `"type": "module"` field in `package.json` for
     the `.js` extensions. This is already enough to support loading ESM-only packages
@@ -370,6 +425,9 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '目前，`require(esm)`仅支持显式标记为ESM的ESM - 通过`.mjs`扩展名或者`package.json`中的`"type": "module"`字段来标记`.js`扩展名的ESM。这已足够支持在npm中加载仅限ESM的包。当出现没有在最接近的`package.json`中标记`"type":
+    "module"`字段的`.js`文件的ESM语法时，可以实现回退到ESM加载，但是一般来说，用户应该避免这样做 - ESM语法检测会带来额外的开销，一旦项目中有足够多的ESM模块，您可能不希望Node.js浪费时间猜测您的模块类型，而是可以通过仅一个显式的`"type":
+    "module"`字段在您的`package.json`中节省成本。'
 - en: Support for top-level await in entry points is still possible - we could just
     fallback to the asynchronous loading for the entry point in that case, since the
     exports of the entry point goes nowhere anyway. That can be done already via the
@@ -378,8 +436,10 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持顶层等待的入口点仍然是可能的 - 在这种情况下，我们可以简单地回退到入口点的异步加载，因为入口点的导出不会影响到任何地方。这已经可以通过`--experimental-detect-module`来实现，并且将回退移到CJS加载器中，现在它支持加载ESM，更多的是实现细节。
 - en: Thanks Bloomberg, who has been sponsoring my work over the years, for supporting
     my work on fixing this agony.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢多年来一直赞助我的工作的彭博社，支持我解决这个痛苦。
