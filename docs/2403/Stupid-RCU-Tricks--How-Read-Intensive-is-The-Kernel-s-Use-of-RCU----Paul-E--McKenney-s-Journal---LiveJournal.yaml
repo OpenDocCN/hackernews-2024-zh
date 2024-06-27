@@ -2,83 +2,102 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-29 12:50:15'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:50:15
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Stupid RCU Tricks: How Read-Intensive is The Kernel''s Use of RCU? - Paul E.
     McKenney''s Journal — LiveJournal'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 蠢萌的 RCU 技巧：内核对 RCU 的读取强度如何？- Paul E. McKenney's Journal — LiveJournal
 - en: 来源：[https://paulmck.livejournal.com/67547.html](https://paulmck.livejournal.com/67547.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://paulmck.livejournal.com/67547.html](https://paulmck.livejournal.com/67547.html)
 - en: RCU is a specialized synchronization mechanism, and is typically used where
     there are far more readers (
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: RCU 是一种专门的同步机制，通常用于读者更多的场景（
 - en: '`rcu_read_lock()`'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_read_lock()`'
 - en: ','
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: ，
 - en: '`rcu_read_unlock()`'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_read_unlock()`'
 - en: ','
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: ，
 - en: '`rcu_dereference()`'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_dereference()`'
 - en: ', and so on) than there are updaters ('
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 等）比更新者（
 - en: '`synchronize_rcu()`'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu()`'
 - en: ','
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: ，
 - en: '`call_rcu()`'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: '`call_rcu()`'
 - en: ','
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: ，
 - en: '`rcu_assign_pointer()`'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_assign_pointer()`'
 - en: ', and so on). But does the Linux kernel really make heavier use of RCU''s read-side
     primitives than of its update-side primitives?'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: ，等等）。但 Linux 内核是否真的更多地使用了 RCU 的读取端原语而不是更新端原语？
 - en: One way to determine this would be to use something like ftrace to record all
     the calls to these functions. This works, but trace messages can be lost, especially
     when applied to frequently invoked functions. Also, dumping out the trace buffer
@@ -89,259 +108,319 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种确定这一点的方法是使用类似 ftrace 的工具记录对这些函数的所有调用。这种方法有效，但是跟踪消息可能会丢失，尤其是在频繁调用的函数上。另外，倒出跟踪缓冲区可能会扰乱系统。另一种方法是修改内核源代码以计算这些函数调用的次数，并以一种对缓存友好的方式转储到用户空间。这种方法有效，但我有点懒。还有一种方法是向跟踪专家寻求建议。
 - en: This last is what I actually did, and because the tracing person I happened
     to ask happened to be Andrii Nakryiko, I learned quite a bit about BPF in general
     and the
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，这就是我实际做的，因为我碰巧询问的跟踪人员是 Andrii Nakryiko，我对 BPF 总体和
 - en: '`bpftrace`'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: command in particular. If you don't happen to have Andrii on hand, you can do
     quite well with Appendix A and Appendix B of Brendan Gregg's “BPF Performance
     Tools”. You will of course need to install
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 命令特别是。如果你手头没有 Andrii，你可以通过 Brendan Gregg 的《BPF 性能工具》附录 A 和附录 B 来完成相当不错的工作。当然，你需要安装
 - en: '`bpftrace`'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: itself, which is reasonably straightforward on many Linux distributions.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 本身，在许多 Linux 发行版上相当简单。
 - en: Linux-Kernel RCU Read Intensity
   id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Linux 内核 RCU 读取强度
 - en: Those of you who have used
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 曾经使用过的人
 - en: '`sed`'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '`sed`'
 - en: and
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 和
 - en: '`awk`'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '`awk`'
 - en: have a bit of a running start because you can invoke
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一点的启动是因为你可以调用
 - en: '`bpftrace`'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: with a
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 带有
 - en: '`-e`'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '`-e`'
 - en: argument and a series of tracepoint/program pairs, where a program is
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 参数和一系列跟踪点/程序对，其中一个程序是
 - en: '`bpftrace`'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: code enclosed in curly braces. This code is compiled, verified, and loaded into
     the running kernel as a kernel module. When the code finishes executing, the results
     are printed right there for you on
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 用大括号括起来的代码。此代码被编译、验证，并作为内核模块加载到运行中的内核中。代码执行完成后，结果会直接打印在这里给你看
 - en: '`stdout`'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '`stdout`'
 - en: '. For example:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 。例如：
 - en: '[PRE0]'
   id: totrans-split-39
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This command uses the
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个命令使用
 - en: '`kprobe`'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '`kprobe`'
 - en: facility to attach a program to the
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以附加程序到
 - en: '`__rcu_read_lock()`'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: '`__rcu_read_lock()`'
 - en: function and to attach a very similar program to the
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数并附加一个非常相似的程序到
 - en: '`rcu_gp_fqs_loop()`'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_gp_fqs_loop()`'
 - en: function, which happens to be invoked exactly once per RCU grace period. Both
     programs count the number of calls, with
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数，这个函数恰好在每个 RCU 优雅期间被调用一次。这两个程序都计算调用次数，带有
 - en: '`@gp`'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '`@gp`'
 - en: being the
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 是
 - en: '`bpftrace`'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: “variable” accumulating the count, and the
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: “变量”累积计数，和
 - en: '`count()`'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '`count()`'
 - en: function doing the counting in a cache-friendly manner. The final
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 以一种对缓存友好的方式进行计数的函数。最后
 - en: '`interval:s:10`'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '`interval:s:10`'
 - en: in effect attaches a program to a timer, so that this last program will execute
     every 10 seconds (“
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上附加了一个程序到定时器，这样最后一个程序将每 10 秒执行一次（“
 - en: '`s:10`'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '`s:10`'
 - en: ”). Except that the program invokes the
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: ”）。除了这个程序调用了
 - en: '`exit()`'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: '`exit()`'
 - en: function that terminates this
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数终止这个
 - en: '`bpftrace`'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: program at the end of the very first 10-second time interval. Upon termination,
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序在第一个 10 秒时间间隔结束时执行。终止时，
 - en: '`bpftrace`'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: 'outputs the following on an idle system:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在空闲系统上输出以下内容：
 - en: '[PRE1]'
   id: totrans-split-63
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: In other words, there were about a thousand grace periods and more than six
     million RCU readers during that 10-second time period, for a read-to-grace-period
     ratio of more than six thousand. This certainly qualifies as read-intensive.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，这段时间内大约有一千个宽限期和六百多万个RCU读者，读取到宽限期比率超过六千。这确实可以被视为读取密集型。
 - en: But what if the system is busy? Much depends on exactly how busy the system
     is, as well as exactly how it is busy, but let's use that old standby, the kernel
     build (but using the
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是如果系统很忙呢？很大程度上取决于系统的忙碌程度以及具体的忙碌方式，但让我们使用那个老生常谈的方法，内核构建（但使用
 - en: '`nice`'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: '`nice`'
 - en: command to avoid delaying
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 命令以避免延迟
 - en: '`bpftrace`'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: ). Let's also put the
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: ）。我们也把
 - en: '`bpftrace`'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: script into a creatively named file
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 将脚本命名为创造性地命名的文件
 - en: '`rcu1.bpf`'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu1.bpf`'
 - en: 'like so:'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 如下所示：
 - en: '[PRE2]'
   id: totrans-split-74
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This allows the command
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 这允许命令
 - en: '`bpftrace rcu1.bpf`'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace rcu1.bpf`'
 - en: 'to produce the following output:'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 产生以下输出：
 - en: '[PRE3]'
   id: totrans-split-78
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Where the idle system had about one thousand grace periods over the course of
     ten seconds, the busy system had only 274\. On the other hand, the busy system
     had 78 million RCU read-side critical sections, more than ten times that of the
@@ -350,93 +429,115 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 空闲系统在十秒内大约有一千个宽限期，而忙碌系统只有274个。另一方面，忙碌系统有78百万个RCU读取侧关键部分，是空闲系统的十倍以上。忙碌系统每个宽限期有超过四分之一百万个RCU读取侧关键部分，这显然是严重的读取密集型。
 - en: RCU works hard to make the same grace-period computation cover multiple requests.
     Because
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: RCU 努力使相同的宽限期计算覆盖多个请求。因为
 - en: '`synchronize_rcu()`'
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu()`'
 - en: invokes
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 调用
 - en: '`call_rcu()`'
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: '`call_rcu()`'
 - en: ', we can use the number of'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: ，我们可以使用
 - en: '`call_rcu()`'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: '`call_rcu()`'
 - en: invocations as a rough proxy for the number of updates, that is, the number
     of requests for a grace period. (The more invocations of
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 调用作为每个宽限期更新的粗略代理，即对宽限期请求的请求数量。（调用越多
 - en: '`synchronize_rcu_expedited()`'
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu_expedited()`'
 - en: and
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 和
 - en: '`kfree_rcu()`'
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: '`kfree_rcu()`'
 - en: ', the rougher this proxy will be.)'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: ，这个代理的越粗糙。
 - en: We can make the
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使
 - en: '`bpftrace`'
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: script more concise by assigning the same action to a group of tracepoints,
     as in the
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过将相同的操作分配给一组跟踪点来使脚本更加简洁，如下所示
 - en: '`rcu2.bpf`'
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu2.bpf`'
 - en: 'file shown here:'
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里显示的文件：
 - en: '[PRE4]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: With this file in place,
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这个文件，
 - en: '`bpftrace rcu2.bpf`'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace rcu2.bpf`'
 - en: 'produces the following output in the midst of a kernel build:'
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 在内核构建中间产生以下输出：
 - en: '[PRE5]'
   id: totrans-split-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: These results look quite different from the earlier kernel-build results, confirming
     any suspicions you might harbor about the suitability of kernel builds as a repeatable
     benchmark. Nevertheless, there are about 180K RCU read-side critical sections
@@ -445,99 +546,122 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些结果看起来与之前的内核构建结果大不相同，确证了您对内核构建作为可重复基准测试的适用性的任何怀疑。尽管如此，每个宽限期大约有180K个RCU读取侧关键部分，这仍然是严重的读取密集型。此外，还有将近2K
 - en: '`call_rcu()`'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: '`call_rcu()`'
 - en: invocations per RCU grace period, which means that RCU is able to amortize the
     overhead of a given grace period down to almost nothing per grace-period request.
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个RCU宽限期的调用，这意味着RCU能够将给定宽限期的开销几乎降至零。
 - en: Linux-Kernel RCU Grace-Period Latency
   id: totrans-split-104
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Linux内核RCU宽限期延迟
 - en: The following
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下
 - en: '`bpftrace`'
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: program makes a histogram of grace-period latencies, that is, the time from
     the call to
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序制作宽限期延迟的直方图，即从调用到
 - en: '`rcu_gp_init()`'
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_gp_init()`'
 - en: to the return from
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 到从
 - en: '`rcu_gp_cleanup()`'
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_gp_cleanup()`'
 - en: ':'
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: ：
 - en: '[PRE6]'
   id: totrans-split-112
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: The
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 在
 - en: '`kretprobe`'
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: '`kretprobe`'
 - en: attaches the program to the return from
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 将程序附加到
 - en: '`rcu_gp_cleanup()`'
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_gp_cleanup()`'
 - en: . The
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 。这
 - en: '`hist()`'
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: '`hist()`'
 - en: function computes a log-scale histogram. The check of the
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数计算一个对数尺度的直方图。检查
 - en: '`@start`'
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: '`@start`'
 - en: variable avoids a beginning-of-time value for this variable in the common case
     where this script start in the middle of a grace period. (Try it without that
     check!)
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 变量在这个脚本通常在宽限期中开始的情况下避免了此变量的时间开头值。（尝试在没有该检查的情况下！）
 - en: 'The output is as follows:'
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 输出如下：
 - en: '[PRE7]'
   id: totrans-split-123
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Most of the grace periods complete within between four and eight milliseconds,
     with most of the remainder completing within between two and four milliseconds
     and then between eight and sixteen milliseonds, but with a few stragglers taking
@@ -545,10 +669,12 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数宽限期在4到8毫秒之间完成，剩余大部分在2到4毫秒之间完成，然后在8到16毫秒之间，但也有少数拖延者需要64毫秒。最后
 - en: '`@start`'
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: '`@start`'
 - en: line shows that
   id: totrans-split-126
   prefs: []
@@ -612,6 +738,7 @@
   id: totrans-split-140
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The
   id: totrans-split-141
   prefs: []
@@ -658,6 +785,7 @@
   id: totrans-split-151
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: In addition, we see not one but two values for
   id: totrans-split-152
   prefs: []
@@ -724,6 +852,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Doing this on a dual-socket system with 80 hardware threads might be ill-advised,
     but you only live once!
   id: totrans-split-168
@@ -754,6 +883,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The output of this script run concurrently with a kernel build is as follows:'
   id: totrans-split-175
   prefs: []
@@ -763,6 +893,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Most
   id: totrans-split-177
   prefs: []
@@ -793,6 +924,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'Running this with the usual kernel build in the background:'
   id: totrans-split-184
   prefs: []
@@ -802,6 +934,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: The final bucket is overflow, containing measurements that exceeded the one-millisecond
     limit.
   id: totrans-split-186
@@ -843,6 +976,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Given the usual kernel-build background load, this produces the following output:'
   id: totrans-split-195
   prefs: []
@@ -852,6 +986,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'This is a bit hard to read, but simple scripting can be applied to this output
     to produce something like this:'
   id: totrans-split-197
@@ -862,6 +997,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: This produces compact output despite outliers such as the last entry, corresponding
     to an invocation that took somewhere between 1.6 and 1.7 milliseconds.
   id: totrans-split-199
@@ -887,3 +1023,5 @@
   id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
+  zh: '`command` 可用于快速轻松地编写内核中编译的脚本程序，可用于测量和监视各种事物。本文集中讨论了RCU的几个方面，但是在 Brendan Gregg
+    的“BPF Performance Tools” 书中可以找到更多的材料。'
