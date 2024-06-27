@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:00:15'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:00:15
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Using rsync for Backup – Both.org
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用rsync进行备份 – Both.org
 - en: 来源：[https://www.both.org/?p=4647](https://www.both.org/?p=4647)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.both.org/?p=4647](https://www.both.org/?p=4647)
 - en: 'Image by: Creative Commons: CC-by-SA'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 图片来源：创作共用许可证：CC-by-SA
 - en: Backup options
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 备份选项
 - en: There are many options for performing backups. Most Linux distributions are
     provided with one or more open source programs especially designed to perform
     backups. There are many commercial options available as well. But none of those
@@ -40,12 +48,14 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多备份执行选项。大多数Linux发行版提供了一个或多个专门设计用于执行备份的开源程序。还有许多商业选项可供选择。但这些选项没有直接满足我的需求，因此我决定使用基本的Linux工具来完成这项工作。
 - en: In a previous article, [Using tar and ssh for Backups](https://www.both.org/?p=4650), I
     showed that fancy and expensive backup programs are not really necessary to design
     and implement a viable backup program.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在先前的文章中，[使用tar和ssh进行备份](https://www.both.org/?p=4650)，我展示了设计和实施可行备份程序并不需要高端昂贵的备份程序。
 - en: Several years ago I started experimenting with another backup option, the **`rsync`**
     command which has some very interesting features that I have been able to use
     to good advantage. My primary objectives were to create backups from which users
@@ -54,17 +64,20 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 几年前，我开始尝试另一种备份选项，即具有一些非常有趣功能的**`rsync`**命令，这些功能对我非常有利。我的主要目标是创建备份，使用户无需解压备份的tar文件即可定位和恢复文件，并减少创建备份所需的时间。
 - en: This article is intended only to describe my own use of **rsync** in a backup
     scenario. It is not a look at all of the capabilities of **rsync** or the many
     other interesting ways in which it can be used.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文仅描述我在备份场景中使用**rsync**的个人经验，不涵盖**rsync**的所有能力或其它有趣的使用方式。
 - en: rsync
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: rsync
 - en: The rsync command was written by Andrew Tridgell and Paul Mackerras and first
     released in 1996\. The primary intention for rsync is to remotely synchronize
     the files on one computer with those on another. Did you notice what they did
@@ -73,6 +86,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: rsync命令由Andrew Tridgell和Paul Mackerras编写，于1996年首次发布。rsync的主要意图是远程同步一台计算机上的文件与另一台计算机上的文件。你注意到他们是如何创建这个名字的吗？rsync是开源软件，并且与我熟悉的所有发行版一起提供。
 - en: The rsync command can be used to synchronize two directories or directory trees
     whether they are on the same computer or on different computers but it can do
     so much more than that. rsync creates or updates the target directory to be identical
@@ -84,6 +98,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: rsync命令可以用于同步两个目录或目录树，无论它们是否在同一台计算机上或不同计算机上，但它的功能远不止于此。rsync创建或更新目标目录以使其与源目录相同。目标目录可以由所有常用的Linux工具自由访问，因为它不是存储在tarball、zip文件或任何其他归档文件类型中；它只是一个普通的目录，其中有普通文件，可以通过基本的Linux工具被普通用户浏览。这满足了我的主要目标之一。
 - en: One of the most important features of rsync is the method it uses to synchronize
     preexisting files that have changed in the source directory. Rather than copying
     the entire file from the source, it uses checksums to compare blocks of the source
@@ -103,6 +118,10 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: rsync 最重要的特性之一是它用于同步源目录中已更改的现有文件的方法。它不是从源复制整个文件，而是使用校验和比较源文件和目标文件的块。如果两个文件的所有块都相同，则不传输任何数据。如果数据不同，则只传输在源上已更改的块到目标。这对远程同步节省了大量时间和网络带宽。例如，当我首次使用我的
+    rsync BASH 脚本将所有主机备份到大型外部 USB 硬盘时，花了大约 3 小时。这是因为所有数据都必须传输，因为没有数据被预先备份过。随后的同步根据自上次同步以来更改或创建的文件数量，实际花费时间在
+    3 到 8 分钟之间。我使用 time 命令确定了这一点，所以这是经验数据。例如，昨晚，同步约 750GB 数据从 6 个远程系统和本地工作站完成的时间是
+    3 分钟 12 秒。当然，实际上只有几百兆字节的数据在一天中实际更改并需要同步。
 - en: The following simple rsync command can be used to synchronize the contents of
     two directories and any of their subdirectories. That is, the contents of the
     target directory are synchronized with the contents of the source directory so
@@ -110,16 +129,19 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面这个简单的 rsync 命令可以用来同步两个目录及其子目录的内容。也就是说，将目标目录的内容与源目录的内容同步，以便在同步结束时，目标目录与源目录相同。
 - en: '[PRE0]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The **-a** option is for archive mode which preserves permissions, ownerships
     and symbolic (soft) links. The **-H** is used to preserve hard links. Note that
     either the source or target directories can be on a remote host.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '**-a** 选项用于归档模式，保留权限、所有权和符号（软）链接。**-H** 用于保留硬链接。请注意，源目录或目标目录可以位于远程主机上。'
 - en: Now let’s assume that yesterday we used rsync to synchronized two directories.
     Today we want to resync them, but we have deleted some files from the source directory.
     The normal way in which rsync would do this is to simply copy all the new or changed
@@ -130,6 +152,8 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在假设昨天我们使用 rsync 同步了两个目录。今天我们想要重新同步它们，但是从源目录中删除了一些文件。rsync 正常处理这种情况的方式是简单地将所有新的或更改的文件复制到目标位置，并在目标上保留已删除的文件。这可能是您希望的行为，但如果您希望从源删除的文件也从目标中删除，可以添加
+    **`--delete`** 选项来实现这一点。
 - en: Another interesting option, and my personal favorite because it increases the
     power and flexibility of rsync immensely, is the **`--link-dest`** option. The
     **–`-link-dest`** option allows a series of daily backups that take up very little
@@ -137,6 +161,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个有趣的选项，也是我个人最喜欢的选项，因为它极大地增加了 rsync 的功能和灵活性，就是 **`--link-dest`** 选项。**`--link-dest`**
+    选项允许创建一系列每天备份，每天备份占用非常少的额外空间，而且创建时间也非常短。
 - en: Specify the previous day’s target directory with this option and a new directory
     for today. rsync then creates today’s new directory and a hard link for each file
     in yesterday’s directory is created in today’s directory. So we now have a bunch
@@ -150,14 +176,17 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用此选项指定前一天的目标目录和今天的新目录。然后rsync在今天的新目录中为昨天的每个文件创建硬链接。因此，现在在今天的目录中有一堆昨天文件的硬链接。没有创建或复制新文件。只是创建了一堆硬链接。维基百科对[硬链接](https://en.wikipedia.org/wiki/Hard_link)有一个非常好的描述。使用这组硬链接创建了今天的目标目录后，rsync像往常一样执行同步，但是当检测到文件变化时，目标硬链接会被昨天文件的副本替换，然后将文件的更改从源复制到目标。
 - en: So now our command looks like the following.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们的命令看起来像下面这样。
 - en: '[PRE1]'
   id: totrans-split-23
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: There are also times when it is desirable to exclude certain directories or
     files from being synchronized. For this there is the `--exclude` option. Use this
     option and the pattern for the files or directories you want to exclude. You might
@@ -165,15 +194,18 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 有时还希望排除某些目录或文件不进行同步。为此有`--exclude`选项。使用此选项和要排除的文件或目录的模式。您可能希望排除浏览器缓存文件，因此您的新命令将如下所示。
 - en: '[PRE2]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Note that each file pattern you want to exclude must have a separate exclude
     option.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，你想要排除的每个文件模式都必须有单独的排除选项。
 - en: rsync can sync files with remote hosts as either the source or the target. For
     the next example, let’s assume that the source directory is on a remote computer
     with the hostname remote1 and the target directory is on the local host. Even
@@ -183,14 +215,17 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: rsync可以将文件与远程主机同步，作为源或目标。对于下一个示例，假设源目录位于具有主机名remote1的远程计算机上，目标目录位于本地主机上。尽管SSH是默认的用于传输数据到或从远程主机的通信协议，但我总是添加ssh选项。现在命令看起来像这样。
 - en: '[PRE3]'
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: This is the final form of my rsync backup command.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我的rsync备份命令的最终形式。
 - en: rsync has a very large number of options that you can use to customize the synchronization
     process. For the most part, the relatively simple commands that I have described
     here are perfect for making backups for my personal needs. Be sure to read the
@@ -199,11 +234,13 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: rsync具有大量的选项，您可以使用这些选项来定制同步过程。就我个人需求而言，我描述的这些相对简单的命令非常适合制作备份。确保阅读rsync的详尽man页面，了解更多功能及这里讨论的选项。
 - en: Performing backups
   id: totrans-split-31
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 执行备份
 - en: I automated my backups because – “[automate everything](http://www.linux-databook.info/?page_id=4913).”
     I wrote a BASH script that handles the details of creating a series of daily backups
     using rsync. This includes ensuring that the backup medium is mounted, generating
@@ -213,16 +250,19 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 我自动化了我的备份，因为 – “[自动化一切](http://www.linux-databook.info/?page_id=4913)” 。我编写了一个BASH脚本，处理了创建一系列每日备份的详细信息，使用rsync。这包括确保备份介质已挂载，生成昨天和今天备份目录的名称，如果备份介质上不存在的话创建适当的目录结构，执行实际备份并卸载介质。
 - en: I run the script daily, early every morning, as a cron job to ensure that I
     never forget to perform my backups.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 我每天早上定时运行这个脚本，作为cron作业，以确保我从不忘记执行我的备份。
 - en: Recovery Testing
   id: totrans-split-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 恢复测试
 - en: No backup regimen would be complete without testing. You should regularly test
     recovery of random files or entire directory structures to ensure not only that
     the backups are working, but that the data in the backups can be recovered for
@@ -232,6 +272,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 没有测试的备份方案是不完整的。你应该定期测试随机文件或整个目录结构的恢复，以确保不仅备份工作正常，而且备份中的数据可以在灾难后恢复使用。我见过太多情况，因为缺乏测试而无法恢复备份，导致宝贵的数据丢失。
 - en: Just select a file or directory to test and restore it to a test location such
     as /tmp so that you won’t overwrite a file that may have been updated since the
     backup was performed. Verify that the files’ contents are as you expect them to
@@ -241,6 +282,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 只需选择一个文件或目录进行测试，并将其恢复到/tmp等测试位置，以免覆盖自备份后可能已更新的文件。验证文件内容是否符合预期。从使用上述rsync命令创建的备份中恢复文件只是找到要从备份中恢复的文件，然后将其复制到要恢复到的位置的问题。
 - en: I have had a few circumstances where I have had to restore individual files
     and, occasionally, a complete directory structure. Most of the time this has been
     self-inflicted when I accidentally deleted a file or directory. At least a few
@@ -248,17 +290,21 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 在几个情况下，我不得不恢复单个文件或完整目录结构。大多数情况下，这是我不小心删除文件或目录时自食其果的结果。至少有几次是因为硬盘崩溃。所以那些备份确实非常有用。
 - en: '* * *'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Resources
   id: totrans-split-39
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 资源
 - en: You can download my rsbu program and its supporting files from [this page](https://www.both.org/?page_id=4666).
     It’s distributed under the GPL V3 license.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以从[这个页面](https://www.both.org/?page_id=4666)下载我的rsbu程序及其支持文件。它是根据GPL V3许可证分发的。
