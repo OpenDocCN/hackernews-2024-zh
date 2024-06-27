@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:40:00'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:40:00'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Supercharge compression efficiency with shared dictionaries  |  Blog  |  Chrome
     for Developers
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用共享字典来提升压缩效率  |  博客  |  Chrome开发者
 - en: 来源：[https://developer.chrome.com/blog/shared-dictionary-compression](https://developer.chrome.com/blog/shared-dictionary-compression)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://developer.chrome.com/blog/shared-dictionary-compression](https://developer.chrome.com/blog/shared-dictionary-compression)
 - en: Data compression is a time-tested performance optimization technique that reduces
     the size of eligible page resources. For some time, it was common practice to
     primarily use gzip on web servers to compress common text-based page resources
@@ -34,6 +40,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据压缩是一种经过时间检验的性能优化技术，可减少符合条件的页面资源的大小。有一段时间，主要在Web服务器上使用gzip来压缩常见的基于文本的页面资源，如HTML、CSS和JavaScript文件，并将其发送到客户端进行解压缩。结果是资源加载时间更快，而不会影响页面的预期行为。
 - en: Though gzip is highly effective in its own right, further improvements in compression
     on the web have been realized in recent years. In 2016, the Brotli algorithm shipped
     in Chrome, delivering overall better compression ratios for eligible resources.
@@ -43,6 +50,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管gzip本身非常有效，但近年来在网络压缩方面已经实现了进一步的改进。2016年，Brotli算法在Chrome中发布，为符合条件的资源提供了更好的总体压缩比。到2017年底，所有现代浏览器都支持Brotli，并且服务器对其支持开始变得更加普遍。最近，Chrome还[推出了ZStandard压缩](https://chromestatus.com/feature/6186023867908096)。
 - en: The work doesn't stop there though! The Chrome team has been working on making
     shared dictionaries usable on the web, which are now available in an origin trial
     for both [Brotli and ZStandard](/origintrials#/view_trial/3693514644397228033).
@@ -54,11 +62,13 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，工作并未就此止步！Chrome团队一直在努力使共享字典在网络上可用，现在已经可以在[两者（Brotli和ZStandard）的起源试验](/origintrials#/view_trial/3693514644397228033)中使用。共享字典可以补充Brotli和ZStandard压缩，大大提高常更新代码的网站的压缩比，有时甚至可以达到**90%甚至更高的压缩比**。本文详细介绍了共享字典的工作原理，以及如何注册起源试验以在您的网站上使用它们来进行Brotli和ZStandard的压缩。
 - en: Shared dictionaries explained
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 共享字典解释
 - en: Compression is a process of finding redundant sequences in an input and using
     that information to create a much smaller output, which can be reversed later
     on. Compression works well on the web because it substantially reduces resource
@@ -69,6 +79,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 压缩是一种在输入中查找冗余序列并利用这些信息创建更小输出的过程，之后可以反向操作。在网络上，压缩效果显著，因为它大幅减少资源加载时间。Brotli和ZStandard通过使用*压缩字典*进一步提升其效率，该字典是这些算法在压缩过程中可以使用的附加模式集合。事实上，Brotli的高效性在一定程度上是通过使用内部字典实现的。
 - en: However, *custom* user-curated dictionaries can be used with Brotli and ZStandard
     that contain patterns specific to particular resources. In practice, a custom
     dictionary is an external file that can be applied to any input. Dictionaries
@@ -125,6 +136,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This particular `Accept-Encoding` header states that the browser requesting
     the resource supports the gzip, Brotli, and ZStandard compression algorithms.
     A web server responding to the request can then decide which algorithm to use
@@ -143,6 +155,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: If a web server is configured to recognize this token, and it recognizes the
     dictionary, it can respond to that request with a resource that was compressed
     using the dictionary for the applicable encoding. How this is achieved in practice
@@ -177,6 +190,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Think of the `Use-As-Dictionary` header as a mechanism that applies to future
     versions of a resource that match the pattern specified within it. So, say your
     website ships all of its styles in a single CSS file. For simplicity's sake, say
@@ -198,6 +212,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: At this point, it's up to the server to configure compression on its end to
     ensure the matching dictionary is used. The resource compressed with that dictionary
     will then be sent, and the available dictionary in the user's browser cache will
@@ -241,6 +256,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'When Chrome encounters this `<link>` element, it *may* fetch the dictionary
     once the page is idle, and at low priority in an effort to avoid bandwidth contention.
     The response for the dictionary itself must specify a `Use-As-Dictionary` header
@@ -252,6 +268,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: From here, the flow is largely the same as for static resources. The browser
     will see that the dictionary itself applies to matching resources, and the browser
     will attach an `Available-Dictionary` header to the request with a hash of the
@@ -289,11 +306,13 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，任何给定版本资源的可用字典可能使用资源的任何先前版本之一。这意味着您需要分析用户流量并相应地规划。努力实现平衡，并生成最大数量的返回用户受益的资源。CDN提供商目前正在尝试共享字典压缩。尚无公开使用的实现，但我们预计情况将有所改变！
 - en: Try it out!
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 尝试一下！
 - en: 'Integrating shared dictionary compression with the browser''s existing compression
     capabilities has the potential to substantially improve loading performance for
     websites that frequently ship updated production code and receive significant
@@ -302,6 +321,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 将共享字典压缩与浏览器现有的压缩能力集成，有潜力显著提高经常更新生产代码并且接收大量重复访问的网站的加载性能。如果您有兴趣尝试共享字典压缩，有两种选择：
 - en: If you're just looking to tinker with shared dictionary compression on your
     own to get a feel for how it works, you can enable the **Compression dictionary
     transport** experimental feature on the `chrome://flags` page.
@@ -309,6 +329,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果您只是想自己动手尝试共享字典压缩，了解其工作原理，可以在`chrome://flags`页面启用**压缩字典传输**实验性功能。
 - en: If you're interested in trying this out on your production website and see how
     shared dictionary compression could benefit real users, [register for the origin
     trial](/origintrials#/view_trial/3693514644397228033) to get a token, and read
@@ -317,11 +338,13 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果您有兴趣在生产网站上尝试此功能，看看共享字典压缩如何使真实用户受益，请[注册进行起始试验](/origintrials#/view_trial/3693514644397228033)以获取令牌，并详细了解[起始试验的工作原理](/docs/web-platform/origin-trials)。
 - en: Conclusion
   id: totrans-split-46
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: We're quite excited about this major advancement in compression technology on
     the web, and how much faster it could make existing applications that people use
     every day. We encourage you to try it out, and most importantly, [we want to hear
@@ -333,3 +356,4 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们对这项网页压缩技术的重大进展感到非常兴奋，以及它可以使人们每天使用的现有应用程序变得更快。我们鼓励您尝试一下，并且最重要的是，[如果您这么做，我们想听听您的想法](https://github.com/WICG/compression-dictionary-transport/issues)！如果您发现了错误，请[在crbug.com上报告](https://issues.chromium.org/issues)。有关更多资源和工具，请访问[use-as-dictionary.com](https://use-as-dictionary.com/)。最后，如果您对其工作原理有更深入的了解兴趣，请查看[解释文档](https://github.com/WICG/compression-dictionary-transport/blob/main/README.md)！
