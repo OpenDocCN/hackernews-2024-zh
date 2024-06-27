@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-29 12:42:16'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-29 12:42:16
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Notes on debugging HotSpot’s JIT compilation | Jorn Vernee
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 关于调试HotSpot的JIT编译的注释 | Jorn Vernee
 - en: 来源：[https://jornvernee.github.io/hotspot/jit/2023/08/18/debugging-jit.html](https://jornvernee.github.io/hotspot/jit/2023/08/18/debugging-jit.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://jornvernee.github.io/hotspot/jit/2023/08/18/debugging-jit.html](https://jornvernee.github.io/hotspot/jit/2023/08/18/debugging-jit.html)
 - en: Typically when you compile a Java program, it is first compiled into bytecode
     by a Java compiler. However, this bytecode is not optimized yet. In HotSpot (OpenJDK’s
     JVM) this instead happens at runtime, and is done by a JIT, a Just-In-Time compiler.
@@ -33,6 +39,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常情况下，当您编译Java程序时，它首先由Java编译器编译为字节码。然而，这个字节码尚未经过优化。在HotSpot（OpenJDK的JVM）中，这些优化是在运行时进行的，由JIT（即时编译器）完成。这种做法允许JIT充分利用代码运行的条件，如硬件，甚至在一定程度上特定输入到程序中的数据。
 - en: Understanding what the JIT compilers do is important when trying to understand
     the performance characteristics of a Java program. In this blog post I will show
     off several techniques that I use to debug what a JIT compiler is doing. This
@@ -42,41 +49,49 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 理解JIT编译器的工作在尝试理解Java程序的性能特征时非常重要。在本博文中，我将展示几种调试JIT编译器操作的技术。这不是针对初学者的文章。不过，这可能会给初学者一些关于他们可能想要学习的内容的启发。如果你想了解更多关于某个主题的信息，你需要自行研究。
 - en: '[Setting the stage](#1-setting-the-stage)'
   id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[设置舞台](#1-setting-the-stage)'
 - en: '[Getting the assembly of a compiled method](#2-getting-the-assembly-of-a-compiled-method)'
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[获取编译方法的汇编](#2-getting-the-assembly-of-a-compiled-method)'
 - en: '[Printing inlining traces](#3-printing-inlining-traces)'
   id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[打印内联跟踪](#3-printing-inlining-traces)'
 - en: '[A closer look at compile commands](#4-a-closer-look-at-compile-commands)'
   id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[深入研究编译命令](#4-a-closer-look-at-compile-commands)'
 - en: '[Tracking down escaping objects](#5-tracking-down-escaping-objects)'
   id: totrans-split-12
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[追踪逃逸对象](#5-tracking-down-escaping-objects)'
 - en: '[Debugging compilation using a native debugger](#6-debugging-compilation-using-a-native-debugger)'
   id: totrans-split-13
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: '[使用本地调试器调试编译](#6-debugging-compilation-using-a-native-debugger)'
 - en: 1\. Setting the stage
   id: totrans-split-14
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 1\. 设置舞台
 - en: First, let’s set up a small test project that we can easily modify to test different
     snippets of Java code. Our goal is to be able to trigger a JIT compilation for
     a particular piece of Java code, so that we can use some of HotSpot’s options
@@ -84,16 +99,19 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们建立一个小型测试项目，我们可以轻松修改以测试不同的Java代码片段。我们的目标是能够触发特定Java代码片段的JIT编译，以便我们可以使用一些HotSpot的调试编译选项。
 - en: 'I define a ‘payload’ method, which will hold the code that we wish to JIT compile.
     Then, we trigger the JIT compilation of this payload simply by invoking the method
     a bunch of times. Here is the code:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我定义了一个‘负载’方法，它将包含我们希望进行JIT编译的代码。然后，我们通过多次调用该方法来简单地触发这个负载的JIT编译。这是代码：
 - en: '[PRE0]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Tier 4 JIT compilation, done by the C2 JIT compiler, which is the highest/most
     optimized tier, happens after 10K invocations on x64\. The number can be found
     in the `./src/hotspot/cpu/x86/c2_globals.hpp` file as `CompileThreshold` [1](https://github.com/openjdk/jdk/blob/752121114f424d8e673ee8b7bb85f7705a82b9cc/src/hotspot/cpu/x86/c2_globals_x86.hpp#L41).
@@ -103,6 +121,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: Tier 4 JIT编译由C2 JIT编译器完成，在x64平台上的最高/最优化层级，在10K次调用后发生。这个数字可以在`./src/hotspot/cpu/x86/c2_globals.hpp`文件的`CompileThreshold`
+    [1](https://github.com/openjdk/jdk/blob/752121114f424d8e673ee8b7bb85f7705a82b9cc/src/hotspot/cpu/x86/c2_globals_x86.hpp#L41)找到。它也是一个虚拟机标志，因此阈值也可以从命令行配置。我在这里调用了20K次负载，以确保安全，因为调用计数器不一定是100%准确的。
 - en: 'I just compile the program to bytecode with `javac`. Then, when running it,
     there are a few important flags to pass. First: `-XX:CompileCommand=dontinline,TestJIT::payload`.
     This flag disables inlining of `payload`. Doing this is important in order to
@@ -112,6 +132,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我只是用`javac`将程序编译成字节码。然后，在运行它时，需要传递一些重要的标志。首先是：`-XX:CompileCommand=dontinline,TestJIT::payload`。这个标志禁用了`payload`方法的内联。这样做很重要，可以单独编译`payload`方法，这是必需的，以便能够独立于`main`中的循环来检查该特定方法的编译。
 - en: The other important flag we need to pass is `-Xbatch`. JIT compilation is by
     default done in a background thread. This means that your code can just keep running
     while the compilation happens, but in our case it also means that the code might
@@ -122,25 +143,31 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要传递的另一个重要标志是`-Xbatch`。 JIT编译默认是在后台线程中完成的。这意味着您的代码可以继续运行，而编译在进行时也会发生，但在我们的情况下，这也意味着代码可能在编译完成之前就运行完毕，这意味着我们无法调试编译。`-Xbatch`使得请求编译的线程在编译进行时停止。顺便说一句，`-Xbatch`是`-XX:-BackgroundCompilation`的别名，即关闭后台编译
+    [2](https://github.com/openjdk/jdk/blob/752121114f424d8e673ee8b7bb85f7705a82b9cc/src/hotspot/share/runtime/globals.hpp#L272-L274)。
 - en: 'If you run the test program with these 2 flags (and any other needed flags),
     the output is not very interesting yet:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您使用这2个标志（以及任何其他必需的标志）运行测试程序，输出目前还不是很有趣：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Next, let’s see how we can start using this test setup to get interesting information
     out of the compilation of the payload method.
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，让我们看看如何开始使用这个测试设置来从有效负载方法的编译中获取有趣的信息。
 - en: 2\. Getting the assembly of a compiled method
   id: totrans-split-24
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 2\. 获取编译方法的汇编
 - en: The JIT compilers output machine code, which is, let’s say, a hard to read format.
     Luckily this machine code can be dis-assembled into a more readable format where
     each CPU instruction is represented with a mnemonic. To do that, a dis-assembler
@@ -153,6 +180,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: JIT编译器输出机器码，这种格式可以说是难以阅读的。幸运的是，这种机器码可以被反汇编成更易读的格式，其中每个CPU指令用助记符表示。要做到这一点，需要一个名为`hsdis`的HotSpot反汇编插件。您可以通过[OpenJDK构建说明](https://github.com/openjdk/jdk/blob/master/src/utils/hsdis/README.md)或者我的[之前关于这个主题的帖子](/hsdis/2022/04/30/hsdis.html)找到如何构建hsdis的指导。我推荐使用基于Capstone的hsdis，因为它最容易构建，也是我在使用的。我已经将hsdis库文件放在了`PATH`上，这样HotSpot可以自动加载它。
 - en: 'Now we just run the program again with a couple of additional VM flags to print
     out the assembly of the `payload` method. I’m using `-XX:CompileCommand=print,TestJIT::payload`
     to print out the assembly, and I’m also adding `-XX:-TieredCompilation` which
@@ -167,26 +195,35 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们再次运行程序，使用几个额外的 VM 标志来打印出 `payload` 方法的汇编代码。我使用 `-XX:CompileCommand=print,TestJIT::payload`
+    来打印出汇编代码，并且还添加了 `-XX:-TieredCompilation` 这个标志，用于禁用 HotSpot C1 编译器的编译。后者用于减少输出量。在这种情况下，我只关注由
+    C2 JIT 生成的汇编代码，这是更优化的版本。相反地，如果您只关注由 C1 生成的汇编代码，可以使用 `-XX:TieredStopAtLevel=3`
+    来禁用第四层编译，即 C2\. 最后，我更喜欢 Intel 汇编语法，所以我还传递了 `-XX:PrintAssemblyOptions=intel`。这个最后的标志是诊断性的，所以我们还必须在
+    `PrintAssemblyOptions` 标志之前传递 `-XX:+UnlockDiagnosticVMOptions`。将所有内容整合在一起，我们运行程序如下：
 - en: '[PRE2]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Note that I’m using powershell. The ticks are the powershell equivalent of `\`
     in a unix shell. I’ve put this command in a script file to make it easier to edit
     and re-run.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，我正在使用 PowerShell。反引号是 PowerShell 中相当于 Unix Shell 中的 `\`。我将这个命令放在脚本文件中，以便更容易编辑和重新运行。
 - en: 'The generated output is architecture specific. I’m using an x64 machine, which
     gives me x64 assembly. If you are using an AArch64 machine, such as Apple’s M1,
     the output will be different. The output I get for my test program above as follows:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 生成的输出是与架构相关的。我使用的是 x64 机器，这给我提供了 x64 汇编。如果您使用的是 AArch64 机器，例如 Apple 的 M1，输出将不同。我上面测试程序的输出如下：
 - en: '[PRE3]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'The thing to focus on is the `[Disassembly]` section of the output. Even though
     our `payload` method is empty, there is still quite a bit of code generated by
     the JIT. We are of course running in a virtual machine, and there is some additional
@@ -197,37 +234,47 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 需要关注的是输出的 `[Disassembly]` 部分。尽管我们的 `payload` 方法是空的，但 JIT 生成了相当多的代码。当然，我们正在运行在虚拟机中，并且需要一些额外的代码使其工作。如果我们只关心为
+    `payload` 方法内容生成的汇编代码，那么上述大部分内容都与此无关。然而，我会先浏览一遍，以便知道哪些部分通常可以忽略：
 - en: '[PRE4]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Setting up the stack frame. Allocates a bit of memory on the thread’s stack,
     and saves the contents of the `rbp` register to the stack.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 设置堆栈帧。在线程的堆栈上分配一些内存，并将 `rbp` 寄存器的内容保存到堆栈上。
 - en: '[PRE5]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: NMethod entry barrier. ‘nmethod’ is the name for a compiled Java method in HotSpot.
     The nmethod entry barrier is needed to make some GCs work. I won’t get into that
     right now.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: '`NMethod` 进入屏障。‘nmethod’ 是 HotSpot 中已编译的 Java 方法的名称。`nmethod` 进入屏障需要使一些 GC
+    工作。我现在不会深入讨论这个问题。'
 - en: '[PRE6]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Cleaning up the frame.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 清理帧。
 - en: '[PRE7]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Safepoint poll. The VM needs threads to occasionally poll for safe points. At
     a safe point, the JVM state for the current thread is fully known and recoverable.
     This is a point in the code where the VM might want to inspect the thread to do
@@ -235,10 +282,13 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 安全点轮询。VM 需要线程偶尔轮询安全点。在安全点，当前线程的 JVM 状态是完全已知且可恢复的。这是代码中的一个点，VM 可能希望检查线程以执行各种
+    VM 操作。
 - en: Return instruction
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 返回指令
 - en: I’m going to ignore the rest for now. The important part is that the code for
     the contents of the `payload` method will be primarily found in this block, between
     the nmethod entry barrier and the cleanup of the frame. A good strategy when trying
@@ -248,16 +298,20 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我现在要忽略其余部分。重要的部分是，`payload` 方法内容的代码主要在此块中找到，介于 `nmethod` 进入屏障和帧清理之间。当尝试找到片段生成的代码时，一个好策略是查找
+    `nmethod` 进入屏障并从那里向前工作，或者查找返回指令并从那里向后工作。
 - en: 'Let’s modify our `payload` method and see what happens to the generated assembly.
     I’m going to change my payload method to add two numbers together and return the
     result:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 修改我们的 `payload` 方法，并查看生成的汇编代码会发生什么。我将修改我的 payload 方法，将两个数相加并返回结果：
 - en: '[PRE8]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'I just call it with some dummy arguments in the `main` method. The values don’t
     really matter since we have disabled inlining of the `payload` method, so the
     JIT compiler will not be able to ‘see’ the actual value of the arguments, and
@@ -266,19 +320,24 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 我只需在 `main` 方法中使用一些虚拟参数调用它。由于我们已禁用 `payload` 方法的内联，所以参数的实际值对我们来说并不重要，因此 JIT
+    编译器无法“看到”参数的实际值，并且必须假定它们可以是任意值。出于类似的原因，在 `main` 方法中安全地丢弃返回值是可以的：
 - en: '[PRE9]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Recompiling with `javac`, and re-running the program with the flags above,
     gets me this bit of assembly:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 `javac` 重新编译，并使用上述标志重新运行程序，可以得到这段汇编：
 - en: '[PRE10]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'I’ve just copied the relevant bits here, starting from the method entry to
     the return instruction. Note the first few lines, which tells us in which registers
     the arguments are being passed. The HotSpot JITs use a custom calling convention
@@ -287,30 +346,37 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我只复制了相关部分，从方法入口到返回指令。注意前几行，告诉我们参数传递到哪些寄存器中。HotSpot JIT 使用自定义的 Java 方法调用约定。因此，这可能与例如
+    C 使用的调用约定不同：
 - en: '[PRE11]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'The assembly for the code `return a + b;` can be found between the nmethod
     entry barrier and the frame cleanup:'
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码 `return a + b;` 的汇编可以在 nmethod 入口屏障和帧清理之间找到：
 - en: '[PRE12]'
   id: totrans-split-51
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: A clever way of adding two values together in a single instruction, and storing
     the result in the `eax` register, which is the register in which integer values
     are returned in the Java compiled calling convention.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 一种聪明的方法是在单个指令中将两个值相加，并将结果存储在 `eax` 寄存器中，这是 Java 编译调用约定中用于返回整数值的寄存器。
 - en: That should give you a basic idea of what is needed to start analysing the code
     generated by the JIT compilers for a particular snippet of Java code.
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该给你一个开始分析特定 Java 代码片段由 JIT 编译器生成的代码的基本概念。
 - en: A thing to note here is that this assembly was generated with a release build,
     i.e. the ones that you can download from [jdk.java.net](https://jdk.java.net/).
     There are also ‘fastdebug’ and ‘slowdebug’ versions of HotSpot. Using a debug
@@ -323,11 +389,16 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里需要注意的是，此汇编是使用发布版本生成的，即您可以从 [jdk.java.net](https://jdk.java.net/) 下载的版本。HotSpot
+    还有 'fastdebug' 和 'slowdebug' 版本。在打印汇编时，使用调试版本可以打印更详细的信息。如果您能够获取 'fastdebug' 版本，则建议至少使用这个版本。获取
+    'fastdebug' 版本的最简单方法是按照 [构建指南](https://github.com/openjdk/jdk/blob/master/doc/building.md)
+    中的步骤构建 JDK。对于 'fastdebug' 构建，只需确保使用 `--with-debug-level=fastdebug` 配置构建即可。
 - en: 3\. Printing inlining traces
   id: totrans-split-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 3\. 打印内联跟踪
 - en: The next useful bit of information we can get from a JIT compiler is an inlining
     trace. This trace indicates whether methods being called by the compiled Java
     code were inlined. Inlining is an important optimization that allows other optimizations
@@ -338,14 +409,18 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: JIT 编译器可以提供的下一个有用信息是内联跟踪。此跟踪指示编译的 Java 代码调用的方法是否被内联。内联是一种重要的优化，允许进行其他优化，因此在尝试理解
+    Java 代码片段的性能时，了解哪些方法被内联可能很重要。虽然此信息在汇编中也是存在的，但内联跟踪提供了一个更好的高级概述。
 - en: 'To start, let’s modify our payload method to call another method:'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们修改我们的 payload 方法来调用另一个方法：
 - en: '[PRE13]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'We can generate an inlining trace for this compilation using another `CompileCommand`
     option. Instead of using `-XX:CompileCommand=print,TestJIT::payload` to print
     the assembly, I’m going to change the `print` option in that flag to `PrintInlining`,
@@ -354,10 +429,12 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以使用另一个`CompileCommand`选项为此编译生成一个内联跟踪。而不是使用`-XX:CompileCommand=print,TestJIT::payload`打印汇编，我将在该标志中将`print`选项更改为`PrintInlining`，这将给我们提供一个内联跟踪：`-XX:CompileCommand=PrintInlining,TestJIT::payload`。我得到的输出只是：
 - en: '[PRE14]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: The format of an inlining trace is not really documented, unfortunately. The
     best source of information to understanding it is the source code found in [`CompileTask::print_inlining_inner`](https://github.com/openjdk/jdk/blob/bcba5e97857fd57ea4571341ad40194bb823cd0b/src/hotspot/share/compiler/compileTask.cpp#L412).
     Each line in the inlining trace will indicate a method that was either inlined
@@ -376,19 +453,25 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 内联跟踪的格式实际上并未有详细记录，不幸的是。理解它的最佳信息源是在[`CompileTask::print_inlining_inner`](https://github.com/openjdk/jdk/blob/bcba5e97857fd57ea4571341ad40194bb823cd0b/src/hotspot/share/compiler/compileTask.cpp#L412)中找到的源代码。内联跟踪中的每一行将指示一个成功内联的方法，或者一个失败内联的方法。目前，成功和失败之间的差异并未很好地指示（我希望将来改变），我们必须解释行末的消息以决定内联是否成功。在这种情况下，消息是`inline
+    (hot)`，从中我们可以确定内联成功。该行还列出了被内联的方法的名称，以及调用该方法的字节码位置在调用方法中的位置。在这种情况下，在`payload`中对`otherMethod`的调用位于bci（字节码索引）`0`，而在`otherMethod`中对`yetAnotherMethod`方法的调用也位于bci
+    `0`。行的缩进表示发生的内联的‘级别’。由于`yetAnotherMethod`方法是通过`otherMethod`间接内联的，其行缩进了额外的2个空格。
 - en: 'Let’s see what happens if we disable inlining of `otherMethod` using the `-XX:CompileCommand=dontinline,TestJIT::otherMethod`
     flag. Now the inlining trace looks like this:'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 看看如果我们使用`-XX:CompileCommand=dontinline,TestJIT::otherMethod`标志禁用`otherMethod`的内联会发生什么。现在内联跟踪看起来像这样：
 - en: '[PRE15]'
   id: totrans-split-63
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: That should cover the basics of inlining traces.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该涵盖了内联跟踪的基础知识。
 - en: 'Some notes for debugging profile pollution: profiling happens for instance
     when a virtual method is called. The JVM will record the type of the receiver,
     and if it’s always one of two types, the C2 JIT can inline the method call using
@@ -400,6 +483,7 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些调试配置污染的注意事项：例如，当调用虚方法时会发生分析。JVM会记录接收器的类型，如果始终是两种类型之一，那么C2 JIT可以使用内联缓存内联方法调用。配置文件附加到特定的字节码上，这意味着当我们在某些经常共享的代码中看到虚方法调用站点时，看到了很多不同的接收器类型，C2可能无法内联此类方法调用。这有时被称为配置污染：调用的配置有许多不同的接收器类型。
 - en: Inlining traces can be useful to diagnose profile pollution. Polluted methods
     will show up as `virtual call` in the inlining trace. It is however important
     to turn on tiered compilation again for that in order to get an accurate profile
@@ -415,21 +499,26 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 内联跟踪对诊断性能污染很有用。污染的方法将显示为内联跟踪中的`virtual call`。然而，为了获得准确的性能分析（性能分析也发生在较低的层次），重要的是再次打开分层编译，这样可以使用`-XX:+TieredCompilation`（将`-`替换为`+`）。但是，这也会导致内联跟踪包含来自多个编译的跟踪。为了能够区分它们，我们可以使用`-XX:CompileCommand=PrintCompilation,TestJIT::payload`，这将在特定编译的内联跟踪开头输出一些关于编译的信息，使跟踪更容易区分（例如`
+    2591 308 b 4 AbsMapProfiling::payload (139 bytes)`后跟随该编译的内联跟踪）。对于最相关的信息，您可能希望查看该方法最后一次编译的跟踪。
 - en: 4\. A closer look at compile commands
   id: totrans-split-67
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 4\. 更近距离查看编译命令
 - en: 'By now you’ve probably noticed how useful the `-XX:CompileCommand=...` option
     is. This command is used to control compiler settings on a per-method basis. To
     get more information about the `CompileCommand` flag, we can use:'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，你可能已经注意到`-XX:CompileCommand=...`选项有多么有用了。这个命令用于基于每个方法来控制编译器设置。要获取有关`CompileCommand`标志的更多信息，我们可以使用：
 - en: '[PRE16]'
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: This will output the standard Java help message, but if you scroll up above
     that in the console output, you should also find the `CompileCommand` help message.
     This describes the syntax of the flag, and lists all the options that can be used
@@ -438,6 +527,7 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将输出标准的Java帮助信息，但是如果你在控制台输出中向上滚动，你也应该能找到`CompileCommand`的帮助信息。这描述了标志的语法，并列出了可以与该标志结合使用的所有选项。许多标志也在[`./src/hotspot/share/compiler/compilerDirectives.hpp`文件](https://github.com/openjdk/jdk/blob/bcba5e97857fd57ea4571341ad40194bb823cd0b/src/hotspot/share/compiler/compilerDirectives.hpp)中列出。
 - en: Besides specifying these compile commands on the command line, it’s also possible
     to specify them through a json file, which gives slightly more flexibility wrt.
     which compiler the option applies to. More information about that can be found
@@ -445,38 +535,46 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了在命令行上指定这些编译命令之外，还可以通过json文件指定它们，这样稍微增加了灵活性，可以应用于哪个编译器。有关此更多信息，请参见[JEP](https://openjdk.org/jeps/165)
 - en: If you look at the compilerDirectives file, you might notice that some options
     are only available in non-product builds.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您查看compilerDirectives文件，您可能会注意到一些选项仅在非产品构建中可用。
 - en: 5\. Tracking down escaping objects
   id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 5\. 追踪逃逸对象
 - en: For this section, I’m going to be using a ‘fastdebug’ build of HotSpot. You
     will not be able to use a release build if you wish to follow along.
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于这一部分，我将使用HotSpot的‘fastdebug’构建。如果您想跟进，您将无法使用发布版本构建。
 - en: 'You might have encountered this when running [JMH](https://github.com/openjdk/jmh)
     benchmarks with `-prof gc`. You have a benchmark like so:'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 当使用`-prof gc`运行[JMH](https://github.com/openjdk/jmh)基准测试时，您可能会遇到这种情况。您的基准测试如下：
 - en: '[PRE17]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: 'And when running it with `-prof gc` you see some allocation happening:'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 而在使用`-prof gc`运行时，您会看到一些分配发生：
 - en: '[PRE18]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 96 bytes per operation are being allocated. But, HotSpot has escape analysis
     which allows allocations to be eliminated, and as far as we can see there are
     no objects allocated that escape from the benchmark method. So, why are we still
@@ -487,39 +585,48 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 每次操作分配了96字节。但是，HotSpot有逃逸分析，可以消除分配，并且据我们所见，没有逃离基准方法的分配的对象。那么，为什么我们仍然看到分配？为了调查这个问题，我们将使用`TraceEscapeAnalysis`编译命令（在发布版本中不可用）。该命令会打印逃逸分析算法的跟踪，我们可以用它来追踪逃逸的对象以及原因。
 - en: 'Let’s start by modifying our payload to include the code from the benchmark:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从修改我们的有效载荷开始，包括基准代码：
 - en: '[PRE19]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'Note that I’ve turned the payload method into an instance method, to make that
     work I’m simply creating an instance of the TestJIT class and invoking the payload
     method on that:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，我已将有效载荷方法转换为实例方法，以使其工作。我只需创建TestJIT类的一个实例，并在其上调用有效载荷方法：
 - en: '[PRE20]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'To get an escape analysis trace, I change the `PrintInlining` option to `TraceEscapeAnalysis`
     in the base command: `-XX:CompileCommand=TraceEscapeAnalysis,TestJIT::payload`.
     I also pipe the output to a file `... > EA.txt`, since it’s quite long.'
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了获取逃逸分析跟踪，我将基本命令中的`PrintInlining`选项更改为`TraceEscapeAnalysis`：`-XX:CompileCommand=TraceEscapeAnalysis,TestJIT::payload`。我还将输出重定向到文件`...
+    > EA.txt`，因为输出内容相当长。
 - en: 'The output I get is long, and I wont include it in full here. The important
     thing to look for are the lines like this:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 我获得的输出非常长，我这里不会全部包含。要注意查找类似以下内容的行：
 - en: '[PRE21]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: Notice the `ea_inv=0` at the end. Escape analysis can run for multiple iterations.
     To find escaping objects however, only the last iteration is relevant. So, I just
     search for `ea_inv`, and find the last iteration which is `ea_inv=1`, and delete
@@ -527,16 +634,19 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意结尾的“ea_inv=0”。逃逸分析可以运行多次迭代。但是为了找到逃逸对象，只有最后一次迭代是相关的。因此，我只搜索“ea_inv”，并找到最后一次迭代，即“ea_inv=1”，并删除该之前的所有跟踪内容。
 - en: 'The rest of the trace should be split into 2 parts: the initial work list,
     whose start is marked by the line of text above, and then the actual calculation
     trace, which is marked by the following line:'
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 其余跟踪应分为两部分：初始工作列表，其开始由上述文本行标记，然后是实际的计算跟踪，由以下文本行标记：
 - en: '[PRE22]'
   id: totrans-split-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'The next step is to find our object allocations in the initial work list. Object
     allocations are represented by `Allocate` nodes in C2, so we can look for the
     string `''Allocate ===''`. Be sure to only look at the allocations in the initial
@@ -544,10 +654,12 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一步是在初始工作列表中查找我们的对象分配。对象分配在C2中表示为`Allocate`节点，因此我们可以查找字符串`'Allocate ==='`。确保只查看初始工作列表中的分配。对于我展示的测试程序，应有2个分配：
 - en: '[PRE23]'
   id: totrans-split-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'These allocations start out as non-escaping, but at some point they are discovered
     to escape during the following escape analysis. In the debug string for the Allocate
     node, we can see where the allocation is happening in the code: `TestJIT::payload
@@ -557,31 +669,39 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些分配最初是不逃逸的，但在随后的逃逸分析中发现它们在某个时刻逃逸了。在Allocate节点的调试字符串中，我们可以看到分配发生在代码中的位置：`TestJIT::payload
+    @ bci:0 (line 12)`和`TestJIT$Scope::<init> @ bci:5 (line 20)`。所以我们有2个分配，一个在第12行的有效载荷方法中，另一个在第20行的Scope构造函数中。这些是行：
 - en: '[PRE24]'
   id: totrans-split-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: 'And:'
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且：
 - en: '[PRE25]'
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: Exactly where we are using the `new` operator!
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 正是我们在使用“new”操作符的地方！
 - en: 'Now, let’s try and find why these objects are escaping. I’ll start by searching
     for `JavaObject(9)` in the ‘calculating escape states …’ messages. I find this:'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们试着找出为什么这些对象会逃逸。我将从搜索“在‘计算逃逸状态…’消息中查找JavaObject(9)”开始。我找到了这个：
 - en: '[PRE26]'
   id: totrans-split-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: 'We can see here that the state of `JavaObject(9)` is updated to `ArgEscape(GlobalEscape)`,
     which makes it not scalar replaceable. This is also indicated by the ‘NSR’ (Not
     Scalar Replaceable). To find the reason for this, we have to follow back the chain
@@ -590,25 +710,30 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以看到JavaObject(9)的状态更新为ArgEscape(GlobalEscape)，这使其不可替换为标量。这也由“NSR”（不可标量替换）表示。为了找到原因，我们必须沿着日志中的状态更新链追溯到根源。在这条消息中，我们可以看到状态是从LocalVar(28)传播而来。当我搜索它时，我找到了这个：
 - en: '[PRE27]'
   id: totrans-split-100
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: 'i.e. the state for `LocalVar(28)` was itself propagated from `LocalVar(41)`.
     If I keep following the chain back, I eventually get to:'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 即`LocalVar(28)`的状态本身是从`LocalVar(41)`传播而来。如果我继续追踪链条，最终会到达：
 - en: '[PRE28]'
   id: totrans-split-102
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: i.e. our object escapes through an out-of-line call to `TestJIT$Scope::close`!
     And, if we follow the same process for `JavaObject(10)`, our other allocation,
     we end up at the same call. So, both objects escape through this call.
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 即我们的对象通过对`TestJIT$Scope::close`的不合适调用而逃逸！而且，如果我们对`JavaObject(10)`执行相同的过程，我们最终也会到达同样的调用。因此，这两个对象都通过此调用逃逸。
 - en: 'I’ll say that the process of following the log is somewhat tedious. Lucky for
     you readers I’ve recently written a script that can parse the trace and report
     back information about escaping objects. You can find it [here](https://cr.openjdk.org/~jvernee/TraceEAParser.java).
@@ -617,26 +742,32 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 我会说，跟踪日志的过程有些乏味。幸运的是，我最近编写了一个可以解析追踪并报告有关逃逸对象信息的脚本。您可以在[这里](https://cr.openjdk.org/~jvernee/TraceEAParser.java)找到它。如果我在追踪上调用该脚本：`java
+    .\TraceEAParser.java EA.Txt`，我会得到以下结果：
 - en: '[PRE29]'
   id: totrans-split-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: A nice summary of the escaping allocations (if I do say so myself ;)). Again,
     we can see here that there are 2 escaping allocations which are both escaping
     through a call to `TestJIT$Scope::close`.
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 对逃逸分配的一个很好的总结（如果我可以这么说的话 ;))。同样，我们可以看到这里有2个逃逸分配，它们通过对`TestJIT$Scope::close`的调用逃逸。
 - en: 'Now, for the reason why this out of line call is here, we can generate an inlining
     trace, as shown in [section 3](#3-printing-inlining-traces). If we look for `TestJIT$Scope::close`
     in the trace, we find this:'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，关于为什么这个不合适的调用在这里，我们可以生成一个内联追踪，如[第 3 节](#3-printing-inlining-traces)所示。如果我们在追踪中查找`TestJIT$Scope::close`，我们可以找到这样的内容：
 - en: '[PRE30]'
   id: totrans-split-108
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: Unfortunately, `TestJIT$Scope::close` is not being inlined, which makes our
     objects escape. Actually, we’ve just diagnosed [JDK-8267532](https://bugs.openjdk.org/browse/JDK-8267532)
     which doesn’t have a solution as of the time of writing. But, we now at least
@@ -647,11 +778,13 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，`TestJIT$Scope::close`没有被内联，这使得我们的对象逃逸了。事实上，我们刚刚诊断了[JDK-8267532](https://bugs.openjdk.org/browse/JDK-8267532)，截至撰写时还没有解决方案。但是，我们现在至少知道对象逃逸的原因*为什么*。在其他情况下，这可能是一个更有用的工具，用来追踪问题代码并应用临时修复。但是，不幸的是，在处理性能时，彩虹的尽头并不总是有一锅金子。
 - en: 6\. Debugging compilation using a native debugger
   id: totrans-split-110
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 6\. 使用本地调试器调试编译
 - en: 'Finally, let’s bust open the ultimate escape hatch: debugging the source code
     directly during a compilation. Stepping through the source code with a debugger
     is the ultimate tool for inspecting what a JIT compiler is doing, when all else
@@ -661,25 +794,31 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，让我们打开最终的逃逸通道：在编译期间直接调试源代码。通过调试器逐步执行源代码是检查JIT编译器正在执行的操作的终极工具，当其他方法失效时。为此，我们需要一个‘slowdebug’构建（以类似于快速调试构建的方式获取）。这是必需的，以便VM实际上可以使用本地调试工具进行调试而不会出现太多问题。
 - en: To set up debugging of the VM, I first set up a VSCode project by running `make
     vscode-project` in the JDK build system. That should generate a `./build/<config>/jdk.code-workspace`
     file which I can open in VSCode through `File -> Open Workspace from File...`.
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 要设置VM的调试，我首先通过在JDK构建系统中运行`make vscode-project`来设置一个VSCode项目。这将生成一个`./build/<config>/jdk.code-workspace`文件，我可以通过`File
+    -> Open Workspace from File...`在VSCode中打开。
 - en: 'Next, I add these 2 lines of code to the start of the `main` method in our
     test program:'
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，在我们的测试程序的`main`方法的开头添加这两行代码：
 - en: '[PRE31]'
   id: totrans-split-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: I print out the current process id, and then ‘wait’ by reading from stdin.
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 我打印出当前进程的ID，然后通过从标准输入读取来‘等待’。
 - en: 'Next, I add the `-XX:CompileCommand=BreakAtCompile,TestJIT::payload,true` command
     line flag, which will stop the native debugger during the compilation of the payload
     method. If I run the program, I will see the pid printed on the console. At this
@@ -694,6 +833,10 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: '接下来，我添加 `-XX:CompileCommand=BreakAtCompile,TestJIT::payload,true` 命令行标志，这将在编译载荷方法时停止本地调试器。如果我运行程序，控制台会打印出进程号。此时我可以通过
+    VSCode 附加调试器。我转到‘Run and Debug’选项卡，并点击窗口左上方的小齿轮。这应该打开一个带有几个运行/调试配置的 .json 文件。底部右侧应该有一个‘Add
+    Configuration…’选项，通过它我可以为要使用的调试器添加配置。我正在使用来自 `C/C++` VSCode 插件的 `C/C++: (Windows)
+    Attach` 配置。添加运行配置只需要一次，之后我只需点击窗口左上角的带有‘(Windows) Attach’运行配置的小绿色箭头即可。'
 - en: After attaching the native debugger using the printed pid, and pressing ‘enter’
     in the test program console to make it continue execution, the VSCode window pops
     back up and throws me somewhere into the HotSpot compiler code. At this point
@@ -702,23 +845,28 @@
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用打印的进程号附加本地调试器后，在测试程序控制台按‘enter’以使其继续执行，VSCode 窗口弹出并将我扔到 HotSpot 编译器代码的某个位置。此时我可以在编译器代码中设置其他断点，并开始调试载荷方法的编译。
 - en: That should give you a basic idea of how to debug a compilation with a native
     debugger.
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 这应该给你一个如何使用本地调试器调试编译的基本概念。
 - en: Conclusion
   id: totrans-split-119
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: That’s all I have for now. Hopefully showing some of the debugging techniques
     I use gave you some inspiration for debugging HotSpot’s JIT compilers yourself.
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 目前就这些了。希望展示我使用的一些调试技术能为你自己调试 HotSpot 的 JIT 编译器提供一些灵感。
 - en: Thanks for reading
   id: totrans-split-121
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 感谢阅读
