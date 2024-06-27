@@ -2,44 +2,53 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:19:15'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:19:15
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'WebSocketStream: integrating streams with the WebSocket API  |  Capabilities
      |  Chrome for Developers'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'WebSocketStream: 将流与 WebSocket API 集成 | 能力 | 开发者 Chrome'
 - en: 来源：[https://developer.chrome.com/docs/capabilities/web-apis/websocketstream](https://developer.chrome.com/docs/capabilities/web-apis/websocketstream)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://developer.chrome.com/docs/capabilities/web-apis/websocketstream](https://developer.chrome.com/docs/capabilities/web-apis/websocketstream)
 - en: Prevent your app from getting drowned in WebSocket messages or flooding a WebSocket
     server with messages by applying backpressure.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过施加反压力来防止您的应用程序被 WebSocket 消息淹没，或者向 WebSocket 服务器发送大量消息。
 - en: Background
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 背景
 - en: The WebSocket API
   id: totrans-split-8
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: WebSocket API
 - en: The [WebSocket API](https://developer.mozilla.org/docs/Web/API/WebSockets_API)
     provides a JavaScript interface to the [WebSocket protocol](https://tools.ietf.org/html/rfc6455),
     which makes it possible to open a two-way interactive communication session between
@@ -48,11 +57,15 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '[WebSocket API](https://developer.mozilla.org/docs/Web/API/WebSockets_API)
+    提供了一个 JavaScript 接口到 [WebSocket 协议](https://tools.ietf.org/html/rfc6455)，使得在用户的浏览器和服务器之间可以打开一个双向交互式通信会话成为可能。使用此
+    API，你可以向服务器发送消息并接收事件驱动的响应，而无需轮询服务器等待响应。'
 - en: The Streams API
   id: totrans-split-10
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 流 API
 - en: The [Streams API](https://developer.mozilla.org/docs/Web/API/Streams_API) allows
     JavaScript to programmatically access streams of data chunks received over the
     network and process them as desired. An important concept in the context of streams
@@ -64,21 +77,27 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '[流 API](https://developer.mozilla.org/docs/Web/API/Streams_API) 允许 JavaScript
+    可以编程访问通过网络接收到的数据块流，并根据需要处理它们。在流的上下文中的一个重要概念是 [反压力](https://developer.mozilla.org/docs/Web/API/Streams_API/Concepts#Backpressure)。这是通过单一流或管道链调节读取或写入速度的过程。当流本身或管道链中的后续流仍在忙碌并且尚未准备好接受更多数据块时，它会通过链向后发送信号以适当地减慢交付速度。'
 - en: The Problem with the current WebSocket API
   id: totrans-split-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 当前 WebSocket API 的问题
 - en: Applying backpressure to received messages is impossible
   id: totrans-split-13
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 对接收的消息施加反压力是不可能的
 - en: With the current WebSocket API, reacting to a message happens in [`WebSocket.onmessage`](https://developer.mozilla.org/docs/Web/API/WebSocket/onmessage),
     an `EventHandler` called when a message is received from the server.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用当前 WebSocket API，在 [`WebSocket.onmessage`](https://developer.mozilla.org/docs/Web/API/WebSocket/onmessage)
+    中响应消息。
 - en: Let's assume you had an application that needs to perform heavy data crunching
     operations whenever a new message is received. You would probably set up the flow
     similar to the code below, and since you `await` the result of the `process()`
@@ -86,10 +105,13 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你有一个应用程序，每当接收到新消息时都需要进行大量的数据处理操作。你可能会设置类似下面的流程，并且由于你在 `await` `process()`
+    调用的结果，你应该没问题，对吧？
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Wrong! The problem with the current WebSocket API is that there is no way to
     apply backpressure. When messages arrive faster than the `process()` method can
     handle them, the render process will either fill up memory by buffering those
@@ -97,11 +119,14 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 错了！当前 WebSocket API 的问题在于没有办法施加反压力。当消息比 `process()` 方法处理它们的速度更快时，渲染过程将会通过缓冲这些消息填满内存，或者由于
+    CPU 使用率达到 100%，变得无响应，或者两者兼而有之。
 - en: Applying backpressure to sent messages is non-ergonomic
   id: totrans-split-18
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 对发送的消息施加反压力是非人性化的
 - en: Applying backpressure to sent messages is possible, but involves polling the
     [`WebSocket.bufferedAmount`](https://developer.mozilla.org/docs/Web/API/WebSocket/bufferedAmount)
     property, which is inefficient and non-ergonomic. This read-only property returns
@@ -112,32 +137,38 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 对发送的消息施加背压是可能的，但涉及轮询[`WebSocket.bufferedAmount`](https://developer.mozilla.org/docs/Web/API/WebSocket/bufferedAmount)属性，这是低效且不符合人体工程学的。这个只读属性返回已通过调用[`WebSocket.send()`](https://developer.mozilla.org/docs/Web/API/WebSocket/send)排队但尚未传输到网络的数据字节数。一旦所有排队的数据都发送完毕，该值将重置为零，但如果你继续调用`WebSocket.send()`，它将继续增加。
 - en: What is the WebSocketStream API?
   id: totrans-split-20
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是WebSocketStream API?
 - en: The WebSocketStream API deals with the problem of non-existent or non-ergonomic
     backpressure by integrating streams with the WebSocket API. This means backpressure
     can be applied "for free", without any extra cost.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: WebSocketStream API通过将流集成到WebSocket API中解决了不存在或不符合人体工程学的背压问题。这意味着可以免费应用背压，无需额外成本。
 - en: Suggested use cases for the WebSocketStream API
   id: totrans-split-22
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: WebSocketStream API的建议用例
 - en: 'Examples of sites that can use this API include:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以使用此API的网站示例包括：
 - en: High-bandwidth WebSocket applications that need to retain interactivity, in
     particular video and screen-sharing.
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 需要保持互动性的高带宽WebSocket应用，特别是视频和屏幕共享。
 - en: Similarly, video capture and other applications that generate a lot of data
     in the browser that needs to be uploaded to the server. With backpressure, the
     client can stop producing data rather than accumulating data in memory.
@@ -145,52 +176,66 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 同样，视频捕获和其他在浏览器中生成大量数据并需要上传到服务器的应用程序。通过背压，客户端可以停止生成数据，而不是在内存中积累数据。
 - en: Current status
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 当前状态
 - en: '| Step | Status |'
   id: totrans-split-27
   prefs: []
   type: TYPE_TB
+  zh: '| 步骤 | 状态 |'
 - en: '| --- | --- |'
   id: totrans-split-28
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- |'
 - en: '| 1\. Create explainer | [Complete](https://github.com/ricea/websocketstream-explainer/blob/master/README.md)
     |'
   id: totrans-split-29
   prefs: []
   type: TYPE_TB
+  zh: '| 1\. 创建说明文档 | [完成](https://github.com/ricea/websocketstream-explainer/blob/master/README.md)
+    |'
 - en: '| 2\. Create initial draft of specification | [In progress](https://github.com/ricea/websocketstream-explainer/blob/master/README.md)
     |'
   id: totrans-split-30
   prefs: []
   type: TYPE_TB
+  zh: '| 2\. 创建规范初稿 | [进行中](https://github.com/ricea/websocketstream-explainer/blob/master/README.md)
+    |'
 - en: '| 3\. Gather feedback & iterate on design | [In progress](#feedback) |'
   id: totrans-split-31
   prefs: []
   type: TYPE_TB
+  zh: '| 3\. 收集反馈并迭代设计 | [进行中](#feedback) |'
 - en: '| 4\. Origin trial | [Complete](https://developers.chrome.com/origintrials/#/view_trial/1977080236415647745)
     |'
   id: totrans-split-32
   prefs: []
   type: TYPE_TB
+  zh: '| 4\. 原型试验 | [完成](https://developers.chrome.com/origintrials/#/view_trial/1977080236415647745)
+    |'
 - en: '| 5\. Launch | Not started |'
   id: totrans-split-33
   prefs: []
   type: TYPE_TB
+  zh: '| 5\. 发布 | 未开始 |'
 - en: How to use the WebSocketStream API
   id: totrans-split-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何使用WebSocketStream API
 - en: Introductory example
   id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 入门示例
 - en: The WebSocketStream API is promise-based, which makes dealing with it feel natural
     in a modern JavaScript world. You start by constructing a new `WebSocketStream`
     and passing it the URL of the WebSocket server. Next, you wait for the connection
@@ -199,6 +244,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: WebSocketStream API是基于Promise的，这使得在现代JavaScript世界中处理它感觉自然。你首先通过构造一个新的`WebSocketStream`并传递WebSocket服务器的URL来开始。接下来，等待连接`opened`，这将产生一个[`ReadableStream`](https://developer.mozilla.org/docs/Web/API/ReadableStream/ReadableStream)和/或一个[`WritableStream`](https://developer.mozilla.org/docs/Web/API/WritableStream/WritableStream)。
 - en: 'By calling the [`ReadableStream.getReader()`](https://developer.mozilla.org/docs/Web/API/ReadableStream/getReader)
     method, you finally obtain a [`ReadableStreamDefaultReader`](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader),
     which you can then [`read()`](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader/read)
@@ -207,6 +253,8 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '通过调用[`ReadableStream.getReader()`](https://developer.mozilla.org/docs/Web/API/ReadableStream/getReader)方法，最终可以获得一个[`ReadableStreamDefaultReader`](https://developer.mozilla.org/docs/Web/API/ReadableStreamDefaultReader)，然后可以从中读取数据，直到流结束，即返回形式为`{value:
+    undefined, done: true}`的对象为止。'
 - en: Accordingly, by calling the [`WritableStream.getWriter()`](https://developer.mozilla.org/docs/Web/API/WritableStream/getWriter)
     method, you finally obtain a [`WritableStreamDefaultWriter`](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultWriter),
     which you can then [`write()`](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultWriter/write)
@@ -214,15 +262,18 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，通过调用[`WritableStream.getWriter()`](https://developer.mozilla.org/docs/Web/API/WritableStream/getWriter)方法，最终可以获取[`WritableStreamDefaultWriter`](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultWriter)，然后可以向其[`write()`](https://developer.mozilla.org/docs/Web/API/WritableStreamDefaultWriter/write)数据。
 - en: '[PRE1]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Backpressure
   id: totrans-split-40
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 背压
 - en: What about the promised backpressure feature? As I wrote above, you get it "for
     free", no extra steps needed. If `process()` takes extra time, the next message
     will only be consumed once the pipeline is ready. Likewise the `WritableStreamDefaultWriter.write()`
@@ -230,21 +281,25 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 承诺的背压功能怎么样？如上所述，您可以"免费"获得它，无需额外步骤。如果`process()`花费额外时间，只有在管道准备好后才会消耗下一个消息。同样地，`WritableStreamDefaultWriter.write()`步骤只有在安全的情况下才会进行。
 - en: Advanced examples
   id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 高级示例
 - en: 'The second argument to WebSocketStream is an option bag to allow for future
     extension. Currently the only option is `protocols`, which behaves the same as
     the [second argument to the WebSocket constructor](https://developer.mozilla.org/docs/Web/API/WebSocket/WebSocket#Parameters:%7E:text=respond.-,protocols):'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: WebSocketStream的第二个参数是一个选项包，允许未来扩展。目前唯一的选项是`protocols`，其行为与[WebSocket构造函数的第二个参数](https://developer.mozilla.org/docs/Web/API/WebSocket/WebSocket#Parameters:%7E:text=respond.-,protocols)相同：
 - en: '[PRE2]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The selected `protocol` as well as potential `extensions` are part of the dictionary
     available via the `WebSocketStream.opened` promise. All the information about
     the live connection is provided by this promise, since it is not relevant if the
@@ -252,15 +307,18 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 所选的`协议`以及可能的`扩展`都是通过`WebSocketStream.opened`承诺可用的字典的一部分。由于连接失败时没有相关信息，因此此承诺提供了有关活动连接的所有信息。
 - en: '[PRE3]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Information about closed WebSocketStream connection
   id: totrans-split-47
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 关于已关闭的WebSocketStream连接的信息
 - en: The information that was available from the [`WebSocket.onclose`](https://developer.mozilla.org/docs/Web/API/WebSocket/onclose)
     and [`WebSocket.onerror`](https://developer.mozilla.org/docs/Web/API/WebSocket/onerror)
     events in the WebSocket API is now available via the `WebSocketStream.closed`
@@ -269,45 +327,54 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 以前在WebSocket API的[`WebSocket.onclose`](https://developer.mozilla.org/docs/Web/API/WebSocket/onclose)和[`WebSocket.onerror`](https://developer.mozilla.org/docs/Web/API/WebSocket/onerror)事件中可用的信息现在通过`WebSocketStream.closed`承诺可用。如果出现非干净关闭，该承诺会拒绝，否则会解析为服务器发送的代码和原因。
 - en: All possible status codes and their meaning is explained in the [list of `CloseEvent`
     status codes](https://developer.mozilla.org/docs/Web/API/CloseEvent#Status_codes).
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有可能的状态代码及其含义在[`CloseEvent`状态代码列表](https://developer.mozilla.org/docs/Web/API/CloseEvent#Status_codes)中有详细解释。
 - en: '[PRE4]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: Closing a WebSocketStream connection
   id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 关闭WebSocketStream连接
 - en: A WebSocketStream can be closed with an [`AbortController`](https://developer.mozilla.org/docs/Web/API/AbortController).
     Therefore, pass an [`AbortSignal`](https://developer.mozilla.org/docs/Web/API/AbortSignal)
     to the `WebSocketStream` constructor.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 可以使用[`AbortController`](https://developer.mozilla.org/docs/Web/API/AbortController)来关闭WebSocketStream。因此，请将[`AbortSignal`](https://developer.mozilla.org/docs/Web/API/AbortSignal)传递给`WebSocketStream`构造函数。
 - en: '[PRE5]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: As an alternative, you can also use the `WebSocketStream.close()` method, but
     its main purpose is to permit specifying the [code](https://developer.mozilla.org/docs/Web/API/CloseEvent#Status_codes)
     and reason which is sent to the server.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为替代方案，您还可以使用`WebSocketStream.close()`方法，但其主要目的是允许指定发送到服务器的[代码](https://developer.mozilla.org/docs/Web/API/CloseEvent#Status_codes)和原因。
 - en: '[PRE6]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Progressive enhancement and interoperability
   id: totrans-split-56
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 逐步增强和互操作性
 - en: Chrome is currently the only browser to implement the WebSocketStream API. For
     interoperability with the classic WebSocket API, applying backpressure to received
     messages is not possible. Applying backpressure to sent messages is possible,
@@ -316,44 +383,54 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: Chrome目前是唯一实现WebSocketStream API的浏览器。为了与传统的WebSocket API互操作，对接收消息应用背压是不可能的。对发送消息应用背压是可能的，但涉及到轮询[`WebSocket.bufferedAmount`](https://developer.mozilla.org/docs/Web/API/WebSocket/bufferedAmount)属性，这是低效且不符合人体工程学原则的。
 - en: Feature detection
   id: totrans-split-58
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 特性检测
 - en: 'To check if the WebSocketStream API is supported, use:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 要检查WebSocketStream API是否受支持，请使用：
 - en: '[PRE7]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: Demo
   id: totrans-split-61
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 演示
 - en: On supporting browsers, you can see the WebSocketStream API in action in the
     embedded iframe, or [directly on Glitch](https://websocketstream-demo.glitch.me/).
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 在支持的浏览器上，您可以在嵌入的iframe中或[直接在Glitch上](https://websocketstream-demo.glitch.me/)看到WebSocketStream
+    API的运行情况。
 - en: Feedback
   id: totrans-split-63
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 反馈
 - en: The Chrome team wants to hear about your experiences with the WebSocketStream
     API.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: Chrome团队希望听听你对WebSocketStream API的使用体验。
 - en: Tell us about the API design
   id: totrans-split-65
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 谈谈API设计
 - en: Is there something about the API that doesn't work like you expected? Or are
     there missing methods or properties that you need to implement your idea? Have
     a question or comment on the security model? File a spec issue on the corresponding
@@ -362,11 +439,13 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: API有什么不符合你预期的地方吗？或者有需要实现你想法的方法或属性缺失吗？对安全模型有疑问或评论吗？请在相应的[GitHub仓库](https://github.com/ricea/websocketstream-explainer/issues)上提交规范问题，或将你的想法添加到现有问题中。
 - en: Report a problem with the implementation
   id: totrans-split-67
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 报告实现中的问题
 - en: Did you find a bug with Chrome's implementation? Or is the implementation different
     from the spec? File a bug at [new.crbug.com](https://new.crbug.com). Be sure to
     include as much detail as you can, simple instructions for reproducing, and enter
@@ -375,36 +454,44 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 发现Chrome的实现有bug了吗？或者实现与规范不同？请在[new.crbug.com](https://new.crbug.com)报告bug。确保尽可能详细地描述，包括简单的重现指南，并在**组件**框中输入`Blink>Network>WebSockets`。[Glitch](https://glitch.com/)非常适合分享快速且简单的复现案例。
 - en: Show support for the API
   id: totrans-split-69
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 支持API
 - en: Are you planning to use the WebSocketStream API? Your public support helps the
     Chrome team to prioritize features and shows other browser vendors how critical
     it is to support them.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 你计划使用WebSocketStream API吗？你的公开支持帮助Chrome团队优先考虑功能，并向其他浏览器供应商展示支持这些功能的重要性。
 - en: Send a tweet to [@ChromiumDev](https://twitter.com/ChromiumDev) using the hashtag
     [`#WebSocketStream`](https://twitter.com/search?q=%23WebSocketStream&src=typed_query&f=live)
     and let us know where and how you're using it.
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 发一条推文到[@ChromiumDev](https://twitter.com/ChromiumDev)，使用[`#WebSocketStream`](https://twitter.com/search?q=%23WebSocketStream&src=typed_query&f=live)，告诉我们你在哪里以及如何使用它。
 - en: Helpful links
   id: totrans-split-72
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 有用的链接
 - en: Acknowledgements
   id: totrans-split-73
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 致谢
 - en: The WebSocketStream API was implemented by [Adam Rice](https://github.com/ricea)
     and [Yutaka Hirano](https://github.com/yutakahirano). Hero image by [Daan Mooij](https://unsplash.com/@daanmooij)
     on [Unsplash](https://unsplash.com/photos/91LGCVN5SAI).
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: WebSocketStream API由[Adam Rice](https://github.com/ricea)和[Yutaka Hirano](https://github.com/yutakahirano)实现。[Daan
+    Mooij](https://unsplash.com/@daanmooij)在[Unsplash](https://unsplash.com/photos/91LGCVN5SAI)上的英雄图片。
