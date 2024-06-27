@@ -2,61 +2,74 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:37:50'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:37:50'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The "missing" graph datatype was invented in the '70s
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: “缺失”的图数据类型在70年代被发明了
 - en: 来源：[https://tylerhou.com/posts/datalog-go-brrr/](https://tylerhou.com/posts/datalog-go-brrr/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://tylerhou.com/posts/datalog-go-brrr/](https://tylerhou.com/posts/datalog-go-brrr/)
 - en: '*This post is a response to/inspired by [The Hunt for the Missing Data Type](https://www.hillelwayne.com/post/graph-types/)
     ([HN](https://news.ycombinator.com/item?id=39592444)) by Hillel Wayne. I suggest
     reading his article first.*'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*本文是对[Hillel Wayne](https://www.hillelwayne.com/post/graph-types/)的文章《寻找缺失的数据类型》（[HN](https://news.ycombinator.com/item?id=39592444))
+    的回应/灵感来源。建议先阅读他的文章。*'
 - en: 'Why do programming languages lack built-in support for graphs and graph algorithms?
     Or—why is there no “datatype” for a graph? Hillel Wayne argues (in the post linked
     above) that there are a few reasons:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么编程语言缺乏内置的图和图算法支持？或者说，为什么没有图的“数据类型”？Hillel Wayne在上述链接的帖子中认为有几个原因：
 - en: There are too many types of graphs.
   id: totrans-split-8
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 有太多类型的图。
 - en: There are too many graph algorithms.
   id: totrans-split-9
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 有太多图算法。
 - en: Even if you focus on one particular type of graph, there are many possible different
     graph representations.
   id: totrans-split-10
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 即使您专注于特定类型的图表，也有许多可能的不同图表表示方式。
 - en: The graph representation you choose has a large effect on performance.
   id: totrans-split-11
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 您选择的图表表示方式对性能有很大影响。
 - en: I agree with all these reasons. But I don’t agree with Wayne’s (implied) conclusion—that
     graphs are inherently too complex to be well-supported by mainstream programming
     languages. Languages **could** have **amazing** graph support! In maybe a decade?
@@ -64,6 +77,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我同意所有这些理由。但我不同意Wayne的（暗示的）结论——即图在本质上太复杂，不能被主流编程语言很好地支持。编程语言**可能会**拥有**令人惊奇的**图支持！也许十年后？并且只有在大量研究工作之后？（稍后详述...）
 - en: I claim the reason why it is so difficult to support graphs in languages nowadays
     is **because the imperative/structured programming model of modern programming
     languages is ill-suited for graph algorithms.** As Wayne correctly points out,
@@ -75,6 +89,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为现代编程语言的命令式/结构化编程模型不适合图算法，**这是当前编程语言难以支持图的根本原因。**正如Wayne正确指出的那样，核心问题在于，当您在诸如Python或Rust之类的命令式语言中编写图算法时，您必须为图选择某种显式表示。然后，您的遍历算法依赖于您选择的表示方式。如果后来发现您的表示不再高效，那么为新的表示调整您的算法将是一项艰巨的工作。
 - en: So what if we just, like, didn’t do this? What if we don’t pick a graph representation?
     What if we could express our graph and our graph algorithm declaratively and have
     the computer pick a representation for us? Would such an program be just as performant?
@@ -82,6 +97,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们就这样，不选择图的表示方法会怎样呢？如果我们能以声明方式表达我们的图和图算法，并让计算机为我们选择表示方法，会怎么样？这样的程序是否同样高效？这些问题是反问的吗？
 - en: The answers, of course, are yes. **We already have a declarative programming
     language where expressing graph algorithms is extremely natural**—[Datalog](https://en.wikipedia.org/wiki/Datalog),
     whose semantics are based on* the relational algebra, which was developed in the
@@ -94,11 +110,13 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 答案当然是肯定的。**我们已经有一种声明性编程语言，其中表达图算法非常自然**—[Datalog](https://en.wikipedia.org/wiki/Datalog)，其语义基于关系代数，这是在上世纪70年代开发的。例如，计算图的可达性是一个两行的Datalog程序，并且（在Datalog的扩展中）非常容易计算更复杂的事实，如单源或所有对最短路径。Datalog的实现也非常高效，可以根据数据变化调整查询策略，一些引擎甚至支持高级功能，如实时流/增量视图维护。缺点呢？你得写Datalog。
 - en: Datalog
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Datalog
 - en: 'In Datalog, it is natural to encode a graph as an *edge relation* (a set of
     edges). Queries on a graph like connectivity are well-expressed by *recursive
     joins* on that edge relation. (In fact, transitive closure in a graph is so naturally
@@ -108,16 +126,20 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Datalog 中，将图编码为*边关系*（一组边）是自然的。像连通性这样的图查询通过对该边关系的*递归连接*得到很好的表达。（事实上，图中的传递闭包在
+    Datalog 中表达得如此自然，以至于通常用作[教授 Datalog 的第一个例子！](https://berkeley-cs294-248.github.io/lectures/unit9.pdf#page=37)）这里是这样一个程序的具体例子：
 - en: '[PRE0]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Lines 1-3 encode the graph in the edge relation. This graph in particular is
     a (directed) “linked-list” graph on three nodes, where vertex 1 has an edge to
     vertex 2, which has an edge to vertex 3.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 行1-3将图编码为边关系。特别是这个图是一个（有向）三节点的“链表”图，其中顶点1到顶点2有一条边，顶点2到顶点3有一条边。
 - en: 'In plain English, lines 5 and 6 say: there are two ways that there might be
     a path from <mjx-container class="MathJax" jax="SVG"></mjx-container>to <mjx-container
     class="MathJax" jax="SVG"></mjx-container>. Either there is a direct edge from
@@ -131,43 +153,58 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 用通俗的语言说，第5行和第6行表示：可能有两种方式从<mjx-container class="MathJax" jax="SVG"></mjx-container>到<mjx-container
+    class="MathJax" jax="SVG"></mjx-container>的路径。要么是从<mjx-container class="MathJax"
+    jax="SVG"></mjx-container>直接到<mjx-container class="MathJax" jax="SVG"></mjx-container>的边（第5行），要么是从<mjx-container
+    class="MathJax" jax="SVG"></mjx-container>到另一个顶点<mjx-container class="MathJax"
+    jax="SVG"></mjx-container>的路径，并且从<mjx-container class="MathJax" jax="SVG"></mjx-container>直接到<mjx-container
+    class="MathJax" jax="SVG"></mjx-container>的边（第6行）。这两个规则将重复评估，直到数据库达到*固定点*；即，进一步应用任一规则不再导致更改。
 - en: 'How does this evaluate? First, the database starts off as just containing the
     edges:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是如何评估的？首先，数据库从仅包含边开始：
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
 - en: 'While Datalog rules are allowed to fire in arbitrary order, let’s assume that
     they fire in program order. The rule on line 5 fires, adding a path to our database
     for each edge:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管 Datalog 规则可以以任意顺序触发，让我们假设它们按程序顺序触发。第5行的规则触发，为每条边添加路径到我们的数据库：
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
 - en: 'To execute line 6, the Database engine *joins* the `edge` and `path` relations
     on the common variable <mjx-container class="MathJax" jax="SVG"></mjx-container>.
     That is, the equivalent SQL statement might be:'
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 要执行第6行，数据库引擎在共同变量<mjx-container class="MathJax" jax="SVG"></mjx-container>上*连接*`edge`和`path`关系。换句话说，等效的
+    SQL 语句可能是：
 - en: '[PRE1]'
   id: totrans-split-26
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Here is the result of the join.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是连接的结果。
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
 - en: And the Datalog engine adds these new tuples to the database. Note that before
     firing the rule on line 6, we had paths of length <mjx-container class="MathJax"
     jax="SVG"></mjx-container>in our database; now we have paths of length <mjx-container
@@ -175,27 +212,34 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 并且 Datalog 引擎将这些新元组添加到数据库中。请注意，在触发第6行规则之前，我们的数据库中有长度为<mjx-container class="MathJax"
+    jax="SVG"></mjx-container>的路径；现在我们有长度为<mjx-container class="MathJax" jax="SVG"></mjx-container>的路径。
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
 - en: We fire the rule on line 5 again, but it does not change our database. Finally
     we fire the rule on line 6, and we get the join
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们再次触发第5行的规则，但它不会改变我们的数据库。最后，我们触发第6行的规则，得到连接。
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
 - en: 'Only the last entry is new, so we add it to our database:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有最后一个条目是新的，所以我们将其添加到我们的数据库中：
 - en: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: <mjx-container class="MathJax" jax="SVG" display="true"></mjx-container>
 - en: And now the program is finished, because execution of either rule will not change
     the database. Notice how we have not only computed that there is a path from vertex
     1 to vertex 4, as expected, but also computed whether there is a path between
@@ -217,6 +261,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: You can express much more powerful programs in Egglog (and Datalog in general)
     than just transitive closure on a graph. For example, Egglog also supports algebraic
     data types, which means the path relation can be annotated [with a “proof” of
@@ -268,6 +313,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据库引擎如何如此之快呢？首先，上述Datalog程序的执行模型已经为了清晰起见进行了简化。实际上，有技术使得Datalog的运行比上面展示的“天真”执行快得多。其中主要的技术是[半天真评估](https://pages.cs.wisc.edu/~paris/cs838-s16/lecture-notes/lecture8.pdf#page=2)和[需求转换](https://dl.acm.org/doi/abs/10.1145/1836089.1836094)/[魔术集](https://dl.acm.org/doi/10.1145/28659.28689)。
 - en: Second, (as Wayne observed) the most efficient representation of a graph and
     the most efficient algorithms to traverse that graph depends how the graph is
     structured. This type of data-dependent optimization is exactly what databases
@@ -277,6 +323,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 其次，（正如Wayne所观察到的）图的最有效表示和最有效的遍历算法取决于图的结构。这种依赖于数据的优化正是数据库最擅长的。在数据库系统中，关于如何最佳表示数据集（[非]聚集索引，高效的内存数据结构）以及在这些数据集上查询（连接排序，连接类型）已经进行了数十年的研究。
 - en: 'These correspond decently well to efficient representations of a graph: for
     example, an adjacency list is essentially a database index on the edge relation!
     If your edge relation is small enough, it’s reasonable for a database engine to
@@ -286,6 +333,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些相当不错地对应了图的高效表示方法：例如，邻接表本质上就是边关系的数据库索引！如果你的边关系足够小，那么使用（哈希）连接和内存索引在数据库引擎上进行连接是合理的。这本质上与命令式语言中的正常内存图遍历相同——只不过数据库连接可能会优化得更好。
 - en: 'If a graph is huge but sparse, a database could choose to merge-join relations,
     which has high throughput because of its predictable memory and disk access patterns.
     If it’s huge but dense, it could possibly encode joins as [matrix multiplications
@@ -296,6 +344,8 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个图非常大但稀疏，数据库可以选择合并连接关系，这是因为其可预测的内存和磁盘访问模式而具有高吞吐量。如果它非常大但密集，可能会将连接编码为[GPU上的矩阵乘法……？](https://arxiv.org/abs/2311.02206)
+    还有各种先进的连接技术（最坏情况最优连接：[VAAT](https://berkeley-cs294-248.github.io/lectures/hung-ngo-wcoj.pdf#page=22)，[IAAT](https://berkeley-cs294-248.github.io/lectures/hung-ngo-wcoj.pdf#page=45)），在某些图上性能甚至更好。
 - en: That’s not to mention that sophisticated database engines can adapt their storage
     and query strategies as data changes over time. If your graph starts out sparse
     but gets denser over time, a database system can continuously collect statistics
@@ -305,6 +355,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 复杂的数据库引擎可以根据数据随时间变化调整其存储和查询策略，这一点不用多说。如果你的图在开始时很稀疏，但随着时间变得更加密集，数据库系统可以持续收集你的图的统计数据，并在合适时刻切换到更好的表示形式。当一切正常运作时，这不需要程序员额外的工作。（而且通常数据库会提供调优选项，如果选择的表示或连接顺序不合适的话。）
 - en: That said, there are still a few performance challenges for Datalog. First,
     a lot of the databases that support such sophisticated query optimization and
     fancy join algorithms are not open source, which poses a barrier for widespread
@@ -316,15 +367,18 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，Datalog仍然面临一些性能挑战。首先，许多支持如此复杂查询优化和花哨连接算法的数据库都不是开源的，这对广泛采用构成了一道障碍。其次，Datalog评估的一个主要假设是数据库必须单调增长——也就是说，它永远不会“删除”事实。这对内存受限系统（例如[遍历巨大文件系统或搜索数万亿顶点](https://www.hillelwayne.com/post/graph-types/#:~:text=Everyone%20I%20talked,of%20a%20thousand.)）构成了挑战，但原则上这些问题可能通过更多的研究来解决。
 - en: Wonderful! Except for the “writing Datalog” part.
   id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 太棒了！除了“编写Datalog”这一部分。
 - en: If Datalog is so great, why hasn’t it seen more adoption?
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果Datalog如此出色，为什么它没有得到更多的采纳？
 - en: The short answer is that Datalog is relatively esoteric outside of academia
     and some industry applications and, as a result, is not a great language from
     a “software engineering” perspective. It is hard for programmers accustomed to
@@ -333,6 +387,7 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，Datalog在学术界和一些行业应用之外相对狭隘，因此从“软件工程”角度来看，并不是一种很好的语言。对于习惯于命令式代码的程序员来说，编写Datalog程序很困难，而编写和理解大型Datalog程序也很困难。
 - en: Fortunately, in recent years, there has been research in the area of how to
     make Datalog easier to use in everyday languages. The [Flix](https://flix.dev/)
     language was originally created as an [extension of Datalog to support lattices
@@ -345,6 +400,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，近年来在如何使Datalog在日常语言中更易于使用的研究领域有了进展。[Flix](https://flix.dev/)语言最初是作为[扩展Datalog以支持程序分析中的格](https://dl.acm.org/doi/10.1145/2980983.2908096)被创建，并且现在类似于一种命令式语言，还[natively支持Datalog约束和固定点计算](https://doc.flix.dev/fixpoints.html)。将Datalog与传统编程语言“融合”的优势在于，你可以用Datalog表达所有图遍历/固定点算法，希望与传统编程无缝交互。
 - en: 'Another research paper, [Functional Programming with Datalog (2022)](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECOOP.2022.7),
     explored a different approach to integrate Datalog into a traditional language:
     instead of embedding Datalog into a traditional language, the authors compile
@@ -356,6 +412,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一篇研究论文，[《Functional Programming with Datalog (2022)》](https://drops.dagstuhl.de/entities/document/10.4230/LIPIcs.ECOOP.2022.7)，探索了一种将Datalog整合到传统语言中的不同方法：作者们并非将Datalog嵌入传统语言，而是将（简单的）函数式编程语言*转换为*Datalog。这种技术有点激进；在高层次上，他们（滥）用需求转换来“控制”Datalog评估的流程（传统上Datalog规则可以以任何顺序进行评估，但函数式语言通常具有由控制流定义的评估顺序）。
 - en: And there are other papers that I haven’t mentioned ([Slog](https://arxiv.org/abs/2211.11573))
     but if I keep listing prior work, I’d just be repeating the entire [reading list
     of the Declarative Program Analysis and Optimization class being offered at Berkeley
@@ -363,6 +420,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 而且还有其他论文我没有提到（[Slog](https://arxiv.org/abs/2211.11573)），但如果我继续列举先前的工作，我只会重复整个[本学期在伯克利提供的声明性程序分析与优化课程的阅读清单](https://inst.eecs.berkeley.edu/~cs294-260/sp24/)，所以我停止。
 - en: 'The point of all of this is: I think it is very possible that some future (mainstream?)
     programming language will have serious support for Datalog. And this isn’t just
     because Datalog makes recursive graph traversals easy to express—in recent years
@@ -373,6 +431,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些的要点是：我认为未来（主流？）某种编程语言很可能会严肃支持**Datalog**。而且这不仅仅是因为Datalog使递归图遍历易于表达——近年来在数据库系统中还有[大量关于增量视图维护的激动人心的研究](https://arxiv.org/abs/2203.16684)。想象一下，编写一个复杂的图遍历（或其他某种可以递增的算法），然后获得高效的增量更新*免费*。
 - en: 'In summary, the data model for graphs—relations, and the relational algebra—was
     indeed invented in the ’70s. But recently there have been exciting developments
     in the field: the adoption of Datalog by the program analysis community, recent
@@ -383,3 +442,4 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结一下，图的数据模型——关系和关系代数——确实是在70年代发明的。但最近这个领域有了令人兴奋的进展：Datalog被程序分析社区采用，联接算法的最新进展（[WCOJ](https://dl.acm.org/doi/10.1145/3180143)），增量视图维护的简单框架（[DBSP](https://arxiv.org/abs/2203.16684)），以及总体上对Datalog的重新关注。数据库霸主们向我展示了光明，而光明表明Datalog非常牛。
