@@ -90,6 +90,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们退一步。零信任实际上是什么意思？我们将给出一个定义。我希望你理解的关键是，一个有动机的攻击者可能已经在网络中了。问题是，我们如何限制他们可能造成的损害？这一切都是关于风险缓解。我想先退后一步，然后我们再来定义。这是希望大多数人熟悉的东西，比如一个API网关或者向最终用户提供应用程序。有一些我们总是做的事情。我们总是在用户进入时进行认证。我们希望总是授权该用户执行某些操作。如果我们谈论的是API网关，也许我们还会额外做一些速率限制。也许我们有一些其他的策略，比如WAF可以应用。在前端门户上发生了很多不同的事情。两个重要的是我们总是对用户进行认证和授权。当我们考虑有人可能在网络中，有人可能在内部围栏之内，我们如何尽量减少损害？然后，肯定地，我们可能想要开始对通信工作负载做同样的认证和授权。不仅仅是，我们有一个用户在会话中，而是我们知道这些用户在使用什么。我们希望能够说，前端可以调用后端，后端可以调用数据库。在所有这些跳跃中，最好有一个有效的最终用户凭据。也许我们甚至可以进一步。我们可能会说，如果你要在前端进行put操作，你就必须在最终用户凭据中具备正确的范围。如果你只是要get，那么也许你只需要读权限。当我们开始结合这些时，我们可以制定非常强大的策略。
 - en: Again, I led off with the attacker is already in the network. Every single time
     I give a variation on this 207A talk, there's a different example that I can cite
     of a network breach. In this case, for folks that follow the news, there was a
@@ -120,11 +121,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，我开头说的是攻击者已经进入了网络。每次我在这个207A演讲中提供的变体都有不同的例子可以引用网络入侵。例如，对于关注新闻的人来说，美国网络安全与基础设施安全局（CISA）与日本联合发布了一份关于由中国驱动的各种网络的网络入侵的重要公告。那个例子非常相关。这个例子来自十年前。有人知道那张图片是从哪里来的吗？那实际上是从斯诺登泄密事件中来的。美国政府介入了基础设施。这里的重点是，一个有动机的攻击者可以进入网络。如果我们唯一的控制措施，唯一的安全措施在边界，那么你已经失控了。这就引出了零信任。我们想要的是显式的信任。事实上，我非常讨厌“零信任”这个短语，它真的应该称为零隐含信任，因为它完全是关于使我们对系统中的信任变得显式化。希望通过策略来实现这一点，这样我们实际上有一个执行它的代码片段。我们想要的信任不是基于边界的，因为它是可以被攻破的。因此，我们需要的是基于最小权限的决策。我们希望每个请求都这样做，因为请求可能会执行不同的操作。我们希望它基于上下文。如果你在美国访问了很多次，然后突然，5分钟后，你从完全不同的地理位置访问，那里可能有些可疑。我们想要基于上下文的决策。再次强调，这些决策需要基于身份。不仅仅是服务身份，我们还想要终端用户身份，可能还有设备身份。因为所有这些因素都影响了我们允许用户访问系统的上下文。如果我使用的是公司批准的设备，并且我已经登录，并且我来自我的家庭地理位置，我可能可以拥有很多访问权限。如果我使用的是一个不受信任的随机设备，突然出现在像俄罗斯或东欧这样的奇怪地理位置，那么我可能想要减少对它的访问权限，因为这不是系统正常操作的典型情况。
 - en: Identity-Based Segmentation (Zero Trust Segmentation)
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 基于身份的分段（零信任分段）
 - en: With that high-level definition for zero trust, let me bring in identity-based
     segmentation. This is the main thrust of 207A. We defined a few different things,
     probably three things in 207A that I'll talk to you about, but identity-based
@@ -141,6 +144,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于零信任的高层次定义，让我介绍一下基于身份的分段。这是207A的主要内容。我们在207A中定义了几件不同的事物，可能是三件，我将与你讨论，但基于身份的分段是其中重要的一部分。微分段是在网络层面隔离工作负载。理想情况下，我们希望将其下降到单个IP地址，因此我们拥有针对谁能访问谁的成对策略。我们希望在身份层面做同样的事情。我们希望为用户、设备和服务提供防篡改的、可加密验证的身份。我们希望利用这些身份来做出我之前谈到的那个决定，即基于上下文的每个请求的最小特权决策。理想情况下，我们可能会将网络参数作为我们基于风险的评估的一部分。它们不应该是我们做出访问决策的唯一区分因素。然而，再次强调，我们将会因为在网络中的特权位置今天不是一个足够好的安全边界而受到影响。
 - en: What is identity-based segmentation? It's these five things. If there's anything
     that you walk out of this talk with, if this is it, these are the five runtime
     activities you need to be doing at minimum, these things, and you can call yourself
@@ -170,11 +174,14 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 什么是基于身份的分段？这就是这五件事。如果有什么是你在这次讲话中带走的，那就是这些，这五个运行时活动是你至少需要做的，这些事情，你可以称自己为零信任姿态。除了这些以外，我们还可以做很多事情，也许应该做得更多。这是一个最低限度的工作定义。我们希望有五件事情，传输中的加密。实际上，我们有两个原因想要这个。一是我们想要消息的真实性。我想知道别人不能改变我发送的消息。然后，第二，我们想要窃听保护。如果数据很敏感，我希望确保别人不能查看我正在发送的数据。然后，除此之外，我们想知道，哪些工作负载正在通信？前端是否在调用后端？数据库是否在调用前端？从软件部署的角度来看，我们的系统的哪些部分正在通信？然后，对于身份信息，我们应该授权该访问。同样，我们应该根据每个请求来执行。然后，就像我之前说的一样，我们还想额外地包含终端用户的凭证和终端用户的授权决策。我们希望做到这五件事情。理想情况下，我们希望在我们基础设施的每一个跳点都做到这一点。如果我们实现了这一点，如果我们正在做这个，那么我们对于网络上出现攻击者的答案是什么？希望我们有一个相当不错的答案。因为答案是，现在他们需要窃取一个凭证。我们稍后将更详细地讨论这个模型，但他们需要窃取一个终端用户凭证。他们需要妥协一个工作负载或窃取一个工作负载凭证。这些凭证也是非常短暂的。我会谈谈服务网格，特别是
+    Istio，工作负载标识可能持续 24 小时，甚至只有一小时。终端用户凭证通常在 15 分钟左右没有刷新的情况下持续。我们可以开始结合这些事情，我们开始在时间和空间上限制攻击者。我们减轻他们可以造成的损害。我稍后会更详细地谈论这个问题。
 - en: Service Mesh
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 服务网格
 - en: The service mesh is one of the key ways that we discuss implementing this in
     the SPs. It's not the only way that you can implement these capabilities, but
     it is a very powerful way to do that. I'll dig into that. If you're interested
@@ -195,6 +202,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 服务网格是我们在SPs中讨论实施这一点的关键方式之一。这不是你可以实现这些功能的唯一方式，但这是一个非常强大的方法。我将深入探讨这一点。如果您对基于身份的分段之外的一些其他用例感兴趣，有一些其他的SPs涉及到更多服务网格。我们如何使用服务网格来进行分段？只是为了让每个人都知道什么是服务网格，我们所做的是拿一个代理，一个web代理，一个反向代理，在Istio中我们使用Envoy实现，但您也可以考虑类似的东西如NGINX，或者类似的。我们将它放在每个单个应用程序实例旁边，并强制所有网络流量通过该代理进出应用程序。这使我们能够拥有应用程序标识并代表应用程序进行加密。我们可以代表应用程序做出负载均衡决策。我们可以进行服务发现和负载均衡。我们可以执行诸如弹性、超时、保持活动、重试之类的操作。您可以从系统中获得操作遥测数据，以帮助您闭环。当您进行更改时，您可以看到该更改的效果是什么，它是否符合您的意图？然后再次进行更改，如果不符合。
 - en: Again, there's quite a few capabilities here. If you're going to have any distributed
     system, you have to have these capabilities. The service mesh is not novel in
     bringing these capabilities into play. What is novel about the service mesh, is
@@ -211,6 +219,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，这里有相当多的功能。如果您要建立任何分布式系统，您必须具备这些功能。服务网格在将这些功能引入使用方面并不新颖。服务网格的新颖之处在于，它使我们能够在整个应用程序群中一致地执行所有这些功能，而不论我们使用的是哪种语言，因为我们在网络级别进行操作，并拦截网络流量。这为我们提供了集中控制，因此我们在每个应用程序实例旁都有那些代理，即旁车。我们有一个管理它的中央控制平面。我们可以将声明性配置推送到该控制平面，并且它将在不到一秒的时间内在所有旁车上实施该配置，通常如此。我们有一个非常快速、响应迅速的系统。我们可以查看信号以查看它是否处于我们想要的状态。如果不是，我们可以推送配置，使其几乎即时生效。然后观察并查看它是否处于我们希望的状态。
 - en: I worked on Istio. Istio is the most widely deployed mesh. Istio is also a CNCF
     project now. Envoy the CNCF project is the data plane there. Envoy is handling
     the bits and the bytes of your request. It's the sidecar. Istio is what's programming
@@ -230,6 +239,10 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 我曾经在 Istio 上工作。Istio 是目前部署最广泛的服务网格。Istio 现在也是一个 CNCF 项目。在那里，Envoy 是数据平面的一部分。Envoy
+    处理你请求的比特和字节。它是 sidecar。在运行时，Istio 就是在编程这个 Envoy。还有几个关键的想法我也想给大家，因为我们正在思考这个框架，如何实现零信任的访问控制？我们如何使用服务网格？第一个关键的想法是，这个
+    sidecar 形成了一个策略强制执行点。这个想法是因为它拦截了所有进出的流量，我们可以利用它来施加任何我们想要的策略。我提到过像加密这样的事情。我提到过像可观察性这样的事情。我们还可以做一些像与
+    OPA 集成的事情。我们可以做一些像与我们的身份提供者集成以代表应用程序进行单点登录的事情。我们可以构建一个自定义库，执行某些特定于我们业务的操作，并强制要求通过服务网格调用它。这个想法是，当我们有要在整个架构中应用的策略时，不仅仅是针对一组应用程序，而是大多数应用程序时，我们可以利用一次与服务网格集成来进行强制执行，而不必逐个应用程序进行操作。
 - en: If you go back to the old school access control literature from the 1970s, that's
     where the notion of a kernel comes from. That's where we talk about the idea of
     a reference monitor, the thing that intercepts all the traffic and enforces policy.
@@ -250,6 +263,9 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你回到上世纪七十年代的老派访问控制文献，这就是核心的概念来源。这就是我们讨论参考监视器的概念，它拦截了所有的流量并强制执行策略。然后扩展到服务网格本身，这也是
+    NIST 的人们对服务网格如此感兴趣的一个关键理念之一，可能会成为我们现代分布式系统的安全核心。如果我们将操作系统内核和它为运行在操作系统上的进程提供的安全能力联系起来，它提供了隔离。这些天它提供了
+    cgroups 和 namespaces，为容器提供软多租户性。它提供了 Unix 文件权限作为另一种访问控制机制。我们在操作系统内核中构建了相当多的访问控制系统，并利用它们来保护我们的应用程序。这个想法是，服务网格可以在我们的分布式系统中扮演同样的角色。与将进程部署到主机上不同，我们将微服务部署到我们的基础设施中。就像操作系统为应用程序提供一套关键的能力集一样，服务网格可以为运行的应用程序提供一致的安全能力集。
 - en: In this way, the service mesh facilitates cross-cutting change. I mentioned
     we can integrate whatever policy it is, whether that's traffic routing, whether
     that's security, observability, we can integrate that into the service mesh to
@@ -266,6 +282,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过服务网格实现跨切变更。我提到我们可以集成任何策略，无论是流量路由、安全性还是可观察性，我们都可以将其集成到服务网格中进行强制执行。我们可以集中更改和管理它，这意味着少数人可以代表整个组织来执行政策并进行更改。没有免费午餐，我们无法摆脱复杂性。我们希望在任何地方进行加密。有人仍然需要与PKI集成，并获取证书。服务网格让您只需一次集成，将其与服务网格集成，然后所有应用程序都将受益。一个例子。它可以是我们可以使用的力量倍增器，集中我们需要处理的复杂性，交给一个小团队，他们有能力处理它。例如，在加密的情况下，不需要每个应用团队都去实现一些加密库在他们自己的系统中。
 - en: To bring this back, if we look at our five tenets for identity-based segmentation,
     we can use the service mesh to achieve all of them. First off, we can achieve
     encryption in transit. The service mesh gives you a strong application identity.
@@ -286,11 +303,13 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 归根结底，如果我们看看我们基于身份的分段的五个原则，我们可以使用服务网格来实现所有这些原则。首先，我们可以实现传输中的加密。服务网格为您提供强大的应用程序身份。我们使用一个称为SPIFFE的系统来做到这一点，并发放一个普通证书来编码应用程序身份，我们可以使用它来进行传输加密，具体来说是双向TLS。然后使用该证书，我们可以认证我们正在通信的工作负载，这意味着我们有机会应用授权。我们确切地知道哪些工作负载正在通信，我们已经对它们进行了身份验证。现在我们实际上可以决定，前端blob调用是否可以直接访问数据库？不，可能不能，它需要通过后端。我们可以开始执行该策略。然后，我们可以将sidecar集成为现有身份和授权系统的策略执行点，用于最终用户。服务网格本身不适合模拟用户对资源访问或类似事物。它擅长于建模服务间的访问。我们希望将授权委托给我们现有的系统来处理最终用户的身份验证和授权。服务网格提供了与这些系统集成的工具。
 - en: Moving Incrementally
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 逐步迁移
 - en: The final thing that I want to cover then, is how can we start to move incrementally
     from the current system that we have today, a perimeter-based system, into some
     of this identity-based policy? What are some of the benefits of doing that? First
@@ -310,6 +329,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一件我想讨论的事情是，我们如何能够逐步从今天的现有系统——基于周界的系统，过渡到一些基于身份的政策？这样做有什么好处？首先，任何一个层面的政策都会有其不足和痛点。如果我们仅考虑网络策略和基于身份的策略，那么今天基于网络的策略最大的痛点之一是更改通常需要很长时间。在这里有谁的组织中有防火墙，每次需要更改时都得操作一番？有谁能在两周内更改防火墙？通常情况下，我认为我曾经和任何一个组织谈过的，都需要六周时间来更改防火墙。我不知道为什么是这样。需要多长时间？六周。得去查电子表格，得找到CIDR。这种方式不适合我们今天部署的高度动态的环境。特别是云环境，自动伸缩等特性，传统的网络控制无法胜任。我们要么需要使用更复杂、通常也更昂贵的技术来做到这一点，要么就得妥协，减慢我们在云中使用资源的速度，以适应现有的流程，但这是不可接受的。
 - en: Identity-based policies, and this is something as an industry, we don't have
     a lot of experience managing identity-based policy, in this sense, in the same
     way that we have with network-oriented policy. Some of the challenges people haven't
@@ -364,6 +384,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 相反，我们希望这两个层可以共存。我们想要做的是在两者之间进行权衡，以便我们可以在网络级别最小化某些类型的策略，并用基于身份的策略抵消它们。希望这样做可以使系统更加灵活。接下来我会给你一些具体的例子。如果我们谈论多层策略，实际上有更多层的策略，但我们尽量让SP非常简短和专注。大约有18页，内容约12页，如果你想阅读的话。大多数SP通常是50或60页长。我们确实保持了专注。至少有两个策略，网络层策略，例如防火墙规则，身份层策略，例如我刚刚和你讲过的，如基于应用的更强身份授权。我们可以开始做的是，在需要像穿越防火墙这样的事情时，我们可以开始整合基于身份的策略，并放宽一些我们的网络规则。特别是今天，在网络导向的方案中，当我有两个应用程序，可能一个在本地，一个在云中，或者是我的两个本地数据中心或两个不同的云提供商，其实并不重要，并且我希望它们能够通信。我通常需要去更改组织中的防火墙规则，逐对地。我需要说应用A现在可以调用应用B，或者服务1可以调用服务2。如果明天服务1需要调用服务3，我需要一个新的防火墙更改，然后我又回到了六周更新防火墙的周期中。这是我们与之交谈的人中敏捷性的巨大杀手。
 - en: Instead, what we can do is deploy identity-aware gateways. Instead of having
     these pairwise rules that we need to update regularly, we can deploy these identity-aware
     proxies or gateways, instantiate a single set of firewall rules that say, these
