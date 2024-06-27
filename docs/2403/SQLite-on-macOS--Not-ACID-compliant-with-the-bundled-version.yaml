@@ -2,43 +2,53 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:46:46'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:46:46'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'SQLite on macOS: Not ACID compliant with the bundled version'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SQLite 在 macOS 上：与捆绑版本不符合 ACID 标准
 - en: 来源：[https://bonsaidb.io/blog/acid-on-apple/](https://bonsaidb.io/blog/acid-on-apple/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://bonsaidb.io/blog/acid-on-apple/](https://bonsaidb.io/blog/acid-on-apple/)
 - en: 'SQLite on macOS: Not ACID compliant with the bundled version'
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: SQLite 在 macOS 上：与捆绑版本不符合 ACID 标准
 - en: Written by [Jonathan Johnson](https://github.com/ecton). Published 2022-06-14.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 作者为 [Jonathan Johnson](https://github.com/ecton)。发布于 2022-06-14。
 - en: I'm building [a database](/about), and I consider SQLite a "gold standard" to
     compare my database against. While benchmarking new code recently, I noticed Apple's
     bundled version of SQLite is not ACID compliant.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我正在构建 [一个数据库](/about)，我认为 SQLite 是“黄金标准”，可以与我的数据库进行比较。最近在对新代码进行基准测试时，我注意到 Apple
+    捆绑版本的 SQLite 并不符合 ACID 标准。
 - en: I do not consider myself an expert on these topics. If there are any errors
     in my analysis, please reach out to me, and I will correct them immediately. I'm
     learning by doing, and as evidenced by [my last post on this topic](/blog/durable-writes),
@@ -47,10 +57,12 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不认为自己在这些问题上是专家。如果我的分析中有任何错误，请联系我，我将立即更正。我通过实践学习，并且正如[我在这个话题上的上一篇文章](/blog/durable-writes)所证明的，我也犯过自己的错误。
 - en: On February 17, 2022, [Scott Perry wrote this in a conversation on Twitter:](https://twitter.com/numist/status/1494392674014531593)
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 2022年2月17日，[Scott Perry 在 Twitter 上的对话中写道：](https://twitter.com/numist/status/1494392674014531593)
 - en: 'There''s a third sync operation that lets you have your performance and write
     ordering too: F_BARRIERFSYNC. SQLite already uses it on Darwin, and it''s part
     of the best practices guide for I/O reduction. [https://developer.apple.com/documentation/xcode/reducing-disk-writes](https://developer.apple.com/documentation/xcode/reducing-disk-writes)'
@@ -58,6 +70,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 有第三个同步操作可以让您既提升性能又保证写入顺序：F_BARRIERFSYNC。SQLite 在 Darwin 上已经使用了它，它也是 I/O 降低的最佳实践指南的一部分。[https://developer.apple.com/documentation/xcode/reducing-disk-writes](https://developer.apple.com/documentation/xcode/reducing-disk-writes)
 - en: Some people (myself included) interpretted the statement "SQLite already uses
     it on Darwin" to mean that it's the default behavior. My post will show that this
     is not the case. By default, the bundled version of SQLite distributed in macOS
@@ -65,11 +78,14 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些人（包括我自己）曾解读过“SQLite 在 Darwin 上已经使用了它”这一说法，认为这是默认行为。我的文章将表明这并非事实。在 macOS 12.4（21F79）中，默认情况下，捆绑版本的
+    SQLite 使用 `fsync()` 进行同步。
 - en: From my investigation, Apple's version of SQLite instead replaces `PRAGMA fullfsync
     = on`'s implementation to use `F_BARRIERFSYNC`.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过我的调查，苹果的 SQLite 版本相反地用 `F_BARRIERFSYNC` 替换了 `PRAGMA fullfsync = on` 的实现。
 - en: SQLite users who are expecting `PRAGMA fullfsync` to provide durability guarantees
     in the event of power failures or kernel panics can [override xSync via a custom
     VFS](https://twitter.com/numist/status/1536859148897226753) or build SQLite from
@@ -77,11 +93,14 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 那些期望 `PRAGMA fullfsync` 提供持久性保证以防止电源故障或内核崩溃的 SQLite 用户可以通过自定义 VFS 来覆盖 xSync，或者从源代码构建
+    SQLite。
 - en: To understand why, let's review how to ensure persistent writes on Apple's operating
     systems.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解其中的原因，让我们来看看如何确保苹果操作系统上的持久写入。
 - en: 'There are two APIs we need to cover: `fsync()` and `fcntl()`. On Linux, `fsync()`
     is the system call that is tells the kernel to fully synchronize its file state
     with the disk. It is debatable whether the original POSIX specification intends
@@ -91,10 +110,13 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要涵盖两个 API：`fsync()` 和 `fcntl()`。在 Linux 上，`fsync()` 是系统调用，用于告知内核将其文件状态与磁盘完全同步。关于
+    `fsync()` 的原始 POSIX 规范是否打算提供这种耐久性保证是值得商榷的，但在 Linux 上，它尽最大努力保证所有更改的位都已同步到磁盘，包括刷新任何受影响的易失性写入缓存。
 - en: 'However, on macOS, the man page for `fsync()` reads:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在 macOS 上，`fsync()` 的 man 页面如下所述：
 - en: Note that while fsync() will flush all data from the host to the drive (i.e.
     the "permanent storage device"), the drive itself may not physically write the
     data to the platters for quite some time and it may be written in an out-of-order
@@ -103,6 +125,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 需要注意的是，虽然 `fsync()` 将所有数据从主机刷新到驱动器（即“永久存储设备”），但驱动器本身可能要相当长时间才能将数据写入到盘片上，并且可能以非顺序方式写入。
 - en: Specifically, if the drive loses power or the OS crashes, the application may
     find that only some or none of their data was written. The disk drive may also
     re-order the data so that later writes may be present, while earlier writes are
@@ -111,12 +134,14 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 具体来说，如果驱动器失去电源或操作系统崩溃，应用程序可能会发现只有部分或没有数据被写入。磁盘驱动器还可能重新排序数据，使得后续写入可能存在，而先前的写入则不存在。
 - en: This is not a theoretical edge case. This scenario is easily reproduced with
     real world workloads and drive power failures.
   id: totrans-split-20
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 这不是一个理论上的边缘情况。这种情况很容易通过真实的工作负载和驱动器断电来重现。
 - en: For applications that require tighter guarantees about the integrity of their
     data, Mac OS X provides the F_FULLFSYNC fcntl. The F_FULLFSYNC fcntl asks the
     drive to flush all buffered data to permanent storage. Applications, such as databases,
@@ -126,12 +151,15 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 对于需要更严格保证其数据完整性的应用程序，Mac OS X 提供了 F_FULLFSYNC fcntl。F_FULLFSYNC fcntl 要求驱动器将所有缓冲数据刷新到永久存储。需要严格写入顺序的应用程序（例如数据库）应使用
+    F_FULLFSYNC 来确保其数据按其期望的顺序写入。请参阅 fcntl(2) 获取更多详细信息。
 - en: Apple's documentation clearly states that for any guarantees about data loss
     due to power loss or kernel panic, you must use the `fcntl()` API with the `F_FULLFSYNC`
     command.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: Apple 的文档明确指出，为了防止因电源故障或内核恐慌而造成的数据丢失，必须使用 `fcntl()` API 与 `F_FULLFSYNC` 命令。
 - en: 'Back in February of this year, this topic circulated fairly widely, and [this
     post from Michael Tsai](https://mjtsai.com/blog/2022/02/17/apple-ssd-benchmarks-and-f_fullsync/)
     has a summary of the findings. In short, it was noted that `F_FULLFSYNC` is incredibly
@@ -141,12 +169,16 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾今年二月，这个主题相当广泛地传播开来，[Michael Tsai 的这篇文章](https://mjtsai.com/blog/2022/02/17/apple-ssd-benchmarks-and-f_fullsync/)
+    总结了研究结果。简而言之，指出 `F_FULLFSYNC` 在当前实现中非常慢。文章还指出，苹果在其 ["减少磁盘写入"](https://developer.apple.com/documentation/xcode/reducing-disk-writes)
+    文章中向用户推荐另一个 `fcntl()` 命令：
 - en: Some apps require a write barrier to ensure data persistence before subsequent
     operations can proceed. Most apps can use the fcntl(*:*:) F_BARRIERFSYNC for this.
   id: totrans-split-24
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一些应用程序需要写入障碍以确保数据持久性，然后才能继续进行后续操作。大多数应用程序可以使用 fcntl(*:*:) 的 F_BARRIERFSYNC 来实现这一点。
 - en: Only use F_FULLFSYNC when your app requires a strong expectation of data persistence.
     Note that F_FULLFSYNC represents a best-effort guarantee that iOS writes data
     to the disk, but data can still be lost in the case of sudden power loss.
@@ -154,6 +186,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 只有在您的应用程序需要对数据持久性有强烈期望时才使用 F_FULLFSYNC。请注意，F_FULLFSYNC 代表 iOS 将数据写入磁盘的尽力保证，但在突然断电情况下仍然可能丢失数据。
 - en: '`F_BARRIERFSYNC` issues an IO barrier such that all subsequent IO operations
     must wait for all current writes to succeed. The `fcntl()` call returns after
     issuing the barrier, but before the data is synchronized. This is why using `F_BARRIERFSYNC`
@@ -162,12 +195,16 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '`F_BARRIERFSYNC` 发出一个 IO 障碍，所有后续的 IO 操作必须等待所有当前写入成功。`fcntl()` 调用在发出障碍后返回，但在数据完全同步之前。这就是为什么使用
+    `F_BARRIERFSYNC` 不能满足 ACID 的耐久性要求：更改在数据完全同步之前被确认。'
 - en: I should note that while `fcntl()` is an API that is available on Linux, `F_FULLFSYNC`
     and `F_BARRIERFSYNC` are specific to Apple OSes. Linux has no need for these options
     as `fsync()` provides the guarantees needed.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我应该注意到，虽然 `fcntl()` 是 Linux 上可用的 API，但 `F_FULLFSYNC` 和 `F_BARRIERFSYNC` 是特定于
+    Apple 操作系统的。Linux 不需要这些选项，因为 `fsync()` 提供了所需的保证。
 - en: When starting my new low-level storage layer ([Sediment](https://github.com/khonsulabs/sediment)),
     I added support to optionally use `F_BARRIERFSYNC` instead of `F_FULLFSYNC` on
     macOS. By default, `F_FULLSYNC` would still be used as I wanted the user to explicitly
@@ -177,6 +214,9 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我启动我的新低级存储层（[Sediment](https://github.com/khonsulabs/sediment)）时，我添加了支持选择在
+    macOS 上使用`F_BARRIERFSYNC`而不是`F_FULLFSYNC`的选项。默认情况下，我仍然会使用`F_FULLSYNC`，因为我希望用户在需要在苹果硬件上获得额外性能时显式选择退出
+    ACID。这基于 SQLite 在 macOS 上实现非常快速速度的相同方法。
 - en: Yesterday, I created a simple benchmark to see where Sediment's performance
     was currently at. I'm not ready to share numbers, and that's not the point of
     this post. The summary, however, is that Sediment was faster than SQLite on Linux,
@@ -184,48 +224,59 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 昨天，我创建了一个简单的基准测试，以查看Sediment的性能当前情况。我还不准备分享具体数字，这也不是本文的重点。然而，总结来说，Sediment在Linux上比SQLite更快，在我的M1
+    MacBook Air上比SQLite慢。
 - en: That puzzled me, because if both SQLite and Sediment are using the same synchronization
     primitives, how could the performance difference be inverted between by switching
     operating systems? I decided to investigate how SQLite utilized `F_BARRIERFSYNC`.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这让我感到困惑，因为如果SQLite和Sediment都使用相同的同步原语，那么在切换操作系统时，性能差异如何会被颠倒？我决定调查SQLite如何利用`F_BARRIERFSYNC`。
 - en: My first stop was the documentation. SQLite has a pragma to [enable `F_FULLFSYNC`](http://www3.sqlite.org/pragma.html#pragma_fullfsync),
     but I could not find any documentation talking about `F_BARRIERFSYNC`. The documentation
     for `PRAGMA fullfsync` states that the default value is off.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 我的第一站是文档。SQLite有一个用于[启用`F_FULLFSYNC`的pragma](http://www3.sqlite.org/pragma.html#pragma_fullfsync)，但我找不到任何关于`F_BARRIERFSYNC`的文档。关于`PRAGMA
+    fullfsync`的文档说明了其默认值为关闭状态。
 - en: 'My next stop was the SQLite source code: `full_fsync()` is defined in [os_unix.c](https://sqlite.org/src/file?name=src/os_unix.c&ci=b1be2259).
     Its responsibility is to perform a full fsync based on the available and configured
     options. This section is what is relevant for Apple OSes:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来我查看了SQLite源代码：`full_fsync()`在[os_unix.c](https://sqlite.org/src/file?name=src/os_unix.c&ci=b1be2259)中定义。它的职责是基于可用和配置的选项执行完整的fsync。这一部分与Apple操作系统相关：
 - en: '[PRE0]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The SQLite source code shows the implementation for calling `fcntl()` with `F_FULLFSYNC`,
     but has no mention of `F_BARRIERFSYNC`.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: SQLite源代码显示了调用带有`F_FULLFSYNC`的`fcntl()`的实现，但没有提到`F_BARRIERFSYNC`。
 - en: 'There''s one last thing to check: maybe Apple ships a custom build of SQLite
     that utilizes `F_BARRIERFSYNC`. The best way to verify is to use dtrace to log
     out the system calls the process makes.'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 有最后一件事需要检查：也许苹果会提供一个定制版本的SQLite，其中使用了`F_BARRIERFSYNC`。验证的最佳方法是使用dtrace记录进程所做的系统调用。
 - en: 'I disabled System Integrity Protection so that I could trace the `sqlite3`
     executable that ships with macOS 12.4 (21F79):'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我禁用了系统完整性保护，以便我可以跟踪macOS 12.4（21F79）附带的`sqlite3`可执行文件。
 - en: '[PRE1]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'This log shows all of the `fcntl()` calls issued by SQLite to perform the `insert
     into test (a) values (1);` statement. The second argument is the command. We can
     see SQLite is using commands 0x3F, 0x5A, and 0x5F. In decimal, those are 63, 90,
@@ -233,44 +284,54 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 此日志显示了SQLite执行`insert into test (a) values (1);`语句时发出的所有`fcntl()`调用。第二个参数是命令。我们可以看到SQLite正在使用命令0x3F、0x5A和0x5F。以十进制表示，这些分别是63、90和95。查看`fcntl.h`，我们看到了这些值：
 - en: '[PRE2]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The commands for 90 and 95 [are private](https://github.com/apple/darwin-xnu/blob/2ff845c2e033bd0ff64b5b6aa6063a1f8f65aa32/bsd/sys/fcntl.h#L360-L370):'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 命令90和95是[私有的](https://github.com/apple/darwin-xnu/blob/2ff845c2e033bd0ff64b5b6aa6063a1f8f65aa32/bsd/sys/fcntl.h#L360-L370)。
 - en: '[PRE3]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'We did not see any `fcntl()` calls with the command argument being 85 (0x55).
     Let''s try enabling `PRAGMA fullfsync`:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们没有看到任何使用命令参数为85（0x55）的`fcntl()`调用。让我们尝试启用`PRAGMA fullfsync`：
 - en: '[PRE4]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'As expected, we have a new `fcntl()` command: 0x55\. Unexpectedly, however,
     instead of enabling `F_FULLFSYNC` (0x33) as we would expect from reading the publicly
     available SQLite code, we see 0x55 instead which is `F_BARRIERFSYNC`.'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 如预期，我们有一个新的`fcntl()`命令：0x55。然而，出乎意料的是，与其通过阅读公开可用的SQLite代码期望启用`F_FULLFSYNC`（0x33），我们看到了0x55，即`F_BARRIERFSYNC`。
 - en: To summarize, Apple's SQLite doesn't use `F_BARRIERFSYNC` or `F_FULLFSYNC` by
     default, and it replaces `fcntl(.., F_FULLFSYNC, ..)` with `fcntl(.., F_BARRIERFSYNC,
     ..)` when `PRAGMA fullfsync` is enabled.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结一下，Apple的SQLite默认情况下不使用`F_BARRIERFSYNC`或`F_FULLFSYNC`，并且在启用`PRAGMA fullfsync`时，将`fcntl(..,
+    F_FULLFSYNC, ..)`替换为`fcntl(.., F_BARRIERFSYNC, ..)`。
 - en: This behavior was [confirmed by Scott Perry](https://twitter.com/numist/status/1536830264214638593)
     as I was editing this post.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我编辑这篇文章时，[Scott Perry确认了这种行为](https://twitter.com/numist/status/1536830264214638593)。
 - en: For most consumer applications, `F_BARRIERFSYNC` will be enough to provide reasonable
     durability with the benefit of performing much more quickly. However, there are
     some situations where true ACID compliance is desired. Many (but not all) of those
@@ -278,6 +339,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于大多数消费者应用程序，`F_BARRIERFSYNC`足以提供合理的持久性，并且具有更快的执行速度。但是，在一些需要真正ACID兼容性的情况下，这并不足够。许多（但并非所有）这些情况涉及服务器软件。
 - en: With Apple no longer shipping server hardware and the performance of `F_FULLFSYNC`
     [on Apple's drives](https://news.ycombinator.com/item?id=30371857), it's hard
     to fault Apple for making the decision to use `F_BARRIERFSYNC` in their version
@@ -287,12 +349,15 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于苹果不再出货服务器硬件以及`F_FULLFSYNC`在[苹果驱动器上](https://news.ycombinator.com/item?id=30371857)的性能，苹果选择在其版本的SQLite中使用`F_BARRIERFSYNC`是难以指责的决定。我希望他们选择了另一种方式，比如新的编译指示或更改默认的`fsync()`行为，而不是替换`PRAGMA
+    fullfsync`。
 - en: It's very confusing when a feature that's [documented to be specific to macOS](http://www3.sqlite.org/pragma.html#pragma_fullfsync)
     doesn't behave as documented on macOS. As it stands, if a developer wants the
     documented behavior, the easiest way probably is to build SQLite from source.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 当一个特性被[文档化为仅适用于macOS](http://www3.sqlite.org/pragma.html#pragma_fullfsync)时，在macOS上的行为与文档描述不一致时，这非常令人困惑。目前来看，如果开发人员希望获取文档化的行为，最简单的方式可能是从源代码构建SQLite。
 - en: I did not test any of these findings on iOS -- it's been years since I have
     tried doing any tracing on a device. I suspect Apple doesn't maintain separate
     versions of SQLite for iOS and macOS, but because their version of SQLite is closed
@@ -300,6 +365,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我没有在iOS上测试这些发现 -- 多年来，我没有尝试在设备上进行任何追踪。我怀疑苹果不会为iOS和macOS维护单独的SQLite版本，但由于他们的SQLite版本是闭源的，我们无法轻易验证。
 - en: Regardless of whether Apple changes how SQLite synchronizes in the future, I
     encourage Apple to publish their updates to SQLite alongside their other open
     source repositories. I can't imagine the changes made to SQLite would be considered
@@ -309,3 +375,4 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 不论苹果将来如何改变SQLite的同步方式，我鼓励苹果在发布SQLite更新时与其其他开源存储库一起发布。我无法想象苹果对SQLite所做的更改会被视为专有，了解在苹果硬件上SQLite源代码与发布版本之间的差异对于理解SQLite在苹果操作系统上提供的保证是很重要的。
