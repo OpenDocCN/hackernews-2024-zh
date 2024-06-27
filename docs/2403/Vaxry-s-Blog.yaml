@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:59:40'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:59:40'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Vaxry's Blog
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Vaxry 的博客
 - en: 来源：[https://blog.vaxry.net/articles/2024-cursors](https://blog.vaxry.net/articles/2024-cursors)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.vaxry.net/articles/2024-cursors](https://blog.vaxry.net/articles/2024-cursors)
 - en: As I've recently launched [hyprcursor](https://github.com/hyprwm/hyprcursor),
     a completely new cursor format for use in a modern desktop aimed at replacing
     the old standard of XCursor, I think it's a good idea to make a blogpost about
@@ -32,44 +38,54 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于我最近推出了 [hyprcursor](https://github.com/hyprwm/hyprcursor)，这是一种完全新的光标格式，用于现代桌面，旨在取代
+    XCursor 的旧标准，我认为写一篇博文解释 Linux（以及 BSD，啦啦啦）上的光标实际上如何工作，对于帮助人们理解发生了什么是个好主意。
 - en: Terminology
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 术语
 - en: 'A quick one on the terms used:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于使用的术语的简短说明：
 - en: A "theme" is a pack of cursor shapes.
   id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"主题" 是一组光标形状。'
 - en: A "shape" is, well, a shape. E.g. a pointer, a text indicator, a grabbing hand.
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"形状" 是一个形状。例如指针、文本指示器、抓取手等。'
 - en: An "image" is a single picture of a shape at a set resolution (or an svg)
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '"图像" 是一个形状在一定分辨率下的单个图片（或 svg）'
 - en: How does a cursor work?
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 光标是如何工作的？
 - en: '*"Well lol just draw a png haha"*'
   id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '*"嘿，只要画一个 PNG 哈哈"*'
 - en: Well, no, it's not that simple.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，不，事情并不那么简单。
 - en: Rasters are annoying. Raster means an image is stored with pixels, for example
     a png, or an mp4\. The problem with rasters is that when you resize them, the
     computer has to take a wild guess at what it should look like. There are various
@@ -77,232 +93,278 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 光栅图很烦人。光栅意味着图像以像素形式存储，例如 png 或 mp4。光栅的问题在于当你调整它们的大小时，计算机必须猜测它应该看起来像什么。有各种算法可以做到这一点，但最常用的是双线性和最近邻。
 - en: Nearest neighbor will produce a "pixelated" look, while bilinear will make it
     more blurry.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近邻算法会产生 "像素化" 外观，而双线性会使其更模糊。
 - en: Now, if we just encoded our cursor in e.g. 128x128, we could just downscale
     it to the user-requested size and be done with it, right?
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果我们只将我们的光标编码为例如 128x128，我们可以简单地缩小到用户请求的大小，然后完成，对吧？
 - en: Well, not exactly. No matter the algorithm, it will almost never produce pixel-perfect
     results. It will almost always look "odd".
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，不完全是。无论算法如何，它几乎永远不会产生完美的像素结果。它几乎总是看起来 "奇怪"。
 - en: That's why, with raster cursors, the best course of action is to just encode
     a few common sizes and be done with it. That's what XCursor does.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么对于光栅光标来说，最佳方法就是只编码几种常见尺寸并完成。这就是 XCursor 所做的。
 - en: Every XCursor shape is just a few images at different sizes. 96, 64, 48, 32,
     24, 18, etc.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个 XCursor 形状只是几个不同尺寸的图像。96、64、48、32、24、18 等等。
 - en: The obvious problem with this is that first, we are storing multiple images
     per shape, and second, that we can't get anything in-between.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个明显的问题是，首先，我们正在存储每个形状的多个图像，其次，我们无法得到任何中间值。
 - en: XCursor does not allow for resizing those images, so either the client has to
     do it or it's not happening. In most cases, it's not happening.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: XCursor 不允许调整这些图像的大小，因此要么客户端必须这样做，要么就不会发生。在大多数情况下，不会发生。
 - en: That's not too bad
   id: totrans-split-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 那并不太糟糕
 - en: Oh wait, we got more!
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 噢等等，我们还有更多！
 - en: Most cursor sizes have their largest images at 96x96\. That's, on an 8K screen,
     already considerably smaller than a 32px on a 1080p screen.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数光标尺寸的最大图像为 96x96。在 8K 屏幕上，已经比 1080p 屏幕上的 32px 要小得多。
 - en: You might think that a 1080p PNG is like a megabyte, so why not encode more?
     like 128px and 256px?
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能认为 1080p 的 PNG 大约是一个兆字节，那为什么不编码更多？比如 128px 和 256px？
 - en: Well, the reason is simple. XCursor predates PNG. GIF too. JPEG as well. That's
     why, XCursor images are... uncompressed.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，原因很简单。XCursor 早于 PNG。GIF 也是。JPEG 也是。这就是为什么 XCursor 图像是…… 未压缩的。
 - en: A max 96x96 Bibata cursor, a single cursor, is about 2MB. That's a lot. The
     entire theme is 44.1MB. Ouch.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 单个 96x96 Bibata 光标，一个光标，大约 2MB。太多了。整个主题是 44.1MB。哎呀。
 - en: '*Amendment*: A single static cursor in Bibata is almost 170kB, and animated
     ones are about 16MB each, my bad. The 44.1MB figure is correct.'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '*修正*：Bibata 中的单个静态光标几乎是 170kB，动画光标大约每个 16MB，我的错。44.1MB 的数字是正确的。'
 - en: A modern format
   id: totrans-split-30
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一种现代格式
 - en: To stop storing uncompressed pixel data like a caveman, I've made hyprcursor.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了停止像原始人一样存储未压缩的像素数据，我做了 hyprcursor。
 - en: 'Hyprcursor has a few key advantages:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: Hyprcursor 有几个关键优势：
 - en: Cursors can be stored as *either* PNG or SVG image(s).
   id: totrans-split-33
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 光标可以作为 *PNG 或 SVG* 图像存储。
 - en: Each cursor has metadata describing how it wants to be presented
   id: totrans-split-34
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 每个光标都有描述它想要展示方式的元数据
 - en: Simplified and straightforward API
   id: totrans-split-35
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 简化和直观的 API
 - en: '*Way* less space usage.'
   id: totrans-split-36
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*完全* 更少的空间使用。'
 - en: 'Let''s elaborate on each point a bit:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们详细说明每一点：
 - en: Storage format
   id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 存储格式
 - en: Your cursors can be either PNG, which is an efficient, extremely widely used,
     lossless raster image format, or SVG, which is the most adopted standard for vector-based
     images.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 您的光标可以是PNG，这是一种高效的，被广泛使用的无损光栅图像格式，也可以是SVG，这是基于矢量的图像的最常见标准。
 - en: Almost all cursors start out as an SVG, because they are infinitely scalable.
     An SVG basically describes the "shape" of your cursor instead of the raw pixels,
     and is then rendered at different resolutions for packing into a theme.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 几乎所有的光标最初都是SVG格式的，因为它们具有无限的可扩展性。SVG基本上描述了你的光标的“形状”，而不是原始像素，然后在不同分辨率下渲染，以便打包到主题中。
 - en: 'With hyprcursor, hyprcursor itself can do the rendering, which has two benefits:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用hyprcursor，hyprcursor本身可以进行渲染，这有两个好处：
 - en: You can support any and all sizes (For fun I rendered Bibata at 2048px the other
     day, it looks beautiful)
   id: totrans-split-42
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 你可以支持任何大小（有趣的是，前几天我在2048像素上渲染了Bibata，它看起来很漂亮）
 - en: 'Way less space usage: SVGs of cursors are usually around 1kB.'
   id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 空间使用大大减少：光标的SVG通常只有约1kB。
 - en: Some cursors cannot become SVGs, and that's fine. Some cursors are used for
     more than one shape, and that's fine. Some cursors are animated, and that's fine!
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些光标不能成为SVG，这没关系。一些光标用于多个形状，这也没关系。一些光标是动画的，这也没关系！
 - en: All of a shape's properties are described in a small `meta.hl` file alongside
     them.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有形状的属性都在一个小的`meta.hl`文件中描述。
 - en: For overrides, instead of being a caveman and making symlinks all over the place,
     a simple `define_override = name` in the meta is enough.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于覆盖，不要像穴居人一样到处创建符号链接，只需在meta中简单地定义`define_override = name`就足够了。
 - en: For raster shapes, you can define what scaling algorithm to use, if any, so
     that you can control how your cursors scale to sizes outside of the ones you've
     made.
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于光栅形状，您可以定义要使用的缩放算法（如果有的话），以便控制光标如何在您制作的尺寸之外的尺寸上缩放。
 - en: API
   id: totrans-split-48
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: API
 - en: Rendering a cursor shape with hyprcursor to a png on disk takes about 10 lines
     of C if we exclude error checking. With it, it's about 25.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用hyprcursor将光标形状渲染为磁盘上的PNG大约需要10行C代码，如果不考虑错误检查。加上错误检查，大约需要25行。
 - en: You can also use the C++ API, which does some additional QoL stuff behind the
     scenes for you :)
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以使用C++ API，在幕后为您做一些额外的QoL（生活质量）工作:)
 - en: Space efficiency
   id: totrans-split-51
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 空间效率
 - en: PNGs are way more efficient than uncompressed data, bringing down Bibata from
     44.1MB to about 6MB. However, with svg, we get down to **171kB**, which is a 250x
     reduction.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: PNG比未压缩数据更高效，将Bibata从44.1MB降低到约6MB。然而，使用SVG，我们可以降低到**171kB**，这是250倍的减少。
 - en: Okay okay but how is that used?
   id: totrans-split-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 好吧好吧，但是这怎么用？
 - en: Who draws the cursor? Well, you might assume it's the, well, display server,
     the compositor, right?
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 谁来绘制光标呢？你可能会认为是显示服务器，复合器，对吧？
 - en: Well, kind of.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，有点。
 - en: In the beginning, the earth was without form, and void. Wait, a bit too far
     behind.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在开始时，地球是没有形状和空虚的。等等，有点太远了。
 - en: In the beginning of wayland, and in the core design spec, it's the *client's*
     job to draw the cursor. I mean, it kind of makes sense, as some apps might want
     to draw a custom cursor (e.g. games)
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在wayland的开始和核心设计规范中，**客户端的**职责是绘制光标。我是说，这有点说得通，因为一些应用可能希望绘制自定义光标（例如游戏）。
 - en: However, for desktop usage, that kinda sucks. Each app has to support rendering
     cursors, and some apps might render them differently, leading to inconsistencies.
     You probably have encountered them especially if using a HiDPI screen.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，对于桌面使用来说，这有点糟糕。每个应用程序都必须支持渲染光标，而一些应用程序可能以不同的方式渲染它们，导致不一致性。如果您使用HiDPI屏幕，可能已经遇到过这些问题。
 - en: Recently, we've got the wp_cursor_shape protocol, which allows the apps to just
     say "hey compositor, render a ~~shape~~", which is miles better, as the compositor
     can now draw the cursor.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 最近，我们有了wp_cursor_shape协议，允许应用程序只需说“嘿，复合器，渲染一个~~形状~~”，这要好得多，因为复合器现在可以绘制光标。
 - en: There are about 35 defined shapes in the protocol, which is, to be honest, enough.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 协议中定义了大约35种形状，老实说，这已经足够了。
 - en: If your compositor supports hyprcursor (like hyprland), then whenever server-side
     cursors are being used, hyprcursor will also be utilized. However, if client-side,
     the classic style, is used, it's up to the app, and most, at the moment, don't
@@ -310,38 +372,47 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你的复合器支持hyprcursor（如hyprland），那么在使用服务器端光标时，也将使用hyprcursor。然而，如果使用客户端经典样式，则由应用程序决定，目前大多数应用不支持hyprcursors。
 - en: What's the support looking like?
   id: totrans-split-62
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 支持情况如何？
 - en: Well, right now, not perfect. QT, chromium, electron and hypr* apps support
     cursor_shape, so in hyprland (or any other compositor using hyprcursors) you will
     get your pixel-perfect hyprcursors.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，现在，还不完美。QT、chromium、electron 和 hypr* 应用程序支持 cursor_shape，在 hyprland（或使用 hyprcursors
+    的任何其他合成器）中，您将获得像素完美的 hyprcursors。
 - en: Notably, GTK does not support the protocol, so apps like firefox, or the entire
     gnome suite will fall back to the ugly XCursor themes.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 值得注意的是，GTK 不支持该协议，因此像 Firefox 或整个 GNOME 套件这样的应用程序将退回到丑陋的 XCursor 主题。
 - en: Will this ever be adopted?
   id: totrans-split-65
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这会被采纳吗？
 - en: I don't know! All I know is that it's a clearly superior system that is easy
     to implement.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不知道！我只知道这是一个显然优越的系统，易于实施。
 - en: The best path, in my opinion, would be to push for wp_cursor_shape adoption
     over at gtk. If gtk finally supports the protocol, almost all desktop apps that
     people might wanna use on Linux will be able to utilize hyprcursors via the compositor.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，最好的路径是在 gtk 推动 `wp_cursor_shape` 的采用。如果 gtk 最终支持该协议，几乎所有人们可能在 Linux 上使用的桌面应用程序都能通过合成器利用
+    hyprcursors。
 - en: Support from the toolkits themselves for hyprcursor itself is likely not going
     to happen, as hyprcursor is not made by a million-dollar non-profit entity via
     a 10-year-long bureaucratic process, unless somehow the developers over there
@@ -350,16 +421,20 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 支持 hyprcursor 本身的工具包本身可能不太可能发生，因为 hyprcursor 不是通过 10 年的官僚过程由百万美元非营利实体制造的，除非那边的开发人员某种方式决定现在更有利于使用
+    hyprcursors 而不是等待并开发他们自己的新标准。谁知道呢？ :)
 - en: How do I make a hyprcursor theme? Can I use my current themes?
   id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何制作 hyprcursor 主题？我可以使用我的当前主题吗？
 - en: You can convert an xcursor theme to a hyprcursor theme in 5 minutes using the
     `hyprcursor-util` in the hyprcursor repo.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以使用 hyprcursor 仓库中的 `hyprcursor-util` 将 xcursor 主题转换为 hyprcursor 主题，只需 5 分钟。
 - en: However, you probably would rather go to the original cursor source and replace
     all the generated `.png` files with the source `.svg` versions to get the benefits
     of vector images. This process will take a bit longer, but is surely worth it
@@ -367,42 +442,54 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，你可能更愿意访问原始的光标源并用源 `.svg` 版本替换所有生成的 `.png` 文件，以获得矢量图像的好处。这个过程会花费一些时间，但肯定是值得的
+    :) *记得更新 meta.hl 文件中的新图像！*
 - en: If you want to share the theme with other people (and it is allowed via its
     license), feel free to post it in `#hyprcursor-themes` on the Hyprland discord
     server :)
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想与其他人分享主题（并且根据其许可证允许），请随时在 Hyprland Discord 服务器的 `#hyprcursor-themes` 发布它
+    :)
 - en: Check out the docs and the util on the [hyprcursor github page](https://github.com/hyprwm/hyprcursor)
     for more. You can also find instructions there for the end users and developers
     wishing to adopt this library in the `docs/` directory.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看 [hyprcursor github 页面](https://github.com/hyprwm/hyprcursor) 上的文档和实用工具，了解更多信息。你也可以在
+    `docs/` 目录中找到使用此库的最终用户和开发者的说明。
 - en: Closing thoughts
   id: totrans-split-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结思想
 - en: Thanks to everyone for the constant support towards making the Hypr* project
     better and better!
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢大家对使 Hypr* 项目变得越来越好的持续支持！
 - en: We've got some big plans moving forward so stick around for the journey :)
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们有一些前进的大计划，所以请继续关注这段旅程 :)
 - en: 'As a small gift, here''s bibata''s left_ptr, rendered with hyprcursor at 4K,
     just because I thought it was funny:'
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为一个小礼物，这里是 bibata 的 left_ptr，在 4K 下使用 hyprcursor 渲染，只是因为我觉得这很有趣：
 - en: '[click here](../resource/articleCursor/arrow.png)'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: '[点击这里](../resource/articleCursor/arrow.png)'
 - en: '*I tried 16K but it almost crashed my computer lol*'
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: '*我尝试了 16K 但几乎让我的电脑崩溃了 lol*'

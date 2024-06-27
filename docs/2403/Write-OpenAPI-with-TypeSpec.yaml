@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:42:57'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:42:57'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Write OpenAPI with TypeSpec
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用TypeSpec编写OpenAPI
 - en: 来源：[https://blog.trl.sn/blog/typespec-for-openapi/](https://blog.trl.sn/blog/typespec-for-openapi/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.trl.sn/blog/typespec-for-openapi/](https://blog.trl.sn/blog/typespec-for-openapi/)
 - en: <main id="skip">
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: <main id="skip">
 - en: Write OpenAPI with TypeSpec
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用TypeSpec编写OpenAPI
 - en: 'I''ve spent the last few years at Microsoft working on an API definition language
     called [TypeSpec](https://typespec.io). It''s essentially a super flexible protocol-agnostic
     DSL for describing API shapes. You can try it in your browser at the [TypeSpec
@@ -42,11 +50,13 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Microsoft工作的最后几年中，我专注于一种称为[TypeSpec](https://typespec.io)的API定义语言。它本质上是一种超级灵活的协议不可知DSL，用于描述API形状。您可以在[TypeSpec游乐场](https://typespec.io/playground)中尝试它。关于它的许多方面令人兴奋，但我特别想谈一件事：为什么TypeSpec是编写OpenAPI的最佳方式。
 - en: 'OpenAPI: the good and the not-so-good'
   id: totrans-split-9
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 'OpenAPI: 优点和不足'
 - en: OpenAPI is pretty great at describing the low level details of how an HTTP API
     works. It allows software to understand the shape of an API which in turn enables
     myriad useful things, like generating clients and documentation, configuring API
@@ -55,6 +65,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenAPI非常擅长描述HTTP API的低级细节。它允许软件理解API的形状，从而实现诸如生成客户端和文档、配置API网关或生成测试用例等多种有用功能。事实证明，OpenAPI是描述HTTP
+    API最广泛使用的语言，这充分显示了其优势。
 - en: However, after working with OpenAPI inside Azure, it is also clear to me that
     OpenAPI suffers a few critical weaknesses. Humans don't find OpenAPI particularly
     pleasant to author and review, whether in JSON or YAML. The code generation from
@@ -65,6 +77,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，在与Azure内部使用OpenAPI后，我也清楚地看到OpenAPI存在一些关键弱点。人们不认为OpenAPI特别适合编写和审查，无论是在JSON还是YAML中。尽管社区中的许多人做出了巨大的努力，但从OpenAPI生成的代码通常并不理想。在大规模构建API时，其冗长和缺乏可重用组件的特性需要大量投入API审查和治理过程。
 - en: I believe API-first development principles are great in theory, but in practice
     API-first with OpenAPI faces significant headwinds. Developers are likely to opt
     for code-first approaches that generate OpenAPI as a build artifact. I believe
@@ -72,11 +85,13 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我相信API优先开发原则在理论上很棒，但在实践中，使用OpenAPI的API优先方法面临着重大阻力。开发人员更有可能选择以代码优先的方式生成OpenAPI作为构建产物。我认为TypeSpec改变了游戏规则。让我们来看看吧！
 - en: Enter TypeSpec
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 进入TypeSpec
 - en: TypeSpec is designed to be protocol agonstic, but the team has invested heavily
     in making great OpenAPI 3.0 emit. You can use TypeSpec to define most OpenAPI
     documents by using its `http` standard library which provides various types and
@@ -87,11 +102,13 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: TypeSpec被设计为协议不可知，但团队在大幅度投资使其支持出色的OpenAPI 3.0输出。您可以使用TypeSpec通过其提供的`http`标准库来定义大多数OpenAPI文档，该库提供了各种类型和装饰器，用于添加HTTP特定的元数据，如头部、查询字符串或状态码。使用TypeSpec编写OpenAPI比直接使用OpenAPI具有许多优势。今天我将讨论的是，TypeSpec更小，更易读，并且可以使用API组件。
 - en: Terse & expressive
   id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 简洁而富有表现力
 - en: TypeSpec's syntax and semantics borrow heavily from TypeScript, which is one
     of the best languages for describing REST API shapes. TypeSpec is able to describe
     complex model shapes and REST endpoints with substantially less typing than OpenAPI,
@@ -100,19 +117,24 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: TypeSpec的语法和语义大量借鉴于TypeScript，后者是描述REST API形状的最佳语言之一。TypeSpec能够用比OpenAPI更少的打字描述复杂的模型形状和REST端点，最终结果更易读。我甚至听说有些人成功地使用TypeSpec语法与非技术利益相关者讨论API形状！
 - en: Let's look at an example of what I mean. You can view the resulting OpenAPI
     [in the playground](https://typespec.io/playground?c=aW1wb3J0ICJAdHlwZXNwZWMvaHR0cCI7DQp1c2luZyBIdHRwOw0KDQovKiogQSBjaGFyYWN0ZXIgaW4gYSBmYW50YXN5IFJQRy1zdHlsZSBnYW1lICovDQptb2RlbCBDyTB7DQogIG5hbWU6IHN0cmluZzvEEWlkOiBzYWZlaW50xRBzdGF0dXM6ICJBbGl2ZSIgfCAiRGVhZOQAkCAgY2xhc3M6IEPEBzsNCn3kAJdlbnVtxhIgeyB3YXJyaW9yOyB3aXphcmQ7IMUjQG1pblZhbHVlKDEpxA5heMYOMjApDQpzY2FsYXLFeMUWIGV4dGVuZHMgdWludDjlAPrmAMpTdGF0c%2BYAxnN0cmVuZ3Ro5ADKxzfmAM1udGVsbGlnZW5j5QDmzBxkxFhyaXR5zhnlAKFvcCBnZXTpASsoQHBhdGjsARspOuoBSTs%3D&e=%40typespec%2Fopenapi3&options=%7B%7D).
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看我所说的一个例子。您可以在 [游乐场中查看](https://typespec.io/playground?c=aW1wb3J0ICJAdHlwZXNwZWMvaHR0cCI7DQp1c2luZyBIdHRwOw0KDQovKiogQSBjaGFyYWN0ZXIgaW4gYSBmYW50YXN5IFJQRy1zdHlsZSBnYW1lICovDQptb2RlbCBDyTB7DQogIG5hbWU6IHN0cmluZzvEEWlkOiBzYWZlaW50xRBzdGF0dXM6ICJBbGl2ZSIgfCAiRGVhZOQAkCAgY2xhc3M6IEPEBzsNCn3kAJdlbnVtxhIgeyB3YXJyaW9yOyB3aXphcmQ7IMUjQG1pblZhbHVlKDEpxA5heMYOMjApDQpzY2FsYXLFeMUWIGV4dGVuZHMgdWludDjlAPrmAMpTdGF0c%2BYAxnN0cmVuZ3Ro5ADKxzfmAM1udGVsbGlnZW5j5QDmzBxkxFhyaXR5zhnlAKFvcCBnZXTpASsoQHBhdGjsARspOuoBSTs%3D&e=%40typespec%2Fopenapi3&options=%7B%7D)
+    中查看生成的 OpenAPI。
 - en: '[PRE0]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: A partial TypeSpec API definition for a fantasy RPG
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 幻想 RPG 的部分 TypeSpec API 定义
 - en: This TypeSpec ultimately compiles to OpenAPI that is almost 3x the number of
     lines, and 3.5x as many bytes. The TypeSpec code is fairly easy to read and follow—certainly
     familiar to TypeScript developers, but also obvious enough that anyone can get
@@ -120,60 +142,75 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种 TypeSpec 最终编译成的 OpenAPI 几乎是行数的三倍，字节数的三倍半。TypeSpec 代码非常容易阅读和理解 —— 对于 TypeScript
+    开发者来说很熟悉，但对任何人来说都足够清晰。
 - en: 'TypeSpec unions in particular demonstrate how TypeSpec''s syntax significantly
     improves readability. Unions provide a single terse syntax that compile to OpenAPI''s
     `oneOf`, `anyOf`, and `enum` constructs. Consider the following TypeSpec and OpenAPI:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 特别是 TypeSpec 联合体展示了 TypeSpec 语法如何显著提升可读性。联合体提供了一种简洁的语法，编译成 OpenAPI 的 `oneOf`、`anyOf`
+    和 `enum` 结构。考虑以下 TypeSpec 和 OpenAPI 示例：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: A TypeSpec union of literal types
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: TypeSpec 文字类型的联合体
 - en: '[PRE2]'
   id: totrans-split-24
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: OpenAPI output for a union of literal types
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenAPI 对象文字类型的输出
 - en: The compiler determined that this was a union of literal types and so the right
     choice was to emit it as an enum. But if we have a union of object types, it compiles
     into an anyOf.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 编译器确定这是一组文字类型的联合体，因此正确的选择是将其作为枚举发出。但是，如果我们有一组对象类型的联合体，它将编译成 `anyOf`。
 - en: '[PRE3]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: A TypeSpec union of objects
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: TypeSpec 对象的联合体
 - en: '[PRE4]'
   id: totrans-split-29
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: OpenAPI output for a union of objects
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: OpenAPI 对象联合输出
 - en: Overall, TypeSpec's various language features compile to OpenAPI that is generally
     longer and more complex, both in terms of syntax and semantics.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，TypeSpec 的各种语言特性编译成的 OpenAPI 通常更长，更复杂，无论是在语法还是语义上。
 - en: Composable & modular
   id: totrans-split-32
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 可组合和模块化
 - en: The ability to encapsulate API patterns into reusable components was one of
     the main reasons why we started working on TypeSpec in the first place. At scale,
     consistency across APIs and conformance with API guidelines becomes quite costly.
@@ -182,6 +219,8 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 将 API 模式封装成可重用组件的能力是我们开始开发 TypeSpec 的主要原因之一。在规模化时，跨 API 的一致性和符合 API 准则变得非常昂贵。需要
+    API 作者和 API 审阅者付出巨大的努力来确保质量。
 - en: TypeSpec's API components make consistency easy. API designers can encapsulate
     blessed API patterns into components that API authors import and use. In this
     way, API designers are assured that the API is correct simply by virtue of using
@@ -190,33 +229,41 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: TypeSpec 的 API 组件使一致性变得容易。API 设计者可以将受欢迎的 API 模式封装到组件中，供 API 作者导入和使用。这样，API 设计者可以确保
+    API 的正确性，只需使用组件，而 API 作者则无需在 JSON 中实现复杂的高级模式。
 - en: A common example is pagination. Using TypeSpec, we can define a template that
     defines the shape of our page, and use that for every paged endpoint.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 常见的例子是分页。使用 TypeSpec，我们可以定义一个模板来定义页面的结构，并将其用于每个分页的终点。
 - en: '[PRE5]'
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: A TypeSpec for paginated endpoints
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 分页端点的 TypeSpec
 - en: 'Another common use for templates is defining your standard error shapes. For
     example, if every endpoint might return a `403` error, we can express that with
     a template:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个常见的模板用法是定义标准的错误形状。例如，如果每个端点都可能返回 `403` 错误，我们可以用一个模板来表达这一点：
 - en: '[PRE6]'
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: A TypeSpec for standard response shapes
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 标准响应形状的 TypeSpec
 - en: In Azure, we have dozens of these templates, which encapsulate the API patterns
     we use across Azure's API surface area. We package these templates into modules
     that are imported by service owners when they're writing their API spec. They
@@ -227,11 +274,14 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Azure 中，我们有数十个这些模板，这些模板封装了我们在整个 Azure API 表面上使用的 API 模式。我们将这些模板打包成模块，服务所有者在编写他们的
+    API 规范时导入这些模块。他们无需知道“长时间运行操作”使用特定的HTTP动词和特定形状的负载，他们只需为其API提供几个特定参数，并完成。API 作者高兴，审阅者满意。
 - en: Wrapping up
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结尾
 - en: This just scratches the surface of what it's possible to do with TypeSpec. There
     are many other features that combine to make TypeSpec extremely productive to
     use, producing OpenAPI documents that can be well over 10x the size. When writing
@@ -240,6 +290,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是探索 TypeSpec 能力的冰山一角。有许多其他功能结合在一起，使得 TypeSpec 非常高效，生成的 OpenAPI 文档可以是原来的10倍以上。当编写API如此高效时，我认为以API为先的方式不仅变得可行，而且十分吸引人。
 - en: In later posts, I'll be sharing some more details about fun things TypeSpec
     can do. Topics may include its support for other protocols (e.g. Protobuf, JSON
     Schema), TypeSpec's extensibility model and how you can add your own decorators
@@ -249,7 +300,10 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 在接下来的帖子中，我将分享一些关于 TypeSpec 能做的有趣事情的更多细节。主题可能包括它对其他协议的支持（例如Protobuf，JSON Schema），TypeSpec的可扩展模型以及如何使用TypeScript添加自定义装饰器或生成自定义输出，TypeSpec如何实现更高质量的代码生成，以及关于分页和流API支持的未来方向。如果您对特定主题感兴趣，请随时在
+    [twitter](https://twitter.com/bterlson) 上表达出来。
 - en: </main>
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: </main>

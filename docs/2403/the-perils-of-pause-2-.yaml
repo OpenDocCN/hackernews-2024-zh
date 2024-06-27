@@ -2,46 +2,56 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:36:55'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:36:55'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: the perils of pause(2)
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: pause(2)的危险
 - en: 来源：[https://www.cipht.net/2023/11/30/perils-of-pause.html](https://www.cipht.net/2023/11/30/perils-of-pause.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.cipht.net/2023/11/30/perils-of-pause.html](https://www.cipht.net/2023/11/30/perils-of-pause.html)
 - en: 'In the case of `pause(2)`, we can use `sigsuspend(2)`, or a few other similar
     functions. If we need the signal handler, our code might look like this:'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在`pause(2)`的情况下，我们可以使用`sigsuspend(2)`或其他几个类似的函数。如果我们需要信号处理程序，我们的代码可能如下所示：
 - en: '[PRE0]'
   id: totrans-split-7
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'but in this case, we are just waiting for this signal, and don''t need to take
     other action when it arrives, so `sigwait(2)` suffices:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 但在这种情况下，我们只是等待这个信号，并且不需要在其到达时采取其他操作，因此`sigwait(2)`就足够了：
 - en: '[PRE1]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: We might use `sigwaitinfo` or `sigtimedwait` if we need more details than just
     the signal number. If we were certain no other signal could arrive, we could avoid
     the loop entirely, but it's nice to protect against cases you might not otherwise
@@ -49,10 +59,12 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们需要比仅信号号码更多的细节，我们可能会使用`sigwaitinfo`或`sigtimedwait`。如果我们确信不会收到其他信号，我们可以完全避免循环，但保护对于那些可能考虑不到的情况（例如在交互式测试程序时按下^Z发送SIGTSTP）是个好习惯。
 - en: (Note that OpenBSD also lacks `sigwaitinfo` and `sigtimedwait` presently.)
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: （请注意，OpenBSD目前也缺少`sigwaitinfo`和`sigtimedwait`。）
 - en: For `poll(2)` and `select(2)`, unmasking variants `ppoll(2)` and `pselect(2)`
     exist for this reason. (Linux also has `signalfd(2)`, which more naturally integrates
     with polling loops, but note it only reads pending signals, so you still need
@@ -62,3 +74,4 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于`poll(2)`和`select(2)`，存在解除掩码变体`ppoll(2)`和`pselect(2)`，因此存在这个原因。（Linux还具有`signalfd(2)`，它与轮询循环更自然地集成，但请注意它仅读取挂起的信号，因此仍需使用`sigprocmask`进行掩码，并且现在必须处理从缓冲区读取`siginfo`的情况。哦，实际从fd读取的内容取决于哪个进程正在读取…）还有经典的[self-pipe技巧](https://cr.yp.to/docs/selfpipe.html)。

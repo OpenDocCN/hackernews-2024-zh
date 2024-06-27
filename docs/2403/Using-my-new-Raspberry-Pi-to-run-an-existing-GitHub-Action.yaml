@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:53:05'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:53:05'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Using my new Raspberry Pi to run an existing GitHub Action
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用我的新树莓派来运行现有的 GitHub Action
 - en: 来源：[https://blog.frankel.ch/raspberry-pi-github-action/](https://blog.frankel.ch/raspberry-pi-github-action/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.frankel.ch/raspberry-pi-github-action/](https://blog.frankel.ch/raspberry-pi-github-action/)
 - en: 'GitHub Actions depend on Docker being installed on the runner. Because of this,
     I thought jobs ran in a dedicated image: it’s plain wrong. Whatever you script
     in your job happens on the running system. Case in point, the initial script installed
@@ -31,73 +37,91 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: GitHub Actions 依赖于 Runner 上安装了 Docker。因此，我认为作业在专用镜像中运行是错误的。无论你在作业中脚本化的内容，都会在运行系统上发生。例如，最初的脚本安装了
+    Python 和 Poetry。
 - en: '[PRE0]'
   id: totrans-split-7
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In the context of a temporary container created during each run, it makes sense;
     in the context of a stable, long-running system, it doesn’t.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在每次运行时创建的临时容器的情况下，这是有意义的；在稳定的长期运行系统中，这是不合适的。
 - en: Raspbian, the Raspberry default operating system, already has Python 3.11 installed.
     Hence, I had to downgrade the version configured in Poetry. It’s no big deal because
     I don’t use any specific Python 3.12 feature.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: Raspbian，树莓派的默认操作系统，已经安装了 Python 3.11。因此，我必须降级 Poetry 中配置的版本。这没什么大不了的，因为我没有使用任何特定的
+    Python 3.12 功能。
 - en: pyproject.toml
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: pyproject.toml
 - en: '[PRE1]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Raspbian forbids the installation of any Python dependency in the primary environment,
     which is a very sane default. To install Poetry, I used the regular APT package
     manager:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Raspbian 禁止在主环境中安装任何 Python 依赖项，这是一个非常明智的默认设置。为了安装 Poetry，我使用了常规的 APT 包管理器：
 - en: '[PRE2]'
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The next was to handle secrets. On GitHub, you set the secrets on the GUI and
     reference them in your scripts via environment variables:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是处理密钥。在 GitHub 上，你可以在 GUI 中设置密钥，并通过环境变量在脚本中引用它们：
 - en: '[PRE3]'
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: It allows segregating individual steps so that a step has access to only the
     environmental variables it needs. For self-hosted runners, you set environment
     variables in an existing `.env` file inside the folder.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 它允许隔离各个步骤，以便每个步骤只能访问它需要的环境变量。对于自托管的 Runner，你可以在文件夹中的现有 `.env` 文件中设置环境变量。
 - en: '[PRE4]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: If you want more secure setups, you’re on your own.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你希望有更安全的设置，那就全靠你自己了。
 - en: 'Finally, the architecture is a pull-based model. The runner constantly checks
     if a job is scheduled. To make the runner a service, we need to use out-of-the-box
     scripts inside the runner folder:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，这种架构是一种拉取式模型。Runner 不断检查是否有作业被调度。要将 Runner 设置为服务，我们需要在 Runner 文件夹中使用现成的脚本：
 - en: '[PRE5]'
   id: totrans-split-20
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The script uses `systemd` underneath.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 脚本使用 `systemd` 作为底层。

@@ -2,69 +2,83 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:35:59'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:35:59'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Why the hell is your Kubernetes API public? | lbr.
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么你的Kubernetes API要公开？| lbr.
 - en: 来源：[https://leebriggs.co.uk/blog/2024/03/23/why-public-k8s-controlplane](https://leebriggs.co.uk/blog/2024/03/23/why-public-k8s-controlplane)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://leebriggs.co.uk/blog/2024/03/23/why-public-k8s-controlplane](https://leebriggs.co.uk/blog/2024/03/23/why-public-k8s-controlplane)
 - en: Do you ever really think about how you get access to your Kubernetes control
     plane? Whatever mechanism you use to provision your cluster, you get a `KUBECONFIG`
     and usually just go on your merry way to overcomplicating your infrastructure.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有没有真正想过如何访问你的Kubernetes控制平面？无论你使用什么机制来部署你的集群，你都会得到一个`KUBECONFIG`，通常只是简单地过度复杂化你的基础设施。
 - en: However, if you’ve ever looked at your `KUBECONFIG` you’ll see you have a server
     address.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，如果你曾经查看过你的`KUBECONFIG`，你会看到你有一个服务器地址。
 - en: 'You can check the health of your cluster by doing the following:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以通过以下方式检查集群的健康状况：
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Assuming everything is working as expected (and if it isn’t, you should probably
     stop reading and go figure out what), it should return `ok`.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设一切正常运行（如果不是，请停止阅读并找出问题所在），它应返回`ok`。
 - en: Has it ever come to your attention that this *just works* from a networking
     perspective? More than likely you didn’t have to a connect to a VPN, or SSH into
     a bastion/jump host host?
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 你有没有意识到，从网络角度来看，这*只是工作*？很可能你根本不需要连接VPN，或者SSH到一个堡垒/跳板主机？
 - en: How did I know that? Well, because the vast majority of Kubernetes clusters
     are just hanging out on the public internet, without a care in the world.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我怎么知道的？嗯，因为绝大多数Kubernetes集群都悬挂在公共互联网上，毫不在乎。
 - en: If you search [shodan.io for Kubernetes clusters](https://www.shodan.io/search?query=kubernetes)
     you’ll see there’s almost 1.4 million clusters, readily accessible and open to
     the scary, scary world.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你在[shodan.io搜索Kubernetes集群](https://www.shodan.io/search?query=kubernetes)，你会看到几乎有1.4百万个集群，可以轻松访问并对可怕的世界敞开大门。
 - en: For reasons I can’t quite understand, we’ve sort of collectively decided that
     it’s okay to put our Kubernetes control planes on the public internet. At the
     very least, we’ve sort of decided it’s okay to give them a public IP address -
@@ -73,23 +87,27 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 出于我无法完全理解的原因，我们似乎集体决定把我们的Kubernetes控制平面放在公共互联网上。至少，我们似乎已经决定允许它们有一个公共IP地址 - 当然，你可能会添加一些安全组或防火墙规则，限制特定IP地址的访问，但控制平面仍然可以从互联网访问。
 - en: To put this into some sort of perspective, how many of the people reading this
     get a cold shudder when they think about putting their database on the public
     internet? Or a windows server with RDP? Or a Linux server with SSH?
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 从某种角度来看，看到这些内容，你中有多少人在考虑将他们的数据库放在公共互联网上时会感到一阵寒意？或者一个带有RDP的Windows服务器？或者一个带有SSH的Linux服务器？
 - en: Established practices say this is generally not a good idea, and yet in order
     to make our lives easier, we’ve decided that it’s *okay* to let every person and
     their dog free access to try and make our clusters theirs.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 传统做法普遍认为这不是个好主意，但为了使我们的生活更轻松，我们决定让每个人及其狗都自由访问并尝试将我们的集群变成他们自己的。
 - en: Private Networks
   id: totrans-split-17
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 私有网络
 - en: As soon as you put something in a private subnet in the cloud, you add a layer
     of complexity to the act of actually using it. You have to explain to everyone
     who needs access to it, including that developer who’s just joined the team, where
@@ -98,12 +116,14 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦你把云中的某些东西放在私有子网中，你就增加了实际使用它的复杂性。你必须向所有需要访问它的人解释，包括刚加入团队的开发人员，它在哪里以及如何使用它。你可能会使用一个SSH隧道，或者一个堡垒实例，或者上帝原谅那个几年前设置的VPN服务器，没人敢碰的那个。
 - en: We sort of accept these for things like databases because we very rarely need
     to get into them except in case of emergency, and we think it’s okay to have to
     route through something else because the data in them is important enough to protect.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于像数据库这样的东西，我们接受这些，因为我们很少需要访问它们，除非紧急情况，我们认为通过其他途径访问它们是可以接受的，因为其中的数据足以保护。
 - en: In addition to this, when cloud providers started offering managed Kubernetes
     servers, most of them didn’t even *have* private control planes. It was only in
     the last few years that they started offering this as a feature, and even then,
@@ -111,6 +131,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，当云提供商开始提供托管 Kubernetes 服务器时，它们大多数甚至*没有*私有控制平面。直到最近几年，他们才开始将其作为一项功能提供，即使如此，这也不是默认设置。
 - en: So the practice of putting a very important API on the internet has proliferated
     because it’s just *easier* to do it that way. The real concern here is that we’re
     one severe vulnerability from having a bitcoin miner on every Kubernetes cluster
@@ -118,11 +139,13 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为这样做*更加*容易，所以将非常重要的 API 放在互联网上的做法正在蔓延。这里真正的关注点是，我们距离每个互联网上的 Kubernetes 集群都安装一个比特币挖矿程序只有一个严重的漏洞。
 - en: An alternative
   id: totrans-split-22
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 另一个选择
 - en: 'I [previously](/blog/2024/02/26/cheap-kubernetes-loadbalancers.html) wrote
     about the [Tailscale Kubernetes Operator](https://tailscale.com/kb/1236/kubernetes-operator)
     and its ability to expose services running inside your Kubernetes cluster to your
@@ -130,21 +153,27 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我[之前](/blog/2024/02/26/cheap-kubernetes-loadbalancers.html)曾写过[Tailscale Kubernetes
+    操作员](https://tailscale.com/kb/1236/kubernetes-operator)及其能够将运行在 Kubernetes 集群内部的服务暴露给您的
+    Tailnet，但它还有另一个令人惊叹的功能：
 - en: It can act as a Kubernetes proxy for your cluster.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 它可以作为您集群的 Kubernetes 代理。
 - en: Say what now?
   id: totrans-split-25
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 现在说什么？
 - en: Well, let’s say you provision a Kubernetes cluster in AWS. You decide that you
     that in order to give yourself another layer of protection, you’re going to make
     sure the control plane is only accessible within the VPC.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，假设您在 AWS 中配置了一个 Kubernetes 集群。您决定为了给自己增加另一层保护，将确保控制平面仅在 VPC 内部可访问。
 - en: If you install the Tailscale Kubernetes operator and set the `apiServerProxyConfig`
     flag, it’ll create a device in your Tailnet that makes it accessible to anyone
     on the tailnet. This means before you’re able to use the cluster, you need to
@@ -153,58 +182,71 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果安装了 Tailscale Kubernetes 操作员并设置了 `apiServerProxyConfig` 标志，它将在您的 Tailnet 中创建一个设备，使任何连接到
+    Tailnet 的人都可以访问。这意味着在您能够使用集群之前，您需要连接到 Tailnet。我之前提到的关于堡垒主机和网络的所有痛苦都将消失得无影无踪。
 - en: Let’s take it for a spin!
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们试一试！
 - en: Installing and using the Tailscale Operator
   id: totrans-split-29
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 安装和使用 Tailscale 操作员
 - en: Prerequisites
   id: totrans-split-30
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 先决条件
 - en: You’ll need to have your own Tailnet, and be connected to it. You can [sign
     up for Tailscale](https://login.tailscale.com/start?utm=leebriggs.co.uk) and it’s
     free for personal use.
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 您需要拥有自己的 Tailnet，并与之连接。您可以[注册 Tailscale](https://login.tailscale.com/start?utm=leebriggs.co.uk)，个人使用免费。
 - en: 'Once that’s done, you’ll need to make a slight change to your ACL. The Kubernetes
     operator uses Tailscale’s tagging mechanism so let’s create a tag for the operator
     to use, and then a tag for it to give to client devices it registers:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 完成后，您需要对 ACL 进行轻微更改。Kubernetes 操作员使用 Tailscale 的标记机制，因此让我们为操作员创建一个标记，并为其向客户端设备注册的标记创建一个标记：
 - en: '[PRE1]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Then, register an oauth client with `Devices` write scope and the `tag:k8s-operator`
     tag.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，注册一个 OAuth 客户端，具有`Devices`写入范围和`tag:k8s-operator`标记。
 - en: 'Step 1: Get a Kubernetes Cluster'
   id: totrans-split-35
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 步骤 1：获取 Kubernetes 集群
 - en: There’s a lot of ways to do this, choose the way you prefer. If you’re a fan
     of eksctl, [this page](https://eksctl.io/usage/eks-private-cluster/) shows you
     how to create a fully private cluster.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 有很多种方法可以实现这一点，选择您喜欢的方式。如果您喜欢 eksctl，[此页面](https://eksctl.io/usage/eks-private-cluster/)
+    展示了如何创建完全私有的集群。
 - en: You can of course use the defaults and try this out with a public cluster if
     you like, but I’m going to assume you’re doing this because you want to make your
     cluster private.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，您可以使用默认设置并尝试在公共集群上进行此操作，但我假设您这样做是因为希望使您的集群变为私有。
 - en: You may have to do this from inside your actual VPC, because remember, any post
     install steps that interact with the Kubenrnetes API server won’t work. I leverage
     a [Tailscale Subnet Router](https://tailscale.com/kb/1019/subnets) to make this
@@ -212,82 +254,101 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可能需要从实际的 VPC 内部执行此操作，因为请记住，任何与 Kubenrnetes API 服务器交互的后安装步骤都将无法运行。我利用[Tailscale
+    子网路由器](https://tailscale.com/kb/1019/subnets)使这一过程更加轻松，稍后再详细介绍。
 - en: 'Step 2: Install the Tailscale Kubernetes Operator'
   id: totrans-split-39
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 步骤 2：安装 Tailscale Kubernetes 操作员
 - en: 'The easiest way to do this is with [Helm](https://tailscale.com/kb/1236/kubernetes-operator#installation).
     You’ll need to add the Tailscale Helm repository:'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 最简单的方法是使用[Helm](https://tailscale.com/kb/1236/kubernetes-operator#installation)。您需要添加
+    Tailscale Helm 存储库：
 - en: '[PRE2]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Then install the operator with your oauth keys from the prerequites step, and
     enable the proxy:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，使用你的oauth密钥从前提步骤安装运营商，并启用代理：
 - en: '[PRE3]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Now, if you look at your Tailscale dashboard, or use `tailscale status` you
     should see a couple of new devices - the operator and a service just for the API
     server proxy.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果你查看你的Tailscale仪表板，或者使用`tailscale status`，你应该会看到几个新设备 - 运算符和一个专门用于API服务器代理的服务。
 - en: You can now access your Kubernetes cluster from anywhere that has a Tailscale
     client installed, no faffing required.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，你可以从任何安装了Tailscale客户端的地方访问你的Kubernetes集群，不需要繁琐操作。
 - en: 'Step 3: Use it'
   id: totrans-split-46
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 第三步：使用它
 - en: 'You’ll need to configure your `KUBECONFIG` using the following command:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 你需要使用以下命令配置你的`KUBECONFIG`：
 - en: '[PRE4]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'This will set up your `KUBECONFIG` to use the Tailscale API server proxy as
     the server for your cluster. If you examine your `KUBECONFIG` you should see something
     like this:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将设置你的`KUBECONFIG`以使用Tailscale API服务器代理作为你的集群的服务器。如果你检查你的`KUBECONFIG`，你应该会看到类似这样的内容：
 - en: '[PRE5]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Hang on a minute..
   id: totrans-split-51
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 等一下..
 - en: You probably have some questions. Firstly, what’s that `unused` token all about?
     What does `noauauthmodeth` mean in our operator installation? How does this work?
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能有一些问题。首先，`unused`令牌是什么意思？我们的操作员安装中的`noauth`模式是什么意思？这是如何工作的？
 - en: 'Well, if you run a basic `kubectl` command now (and assuming you’re connected
     to your Tailnet) you’ll get something back, but it won’t help much:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，现在如果你运行一个基本的`kubectl`命令（并假设你已连接到你的Tailnet），你会得到一些返回，但它不会帮助太多：
 - en: '[PRE6]'
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'What’s happened here? Well, the good news is, we’ve been able to route to our
     private Kubernetes control plane, but we’re not sending any information back about
     who we are. So let’s make a small change to our Tailscale ACL in the Tailscale
@@ -295,47 +356,58 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里发生了什么？好消息是，我们已经能够路由到我们的私有Kubernetes控制平面，但我们没有发送关于我们是谁的任何信息。所以让我们在Tailscale控制台的Tailscale
+    ACL中做一个小改动。添加以下内容：
 - en: '[PRE7]'
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: By adding this grant, I’m assuming you’re an admin of your Tailnet.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过添加这个授权，我假设你是你的Tailnet的管理员。
 - en: Now, give that `kubectl` command another try.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，再试一次那个`kubectl`命令。
 - en: '[PRE8]'
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: That’s more like it.
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 就更像是这样。
 - en: 'As you can see here, I’ve solved two distinct problems:'
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你在这里看到的，我解决了两个不同的问题：
 - en: I’ve made my public Kubernetes control plane accessible over a VPN, without
     needing to worry about routing and networking - Tailscale has handled it for me.
   id: totrans-split-62
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我已经通过VPN使我的公共Kubernetes控制平面可访问，而无需担心路由和网络 - Tailscale已经为我处理了这个问题。
 - en: I’ve also been able to leveraging Tailscale’s ACL mechanism to provide authentication
     to Kubernetes groups in a clusterrolebinding.
   id: totrans-split-63
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我还能够利用Tailscale的ACL机制为集群角色绑定提供认证。
 - en: noauth Mode
   id: totrans-split-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: noauth模式
 - en: Now, if you’re already happy with your current authorization mode, you can still
     use Tailscale’s access mechanism to solve the routing problem. In this particular
     case, you’d install the Operator in `noauth` mode and then use your cloud providers
@@ -343,54 +415,65 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果你对当前的授权模式感到满意，你仍然可以使用Tailscale的访问机制来解决路由问题。在这种特殊情况下，你可以以`noauth`模式安装Operator，然后使用你的云提供商现有的机制来检索令牌。
 - en: 'Modify your Tailscale Operator installation like so:'
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 修改你的Tailscale Operator安装如下：
 - en: '[PRE9]'
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: 'Once that’s installed, if you run your `kubectl` command again, you’ll see
     a different error message:'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 安装完成后，如果您再次运行您的`kubectl`命令，您将看到一个不同的错误消息：
 - en: '[PRE10]'
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: The reason for this is a little obvious, the EKS cluster I’m using has absolutely
     no idea who `jaxxstorm@github` is - because it uses IAM to authenticate me to
     the cluster.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个原因有点显而易见，我使用的EKS集群完全不知道`jaxxstorm@github`是谁 - 因为它使用IAM来将我认证到集群。
 - en: 'So let’s modify our `KUBECONFIG` to retrieve a token as EKS expects. We’ll
     modify the `user` section to leverage an `exec` directive - it should look a little
     bit like this:'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以让我们修改我们的`KUBECONFIG`以获取像EKS期望的令牌。我们将修改`user`部分以利用一个`exec`指令 - 它应该看起来有点像这样：
 - en: '[PRE11]'
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: Now we’re able to route to the Kubernetes control plane, and authenticate with
     it using the cloud providers authorization mechanism.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们能够路由到Kubernetes控制平面，并使用云提供商的授权机制进行身份验证。
 - en: Some FAQs
   id: totrans-split-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一些常见问题解答
 - en: Why wouldn’t I just use a Subnet Router?
   id: totrans-split-75
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 为什么我不只是使用子网路由器？
 - en: A common question I get asked is why wouldn’t I just use a subnet router in
     the VPC to route anything to the private address of the control plane? I leveraged
     this mechanism when I installed the operator, because my control plane was initially
@@ -398,6 +481,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常被问到的一个常见问题是，为什么我不只是在VPC中使用子网路由器将任何东西路由到控制平面的私有地址？我在安装运营商时利用了这个机制，因为我的控制平面最初无法从互联网路由。
 - en: This is a legimate solution to the problem, and if you don’t want to use the
     operator in `auth` mode, keep living your life. However, one benefit you get by
     installing the operator and talking directly to it via your `KUBECONFIG` is being
@@ -406,6 +490,8 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是问题的一个合法解决方案，如果您不想在 `auth` 模式下使用运算符，可以继续过您的生活。但是，通过安装运算符并直接通过您的 `KUBECONFIG`
+    与其通信，您将获得的一个好处是能够使用 Tailscale 的 ACL 来控制谁实际上可以与运算符通信。
 - en: If you recall our `grant` from earlier we were able to dictate who was able
     to impersonate users inside the cluster in `auth` mode, but with Tailscale’s ACL
     system we can also be prescriptive about connectivity. Consider if you removed
@@ -413,90 +499,110 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您回忆起我们之前的 `grant`，我们可以在 `auth` 模式下指定谁能够冒充用户进入集群，但是通过 Tailscale 的 ACL 系统，我们还可以对连接进行详细规定。考虑一下，如果您删除了默认的宽松
+    ACL
 - en: '[PRE12]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'Then defining a group of users who can access the cluster, and adding a more
     explicit ACL:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后定义一个可以访问集群的用户组，并添加更明确的 ACL：
 - en: '[PRE13]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: I can be much more granular about my access to my cluster, and have a Zero Trust
     model for my Kubernetes control plane at the *network* level as well as the authorization
     level. Your information security team will *love* you for this.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 我可以对我对集群的访问更加精细化，并且在 *网络* 级别以及授权级别上拥有一个零信任模型。您的信息安全团队会对此*感到高兴*。
 - en: When you provision the operator in the cluster, you can modify the tags it uses
     to even further allow you to segment your Tailnet, see the [operator config in
     the Helm chart’s values.yaml](https://github.com/tailscale/tailscale/blob/main/cmd/k8s-operator/deploy/chart/values.yaml#L23)
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 当您在集群中部署运算符时，您可以修改它使用的标签，进一步允许您分段您的 Tailnet，请查看[操作符配置在 Helm 图的 values.yaml](https://github.com/tailscale/tailscale/blob/main/cmd/k8s-operator/deploy/chart/values.yaml#L23)
 - en: Just remember to ensure your oauth clients has the correct permissions to manage
     those tags!
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 只需确保您的 oauth 客户端具有管理这些标签的正确权限！
 - en: Can I scope the access on the cluster side?
   id: totrans-split-85
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 我可以在集群端限定访问范围吗？
 - en: If you have the operator installed in `auth` mode, you can scope the access
     both at the network level (using the aforementioned tags) *and* the Kubernetes
     RBAC system.
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您在 `auth` 模式下安装了运算符，您可以在网络级别（使用前述标签）*以及* Kubernetes RBAC 系统中限定访问。
 - en: Let’s say we want to give our aforementioned engineers group access to only
     a single namespace called `demo`.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们想要将我们前面提到的工程师组仅限于名为 `demo` 的单个命名空间的访问权限。
 - en: 'First, we’d create the ClusterRole (or Role) and then cluster role binding:'
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们将创建 ClusterRole（或 Role），然后创建集群角色绑定：
 - en: '[PRE14]'
   id: totrans-split-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'Then update our Tailscale ACL to modify the grants:'
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后更新我们的 Tailscale ACL 来修改授权：
 - en: '[PRE15]'
   id: totrans-split-91
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'Now, if I try to access the `demo` namespace, I can do the stuff I need to
     do:'
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，如果我尝试访问 `demo` 命名空间，我可以执行我需要做的事情：
 - en: '[PRE16]'
   id: totrans-split-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'But not in the `kube-system` namespace:'
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是不能在 `kube-system` 命名空间中：
 - en: '[PRE17]'
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: Wrap Up
   id: totrans-split-96
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: As always with the posts I write on here, I’m writing in my personal capacity,
     but obviously I’m a Tailscale employee with a vested interest in the success of
     the company. Do I want you to sign up for Tailscale and pay us money? You bet
@@ -505,13 +611,17 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 像我在这里写的帖子一样，我是以个人身份写作的，但显然我是一名 Tailscale 员工，对公司的成功有着切身利益。我希望你注册 Tailscale 并支付费用吗？当然希望。即使你不想注册
+    Tailscale 并支付费用，我也希望你将你的 Kubernetes 集群从公共互联网上移除。**是的**。
 - en: I’ve always had an uneasy feeling about these public clusters, and I can’t help
     but feel we’re one RCE away from a disaster.
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 我一直对这些公共集群感到不安，我不禁担心我们离灾难仅一步之遥。
 - en: So now you know how easy it is to get your Kubernetes control plane off the
     internet, what are you waiting for?
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你知道将你的 Kubernetes 控制平面从互联网上移除是多么容易，你还在等什么呢？

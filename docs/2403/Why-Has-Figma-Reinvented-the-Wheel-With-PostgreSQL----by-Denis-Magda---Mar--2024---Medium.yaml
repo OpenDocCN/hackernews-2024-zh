@@ -2,34 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:48:53'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:48:53'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Why Has Figma Reinvented the Wheel With PostgreSQL? | by Denis Magda | Mar,
     2024 | Medium
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么 Figma 要重新发明 PostgreSQL 的轮子？ | 作者：Denis Magda | 2024年3月 | Medium
 - en: 来源：[https://medium.com/@magda7817/why-has-figma-reinveted-the-wheel-with-postgresql-3a1cb2e9297c](https://medium.com/@magda7817/why-has-figma-reinveted-the-wheel-with-postgresql-3a1cb2e9297c)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://medium.com/@magda7817/why-has-figma-reinveted-the-wheel-with-postgresql-3a1cb2e9297c](https://medium.com/@magda7817/why-has-figma-reinveted-the-wheel-with-postgresql-3a1cb2e9297c)
 - en: Why Has Figma Reinvented the Wheel With PostgreSQL?
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么 Figma 要重新发明 PostgreSQL 的轮子？
 - en: A few weeks ago, Figma published an [article](https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/)
     introducing their own sharding solution for PostgreSQL. The Figma engineering
     team was aware of, and evaluated, several existing options that could have made
@@ -38,10 +45,13 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 几周前，Figma 发布了一篇[文章](https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/)，介绍了他们为
+    PostgreSQL 自己开发的分片解决方案。Figma 工程团队已经意识到并评估了几种现有选项，这些选项本可以使他们的数据库层水平扩展。但他们最终决定从零开始构建自己的分片解决方案。
 - en: 'In this article, I’ll share my thoughts (and sometimes speculate) on the following:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我将分享我对以下问题的看法（有时是推测）：
 - en: First, why a knowledgeable and experienced Figma engineering team decided to
     reinvent the wheel instead of selecting one of the existing options from a broad
     PostgreSQL ecosystem?
@@ -49,6 +59,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 首先，为什么经验丰富的 Figma 工程团队决定重新发明轮子，而不是从广泛的 PostgreSQL 生态系统中选择一个现有选项？
 - en: Second, how does the future look for Figma’s custom solution? Will the team
     double down on their sharding solution or eventually migrate to one of the existing
     and more mature options?
@@ -56,35 +67,41 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 其次，Figma 的自定义解决方案未来会是怎样的？团队会坚持他们的分片解决方案，还是最终会迁移到其中一个现有且更成熟的选项？
 - en: Lastly, if Figma eventually migrates to another option from the PostgreSQL ecosystem,
     then what that option will be?
   id: totrans-split-11
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 最后，如果 Figma 最终从 PostgreSQL 生态系统迁移到其他选项，那么这个选项将会是什么？
 - en: Quick Solution Overview
   id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 快速解决方案概述
 - en: I do understand that not everyone has time to read [Figma’s article](https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/)
     from cover to cover, that’s why I’d like to give a brief overview of their custom
     solution.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我知道并非每个人都有时间从头到尾阅读[Figma 的文章](https://www.figma.com/blog/how-figmas-databases-team-lived-to-tell-the-scale/)，这就是为什么我想简要介绍一下他们的定制解决方案。
 - en: Sharding is a technique that distributes data and load across several standalone
     database instances. It allows you to split the original dataset into shards, which
     are then distributed across multiple database instances.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 分片是一种技术，它将数据和负载分布到多个独立的数据库实例中。它允许你将原始数据集分成片段，然后分布到多个数据库实例中。
 - en: To get sharding working, you need to come up with a sharding key and a hash
     function. Then, you write the logic that uses the hash function to map a key with
     an associated record to a shard, and then the shard to a database node.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使分片工作，你需要制定一个分片键和一个哈希函数。然后，编写使用哈希函数将键与相关记录映射到分片，然后将分片映射到数据库节点的逻辑。
 - en: The Figma team solved this first step easily by selecting the most suitable
     sharding keys for their dataset and the hash function. Also, they implemented
     a [data colocation approach](/@magda7817/colocated-and-interleaved-tables-in-distributed-sql-databases-tradeoffs-f2e7b1b9d68e)
@@ -94,56 +111,67 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma 团队通过选择最适合其数据集和哈希函数的分片键，并实施了一种[数据共位方法](/@magda7817/colocated-and-interleaved-tables-in-distributed-sql-databases-tradeoffs-f2e7b1b9d68e)，使得相关数据可以存储在同一片/节点上。例如，所有针对特定
+    Figma 文件留下的评论都与文件记录一起存储在同一个节点上。
 - en: 'However, this first step in any sharding implementation is the most straightforward.
     The most challenging parts come next. Once you’ve distributed your data across
     several database servers, you need to decide on:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，在任何分片实施中，这一第一步都是最简单的。更具挑战性的部分在后面。一旦你把数据分布到多个数据库服务器上，你需要决定：
 - en: How to maintain data integrity by supporting global unique indexes and foreign
     keys?
   id: totrans-split-18
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何通过支持全局唯一索引和外键来维护数据完整性？
 - en: How to coordinate, commit, and roll back cross-shard/node transactions?
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何协调、提交和回滚跨分片/节点事务？
 - en: How to roll out schema changes atomically across all database nodes?
   id: totrans-split-20
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在所有数据库节点上原子地推出模式更改？
 - en: How to reshard and rebalance the data when necessary?
   id: totrans-split-21
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何在必要时重新分片和重新平衡数据？
 - en: How to route the queries from the application layer? Should there be a coordinator,
     or does this become the responsibility of app developers?
   id: totrans-split-22
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何从应用层路由查询？应该有一个协调器，还是这成为应用开发者的责任？
 - en: How to make the overall solution highly available (with standbys, replicas,
     failover solutions)?
   id: totrans-split-23
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 如何使整体解决方案高度可用（具备备用、复制品、故障转移解决方案）？
 - en: And many other considerations…
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 还有许多其他考虑……
 - en: The Figma team acknowledged most of these challenges and made efforts to address
     several of them. For instance, they introduced a coordinator component, named
     DBProxy, which significantly eases the work for application developers.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma团队承认了大部分这些挑战，并努力解决了其中的几个。例如，他们引入了一个名为DBProxy的协调器组件，显著简化了应用开发者的工作。
 - en: The coordinator plays a pivotal role in any sharding solution, provided it’s
     fully aware of the data distribution across nodes. This component might be referred
     to by various names, such as coordinator, router, director, or proxy. The client
@@ -152,11 +180,13 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 协调器在任何分片解决方案中都扮演着关键角色，前提是它完全了解数据在节点间的分布。这个组件可能会被称为各种名称，比如协调器、路由器、指挥官或代理。客户端或应用连接到协调器，然后协调器将请求路由到特定的数据库节点或在整个群集中广播。
 - en: Why Custom Sharding Solution?
   id: totrans-split-27
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么要自定义分片解决方案？
 - en: Overall, as an engineer, you will never regret taking part in the development
     of a sharding solution. It’s a complex engineering problem with many non-trivial
     tasks to solve. But it’s also a big investment for a company that sponsors the
@@ -165,11 +195,14 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，作为一名工程师，参与分片解决方案的开发永远不会后悔。这是一个复杂的工程问题，有许多非平凡的任务需要解决。但对于一家赞助开发的公司来说，这也是一项巨大的投资
+    —— 需要有人来构建并在生产中支持/维护这个解决方案。
 - en: 'The Figma team certainly was aware of the trade-offs between the custom vs.
     existing solution and evaluated several existing options:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma团队显然意识到定制与现有解决方案之间的权衡，并评估了几个现有选项：
 - en: There are many popular open source and managed solutions for horizontally sharded
     databases that are compatible with Postgres or MySQL. During our evaluation, we
     explored CockroachDB, TiDB, Spanner, and Vitess.
@@ -177,15 +210,18 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 有许多流行的开源和托管解决方案适用于横向分片的数据库，与Postgres或MySQL兼容。在我们的评估期间，我们探索了CockroachDB、TiDB、Spanner和Vitess。
 - en: But still, they decided to go ahead and create their own sharding solution from
     scratch. Why would they do that?
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，他们仍然决定继续创建他们自己的分片解决方案。为什么他们要这样做呢？
 - en: 'They justify their custom implementation by saying that:'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 他们通过以下方式证明了他们的定制实现：
 - en: However, switching to any of these alternative databases would have required
     a complex data migration to ensure consistency and reliability across two different
     database stores… Given our very aggressive growth rate, we had only months of
@@ -196,6 +232,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 然而，切换到任何这些替代数据库都需要进行复杂的数据迁移，以确保在两种不同的数据库存储之间的一致性和可靠性……考虑到我们非常激进的增长速度，我们只剩下几个月的运营时间。减少完全新的存储层的风险，并完成我们最关键业务用例的端到端迁移，将会在必要的时间轴上非常冒险。
 - en: In short, it sounds like some of the evaluated options would have worked for
     them, but they didn’t have enough time to migrate to one of those existing solutions.
     This does sound reasonable if you need to transition to distributed databases
@@ -205,11 +242,13 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 简而言之，听起来某些评估的选项对他们来说可能有效，但他们没有足够的时间迁移到其中一个现有的解决方案上。如果需要转向诸如TiDB或Spanner之类的分布式数据库，这听起来是合理的。然而，这并不能解释为什么[CitusData](https://www.citusdata.com)，PostgreSQL的默认分片扩展，对他们来说行不通。他们甚至没有将CitusData添加到他们的评估列表中。
 - en: 'However, if you continue reading the article carefully, you’ll notice the team
     mentioning the following:'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，如果你仔细阅读这篇文章，你会注意到团队提到了以下内容：
 - en: over the past few years, we’ve developed a lot of expertise on how to reliably
     and performantly run **RDS Postgres** in-house. While migrating, we would have
     had to rebuild our domain expertise from scratch.
@@ -217,6 +256,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在过去几年中，我们已经积累了如何在内部可靠和高效地运行**RDS Postgres**的大量专业知识。而在迁移过程中，我们本来必须从头开始重建我们的领域专业知识。
 - en: Figma doesn’t use the open-source distribution of PostgreSQL. Instead, they
     utilize PostgreSQL as a service by subscribing to [Amazon RDS](https://aws.amazon.com/rds/).
     There’s an interesting, often overlooked fact about PostgreSQL managed services
@@ -226,6 +266,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: Figma并不使用PostgreSQL的开源分发，而是通过订阅[Amazon RDS](https://aws.amazon.com/rds/)来利用PostgreSQL作为服务。关于大型云服务提供商和小型供应商提供的PostgreSQL托管服务，有一个有趣的常被忽视的事实。虽然这些服务通常提供所有核心的PostgreSQL功能，但支持的扩展列表取决于服务提供商。
 - en: 'Now, we have CitusData, a mature PostgreSQL extension for sharding, and we
     know that Figma uses RDS, a fully-managed PostgreSQL service by Amazon. However,
     if you check [the list of PostgreSQL extensions](https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html)
@@ -233,6 +274,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们有了CitusData，一个成熟的PostgreSQL分片扩展，并且我们知道Figma使用了Amazon的完全托管的PostgreSQL服务RDS。然而，如果你查看[PostgreSQL扩展列表](https://docs.aws.amazon.com/AmazonRDS/latest/PostgreSQLReleaseNotes/postgresql-extensions.html)，你会发现CitusData并不包括在内：
 - en: So, now, let me speculate. The real reason why Figma reinvented the wheel by
     creating their own custom solution for sharding might be as straightforward as
     this — *Figma wanted to stay on RDS, and since Amazon had decided not to support
@@ -241,11 +283,13 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，现在让我推测一下。Figma重新发明了轮子创建他们自己的分片定制解决方案的真正原因可能如此简单——*Figma希望留在RDS上，而由于亚马逊过去决定不支持CitusData扩展，Figma团队别无选择，只能从头开发他们自己的分片解决方案*。
 - en: What Does the Future Look Like?
   id: totrans-split-40
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 未来会是怎样的呢？
 - en: What I truly like about the Figma engineering team is their transparency. They
     have been very open about the choices and trade-offs they had to confront. I deeply
     respect their decision and believe that the path they chose was the most sensible
@@ -253,15 +297,18 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 我真正喜欢Figma工程团队的是他们的透明度。他们对他们所面临的选择和权衡非常开放。我深深尊重他们的决定，并相信他们选择的路径在当时是最明智的。
 - en: However, does this imply that the Figma team will continue to use and invest
     in their own sharding solution? What does the future hold?
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 不过，这是否意味着Figma团队将继续使用并投资于他们自己的分片解决方案呢？未来会怎样？
 - en: 'The team gives us the following hint:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 团队给了我们以下提示：
 - en: Once we’ve bought ourselves sufficient runway, **we will also reassess our original
     approach** of in-house RDS horizontal sharding. We started this journey 18 months
     ago with extremely tight timeline pressure. NewSQL stores have continued to evolve
@@ -272,10 +319,12 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一旦我们有了足够的时间窗口，**我们也将重新评估我们最初的方法**，即内部RDS水平分片。我们在18个月前开始了这个旅程，当时时间紧迫。NewSQL存储继续发展和成熟。我们**最终会有带宽来重新评估**继续当前路径与切换到开源或托管解决方案之间的权衡。
 - en: 'Overall, the future might look as follows:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 总的来说，未来可能如下所示：
 - en: 'Option #1: Figma continues investing in its own custom solution for sharding
     and makes it open source once it becomes mature enough. However, they would then
     need to find a way to differentiate from the CitusData extension.'
@@ -283,6 +332,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 选项＃1：Figma继续投资于他们自己的分片定制解决方案，并在其足够成熟后将其开源。然而，他们随后需要找到一种与CitusData扩展区分开的方法。
 - en: 'Option #2: Considering that Figma is a customer of Amazon RDS, they might migrate
     to [Amazon Aurora Limitless](https://aws.amazon.com/blogs/aws/join-the-preview-amazon-aurora-limitless-database/)
     once this service is blessed for production by Amazon. Aurora Limitless is a sharding
@@ -293,6 +343,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 选项＃2：考虑到 Figma 是 Amazon RDS 的客户，一旦这项服务被 Amazon 批准用于生产，他们可能会迁移到[Amazon Aurora
+    无限](https://aws.amazon.com/blogs/aws/join-the-preview-amazon-aurora-limitless-database/)。Aurora
+    无限是为 AWS 用户提供的 Postgres 分片解决方案。然而，他们需要仔细评估 TCO（总拥有成本），因为许多评估这项新服务的人士认为，“无限”也可能意味着无限的成本。
 - en: 'Option #3: Figma migrates to [one of the existing solutions from the PostgreSQL
     ecosystem](https://www.yugabyte.com/postgresql/distributed-postgresql/) that enables
     horizontal scalability or full distribution. This could be the CitusData extension
@@ -303,8 +356,12 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 选项＃3：Figma 迁移到[来自 PostgreSQL 生态系统的现有解决方案之一](https://www.yugabyte.com/postgresql/distributed-postgresql/)，支持水平扩展或完全分布。这可能是
+    CitusData 扩展，甚至是[YugabyteDB](https://www.yugabyte.com)，这是一个基于 Postgres 构建的分布式共享无关数据库。考虑到团队之前探索过
+    TiDB 和 CockroachDB，YugabyteDB 可能是一个可能的选择。
 - en: Alright, I hope you enjoyed this “investigation.” Let’s wish the Figma team
     luck and keep an eye on how the story of their sharding solution evolves!
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 好的，希望你喜欢这次“调查”。让我们祝愿 Figma 团队好运，并继续关注他们的分片解决方案发展的进展！

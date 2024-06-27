@@ -2,29 +2,35 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 14:30:56'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 14:30:56'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The speed of Microsoft's BASIC floating point routines - The Boston Diaries
     - Captain Napalm
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 微软的 BASIC 浮点运算速度 - 波士顿日记 - 娜潘船长
 - en: 来源：[https://boston.conman.org/2024/03/01.1](https://boston.conman.org/2024/03/01.1)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://boston.conman.org/2024/03/01.1](https://boston.conman.org/2024/03/01.1)
 - en: I was curious about how fast [Microsoft's BASIC floating point](https://en.wikipedia.org/wiki/Microsoft_Binary_Format)
     routines were. This is easy enough to test, now that I can [time assembly code
     inside the assembler](/2023/12/19.3). The code calculates -2π³/3! using Color
@@ -32,14 +38,18 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我对微软的 BASIC 浮点运算速度很好奇。现在我可以在汇编器内部[测试汇编代码的时间](/2023/12/19.3)，这很容易测试。代码使用 Color
+    BASIC 例程、IEEE-754 单精度和双精度计算了 -2π³/3!。
 - en: 'First, Color BASIC:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是 Color BASIC：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: I can't use the `.FLOAT` directive here since that only supports either the
     Microsoft format or IEEE-754 but not both. So for this test, I have to define
     the individual bytes per float. The last line is what the result should be (by
@@ -50,14 +60,19 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 我无法在这里使用 `.FLOAT` 指令，因为它只支持微软格式或 IEEE-754，但不能同时支持两者。所以对于这个测试，我必须为每个浮点数定义单独的字节。最后一行是运行后检查虚拟机内存转储的结果。另外，`.tao`
+    是 [2π](https://tauday.com/tau-manifesto)，以防不清楚。这个测试在 8,742 个周期内完成，包括 2,124 条指令，平均每条指令
+    4.12 个周期（我修改了汇编器以记录这些额外信息）。
 - en: 'Next up, IEEE-754 single precision:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是 IEEE-754 单精度：
 - en: '[PRE1]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The floating point control block (`.fpcb`) configures the MC6839 to use single
     precision, normal rounding and projective closure (not sure what that is, but
     it's the default value). And it does calculate the correct result. It's amazing
@@ -67,6 +82,9 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 浮点控制块（`.fpcb`）配置了 MC6839 使用单精度、普通舍入和投影封闭（不确定是什么，但这是默认值）。并且它确实计算出了正确的结果。令人惊讶的是，42
+    *年* 前为 8 位 CPU 编写的代码可以无缺地运行。它*不*快的是。这段代码在 14,204 个周期内完成了 2,932 条指令（平均每条指令 4.84
+    个周期）。
 - en: The higher than average cycle type could be due to position independent addressing
     modes, but I'm not entirely sure what it's doing to take nearly twice the time.
     The ROM does use the IEEE-754 extended format (10 bytes) internally, with more
@@ -74,10 +92,12 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 高于平均周期类型可能是由于位置无关寻址模式，但我并不完全确定它为何需要将时间增加近两倍。ROM 在内部确实使用 IEEE-754 扩展格式（10 字节），需要更多的位移来提取指数和尾数，但是*两倍*的时间呢？
 - en: Perhaps it's code to deal with ±∞ and NaNs.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 或许这是用来处理 ±∞ 和 NaN 的代码。
 - en: The IEEE-754 double precision is the same, except for the floating point control
     block configuring double precision and the use of `.FLOATD` instead of `.FLOAT`;
     otherwise the code is identical. The result, however, isn't. It took 31,613 cycles
@@ -86,25 +106,31 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: IEEE-754 双精度相同，除了浮点控制块配置为双精度和使用 `.FLOATD` 而不是 `.FLOAT`，其他代码都相同。然而，结果却不同。它在 31,613
+    个周期内完成了 6,865 条指令，平均每条指令 4.60 个周期。尺寸增加了近两倍，因此花费的时间也接近两倍，这是预期的结果。
 - en: 'The final bit of code just loads the ROMs into memory, and calls each function
     to get the timing:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一段代码只是将 ROM 装入内存，并调用每个函数以获取时间：
 - en: '[PRE2]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: Really, the only surprising thing here was just how fast Microsoft BASIC was
     at floating point.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 真正令人惊讶的是微软的 BASIC 浮点运算有多快。
 - en: You have my permission to link freely to any entry here. Go ahead, I won't bite.
     I promise.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 欢迎链接到这里的任何条目。别客气，我不会咬人的。我保证。
 - en: 'The dates are the permanent links to that day''s entries (or entry, if there
     is only one entry). The titles are the permanent links to *that* entry only. The
     format for the links are simple: Start with the base link for this site: [https://boston.conman.org/](https://boston.conman.org/),
@@ -113,15 +139,18 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期是那天条目（如果只有一个条目，则为条目）的永久链接。标题是仅限于*该*条目的永久链接。链接的格式很简单：从此站点的基础链接开始：[https://boston.conman.org/](https://boston.conman.org/)，然后添加您感兴趣的日期，比如[2000/08/01](/2000/08/01)，因此最终的URL是：
 - en: '[https://boston.conman.org/2000/08/01](https://boston.conman.org/2000/08/01)'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://boston.conman.org/2000/08/01](https://boston.conman.org/2000/08/01)'
 - en: You can also specify the entire month by leaving off the day portion. You can
     even select [an arbitrary portion of time.](/about/technical.html)
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 您还可以通过省略日期部分来指定整个月。您甚至可以选择[任意时间段。](/about/technical.html)
 - en: 'You may also note subtle shading of the links and that''s intentional: the
     “closer” the link is (relative to the page) the “brighter” it appears. It''s an
     experiment in using color shading to denote the distance a link is from here.
@@ -129,6 +158,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能还会注意到链接的微妙阴影，这是有意为之的：链接距离页面越“近”，它看起来就越“亮”。这是一种使用颜色阴影来表示链接距离的实验。如果你没有注意到，不要担心；这并不是*那么*重要。
 - en: It is assumed that every brand name, slogan, corporate name, symbol, design
     element, et cetera mentioned in these pages is a protected and/or trademarked
     entity, the sole property of its owner(s), and acknowledgement of this status
@@ -136,3 +166,4 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设这些页面中提到的每个品牌名称、口号、公司名称、符号、设计元素等都是受保护和/或注册商标实体，其所有者独有，对此状态的确认被暗示在内。

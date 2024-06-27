@@ -2,50 +2,60 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 15:03:12'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 15:03:12'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Using LLMs to reverse JavaScript variable name minification
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 使用LLMs反转JavaScript变量名缩小
 - en: 来源：[https://thejunkland.com/blog/using-llms-to-reverse-javascript-minification.html](https://thejunkland.com/blog/using-llms-to-reverse-javascript-minification.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://thejunkland.com/blog/using-llms-to-reverse-javascript-minification.html](https://thejunkland.com/blog/using-llms-to-reverse-javascript-minification.html)
 - en: This blog introduces a novel way to reverse minified Javascript using large
     language models (LLMs) like ChatGPT and llama2 while keeping the code semantically
     intact. The code is open source and available at [Github project Humanify](https://github.com/jehna/humanify).
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇博客介绍了使用大型语言模型（LLMs），如ChatGPT和llama2来反转缩小的JavaScript的新方法，同时保持代码的语义完整性。该代码是开源的，可在[Github项目Humanify](https://github.com/jehna/humanify)找到。
 - en: What is minification?
   id: totrans-split-7
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 什么是缩小？
 - en: 'Minification is a process of reducing the size of a Javascript file in order
     to optimize for fast network transfer. Looking from the reverse engineering standpoint,
     there are a few different categories of minification that present increasing challenges:'
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 缩小是减少JavaScript文件大小以便优化快速网络传输的过程。从逆向工程的角度来看，有几个不同类别的缩小提出了越来越大的挑战：
 - en: Lossless minification
   id: totrans-split-9
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 无损缩小
 - en: Most minification is lossless; There's no data lost when `true` is converted
     to its minified alternative `!0`. It's straightforward to [write a Babel transformation](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md)
     to reverse this process. There are [many](https://www.npmjs.com/package/babel-plugin-transform-beautifier)
@@ -54,11 +64,14 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数缩小是无损的；当`true`转换为其缩小的替代项`!0`时，不会丢失数据。可以很容易地[编写一个Babel转换](https://github.com/jamiebuilds/babel-handbook/blob/master/translations/en/plugin-handbook.md)来反转此过程。有[许多](https://www.npmjs.com/package/babel-plugin-transform-beautifier)
+    [工具](https://www.npmjs.com/package/debundle)专门设计用于反转这些类型的无损转换。
 - en: Unimportant data loss
   id: totrans-split-11
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 不重要的数据丢失
 - en: Some data is lost during the minification, but that data may be trivial to recreate.
     A good example is whitespace; it's trivial to use [Prettier](https://prettier.io)
     (or a similar tool) to reformat minified code's indentation and whitespace to
@@ -68,105 +81,125 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在缩小过程中会丢失一些数据，但这些数据可能很容易重新创建。一个很好的例子是空白；使用[Prettier](https://prettier.io)（或类似工具）重新格式化缩小代码的缩进和空白到人类可读的格式是微不足道的。大多数情况下，开发人员在原始代码中也使用了类似的工具，因此可以高度自信地重新创建空白数据。
 - en: Variable names
   id: totrans-split-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 变量名称
 - en: The most important information that's lost during the minification process is
     the loss of variable and function names. When you run a minifier, it completely
     replaces all possible variable and function names to save bytes.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 在缩小过程中丢失的最重要信息是变量和函数名的丢失。当你运行一个缩小工具时，它会完全替换所有可能的变量和函数名，以节省字节。
 - en: Until now, there has not been any good way to reverse this process; when you
     rename a variable from `crossProduct` to `a`, there's not much you can do to reverse
     that process.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，还没有任何好的方法来反转这个过程；当你将变量从`crossProduct`重命名为`a`时，你几乎无法反转该过程。
 - en: How would a human reverse minification?
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 人类如何反转缩小？
 - en: 'Many reverse engineers train their eyes to recognize some heuristics from the
     context of the code so that they form educated guesses about the code''s purpose.
     Let''s have a look at a simple example:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 许多逆向工程师通过从代码的上下文中识别一些启发式规则来形成对代码用途的有教育意义的猜测。让我们看一个简单的例子：
 - en: '[PRE0]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: How would you rename the function `a`? Given the context, we can make a pretty
     good guess that the original name was something like `square`. But this requires
     the knowledge of the internal workings of the function.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 如何重新命名函数`a`？根据上下文，我们可以猜测原始名称可能类似于`square`。但这需要了解函数的内部工作原理。
 - en: 'Let''s try to codify the process of renaming the function:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们尝试系统化地描述重命名函数的过程：
 - en: Read the function's body
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 阅读函数的主体
 - en: Describe what the function does
   id: totrans-split-22
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 描述函数的作用
 - en: Try to come up with a name that fits that description
   id: totrans-split-23
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 尝试提出一个符合该描述的名称
 - en: For a classical computer program it would be very difficult to make the leap
     from "multiply `b` with itself" to "squaring a number". Fortunately recent advances
     in LLMs have made this leap not only possible, but almost trivial.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于传统的计算机程序来说，从“将 `b` 与其自身相乘”到“计算一个数的平方”是非常困难的。幸运的是，LLM的最新进展使得这种转变不仅可能，而且几乎是微不足道的。
 - en: Essentially the step 2\. is called "rephrasing" (or "translating" if you consider
     Javascript as its own natural language), and LLMs are known to be very good at
     that.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，步骤 2\. 被称为“重新表述”（或者如果你把Javascript视为自然语言，则称为“翻译”），而LLMs在这方面表现非常出色。
 - en: Another task where LLMs really shine is summarization, which is pretty much
     what we're doing in step 3\. The only specialization here is that the output needs
     to be short enough and formatted to the camel case.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个LLMs真正闪耀的任务是摘要，这几乎就是我们在步骤 3\. 所做的事情。这里唯一的专业化是输出需要足够短，并且格式化为驼峰式。
 - en: Controlling LLMs
   id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 控制LLMs
 - en: The issue with using output from LLMs is that they are not deterministic. In
     a nutshell a LLM is a very complex markov chain; it tries its best to guess the
     next word in a text based on the previous words.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用LLM输出的问题在于它们不是确定性的。简言之，LLM是一个非常复杂的马尔可夫链；它尝试根据前面的单词猜测文本中的下一个单词。
 - en: 'This means that even if we have a good prompt like:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着即使我们有一个像这样好的提示：
 - en: '[PRE1]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: An LLM might still answer "No, but ...", "I don't know" or the famous "I'm sorry,
     but as an AI language model I cannot...".
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使如此，LLM可能仍会回答“不，但是...”，“我不知道”或者著名的“对不起，但作为一个AI语言模型，我不能……”。
 - en: This used to be a problem, but fortunately there are now ways to control the
     LLM's output like [guidance](https://guidance.readthedocs.io/) and [outlines](https://github.com/normal-computing/outlines).
     These tools use different techniques to ensure that the LLM's output matches a
@@ -174,23 +207,28 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 这曾经是一个问题，但幸运的是现在有了控制LLM输出的方法，如 [guidance](https://guidance.readthedocs.io/)
+    和 [outlines](https://github.com/normal-computing/outlines)。这些工具使用不同的技术确保LLM的输出与所需的格式匹配。
 - en: Fortunately Javascript variables can only have a specific format, so can match
     the output with a regular expression to ensure that the output is a valid Javascript
     variable name.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，Javascript变量只能有特定的格式，因此可以使用正则表达式匹配输出，以确保输出是有效的Javascript变量名。
 - en: Don't let AI touch the code
   id: totrans-split-34
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 不要让AI触碰代码
 - en: Now while LLMs are very good at rephrasing and summarizing, they are not very
     good at coding (yet). They have inherent randomness, which makes them unsuitable
     for performing the actual renaming and modification of the code.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在虽然LLM在重新表述和摘要方面非常出色，但在编码方面并不是很擅长（至少目前如此）。它们具有固有的随机性，这使它们不适合执行实际的重命名和代码修改。
 - en: Fortunately renaming a Javascript variable within its scope is a solved problem
     with traditional tools like Babel. Babel first parses the code into an abstract
     syntax tree (AST, a machine representation of the code), which is easy to modify
@@ -198,6 +236,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，在传统工具如Babel中，重新命名Javascript变量在其作用域内已经是一个解决的问题。Babel首先将代码解析成抽象语法树（AST，代码的机器表示），然后可以使用良好的算法轻松修改。
 - en: This is much better than letting the LLM modify the code on a text level; it
     ensures that only very specific transformations are carried out so the code's
     functionality does not change after the renaming. The code is guaranteed to have
@@ -205,65 +244,80 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这比让LLM在文本级别修改代码要好得多；它确保只进行非常具体的转换，以确保重命名后代码的功能不会改变。代码保证具有原始功能，并且可以由计算机运行。
 - en: Putting it all together
   id: totrans-split-38
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 将所有内容整合在一起
 - en: 'So, how do we un-minify Javascript? Let''s put it all together:'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么，我们如何反向缩小Javascript呢？让我们把所有内容整合起来：
 - en: Unbundle webpack bundles with [webcrack](https://github.com/j4k0xb/webcrack)
   id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用 [webcrack](https://github.com/j4k0xb/webcrack) 解开webpack捆绑包
 - en: Run the code through [transform-beautifier](https://www.npmjs.com/package/babel-plugin-transform-beautifier)
     and a few custom Babel plugins that reverse lossless minification
   id: totrans-split-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将代码通过 [transform-beautifier](https://www.npmjs.com/package/babel-plugin-transform-beautifier)
+    和几个自定义的Babel插件运行，这些插件会反向无损缩小化。
 - en: Loop through all variables in the code, asking LLM to describe their intent
     and generate a better name based on that description
   id: totrans-split-42
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 循环遍历代码中的所有变量，要求LLM描述它们的意图，并基于该描述生成更好的名称。
 - en: Rename the variables using Babel
   id: totrans-split-43
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用Babel重命名变量
 - en: Run a final round of [Prettier](https://prettier.io/) to ensure nice whitespace
   id: totrans-split-44
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 最后运行一轮 [Prettier](https://prettier.io/) 确保良好的空白格式。
 - en: 'And that''s it! Given the following code:'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这样了！给出以下代码：
 - en: '[PRE2]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'The tool outputs the following:'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 工具输出如下：
 - en: '[PRE3]'
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Try it yourself!
   id: totrans-split-49
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 试试看吧！
 - en: The tool is called [Humanify and it's available at Github](https://github.com/jehna/humanify).
     Do check it out and see if it works for you!
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 工具名为[Humanify，可在Github找到](https://github.com/jehna/humanify)。请查看并确认它是否适合你！
