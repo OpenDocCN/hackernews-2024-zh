@@ -2,36 +2,44 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:38:32'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:38:32
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Protecting paths in macro expansions by extending UTF-8
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 通过扩展UTF-8保护宏扩展中的路径
 - en: 来源：[https://nullprogram.com/blog/2024/03/05/](https://nullprogram.com/blog/2024/03/05/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://nullprogram.com/blog/2024/03/05/](https://nullprogram.com/blog/2024/03/05/)
 - en: March 05, 2024
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 2024年3月5日
 - en: nullprogram.com/blog/2024/03/05/
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: nullprogram.com/blog/2024/03/05/
 - en: After a year I’ve finally came up with an elegant solution to a vexing [u-config](/blog/2023/01/18/)
     problem. The pkg-config format uses macros to generate build flags through recursive
     expansion. Some flags embed file system paths, but to the macro system it’s all
@@ -45,11 +53,13 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 一年后，我终于为一个令人烦恼的[u-config](/blog/2023/01/18/)问题找到了一个优雅的解决方案。pkg-config格式使用宏通过递归扩展生成构建标志。一些标志嵌入文件系统路径，但对于宏系统来说，它们仅仅是字符串。输出最终也只是一个大字符串，接收shell将其[分割成字段](https://pubs.opengroup.org/onlinepubs/9699919799/utilities/V3_chap02.html#tag_18_06_05)。如果路径包含空格或shell元字符，u-config必须对它们进行转义，以便shell将它们视为标记的一部分。但是，u-config本身如何区分路径中的偶发空格与标志之间的意图空格？路径中的其他shell元字符呢？我的解决方案是扩展UTF-8以编码在宏扩展中生存的元数据。
 - en: 'As usual, it helps to begin with a concrete example of the problem. The following
     is a conventional `.pc` file much like you’d find on your own system:'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常，从一个具体的问题例子开始会有所帮助。以下是一个类似于你在自己系统上找到的传统`.pc`文件：
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
@@ -61,6 +71,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 它从定义库的安装前缀开始，从中派生额外的路径，最终用于生成构建标志（`Cflags`，`Libs`）的包字段。如果我对这个配置运行u-config：
 - en: '[PRE1]'
   id: totrans-split-12
   prefs: []
@@ -75,6 +86,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 通常`prefix`由库的构建系统填充，它知道库应该安装在哪里。在某些情况下，这是不可能的，并且没有机会将`prefix`设置为有意义的路径。在这种情况下，pkg-config可以自动覆盖它（`--define-prefix`）为相对于`.pc`文件的路径，使安装可以重定位。这在[Windows上效果非常好，因为它是默认设置](/blog/2020/09/25/)的。
 - en: '[PRE2]'
   id: totrans-split-14
   prefs: []
@@ -88,6 +100,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这只是起作用…… *只要路径中不包含空格*。如果包含空格，它有可能会分裂成独立的字段。`.pc`格式支持引用来控制如何转义这样的输出。在引号之间的区域在输出中被转义，这样它们在shell中的字段分割时保留它们的空格。如果一个`.pc`文件的作者小心的话，他们会使用引号来编写：
 - en: '[PRE3]'
   id: totrans-split-16
   prefs: []
@@ -98,6 +111,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 路径被小心地放置在[引用区域](/blog/2021/12/04/)中，以便它们正确地输出：
 - en: '[PRE4]'
   id: totrans-split-18
   prefs: []
@@ -110,6 +124,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '*几乎没有人以这种方式编写他们的`.pc`文件*！约定是不使用引号。我的最初解决方案是在分配时隐式包裹`prefix`在引号中，这修复了绝大多数`.pc`文件。在“虚拟”的`.pc`文件中，它实际上看起来像这样：'
 - en: '[PRE5]'
   id: totrans-split-20
   prefs: []
