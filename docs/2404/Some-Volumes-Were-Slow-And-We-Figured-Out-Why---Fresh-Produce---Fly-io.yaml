@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:22:53'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:22:53
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Some Volumes Were Slow And We Figured Out Why - Fresh Produce - Fly.io
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 有些卷慢了，我们找出了原因 - 新鲜农产品 - Fly.io
 - en: 来源：[https://community.fly.io/t/some-volumes-were-slow-and-we-figured-out-why/19394](https://community.fly.io/t/some-volumes-were-slow-and-we-figured-out-why/19394)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://community.fly.io/t/some-volumes-were-slow-and-we-figured-out-why/19394](https://community.fly.io/t/some-volumes-were-slow-and-we-figured-out-why/19394)
 - en: A Bug Report
   id: totrans-split-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 一个 Bug 报告
 - en: 'Fly Volumes are fast. That sounds like a brag, but the truth is, we made tradeoffs
     to end up with fast Volumes. We back them with a pool of locally-attached NVMe
     drives, which means they’re pinned to specific physical servers, and while we
@@ -37,6 +44,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: Fly Volumes 是快速的。这听起来像是吹牛，但事实是，我们做出了一些权衡以获得快速的卷。我们用本地连接的 NVMe 驱动器池支持它们，这意味着它们被固定到特定的物理服务器上，并且虽然我们对它们进行了备份，但通常您希望在上层执行某些操作以复制它们。它们可能会丢失数据！但反过来，它们非常快。
 - en: 'So it was jarring, earlier this week, to get reports from folks experiencing
     what appeared to be I/O performance problems. We make it easy to spot I/O issues:
     you can just click out from our dashboard to `Metrics`, and look at the `I/O Utilization`
@@ -44,6 +52,8 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，在本周早些时候，从经历了I/O性能问题的人那里收到报告是令人震惊的。我们让发现 I/O 问题变得容易：您可以从我们的仪表板直接点击到 `Metrics`，查看
+    `I/O 利用率` 百分比，它应该很低。
 - en: One tricky thing about doing infra ops for a public cloud is that every possible
     thing can go wrong. Our customers exercise our hardware in every conceivable way.
     A performance problem could be on our side, or it could be an app stuck in an
@@ -51,6 +61,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 处理公共云基础设施运维的一个棘手问题是，任何可能出错的地方都可能出错。我们的客户以各种可能的方式使用我们的硬件。性能问题可能是我们这边的问题，也可能是应用程序陷入昂贵的紧耦合循环中。我们开始深入挖掘，但没有看到任何模式。
 - en: Then [our metrics cluster started dragging.](https://status.flyio.net/incidents/2sl3hm7h8n3h)
     Well, we’re confident in the performance envelope of that system. We built it
     to scale. And we were seeing the Fly Machines running it grinding to a halt. Our
@@ -58,6 +69,8 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后 [我们的指标集群开始拖累。](https://status.flyio.net/incidents/2sl3hm7h8n3h) 嗯，我们对系统的性能包络有信心。我们设计它来进行扩展。但我们看到运行它的
+    Fly Machines 正在停止运行。我们的深入挖掘增加了一些紧急性。
 - en: 'Then a customer reported the same grinding halt. We worked around the problem
     with them, by re-creating machines (hold that thought, it’s relevant later). But
     something was obviously up: as the [saying goes](https://gutenberg.ca/ebooks/flemingi-goldfinger/flemingi-goldfinger-00-h-dir/flemingi-goldfinger-00-h.html#:~:text=Mr%20Bond%2C%20they%20have%20a%20saying%20in%20Chicago%3A%20%22Once%20is%20happenstance.%20Twice%20is%20coincidence.%20The%20third%20time%20it%27s%20enemy%20action.),
@@ -65,11 +78,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后一个客户报告了同样的停滞现象。我们通过重新创建机器（先放一下，稍后会提到）与他们一起解决了这个问题。但显然有些事情不对：正如 [俗语所说](https://gutenberg.ca/ebooks/flemingi-goldfinger/flemingi-goldfinger-00-h-dir/flemingi-goldfinger-00-h.html#:~:text=Mr%20Bond%2C%20they%20have%20a%20saying%20in%20Chicago%3A%20%22Once%20is%20happenstance.%20Twice%20is%20coincidence.%20The%20third%20time%20it%27s%20enemy%20action.)，“一次是巧合。两次是偶然。三次是事件。”
 - en: Digging deeper
   id: totrans-split-12
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 深入挖掘
 - en: The way [Fly.io](http://Fly.io) works is, an orchestrator service on our physical
     servers, called `flyd`, spawns and manages KVM virtual machines using Firecracker
     and Cloud-Hypervisor. Both are lightweight and super fast, we we run lots and
@@ -77,6 +92,8 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '[Fly.io](http://Fly.io) 的工作方式是，在我们的物理服务器上有一个名为 `flyd` 的编排服务，使用 Firecracker
+    和 Cloud-Hypervisor 生成和管理 KVM 虚拟机。两者都非常轻量和超快，因此我们在任何给定的物理服务器上运行大量的虚拟机。'
 - en: We know that customer Fly Machines overwhelmingly aren’t having problems, but
     we also know something is up. We want to catch a Fly Machine in the act. So we
     set up a tiny script to alert us when any Firecracker process gets stuck in “uninterruptible
@@ -86,6 +103,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们知道客户的 Fly Machines 几乎没有问题，但我们也知道有些事情不对劲。我们希望抓到一个 Fly Machine 在操作中。因此，我们设置了一个小脚本，在任何
+    Firecracker 进程在“不可中断睡眠”（`D`）状态超过几秒钟时向我们发出警报。这表明该进程在I/O上停滞。停顿多秒，甚至连续多次进入 `D` 状态，意味着有些不对劲。
 - en: 'Stalking a few of these troublesome processes gives us candidates to inspect.
     Linux makes this easy: you just `cat /proc/$pid/stack`. Here’s what we see:'
   id: totrans-split-15
