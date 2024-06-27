@@ -270,6 +270,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 很明显，引入额外的复杂性通常是不好的。但这真的重要吗？我们不是可以只是实现这个东西，好好测试它，并简单地容忍额外的复杂性吗？当然，通过严格的测试，我们可以足够自信地认为我们的实现是正确的。然而，在这种情况下，做一个小改动，例如应用一个简单的修复来解决后来发现的一个重大问题，据报道^([3](#user-content-fn-tendermint-liveness-fix-d8d72b))可能需要数月的工作。因此，进一步改进、调整或重用这样的实现将会非常困难。
 - en: We need a structured, yet flexible enough, approach guiding us away from incidental
     complexity if we wish to avoid wasted efforts and foster innovation in the field.
     Let's look into more details concerning complexity in implementation of distributed
@@ -277,11 +278,13 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们希望避免浪费并在该领域促进创新，我们需要一种结构化但足够灵活的方法来引导我们远离偶然复杂性。让我们深入探讨分布式协议实施中的复杂性问题。
 - en: Modularity[​](#modularity "Direct link to Modularity")
   id: totrans-split-42
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[模块化](#modularity "模块化的直接链接")'
 - en: We can deal with a complex problem, such as implementing a distributed protocol,
     by dividing it into smaller, simpler problems, solving them individually, and
     then combining the solutions to finally address the original problem. This is,
@@ -290,11 +293,13 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过将复杂问题，例如实施分布式协议，分解为较小、更简单的问题来处理，分别解决它们，然后将解决方案结合起来，最终解决原始问题。基本上，这就是模块化的意义所在。在这个过程中，如何划分问题，我们得到什么样的片段，以及如何将它们重新组合在一起，都是至关重要的。
 - en: Granularity[​](#granularity "Direct link to Granularity")
   id: totrans-split-44
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: '[粒度](#granularity "粒度的直接链接")'
 - en: First of all, modularity comes in different levels of *granularity*. Implementing
     a large component, such as a state machine replication engine, we can define its
     external dependencies, then split the component into several chunks of functionality
@@ -305,6 +310,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，模块化具有不同层次的*粒度*。实现一个大组件，比如状态机复制引擎，我们可以定义其外部依赖，然后将组件拆分为几个功能块，就到此为止。这当然比处理完整的单体要好，但这种模块化程度仍然太*粗糙*。相反，我们可以继续进一步分解子组件，直到得到相当小而简单，但又不简单的组件；这就是*细粒度*的模块化。
 - en: All of the explored code bases exhibit some level of modularity. It is quite
     common to separate concerns by delegating pieces of functionality to external
     components. This way, most of the code bases clearly separate implementation of
@@ -475,6 +481,8 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管在所探索的代码库中有一些可组合性的例子。Sui 实现中的通信层利用了基于[`tower`](https://docs.rs/tower/0.4.12/tower/)的中间件层管道处理来自其他节点的RPC请求，这是建立在[`anemo`](https://github.com/MystenLabs/anemo)上的对等网络库；Algorand
+    实现中代表共识协议核心逻辑的状态机由一组统一定义的事件处理程序组成，这些处理程序按层次组织在事件路由器中，用于分派事件到相应的处理程序。
 - en: '[Asynchrony](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming))
     and [concurrency](https://en.wikipedia.org/wiki/Concurrency_(computer_science))
     make achieving composability particularly challenging. Components implemented
@@ -491,6 +499,8 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: '[异步性](https://en.wikipedia.org/wiki/Asynchrony_(computer_programming))和[并发性](https://en.wikipedia.org/wiki/Concurrency_(computer_science))使得实现可组合性尤为具有挑战性。使用基于[锁](https://en.wikipedia.org/wiki/Lock_(computer_science))的常规并发编程技术实现的组件，缺乏可组合性：单独绝对正确的组件的简单组合可能很容易导致一致性问题或死锁。在这种模型中确保正确性通常需要打破抽象，并以一种尴尬和容易出错的方式直接处理同步。在
+    Cardano 实现中使用的替代并发编程技术，如[软件事务内存](https://en.wikipedia.org/wiki/Software_transactional_memory)，可以帮助克服这些问题，而不会牺牲模块化和可组合性。更多关于异步性和并发性的内容将在下一节讨论。'
 - en: Functional programming places a significant emphasis on composability. One of
     its core principles is to break down programs into smaller, reusable functions,
     avoiding side effects, that can be easily combined to create more complex functionality.
@@ -503,6 +513,7 @@
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数式编程非常强调可组合性。其核心原则之一是将程序分解为更小、可重用的函数，避免副作用，并且这些函数可以轻松组合以创建更复杂的功能。这种方法鼓励更*声明性的表示*，通常导致更易于理解的代码。函数式编程中采用的方法和技术，如[不可变性](https://en.wikipedia.org/wiki/Immutable_object)、[惰性评估](https://en.wikipedia.org/wiki/Lazy_evaluation)、[单子](https://en.wikipedia.org/wiki/Monad_(functional_programming))和[效果系统](https://en.wikipedia.org/wiki/Effect_system)，等等，因此是增强可组合性的重要思路来源。
 - en: Composability is indispensable for *future-proof* software solutions. Though
     this property doesn't necessarily emerge together with modularity; conversely,
     achieving it may be challenging, especially in the inherently concurrent context
@@ -511,11 +522,13 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 可组合性对于*未来的软件解决方案*至关重要。虽然这种特性不一定与模块化同时出现；相反，实现它可能具有挑战性，特别是在分布系统的内在并发上下文中。因此，我们应该主动采取措施，并有意识地设计可组合性。
 - en: Concurrency[​](#concurrency "Direct link to Concurrency")
   id: totrans-split-66
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 并发[​](#concurrency "到并发的直接链接")
 - en: '[Concurrent programming](https://en.wikipedia.org/wiki/Concurrent_computing)
     is a way to structure code into multiple *threads of control*—concurrent tasks—that
     can execute concurrently. Observable effects caused by individual tasks can interleave
