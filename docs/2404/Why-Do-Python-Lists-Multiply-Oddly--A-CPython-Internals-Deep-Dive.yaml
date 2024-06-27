@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:04:34'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:04:34'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Why Do Python Lists Multiply Oddly? A CPython Internals Deep Dive
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 为什么 Python 的列表复制看起来奇怪？CPython 内部深入解析
 - en: 来源：[https://codeconfessions.substack.com/p/why-do-python-lists-multiply-oddly](https://codeconfessions.substack.com/p/why-do-python-lists-multiply-oddly)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://codeconfessions.substack.com/p/why-do-python-lists-multiply-oddly](https://codeconfessions.substack.com/p/why-do-python-lists-multiply-oddly)
 - en: I was scrolling down on X/Twitter when I noticed the following Python related
     post with 2.5k likes on it.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我在 X/Twitter 上滚动时，我注意到以下与 Python 相关的帖子，获得了 2.5k 个赞。
 - en: At first glance it does appear to be a surprising output and I agree with the
     sentiment that it is counter intuitive. I am not going to debate whether this
     is the right behavior or not. Instead, I want to take this opportunity to explain
@@ -37,6 +44,8 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 乍一看，这似乎是一个令人惊讶的输出，我同意这种行为是反直觉的。我不打算讨论这是否是正确的行为。相反，我想借此机会解释这种行为背后的原因，并展示这个过程中的一些
+    CPython 内部细节。
 - en: We will start by a high level answer by just doing some inspection in the REPL,
     then we will go one level deeper and see the details of the list implementation
     in CPython to see why that happens, and finally we will go another level down
@@ -44,19 +53,24 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将通过在 REPL 中进行一些检查来给出一个高层次的答案，然后我们将深入到 CPython 中列表实现的细节，以了解为什么会发生这种情况，最后我们将进一步深入到看看
+    CPython 如何调用这种行为。
 - en: '* * *'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '* * *'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: This peculiar behavior of Python can be explained right from the REPL itself.
     So first, let’s get the short answer first using the REPL.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: Python 的这种特殊行为可以从 REPL 中进行解释。因此，首先让我们先通过 REPL 得到简短的答案。
 - en: 'In Python, the `*` operator when used on a sequence type object (such as lists,
     strings), repeats the elements of the object `x` number of times. For instance:
     `‘a’ * 3` would produce `‘aaa’`. Similarly, `[[]] * 4` produces `[[], [], [],
@@ -64,6 +78,8 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Python 中，当 `*` 操作符用于序列类型对象（如列表、字符串）时，它会将对象的元素重复 `x` 次。例如：`‘a’ * 3` 将产生 `‘aaa’`。同样，`[[]]
+    * 4` 产生 `[[], [], [], []]`。
 - en: However, as you might know, everything is an object in Python and every object
     is accessed by a reference to it. So in `[[]]`, the inner list is a reference
     to an empty list object. And the `*` operator is simply copying the same reference
@@ -72,11 +88,14 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，您可能知道，Python 中的所有东西都是对象，每个对象都通过对它的引用来访问。所以在 `[[]]` 中，内部列表是对一个空列表对象的引用。`*`
+    操作符只是复制相同的引用四次，导致 `[[], [], [], []]`。而且，所有这些重复的内部列表都是对同一个初始空列表对象的引用。
 - en: 'We can verify this theory by printing the ids of each of the empty list as
     shown below:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以通过打印每个空列表的 id 来验证这个理论，如下所示：
 - en: '[PRE0]'
   id: totrans-split-15
   prefs: []
@@ -88,33 +107,40 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您所见，每个内部列表都具有相同的对象 id，这意味着它们是对同一对象的引用。这就是为什么修改这些内部列表中的一个会反映为对每个其他列表的更新。
 - en: Demonstration that each inner list is indeed reference to the same list object
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 证明每个内部列表确实是对同一列表对象的引用
 - en: So this was the short answer. Now, for those interested in the CPython implementation
     details behind this, let’s dive in!
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此这就是简短的答案。现在，对于那些对此背后的 CPython 实现细节感兴趣的人，让我们深入探讨一下！
 - en: '* * *'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: Let’s start by looking at the definition of the list object which is defined
     in the file [Include/cpython/listobject.h](https://github.com/python/cpython/blob/3.12/Include/cpython/listobject.h#L5).
     The following illustration shows its structure.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先看看在文件[Include/cpython/listobject.h](https://github.com/python/cpython/blob/3.12/Include/cpython/listobject.h#L5)中定义的列表对象的定义。下图展示了其结构。
 - en: Definition of list object in CPython
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: CPython 中列表对象的定义
 - en: 'It consists of three fields:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 它由三个字段组成：
 - en: The first field is an instance of the `PyObject` struct (also called as the
     object header because it is the first field of every CPython object) — it contains
     the object reference count and type implementation related details about the object.
@@ -124,6 +150,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第一个字段是 `PyObject` 结构的一个实例（也称为对象头，因为它是每个 CPython 对象的第一个字段）—— 它包含有关对象的引用计数和类型实现相关的详细信息。（查看我关于
+    PyObject 和 PyTypeObject 的[视频](https://codeconfessions.substack.com/p/decoding-pyobject-and-pytypeobject)了解更多详情）。
 - en: The third field is the current capacity of the list, i.e., how many objects
     can it hold. The list gets resized when it is about to overflow its capacity.
   id: totrans-split-24
