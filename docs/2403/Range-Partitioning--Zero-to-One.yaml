@@ -2,80 +2,97 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:43:48'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:43:48'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Range Partitioning: Zero to One'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 范围分区：从零到一
 - en: 来源：[https://www.aspiring.dev/range-partitioning/](https://www.aspiring.dev/range-partitioning/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.aspiring.dev/range-partitioning/](https://www.aspiring.dev/range-partitioning/)
 - en: Of the many partitioning methods used to build distributed systems, range partitioning
     (dividing data into logical key ranges), is quickly becoming the preferred method
     to build the most scalable systems.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在构建分布式系统中使用的许多分区方法中，范围分区（将数据分割成逻辑键范围）迅速成为构建最可扩展系统的首选方法。
 - en: 'Yet if you go searching, there''s a clear lack of resources on how to implement
     this: It''s buried away in implementations such as FoundationDB, and skimmed over
     as a minor detail in papers.'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，如果你去搜索，关于如何实现这一点的资源明显不足：它被深藏在 FoundationDB 等实现中，并在论文中被略过作为一个次要细节。
 - en: Range partitioning has become the foundation for many of the databases deployed
     at the largest scales, such as FoundationDB (Apple), BigTable (Google), Spanner
     (Google), and CockroachDB.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 范围分区已经成为许多规模最大的数据库部署的基础，例如 FoundationDB（Apple）、BigTable（Google）、Spanner（Google）和
+    CockroachDB。
 - en: In this post, we'll go over how range partitioning works, why it's chosen over
     other partitioning methods, and build a simple implementation for a key-value
     store.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 在本文中，我们将介绍范围分区的工作原理，为什么选择它而不是其他分区方法，并为键值存储构建一个简单的实现。
 - en: To keep this post focused on the partitioning, we won't go over tangential topics
     in range-partitioned distributed databases like replication, range mapping, leader
     election, etc.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保持本文集中在分区上，我们不会涉及到像复制、范围映射、领导选举等在范围分区分布式数据库中的相关话题。
 - en: You can find the [code on Github](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev)
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可以在 [Github 上找到这段代码](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev)
 - en: 'How Range Partitioning Works: A Speedrun'
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 如何工作的范围分区：极速介绍
 - en: Just to make sure we're all on the same page, I'll quickly go over how range
     partitioning works.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了确保我们都理解得很清楚，我将快速介绍一下范围分区的工作方式。
 - en: 'It''s pretty simple: Data is split by ranges of the key.'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 很简单：数据按键的范围进行分割。
 - en: Let's say you have a key-value store, with keys `a`, `b`, `d`, and `e`.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你有一个键值存储，其中有键 `a`、`b`、`d` 和 `e`。
 - en: Databases like CockroachDB that using range partitioning will start with just
     a single range, and split as necessary. In databases like these, ranges typically
     have their own low-level indexes (e.g. a b-tree), so having them in separate indexes
@@ -83,68 +100,83 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用范围分区的数据库，如 CockroachDB，将从单一范围开始，并根据需要进行分割。在这些数据库中，范围通常有它们自己的低级索引（例如 B 树），因此将它们放在单独的索引中减少了竞争，并允许数据在集群中的节点之间的粒度可移植性。
 - en: 'The two most common conditions to splitting ranges are:'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 分割范围的两个最常见的条件是：
 - en: Exceeding some size threshold (e.g. 512MB)
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 超过某个大小阈值（例如 512MB）
 - en: High load, commonly referred to as a "hot range"
   id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 高负载，通常称为“热范围”
 - en: In our example above, we start with a single range `[0, inf]`. This range says
     "I own everything between and including no bytes, and infinite bytes. Typically
     they are represented in byte ranges, but for simplicity I'll show the string values.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们上面的例子中，我们从单一范围 `[0, inf]` 开始。这个范围表示“我拥有包括无字节和无限字节在内的所有内容。通常它们用字节范围表示，但为了简单起见，我将显示字符串值。
 - en: But there's an issue in our database! Key `b` is getting a *LOT* of `get()`
     operations, so much so that it's slowing down the performance of selections for
     other keys as well! *Time to split the range*.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是我们的数据库有问题！键 `b` 收到了大量的 `get()` 操作，以至于它减慢了对其他键的选择性能！*是时候分割这个范围了*。
 - en: 'So, we split the one range into two: `[0, d)` and `[d, inf)`. We split at `d`,
     so that now the `[0, d)` range can handle the load of `b` with less contention
     from the data in `[d, inf)`.'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，我们将一个范围分成两个部分：`[0, d)` 和 `[d, inf)`。我们在 `d` 处进行分割，因此现在 `[0, d)` 范围可以处理 `b`
+    的负载，而减少了来自 `[d, inf)` 数据的竞争。
 - en: '*Note: When it comes to range nomenclature, `[` or `]` means includes (>= or
     <=), and `(` or `)` means excludes (> or <).*'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '*注：在范围命名方面，`[` 或 `]` 表示包括（>= 或 <=），`(` 或 `)` 表示不包括（> 或 <）。*'
 - en: 'If we insert now, the range it lands in depends on the key: If we insert `c`,
     that would fall into the `[0, d)` range, since `c >= 0` and `c < d`. If we inserted
     `z`, that would be in the `[d, inf)` range, because `z >= d` and `z < inf`.'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们现在插入，它落入的范围取决于键：如果我们插入 `c`，那将落入 `[0, d)` 范围，因为 `c >= 0` 且 `c < d`。如果我们插入
+    `z`，那将在 `[d, inf)` 范围内，因为 `z >= d` 且 `z < inf`。
 - en: And that's how range partitioning works! See, it's simple!
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是范围分区的工作方式！看，这很简单！
 - en: Why Range Partitioning
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么选择范围分区
 - en: There are many reasons to prefer range partitioning over other methods such
     as hash partitioning.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多理由更喜欢范围分区而不是其他方法，如哈希分区。
 - en: Scale
   id: totrans-split-28
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 规模
 - en: 'While some notably scalable databases use hash-based partitioning (e.g. Cassandra,
     Scylla), they all share the same warning in the docs: Something along the lines
     of "you must choose the `num_tokens` when creating the keyspace", meaning that
@@ -153,23 +185,28 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管一些显著可扩展的数据库使用基于哈希的分区（例如Cassandra，Scylla），但它们在文档中都有相同的警告：类似于“在创建键空间时必须选择`num_tokens`”，这意味着一旦选择了分区数（通常称为“token”），**就不能在不重写数据的情况下更改它。**
 - en: This is because the understanding of how to route operations for a given key
     is based on hashing that key, and performing modulo over the number of tokens
     like `hash('abc') % 256`.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是因为如何为给定键路由操作的理解基于对该键进行哈希和对令牌数进行取模，例如 `hash('abc') % 256`。
 - en: This also means that if the number of hashes changes between insert and select,
     it breaks!
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也意味着在插入和选择之间哈希数的变化会导致失败！
 - en: For example, maybe we inserted `"blah"` which was put in token `42`, but after
     changing the number of tokens from `256` to `1024` subsequent selects look for
     it at token `731`, and can't find it! *Big problem*.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，也许我们插入了 `"blah"`，它被放在令牌 `42` 中，但在将令牌数从 `256` 更改为 `1024` 后，后续的选择会在令牌 `731`
+    中寻找它，找不到！*大问题*。
 - en: With range partitioning, you can easily scale the number of ranges up and down,
     as instead of nodes communicating token ownership, they communicate range ownership.
     As we can see from the explanation in the first section, it's easy for peers to
@@ -180,16 +217,19 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用范围分区，您可以轻松地调整范围的数量，因为节点通信的是范围所有权，而不是令牌所有权。正如我们从第一节的解释中看到的那样，对等体可以根据范围所有权知道哪个节点拥有给定的键，因为算法不会改变！范围可以调整它们的高低来适应分割和合并（尽管合并不会经常发生，所以我们会停止谈论它）。
 - en: Scan performance
   id: totrans-split-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 扫描性能
 - en: Databases aren't just about single key-value operations, it also matters how
     fast we can select variable numbers of contiguous rows in one fell swoop.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据库不仅仅是关于单个键值操作，还涉及如何快速选择一个连续行的可变数量。
 - en: With hash based partitioning, as long as all your data shares the same partitioning
     key, you're in good shape. However, once you have to straddle partitions, there's
     a high probability to have to select from multiple nodes, as hash tokens are typically
@@ -198,10 +238,12 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用基于哈希的分区，只要所有数据共享相同的分区键，您就处于良好状态。然而，一旦必须跨越分区，就有很高的概率需要从多个节点选择，因为哈希令牌通常在节点之间随机分布。集群越大，下一个分区需要跳转网络的概率就越高。
 - en: '*That''s much slower... and we don''t like slow in the database world.*'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '*这慢多了... 在数据库世界中，我们不喜欢慢。*'
 - en: 'With range partitioning, we have the same benefits of related data being in
     the same logical partition, but when we have to hop partitions, there''s a high
     chance that the data we need is still on the same node! Just because a range is
@@ -214,38 +256,46 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用范围分区，我们可以获得相关数据在同一逻辑分区的好处，但是当我们需要跳转分区时，我们很有可能需要的数据仍然在同一个节点上！仅仅因为一个范围被分割，并不意味着它会被扔到另一个节点上：基于负载的分割通常是锁定或索引性能的一个因素，而不是节点性能，因此当我们分割范围时，通常会保持它们都在同一个节点上。这也意味着，如果我们必须访问许多范围，那么我们必须访问多个节点累积数据的机会较小，尽管这种概率在扩展集群时并不会真正改变。
 - en: '*We like linear scan performance as the cluster grows in the database world!*'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '*在数据库世界中，随着集群的增长，我们喜欢线性扫描性能！*'
 - en: An excellent example of this is CQL vs SQL. Notice how Cassandra and Scylla
     don't have a rich ecosystem of aggregation functions, but CockroachDB (and other
     NewSQL DBs) do?
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个很好的例子是CQL与SQL的比较。注意Cassandra和Scylla没有丰富的聚合函数生态系统，但CockroachDB（以及其他NewSQL数据库）有？
 - en: '*Scan performance ftw.*'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: '*扫描性能胜利*。'
 - en: Why Not Range Partitioning
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 为什么不使用范围分区
 - en: Range partitioning is not a silver bullet, there are cases where it's sub-par.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 范围分区并非万能之策，某些情况下效果并不理想。
 - en: '**The first case is highly sequential workloads, like time.**'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: '**第一种情况是高度顺序工作负载，比如时间。**'
 - en: If you're inserting time-series data super fast, you're obviously always targeting
     one range at a time. This is problematic, and creates hotspots.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你正在非常快速地插入时间序列数据，显然你总是一次只针对一个范围。这是有问题的，并且会造成热点。
 - en: Hashing is one mechanism to defend against hotspots (in fact, [CockroachDB includes
     hash-based indexing natively](https://www.cockroachlabs.com/docs/stable/hash-sharded-indexes?ref=aspiring.dev#:~:text=Hash%2Dsharded%20indexes%20contain%20a,be%20seen%20with%20SHOW%20COLUMNS%20.)),
     but can cause selections over ranges of time to become very slow, as many hash
@@ -253,16 +303,19 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 哈希是一种防止热点的机制之一（事实上，[CockroachDB在本地包含基于哈希的索引](https://www.cockroachlabs.com/docs/stable/hash-sharded-indexes?ref=aspiring.dev#:~:text=Hash%2Dsharded%20indexes%20contain%20a,be%20seen%20with%20SHOW%20COLUMNS%20.))，但会导致对时间范围的选择变得非常缓慢，因为需要访问许多哈希范围...
 - en: '**Range partitioning can also be a bit more tricky to implement than hash partitioning.**'
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '**与哈希分区相比，范围分区的实现可能也更加复杂一些。**'
 - en: 'Hash partitioning is simple: Hash the key, then find what node owns that token
     (e.g. token ownership shared via gossip). They''re typically delegated to their
     owning nodes on creation, and that only changes if the size of the cluster changes.'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 哈希分区很简单：对键进行哈希，然后找出哪个节点拥有该令牌（例如通过流言蜚语共享的令牌所有权）。它们通常在创建时被委派给拥有它们的节点，并且只有在集群大小发生变化时才会更改。
 - en: With range partitioning, it's a bit tricker because we have to figure out when
     to split ranges, where to split them, and how to choose which node owns ranges
     while under load. Storing range metadata on a node typically uses more complex
@@ -274,16 +327,19 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用范围分区时，稍微有些麻烦，因为我们必须弄清楚何时分割范围，如何分割范围，并在负载下选择哪个节点拥有范围。在节点上存储范围元数据通常使用更复杂的数据结构，如B树（用于快速键->范围查找），每次分割或移动范围时都会更改。在一致性分布式系统中，当范围移动到另一个节点时，情况变得更加复杂。如果你仔细听，你可以听到分布式系统工程师在豆袋和空咖啡杯之间哭泣，因为他们的第107次一致性测试仍然失败。
 - en: Hash rings can just use a map that's rarely edited, and as most of these databases
     are eventually consistent, they can just sync token ownership over gossip. *Must
     be nice*.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 哈希环可以只使用一个很少编辑的映射，由于大多数这些数据库最终是一致的，它们可以通过流言蜚语同步令牌所有权。*真是太好了*。
 - en: '**Range-partitioned databases typically start with just a single range.**'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '**范围分区的数据库通常从单个范围开始。**'
 - en: This means that write performance gets better over time (that's weird), because
     ranges are typically performance limited as they're bound to locks or IO (e.g.
     RAFT groups). Many databases can pre-split ranges, but that's a PITA if I've ever
@@ -293,11 +349,13 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着随着时间的推移，写入性能会变得更好（这很奇怪），因为范围通常受限于锁定或IO的性能（例如RAFT组）。许多数据库可以预先分割范围，但如果我听到过的话，那真是个麻烦事。通常情况下，你不会遇到这种情况，因为大多数人在小规模并且没有太多写入负载时会选择新数据库。如果你正在迁移，这是一个重要考虑因素，如果处理不当可能会使迁移变得*超级慢*。
 - en: Building Range Partitioning
   id: totrans-split-53
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 构建范围分区
 - en: 'We''ll build a simple single node key-value database with range partitioning.
     To focus on range partitioning, and not other aspects like distributing ranges
     across nodes and replication, we''ll create synthetic constraints as to when we
@@ -306,6 +364,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将建立一个简单的单节点键值数据库，采用范围分区。为了专注于范围分区，而不是分布范围到节点和复制等其他方面，我们将设置合成约束：当一个范围有N/2个或更多键时，我们将分割它（N是我们可以在创建数据库时传递的参数）。
 - en: I want to stress that this method of building a KV database is in no way reflective
     of how real databases do it, this is just a quick implementation to show off range
     partitioning!
@@ -510,6 +569,7 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们插入更多值，我们可以看到范围被进一步分割：
 - en: '[PRE8]'
   id: totrans-split-90
   prefs: []
@@ -519,10 +579,12 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 真是太酷了，看看所有这些范围！
 - en: 'For run, let''s jam it with numbers and see how they lexicographically sort:'
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 用数字进行运行，让我们看看它们的词典排序：
 - en: '[PRE9]'
   id: totrans-split-93
   prefs: []
@@ -533,20 +595,24 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以在[Github的这个代码](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev)上玩耍，只需按照自述文件中的说明进行操作！
 - en: Some Things We Didn't Cover
   id: totrans-split-95
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 我们没有涵盖的一些事情
 - en: We built the worlds simplest, but worst, range-partitioned memory DB ever!
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们构建了世界上最简单但最糟糕的范围分区内存数据库！
 - en: A key implementation of distributed databases is the availability of ranges
     when they are split and moved.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 分布式数据库的一个关键实现是在范围分割和移动时的可用性。
 - en: This isn't an issue we had to deal with our implementation, as our ranges are
     so small that when we (b)lock the DB to split ranges a client can't tell. But
     with databases such as FoundationDB and CockroachDB, they coordinate a fancy dance
@@ -554,6 +620,7 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不是我们实现时需要处理的问题，因为我们的范围如此小，以至于当我们（b）锁定数据库以分割范围时，客户端无法察觉。但是对于FoundationDB和CockroachDB等数据库来说，它们协调一种复杂的舞蹈，以最小化数据范围不可用的时间。
 - en: Another major area of concern is making sure that nodes are up to date on the
     latest in range ownership. This isn't something that we want to do over gossip,
     because there would be brief (potentially not-so brief) periods of nodes routing
@@ -561,33 +628,39 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个主要关注的领域是确保节点在范围所有权的最新信息上是最新的。这不是我们希望通过八卦来做的事情，因为可能会有短暂的（甚至可能不那么短暂的）时间段，节点将操作路由到错误的节点，认为它们拥有一个它们实际上并没有的范围。
 - en: This is yet another fancy dance that combines replication magic, along with
     consenus protocols like Paxos and RAFT. These databases work really hard to make
     sure you never know it happens.
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 这其实是另一种复杂的舞蹈，结合了复制魔法以及Paxos和RAFT等共识协议。这些数据库非常努力，确保你永远不会知道它发生了什么。
 - en: Alternative Use Cases for Range Partitioning
   id: totrans-split-101
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 范围分区的替代使用案例
 - en: Databases aren't the only place where range partitioning can be useful, there
     are abundant opportunities to jam range partitioning into what ever we build.
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 数据库并不是唯一能够使用范围分区的地方，我们可以把范围分区塞进我们构建的任何东西中。
 - en: One place is actually compute scheduling! In fact, in the context of databases,
     you can kind of think of range partitioning as a way to "scheduling data" to nodes.
     Starting to make sense, right?
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中一个地方实际上是计算调度！事实上，在数据库的背景下，你可以把范围分区看作是一种“调度数据”到节点的方式。开始有点意义了，对吧？
 - en: When you need to have long-running workloads on machines, using range partitioning
     to place them on workers is actually a *very good idea, hear me out.*
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你需要在机器上运行长时间的工作负载时，使用范围分区将它们放置在工作者上实际上是一个*非常好的主意，请听我解释*。
 - en: Let's say we have something called a [Cloudflare Durable Object](https://developers.cloudflare.com/durable-objects/?ref=aspiring.dev),
     we'd want to be able to schedule them on machines, with consensus about who is
     responsible for running what instances (through the ranges they own). That makes
@@ -596,6 +669,7 @@
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们有一个名为[Cloudflare Durable Object](https://developers.cloudflare.com/durable-objects/?ref=aspiring.dev)，我们希望能够将它们调度到机器上，并对谁负责运行哪些实例（通过它们所拥有的范围）达成共识。这样我们就可以轻松地将请求路由到实例，并确保每次只有一个实例在运行（至少可以接收请求）。
 - en: If a node dies and recovers, or doesn't come back (and we need to move the objects
     to other machines), it'd be great if there was a consistent silo of defined objects
     that we can transfer ownership of (range of object IDs). Being able to use coarse-grained
@@ -603,11 +677,13 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果一个节点死了并恢复，或者不回来（而我们需要将对象移动到其他机器上），如果有一组已定义对象的一致性隔离（对象ID的范围）将非常有帮助。能够使用粗粒度锁（在范围上）比每个对象的锁定*要高效得多*。
 - en: Using range partitioning, it means that the cluster can easily scale to adjust
     to the adoption of Durable Objects by adding more machines and splitting ranges.
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用范围分区，这意味着集群可以通过添加更多机器和分割范围来轻松扩展，以适应Durable Objects的采用。
 - en: In fact, a potential optimization for performance could be if they colocated
     Durable Object instances with the elected leader for a custom distributed KV database
     (I believe they currently use FoundationDB) to remove an extra network hop when
