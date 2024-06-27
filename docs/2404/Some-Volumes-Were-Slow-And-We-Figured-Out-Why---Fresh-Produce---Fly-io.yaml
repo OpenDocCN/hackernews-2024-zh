@@ -91,10 +91,12 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 追踪几个这些麻烦进程给了我们需要检查的候选者。Linux 让这很容易：只需 `cat /proc/$pid/stack`。这是我们看到的：
 - en: '[PRE0]'
   id: totrans-split-16
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'This is a normal stack trace: a process waiting for the completion of a scheduled
     I/O operation. But every process we looked at had the exact same trace. That’s
     a smell: `blk_io_schedule` should be super fast, unless something is getting in
@@ -103,15 +105,19 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个正常的堆栈跟踪：一个进程在等待调度的 I/O 操作完成。但我们看过的每个进程都有完全相同的跟踪。这有点可疑：`blk_io_schedule`
+    应该非常快，除非有什么阻碍。这就像捕捉到一个房间里所有人同时眨眼一样。
 - en: The obvious question
   id: totrans-split-18
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 显而易见的问题是
 - en: What changed?
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 发生了什么变化？
 - en: Our hardware didn’t change. And there’s no correlation of these events in particular
     regions. We’re in the middle of a round of Firecracker version updates (ironically,
     to improve I/O performance!) but the new version is feature flagged. And we haven’t
@@ -119,10 +125,12 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的硬件没有变化。而且特定区域的这些事件之间没有关联。我们正处于一轮 Firecracker 版本更新中（具有讽刺意味地，是为了提高 I/O 性能！），但新版本已启用特性标志。我们没有改变卷的工作方式。
 - en: Except we did, and didn’t realize it.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了我们之外，没人意识到。
 - en: Earlier this week, we shipped a small feature to allow [first class support
     for swap devices](https://community.fly.io/t/a-new-way-to-rootfs/19196/2). This
     has the effect of moving swap off the root filesystem device and onto a dedicated
@@ -130,6 +138,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 本周早些时候，我们发布了一个小功能，允许 [对交换设备进行一流支持](https://community.fly.io/t/a-new-way-to-rootfs/19196/2)。这导致将交换移出根文件系统设备，并放到一个专用的交换设备上。
 - en: The thing about swap is, if you’re using it, you’re probably using it pretty
     hard. Because of the way swap memory works, mostly invisibly to your apps, it
     can get pretty thrashy, as the OS lies to your dev framework about how much memory
@@ -137,6 +146,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于交换的问题在于，如果您在使用它，您可能会相当用力。由于交换内存的工作方式，大多数情况下对您的应用程序来说是不可见的，它可能会变得相当混乱，因为操作系统对您的开发框架进行了虚假的内存跟踪，并用磁盘操作掩盖其痕迹。
 - en: 'So: we limit the IO bandwidth swap devices. This is good. Swap is available,
     to keep your app from crashing in a transient spike, but it’s limited, so it doesn’t
     inadvertently create noisy neighbor problems. All is in balance, all is right
@@ -144,33 +154,40 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以：我们限制了交换设备的 I/O 带宽。这是好事。交换是可用的，以防止您的应用程序在短暂的峰值时崩溃，但它受限制，因此不会意外地造成噪声邻居问题。一切都平衡了，世界就是这样正确。
 - en: You see where this is going.
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你看得出接下来会发生什么。
 - en: 'It’s easy enough to check which devices we’re rate limiting:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查我们正在限制速率的设备很容易：
 - en: '[PRE1]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'Most of those `major,minor` pairs were associated with swap devices. “Most”
     is not the answer you want here. Now we know what’s happening: some small number
     of Fly Machines are getting throttled by an incorrect swap rate limit.'
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数 `major,minor` 对应于交换设备。在这里，“大多数”并不是您想要的答案。现在我们知道发生了什么：一些 Fly 机器由于错误的交换速率限制而受到限制。
 - en: 'The remaining question is “why”. And a quick audit of the `flyd` code that
     sets up the rate limits yields an answer:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 剩下的问题是“为什么”。而对于设置速率限制的 `flyd` 代码的快速审计给出了答案：
 - en: '[PRE2]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'To work with a device given its path on the filesystem, you call `stat(2)`
     on it. `stat` gives us the device `major,minor` numbers packed into a `dev_t`,
     which you get to unpack. Easy enough: the major is the top 8 bits, the minor the
@@ -178,49 +195,59 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使用文件系统上设备的路径工作，您需要调用 `stat(2)`。`stat` 给我们一个 `dev_t`，其中包含设备的 `major,minor` 数字，您需要将其解包。很简单：主要是顶部的8位，次要是底部的8位，共16位值…
 - en: … if it’s 2003.
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: …如果是在2003年。
 - en: 'Check [linux/kdev_t.h](https://github.com/torvalds/linux/blob/v5.18/include/linux/kdev_t.h#L7):'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查 [linux/kdev_t.h](https://github.com/torvalds/linux/blob/v5.18/include/linux/kdev_t.h#L7)：
 - en: '[PRE3]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Our orchestrator was potentially setting the `blkio` limits on the wrong device,
     limiting it to 16MiB/s, and sending any IO-intensive applications straight into
     their worst nightmare.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的编排器可能在错误的设备上设置了 `blkio` 限制，将其限制为16MiB/s，并直接将任何 I/O 密集型应用程序推向它们的噩梦。
 - en: The probability of hitting this was not huge. Which explained why the elevated
     `iowait` times seemed so sporadic. But once in a million events happen constantly
     at [Fly.io](http://Fly.io) scale.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 击中这一点的概率并不大。这解释了为什么提高的 `iowait` 时间似乎如此零星。但是在 [Fly.io](http://Fly.io) 规模上，百万事件中的一次事件会持续发生。
 - en: 'You can see now why re-creating a Fly Machine worked around this issue: it
     generated a new swap device, and a new root filesystem device, and those were
     unlikely to lose the block device number lottery.'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在您可以看到为什么重新创建Fly Machine可以解决这个问题：它生成了一个新的交换设备和一个新的根文件系统设备，这些设备不太可能再次碰到块设备编号抽签失败的情况。
 - en: What we did
   id: totrans-split-38
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 我们做了什么。
 - en: Clearing the bad rate limits was easy enough.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 清除不良速率限制足够简单。
 - en: So was fixing the `flyd` code that handled `st_rdev`.
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此修复了处理`flyd`代码中的`st_rdev`的问题。
 - en: Meanwhile, we’re investigating better telemetry for container process states.
     It’s not certain that a machine stuck for an extended period of time in an uninterruptible
     state is something that warrants us taking action or if it’s just a false positive
@@ -228,6 +255,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 与此同时，我们正在研究更好的容器进程状态遥测。机器长时间处于不可中断状态是否值得我们采取行动，或者只是误报事件，目前还不确定，但这可能会为我们提供一些信号，帮助检测潜在问题。
 - en: We’d also like to flat out make Firecracker’s IO layer faster. I don’t think
     that would have helped with this bug, but knowing with greater certainty what
     the expected IO performance for a machine should be may let us determine if the
@@ -236,11 +264,13 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们还想直截了当地提高Firecracker的IO层速度。我不认为这会对这个 bug 有帮助，但更加确定地了解一台机器应有的预期IO性能，可能会让我们确定观察到的性能是否受到我们平台变更的影响。我们将很快详细介绍这一点。
 - en: In short
   id: totrans-split-43
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 简而言之。
 - en: You’re hosting your app on [Fly.io](http://Fly.io) and may have seen abnormally
     slow IO for the past few days. A change we made was the reason that happened and
     we are bummed if your app was affected. Bare metal performance is a feature of
@@ -248,6 +278,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 您将应用托管在[Fly.io](http://Fly.io)，可能在过去几天看到IO异常缓慢的情况。我们做出的一项变更导致了这种情况，如果您的应用受到影响，我们感到遗憾。裸金属性能是我们平台的一个特性，我们对此非常热衷。
 - en: As always, if you’re running into issues or see something funky, you should
     get in touch. Despite millions of metrics being spun through the heuristics that
     drive our alerts, you have an app you care about and we want to know if you’re
@@ -256,3 +287,4 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 一如既往，如果您遇到问题或发现什么不正常的情况，应及时与我们联系。尽管我们的警报系统通过大量启发式分析海量指标数据，但您的应用是您关心的，我们希望知道您是否遇到任何问题。我们的用户帮助我们识别了这个问题，我们对您的参与表示感激。
