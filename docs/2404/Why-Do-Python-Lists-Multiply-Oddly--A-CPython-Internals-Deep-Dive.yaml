@@ -81,6 +81,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: As you can see, each of the inner lists has the same object id, which means
     that they are references to the same object. This is why modifying one of these
     inner lists reflects as an update to every other list.
@@ -129,16 +130,19 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第三个字段是列表的当前容量，即它可以容纳多少对象。当列表即将溢出其容量时，列表会被重新调整大小。
 - en: The 2nd field is an array of `PyObject *` types. This array is where the list
     internally stores all those objects. Let’s discuss it in more detail.
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第二个字段是`PyObject *`类型的数组。这个数组是列表内部存储所有这些对象的地方。让我们详细讨论一下。
 - en: '* * *'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'So we know that the list type internally uses an array for storing its items.
     This data type of this array is `PyObject *`, which means that every item in this
     array is a pointer to a `PyObect` object. This itself means that the list simply
@@ -147,22 +151,27 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此我们知道列表类型在内部使用数组来存储其项。这个数组的数据类型是`PyObject *`，这意味着这个数组中的每个项都是指向`PyObect`对象的指针。这本身意味着列表仅存储对对象的引用，而不是存储实际的对象。下面的插图展示了其外观：
 - en: The in-memory representation of the CPython list object
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: CPython列表对象的内存表示
 - en: Let’s see what the list looks like after adding an element to it.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看在添加元素后列表的样子。
 - en: '[PRE1]'
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: How the list looks like when an element is inserted into it
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 在插入元素后列表的外观
 - en: As you can see in the illustration — when we add a new element to the list,
     internally the list is only storing a pointer (or reference) to that object. Now,
     let’s see how the list object in CPython handles the `*` operator and what happens
@@ -170,10 +179,12 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如您在插图中所看到的 — 当我们向列表添加新元素时，内部列表只存储指向该对象的指针（或引用）。现在，让我们看看CPython中列表对象如何处理`*`运算符，以及在这种情况下这个数组会发生什么变化。
 - en: '* * *'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: With this basic understanding of how the list type is defined in CPython, let’s
     take a look at the function where it implements handling for the `*` operator.
     The complete implementation of CPython’s list object is in the file [Objects/listobject.c](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L552)
@@ -181,16 +192,19 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了对CPython中列表类型如何定义的基本理解，让我们看看它是如何实现处理`*`运算符的函数。CPython列表对象的完整实现位于文件[Objects/listobject.c](https://github.com/python/cpython/blob/3.12/Objects/listobject.c#L552)，以下插图展示了处理`*`操作的函数。
 - en: The function for handling * operator as defined in listobject.c
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于处理`*`运算符的函数在listobject.c中定义
 - en: This function starts by creating a new list, it then copies the references stored
     in the original list into the new list, and finally it repeats those references
     n times in the new list.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 此函数首先创建一个新列表，然后将原始列表中存储的引用复制到新列表中，最后在新列表中重复这些引用n次。
 - en: 'Although I''ve annotated the whole function with commentary, let’s spend some
     time on the meat of the function where the items of the first list are being copied
     and repeated into the new list. Let’s start by looking at how a list which stores
@@ -198,15 +212,18 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我已经用评论注释了整个函数，但是让我们花些时间来看看函数的核心部分，在这里第一个列表的项被复制并重复到新列表中。让我们首先看看一个将空列表存储为唯一元素的列表在内存中的样子：
 - en: '[PRE2]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: How the list l1 looks like in-memory when it stores a reference to another empty
     list
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 当列表l1在内存中存储对另一个空列表的引用时的外观
 - en: So this is the way things look like before we use the `*` operator. The outer
     list `l1` contains another list as its first element. This is shown by having
     an entry in the `ob_item` array of `l1` which points to the other list. This other
@@ -215,20 +232,24 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，这就是在我们使用`*`运算符之前的情况。外部列表l1包含另一个列表作为其第一个元素。通过在l1的`ob_item`数组中有一个条目指向另一个列表来显示这一点。这个其他列表当前的引用计数为1。我们将看到在我们应用`*`运算符后这将如何改变。
 - en: '[PRE3]'
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Let’s see how things look like after applying the `*` operator on `l1` as per
     the above code snippet.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据上述代码片段，在l1上应用`*`运算符后的外观。
 - en: The result of applying the * operation l1\. A new list gets created which contains
     copies of the references originally stored in l1, repeated n times.
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 应用`*`运算符到l1后的结果。创建了一个包含l1中原始存储引用的副本，并重复n次的新列表。
 - en: The above illustration shows the result of doing `l1 * 4`. Note that the `*`
     operator on lists creates a new list by copying the references stored in the original
     list n times in the new list. As you can see, the `ob_item` array in this new
@@ -238,19 +259,24 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面的插图展示了执行`l1 * 4`的结果。请注意，列表上的`*`运算符通过在新列表中n次复制原始列表中存储的引用来创建新列表。正如你所见，这个新列表中的`ob_item`数组包含4个指针（或引用），指向同一个空列表对象。此外，它们指向的列表的引用计数从1增加到了5
+    —— `l2`中的四个引用和`l1`中的一个引用。
 - en: Finally, what happens when we do `l2[0].append()`? The following illustration
     shows that
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，当我们执行`l2[0].append()`时会发生什么？下面的插图显示了这一点。
 - en: '[PRE4]'
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: What happens when we insert an element into the first inner list of l2?
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我们向`l2`的第一个内部列表中插入一个元素时会发生什么？
 - en: We appended the float value `3.14` to the first element of `l2`. The above figure
     illustrates the changes caused by that. The 4 elements in `l2` still point to
     the same common list but now this list’s `ob_item` array contains a reference
@@ -258,10 +284,12 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将浮点值`3.14`附加到`l2`的第一个元素上。上图说明了这造成的变化。`l2`中的4个元素仍然指向同一个共同的列表，但现在这个列表的`ob_item`数组包含对一个值为`3.14`的浮点类型对象的引用。
 - en: '* * *'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: This is everything that goes on when we use the * operator on lists. But there
     is one more question — how does the CPython runtime know that it needs to invoke
     this particular function when the `*` operator is used on a list type object?
@@ -270,12 +298,14 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 在使用列表上的`*`运算符时发生的所有事情都在这里。但是还有一个问题 —— CPython运行时如何知道在列表类型对象上使用`*`运算符时需要调用这个特定的函数？这是一个与理解我们原始问题无关的附加部分。如果你对深入了解CPython内部感兴趣，可以继续阅读。
 - en: So how does the CPython VM know that it needs to invoke the function `list_repeat`
     from inside `listobject.c` (we saw this function in the previous section)? Let’s
     learn this from the bottom up.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么CPython VM如何知道它需要在`listobject.c`内部调用`list_repeat`函数呢？让我们从底层开始学习这个。
 - en: In the first section we saw the definition of the list object in CPython, and
     we saw that the first element in it was an instance of the [PyObject](https://github.com/python/cpython/blob/3.12/Include/object.h#L166)
     struct. It turns out every type definition in CPython includes this as its first
@@ -284,6 +314,7 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 在第一节中，我们看到了CPython中列表对象的定义，并且我们看到它的第一个元素是[PyObject](https://github.com/python/cpython/blob/3.12/Include/object.h#L166)结构的一个实例。事实证明，CPython中的每个类型定义都包含这个作为其第一个字段，因此这个字段也被称为对象头（因为它位于每个对象的开头）。
 - en: The `PyObject` struct includes the reference count of the object and it also
     includes a pointer to an object of type [PyTypeObject](https://github.com/python/cpython/blob/3.12/Include/cpython/object.h#L146).
     Now, `PyTypeObject` struct is of interest here because it includes fields for
@@ -291,10 +322,12 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: '`PyObject`结构包括对象的引用计数以及指向类型为[PyTypeObject](https://github.com/python/cpython/blob/3.12/Include/cpython/object.h#L146)的对象的指针。现在，在这里我们对`PyTypeObject`结构感兴趣，因为它包括用于存储对象的类型相关信息的字段。'
 - en: Definition of PyObject struct in CPython
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 在CPython中的PyObject结构的定义
 - en: Among these fields are a bunch of function pointer tables for handling various
     operators and object protocols. Among these function pointer tables, there is
     a table called `tp_as_sequence`. It contains function pointers for handling operations
@@ -303,6 +336,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这些字段中，有一堆函数指针表用于处理各种运算符和对象协议。在这些函数指针表中，有一个称为`tp_as_sequence`的表，它包含用于处理序列类型对象所期望的操作的函数指针。这些操作包括切片、索引、重复、连接等。
 - en: The following illustration shows a partial definition of the `PyTypeObject`
     struct (because it’s too big to show all of it here) and highlights a couple of
     function pointer tables, i.e. `tp_as_number` (for numeric operators) and `tp_as_sequence`
@@ -310,11 +344,13 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的插图显示了`PyTypeObject`结构的部分定义（因为它太大了，无法完全显示在这里），并突出显示了一些函数指针表，如`tp_as_number`（用于数值运算符）和`tp_as_sequence`（用于处理序列类型运算符）。
 - en: Definition of PyTypeObject and the function pointer tables for handling numeric
     and sequence type operations
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: PyTypeObject 的定义以及用于处理数值和序列类型操作的函数指针表
 - en: Every object in CPython (depending on its type, i.e. whether its numeric, sequence
     type etc) needs to implement the relevant functions for handling various operations.
     For instance, a sequence type object needs to implement functions for handling
@@ -324,12 +360,17 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 CPython 中的每个对象（取决于其类型，即其是否为数值、序列类型等）都需要实现处理各种操作的相关函数。例如，序列类型对象需要实现处理索引、切片、重复等的函数，并在其
+    `PyTypeObject` 实例中的 `tp_as_sequence` 字段中填充指向这些函数的指针。下面的插图展示了所有这些发生在 `listobject.c`
+    内部的过程。
 - en: How the list type in CPython implements functions for handling len, concat (+)
     and repeat (*) operations, and then uses pointers to those functions to create
     the PySequenceMethods object, which in turn goes inside the PyTypeObject instance
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 CPython 中，列表类型如何实现处理长度、连接（+）和重复（*）操作的函数，并使用指向这些函数的指针创建 `PySequenceMethods`
+    对象，然后该对象进入 `PyTypeObject` 实例内部。
 - en: The illustration shows the functions that the list object implements for handling
     the `len`, `+` and `*` operations on lists. The pointers to these functions are
     used to populate an instance of the `PySequenceMethods` struct, and finally a
@@ -338,6 +379,8 @@
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 插图展示了列表对象实现处理列表上 `len`、`+` 和 `*` 操作的函数。这些函数的指针用于填充 `PySequenceMethods` 结构体的实例，最终指针指向此对象的一个实例放入
+    `PyTypeObject`（称为 `PyList_Type`）的实例内部。
 - en: Next, a pointer to this `PyList_Type` object is used to populate the header
     of every new list object upon initialization. The following illustration shows
     the code which is invoked every time the CPython runtime needs to create a new
@@ -345,11 +388,13 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，指向 `PyList_Type` 对象的指针用于在初始化时为每个新的列表对象填充头部。下面的插图展示了每次 CPython 运行时需要创建新的列表对象时调用的代码。
 - en: The function in listobject.c which gets invoked everytime a new list object
     needs to be created.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 每当需要创建新的列表对象时调用的 `listobject.c` 中的函数。
 - en: This means that every list object has these function pointers in its headers
     at runtime, which the VM can lookup to execute them to handle different operations.
     In fact, every CPython object follows a similar protocol in its implementation
@@ -358,15 +403,19 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着每个列表对象在运行时的头部都有这些函数指针，虚拟机可以查找并执行它们来处理不同的操作。事实上，每个 CPython 对象在实现上都遵循类似的协议，在其头部填充函数指针表以执行各种操作。现在让我们看看
+    CPython 虚拟机如何查找这个头部以在对象上执行各种操作。
 - en: Let’s understand this with the help of an example where we have a function which
     performs the `*` operator on a list object.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们通过一个示例来理解，在这个示例中，我们有一个函数对列表对象执行 `*` 操作符。
 - en: '[PRE5]'
   id: totrans-split-65
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: The above listing also shows the compiled bytecode for this function using the
     [dis](https://docs.python.org/3/library/dis.html) module. CPython uses a stack
     based virtual machine (VM) to execute these bytecode instructions. The VM uses
@@ -374,34 +423,41 @@
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述列表还显示了使用 [dis](https://docs.python.org/3/library/dis.html) 模块的这个函数的编译字节码。CPython
+    使用基于堆栈的虚拟机（VM）来执行这些字节码指令。VM 使用堆栈来存储执行这些指令所需的参数。
 - en: Apart from the stack, there is a `locals` table for storing scope local variables
     and function arguments, and a `globals` table for storing global objects. Based
     on this information, let’s understand what is happening in this bytecode sequence.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 除了堆栈之外，还有一个`locals`表用于存储作用域局部变量和函数参数，并且一个`globals`表用于存储全局对象。基于这些信息，让我们来理解这段字节码序列中发生了什么。
 - en: '`BUILD_LIST`: creates a new list object.'
   id: totrans-split-68
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`BUILD_LIST`：创建一个新的列表对象。'
 - en: '`STORE_FAST`: puts the list object into the locals table (i.e. the variable
     `l`) at index 0'
   id: totrans-split-69
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`STORE_FAST`：将列表对象放入局部表中（即变量 `l`）的索引 0 处。'
 - en: '`LOAD_FAST`: loads the object at index 0 from the locals table and pushes it
     onto the stack'
   id: totrans-split-70
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`LOAD_FAST`：从局部表中索引 0 处加载对象并将其推送到堆栈上。'
 - en: '`LOAD_CONST`: pushes the constant 4 onto the stack'
   id: totrans-split-71
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`LOAD_CONST`：将常量 4 推送到堆栈上。'
 - en: '`BINARY_OP`: pops the top two objects from the stack and performs the `*` operation
     on them, i.e., it pops 4 and `l` from the stack and executes the `*` operation
     on them. Let’s discuss this in more detail.'
@@ -409,26 +465,31 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`BINARY_OP`: 弹出堆栈顶部的两个对象，并对它们执行`*`操作，例如，它从堆栈中弹出4和`l`，然后对它们执行`*`操作。让我们详细讨论一下。'
 - en: 'The implementation for handling all these bytecode instructions is present
     in the file [Python/generated_cases.c.h](https://github.com/python/cpython/blob/3.12/Python/generated_cases.c.h).
     The code for handling the `BINARY_OP` instruction looks like the following:'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于处理所有这些字节码指令的实现位于文件[Python/generated_cases.c.h](https://github.com/python/cpython/blob/3.12/Python/generated_cases.c.h)中。处理`BINARY_OP`指令的代码如下：
 - en: The handling of the BINARY_OP instruction in the CPython VM
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 在CPython VM中处理BINARY_OP指令
 - en: So we see that the VM has a function pointer table for handling each operator.
     In order to execute a binary operation, it looks up this table and calls the corresponding
     function. Now let’s see what this table looks like.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们看到VM为处理每个操作符拥有一个函数指针表。为了执行二进制操作，它查找此表并调用相应的函数。现在让我们看看这个表是什么样子。
 - en: The function pointer table in generated_cases.c.h for handling binary operators
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 用于处理二元操作符的generated_cases.c.h中的函数指针表
 - en: All the function pointers mapped in this table are defined in the file [Objects/abstract.c](https://github.com/python/cpython/blob/3.12/Objects/abstract.c).
     This `abstract.c` is an abstract object interface that hides the type system implementation
     details from the VM. The VM doesn’t need to know how the different types implement
@@ -438,10 +499,12 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 此表中映射的所有函数指针均定义在文件[Objects/abstract.c](https://github.com/python/cpython/blob/3.12/Objects/abstract.c)中。这个`abstract.c`是一个抽象对象接口，它将类型系统实现细节隐藏在VM之外。VM不需要了解不同类型如何实现不同操作符，它让抽象对象接口处理这一部分。现在让我们来看看在`Objects/abstract.c`中`PyNumber_Multiply`函数的实现。
 - en: The PyNumber_Multiply function as implemented in abstract.c
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 在abstract.c中实现的PyNumber_Multiply函数
 - en: The above illustration lists the function from abstract.c which handles the
     `*` operator. As you can see, this function is fully aware of how the type system
     in CPython exposes the functions for handling the operators via the function pointer
@@ -449,6 +512,7 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述插图列出了abstract.c中处理`*`运算符的函数。正如你所见，这个函数完全了解CPython中的类型系统如何通过对象头中的函数指针表来公开处理操作符的函数。
 - en: Even though the function name is `PyNumber_Multiply`, it handles the `*` operator
     for both numeric types and sequence types. First it tries to look up the function
     pointer table for numeric operations (which is defined inside the `PyNumberMethods`
@@ -458,10 +522,12 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使函数名称是`PyNumber_Multiply`，它也处理了数值类型和序列类型的`*`操作符。首先它尝试查找数值操作的函数指针表（定义在`PyTypeOjbect`的`PyNumberMethods`字段内），当失败时，它再尝试查找序列类型的函数指针表。一旦找到函数，它就调用该函数并返回值。
 - en: '* * *'
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'So this was all we needed to know about the CPython implementation details
     behind the handling of `*` operation on sequence type objects and to understand
     the reason behind that peculiar behavior for which we started this whole exploration.
@@ -469,6 +535,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，这是我们需要了解的关于CPython在处理序列类型对象上的`*`操作背后的实现细节，并且理解我们开始整个探索的那种奇怪行为的原因。让我们快速总结一下本文的所有讨论，以结束本文：
 - en: Everything is an object in Python but those objects are accessed by references,
     i.e., our code is dealing with references to objects as opposed to the objects
     directly.
@@ -476,11 +543,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在Python中一切皆为对象，但是这些对象是通过引用来访问的，即我们的代码处理的是对对象的引用，而不是直接处理对象。
 - en: Lists also store references to other objects internally.
   id: totrans-split-84
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 列表也在内部存储对其他对象的引用。
 - en: When the `*` operator is applied on a list, a new list object is created which
     contains the references stored in the original list repeated n times. This means
     that the repeated elements in the new list are sharing references to the same
@@ -489,11 +558,13 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当对列表应用`*`运算符时，将创建一个新的列表对象，其中包含原始列表中存储的引用重复n次。这意味着新列表中重复的元素共享对同一对象的引用。
 - en: We looked at how this is implemented within CPython’s list implementation.
   id: totrans-split-86
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们看了这是如何在CPython的列表实现中实现的。
 - en: We looked at the definition of the list object in CPython and learned that it
     internally uses an array to store the items. This array contains pointers to objects
     of type `PyObject`. `PyObject` is the universal type in the CPython runtime to
@@ -502,12 +573,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们查看了CPython中列表对象的定义，并了解到它内部使用数组来存储项目。该数组包含指向`PyObject`类型对象的指针。`PyObject`是CPython运行时中表示所有对象的通用类型。
 - en: We saw when we store a value in a list, how it results in the array storing
     a pointer to that object.
   id: totrans-split-88
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们看到当我们将一个值存储在列表中时，它导致数组存储指向该对象的指针。
 - en: We looked at the function in `listobject.c` which handles the `*` operator and
     saw how this function simply copies these pointers in the new list. Which again
     shows how the repeated values in the new list are simply pointers to the same
@@ -516,24 +589,29 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们查看了`listobject.c`中处理`*`运算符的函数，并看到这个函数是如何简单地在新列表中复制这些指针的。这再次表明新列表中重复的值只是指向同一对象的指针。
 - en: Then we went one level deeper and saw how the CPython VM invokes the right function
     in `listobject.c` when the `*` operator is applied on a list type object.
   id: totrans-split-90
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 然后我们深入了解了当在列表类型对象上应用`*`运算符时，CPython虚拟机如何调用`listobject.c`中正确的函数。
 - en: This is done by doing a function pointer lookup in a table present in the list
     object’s header.
   id: totrans-split-91
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这是通过在列表对象头部的表中进行函数指针查找来完成的。
 - en: '* * *'
   id: totrans-split-92
   prefs:
   - PREF_IND
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: '[Share](https://blog.codingconfessions.com/p/why-do-python-lists-multiply-oddly?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: '[分享](https://blog.codingconfessions.com/p/why-do-python-lists-multiply-oddly?utm_source=substack&utm_medium=email&utm_content=share&action=share)'
