@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:36:36'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:36:36'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Port-scanning the fleet and trying to put out fires
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 扫描整个机群的端口并尝试解决问题
 - en: 来源：[https://rachelbythebay.com/w/2024/03/21/scan/](https://rachelbythebay.com/w/2024/03/21/scan/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://rachelbythebay.com/w/2024/03/21/scan/](https://rachelbythebay.com/w/2024/03/21/scan/)
 - en: Port-scanning the fleet and trying to put out fires
   id: totrans-split-6
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 扫描整个机群的端口并尝试解决问题
 - en: There was this team which was running a pretty complicated data storage, leader
     election and "discovery" service. They had something like 3200 machines and had
     something like 300 different clusters/cells/ensembles/...(*) running across them.
@@ -36,6 +43,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 有一个团队正在运行一个相当复杂的数据存储、领导者选举和“发现”服务。他们有大约3200台机器，并且在它们之上运行大约300个不同的集群/单元/合奏/……(*)。这项服务运行类似于etcd，但并非完全相同。
 - en: The way it worked was that a bunch of "participant" machines would start an
     election process, and then they'd decide who was going to lead them for a while.
     That leader got to handle all of the write traffic and it did all of the usual
@@ -45,6 +53,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的工作方式是一堆“参与者”机器会启动一个选举过程，然后他们会决定谁将在一段时间内担任领导。那个领导者负责处理所有的写入流量，并且在参与者之间执行所有通常的类似raft/paxos的神秘协调工作，包括更新其他参与者，并处理暂时离开并稍后回来的主机等等。对于这种类型的服务来说，这都是必备条件。
 - en: This group of clusters had started out relatively simple but had grown into
     a monster over the years. Nobody probably expected them to have hundreds of clusters
     and thousands of machines, but they now did, and they were having trouble keeping
@@ -53,6 +62,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这组集群最初看起来相对简单，但多年来已经变成了一个庞然大物。可能没有人预料到它们会有数百个集群和数千台机器，但现在确实如此，他们难以跟踪一切。不断出现故障，由于它们在堆栈中的位置较低，一旦出现故障，会影响到很多其他东西。
 - en: I wanted to know just what the ground truth looked like and so started something
     really stupid from my development machine. It would take a list of their servers
     and would crawl them, interrogating the TCP ports on which the service ran. This
@@ -61,6 +71,7 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想知道实际情况如何，所以从我的开发机器上开始了一些非常愚蠢的尝试。它将获取他们服务器的列表，并爬取它们，查询服务运行的TCP端口。每台机器只有大约10个端口，所以虽然听起来很讨厌，但在原型设计阶段仍然是可能的。
 - en: On these ports, there were simple text-based commands which could be sent, and
     it would return config information about what that particular instance was running.
     It was possible to derive the identity of the cluster from that. Given all of
@@ -70,6 +81,7 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这些端口上，可以发送简单的基于文本的命令，并返回关于该特定实例正在运行的配置信息。可以从中推断出集群的身份。考虑到所有这些以及对整个机群的扫描，可以看到支持任何给定集群的主机+端口组合，从而了解它们的运行情况。
 - en: Early results from this terrible manual scraping started showing promise. Misconfigurations
     were showing up all over the place - clusters that are supposed to have 5 hosts
     but only have 3 in practice with the other two missing in action somewhere, clusters
@@ -77,6 +89,7 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种可怕的手动爬取的早期结果显示了希望。到处都是配置错误的迹象 - 集群本应有5台主机，但实际上只有3台，另外两台不知所踪，非标准主机数量的集群，位置错误的集群等等。
 - en: To get away from the "printf | nc the world in cron" thing, we wound up writing
     this dumb little agent thing that would run on all of the ~3200 hosts. It would
     do the same crawling, but it would happen over loopback so it was a good bit faster
@@ -86,6 +99,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了摆脱“printf | nc the world in cron”的问题，我们最终编写了这个愚蠢的小代理程序，在所有~3200台主机上运行。它执行相同的爬取操作，但是通过回环进行，因此速度要快得多，因为消除了通过生产网络的长距离传输。它还分担了从我的单一机器轮询~32000个端口的负载，并且本质上是并行的。
 - en: It was now possible to just query an agent and get a list of everything running
     on that box. It would refresh things every minute, so it was far more current
     than my terrible script which might run every couple of hours (since it was so
@@ -93,6 +107,7 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在只需查询一个代理并获取运行在该主机上的所有内容就行了。它每分钟刷新一次，因此比我那个可能每隔几个小时才运行一次（因为速度太慢）的可怕脚本要及时得多。这使事情变得更好，因此我们需要一个聚合器。
 - en: We did some magic to make each of these agents create a little "beacon" somewhere
     any time they were run. Our "aggregator" process would start up and would subscribe
     to the spot where beacons were being created. It would then schedule the associated
@@ -101,12 +116,14 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 每次运行时，我们让这些代理创建一个小的“信标”。我们的“聚合器”进程会启动，并订阅信标创建的位置。然后它会安排检查相关的主机，在那些主机上与代理交流，并要求一份其结果的副本。
 - en: So now we had an agent on every one of the ~3200 hosts, each polling 10 local
     ports, plus an aggregator that talked to the ~3200 agents and refreshed the data
     from them.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们每台约3200台主机上都有一个代理，每个代理轮询10个本地端口，再加上一个与约3200个代理交流并刷新它们数据的聚合器。
 - en: Finally, all of the data was available in one place with a single query that
     was really fast. The next step was to write a bunch of simple "dashboard" web
     pages which allowed anyone to look at the entire fleet, or to narrow it down by
@@ -115,6 +132,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，所有数据都在一个地方以非常快的单一查询中可用。接下来的步骤是编写一堆简单的“仪表板”网页，让任何人可以查看整个设备组，或者按照特定参数（这些服务器的）给定集群，给定区域，数据中心等进行筛选。
 - en: 'With all of this visible with just a few clicks, it was pretty clear that we
     needed something more to actually find the badness for us. It was all well and
     good to go clicking around while knowing what things are supposed to look like,
@@ -123,10 +141,12 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 只需点击几下即可看到所有这些，显然我们确实需要更多的东西来实际找出问题所在。点击查看时，我们知道事物应该是什么样的，但关于这种事情应该有一些规则：一个集群中有这么多主机，每个故障域不超过N个主机，等等。
 - en: '...'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: Failure domains are a funny thing. Let's say you have five hosts which form
     a quorum and which are supposed to be high-availability. You'd probably want to
     spread them around, right? If they were serving clients from around the world,
@@ -135,6 +155,7 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 失败域是一件有趣的事情。假设你有五台主机形成一个法定人数，应该具有高可用性。你可能希望它们分散开来，对吧？如果它们正在为全球客户提供服务，也许你会把它们放在不同的地方，并且从不将两者放在同一位置？如果有什么违反了这个规则，你如何知道呢？
 - en: Here's an example of bad placement. We had this one cluster which was supposed
     to be spread out throughout an entire region which was composed of multiple datacenter
     buildings, each with multiple (compute) clusters in it, with different racks and
@@ -144,6 +165,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有一个错误放置的例子。我们有一个集群，本应该遍布整个由多个数据中心建筑组成的区域，每个建筑物中都有多个（计算）集群，有不同的机架等等。但是，因为它在该区域生命周期早期启动时只存在少数主机，所以它们全都放在了同两三个机架中。
 - en: Worse still, those racks were physically adjacent. Put another way, if the servers
     had arms and hands, they could have high-fived each other across the hot and cold
     aisles in the datacenter suite. That's how close together they were. One bad event
@@ -151,6 +173,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 更糟糕的是，这些机架是物理上相邻的。换句话说，如果服务器有手臂和手的话，它们可以在数据中心套件的热通道和冷通道之间高兴地击掌。它们离得如此之近。某一位置发生严重问题，就会彻底删除所有数据。
 - en: We had to write a schema which would let us express limits for a given cluster
     - how many regions it should be in, the maximum number of members per host, rack,
     (compute) cluster, building, region, etc. Then we wrote a tool to let us create
@@ -161,10 +184,12 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们不得不编写一个模式，让我们能够为给定的集群设定限制——它应该在多少个区域内，每个主机、机架（计算）集群、建筑物、区域等的最大成员数。然后，我们编写了一个工具来让我们创建规则，然后开始使用它来生成规则集。接下来，我们设计了一些工具，可以获取现有状态（从代理/聚合器组合）并将其与规则集进行比较。任何不符合规定的情况都会立即显示出来。
 - en: '...'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: …
 - en: Then there was the problem of managing the actual ~3200 hosts. With a footprint
     that big, there's always something happening. A location gets turned up and new
     hosts appear. Another location is taken down after the machines get too old and
@@ -176,6 +201,7 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后有管理实际约3200台主机的问题。当足迹如此之大时，总会发生一些事情。某个地点被开启，新主机出现。另一个位置在机器老化后被拆除，这些主机消失。我们不断遇到退役计划的故障，然后远程的某人运行带有大量--force类型命令的脚本，它会拔掉这些机器并擦除它们。它不关心它们实际在做什么，他们通过这种方式设法破坏了一些东西。这种情况一直在发生。
 - en: This is when I had to do something that does not scale. I said to the decom
     crew that they should treat any host owned by this team as off limits because
     we do not have things under control. That means never *ever* running a decom script
@@ -183,6 +209,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这时我必须采取一些不可扩展的措施。我告诉退役人员，他们应将任何由该团队拥有的主机视为禁区，因为我们控制不了情况。这意味着在这些主机仍由团队拥有时，绝不要再运行退役脚本。
 - en: I further added that while we're working to get things under control, if for
     some reason a decom is blocked due to this decree of mine, they are to contact
     me, any time of day or night, and I will get them unblocked... somehow. I figured
@@ -191,12 +218,14 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我进一步补充道，虽然我们正在努力控制局面，但如果由于我的这个命令而导致的任何一次退役受阻，他们可以随时联系我，无论白天黑夜，我都会帮助解决……以某种方式。我觉得这是我展示自己有"利害关系"的方式，因为提出这样一个愚蠢且不合理的要求。
 - en: I've often said that the way to get something fixed is to make sure someone
     is in the path of the badness so they will feel it when something screws up. This
     was my way of doing exactly that.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常说，解决问题的方法是确保有人处于糟糕状态的路径上，这样当出现问题时，他们就会感受到它。这是我正在做的事情。
 - en: We stopped having decom-related outages. We instead started having these "fire
     drill" type events where one or two people on the team (and me) would have to
     drop what they were doing and spend a few hours manually replacing machines in
@@ -204,6 +233,7 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们停止了由退役引起的故障。相反，我们开始发生这种“火灾演习”类型的事件，团队中的一两个人（还有我）必须放下手头的事情，花几个小时手动更换各种集群中的机器，以便释放它们。
 - en: Obviously, this couldn't stand, and so we started in on another project. This
     one was more of a "fleet manager", where a dumb little service would keep track
     of which machines the team owned, and it would store a series of bits for each
@@ -211,11 +241,13 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 显然，这是无法容忍的，因此我们着手进行另一个项目。这是更像是一个“车队管理器”的项目，一个简单的服务会跟踪团队拥有的机器，并为每台机器存储我称之为“意图”的一系列位。
 - en: 'There were only three bits per host: drain, release, freeze. Not all combinations
     were valid.'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 每个主机只有三位：排空、释放、冻结。并非所有组合都是有效的。
 - en: If no bits were set on a host, that meant it was intended for production use.
     If it has a server on it, that's fine. If someone needs a replacement, it's potentially
     available (assuming it meets the other requirements, like being far enough away
@@ -223,12 +255,14 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果主机上没有设置任何位，那意味着它是用于生产的。如果上面有服务器，那很好。如果有人需要更换，那可能可用（假设它符合其他要求，比如与其他参与者足够远）。
 - en: If the "drain" bit was set, that meant it was not supposed to be serving. Any
     server on it should be taken off by replacing it with an available host which
     itself isn't marked for "drain" (or worse).
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果“排空”位被设置了，那意味着它不应该提供服务。应该通过用可用主机替换它来将其上的任何服务器取下来，这个可用主机本身不被标记为“排空”（或更糟）。
 - en: The "release" bit meant that if a host no longer had anything running on it,
     then it should be released back to the machine provisioning system. In doing this,
     the name of the machine changed, and thus the ownership (and responsibility) for
@@ -237,6 +271,7 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: “释放”位意味着如果主机上没有任何运行的东西了，那么它应该被释放回机器供应系统。在这样做的过程中，主机的名称会改变，因此其所有权（和责任）离开了团队，它不再是我们的问题。进行解体的人会接手处理。
 - en: '"Freeze" was a special bit which was intended as a safety mechanism to stop
     a runaway automation system. If that bit was set on a host, none of the tools
     would change anything on it. It''s one of those things where you should never
@@ -245,16 +280,19 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: “冻结”是一个特殊位，旨在作为防止自动化系统失控的安全机制。如果主机上设置了该位，任何工具都不会对其进行任何更改。这是那种你永远不应该需要使用的东西，但如果不写下并有一天需要它，你会后悔的事情。
 - en: '"Drain" + "release" meant "keep trying to kick instances off this host and
     don''t add any new ones", and then "once it becomes empty, give it back".'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: “排空”+“释放”意味着“继续尝试踢掉这台主机上的实例，并且不添加任何新的实例”，然后“一旦它变空，就归还它”。
 - en: Other combinations of the bits (like "release" without "drain") were invalid
     and were rejected by the automation.
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 其他位的组合（比如“释放”而不是“排空”）是无效的，并被自动化系统拒绝。
 - en: I should note that this was meant to be level-triggered, meaning on every single
     pass, if a host had a bit set and yet wasn't matching up with that intent or those
     intents, something should try to drain it, or give it away, or whatever. Even
@@ -263,10 +301,12 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我应该指出，这是意味着每个主机在每次通行时，如果某个主机有一个设置的位，但却与那个意图或那些意图不匹配，应该尝试排出它，或者交出它，或者其他什么。即使失败了，也应该在下一次通行时再试一次，而且失败应该是不寻常的，因此应该向人类报告。
 - en: '...'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: Then there was also the pre-existing system which took config files and used
     it to install instances on machines. This system worked just fine, but it only
     did that part of the process. It didn't close the loop and so many parts of the
@@ -274,32 +314,39 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后还有一个预先存在的系统，它接受配置文件并用它来在机器上安装实例。这个系统工作得很好，但它只完成了流程的一部分。它没有闭环，因此服务生命周期的许多部分最终由它未管理。
 - en: Looking back at this, you can now see that we could establish a bunch of "sets"
     with the data available.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 回顾这些，现在可以看到我们可以建立一堆可用数据的“集合”。
 - en: 'Configs: "where we told it to run"'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 配置：“我们告诉它运行的地方”
 - en: 'Agent + aggregator: "where it''s actually managing to run"'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 代理 + 聚合器：“实际上正在成功运行的地方”
 - en: 'Checker: "what rules these things should be obeying"'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 检查器：“这些东西应该遵守什么规则”
 - en: 'Fleet manager: "which machines should be serving (or not), which machines we
     should hang onto (or give back)".'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 车队经理：“哪些机器应该提供服务（或不提供服务），哪些机器我们应该保留（或交还）”。
 - en: Doing different operations on those sets yielded different things.
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 对这些集合执行不同的操作会产生不同的结果。
 - en: '[configs] x [agent/aggr] = hosts which are doing what they are supposed to
     be doing, hosts which are supposed to be serving but aren''t for some reason,
     and hosts which are NOT supposed to be running but are running it anyway. It would
@@ -308,18 +355,21 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: '[配置] x [代理/聚合器] = 做他们应该做的事情的主机，因某些原因应该提供服务但并没有做到的主机，和不应该运行但却正在运行的主机。它会找到有问题的机器，在配置系统中的故障，黑暗角落中的奇怪手动安装的hack工作，以及更糟的情况。'
 - en: '[agent/aggr] x [checker] = clusters which are actually spread out correctly,
     and clusters which are actually spread out incorrectly, (possibly because of bad
     configs, but could be any reason).'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: '[代理/聚合器] x [检查器] = 实际上正确分散的集群和实际上错误分散的集群（可能是因为糟糕的配置，但可能是任何原因）。'
 - en: '[agent/aggr] x [fleet manager] = hosts which are serving where that''s okay,
     hosts which need to be drained until empty, and hosts which are now empty and
     can be given back.'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '[代理/聚合器] x [车队经理] = 提供服务而可以的主机，需要排空直到空的主机，现在可以交还的主机。'
 - en: '[configs] x [checker] = are out-of-spec clusters due to the configs telling
     them to be in the wrong spot, or is something else going on? You don''t really
     need to do this one, since if the first one checks out, then you know that everything
@@ -327,6 +377,7 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '[配置] x [检查器] = 由于配置告诉它们放错位置，或者其他事情正在发生，这些配置不合格的群集。如果第一个检查通过，你实际上不需要执行这个，因为你知道每件事都正常运行着。'
 - en: '[configs] x [fleet manager] = if you ever get to a point where you completely
     trust that the configs are being implemented by the machines (because some other
     set operations are clear), then you could find mismatches this way. You wouldn''t
@@ -335,11 +386,13 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: '[配置] x [舰队管理器] = 如果你最终完全信任配置是由机器实施的（因为其他一些操作是清晰的），那么你可以通过这种方式找到不匹配的地方。你不一定需要依赖经验数据，事实上，可以停止扫描它。'
 - en: For that matter, the whole port-scanning agent/aggr combination shouldn't have
     needed to exist in theory, but in practice, independent verification was needed.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 就这一点而言，从理论上讲，整个端口扫描代理/聚合组合实际上不应该存在，但在实践中，需要进行独立验证。
 - en: I should point out that my engagement with this team was not viewed kindly by
     management, and my reports about what had been going on ultimately got me in trouble
     more than anything else. It's kind of amazing, considering I was working with
@@ -349,15 +402,18 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 我应该指出，管理层并不看好我与这个团队的合作，而且我对发生的事情的报告最终比任何其他事情都让我陷入了麻烦。考虑到我是应直接请求帮助可靠性而与他们合作的，这有点令人惊讶，但打击信使并不是什么新鲜事。这次合作让我认识到很多所谓的技术问题实际上根源于人为问题，而这些问题通常来自管理层。
 - en: There's more that happened as part of this whole process, but this post has
     gotten long enough.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 这次整个过程中发生的事情还有更多，但这篇文章已经够长了。
 - en: '...'
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: '...'
 - en: (*) I'm using "clusters" here to primarily refer to the groups of 5, 7, or 9
     hosts which participated in a quorum and kept the state of the world in sync.
     Note that there's also the notion of a "compute cluster", which is just a much
@@ -367,3 +423,4 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: (*) 我在这里使用“群集”主要指的是以5、7或9台主机为一组参与共识并保持世界状态同步。请注意，还有“计算群集”的概念，这只是一个更大的群体，可能有成千上万台机器（都有不同的所有者），在这篇文章中有几个地方也提到了，并在需要时明确指出。
