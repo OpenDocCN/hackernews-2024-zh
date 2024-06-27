@@ -2,33 +2,41 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:14:19'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:14:19'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Upgrading 3 Million Variables to Envelope Encryption
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 将 300 万个变量升级为信封加密
 - en: 来源：[https://blog.railway.app/p/envelope-encryption](https://blog.railway.app/p/envelope-encryption)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://blog.railway.app/p/envelope-encryption](https://blog.railway.app/p/envelope-encryption)
 - en: Railway is (temporarily, at least) hosted entirely on Google Cloud Platform
     while we begin [transitioning our infrastructure to bare metal](https://blog.railway.app/p/team-spotlight-infrastructure-engineering#a-glimpse-into-railway%27s-dynamic-infrastructure-team).
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: Railway 在我们开始 [将基础架构迁移到裸金属](https://blog.railway.app/p/team-spotlight-infrastructure-engineering#a-glimpse-into-railway%27s-dynamic-infrastructure-team)
+    时（至少是暂时的）完全托管在 Google Cloud Platform 上。
 - en: In the beginning, taking advantage of existing GCP-provided services to launch
     a start-up made total sense. Building core services like container registry, block
     storage, load balancers, or key management would’ve only gotten in the way of
@@ -36,6 +44,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 一开始，利用现有的 GCP 提供的服务来启动一个初创公司是完全有道理的。构建核心服务，如容器注册表、块存储、负载均衡器或密钥管理，只会妨碍产品的建设。
 - en: Moving to bare metal gets us the margins required to build a profitable business
     but, even disregarding cost, relying on a single infrastructure  provider is a
     huge technical risk. “How often does GCP fail though?” You  may ask.  Enough to
@@ -44,21 +53,26 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 转向裸金属使我们获得了所需的利润率，但即使忽略成本，依赖单一基础设施提供商也是巨大的技术风险。“GCP 失败的频率如何？” 你可能会问。足以值得写一篇
+    [博文](https://blog.railway.app/p/gcp-incidents) 来讨论这个主题！
 - en: The GCP service that continues to cause the most problems for us is Key Management
     Service (KMS). And, while the dependency still technically exists, our usage of
     KMS has been greatly reduced, making migrating away almost trivial.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 对我们造成最多问题的仍然是 GCP 的 Key Management Service (KMS)。尽管技术上仍然存在依赖，但我们对 KMS 的使用大大减少，使得迁移几乎变得微不足道。
 - en: Let’s dig into how we removed this KMS dependency while also improving performance,
     all with no downtime.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们深入探讨如何在不中断的情况下去除这种对 KMS 的依赖并同时提升性能。
 - en: View of cryptographic requests to KMS before and after
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 KMS 加密请求之前和之后的视图
 - en: Railway is all about making it easy for users to deploy code. These deployments
     often require configuration values like API keys and database credentials to be
     available. Railway solves this with [Service Variables](https://docs.railway.app/reference/variables#service-variables),
@@ -66,21 +80,26 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: Railway 致力于使用户能够轻松部署代码。这些部署通常需要配置值，如 API 密钥和数据库凭据在运行时可用。Railway 通过 [服务变量](https://docs.railway.app/reference/variables#service-variables)
+    实现了这一点，这些变量会自动注入到部署中。
 - en: Since these values often contain sensitive information, they get encrypted prior
     to storage in our Postgres database. Until now, these encryption operations have
     been done by calling KMS directly.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于这些值通常包含敏感信息，所以在存储到我们的 Postgres 数据库之前会对其进行加密。直到现在，这些加密操作都是通过直接调用 KMS 完成的。
 - en: This works as expected when the number of variables per deployment is average
     (around 10), but some deployments have hundreds 🫣.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 当部署的变量数量平均为 10 时，这种方法能够正常工作，但有些部署会有数百个 🫣。
 - en: This spiky KMS usage pattern leads to problems.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种波动的 KMS 使用模式会导致问题。
 - en: KMS is an external service → Decrypting hundreds of variables for a deployment
     requires many network request (~20ms each) which slows down large batches, even
     if done concurrently
@@ -88,6 +107,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: KMS 是一个外部服务 → 解密部署所需的数百个变量需要大量的网络请求（每个约 20ms），这会减慢大批量操作的速度，即使是并发执行也是如此。
 - en: KMS enforces a quota → Exceeding the quota will cause all operations to fail
     temporarily. Quotas can be raised by request but approval is not guaranteed, and
     [GCP has lowered quotas without warning](https://twitter.com/JustJake/status/1667492928758095872?s=20)
@@ -96,6 +116,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: KMS 强制执行配额 → 超过配额将导致所有操作暂时失败。配额可以通过请求提升，但不保证批准，并且在过去 [GCP 未经警告降低了配额](https://twitter.com/JustJake/status/1667492928758095872?s=20)。
 - en: KMS is not meant for unlimited keys → All variables are currently encrypted
     using the same KMS key, meaning a brute-force attack could compromise variables
     across all of Railway
@@ -103,17 +124,20 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: KMS 不适用于无限密钥 → 所有变量目前都使用相同的 KMS 密钥进行加密，这意味着暴力攻击可能会威胁到 Railway 所有变量的安全性。
 - en: Fortunately, there’s a standard practice that solves all these problems at once
     and is actually what KMS is designed for. (Yes, we were holding it wrong.)
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，有一种标准做法可以一次性解决所有这些问题，这实际上也是 KMS 设计的初衷。（是的，我们之前用错了。）
 - en: Envelope encryption is the practice of encrypting plaintext data — like variables
     — with a data encryption key (DEK), then encrypting the DEK with a key encryption
     key (KEK).
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '**信封加密**是使用数据加密密钥（DEK）加密明文数据（如变量），然后使用密钥加密密钥（KEK）加密DEK的实践。'
 - en: This reduces the surface area of an attack by allowing each user (or Railway
     project) to use separate encryption keys. Using locally generated data keys also
     means less reliance on an external key management service. Precisely what we’re
@@ -121,6 +145,7 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过允许每个用户（或Railway项目）使用单独的加密密钥来减少攻击面。使用本地生成的数据密钥还意味着较少依赖外部密钥管理服务。这正是我们追求的！
 - en: As mentioned, KMS is designed for envelope encryption and is the reason for
     its maximum input size of  `64KiB` (enough to encrypt a large DEK). We knew this
     when implementing variable encryption, but since 99% of variables fit within the
@@ -129,6 +154,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如前所述，KMS专为信封加密而设计，这也是其最大输入大小为`64KiB`的原因（足以加密大型DEK）。我们在实现变量加密时已经了解到了这一点，但由于99%的变量适合最大尺寸（大约相当于10000字的博客文章长度），直接使用KMS来实现功能是合理的。
 - en: Envelope encryption eliminates the need call KMS hundreds of times for large
     batches of variables by requiring only one data encryption key (DEK) for the entire
     batch. We simply generate one DEK per [Environment](https://docs.railway.app/guides/environments)
@@ -137,6 +163,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 通过仅需要一个数据加密密钥（DEK）来消除大批量变量的调用KMS数百次的需要。我们只需为每个[Environment](https://docs.railway.app/guides/environments)生成一个DEK（项目的隔离实例，如生产或暂存），然后用它执行所有加密操作。
 - en: The DEK is generated locally (256-bit [AES using](https://en.wikipedia.org/wiki/Galois/Counter_Mode)
     [GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode)), encrypted once using
     KMS, then stored on the `Environment` data model. We created a helper utility
@@ -145,21 +172,25 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: DEK在本地生成（使用256位[AES使用](https://en.wikipedia.org/wiki/Galois/Counter_Mode)[GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode)），仅使用一次KMS加密，然后存储在`Environment`数据模型上。我们创建了一个辅助工具来处理加密、解密和密钥生成，并将其附加到我们的请求上下文中，该上下文的生命周期为当前HTTP请求或后台作业。
 - en: '[PRE0]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: This means that for each deployment (or other action), the encryption helper
     decrypts the necessary DEK once and caches it in memory for further operations,
     reducing  the 100+ trips to KMS to 1.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这意味着对于每次部署（或其他操作），加密助手只需解密一次必要的DEK并将其缓存在内存中以供后续操作，将100+次访问KMS减少到1次。
 - en: There’s some other magic in here though. Did you notice that `decrypt()` doesn’t
     require a DEK? How does that work?
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里还有一些其他的魔法。你注意到`decrypt()`不需要DEK吗？那是如何工作的？
 - en: One of the requirements for envelope encryption was the ability to easily rotate
     keys. As we’ve seen, the DEK is stored on the `Environment` model, but how would
     we rotate it if needed? We’d either have to store a list of old keys to try during
@@ -168,10 +199,12 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 信封加密的要求之一是能够轻松地进行密钥轮换。正如我们所见，DEK存储在`Environment`模型上，但如果需要如何进行轮换呢？我们要么必须在加密过程中存储一系列旧密钥列表以供尝试，要么在一个可能非常庞大的数据库事务内重新加密所有变量并更新数据库。
 - en: Not great.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 不是很好。
 - en: 'Luckily there’s also a best-practice for this, which is to store the encryption
     key next to the encrypted value (cipher text). For us, this meant serializing
     the encrypted DEK with the cipher text before storing the value in the database
@@ -179,10 +212,12 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 幸运的是，这也有一个最佳实践，即将加密密钥与加密值（密文）存储在一起。对于我们来说，这意味着在将值存储为JSON字符串之前，将加密的DEK与密文序列化：
 - en: '[PRE1]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Variable decryption with this setup can be done by decrypting the DEK using
     KMS (if not already cached in memory) and using it to decrypt the variable locally
     (without KMS). It also makes passing around encrypted values easier because the
@@ -190,65 +225,77 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这种设置进行变量解密可以通过使用KMS解密DEK（如果尚未缓存在内存中）并使用它本地解密变量来完成（无需KMS）。它还使得传递加密值更加容易，因为相关的`Environment`或DEK不需要一直随行。
 - en: The basic implementation of this strategy was only a few hundred lines of code
     but we still had to convert over 3 million existing variables to the new system.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种策略的基本实现只有几百行代码，但我们仍然不得不将超过300万个现有变量转换为新系统。
 - en: Storing the encrypted DEK next to the cipher text is also what made it possible
     to support both legacy and envelope encryption simultaneously, allowing us to
     progressively upgrade over 3 million variables.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 将加密DEK存储在密文旁边也是支持传统和信封加密同时的可能性所在，允许我们逐步升级超过300万个变量。
 - en: For decryption fallback, if a DEK isn’t found within the encrypted variable,
     KMS is called directly to decrypt just like before.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于解密回退，如果在加密变量中找不到DEK，则直接调用KMS进行解密，就像以前一样。
 - en: Similarly for encryption fallback, if no DEK exists yet on the `Environment`,
     KMS is called directly.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 同样，对于加密回退，如果在`Environment`中尚不存在DEK，则直接调用KMS。
 - en: 'This makes it possible to generate a DEK for a single environment. Modified
     variables within this environment will be upgraded to envelope encryption on write,
     reducing the migration effort to the following steps:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 这使得可以为单个环境生成DEK。在此环境中修改的变量将在写入时升级为信封加密，从而减少迁移工作到以下步骤：
 - en: Deploy initial envelope encryption code (does nothing by itself)
   id: totrans-split-38
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 部署初始信封加密代码（本身不起任何作用）
 - en: Start generating DEKs for newly created environments
   id: totrans-split-39
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为新创建的环境生成DEKs
 - en: Run data migration to generate DEKs for all environments
   id: totrans-split-40
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行数据迁移以为所有环境生成DEKs
 - en: Run data migration to re-encrypt all variables
   id: totrans-split-41
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行数据迁移以重新加密所有变量
 - en: 'It’s been a few weeks since introducing envelope encryption and it’s been a
     success. Our KMS usage has dropped by 10x with no usage spikes, and we’ve been
     able to realize the benefits mentioned earlier:'
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 自引入信封加密以来已经过去了几周，效果非常好。 我们的KMS使用量下降了10倍，没有使用高峰，并且我们已经能够实现之前提到的好处：
 - en: Better performance → Decrypting DEKs with KMS once per batch reduced the slow-case
     for variable decryption from ~10s at the slowest to only a handful of milliseconds
   id: totrans-split-43
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更好的性能 → 使用KMS一次批量解密DEK将慢速变量解密的慢速情况从最慢的10秒减少到只有几毫秒
 - en: No service disruption → The more consistent usage pattern means we no longer
     have to worry about spiking above our KMS quota and causing downtime. We’ve also
     been able to reduce our quota by several orders of magnitude
@@ -256,12 +303,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 无服务中断 → 更一致的使用模式意味着我们不再必须担心超出KMS配额并导致停机的情况。 我们还能够将我们的配额减少几个数量级
 - en: Better security → Using a separate data key per environment means that a brute-force
     attack of one environment won’t compromise data for any others
   id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更好的安全性 → 在每个环境中使用单独的数据密钥意味着对一个环境的暴力攻击不会危及其他任何环境的数据
 - en: More flexible encryption → While we don’t necessarily need to surpass the `64KiB`
     KMS limit, the use of symmetric AES encryption means we can now encrypt data of
     any length
@@ -269,12 +318,14 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 更灵活的加密 → 虽然我们不一定需要超过`64KiB`的KMS限制，但对称AES加密的使用意味着我们现在可以加密任意长度的数据
 - en: Not only do we get these direct benefits but we’ve also already used this envelope
     encryption system to persist credentials for our recently-released [Private Registry
     Support](https://railway.app/changelog/2024-03-15-template-composer).
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 不仅获得了这些直接的好处，而且我们已经使用这个信封加密系统来保存我们最近发布的[私有仓库支持](https://railway.app/changelog/2024-03-15-template-composer)的凭证。
 - en: We’re one step closer to having no dependencies on GCP. Yes, we’re still technically
     using KMS, but replacing it with something like [Vault](https://www.vaultproject.io/)
     can now be done incrementally by repeating the above migration steps to rotate
@@ -282,6 +333,7 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们离不依赖于GCP又进了一步。 是的，我们在技术上仍在使用KMS，但可以通过重复上述迁移步骤逐步地使用诸如[Vault](https://www.vaultproject.io/)之类的东西替换它来轮换每个环境的DEK。
 - en: So that’s how we upgraded 3 million variables to envelope encryption. Migrating
     data is always a scary task. Migrating sensitive data is even worse! But, as it
     goes, even the most daunting work can be broken down into manageable chunks, which
@@ -289,9 +341,11 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '这就是我们如何将300万个变量升级为信封加密。 迁移数据总是一个可怕的任务。 迁移敏感数据甚至更糟！ 但是，正如它所说的那样，即使最艰巨的工作也可以分解成可管理的块，这便是我们活着的证明。 '
 - en: Did we do something wrong? Let us know on [Twitter](https://twitter.com/railway)
     and stay tuned for more of these stories as we get further and further along our
     path to bare metal.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们做错了什么吗？ 在[Twitter](https://twitter.com/railway)上告诉我们，敬请期待更多这样的故事，因为我们在前往裸机的道路上越走越远。
