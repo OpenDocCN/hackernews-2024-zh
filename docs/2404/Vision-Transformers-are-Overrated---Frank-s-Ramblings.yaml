@@ -111,6 +111,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 我们利用现代文献中找到的大量数据增强方法，包括但不限于：标签平滑、mixup、cutmix 和模型 EMA。
 - en: To prevent overfitting on the validation dataset, we’ll skip hyperparameter
     tuning and grid search and stick with the stock training methodology listed out
     in the blog post.
@@ -118,31 +119,37 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了防止在验证数据集上过拟合，我们将跳过超参数调整和网格搜索，并坚持在博客文章中列出的原始训练方法。
 - en: Nearly all of these training optimizations have already been used to boost the
     performance of modern visual recognition models, but adopting these changes don’t
     quite get us to the magical 82% accuracy we’re looking for.
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 几乎所有这些训练优化措施已经被用来提升现代视觉识别模型的性能，但采用这些变化并没有使我们达到期望的神奇的 82% 准确率。
 - en: Architectural modifications
   id: totrans-split-18
   prefs:
   - PREF_H4
   type: TYPE_NORMAL
+  zh: 架构修改
 - en: 'The baseline ResNet architecture is strong but not optimal, so we adopt a few
     architectural modifications to enable better performance:'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 基准的 ResNet 结构强大但不是最优的，因此我们采用了几种架构修改来提升性能：
 - en: '**ResNet-d**'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '**ResNet-d**'
 - en: 'First order of business is the embrace some “modernizations” to ResNet. For
     completeness, here are the changes listed out:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 首要任务是改进 ResNet 的一些“现代化”。为了全面，这里列出了所做的更改：
 - en: The initial 7x7 convolution is changed to a sequence of three 3x3 convolutions
     with 32, 64, and 128 output channels, respectively. The stride remains on the
     first convolutional layer. With this change, we now use exclusively 3x3 and 1x1
@@ -152,6 +159,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 初始的 7x7 卷积改为一系列连续的三个 3x3 卷积，分别具有 32、64 和 128 个输出通道。步幅仍然在第一个卷积层上。通过这一变化，我们现在在整个网络中完全使用
+    3x3 和 1x1 卷积，同时保持网络头部的原始感受野大小。
 - en: Strides in downsampling residual blocks are moved from the first 1x1 convolutional
     layer to the subsequent 3x3 convolutional layer. This has the effect of capturing
     all input pixels in a downsampling block, since a strided 1x1 convolution effectively
@@ -160,6 +169,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在下采样残差块中，步幅从第一个 1x1 卷积层移至随后的 3x3 卷积层。这样做的效果是捕捉下采样块中的所有输入像素，因为步幅为 1x1 的卷积实际上会跳过每隔一个像素。
 - en: The max pooling in the stem is removed. The first 3x3 convolution of the first
     residual block now has a stride of two, matching the remaining residual blocks.
     While max pooling is theoretically useful for retaining edges, corners, and other
@@ -168,6 +178,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在初始部分的最大池化已被移除。第一个残差块的第一个 3x3 卷积现在步幅为二，与其余的残差块保持一致。虽然最大池化在理论上对保留边缘、角点和其他低级特征有用，但在实践中我并未发现它特别有用。
 - en: The strided 1x1 convolution in the shortcut connections of downsampling blocks
     is replaced with 2x2 average pooling followed by a standard 1x1 convolutional
     layer. Again, this has the effect of capturing all input activations rather than
@@ -176,16 +187,19 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在下采样块的快捷连接中，步幅为 1x1 的卷积被替换为 2x2 平均池化，随后是标准的 1x1 卷积层。同样，这种做法的效果是捕捉所有输入激活而不仅仅是每四个输入通道中的一个。
 - en: The resulting micro-optimizations result in an architecture that is extremely
     close to [ResNet-d](https://arxiv.org/abs/1812.01187v2), with some very minor
     differences.
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些微观优化的结果导致的架构与 [ResNet-d](https://arxiv.org/abs/1812.01187v2) 非常接近，仅有一些非常小的差异。
 - en: '**ReLU -> SiLU**'
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: '**ReLU -> SiLU**'
 - en: 'ReLU has two weaknesses compared to other activation functions: 1) it is not
     smooth (ReLU is, strictly speaking, non-differentiable at 0), and 2) the “dying
     ReLU” problem, where pre-activation values are near-universally negative during
