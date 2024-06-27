@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 13:02:52'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:02:52
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'smeso - MIPS stacktrace: an unexpected journey'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'smeso - MIPS stacktrace: an unexpected journey'
 - en: 来源：[https://smeso.it/2024/03/02/mips-stacktrace-an-unexpected-journey.html](https://smeso.it/2024/03/02/mips-stacktrace-an-unexpected-journey.html)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://smeso.it/2024/03/02/mips-stacktrace-an-unexpected-journey.html](https://smeso.it/2024/03/02/mips-stacktrace-an-unexpected-journey.html)
 - en: Automatically receiving a stacktrace when your C program crashes isn't rocket
     science. But this time it was more difficult than I expected. This is a short
     recollection of the things I found out few years ago. This post assumes that the
@@ -32,11 +38,14 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你的 C 程序崩溃时自动接收堆栈跟踪并不是什么难事。但这一次比我预期的要困难得多。这篇文章简要回顾了几年前我发现的事情。本文假设读者对函数调用约定、CPU
+    寄存器和汇编有基本了解。
 - en: Some context
   id: totrans-split-7
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 一些背景信息
 - en: A C program running on Linux was randomly crashing on one specific embedded
     device deployed on the other side of the world. The device architecture was MIPS32\.
     We needed a system to asynchronously receive reports with as much details as possible
@@ -47,11 +56,13 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 在世界另一端部署的某特定嵌入式设备上，运行在 Linux 上的一个 C 程序偶尔会随机崩溃。该设备采用 MIPS32 架构。我们需要一个系统来异步接收尽可能详细的报告（例如堆栈跟踪）。该设备使用的是*glibc*，理想情况下，我们希望能找到一个也能兼容其他标准库（如*musl*和*uClibc*）的解决方案，但即使是非可移植的解决方案也可以，至少可以解决这一个问题。使用外部依赖尤其是大型依赖并不是一个选择。
 - en: The simple solution
   id: totrans-split-9
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 简单解决方案
 - en: '*glibc* already has [`backtrace(3)`](https://www.gnu.org/software/libc/manual/html_node/Backtraces.html#index-backtrace-1)
     and [`backtrace_symbols_fd(3)`](https://gnu.org/software/libc/manual/html_node/Backtraces.html#index-backtrace_005fsymbols_005ffd).
     They are easy to use and they will certainly work very well! *glibc* simply calls
@@ -60,43 +71,53 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '*glibc* 已经有了[`backtrace(3)`](https://www.gnu.org/software/libc/manual/html_node/Backtraces.html#index-backtrace-1)
+    和 [`backtrace_symbols_fd(3)`](https://gnu.org/software/libc/manual/html_node/Backtraces.html#index-backtrace_005fsymbols_005ffd)。它们易于使用且肯定能很好地工作！*glibc*
+    简单地调用*libgcc*。任何我编写的代码都不会比*libgcc* 更好地理解*GCC* 生成的代码！'
 - en: Well, this may be true when you are on x86_64, but on some other architectures
     like MIPS32 those functions *don't work at all*.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，在 x86_64 上可能是真的，但在其他一些架构如 MIPS32 上，这些函数*根本不起作用*。
 - en: Some notes on MIPS
   id: totrans-split-12
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: MIPS 的一些注释
 - en: Just in case you are not too familiar with MIPS, I wanted to add some notes
     about how it works with gcc on Linux.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对 MIPS 不太熟悉，我想添加一些关于它如何在 Linux 上与 gcc 协作的注释。
 - en: The return address of the current function is stored in the *$ra* register
   id: totrans-split-14
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当前函数的返回地址存储在*$ra* 寄存器中
 - en: When entering a new function the "old" return address is pushed onto the stack
     and is the last thing just before the start of the stack frame of the new function.
   id: totrans-split-15
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当进入一个新函数时，“旧”的返回地址被推送到堆栈上，正好在新函数的堆栈帧开始之前。
 - en: To reconstruct the stack trace we need to recover all the return addresses in
     sequence. We can start from *$ra* and then go backwards, pulling the return addresses
     from the end of each stack frame.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 要重建堆栈跟踪，我们需要依次恢复所有返回地址。我们可以从*$ra* 开始，然后向后推，从每个堆栈帧的末尾拉出返回地址。
 - en: The problem
   id: totrans-split-17
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 问题
 - en: 'It turns out that `backtrace(3)` does the same thing that too many blog posts
     on the Internet recommend to do: unwind the stack using the `frame pointer` register
     to figure out the position of the previous function''s return address. This makes
@@ -117,14 +138,17 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 原来`backtrace(3)`和互联网上太多博客文章推荐的做法一样：使用*帧指针*寄存器展开堆栈，以找出前一个函数的返回地址的位置。这是完全合理的，*帧指针*（又称*$fp*或MIPS上的*$30*）通常是一个寄存器，用于帮助调试器引用存储在栈上的局部变量和其他信息（例如前一个函数的返回地址），使用常量偏移量。理论上，虽然*堆栈指针*（又称*$sp*）始终指向堆栈顶部，但*$fp*应指向当前*栈帧*的开始，并且不应该从那里移动。如果你想用*$sp*获取返回地址，你需要知道自从进入当前栈帧以来你在栈上放了多少东西，这取决于：你在哪个函数中，这些函数使用了多少自动变量，这些变量的类型是什么，以及这些类型使用了多少字节。在调试过程中使用*$sp*将会非常不方便，所以我们很幸运有了*$fp*！使用*$fp*，我们可以始终获取前一个函数的返回地址，而无需进行任何复杂的操作！对于所有程序中的所有函数来说，*$fp*与返回地址之间的偏移量都是相同的常数！
 - en: '... Or is it?'
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: ……还是吗？
 - en: Well... it turns out it isn't.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧……结果证明并非如此。
 - en: 'In fact, when using GCC on Linux on MIPS32, the *frame pointer* just works
     *exactly* like another *stack pointer*: it''s completely useless! I''m not 100%
     sure about the reason behind this choice, but I think it could be related to the
@@ -134,21 +158,25 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，在MIPS32上使用GCC的Linux时，*帧指针*就像另一个*堆栈指针*一样工作：它完全没用！我不完全确定背后选择的原因，但我认为这可能与事实有关，在具有（相对）较小寄存器的架构上，使用真实的*$fp*引用栈顶将会很困难，但仍然听起来不像正确的做法。
 - en: The funniest thing is that, `backtrace(3)` implementation from libgcc seems
     to ignore how gcc works in this context and it just returns random values.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 最有趣的是，来自libgcc的`backtrace(3)`实现似乎忽略了gcc在这个上下文中的工作方式，它只是返回随机值。
 - en: The real solution
   id: totrans-split-23
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 真正的解决方案
 - en: We can get rid of the *$fp* completely and just work with *$sp*, but how can
     we figure out the correct offset to use with *$sp* for *any* function?
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以完全去掉*$fp*，只使用*$sp*，但是我们如何找出在*任何*函数中使用*$sp*时正确的偏移量呢？
 - en: You may not like the answer (or maybe you will) but the only way to know where
     the beginning of the stack frame is... is to jump into the actual code of the
     function and *parse the opcodes* to figure out how much *$sp* was decremented
@@ -156,19 +184,23 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能不喜欢这个答案（或者也许你会喜欢），但是知道栈帧的起始位置的唯一方法……是跳转到实际函数的代码中，并*解析操作码*来找出编译器减少的*$sp*的数量。
 - en: 'Here is one way to do it:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是一个执行的方法：
 - en: '[PRE0]'
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Symbolizing the addresses
   id: totrans-split-28
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 符号化地址
 - en: It would be nice to be able to translate the addresses, that we just found,
     to actual function names. This isn't usually the funniest thing to do, but after
     what we just did, it seems trivial. We can use `dl_iterate_phdr(3)` to look into
@@ -178,14 +210,17 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 能够将我们刚刚找到的地址翻译成实际的函数名称将是非常好的。这通常不是最有趣的事情，但在我们刚刚做过的事情之后，这似乎微不足道。我们可以使用`dl_iterate_phdr(3)`来查看每个加载的共享对象。一旦找到包含我们地址的共享对象，我们可以遍历其ELF节并查看其*.symtab*以找到函数名称。
 - en: 'Here is an example of how to do it:'
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个如何做的例子：
 - en: '[PRE1]'
   id: totrans-split-31
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Wouldn't it be cool if we also retrieved the source file name and the line?
     To do that we need to use the information provided in the *.debug_line* section
     using the *DWARF* format. To use as little space as possible *DWARF* doesn’t simply
@@ -196,21 +231,25 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们也能获取源文件名和行号，岂不是很酷？要做到这一点，我们需要使用*DWARF*格式中*.debug_line*部分提供的信息。为了尽可能节省空间，*DWARF*并不简单地存储地址到行号的映射列表。它存储了一个*行号程序*，这是一个序列化的有限状态机，可用于查找行号及更多信息。解析*DWARF*留给读者作为练习。或者我们可以手动调用*addr2line*工具。
 - en: Conclusion
   id: totrans-split-33
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 结论
 - en: In the end the bug was found and fixed and everyone lived happily ever after.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后bug被发现和修复，所有人都过上了幸福快乐的生活。
 - en: I learned, once again, that features/bugs can sometime happen in your most trusted
     dependency and one should never refrain from doubting the correctness of the most
     respected software.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 我再次学到，功能/缺陷有时可能会发生在您最信任的依赖项中，一个人永远不应该怀疑最受尊敬的软件的正确性。
 - en: I also learned, once again, that the Internet is full of misleading information
     and blog posts written with authority by people that never *actually tried* to
     do the things that they talk about. As of today if you try to lookup information
@@ -221,13 +260,16 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还再次学到，互联网上充斥着误导性信息和由从未真正尝试过他们所谈论的事情的人写的带有权威性的博文。截至今天，如果您试图查找有关MIPS32上帧指针的信息，几乎不可能找到任何提到本文中概述问题的信息。所以，永远不要相信博文！甚至不要相信这篇！您的编译器和libc的组合可能会表现出不同的行为，并且具有不同的新的令人兴奋的问题，这将毁掉您的一天！
 - en: P.S.
   id: totrans-split-37
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 附言
 - en: This post made HN's front page and received a few comments! You can add your
     comments [here](https://news.ycombinator.com/item?id=39967864) as well.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇帖子进入了HN的首页，并收到了一些评论！您也可以在[这里](https://news.ycombinator.com/item?id=39967864)添加您的评论。
