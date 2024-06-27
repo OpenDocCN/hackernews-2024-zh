@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 12:55:37'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 12:55:37
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: xz backdoor and autotools insanity | Felipe Contreras
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: xz后门和autotools的疯狂 | 费利佩·康特雷拉斯
 - en: 来源：[https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/](https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/](https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/)
 - en: I’ve been arguing for more than a decade now that GNU Autotools is too complicated,
     unnecessary, and stupid. The latest xz backdoor simply adds more fuel to the fire.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 十多年来，我一直在争论GNU Autotools过于复杂、不必要且愚蠢。最新的xz后门只是火上加油。
 - en: First a little bit of background. I have been doing package-related stuff for
     Linux for more than 20 years now. I’m competent with Debian, RPM and Arch Linux
     packaging systems, in addition to compiling my whole system by hand ([LFS](https://www.linuxfromscratch.org/lfs/))
@@ -37,109 +44,131 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，先来点背景。我已经在Linux上做与软件包相关的事情超过20年了。我熟悉Debian、RPM和Arch Linux的打包系统，还包括手动编译整个系统（[LFS](https://www.linuxfromscratch.org/lfs/)）以及为嵌入式设备交叉编译系统（[buildroot](https://buildroot.org/)）。我还维护过Windows安装程序。
 - en: Additionally I have experience with autotools, make, ninja, and several custom
     build systems.
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 另外，我还有使用autotools、make、ninja和几个自定义构建系统的经验。
 - en: So I have a good idea how libraries are supposed to be built, but in my experience
     virtually no one knows how to do it. Here you’ll see a clear example of that.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我对图书馆的构建方式有很好的理解，但在我的经验中，几乎没有人知道如何去做。在这里，你将看到一个明显的例子。
 - en: This article is not about the backdoor itself, plenty of researchers are surely
     working on that. This is about what enabled the introduction of the backdoor in
     the first place and how to ensure it never happens again.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章不是关于后门本身的，肯定有许多研究人员正在处理这个问题。这篇文章关于的是首次引入后门的原因以及如何确保它不再发生。
 - en: If the xz project had not been using autotools, installing the backdoor would
     not have been possible. It’s as simple as that.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果xz项目没有使用autotools，安装后门是不可能的。就是这么简单。
 - en: GNU Autotools primer
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: GNU Autotools入门
 - en: In order to understand how the backdoor was so easily introduced, you need to
     understand what autotools is in the first place. Basically it’s a build system,
     but an unnecessarily complex one.
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 要理解为什么后门如此容易被引入，你需要首先了解autotools是什么。基本上它是一个构建系统，但它是一个不必要复杂的构建系统。
 - en: 'I’m going to describe the typical sequence of steps so you get a rough idea:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将描述典型的步骤序列，以便你大致了解：
 - en: Run `autogen.sh` script (generates `configure`)
   id: totrans-split-15
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行 `autogen.sh` 脚本（生成 `configure`）
 - en: Run `configure` script (generates `Makefile` files)
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行 `configure` 脚本（生成 `Makefile` 文件）
 - en: Run `make`
   id: totrans-split-17
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行 `make`
 - en: Run `make install`
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 运行 `make install`
 - en: Now, even though an `autogen.sh` script is typical, it’s not necessary, and
     most of the time you can just run `autoreconf --force --install` and that would
     basically do the same thing.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，虽然 `autogen.sh` 脚本是典型的，但并不是必需的，大多数情况下你可以直接运行 `autoreconf --force --install`，它基本上会做同样的事情。
 - en: Once everything is in place, you can run the `configure` script which is going
     to do runtime checks to see the features that your system has, and its main purpose
     is to generate `Makefile` files so you can do the next step.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 一切就位后，你可以运行 `configure` 脚本，它会进行运行时检查以查看系统的功能，并且它的主要目的是生成 `Makefile` 文件，这样你就可以执行下一步。
 - en: 'Now, I’m going to spoil the surprise and tell you that it’s at this step that
     [the backdoor is introduced](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27#design-specifics),
     specifically this line:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我要揭开惊喜，告诉你，就在这一步，[引入了后门](https://gist.github.com/thesamesam/223949d5a074ebc3dce9ee78baad9e27#design-specifics)，特别是这一行：
 - en: '[PRE0]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: They made a good job of hiding what this actually does by introducing several
     levels of indirection, but essentially the command is in `gl_localedir_config`,
     which they themselves introduced, by calling it `gl_[$1]_config` (`$1` being `localedir`).
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 他们通过引入几层间接性很好地隐藏了这实际上做了什么，但本质上命令在于 `gl_localedir_config` 中，他们自己通过称之为 `gl_[$1]_config`
+    （其中 `$1` 是 `localedir`）来引入它。
 - en: Then you do `make` and `make install`, but at that point the code is already
     tampered with.
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后你执行 `make` 和 `make install`，但在那时代码已经被篡改了。
 - en: Why did nobody catch this?
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么没人发现这个问题呢？
 - en: Yes, it was obfuscated, but `eval $anything | $SHELL` seems highly suspicious,
     even to my eyes untrained in security analysis. Are open source developers blind?
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 是的，它被混淆了，但是 `eval $anything | $SHELL` 看起来非常可疑，即使对我这个未经安全分析训练的人也是如此。开源开发者是瞎了吗？
 - en: The “magic” of autotools
   id: totrans-split-27
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: “自动工具”的“魔力”
 - en: One really cool feature of autotools is that you don’t have to do every step
     every time. That means that one person does `autoreconf` in one machine which
     will generate the `configure` script, and then package the result so everyone
@@ -147,11 +176,14 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 自动工具的一个非常酷的特性是，你不必每次都执行每个步骤。这意味着一个人在一台机器上运行 `autoreconf` 会生成 `configure` 脚本，然后打包结果，这样其他人只需运行该脚本，即使他们没有安装自动工具。
 - en: One machine might run `./configure` and figure out that [ifunc](https://sourceware.org/glibc/wiki/GNU_IFUNC)
     is not available, but in another machine it would be.
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 一台机器可能运行 `./configure` 并发现 [ifunc](https://sourceware.org/glibc/wiki/GNU_IFUNC)
+    不可用，但在另一台机器上可能可用。
 - en: So the `configure` script is generic, but the resulting `Makefile`s would be
     different in different machines. Therefore when you do `make dist`, the `Makefile`s
     are not included in the tarball, only the `configure` script, which is generated
@@ -159,10 +191,13 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，`configure` 脚本是通用的，但是生成的 `Makefile` 在不同机器上可能会有所不同。因此，当您执行 `make dist` 时，`Makefile`
+    不包括在压缩包中，只有从 `configure.ac` 生成的 `configure` 脚本。
 - en: Pretty neat, right?
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 相当巧妙，对吧？
 - en: 'No, we’ll soon see why it isn’t, but long story short: if tarball `xz-5.6.1.tar`
     contains files that are not part of the git repository, but were generated, what
     stops a malicious actor from modifying those files? **Nothing**. Distributions
@@ -172,6 +207,8 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 不，我们很快就会看到为什么不是这样，但长话短说：如果压缩包 `xz-5.6.1.tar` 包含不在git存储库中的文件，但是已经生成了，有什么能阻止恶意行为者修改这些文件呢？**没有**。发行版必须相信创建压缩包的人没有包含
+    `make dist` 在干净的git检出中没有包含的任何内容，而且这个检查是非常困难的。
 - en: One of those files is `m4/build-to-host.m4`, that is supposed to come from [gnulib](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=m4/build-to-host.m4;h=f466bdbd84abdf60e8305fa7adc12c74d7f05a8a)
     and copied when you run `autoreconf --install`, but the nefarious actors modified
     it. This is the file a lot of analysts are mentioning, because that’s the one
@@ -181,6 +218,9 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 其中一个文件是 `m4/build-to-host.m4`，它应该来自[gnulib](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=m4/build-to-host.m4;h=f466bdbd84abdf60e8305fa7adc12c74d7f05a8a)，并且当您运行
+    `autoreconf --install` 时复制，但是卑劣的行为者对其进行了修改。这是很多分析师提到的文件，因为那里的修改更容易被发现，但实际上并不危险，因为用户不会运行它。危险的修改在于
+    `configure` 脚本中，用户会运行它。
 - en: For example, a Debian maintainer might decide to run `make dist` on his machine,
     compare the result with the official tarball and see that the `configure` script
     is different, but that could be because the official tarball was generated with
@@ -189,17 +229,20 @@
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，Debian 的维护者可能决定在他的机器上运行 `make dist`，将结果与官方压缩包进行比较，并发现 `configure` 脚本不同，但这可能是因为官方压缩包是使用更新版本的autoconf或gnulib生成的。因此，它们不同可能完全是无害的。
 - en: In my experience the files generated by autotools are drastically different
     in different machines because everyone is using different versions of those tools.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据我的经验，由自动工具生成的文件在不同机器上是截然不同的，因为每个人都在使用不同版本的这些工具。
 - en: The convenience of autotools — which generates a `configure` script which doesn’t
     require autotools or a development version of gnulib in order to run — is biting
     us in the ass.
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 自动工具的方便之处在于生成一个不需要自动工具或gnulib开发版本就能运行的 `configure` 脚本，现在正在咬我们的后腿。
 - en: So, `configure.ac` contains a line `AM_GNU_GETTEXT([external])`, that macro
     is inside `m4/gettext.m4`, which calls `gl_BUILD_TO_HOST([localedir])`, that macro
     is inside `m4/build-to-host.m4`. The malicious actors inserted code in that macro,
@@ -208,16 +251,21 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，`configure.ac` 文件包含一行 `AM_GNU_GETTEXT([external])`，该宏位于 `m4/gettext.m4` 中，调用了
+    `gl_BUILD_TO_HOST([localedir])`，该宏位于 `m4/build-to-host.m4` 中。恶意行为者在该宏中插入了代码，然后运行了
+    `autoreconf`，生成了安装了后门的 `configure` 脚本。
 - en: The only reason this was possible in the first place is that GNU Autotools is
     so horrendously complex that **nobody** really checks the mess it generates.
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 最初之所以可能是因为GNU Autotools实在是太复杂了，**没有人**真正检查它生成的混乱。
 - en: Even in an uncompromised tree, the resulting `configure` script is **25,697
     lines** of obfuscated shell script. Good luck finding anything malicious there.
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使在一个未被妥协的代码树中，生成的`configure`脚本也有**25,697行**的混淆Shell脚本。祝你好运，在那里找到任何恶意内容。
 - en: The malicious developers did not have to include their `m4/build-to-host.m4`
     in the tarball, because the `configure` script already contained the tainted code,
     but if some maintainer ran the `autogen.sh` script, `configure` would be regenerated
@@ -228,46 +276,57 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 恶意开发者没有在tarball中包含他们的`m4/build-to-host.m4`，因为`configure`脚本已经包含了受污染的代码，但如果某些维护者运行了`autogen.sh`脚本，`configure`将会用良性版本重新生成。包含m4脚本确保即使在这种情况下，后门也会保留。即使你执行`aclocal
+    --force --install`，恶意的m4脚本仍然存在（由于某种原因，`aclocal`不会复制已经存在的脚本）。
 - en: Totally unnecessary
   id: totrans-split-41
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 完全不必要
 - en: The saddest part of this saga is that autotools is not needed at all. It doesn’t
     serve **any purpose**.
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个悲伤故事中最令人难过的部分是，根本不需要自动工具。它**没有任何用处**。
 - en: 'Let’s create a simple library:'
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们创建一个简单的库：
 - en: '[PRE1]'
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We follow the steps to build a library with libtool and gettext, and then we
     do `make dist`. The resulting files in the tarball contain 52,466 lines: that’s
     more than **fifty thousand lines** to build a library with a single function.'
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们按照使用libtool和gettext构建库的步骤，并执行`make dist`。在tarball中生成的文件包含52,466行：这比一个只有一个函数的库更多，超过**五万行**。
 - en: 'All we really needed to build the library was this:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上我们真正需要构建库的时候只需要这些：
 - en: '[PRE2]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'What on Earth is autotools doing? OK, here’s one check:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 到底自动工具在做什么？好吧，这里有一个检查：
 - en: '[PRE3]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Judging from the dozens of lines of pretty undecipherable code, it seems this
     is trying to compile a C program with C11 features — like anonymous structs —
     without specifying any flags, and if that fails, then try with `-std=gnu11`, if
@@ -275,15 +334,18 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 从几十行看似难以理解的代码来看，似乎这是试图使用C11特性（比如匿名结构体）编译C程序，而没有指定任何标志。如果失败，则尝试使用`-std=gnu11`，如果成功，则在后续的编译中使用该标志。
 - en: Why? I’m not using C11, and I never told autotools to ensure support for C11.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么？我不使用C11，并且我从未告诉自动工具要确保支持C11。
 - en: Imagine the billions of unnecessary checks autotools is doing on god knows how
     many package builds.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下，自动工具正在进行无数不必要的检查，以及在上帝知道多少软件包构建中的情况。
 - en: OK, maybe I’m being unfair, maybe there are cases where these checks are necessary,
     for example when cross compiling to other architectures… But that’s actually my
     area of expertise, and in fact autotools makes cross compilation **more difficult**.
@@ -293,6 +355,7 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 好吧，也许我有些不公平，也许确实有些情况下这些检查是必要的，例如在交叉编译到其他架构时……但这实际上是我的专业领域，事实上自动工具使得交叉编译变得更加**困难**。像[scratchbox2](https://github.com/sailfishos/scratchbox2)这样的项目正是为了应对过多依赖于自动工具运行时检查的代码而创建的。只需谷歌“无法在交叉编译时运行测试程序”。
 - en: 'Back in the days when I was working to create the [Nokia N9](https://en.wikipedia.org/wiki/Nokia_N9),
     I wrote a blog post precisely to explain [why we were using scratchbox](https://felipec.wordpress.com/2009/06/07/installing-scratchbox-1-and-2-for-arm-cross-compilation/),
     and it starts with a case where the `configure` script failed on ARM cross compilation.
@@ -302,37 +365,45 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 当我还在为[Nokia N9](https://en.wikipedia.org/wiki/Nokia_N9)开发时，我写了一篇博客文章，详细解释了为什么我们使用了[scratchbox](https://felipec.wordpress.com/2009/06/07/installing-scratchbox-1-and-2-for-arm-cross-compilation/)，并从一个在ARM交叉编译上`configure`脚本失败的案例开始。解决方案是手动设置系统的特性，例如`ac_cv_func_posix_getgrgid_r=yes`。但如果我们必须手动指定系统具有POSIX兼容的`getgrgid_r`，我们也可以**在Makefile上**做。
 - en: '[PRE4]'
   id: totrans-split-55
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'That’s in fact how you pass configurations to git’s build system, which is
     just Makefiles: `make NO_POSIX_GOODIES=UnfortunatelyYes`. But this is done by
     default for Windows, so you don’t actually need to specify that.'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 这实际上是你如何向git的构建系统传递配置的方式，而git的构建系统只是Makefiles：`make NO_POSIX_GOODIES=UnfortunatelyYes`。但这在Windows上是默认的，所以实际上你不需要指定这个。
 - en: Thanks for nothing autotools.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 感谢autotools一无是处。
 - en: Solve stupid problems
   id: totrans-split-58
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 解决愚蠢的问题
 - en: 'Let’s take a look at one configuration autoconf generates for xz:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们来看看autoconf为xz生成的一个配置：
 - en: '[PRE5]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: What is wrong with `sizeof(size_t)`?
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: '`sizeof(size_t)`有什么问题？'
 - en: Well, according to the comment generated, HP’s C compiler HP92453-01 B.11.11.23709.GP
     has a bug interpreting declarations like `int a3[[(sizeof (unsigned char)) >=
     0]]`, so a cast to a `long int` is needed to get the correct number. Right, but
@@ -346,31 +417,38 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据生成的注释，HP的C编译器HP92453-01 B.11.11.23709.GP在解释类似于`int a3[[(sizeof (unsigned char))
+    >= 0]]`的声明时存在bug，因此需要将其强制转换为`long int`以获取正确的数字。没错，但那是在2001年，为什么我们要强制成千上万的软件包做这个不必要的检查？也许早就修复了。即使没有，如果在HP的错误C编译器中确实存在问题，那这与数组内的`sizeof()`无关。即使`sizeof(size_t)`出现问题，那也是**他们的问题**。如果真的有人试图为该平台编译xz，他们可以简单地修补源代码。为什么**每个人**都需要检查这个问题？
 - en: You don’t put “careful, the coffee is hot” on every cup of coffee just because
     that **one time** when a person burned herself.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 你不会因为那**一次**有人烫伤自己而在每杯咖啡上写上“小心，咖啡很烫”。
 - en: No. Don’t design for the lowest common denominator. It’s prematurely worrying
     about something that will never happen.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 不。不要为最低公共分母设计。这是对一个永远不会发生的事情过早担心。
 - en: “I make up problems, and then I write overly complicated crap code to solve
     them.”
   id: totrans-split-65
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “我编造问题，然后写过于复杂的烂代码来解决它们。”
 - en: '[Linus Torvalds](https://lore.kernel.org/lkml/CAHk-=wgZEHwFRgp2Q8_-OtpCtobbuFPBmPTZ68qN3MitU-ub=Q@mail.gmail.com/)'
   id: totrans-split-66
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '[Linus Torvalds](https://lore.kernel.org/lkml/CAHk-=wgZEHwFRgp2Q8_-OtpCtobbuFPBmPTZ68qN3MitU-ub=Q@mail.gmail.com/)'
 - en: Worry when somebody **actually** has an issue compiling xz with an HP C compiler.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 当有人确实在使用HP的C编译器编译xz时才会担心。
 - en: 'A simple Makefile can build liblzma just fine. As a proof of concept I created
     it in my own liblzma project: [Makefile](https://github.com/felipec/liblzma/blob/master/Makefile).
     It builds and works perfectly fine, although more fine tuning would be needed
@@ -378,20 +456,24 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 一个简单的Makefile可以很好地构建liblzma。作为概念验证，我在自己的liblzma项目中创建了它：[Makefile](https://github.com/felipec/liblzma/blob/master/Makefile)。它构建并工作得非常好，尽管需要更多的微调来支持更多的配置，但对于几个小时的工作来说，这已经不错了。
 - en: The origin of the backdoor
   id: totrans-split-69
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 后门的起源
 - en: After playing around with xz’s build system, it is now clear to me what started
     everything.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 玩弄xz的构建系统之后，我现在清楚地知道了一切的起因。
 - en: '[PRE6]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'In order to properly setup the translations, we need to specify the location
     of the translated files. In my system that location is “/usr/share/locale”. But
     the way that you are supposed to define this variable is with something like the
@@ -400,43 +482,52 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了正确设置翻译，我们需要指定翻译文件的位置。在我的系统中，该位置是“/usr/share/locale”。但你应该用类似于C编译器标志`-DLOCALEDIR=\"/usr/share/locale\"`来定义这个变量，这就是xz所做的：`-DLOCALEDIR=\"$(localedir)\"`。
 - en: 'But according to GNU’s [gettext manual](https://www.gnu.org/software/gettext/manual/html_node/src_002fMakefile.html),
     it should be `-DLOCALEDIR=$(localedir_c_make)`. Here’s part of a generated `Makefile`:'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 但根据GNU的[gettext手册](https://www.gnu.org/software/gettext/manual/html_node/src_002fMakefile.html)，应该是`-DLOCALEDIR=$(localedir_c_make)`。这是生成的Makefile的一部分：
 - en: '[PRE7]'
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: We can clearly see that these two things are equivalent.
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以清楚地看到这两件事是等效的。
 - en: 'gnulib’s m4 macro [build-to-host.m4](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=m4/build-to-host.m4#l51)
     is trying to help by adding the quotes automatically. This is part of the generated
     `configure` script:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: gnulib的m4宏[build-to-host.m4](https://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=blob;f=m4/build-to-host.m4#l51)试图通过自动添加引号来提供帮助。这是生成的`configure`脚本的一部分：
 - en: '[PRE8]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'And right there is where the malicious actors swept in the beginning of their
     exploit:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，恶意行为者开始他们的攻击：
 - en: '[PRE9]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: Weirdly enough the malicious code does look eerily similar to the benign code,
     because both are unnecessarily obfuscated.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 奇怪的是，恶意代码看起来与良性代码非常相似，因为两者都不必要地混淆了。
 - en: This is not some weird macro xz was using, **all** autotools code has that macro,
     at least all the code that uses gettext’s translations with `AM_GNU_GETTEXT()`.
     But even if we all in the industry start to check for modifications to `build-to-host.m4`
@@ -445,44 +536,53 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 这不是某种奇怪的宏，xz使用的**所有**autotools代码都有这个宏，至少所有使用gettext翻译的代码有`AM_GNU_GETTEXT()`。但即使我们在行业中开始严格检查对`build-to-host.m4`的修改，恶意行为者可以简单地修改另一个宏，或者只是`configure`脚本。
 - en: All this just to add quotes to a variable xz’s build system **isn’t even using**.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有这些只是为了给变量xz的构建系统添加引号，**它甚至没有使用**。
 - en: How is this not insane?
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 这怎么不疯狂呢？
 - en: Ain’t nobody got time for that
   id: totrans-split-84
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 没人有时间做那种事。
 - en: 'I do not blame Debian package maintainers nor xz developers for not spotting
     the malicious m4 code: m4 is horrible.'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不责怪Debian软件包维护者或xz开发者未发现那段恶意的m4代码：m4太可怕了。
 - en: 'Here is a completely benign m4 fix I sent to the zsh developers: [autoconf:
     prepare for 2.70](https://www.zsh.org/mla/workers/2020/msg01605.html).'
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '这是我向zsh开发人员发送的一个完全良性的m4修复：[autoconf: prepare for 2.70](https://www.zsh.org/mla/workers/2020/msg01605.html)。'
 - en: Did anybody review that code carefully? Even **I** didn’t want to review my
     own code a couple of months later.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 有人仔细审查过那段代码吗？即使是**我**几个月后也不愿意审查自己的代码。
 - en: I blame them for using autotools. That’s their mistake. Nobody has the time
     to review the mess these tools generate.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 我责怪他们使用autotools。这是他们的错误。没有人有时间审查这些工具生成的混乱。
 - en: No hope
   id: totrans-split-89
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 没有希望。
 - en: 'At this point you may be able to see the level of insanity that autotools brings,
     and the solution is simple: **stop using it**. There’s better build systems like
     [CMake](https://cmake.org/) or [meson](https://mesonbuild.com/) (at least that’s
@@ -490,6 +590,7 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 此时，你可能能看出autotools带来的疯狂程度了，而解决方案很简单：**停止使用它**。还有更好的构建系统，比如[CMake](https://cmake.org/)或[meson](https://mesonbuild.com/)（至少我是这么听说的），但实际上，简单的Makefiles更为优越。
 - en: I was arguing that back in 2010 and nobody listened. I created an entire project
     ([libpurple-mini](https://github.com/felipec/libpurple-mini)) just to be able
     to cross compile using a simple `Makefile` rather than their autotools system
@@ -501,28 +602,33 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在2010年就在争论这个问题，但没有人听我说。我创建了一个完整的项目（[libpurple-mini](https://github.com/felipec/libpurple-mini)），只是为了能够使用简单的`Makefile`进行交叉编译，而不使用他们的autotools系统，这样可以轻松地链接另一个项目到交叉编译库上。libpurple开发者放弃了autotools吗？没有，他们决定维护**两种**构建系统，因为autotools在Windows上不好用。第二个构建系统是`Makefiles`。那为什么不在所有平台上都用Makefiles呢？特别是因为我已经为Linux创建了它们。
 - en: Don’t ask me.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 不要问我。
 - en: Oh yeah, autotools is supposed to help portability, but relies on tools that
     are not easily available on Windows, and does many forks, which Windows is notoriously
     bad at handling. That’s why you are better off using `Makefile`s in Windows.
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 哦，是的，autotools本应帮助可移植性，但却依赖于在Windows上难以获得的工具，并且会进行多次分叉，而Windows在处理这些方面声名狼藉。因此，在Windows上最好使用`Makefile`。
 - en: One of the highlighted aspects of this saga is the burnout of open source developers
     who create great tools entirely for free. That is what pressured the maintainer
     of xz to trust a malicious developer, isn’t it?
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个事件的一个突出方面是开源开发者因为完全免费地创建了出色的工具而感到疲惫。这正是压垮xz的维护者信任恶意开发者的原因，对吗？
 - en: In my opinion Lasse Collin should have held to his reigns and let the project
     stagnate if he didn’t have the time to properly review changes. That’s better
     than hastily accepting contributors.
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我看来，如果拉斯·科林没有时间适当审查更改，他应该坚持自己的控制权，让项目停滞下来。这比草率地接受贡献者要好。
 - en: 'But that is what I did with my [git-remote-hg](https://github.com/felipec/git-remote-hg)
     project — which I authored and worked entirely for free for years — and as a result
     of my caution Debian decided to package a fork instead: debian’s [git-remote-hg](https://packages.debian.org/sid/git-remote-hg),
@@ -533,21 +639,27 @@
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 但这就是我对我的[git-remote-hg](https://github.com/felipec/git-remote-hg)项目所做的事情 ——
+    我完全免费地为这个项目撰写和工作了多年 —— 结果 Debian 决定打包一个分支：debian的[git-remote-hg](https://packages.debian.org/sid/git-remote-hg)，是别人的代码。是的，Debian
+    的维护者们，你们比`git-remote-hg`的作者更了解什么对`git-remote-hg`更好，就像你们比OpenSSH开发者更了解什么是安全的链接（如果他们没有将openssh与libsystemd链接，那么黑客攻击就不可能发生）。
 - en: The truth is that as an open source maintainer working for free you can’t win.
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 事实上，作为一个无偿开源项目的维护者，你是无法赢的。
 - en: 'Some may be thinking that I dislike open source, but it’s the complete opposite.
     I just think 99% of it is badly maintained. And no: closed source is not maintained
     any better.'
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 有些人可能会认为我不喜欢开源，但事实完全相反。我只是觉得99%的开源项目维护得很差。而不，闭源也不会维护得更好。
 - en: Cargo cult
   id: totrans-split-99
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 货物崇拜
 - en: I remember a story about a daughter replicating her mom’s chicken recipe which
     involved cutting away part of it, but when her husband inquired as to **why**
     that was the case, she didn’t know what to answer. When she eventually asked her
@@ -555,6 +667,7 @@
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我记得有一个关于女儿复制她妈妈的炖鸡食谱的故事，其中涉及削掉一部分的步骤，但是当她的丈夫询问为什么这样做时，她不知道该如何回答。最终当她问她妈妈时，答案是“因为鸡不能放在我的锅里”。
 - en: The term [cargo cult](https://en.wikipedia.org/wiki/Cargo_cult) comes from people
     in the islands of Melanesia who devised airplane marshaling gear with coconuts
     in order for planes with cargo to come, after the Westerners left and no more
@@ -562,44 +675,54 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 术语[cargo cult](https://en.wikipedia.org/wiki/Cargo_cult)来源于马兰尼西亚岛上的人们，他们用椰子制作飞机引导设备，以便飞机带货物而来，在西方人离开后，没有更多的飞机来了。
 - en: These Melanesians did not know why the airplane marshals did what they did,
     they simply repeated their actions.
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些美拉尼西亚人不知道飞机引导员为什么要做他们所做的事情，他们只是重复他们的行动。
 - en: 'And that’s the reason people keep using autotools and other complex build systems:
     because nobody stops to think: **why** do I need this? Everyone just repeats what
     everyone else is doing. Just do whatever Stack Overflow says, right?'
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么人们继续使用自动工具和其他复杂的构建系统的原因：因为没有人停下来思考：**为什么**我需要这个？每个人都只是重复别人在做什么。按照 Stack
+    Overflow 的说法做就行了，对吧？
 - en: 'GNU software is the epitome of cargo cult, that’s why their shell scripts are
     riddled with checks like:'
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: GNU 软件是货物崇拜的典范，这就是为什么他们的shell脚本中充斥着像这样的检查：
 - en: '[PRE10]'
   id: totrans-split-105
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: Unless you live in 1995, the x-hack is [not necessary](https://www.vidarholen.net/contents/blog/?p=1035),
     and even in the cases where it was, it’s when `$foo` contains special characters,
     **not** when the string is just “yes” or “no”.
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 除非你生活在1995年，x-hack是[不必要的](https://www.vidarholen.net/contents/blog/?p=1035)，即使在它必要的情况下，也是当`$foo`包含特殊字符时，而**不是**字符串只是“yes”或“no”。
 - en: GNU developers would rather keep doing things like they were done in the 1990s
     (although even then it was a bad practice) and complicate billions of scripts
     rather than think for two seconds and ask **why** they are doing that.
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: GNU 开发者宁愿继续像在1990年代那样做事情（尽管即使那时候也是一种不好的做法），并且使数十亿个脚本复杂化，而不是停下来思考两秒钟并问**为什么**他们这样做。
 - en: Let’s all keep doing what we have been doing for decades and never question
     why.
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们继续做我们几十年来一直在做的事情，永远不要质疑为什么。
 - en: What’s the worst thing that could happen?
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 最坏的事情会发生什么？
