@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:41:15'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:41:15'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Rust data structures with circular references - Eli Bendersky's website
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust数据结构与循环引用 - Eli Bendersky的网站
 - en: 来源：[https://eli.thegreenplace.net/2021/rust-data-structures-with-circular-references/](https://eli.thegreenplace.net/2021/rust-data-structures-with-circular-references/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://eli.thegreenplace.net/2021/rust-data-structures-with-circular-references/](https://eli.thegreenplace.net/2021/rust-data-structures-with-circular-references/)
 - en: '*November 12, 2021 at 20:30* *Tags [Rust](https://eli.thegreenplace.net/tag/rust)*
     *To implement its safety guarantees, the Rust compiler keeps careful track of
     ownership and references throughout a program. This makes writing certain kinds
@@ -32,10 +38,12 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: '*2021年11月12日20:30* *标签 [Rust](https://eli.thegreenplace.net/tag/rust)* *为了实现其安全性保证，Rust编译器在整个程序中精确跟踪所有权和引用。这使得编写某些类型的数据结构变得具有挑战性；特别是具有循环引用的数据结构。'
 - en: 'Let''s start with a simple binary tree:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从一个简单的二叉树开始：
 - en: '[PRE0]'
   id: totrans-split-8
   prefs: []
@@ -47,6 +55,7 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于Rust编译器应能在编译时计算结构体的大小，`left`和`right`通常使用堆分配的`Box`。这些盒子被包装在`Option`中，因为节点的左子节点或右子节点可能为空。
 - en: Now suppose we want to add a *parent* link to every node. This is useful for
     certain tree structures; for example, in a [binary search tree](https://en.wikipedia.org/wiki/Binary_search_tree)
     (BST), a parent link can be used to efficiently find the successor of a node.
@@ -54,11 +63,13 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在假设我们想为每个节点添加一个*父链接*。这对于某些树结构很有用；例如，在[二叉搜索树](https://zh.wikipedia.org/wiki/%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91)（BST）中，父链接可用于高效地查找节点的后继节点。我们该如何做呢？
 - en: The "obvious" approach fails
   id: totrans-split-11
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: “显而易见”的方法失败了
 - en: 'We can''t just add a `parent: Option<Box<Node>>` field to `Node`, because that
     would imply that a node owns its parent; this is clearly wrong. In fact, our original
     `Node` definition already makes it clear that a parent owns its children, not
@@ -66,11 +77,13 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '我们不能简单地向`Node`添加一个`parent: Option<Box<Node>>`字段，因为这将意味着节点拥有其父节点；显然这是错误的。事实上，我们最初的`Node`定义已经清楚地表明，父节点拥有其子节点，而不是反过来。'
 - en: 'So we probably want to add a *reference* instead; a parent owns its children,
     but a child may *refert to* a parent. That sounds right; let''s try it:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我们可能想要添加一个*引用*而不是一个父链接；父节点拥有其子节点，但子节点可能*指向*父节点。听起来合理；让我们试试：
 - en: '[PRE1]'
   id: totrans-split-14
   prefs: []
@@ -83,6 +96,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust将拒绝编译此代码，并要求显式生命周期参数。当我们将引用存储在结构字段中时，Rust希望知道此引用的生命周期如何与结构本身的生命周期相关联。公平地说，我们可以这样做：
 - en: '[PRE2]'
   id: totrans-split-16
   prefs: []
@@ -100,16 +114,19 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在生命周期是明确的：我们告诉编译器，`parent`引用的生命周期与`Node`本身相同。这个结构定义将会编译通过，但编写实际操作它的代码将很快与借用检查器发生冲突。考虑一下插入新子节点到当前节点的代码；要改变当前节点，必须在范围内拥有可变引用。与此同时，新子节点的父链接是指向该节点的引用。借用检查器不允许我们创建对已经有活跃可变引用的对象的引用；它也不允许我们在任何其他引用活动时修改对象。
 - en: As an exercise, try to write an insertion method for the tree using this `Node`
     definition; you'll run into the problem fairly quickly.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为练习，请尝试使用这个`Node`定义编写树的插入方法；你会很快遇到问题。
 - en: Now what?
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 现在怎么办？
 - en: Clearly, the "obvious" way doesn't work. And indeed, thinking about it from
     first principles, it shouldn't. In this post I'm using BSTs with parent links
     as a simple case study, but there are even more obvious (and perhaps more useful)
