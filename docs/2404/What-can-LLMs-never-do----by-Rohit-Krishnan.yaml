@@ -368,23 +368,27 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也显示了同样的问题。它无法预测中间状态，然后从那一点开始工作，因为它试图完全通过预测来学习下一个状态。如果有足够的权重和层，它可能能够在某种程度上模仿这样的递归函数运行的外观，但它实际上无法模仿它。
 - en: The normal answer is to try, as with Wordle before, by doing chain-of-thought
     or repeated LLM calls to go through this process.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 像之前的Wordle一样，尝试的常规答案是通过思维链或重复的LLM调用来进行这个过程。
 - en: And just as with Wordle, unless you atomise the entire input, force the output
     only token by token, it still gets it wrong. Because the attention inevitably
     drifts and this only works with a high degree of precision.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 就像Wordle一样，除非你将整个输入分解，强制仅以标记为单位输出，否则它仍然会出错。因为注意力不可避免地会漂移，这只有在高度精确的情况下才有效。
 - en: Now you might be able to take the next greatest LLM which shows its attention
     doesn’t drift, though we’d have to examine its errors to see if the failures are
     of a similar form or different.
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你可能能够接受下一个最伟大的LLM，显示它的注意力不会漂移，尽管我们必须检查它的错误，看看失败是相似的形式还是不同的。
 - en: Bear with me for a section. At this point I thought I should be able to teach
     the basics here, because you could generate infinite data as you kept training
     until you got the result that you wanted. So I decided to code a small model to
@@ -392,50 +396,59 @@
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 请稍等片刻。在这一点上，我认为我应该能够在这里教授基础知识，因为你可以生成无限的数据，只要你持续训练，直到得到你想要的结果。所以我决定编写一个小模型来预测这些。
 - en: Below are the actual grids - left is CA and right is Transformer output. See
     if you can tell them apart.
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是实际的网格 - 左边是CA，右边是Transformer的输出。看看你能否分辨出它们。
 - en: So … turns out it couldn’t be trained to predict the outcome. And I couldn't
     figure out why. Granted, these were toy transformers, but still they worked on
     various equations I tried to get them to learn, even enough to generalise a bit.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以... 结果是它无法被训练来预测结果。我也搞不清楚为什么。尽管这些都是玩具变压器，但它们仍然可以处理我试图让它们学习的各种方程，甚至可以稍微概括一下。
 - en: I serialised the Game of Life inputs to make it easier to see, second line is
     the Cellular Automata output (the right one), and the Transformer output is the
     third line. They’re different.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我序列化了生命游戏的输入以便更容易查看，第二行是细胞自动机的输出（正确的输出），变压器的输出是第三行。它们是不同的。
 - en: So I tried smaller grids, various hyperparam optimisations, kitchen sink, still
     nope.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我尝试了更小的网格，各种超参数优化，厨房水槽，但仍然不行。
 - en: Then I thought maybe the problem was that it needs more information about the
     physical layout. So I added convolutional net layers to help, and changed positional
     embeddings to be explicit about X and Y axes separately. Still nope.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 随后我想也许问题在于它需要更多关于物理布局的信息。所以我添加了卷积网络层来帮助，并且改变了位置嵌入，明确分别指定了X轴和Y轴。但还是不行。
 - en: Then I really got dispirited and tried to teach it a very simple equation in
     the hope that I wasn't completely incompetent.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我真的感到气馁，试图教它一个非常简单的方程，希望我不是完全无能。
 - en: (Actually at first even this didn't work at all and I went into a pit of despair,
     but a last ditch effort to simply add start and stop tokens made it all work.
     Transformers are weird.)
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: （实际上一开始甚至这都完全没用，我陷入了绝望之中，但最后一搏，简单地添加起始和停止标记，一切都起作用了。变压器很奇怪。）
 - en: Scaling isn’t perfect but then it barely has any heads or layers and max_iter
     was 1000, and clearly it’s getting there.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 缩放并不完美，但是它几乎没有任何头或层，并且max_iter是1000，显然它正在接近。
 - en: So I figured the idea was that clearly it needs to learn to many states and
     keep in mind the history, which meant I needed to somehow add that ability. So
     I even tried changing the decoder to add another input after the output, which
@@ -444,10 +457,12 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以我想这个想法很明显，它需要学习许多状态并记住历史，这意味着我需要以某种方式添加这种能力。所以我甚至尝试改变解码器，在输出之后添加另一个输入，这相当于添加了另一个RNN（递归神经网络）层，或者说给它记住我们之前做过的步骤的记忆。
 - en: But alas, still no.
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 但不幸的是，依然不行。
 - en: Even if you then go back to cellular automata, starting with the [elementary
     ones](https://mathworld.wolfram.com/ElementaryCellularAutomaton.html), things
     don’t work out. And that’s 1 dimensional, and there are even some really easy
@@ -734,12 +749,14 @@
   id: totrans-split-103
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是，即使像GPT-4或Opus这样的东西甚至在玩Wordle游戏时都失败了，即使Devin能解决它，构建一个1000倍Devin是否真的是正确答案？
 - en: 'The exam question is this: If there exists classes of problems that someone
     in an elementary school can easily solve but a trillion-token billion-dollar sophisticated
     model cannot solve, what does that tell us about the nature of our cognition?'
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 考试的问题是：如果存在一类问题，一个小学生可以轻松解决，但万亿令牌、价值数十亿美元的复杂模型无法解决，这对我们认知本质有何启示？
 - en: The bigger issue is that if everything we are saying is correct then almost
     by definition we cannot get close to a reasoning machine. The reason being G in
     AGI is the hard part, it can all generalise easily beyond its distribution. Even
@@ -748,6 +765,7 @@
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 更大的问题在于，如果我们说的一切都是正确的，那么几乎可以通过定义，我们无法接近一个推理机。原因在于AGI中的G是难点，它可以轻松地超越其分布。尽管这不可能发生，[我们可以接近创造一个人工科学家](https://www.amazon.com/Building-God-Demystifying-Decision-Makers-ebook/dp/B0CJ9F327M)，它将有助于推动科学进步。
 - en: What we have is closer to a slice of the library of Babel where we get to read
     not just the books that are already written, but also the books that are close
     enough to the books that are written that the information exists in the interstitial
@@ -755,11 +773,13 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们拥有的更接近于巴别塔图书馆的一个切片，我们不仅可以阅读已经写好的书籍，还可以阅读接近已经写好的书籍的书籍，信息存在于这些书籍之间的间隙中。
 - en: But it is also an excellent example of the distinction between Kuhn's paradigms.
     Humans are ridiculously [bad at judging the impacts of scale](https://www.strangeloopcanon.com/p/llms-have-special-intelligence-not).
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 但它也是区分库恩范式的绝佳示例。人类在判断规模影响时很差劲，[一个链接](https://www.strangeloopcanon.com/p/llms-have-special-intelligence-not)。
 - en: They have been trained on more information than a human being can hope to even
     see in a lifetime. Assuming a human can read 300 words a min and 8 hours of reading
     time a day, they would read over a 30,000 to 50,000 books in their lifetime. Most
@@ -769,6 +789,8 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 它们接受的训练信息比一个人在一生中希望看到的信息还要多。假设一个人可以每分钟阅读300个单词，每天阅读8小时，他们一生可能会读30000到50000本书。大多数人可能最多只能读到这些书籍的一个微薄子集，至多1%。这充其量是1
+    GB的数据。
 - en: LLMs on the other hand, have imbibed everything on the internet and much else
     besides, hundreds of billions of words across all domains and disciplines. GPT-3
     was trained on 45 terabytes of data. Doing the same math of 2MB per book that’s
@@ -777,6 +799,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 另一方面，LLM不仅仅吸收了互联网上的一切，还有许多其他内容，跨越所有领域和学科的数百亿字。GPT-3是在45 TB的数据上训练的。按每本书2MB计算，这大约是2250万本书。
 - en: What would it look like if someone read 2 million books is not a question to
     which we have a straight line or even an exponential extrapolated answer. What
     would even a simple pattern recogniser be able to do if it read 2 million books
@@ -788,12 +811,14 @@
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果有人读了200万本书，它会是什么样子，并不是一个我们能给出直接或者甚至是指数推断答案的问题。如果一个简单的模式识别器读了200万本书，它能做到什么程度也是一个问题，我们并没有一个简单的答案。问题在于LLM学习训练数据中的模式和隐含规则，但不容易将其明确化。除非LLM有办法知道哪些模式匹配与哪些方程相关，否则它无法学会推广。这就是为什么我们仍然有逆转诅咒。
 - en: Whether an LLM is like a really like an entity, or it is like a neuron, or it
     is like a part of a neocortex, are all useful metaphors at certain points but
     none of them quite capture the behaviour we see from them.
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: LLM是否像一个实体，或者像一个神经元，或者像新皮质的一部分，这些在某些时候都是有用的比喻，但没有一个完全捕捉到我们从它们那里看到的行为。
 - en: The interesting part of models that can learn patterns is that it learns patterns
     which we might not have explicitly incorporated into the data set. It started
     off by learning language, however in the process of doing that it also figured
@@ -803,6 +828,7 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 能够学习模式的模型的有趣部分在于，它学习了我们可能没有明确纳入数据集的模式。它开始学习语言，但在这个过程中，它还发现了数据中存在的多个链接，使得它能够将冯·诺伊曼与查尔斯·狄更斯联系起来，并输出一个足够逼真的模拟品，我们可能会做到。
 - en: Even assuming the datasets encode the entire complexity of humanity inherent
     inside it the sheer number of such patterns that exists even within the smaller
     data set will quickly overwhelm the size of the model. This is almost a mathematical
@@ -810,12 +836,14 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使假设数据集编码了其内在的整个人类复杂性，存在于较小数据集中的这类模式的数量也会迅速超过模型的大小。这几乎是数学上的必然性。
 - en: And similar to the cellular automata problems we tested earlier, it’s unclear
     whether it truly learnt the method or how reliable it is. Because their mistakes
     are better indicators of what they don’t know than the successes.
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 与我们之前测试过的细胞自动机问题类似，目前尚不清楚它是否真正学会了这种方法或者其可靠性如何。因为他们的错误更能显示出他们不知道的东西，而不是成功。
 - en: The other point about larger neural nets was that they will not just learn from
     the data, but learn to learn as well. Which it clearly does which is why you can
     provide it a couple of examples and have it do problems which it has not seen
@@ -824,6 +852,7 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 关于更大的神经网络的另一个观点是，它们不仅会从数据中学习，还会学会学习。它显然做到了这一点，这就是为什么你可以提供一些例子，让它处理训练集中从未见过的问题。但它们使用的方法似乎不够泛化，绝对不能像学习在哪里集中注意力那样泛化。
 - en: Learning to learn is not a single global algorithm even for us. It works better
     for some things and worse for others. It works in different ways for different
     classes of problems. And all of it has to be written into the same number of parameters
@@ -833,6 +862,7 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 学会学习并非对我们来说是一个单一的全局算法。对某些事物效果更好，对其他事物则更差。它在不同类型的问题上以不同的方式工作。所有这些都必须写入相同数量的参数中，以便通过这些权重进行计算，可以回答关于木偶的问题，并告诉我将毁掉弦理论的下一个最伟大的物理发现。
 - en: If symbols in a sequence interact in a way that the presence or position of
     one symbol affects the information content of the next, the dataset's overall
     Shannon entropy might be higher than what's suggested by looking at individual
@@ -841,12 +871,14 @@
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果序列中的符号以一种方式相互作用，其中一个符号的存在或位置会影响下一个符号的信息内容，那么数据集的整体Shannon熵可能会高于仅通过查看单个符号所建议的内容，这将使像康威生命游戏这样状态相关的事物变得非常困难。
 - en: Which is also why despite being fine-tuned on a Game Of Life dataset even GPT
     doesn’t seem to be able to actually learn the pattern, but instead learns enough
     to answer the question. A particular form of goodharting.
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也是为什么即使在生命游戏数据集上进行了精调，即使GPT也似乎无法真正学习到模式，而是学会了足够回答问题。一种特定形式的Goodhart现象。
 - en: (Parenthetically asking for a gotcha question to define any single one of these
     in a simple test such that you can run it against and llm is also a silly move,
     when you consider that to define any single one of them is effectively the scientific
@@ -854,6 +886,7 @@
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: （在括号中要求一个捉弄性的问题，以定义任何一个这些问题中的单个问题，以便你可以对其进行测试，并运行它对一个llm的笨蛋问题，这也是一个愚蠢的举动，当你考虑到定义任何一个这些问题实际上是科学研究大纲的一半世纪或更长时间。
 - en: It also means that similar to the current theory, **adding more recursion to
     the llm models of course will make them better.** But only as long as you are
     able to keep the original objective in mind and the path so far in mind you should
@@ -861,6 +894,7 @@
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也意味着，类似于当前的理论，**向llm模型添加更多递归当然会使它们变得更好**。但只要你能记住原始目标和迄今为止的路径，你应该能够逐步解决更复杂的规划问题。
 - en: And it’s still unclear as to why it is not reliable. GPT 4 is more reliable
     compared to 3.5, but I don't know whether this is because we just got far better
     at training these things or whether scaling up makes reliability increase and
@@ -972,10 +1006,12 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 尽管如此，DeepSeek-VL-7B显示了数学（GSM8K）方面的某种程度下降，这表明尽管努力促进视觉和语言模态之间的和谐，它们之间仍然存在竞争关系。这可能归因于模型容量有限（7B），更大的模型可能会显著缓解这一问题。
 - en: So, here’s what we have learnt.
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以，这就是我们学到的。
 - en: There exists certain classes of problems which can’t be solved by LLMs as they
     are today, the ones which require longer series of reasoning steps, especially
     if they’re dependent on previous states or predicting future ones. Playing Wordle
@@ -984,6 +1020,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 存在某些类型的问题，今天的LLMs无法解决，尤其是那些依赖于先前状态或预测未来状态的较长推理步骤。玩Wordle或预测CA都是这种情况的例子。
 - en: With larger LLMs, we can [teach it reasoning](https://github.com/VictorTaelin/ab_challenge_eval/blob/main/users/futuristfrog/prompt.txt),
     somewhat, by giving it step by step information about the problem and multiple
     examples to follow. This, however, abstracts the actual problem and puts the way
@@ -992,6 +1029,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 借助更大的LLMs，我们可以[教会它推理](https://github.com/VictorTaelin/ab_challenge_eval/blob/main/users/futuristfrog/prompt.txt)，在一定程度上，通过为其提供关于问题的逐步信息和多个示例来跟随。然而，这抽象了实际问题，并将思考答案的方式置于提示中。
 - en: This gets better with a) better prompting, b) intermediate access to memory
     and compute and tools. But it will not be able to reach generalisable sentience
     the way we use that word w.r.t humans. **Any information we’ve fed the LLM can
@@ -1000,6 +1038,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 通过a)更好的提示，b)中间访问内存和计算工具，它会变得更好。但是它将无法像我们对待人类那样使用那个词来达到可泛化的感知能力。**只要我们向LLM提供了信息，凭借合适的提示，它可能会回答出来。**
 - en: Therefore, an *enormous* part of using the models properly is the prompt them
     properly per the task at hand. This might require carefully constructing long
     sequences of right and wrong answers for computational problems, to prime the
@@ -1008,6 +1047,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 因此，正确使用这些模型的**巨大**一部分是根据手头任务正确提示它们。这可能需要精心构造长序列的正确和错误答案来解决计算问题，以引导模型适当地回复，同时设定外部的保护栏。
 - en: This, because ‘attention’ suffers from goal drift, is really hard to make reliable
     without significant external scaffolding. The mistakes LLMs make are ***far more
     instructive*** than their successes.
@@ -1015,6 +1055,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 因为“注意力”容易发生目标偏移，所以在没有显著的外部支持的情况下，这真的很难保证可靠性。LLMs犯的错误***比它们的成功更有启发性***。
 - en: I think to hit AGI, to achieve sufficient levels of generalisation, we need
     fundamental architectural improvements. Scaling up existing models and adding
     new architectures like Jamba etc will make them more efficient, and work faster,
@@ -1023,6 +1064,7 @@
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为要实现AGI，要达到足够的泛化水平，我们需要基本的架构改进。扩展现有模型并添加新的架构如Jamba等将使它们更有效、工作更快、更可靠。但它们并没有解决泛化或“目标偏移”缺乏的根本问题。
 - en: Even adding specialised agents to do “prompt engineering” and adding 17 GPTs
     to talk to each other won’t quite get us there, though with enough kludges the
     results might be indistinguishable in the regions we care about. When Chess engines
@@ -1034,12 +1076,14 @@
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 即使添加专门的代理进行“提示工程”并添加17个GPT来彼此交流，也不完全能达到我们的目标，尽管通过足够多的修补，结果在我们关心的领域可能是无法区分的。当象棋引擎首次出现时，早期AI的日子里，它们拥有有限的处理能力和几乎没有真正有用的搜索或评估功能。因此，你必须依赖于修补，比如硬编码的开局或残局，用于更好的搜索的迭代加深，alpha-beta剪枝等等。最终它们通过增量改进克服了这些问题，正如我们在LLMs中所做的那样。
 - en: An idea I’m partial to is multiple planning agents at different levels of hierarchies
     which are able to direct other specialised agents with their own sub agents and
     so on, all interlinked with each other, once reliability gets somewhat better.
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: 我倾向于的一个想法是在不同层次的层级中有多个规划代理，它们能够指导其他具有自己子代理的专业代理等等，所有这些代理相互连接，一旦可靠性稍微提高。
 - en: We might be able to add modules for reasoning, iteration, add persistent and
     random access memories, and even provide an understanding of physical world. At
     this point it feels like we should get the approximation of sentience from LLMs
@@ -1049,12 +1093,14 @@
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可能能够添加推理、迭代、添加持久和随机访问记忆的模块，甚至提供对物理世界的理解。在这一点上，我们似乎应该像从动物那里获得一样，从LLMs获得“足够规模化的统计数据与智能相仿”，但我们会吗？它也可能最终成为一个极具说服力的统计模型，模仿我们需要的内容，同时在分布之外失败。
 - en: Which is why I call LLMs [fuzzy processors](https://www.strangeloopcanon.com/p/beyond-google-to-assistants-with).
     Which is also why the end of asking things like “what is it like to be an LLM”
     ends up in circular conversations.
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 这也是为什么我称LLMs为[模糊处理器](https://www.strangeloopcanon.com/p/beyond-google-to-assistants-with)。这也是为什么像“LLM是什么样”的问题最终会导致循环对话的结束。
 - en: Absolutely none of this should be taken as any indication that what we have
     today is not miraculous. Just because I think the bitter lesson is not going to
     extrapolate all the way towards AGI does not mean that the fruits we already have
@@ -1062,6 +1108,7 @@
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 绝对不能将这些中的任何一点视为今天拥有的不是奇迹。仅仅因为我认为苦涩的教训不会一直推广到通用人工智能，并不意味着我们已经拥有的成果不是非凡的。
 - en: I am completely convinced that the LLMs do “learn” from the data they see. They
     are not simple compressors and neither are they parrots. They are able to connect
     nuanced data from different parts of their training set or from the prompt, and
@@ -1069,6 +1116,7 @@
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 我完全相信LLMs确实从它们看到的数据中“学习”。它们不是简单的压缩器，也不是鹦鹉。它们能够连接来自训练集不同部分或提示的细微数据，并提供智能响应。
 - en: Thomas Nagel, were he so inclined, would probably have asked the question of
     what it is like to be an LLM. Bats are closer to us as mammals than LLMs, and
     if their internals are a blur to us, what chance do we have to understand the
@@ -1078,6 +1126,7 @@
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果汤姆·纳格愿意的话，他可能会问LLM是什么样的问题。蝙蝠作为哺乳动物，比LLMs更接近我们，如果它们的内部对我们来说是一片模糊，那么我们有什么机会去理解新模型的内部功能呢？或者相反，因为对于LLMs，我们可以自由地检查每一个权重和电路，那么我们可能会对我们使用的这些模型有怎样的洞察呢？
 - en: Which is why I am officially willing to bite the bullet. **Sufficiently scaled
     up statistics is indistinguishable from intelligence, within the distribution
     of the training data**. Not for everything and not enough to do everything, but
@@ -1086,6 +1135,7 @@
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是为什么我正式愿意接受这一现实。**在训练数据分布内，足够规模化的统计学几乎无法区分是否具有智能**。虽然不是对所有事情都有效，也不足以完成所有事情，但这并不是幻影。这就是为什么从测试中得到的错误比成功更有用于诊断的原因。
 - en: If LLMs are an [anything to anything machine](https://www.strangeloopcanon.com/p/generative-ai-or-the-anything-from),
     then we should be able to get it to do most things. Eventually and with much prodding
     and poking. Maybe not inspire it to Bach's genius, or von Neumann's genius, but
@@ -1096,3 +1146,4 @@
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果LLMs是一个[任意到任意的机器](https://www.strangeloopcanon.com/p/generative-ai-or-the-anything-from)，那么我们应该能够让它做大多数事情。最终，通过大量的敦促和刺激。也许不能启发它像巴赫或冯·诺伊曼那样的天才，但是可以进行更为普通但同样重要的创新和发现。并且我们可以在不需要它具有意识或道德人格的情况下完成这些。如果我们能够自动化或加速库恩所写关于范式内跨越的跃迁，那么我们就能自由地在不同范式之间跃迁。
