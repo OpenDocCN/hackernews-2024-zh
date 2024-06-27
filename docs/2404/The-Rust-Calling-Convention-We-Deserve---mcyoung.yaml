@@ -135,10 +135,12 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: Clang 不仅生成明显*糟糕*的代码来通过值传递东西，而且如果你请求标准调用约定，它也知道如何更好地做到这一点！我们可以生成比 Clang 更好得多的代码，但我们没有！
 - en: Hereforth, I will describe how to do it.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 从此处开始，我将描述如何做到这一点。
 - en: Let’s suppose that we keep the current calling convention for `extern "Rust"`^(,
     but we add a flag `-Zcallconv` that sets the calling convention for `extern "Rust"`
     when compiling a crate. The supported values will be `-Zcallconv=legacy` for the
@@ -147,6 +149,7 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们保留`extern "Rust"`的当前调用约定^(，但在编译 crate 时添加一个`-Zcallconv`标志来设置`extern "Rust"`的调用约定。支持的值将是`-Zcallconv=legacy`用于当前的调用约定，以及`-Zcallconv=fast`用于我们将要设计的调用约定。我们甚至可以让`-O`自动设置`-Zcallconv=fast`)。
 - en: Why keep the old calling convention? Although I did sweep debugability under
     the rug, one nice property `-Zcallconv=fast` will not have is that it does not
     place arguments in the C ABI order, which means that a reader replying on the
@@ -154,6 +157,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么保留旧的调用约定？尽管我没有详细讨论调试性能，但`-Zcallconv=fast`不会有的一个好特性是它不会按照C ABI顺序放置参数，这意味着在x86上依赖“戴安娜的丝绸裙子花了89美元”这样的助记符的读者将会感到相当困惑。
 - en: I am also assuming we may not even support `-Zcallconv=fast` for some targets,
     like WASM, where there is no concept of “registers” and “spilling”. It may not
     even make sense to enable it for for debug builds, because it will produce much
@@ -161,6 +165,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还假设我们甚至可能不支持对一些目标（如 WASM）启用`-Zcallconv=fast`，在那里没有“寄存器”和“溢出”的概念。在调试构建中甚至可能不值得启用它，因为在关闭优化时它会生成更糟糕的代码。
 - en: There is also a mild wrinkle with function pointers, and `extern "Rust" {}`
     blocks. Because this flag is per-crate, even though functions can advertise which
     version of `extern "Rust"` they use, function pointers have no such luxury. However,
@@ -170,10 +175,14 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数指针也有一个小问题，以及`extern "Rust" {}`块。因为这个标志是每个 crate 的，即使函数可以宣布它们使用哪个版本的`extern
+    "Rust"`，函数指针却没有这种奢侈。但通过函数指针调用是缓慢和罕见的，所以我们可以简单地强制它们使用`-Zcallconv=legacy`。我们可以生成一个
+    shim 来根据需要转换调用约定。
 - en: 'Similarly, we can, in principle, call any Rust function like this:'
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 类似地，原则上我们可以这样调用任何 Rust 函数：
 - en: '[PRE4]'
   id: totrans-split-27
   prefs: []
@@ -184,6 +193,7 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，这种机制只能用于调用未混淆的符号。因此，我们可以简单地强制`#[no_mangle]`符号使用传统的调用约定。
 - en: In an ideal world, LLVM would provide a way for us to specify the calling convention
     directly. E.g., this argument goes in that register, this return goes in that
     one, etc. Unfortunately, adding a calling convention to LLVM requires writing
@@ -191,17 +201,20 @@
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 在理想的情况下，LLVM可以提供一种直接指定调用约定的方法。例如，这个参数放在那个寄存器中，这个返回值放在那个寄存器中等等。不幸的是，向LLVM添加调用约定需要编写大量的C++代码。
 - en: However, we can get away with specifying our own calling convention by following
     the following procedure.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，我们可以通过以下过程设定自己的调用约定，来摆脱这个问题。
 - en: First, determine, for a given target triple, the maximum number of values that
     can be passed “by register”. I will explain how to do this below.
   id: totrans-split-31
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 首先，确定给定目标三元组的“通过寄存器”传递的最大值。我将在下面解释如何做到这一点。
 - en: Decide how to pass the return value. It will either fit in the output registers,
     or it will need to be returned “by reference”, in which case we pass an extra
     `ptr` argument to the function (tagged with the `sret` attribute) and the actual
@@ -210,6 +223,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 决定如何传递返回值。它要么适合于输出寄存器中，要么需要通过“引用”返回，这种情况下我们向函数传递一个额外的`ptr`参数（带有`sret`属性的标记），函数的实际返回值是该指针。
 - en: Decide which arguments that have been passed by value need to be demoted to
     being passed by reference. This will be a heuristic, but generally will be approximately
     “arguments larger than the by-register space”. For example, on x86, this comes
@@ -218,6 +232,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 决定哪些通过值传递的参数需要降级为通过引用传递。这将是一个启发式方法，但通常大约是“大于通过寄存器空间的参数”。例如，在x86上，这大约是176字节。
 - en: Decide which arguments get passed by register, so as to maximize register space
     usage. This problem is NP-hard (it’s the knapsack problem) so it will require
     a heuristic. All other arguments are passed on the stack.
@@ -225,6 +240,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 决定哪些参数通过寄存器传递，以最大化寄存器空间的使用。这个问题是NP-hard（它是背包问题），因此需要启发式算法。所有其他参数都通过堆栈传递。
 - en: Generate the function signature in LLVM IR. This will be all of the arguments
     that are passed by register encoded as various non-aggregates, such as `i64`,
     `ptr`, `double`, and `<2 x i64>`. What valid choices are for said non-aggregates
@@ -234,6 +250,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在LLVM IR中生成函数签名。这将是作为各种非聚合体传递的所有参数，例如`i64`、`ptr`、`double`和`<2 x i64>`。对于这些非聚合体的有效选择取决于目标，但在64位架构上通常会得到上述内容。在“寄存器输入”后，将传递到堆栈上的参数。
 - en: Generate a function prologue. This is code to decode each Rust-level argument
     from the register inputs, so that there are `%ssa` values corresponding to those
     that would be present when using `-Zcallconv=legacy`. This allows us to generate
@@ -243,6 +260,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 生成函数序言。这是从寄存器输入解码每个Rust级别参数的代码，使得在使用`-Zcallconv=legacy`时存在与其对应的`%ssa`值。这使我们能够生成函数主体的相同代码，无论调用约定如何。冗余的解码代码将被DCE
+    passes消除。
 - en: Generate a function exit block. This is a block that contains a single `phi`
     instruction for the return type as it would be for `-Zcallconv=legacy`. This block
     will encode it into the requisite output format and then `ret` as appropriate.
@@ -251,6 +270,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 生成函数退出块。这是一个包含单个`phi`指令的块，用于返回类型，就像在`-Zcallconv=legacy`时那样。该块将其编码为所需的输出格式，然后根据需要`ret`。所有函数的退出路径都应该`br`到这个块，而不是直接`ret`。
 - en: If a non-polymorphic, non-inline function may have its address taken (as a function
     pointer), either because it is exported out of the crate or the crate takes a
     function pointer to it, generate a shim that uses `-Zcallconv=legacy` and immediately
@@ -260,6 +280,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果一个非多态、非内联函数可能会被取地址（作为函数指针），要么因为它被导出到创建外，要么因为创建获取了指向它的函数指针，则生成一个使用`-Zcallconv=legacy`并立即尾调用真实实现的适配器。这是为了保留函数指针的相等性是必要的。
 - en: The main upshot here is that we need to cook up heuristics for figuring out
     what goes in registers (since we allow reordering arguments to get better throughput).
     This is equivalent to the knapsack problem; knapsack heuristics are beyond the
@@ -271,6 +292,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 主要影响在于我们需要制定启发式算法来确定哪些内容应放入寄存器（因为我们允许重新排序参数以提高吞吐量）。这相当于背包问题；背包启发式算法超出了本文的范围。这应尽早发生，以便将此信息塞入`rmeta`中，避免需要重新计算。我们可能希望根据`-Copt-level`使用不同的、更快的启发式算法。请注意，正确性要求我们禁止链接由多个不同Rust编译器生成的代码，这已经是事实，因为Rust从发布到发布会改变ABI。
 - en: 'Assuming we do that, how do we actually get LLVM to pass things in the way
     we want it to? We need to determine what the largest “by register” passing LLVM
     will permit is. The following LLVM program is useful for determining this on a
@@ -278,6 +300,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设我们这样做了，我们如何确保LLVM实际上按我们希望的方式传递内容？我们需要确定LLVM允许的最大“按寄存器”传递是什么。以下是在特定版本的LLVM上确定这一点的有用LLVM程序：
 - en: '[PRE5]'
   id: totrans-split-41
   prefs: []
@@ -290,6 +313,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 当你将一个聚合体按值传递给LLVM函数时，LLVM会尝试将该聚合体“展开”为尽可能多的寄存器。不同系统上有不同的寄存器类。例如，在x86和ARM上，浮点数和向量共享同一寄存器类（某种意义上）。
 - en: The above values are for x86^(. LLVM will pass six integers and eight SSE vectors
     by register, and return half as many (3 and 4) by register. Increasing any of
     the values generates extra loads and stores that indicate LLVM gave up and passed
@@ -297,21 +321,25 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述值适用于x86^(。LLVM将通过寄存器传递六个整数和八个SSE矢量，并通过寄存器返回一半（3个和4个）。增加任何值都会生成额外的加载和存储，这表明LLVM放弃并在堆栈上传递参数。)
 - en: The values for `aarch64-unknown-linux` are 8 integers and 8 vectors for both
     inputs and outputs, respectively.
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于`aarch64-unknown-linux`，输入和输出分别为8个整数和8个矢量。
 - en: This is the maximum number of registers we get to play with for each class.
     Anything extra gets passed on the stack.
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们每个类别可以使用的寄存器的最大数量。任何额外的东西都会传递到堆栈上。
 - en: 'I recommend that *every function* have the same number of by-register arguments.
     So on x86, EVERY `-Zcallconv=fast` function’s signature should look like this:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 我建议*每个函数*都具有相同数量的按寄存器传递的参数。因此，在x86上，每个`-Zcallconv=fast`函数的签名应该如下所示：
 - en: '[PRE6]'
   id: totrans-split-47
   prefs: []
@@ -322,12 +350,14 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 在传递指针时，适当的`i64`应该用`ptr`替换，而传递`double`时，它们应该替换为`<2 x i64>`。
 - en: But you’re probably saying, “Miguel, that’s crazy! Most functions don’t pass
     176 bytes!” And you’d be right, if not for the magic of LLVM’s very well-specified
     `poison` semantics.
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是你可能会说，“米格尔，这太疯狂了！大多数函数的字节数不超过176字节！”如果不是LLVM非常规定的`poison`语义的魔力的话，你是正确的。
 - en: We can get away with not doing extra work if every argument we do not use is
     passed `poison`. Because `poison` is equal to “the most convenient possible value
     at the present moment”, when LLVM sees `poison` passed into a function via register,
@@ -336,11 +366,13 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们不使用的每个参数都传递`poison`，我们可以摆脱做额外工作。因为`poison`等于“当前时刻最方便的可能值”，当LLVM看到通过寄存器传递的`poison`时，它决定最方便的值是“寄存器中已经存在的任何值”，因此它不必触碰该寄存器！
 - en: For example, if we wanted to pass a pointer via `rcx`, we would generate the
     following code.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 例如，如果我们想通过`rcx`传递指针，我们将生成以下代码。
 - en: '[PRE7]'
   id: totrans-split-52
   prefs: []
@@ -360,6 +392,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果函数不与毒害参数以任何规定的方式交互，则将毒害传递给函数是完全合法的。正如我们所看到的，`load_rcx()`在`rcx`中接收其指针参数，而`make_the_call()`在设置调用时不承担任何惩罚：将毒害加载到其他十三个寄存器中编译成无事可做^(，因此它只需要加载malloc返回的指针到`rcx`中。)
 - en: This gives us almost total control over argument passing; unfortunately, it
     is not total. In an ideal world, the same registers are used for input and output,
     to allow easier pipelining of calls without introducing extra register traffic.
@@ -371,6 +404,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 这几乎给了我们对参数传递的完全控制；不幸的是，它并非完全控制。在理想的世界中，应该使用相同的寄存器作为输入和输出，以便更轻松地对调用进行流水线处理而不引入额外的寄存器流量。这在ARM和RISC-V上是正确的，但在x86上不是。然而，因为寄存器排序对我们来说仅仅是一个建议，我们可以选择以任何顺序分配返回寄存器。例如，我们可以假设输入寄存器的分配顺序为`rdx`、`rcx`、`rdi`、`rsi`、`r8`、`r9`，输出寄存器的分配顺序为`rdx`、`rcx`、`rax`。
 - en: '[PRE9]'
   id: totrans-split-56
   prefs: []
@@ -390,6 +424,7 @@
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: '`square`生成非常简单的代码：输入和输出寄存器都是`rdi`，因此不需要额外的寄存器流量。同样地，当我们有效地执行`@square(@square(%0))`时，函数之间没有设置。这类似于在aarch64上看到的代码，它使用相同的寄存器顺序作为输入和输出。由于这个原因，这个IR的“朴素”版本在aarch64上产生了完全相同的代码。'
 - en: '[PRE11]'
   id: totrans-split-59
   prefs: []
@@ -405,12 +440,14 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们已经确立了如何分配寄存器的完全控制权，我们可以转向在Rust中最大化使用这些寄存器。
 - en: For simplicity, we can assume that rustc has already processed the users’s types
     into basic aggregates and unions; no enums here! We then have to make some decisions
     about which portions of the arguments to allocate to registers.
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 简单起见，我们可以假设rustc已经将用户的类型处理成基本的聚合和联合；这里没有枚举！然后我们必须就将参数的哪些部分分配给寄存器做出一些决策。
 - en: First, return values. This is relatively straightforward, since there is only
     one value to pass. The amount of data we need to return is *not* the size of the
     struct. For example, `[(u64, u32); 2]` measures 32 bytes wide. However, eight
@@ -425,24 +462,30 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先是返回值。这相对直接，因为只有一个值需要传递。我们需要返回的数据量*不是*结构体的大小。例如，`[(u64, u32); 2]`宽度为32字节。然而，这八个字节是填充！我们在返回时不需要保留填充，因此我们可以将结构体展平为`(u64,
+    u32, u64, u32)`，并按大小排序为`(u64, u64, u32, u32)`。这没有填充，并且宽度为24字节，适合于x86上LLVM给出的三个返回寄存器。我们将一个类型的*有效大小*定义为它占用的非`undef`位数。对于`[(u64,
+    u32); 2]`，这是192位，因为它排除了填充。对于`bool`，这是一位。对于`char`，这在技术上是21位，但将`char`视为`u32`的别名更简单。
 - en: The reason for counting bits this way is that it permits significant compaction.
     For example, returning a struct full of bools can simply bit-pack the bools into
     a single register.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 计算位数的原因是为了能够显著压缩。例如，将一个充满布尔值的结构体简单地位压缩为一个单一寄存器中的位。
 - en: So, a return value is converted to a by-ref return if its effective size is
     smaller than the output register space (on x86, this is three integer registers
     and four SSE registers, so we get 88 bytes total, or 704 bits).
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果返回值的有效大小小于输出寄存器空间（在x86上，这是三个整数寄存器和四个SSE寄存器，因此我们得到88字节总共，或者704位），则将返回值转换为引用返回。
 - en: Argument registers are much harder, because we hit the [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem),
     which is NP-hard. The following relatively naive heuristic is where I would start,
     but it can be made infinitely smarter over time.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 参数寄存器则更为困难，因为我们遇到了[背包问题](https://zh.wikipedia.org/wiki/背包问题)，这是一个NP难题。以下是一个相对天真的启发式方法，我会从这里开始，但随着时间的推移，可以无限地增强智能化程度。
 - en: First, demote to by-ref any argument whose effective size is larget than the
     total by-register input space (on x86, 176 bytes or 1408 bits). This means we
     get a pointer argument instead. This is beneficial to do first, since a single
@@ -450,6 +493,7 @@
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，将任何有效大小大于寄存器总输入空间（在x86上为176字节或1408位）的参数降级为引用。这意味着我们得到一个指针参数。这样做是有益的，因为一个单独的指针可能比庞大的结构体更好地打包。
 - en: Enums should be replaced by the appropriate discriminant-union pair. For example,
     `Option<i32>` is, internally, `(union { i32, () }, i1)`, while `Option<Option<i32>>`
     is `(union { i32, (), () }, i2)`. Using a small non-power-of-two integer improves
@@ -457,6 +501,8 @@
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 枚举应该被适当的辨别联合对替换。例如，`Option<i32>`在内部是`(union { i32, () }, i1)`，而`Option<Option<i32>>`是`(union
+    { i32, (), () }, i2)`。使用一个小的非二的整数可以提升我们打包的能力，因为枚举辨别者通常非常微小。
 - en: Next, we need to handle unions. Because mucking about with unions’ uninitialized
     bits behind our backs is allowed, we need to either pass it as an array of `u8`,
     unless it only has a single non-empty variant, in which case it is replaced with
@@ -464,6 +510,7 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来，我们需要处理联合。因为在我们背后弄乱联合的未初始化位是允许的，所以我们需要将它作为一个`u8`数组传递，除非它只有一个非空变体，此时它将被替换为该变体^。
 - en: 'Now, we can proceed to flatten everything. All of the converted arguments are
     flattened into their most primitive components: pointers, integers, floats, and
     bools. Every field should be no larger than the smallest argument register; this
@@ -471,12 +518,14 @@
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，我们可以继续将所有内容展平。所有转换后的参数都展平为它们最原始的组件：指针、整数、浮点数和布尔值。每个字段都不应大于最小的参数寄存器；这可能需要分割大型类型，如`u128`或`f64`。
 - en: This big list of primitives is next sorted by effective size, from smallest
     to largest. We take the largest prefix of this that will fit in the available
     register space; everything else goes on the stack.
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个大列表的基本类型按有效大小从小到大排序。我们取这个列表中能够适应可用寄存器空间的最大前缀；其余的放在堆栈上。
 - en: If part of a Rust-level input is sent to the stack in this way, and that part
     is larger than a small multiple of the pointer size (e.g., 2x), it is demoted
     to being passed by pointer-on-the-stack, to minimize memory traffic. Everything
@@ -486,6 +535,8 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 Rust 级别的输入的一部分以这种方式发送到堆栈，并且该部分大于指针大小的小倍数（例如，2x），则将其降级为通过堆栈上的指针传递，以最小化内存流量。其他所有输入按照排序前的顺序直接传递到堆栈上。这有助于保持需要复制的区域相对连续，以最小化对
+    `memcpy` 的调用。
 - en: The things we choose to pass in registers are allocated to registers in reverse
     size order, so e.g. first 64-bit things, then 32-bit things, etc. This is the
     same layout algorithm that `repr(Rust)` structs use to move all the padding into
@@ -493,10 +544,13 @@
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们选择在寄存器中传递的内容是按照逆大小顺序分配到寄存器中的，例如，首先是 64 位内容，然后是 32 位内容等。这与 `repr(Rust)` 结构体使用的布局算法相同，用于将所有填充移动到尾部。一旦到达
+    `bool` 类型，这些内容是按位压缩，每个寄存器中有 64 个。
 - en: 'Here’s a relatively complicated example. My Rust function is as follows:'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个相对复杂的示例。我的 Rust 函数如下：
 - en: '[PRE13]'
   id: totrans-split-75
   prefs: []
@@ -508,6 +562,7 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 此函数的代码生成非常复杂，因此我只会涵盖开头和结尾。在排序和展开之后，我们的原始参数 LLVM 类型大致如下：
 - en: '[PRE14]'
   id: totrans-split-77
   prefs: []
@@ -517,6 +572,7 @@
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 一切都适合寄存器！那么，在 x86 上，LLVM 函数看起来是什么样子呢？
 - en: '[PRE15]'
   id: totrans-split-79
   prefs: []
@@ -528,12 +584,14 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 上面，`!dbg` 元数据应附加到实际材料化其参数的指令上。这确保在要求打印参数值时，gdb 会做一些聪明的事情。
 - en: On the other hand, in current rustc, it gives LLVM eight pointer-sized parameters,
     so it winds up spending all six integer registers, plus two values passed on the
     stack. Not great!
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，在当前的 rustc 中，它给 LLVM 提供了八个指针大小的参数，因此它最终会消耗掉所有六个整数寄存器，再加上两个在堆栈上传递的值。效果不太理想！
 - en: 'This is not a complete description of what a completely over-engineered calling
     convention could entail: in some cases we might know that we have additional registers
     available (such as AVX registers on x86). There are cases where we might want
@@ -541,6 +599,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不是完全超工程的调用约定描述：在某些情况下，我们可能知道我们有额外的寄存器可用（例如 x86 上的 AVX 寄存器）。有时我们可能希望将结构拆分到寄存器和堆栈之间。
 - en: This also isn’t even getting into what returns *could* look like. `Result`s
     are often passed through several layers of functions via `?`, which can result
     in a lot of redundant register moves. Often, a `Result` is large enough that it
@@ -552,6 +611,9 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 这还没有涉及返回值可能看起来像什么。`Result` 经常通过 `?` 传递到几层函数中，这可能导致大量冗余的寄存器移动。通常，`Result` 大到足以不适合寄存器，因此
+    `?` 堆栈中的每个调用都必须通过从内存加载的 ok 位来检查。相反，`Result` 返回可能作为错误的 out-parameter 指针实现，其 ok
+    变体的有效载荷及其 ok 位返回为 `Option<T>`。通过 `Into` 调用的细节有些麻烦，但这个想法是可实现的。
 - en: Now, because we’re Rust, we’ve also got a trick up our sleeve that C doesn’t
     (but Go does)! When we’re generating the ABI that all callers will see (for `-Zcallconv=fast`),
     we can look at the function body. This means that a crate can advertise the *precise*
@@ -559,6 +621,8 @@
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，因为我们是 Rust，我们也有一个 C 没有（但 Go 有）的技巧！当我们生成所有调用者将看到的 ABI（对 `-Zcallconv=fast`）时，我们可以查看函数体。这意味着一个
+    crate 可以宣布其函数的 *精确* ABI（按寄存器传递）。
 - en: 'This opens the door to a more extreme optimization-based ABIs. We can start
     by simply throwing out unused arguments: if the function never does anything with
     a parameter, don’t bother spending registers on it.'
