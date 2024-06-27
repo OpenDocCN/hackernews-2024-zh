@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:44:51'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:44:51'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Representing State as interfaces in Go - Evan Moses
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 用接口在Go中表示状态 - Evan Moses
 - en: 来源：[https://www.emoses.org/posts/resolver-resolved-pattern/](https://www.emoses.org/posts/resolver-resolved-pattern/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.emoses.org/posts/resolver-resolved-pattern/](https://www.emoses.org/posts/resolver-resolved-pattern/)
 - en: Representing State as interfaces in Go
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 用接口在Go中表示状态
 - en: 'I made up a neat little pattern in Go the other day. It’s a way to represent
     a state change in a system by exposing different APIs for different states, while
     only holding state in a single underlying struct. I’m sure I’m not the first person
@@ -39,15 +46,19 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 前几天我在Go中设计了一个巧妙的小模式。这是一种通过在系统中暴露不同状态的API，而仅在单个底层结构中保存状态来表示系统中的状态变化的方法。我确信我不是第一个发明这个的人，也许这已经有了一个名字，所以如果您知道，请告诉我
+    *[更新：[apg](https://lobste.rs/~apg) 在Lobsters上指出了名字](https://lobste.rs/s/tzgizl/representing_state_as_interfaces_go#c_cvlm2d)，我很喜欢]*。首先我将展示一个模式的实例，然后是动机。
 - en: The Pattern
   id: totrans-split-8
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 这个模式
 - en: '[PRE0]'
   id: totrans-split-9
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'So far, so boring. You’ve got a `Resolver` that batches up query data, an `Executor`
     that, well, executes the query, and a `Resolve` that lets you access the result.
     What’s neat about this is that `Resolver` and `Resolved` can be implemented by
@@ -55,15 +66,18 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，很无聊。你有一个`Resolver`用来批量处理查询数据，一个`Executor`来执行查询，以及一个`Resolve`让你访问结果。这里有意思的是`Resolver`和`Resolved`可以由同一个结构体实现：
 - en: '[PRE1]'
   id: totrans-split-11
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: Ok but why?
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 好的，但是为什么？
 - en: I was building a system to bulk-lookup names in my system by ID. But if you
     called `Resolve` before it had executed, you’d have an invalid result. And if
     you `Collected` after you executed, you’d never look up the id. So I added a boolean
@@ -72,42 +86,50 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 我正在构建一个系统，通过ID批量查找我的系统中的名称。但如果你在执行之前调用了`Resolve`，你会得到一个无效的结果。而如果你在执行后调用了`Collect`，你永远不会查找这个ID。所以我在`IdResolver`中添加了一个布尔值`hasExecuted`，这样如果你在调用`Execute`之前调用`Resolve`，或者在执行后调用`Collect`，它会检查该标志并抛出异常。
 - en: '[PRE2]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This is kind of a mess, harder to read and maintain, and much easier to mess
     up the logic in.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有点混乱，难以阅读和维护，逻辑混乱起来也容易多了。
 - en: When to use it
   id: totrans-split-16
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 何时使用它
 - en: 'Of course the `Resolver` and the `Resolved` *could* be represented by different
     structs with their own methods. But in this case it felt like we were really working
     with a single object: it collects data, operates on it, and manages the result.'
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，`Resolver`和`Resolved`*可以*由具有自己方法的不同结构体表示。但在这种情况下，感觉我们真的在处理一个单一对象：它收集数据，对其进行操作，并管理结果。
 - en: The crux of the matter is that the object has different operations that are
     valid in different states, and Go interfaces are a perfect way to expose that.
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 问题的关键是对象在不同状态下具有不同有效的操作，而Go接口正是公开这一点的完美方式。
 - en: 'Update: Is this just a `Builder`?'
   id: totrans-split-19
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 更新：这只是一个`Builder`吗？
 - en: A few folks on the internet have pointed out that this is very similar to the
     Builder pattern that you see pretty often in Java/C# (and to a lesser extent in
     Go), and especially a multiphase [Step Builder](https://www.svlada.com/step-builder-pattern/).
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 一些网友指出，这与Java/C#中经常见到的Builder模式非常相似（在Go中也有，虽然程度较小），特别是多阶段的[Step Builder](https://www.svlada.com/step-builder-pattern/)。
 - en: I don’t think there’s a fundamental difference, but Builders that I’m familar
     with generally have a state-change/execute step (`Build()`) that produces an immutable
     object for use somewhere else, rather than doing any sort of effectful execution.
@@ -116,3 +138,4 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为本质上没有根本的区别，但我熟悉的Builder通常有一个状态改变/执行步骤（`Build()`），生成一个不可变对象供其他地方使用，而不是执行任何形式的有影响的操作。我认为这种模式更加通用（你当然可以将其用作Builder），并且有不同的目的。
