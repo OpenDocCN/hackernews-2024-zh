@@ -679,61 +679,75 @@
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 行显示
 - en: '`bpftrace`'
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: simply dumps out all the variables. You can use the
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 仅仅输出所有变量。您可以使用
 - en: '`delete(@start)`'
   id: totrans-split-129
   prefs: []
   type: TYPE_NORMAL
+  zh: '`delete(@start)`'
 - en: function to prevent printing of
   id: totrans-split-130
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数来防止打印
 - en: '`@start`'
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: '`@start`'
 - en: ', but please note that the next invocation of'
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: ，但请注意下一次调用
 - en: '`rcu_gp_init()`'
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: '`rcu_gp_init()`'
 - en: will re-create it.
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 将重新创建它。
 - en: It is nice to know the internal latency of an RCU grace period, but most in-kernel
     users will be more concerned about the latency of the
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 知道RCU宽限期的内部延迟很好，但大多数内核用户更关心
 - en: '`synchronize_rcu()`'
   id: totrans-split-136
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu()`'
 - en: function, which will need to wait for the current grace period to complete and
     also for callback invocation. We can measure this function's latency with the
     following
   id: totrans-split-137
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数，需要等待当前宽限期完成并等待回调调用。我们可以使用以下命令来测量此函数的延迟
 - en: '`bpftrace`'
   id: totrans-split-138
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: 'script:'
   id: totrans-split-139
   prefs: []
   type: TYPE_NORMAL
+  zh: 脚本：
 - en: '[PRE8]'
   id: totrans-split-140
   prefs: []
@@ -743,44 +757,54 @@
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: 该
 - en: '`tid`'
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: '`tid`'
 - en: variable contains the ID of the currently running task, which allows this script
     to associate a given return from
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 变量包含当前运行任务的ID，这使得此脚本能够将给定的返回与
 - en: '`synchronize_rcu()`'
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu()`'
 - en: with the corresponding call by using
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用对应的调用来
 - en: '`tid`'
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: '`tid`'
 - en: as an index to the
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为
 - en: '`@start`'
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: '`@start`'
 - en: variable.
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 变量。
 - en: 'As you would expect, the resulting histogram is weighted towards somewhat longer
     latencies, though without the stragglers:'
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 如您所预期，生成的直方图偏向于稍长的延迟，尽管没有仍在运行的部分：
 - en: '[PRE9]'
   id: totrans-split-151
   prefs: []
@@ -790,63 +814,78 @@
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 此外，我们看到不是一个而是两个值
 - en: '`@start`'
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: '`@start`'
 - en: . The
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 。该
 - en: '`delete`'
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: '`delete`'
 - en: statement gets rid of old ones, but any new call to
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 语句会摆脱旧的条目，但任何新的调用
 - en: '`synchronize_rcu()`'
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu()`'
 - en: will create more of them.
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 将创建更多这些。
 - en: Linux-Kernel Expedited RCU Grace-Period Latency
   id: totrans-split-159
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Linux内核加速RCU宽限期延迟
 - en: Linux kernels will sometimes executed
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: Linux内核有时会执行
 - en: '`synchronize_rcu_expedited()`'
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu_expedited()`'
 - en: to obtain a faster grace period, and the following command will further cause
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 以获得更快的宽限期，并且以下命令会进一步导致
 - en: '`synchronize_rcu()`'
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu()`'
 - en: to act like
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 以像
 - en: '`synchronize_rcu_expedited()`'
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu_expedited()`'
 - en: ':'
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: ：
 - en: '[PRE10]'
   id: totrans-split-167
   prefs:
@@ -858,26 +897,32 @@
   id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 在双套接字系统上执行此操作，有80个硬件线程可能不明智，但你只能活一次！
 - en: Ill-advised or not, the following
   id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
+  zh: 不管是不是明智，以下
 - en: '`bpftrace`'
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: script measures
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 脚本测量
 - en: '`synchronize_rcu_expedited()`'
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu_expedited()`'
 - en: 'latency, but in microseconds rather than milliseconds:'
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 延迟，但以微秒为单位而非毫秒：
 - en: '[PRE11]'
   id: totrans-split-174
   prefs:
@@ -888,6 +933,7 @@
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 此脚本与内核构建并发运行的输出如下：
 - en: '[PRE12]'
   id: totrans-split-176
   prefs:
@@ -898,27 +944,33 @@
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数
 - en: '`synchronize_rcu_expedited()`'
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu_expedited()`'
 - en: invocations complete within a few hundred microseconds, but with a few stragglers
     around ten milliseconds.
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 调用在几百微秒内完成，但有几个在十毫秒左右的落后者。
 - en: But what about linear histograms? This is what the
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是线性直方图呢？这就是
 - en: '`lhist()`'
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: '`lhist()`'
 - en: 'function is for, with added minimum, maximum, and bucket-size arguments:'
   id: totrans-split-182
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数是用来做什么的，增加了最小值、最大值和桶大小参数：
 - en: '[PRE13]'
   id: totrans-split-183
   prefs:
@@ -929,6 +981,7 @@
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 在后台使用通常的内核构建运行此命令：
 - en: '[PRE14]'
   id: totrans-split-185
   prefs:
@@ -940,37 +993,45 @@
   id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后一个桶是溢出桶，包含超过一毫秒限制的测量。
 - en: The above histogram had only a few empty buckets, but that is mostly because
     the 18
   id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述直方图几乎没有空桶，但这主要是因为18
 - en: '`synchronize_rcu_expedited()`'
   id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
+  zh: '`synchronize_rcu_expedited()`'
 - en: instances that overflowed the one-millisecond limit are consolidated into a
     single
   id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 溢出了一毫秒限制的实例被合并成单一的
 - en: '`[1000, ...)`'
   id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
+  zh: '`[1000, ...)`'
 - en: overflow bucket. This is sometimes what is needed, but other times losing the
     maximum latency can be a problem. This can be dealt with given the following
   id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
+  zh: 溢出桶。有时这正是所需的，但有时丢失最大延迟可能成为问题。这可以通过以下方式处理
 - en: '`bpftrace`'
   id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: 'program:'
   id: totrans-split-193
   prefs: []
   type: TYPE_NORMAL
+  zh: 程序：
 - en: '[PRE15]'
   id: totrans-split-194
   prefs:
@@ -981,6 +1042,7 @@
   id: totrans-split-195
   prefs: []
   type: TYPE_NORMAL
+  zh: 考虑到通常的内核构建后台负载，这会产生以下输出：
 - en: '[PRE16]'
   id: totrans-split-196
   prefs:
@@ -992,6 +1054,7 @@
   id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 这有点难以阅读，但可以应用简单的脚本来生成类似这样的输出：
 - en: '[PRE17]'
   id: totrans-split-198
   prefs:
@@ -1003,19 +1066,23 @@
   id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管存在异常值，例如最后一个条目，对应的调用需要花费介于1.6到1.7毫秒之间。
 - en: Summary
   id: totrans-split-200
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 总结
 - en: The
   id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
+  zh: 这
 - en: '`bpftrace`'
   id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
+  zh: '`bpftrace`'
 - en: command can be used to quickly and easily script compiled in-kernel programs
     that can measure and monitor a wide variety of things. This post focused on a
     few aspects of RCU, but quite a bit more material may be found in Brendan Gregg's
