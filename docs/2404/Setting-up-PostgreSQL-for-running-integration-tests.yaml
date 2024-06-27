@@ -131,6 +131,7 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们尝试的另一种方法是使用[`pg_tmp`](https://eradman.com/ephemeralpg/)。`pg_tmp`是一个为每个测试创建临时PostgreSQL实例的工具。
 - en: In theory, `pg_tmp` is a good solution. It allows a complete isolation of tests.
     In practice, is a lot slower than we could tolerate. With `pg_tmp`, it takes a
     few seconds to start and populate the database, and this overhead quickly adds
@@ -138,18 +139,21 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 理论上，`pg_tmp`是一个很好的解决方案。它允许完全隔离测试。实际上，它比我们能够容忍的要慢得多。使用`pg_tmp`，启动和填充数据库需要几秒钟，当运行数千个测试时，这种额外开销会迅速累积。
 - en: Let's say you have 1000 tests, and each test takes 1 second to run. If you add
     2 seconds of overhead for creating a new database, you are looking at an additional
     2000 seconds (33 minutes) of overhead.
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设您有1000个测试，每个测试需要1秒钟。如果为创建新数据库增加2秒的开销，那么额外的开销将达到2000秒（33分钟）。
 - en: If you like this approach, you could also probably get away with using Docker
     containers. Depending on many factors, Docker containers might be even faster
     than `pg_tmp`.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您喜欢这种方法，您也可以考虑使用Docker容器。根据许多因素，Docker容器可能比`pg_tmp`更快。
 - en: '[integresql](https://github.com/allaboutapps/integresql) is a project that
     I came across in a [HN thread](https://news.ycombinator.com/item?id=26947964).
     It seems like a good alternative that reduces the overhead of creating a new database
@@ -159,6 +163,7 @@
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: '[integresql](https://github.com/allaboutapps/integresql)是我在[HN帖子](https://news.ycombinator.com/item?id=26947964)中了解到的一个项目。它似乎是一个很好的替代方案，可以将创建新数据库的开销减少到约500毫秒。它具有一种池化机制，允许进一步减少开销。我们决定不继续这条道路，因为使用[模板数据库](#template-databases)已经满足了我们的隔离需求。'
 - en: 'After trying various approaches, we settled on combining two approaches: [*template
     databases*](#template-databases) and [*mounting a memory disk*](#mounting-a-memory-disk).
     This approach allowed us to isolate each test at a database level without introducing
@@ -166,6 +171,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 在尝试了各种方法后，我们决定结合两种方法：[*模板数据库*](#template-databases)和[*挂载内存磁盘*](#mounting-a-memory-disk)。这种方法使我们能够在不引入过多开销或复杂性的情况下，在数据库级别上隔离每个测试。
 - en: 'A [template database](https://www.postgresql.org/docs/current/manage-ag-templatedbs.html)
     is a database that serves as a template for creating new databases. When you create
     a new database from a template database, the new database has the same schema
@@ -174,29 +180,34 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: '[模板数据库](https://www.postgresql.org/docs/current/manage-ag-templatedbs.html)是用作创建新数据库模板的数据库。从模板数据库创建新数据库时，新数据库与模板数据库具有相同的模式。创建新数据库的步骤如下：'
 - en: Create a template database (`ALTER DATABASE <database_name> is_template=true;`)
   id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 创建模板数据库 (`ALTER DATABASE <database_name> is_template=true;`)
 - en: Create a new database from the template database (`CREATE DATABASE <new_database_name>
     TEMPLATE <template_database_name>;`)
   id: totrans-split-27
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从模板数据库创建新数据库 (`CREATE DATABASE <new_database_name> TEMPLATE <template_database_name>;`)
 - en: The key advantage of using template databases is that you do not need to mess
     with managing multiple PostgreSQL instances. You can create copy databases and
     have each test run in isolation.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用模板数据库的主要优势在于，您无需处理管理多个PostgreSQL实例的麻烦。您可以创建副本数据库，并使每个测试在隔离环境中运行。
 - en: 'However, on its own, template databases are not fast enough for our use case.
     The time it takes to create a new database from a template database is still too
     high for running thousands of tests:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，单独使用模板数据库对于我们的用例来说并不够快。从模板数据库创建新数据库所需的时间仍然对于运行数千个测试来说太高：
 - en: '[PRE1]'
   id: totrans-split-30
   prefs: []
@@ -206,6 +217,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是[内存挂载](#mounting-a-memory-disk)的应用场景。
 - en: The other limitation of template databases to be aware of is that no other sessions
     can be connected to the source database while it is being copied. `CREATE DATABASE`
     will fail if any other connection exists when it starts; during the copy operation,
@@ -215,17 +227,20 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意到的另一个模板数据库的限制是，在复制过程中不允许有其他会话连接到源数据库。如果在开始时存在任何其他连接，`CREATE DATABASE`将失败；在复制操作期间，新连接到源数据库是被阻止的。使用[互斥模式](https://en.wikipedia.org/wiki/Lock_(computer_science))可以很容易地解决这个限制，但这是需要注意的事项。
 - en: The final piece of the puzzle is mounting a memory disk. By mounting a memory
     disk, and creating the template database on the memory disk, we can significantly
     reduce the overhead of creating a new database.
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 解决方案的最后一部分是挂载内存磁盘。通过挂载内存磁盘，并在内存磁盘上创建模板数据库，我们可以显著减少创建新数据库的开销。
 - en: I will talk about how to mount a memory disk in the next section, but first,
     let's see how much of a difference it makes.
   id: totrans-split-34
   prefs: []
   type: TYPE_NORMAL
+  zh: 我将在下一节讨论如何挂载内存磁盘，但首先让我们看看它会带来多大的改变。
 - en: '[PRE2]'
   id: totrans-split-35
   prefs: []
@@ -236,6 +251,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是一个重大的改进，使得这种方法对我们的使用情况可行。
 - en: Needless to say, this approach is not without its drawbacks. The data is stored
     in memory, which means that it is not persistent. If the database crashes or the
     server restarts, the data is lost. However, for running tests, this is not a problem.
@@ -243,11 +259,13 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: 毫无疑问，这种方法并非没有缺点。数据存储在内存中，这意味着它不是持久的。如果数据库崩溃或服务器重新启动，数据将丢失。然而，对于运行测试来说，这并不是问题。每次创建新数据库时，数据都会从模板数据库重新创建。
 - en: 'The approach we settled on was to use a Docker container with a memory disk.
     Here is how you can set it up:'
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们选择的方法是使用带有内存磁盘的Docker容器。以下是设置步骤：
 - en: '[PRE3]'
   id: totrans-split-39
   prefs: []
@@ -261,12 +279,14 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上述命令中，我们正在创建一个Docker容器，并在`/var/lib/pg/data`挂载一个内存磁盘。我们还将`PGDATA`环境变量设置为`/var/lib/pg/data`，以确保PostgreSQL使用内存磁盘进行数据存储。最终的结果是基础数据存储在内存中，显著减少了创建新数据库的开销。
 - en: 'The basic idea is to create a template database before running the tests and
     then create a new database from the template database for each test. Here is a
     simplified version of how you can manage test databases:'
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本思想是在运行测试之前创建一个模板数据库，然后为每个测试从模板数据库创建一个新数据库。以下是如何管理测试数据库的简化版本：
 - en: '[PRE4]'
   id: totrans-split-42
   prefs: []
@@ -278,6 +298,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 到此时，你可以使用`getTestDatabase`来为每个测试创建一个新数据库。`destroy`方法可用于在测试运行后清理数据库。
 - en: This setup allows us to run thousands of tests in parallel across multiple shards
     without any issues. The overhead of creating a new database is minimal, and the
     isolation is at a database level. We are happy with the performance and reliability
@@ -285,3 +306,4 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种设置允许我们在多个分片上并行运行成千上万个测试，而无需任何问题。创建新数据库的开销很小，而且隔离是在数据库级别进行的。我们对这种设置提供的性能和可靠性非常满意。
