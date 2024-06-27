@@ -170,6 +170,7 @@
   id: totrans-split-26
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是关于记录操作的[BEAM 代码](https://www.erlang.org/blog/a-brief-beam-primer/)：
 - en: '[PRE3]'
   id: totrans-split-27
   prefs: []
@@ -181,10 +182,12 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 换句话说，所有三个记录更新操作都保留为单独的[`update_record`](https://www.erlang.org/blog/more-optimizations/#updating-records-in-otp-26)指令。每个操作通过复制记录的未更改部分并在正确位置填入新值来创建一个新记录。
 - en: 'The compiler in Erlang/OTP 27 will essentially rewrite `update/1` to:'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang/OTP 27 中的编译器实际上将 `update/1` 重写为：
 - en: '[PRE4]'
   id: totrans-split-30
   prefs: []
@@ -194,6 +197,7 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 这将为记录创建生成以下 BEAM 代码：
 - en: '[PRE5]'
   id: totrans-split-32
   prefs: []
@@ -203,16 +207,19 @@
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些优化是通过以下拉取请求实现的：
 - en: Updating records in place [#](#updating-records-in-place)
   id: totrans-split-34
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 在原地更新记录[#](#updating-records-in-place)
 - en: 'To explore the more sophisticated record optimization introduced in Erlang/OTP
     27, consider this example:'
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 要探索引入于 Erlang/OTP 27 中的更复杂的记录优化，请考虑以下示例：
 - en: '[PRE6]'
   id: totrans-split-36
   prefs: []
@@ -223,6 +230,7 @@
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '`count(List)` 计算给定列表中的原子数和其他项的数量。例如：'
 - en: '[PRE7]'
   id: totrans-split-38
   prefs: []
@@ -232,6 +240,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 以下是 `count/2` 所发出的 BEAM 代码：
 - en: '[PRE8]'
   id: totrans-split-40
   prefs: []
@@ -242,6 +251,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 前两个指令测试 `{x,0}` 中的第一个参数是否为非空列表，并在是的情况下提取列表的第一个元素：
 - en: '[PRE9]'
   id: totrans-split-42
   prefs: []
@@ -252,6 +262,7 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来的指令测试第一个元素是否为原子。如果不是，则跳转到第二个子句的代码。
 - en: '[PRE10]'
   id: totrans-split-44
   prefs: []
@@ -262,6 +273,7 @@
   id: totrans-split-45
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来从记录中获取看到的原子数计数器，并将其增加一：
 - en: '[PRE11]'
   id: totrans-split-46
   prefs: []
@@ -271,6 +283,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后是堆空间的分配和记录的更新：
 - en: '[PRE12]'
   id: totrans-split-48
   prefs: []
@@ -281,6 +294,7 @@
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: '`test_heap` 指令确保堆上有足够的空间来复制记录（4 个字）。'
 - en: The `update_record` instruction was introduced in Erlang/OTP 26\. Its first
     operand is an atom that is a hint from the compiler to help the JIT emit better
     code. In Erlang/OTP 26 the hints `reuse` and `copy` are used. For more about those
@@ -288,6 +302,8 @@
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: '`update_record` 指令是在 Erlang/OTP 26 中引入的。其第一个操作数是一个原子，用于帮助 JIT 发出更好的代码。在 Erlang/OTP
+    26 中，使用了 `reuse` 和 `copy` 这两个提示。有关这些提示的更多信息，请参阅[OTP 26 中的记录更新](https://www.erlang.org/blog/more-optimizations/#updating-records-in-otp-26)。'
 - en: In Erlang/OTP 27, there is a new hint called `inplace`. The compiler emits that
     hint when it has determined that nowhere in the runtime system is there another
     reference to the tuple except for the reference used for the `update_record` instruction.
@@ -298,16 +314,19 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，引入了一个名为 `inplace` 的新提示。当编译器确定运行时系统中除了用于 `update_record` 指令的引用之外，不存在对元组的其他引用时，编译器会发出此提示。换句话说，从**编译器**的角度来看，如果运行时系统直接更新现有记录而不先复制它，程序的可观察行为不会改变。不过，从**运行时系统**的角度来看，直接更新记录并不总是安全。
 - en: This new optimization was implemented by Frej Drejhammar. It builds on and extends
     the compiler passes added in Erlang/OTP 26 for [appending to a binary](https://www.erlang.org/blog/more-optimizations/#appending-to-binaries-in-otp-26).
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 此新优化由 Frej Drejhammar 实现。它在 Erlang/OTP 26 中添加的编译器通行证的基础上进行了扩展，用于[向二进制附加内容](https://www.erlang.org/blog/more-optimizations/#appending-to-binaries-in-otp-26)。
 - en: 'Now let’s see what the JIT will do when a `record_update` instruction has an
     `inplace` hint. Here is the complete native code for the instruction:'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在让我们看看当 `record_update` 指令带有 `inplace` 提示时，JIT 会做什么。以下是该指令的完整本地代码：
 - en: '[PRE13]'
   id: totrans-split-54
   prefs: []
@@ -318,6 +337,7 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: （以 `#` 开头的行是 JIT 发出的注释，而跟在 `;` 后面的文本是我添加的说明。）
 - en: The BEAM loader renames an `update_record` instruction with an `inplace` hint
     to `update_record_in_place`.
   id: totrans-split-56
@@ -638,6 +658,8 @@
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，使用[AVX 指令](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)，变量
+    (`A` 和 `C`) 可以仅使用两条指令移动：
 - en: '[PRE29]'
   id: totrans-split-109
   prefs: []
@@ -649,6 +671,7 @@
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于改变的函数表示方式，还可以测试一个具有特定 arity 的函数（在调用时期望的参数数量）。例如：
 - en: '[PRE30]'
   id: totrans-split-111
   prefs: []
@@ -658,6 +681,7 @@
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是 Erlang/OTP 26 中 JIT 发出的本地代码：
 - en: '[PRE31]'
   id: totrans-split-113
   prefs: []
@@ -669,6 +693,7 @@
   id: totrans-split-114
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，函数的 arity（预期参数数量）存储在函数术语的头部字中，这意味着函数的测试可以与其 arity 的测试结合：
 - en: '[PRE32]'
   id: totrans-split-115
   prefs: []
@@ -679,6 +704,7 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有外部函数现在都是存储在所有进程堆之外的文字。例如，请考虑以下函数：
 - en: '[PRE33]'
   id: totrans-split-117
   prefs: []
@@ -690,30 +716,39 @@
   id: totrans-split-118
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 26 中，由 `my_fun/0` 返回的外部函数不会占据调用进程的堆空间，而由 `mfa/3` 返回的动态外部函数则需要占据调用进程的堆空间
+    5 个字。
 - en: In Erlang/OTP 27, neither of the funs will require any room on the heap of the
     calling process.
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，任何一个函数都不需要占用调用进程的堆空间。
 - en: 'Those optimizations were implemented in the following pull requests:'
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些优化已在以下拉取请求中实现：
 - en: Integer arithmetic improvements [#](#integer-arithmetic-improvements)
   id: totrans-split-121
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 整数算术改进 [#](#integer-arithmetic-improvements)
 - en: In the end of June last year, we released the [OTP 26.0.2 patch](https://www.erlang.org/patches/otp-26.0.2)
     for Erlang/OTP 26 that made [`binary_to_integer/1`](https://www.erlang.org/doc/man/erlang#binary_to_integer-1)
     faster.
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 在去年六月底，我们发布了 Erlang/OTP 26 的[OTP 26.0.2 补丁](https://www.erlang.org/patches/otp-26.0.2)，使得
+    [`binary_to_integer/1`](https://www.erlang.org/doc/man/erlang#binary_to_integer-1)
+    更快。
 - en: 'To find out how much faster, run this benchmark:'
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 要了解速度提升多少，请运行此基准测试：
 - en: '[PRE34]'
   id: totrans-split-124
   prefs: []
@@ -723,19 +758,23 @@
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 它测量将包含 1,262,000 位数的二进制转换为整数所需的时间。
 - en: Running an unpatched Erlang/OTP 26 on my Intel-based iMac from 2017, the benchmark
     finishes in about 10 seconds.
   id: totrans-split-126
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的基于 Intel 的 2017 年款 iMac 上运行未打补丁的 Erlang/OTP 26，基准测试大约需要 10 秒完成。
 - en: The same benchmark run using Erlang/OTP 26.0.2 finishes in about 0.4 seconds.
   id: totrans-split-127
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用 Erlang/OTP 26.0.2 运行相同的基准测试大约需要 0.4 秒完成。
 - en: 'The speed-up was achieved by three separate optimizations:'
   id: totrans-split-128
   prefs: []
   type: TYPE_NORMAL
+  zh: 这种加速是通过三个单独的优化实现的：
 - en: '`binary_to_integer/1` was implemented as a BIF in C using a naive algorithm
     that didn’t scale well. It was replaced with a [divide-and-conquer algorithm](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm)
     implemented in Erlang. (Implementing the new algorithm as a BIF wasn’t faster
@@ -744,6 +783,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '`binary_to_integer/1` 最初在 C 中作为 BIF 实现，使用一个不太适合扩展的朴素算法。它被 Erlang 中实现的[分治算法](https://en.wikipedia.org/wiki/Divide-and-conquer_algorithm)替换。
+    （将新算法作为 BIF 实现并没有比 Erlang 版本更快。）'
 - en: The runtime system’s function for doing multiplication of large integers was
     modified to use the [Karatsuba algorithm](https://en.wikipedia.org/wiki/Karatsuba_algorithm),
     which is a divide-and-conquer multiplication algorithm invented in the 1960s.
@@ -751,6 +792,8 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 运行时系统的用于执行大整数乘法的函数已修改为使用[卡拉茨巴算法](https://en.wikipedia.org/wiki/Karatsuba_algorithm)，这是一种在
+    1960 年代发明的分治乘法算法。
 - en: Some of the low-level helper functions for arithmetic with large integers (bignums)
     were modified to take advantage of a 128-bit integer data type on 64-bit CPUs
     when supported by the C compiler.
@@ -758,20 +801,25 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当 C 编译器支持时，一些用于大整数（bignums）算术的低级辅助函数已修改为利用 64 位 CPU 上支持的 128 位整数数据类型。
 - en: 'Those improvements were implemented in the following pull request:'
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些改进已在以下拉取请求中实现：
 - en: In Erlang/OTP 27, some additional improvement of integer arithemetic were implemented.
     That reduced the execution time for the `binary_to_integer/1` benchmark to about
     0.3 seconds.
   id: totrans-split-133
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，实施了一些额外的整数算术改进。这将 `binary_to_integer/1` 基准测试的执行时间减少到大约 0.3
+    秒。
 - en: 'Those improvements are found in the following pull request:'
   id: totrans-split-134
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些改进在以下拉取请求中找到：
 - en: 'Those arithmetic enchancements improve the running times for the [pidigits
     benchmark](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/pidigits-erlang-2.html):'
   id: totrans-split-135
