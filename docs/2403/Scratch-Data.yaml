@@ -2,33 +2,40 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 14:32:29'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 14:32:29
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Scratch Data
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Scratch Data
 - en: 来源：[https://scratchdata.com/blog/building-a-ledger/](https://scratchdata.com/blog/building-a-ledger/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://scratchdata.com/blog/building-a-ledger/](https://scratchdata.com/blog/building-a-ledger/)
 - en: Building a Scalable Accounting Ledger
   id: totrans-split-6
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 构建一个可扩展的会计分类帐
 - en: A number of [blog](https://beancount.github.io/docs/the_double_entry_counting_method.html#double-entry-bookkeeping)
     [posts](https://www.moderntreasury.com/journal/accounting-for-developers-part-i)
     have come to light explaining the basics of double-entry accounting for developers.
@@ -37,6 +44,9 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 有许多[博客](https://beancount.github.io/docs/the_double_entry_counting_method.html#double-entry-bookkeeping)
+    [文章](https://www.moderntreasury.com/journal/accounting-for-developers-part-i)解释开发人员的复式记账基础知识。我打算分享一个简单
+    - 我认为是优雅的 - 数据库架构，用于记录和汇总分类帐条目。
 - en: 'Engineers tend to hand-wave over accounting terminology, dispensing with terms
     like “debit” and “credit” - after all, why not just use positive and negative
     numbers? I think this leads to confusing results. Take this example from ledger-cli’s
@@ -44,6 +54,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 工程师倾向于在会计术语上做手势，放弃像“借方”和“贷方”这样的术语 - 毕竟，为什么不只使用正数和负数？我认为这会导致混淆的结果。看看ledger-cli的[文档](https://www.ledger-cli.org/3.0/doc/ledger3.html#Stating-where-money-goes)中的例子：
 - en: '"When you look at the balance totals for your ledger, you may be surprised
     to see that Expenses are a positive figure, and Income is a negative figure. It
     may take some getting used to, but…"'
@@ -51,6 +62,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: “当您查看账户总额时，您可能会惊讶地发现支出是正数，而收入是负数。这可能需要一些时间来适应，但是…”
 - en: 'I understand the argument: since the normal balance for income is credit, and
     ledger-cli represents credits as negative numbers, then income would be show as
     negative. But this is not consistent at all with how financial statements are
@@ -58,16 +70,19 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 我理解这个论点：因为收入的正常余额是贷方，而ledger-cli将贷方表示为负数，所以收入会显示为负数。但这与财务报表的准备方式完全不一致。
 - en: So let’s design a system which can be easily modeled in a database and consistent
     with how actual accounting is done.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 所以让我们设计一个可以在数据库中轻松建模并与实际会计一致的系统。
 - en: Database Choice Matters
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 数据库选择的重要性
 - en: If you're building an application with millions of transactions, you'll inevitably
     find that calling SUM() on these columns is plain old slow. One way to solve this
     is to pre-aggregate data, perhaps by day, and store it in a separate table. This
@@ -75,27 +90,32 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您正在构建一个拥有数百万交易的应用程序，您肯定会发现在这些列上调用SUM()是非常慢的。解决这个问题的一种方法是预先聚合数据，也许是按天，并将其存储在单独的表中。这可以在应用程序中完成，也可以是物化视图或触发器。
 - en: 'Another option is to use a column-oriented database like Clickhouse. That''s
     what we''ve chosen here: we prefer to keep the data model simple and use the technology
     to process data quickkly rather than complicate how data gets inserted.'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个选择是使用像Clickhouse这样的列式数据库。这就是我们在这里选择的方式：我们更喜欢保持数据模型简单，并使用技术快速处理数据，而不是复杂化数据插入过程。
 - en: The Chart of Accounts
   id: totrans-split-15
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 科目表
 - en: 'The first thing we want to define is our list of accounts. Our accounts table
     has 3 columns:'
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们首先要定义的是我们的账户列表。我们的账户表有3列：
 - en: '**Name**. The name of the account (Assets, Liabilities, etc)'
   id: totrans-split-17
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**名称**。账户的名称（资产、负债等等）'
 - en: '**Number**. Often, accounts are assigned a number hierarchy. For example: 100
     Assets, 101 Cash, 106 Accounts Receivable, etc. The useful thing here is we can
     roll up the value of sub-accounts by using place value. We’ll get to an example
@@ -104,103 +124,127 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**编号**。通常，账户被分配一个数字层次结构。例如：100 资产，101 现金，106 应收账款，等等。这里有用的是我们可以通过位置值来汇总子账户的价值。稍后我们会举个例子。'
 - en: '**Normal balance**. In our schema, we define `1` for credit and `-1` as debit.
     The user never sees this! But it is convenient for arithmetic.'
   id: totrans-split-19
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**正常余额**。在我们的模式中，我们定义`1`表示贷方，`-1`表示借方。用户看不到这一点！但在算术上很方便。'
 - en: 'Here’s our table, using SQLite:'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是我们的表格，使用SQLite：
 - en: '[PRE0]'
   id: totrans-split-21
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'And we’ll populate it with some accounts:'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后我们将填充一些账户：
 - en: '| name | number | normal |'
   id: totrans-split-23
   prefs: []
   type: TYPE_TB
+  zh: '| 名称 | 编号 | 正常 |'
 - en: '| --- | --- | --- |'
   id: totrans-split-24
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| Assets | 100 | 1 |'
   id: totrans-split-25
   prefs: []
   type: TYPE_TB
+  zh: '| 资产 | 100 | 1 |'
 - en: '| Cash | 110 | 1 |'
   id: totrans-split-26
   prefs: []
   type: TYPE_TB
+  zh: '| 现金 | 110 | 1 |'
 - en: '| Merchandise | 120 | 1 |'
   id: totrans-split-27
   prefs: []
   type: TYPE_TB
+  zh: '| 商品 | 120 | 1 |'
 - en: '| Liabilities | 200 | -1 |'
   id: totrans-split-28
   prefs: []
   type: TYPE_TB
+  zh: '| 负债 | 200 | -1 |'
 - en: '| Deferred Revenue | 210 | -1 |'
   id: totrans-split-29
   prefs: []
   type: TYPE_TB
+  zh: '| 递延收入 | 210 | -1 |'
 - en: '| Revenues | 300 | -1 |'
   id: totrans-split-30
   prefs: []
   type: TYPE_TB
+  zh: '| 收入 | 300 | -1 |'
 - en: '| Expenses | 400 | 1 |'
   id: totrans-split-31
   prefs: []
   type: TYPE_TB
+  zh: '| 费用 | 400 | 1 |'
 - en: '| Cost of Goods Sold | 410 | 1 |'
   id: totrans-split-32
   prefs: []
   type: TYPE_TB
+  zh: '| 商品成本 | 410 | 1 |'
 - en: '| Equity | 500 | -1 |'
   id: totrans-split-33
   prefs: []
   type: TYPE_TB
+  zh: '| 股本 | 500 | -1 |'
 - en: '| Capital | 510 | -1 |'
   id: totrans-split-34
   prefs: []
   type: TYPE_TB
+  zh: '| 资本 | 510 | -1 |'
 - en: Note that Cash and Merchandise roll up into Assets (likewise for other sub-accounts.)
     All Asset accounts are in the “100” range. This is [typical](https://www.accountingtools.com/articles/chart-of-accounts-numbering.html)
     for how firms set up their chart of accounts.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意现金和商品合并成资产（其他子账户也是如此）。所有资产账户都在“100”范围内。这是企业设置会计科目表的[典型方式](https://www.accountingtools.com/articles/chart-of-accounts-numbering.html)。
 - en: 'This schema is already useful! Just based on knowing our accounts and their
     normal balances, we can derive the accounting equation:'
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个模式已经很有用了！仅凭借我们了解的账户及其正常余额，我们可以推导出会计等式：
 - en: '[PRE1]'
   id: totrans-split-37
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '| expression |'
   id: totrans-split-38
   prefs: []
   type: TYPE_TB
+  zh: '| 表达式 |'
 - en: '| --- |'
   id: totrans-split-39
   prefs: []
   type: TYPE_TB
+  zh: '| --- |'
 - en: '| Liabilities + Revenues + Equity + Deferred Revenue + Capital |'
   id: totrans-split-40
   prefs: []
   type: TYPE_TB
+  zh: '| 负债 + 收入 + 权益 + 预收收入 + 资本 |'
 - en: '| Assets + Expenses + Cash + Merchandise + Cost of Goods Sold |'
   id: totrans-split-41
   prefs: []
   type: TYPE_TB
+  zh: '| 资产 + 费用 + 现金 + 商品 + 销售成本 |'
 - en: Each line is one side of the equation. This is a rather, erm, comprehensive
     rendition of that equation. We can just get the high-level accounts by selecting
     those which are divisible by 100\. The arithmetic is pretty nifty, and lets us
@@ -208,59 +252,72 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 每行代表等式的一边。这是等式的一个相当详细的表达。我们可以通过选择以100结尾的账户来获取高级账户。这种算术方法非常巧妙，可以根据需要将数据汇总到任何细分。
 - en: '[PRE2]'
   id: totrans-split-43
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '| expression |'
   id: totrans-split-44
   prefs: []
   type: TYPE_TB
+  zh: '| 表达式 |'
 - en: '| --- |'
   id: totrans-split-45
   prefs: []
   type: TYPE_TB
+  zh: '| --- |'
 - en: '| Liabilities + Revenues + Equity |'
   id: totrans-split-46
   prefs: []
   type: TYPE_TB
+  zh: '| 负债 + 收入 + 权益 |'
 - en: '| Assets + Expenses |'
   id: totrans-split-47
   prefs: []
   type: TYPE_TB
+  zh: '| 资产 + 费用 |'
 - en: 'Much better! With a little more SQL we can output the equation itself:'
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 更好了！再加上一些SQL，我们可以输出等式本身：
 - en: '[PRE3]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: Transactions
   id: totrans-split-50
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 交易
 - en: Now that we have a workable chart of accounts, let’s add transactions. Our transactions
     table is straightforward.
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有一个可用的会计科目表，让我们添加交易。我们的交易表格非常简单明了。
 - en: '[PRE4]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: '**Transaction ID**. This will identify all single-entry items (debits+credits)
     which make up a single transaction.'
   id: totrans-split-53
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**交易ID**。这将标识组成单笔交易的借方和贷方项目。'
 - en: '**Date**. The transaction date.'
   id: totrans-split-54
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**日期**。交易日期。'
 - en: '**Amount**. The dollar amount for the transaction. This is usually a positive
     number - we do not use negative numbers to represent credits, there is a separate
     column for that.)'
@@ -268,23 +325,27 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**金额**。交易金额。通常是正数 - 我们不使用负数表示贷方，这有专门的列来表示。）'
 - en: '**Account**. This is the account number (ie, 110 for Cash) for this transaction’s
     line item.'
   id: totrans-split-56
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**账户**。这是此交易行项目的账户编号（例如，现金的编号是110）。'
 - en: '**Direction**. We choose `1` for debit and `-1` for credit, as before. This
     is a handy convention for arithmetic.'
   id: totrans-split-57
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**方向**。我们选择`1`表示借方，`-1`表示贷方，与之前一样。这是算术操作的一个便利约定。'
 - en: Example Transactions
   id: totrans-split-58
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 示例交易
 - en: For our example, we’ll record a number of ledger entries to show an opening
     account balance, buying inventory, and then selling the inventory to a customer.
     This post won’t go into the accounting explanation for each transaction (stay
@@ -292,73 +353,90 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为示例，我们将记录多笔分户账的条目，展示开户余额、购买库存，然后将库存销售给客户。这篇文章不会详细说明每笔交易的会计解释（敬请关注！），但展示了如何利用这些数据进行基本查询。
 - en: 'In our DB, we add the following rows:'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们的数据库中，我们添加了以下行：
 - en: '| id | date | amount | account | direction |'
   id: totrans-split-61
   prefs: []
   type: TYPE_TB
+  zh: '| id | 日期 | 金额 | 账户 | 方向 |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-62
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| 0 | 2022-01-01 | 500.0 | 110 | 1 |'
   id: totrans-split-63
   prefs: []
   type: TYPE_TB
+  zh: '| 0 | 2022-01-01 | 500.0 | 110 | 1 |'
 - en: '| 0 | 2022-01-01 | 500.0 | 510 | -1 |'
   id: totrans-split-64
   prefs: []
   type: TYPE_TB
+  zh: '| 0 | 2022-01-01 | 500.0 | 510 | -1 |'
 - en: '| 1 | 2022-01-01 | 100.0 | 120 | 1 |'
   id: totrans-split-65
   prefs: []
   type: TYPE_TB
+  zh: '| 1 | 2022-01-01 | 100.0 | 120 | 1 |'
 - en: '| 1 | 2022-01-01 | 100.0 | 110 | -1 |'
   id: totrans-split-66
   prefs: []
   type: TYPE_TB
+  zh: '| 1 | 2022-01-01 | 100.0 | 110 | -1 |'
 - en: '| 2 | 2022-02-01 | 15.0 | 110 | 1 |'
   id: totrans-split-67
   prefs: []
   type: TYPE_TB
+  zh: '| 2 | 2022-02-01 | 15.0 | 110 | 1 |'
 - en: '| 2 | 2022-02-01 | 15.0 | 210 | -1 |'
   id: totrans-split-68
   prefs: []
   type: TYPE_TB
+  zh: '| 2 | 2022-02-01 | 15.0 | 210 | -1 |'
 - en: '| 3 | 2022-02-05 | 15.0 | 210 | 1 |'
   id: totrans-split-69
   prefs: []
   type: TYPE_TB
+  zh: '| 3 | 2022-02-05 | 15.0 | 210 | 1 |'
 - en: '| 3 | 2022-02-05 | 15.0 | 300 | -1 |'
   id: totrans-split-70
   prefs: []
   type: TYPE_TB
+  zh: '| 3 | 2022-02-05 | 15.0 | 300 | -1 |'
 - en: '| 4 | 2022-02-05 | 3.0 | 410 | 1 |'
   id: totrans-split-71
   prefs: []
   type: TYPE_TB
+  zh: '| 4 | 2022-02-05 | 3.0 | 410 | 1 |'
 - en: '| 4 | 2022-02-05 | 3.0 | 120 | -1 |'
   id: totrans-split-72
   prefs: []
   type: TYPE_TB
+  zh: '| 4 | 2022-02-05 | 3.0 | 120 | -1 |'
 - en: Note there are multiple rows with the same ID. This is because both rows are
     part of the same transaction - the entirety of that transaction must have debits
     = credits.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意，同一ID有多行。这是因为这些行都属于同一笔交易 - 该交易的借方金额等于贷方金额。
 - en: 'Breaking down transaction `0`:'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 分解交易 `0`：
 - en: The amount is for $500.
   id: totrans-split-75
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 金额是$500。
 - en: The first line is a debit, denoted as `direction=1`. The account is Cash, as
     the account number `110` matches with our accounts table. Because Cash shares
     the same prefix as “Assets” then this transaction rolls up to the “Assets” account.
@@ -366,6 +444,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 第一行是借方，标记为`direction=1`。账户是现金，因为账号110与我们的账户表相符。由于现金与“资产”共享相同的前缀，因此此交易汇总到“资产”账户。
 - en: The second line is a credit, denoted as `direction=-1`. Similarly, the account
     number `510` is Capital, which is an Equity account.
   id: totrans-split-77
@@ -397,6 +476,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: '| id | date | amount | account | direction | name | number | normal |'
   id: totrans-split-83
   prefs: []
@@ -458,6 +538,7 @@
   id: totrans-split-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Debits and credits should sum to 0\. We can verify this like so:'
   id: totrans-split-98
   prefs: []
@@ -466,6 +547,7 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '| sum(direction * amount) |'
   id: totrans-split-100
   prefs: []
@@ -486,6 +568,7 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Balances
   id: totrans-split-105
   prefs:
@@ -499,6 +582,7 @@
   id: totrans-split-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '| a | name | balance |'
   id: totrans-split-108
   prefs: []
@@ -546,6 +630,7 @@
   id: totrans-split-118
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '| a | name | balance |'
   id: totrans-split-119
   prefs: []
@@ -586,6 +671,7 @@
   id: totrans-split-128
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '| id | date | name | DR | CR |'
   id: totrans-split-129
   prefs: []
@@ -646,22 +732,27 @@
   id: totrans-split-142
   prefs: []
   type: TYPE_NORMAL
+  zh: 最后，有人可能会问：我们如何将所有这些数据导入数据库？如果使用数据仓库（Clickhouse、Snowflake 等），则每次交易发生时进行单独的 INSERT
+    语句是不可能的。最终会设置一个每晚批量加载过程。
 - en: What if you could stream journal entries in as transactions happen in real time?
     You could have up-to-the-minute balance sheets. Thankfully, Scratch Data makes
     this really easy.
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您能够在交易发生时实时流传日志条目，那会怎么样？您可以得到最新的资产负债表。幸运的是，Scratch Data 让这变得非常简单。
 - en: You can stream data to Scratch and we will automatically collect it, create
     database schemas, and safely batch insert.
   id: totrans-split-144
   prefs: []
   type: TYPE_NORMAL
+  zh: 您可以将数据流到 Scratch，我们将自动收集它，创建数据库模式，并安全地批量插入。
 - en: Streaming Stripe and Shopify Data
   id: totrans-split-145
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 流式传输 Stripe 和 Shopify 数据
 - en: Stripe and Shopify have webhooks to track every transaction. With our API endpoints,
     you can set Scratch Data as a webhook destination and every transaction will stream
     into the database in real time. Check out our blog posts for [Stripe](/blog/stripe-data-ingest/)
@@ -669,46 +760,57 @@
   id: totrans-split-146
   prefs: []
   type: TYPE_NORMAL
+  zh: Stripe 和 Shopify 都有 Webhooks 用于跟踪每一笔交易。通过我们的 API 端点，您可以将 Scratch Data 设置为 Webhook
+    的目标，每笔交易将实时流入数据库。查看我们的博客文章，例如 [Stripe](/blog/stripe-data-ingest/) 和 [Shopify](/blog/shopify-data-ingest/)。
 - en: Streaming From Code
   id: totrans-split-147
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 从代码流式传输
 - en: 'If you want to stream data from code - perhaps you have your own webhook, or
     application code - this is really easy too! Here''s what the JSON would look like:'
   id: totrans-split-148
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想从代码中流传数据 - 也许您有自己的 Webhook 或应用程序代码 - 这也非常简单！以下是 JSON 的样式：
 - en: '[PRE12]'
   id: totrans-split-149
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: 'And then POST it:'
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后将其 POST 出去：
 - en: '[PRE13]'
   id: totrans-split-151
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: From here, data can be streamed to your application (if you're building a user-facing
     dashboard) or as an Excel file.
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 从这里，数据可以流向您的应用程序（如果您正在构建用户界面的仪表板）或作为 Excel 文件。
 - en: Conclusion
   id: totrans-split-153
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论
 - en: This is hopefully a starting point on how to design a ledgering system which
     has a high chance of producing data that can be used by your finance team using
     correct terminology.
   id: totrans-split-154
   prefs: []
   type: TYPE_NORMAL
+  zh: 这希望是一个关于如何设计具有高概率生成可由您的财务团队使用的数据的分户账系统的起点，使用正确的术语。
 - en: If you want to learn more about how we can help you build such a system, please
     [reach out](https://q29ksuefpvm.typeform.com/to/baKR3j0p#source=building_a_ledger)!
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你想了解更多关于我们如何帮助您构建这样的系统，请[联系我们](https://q29ksuefpvm.typeform.com/to/baKR3j0p#source=building_a_ledger)！
