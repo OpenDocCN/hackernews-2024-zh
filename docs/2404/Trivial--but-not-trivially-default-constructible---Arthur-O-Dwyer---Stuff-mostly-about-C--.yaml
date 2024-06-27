@@ -2,56 +2,69 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:02:07'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:02:07'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Trivial, but not trivially default constructible – Arthur O'Dwyer – Stuff mostly
     about C++
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Trivial，但不是trivially default constructible – Arthur O'Dwyer – Stuff mostly about
+    C++
 - en: 来源：[https://quuxplusone.github.io/blog/2024/04/02/trivial-but-not-default-constructible/](https://quuxplusone.github.io/blog/2024/04/02/trivial-but-not-default-constructible/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://quuxplusone.github.io/blog/2024/04/02/trivial-but-not-default-constructible/](https://quuxplusone.github.io/blog/2024/04/02/trivial-but-not-default-constructible/)
 - en: 'I just watched Jason Turner’s CppCon 2023 talk [“Great C++ `is_trivial`.”](https://www.youtube.com/watch?v=bpF1LKQBgBQ)
     Circa [41m00s](https://www.youtube.com/watch?v=bpF1LKQBgBQ&t=41m) he picks on
     the wording of [[class.prop]/2](https://eel.is/c++draft/class.prop#def:class,trivial):'
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我刚刚看完Jason Turner的CppCon 2023演讲[“Great C++ `is_trivial`.”](https://www.youtube.com/watch?v=bpF1LKQBgBQ)
+    大约在[41m00s](https://www.youtube.com/watch?v=bpF1LKQBgBQ&t=41m)，他挑剔[[class.prop]/2](https://eel.is/c++draft/class.prop#def:class,trivial)的措辞：
 - en: A **trivial class** is a class that is trivially copyable and has one or more
     eligible default constructors, all of which are trivial.
   id: totrans-split-7
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 一个**trivial class**是一个既可以trivially复制，又有一个或多个合格的默认构造函数的类。
 - en: “That phrasing’s always bothered me. How can you have more than one default
     constructor? They could be constrained by `requires`-clauses… but then not more
     than one of them is [eligible](https://eel.is/c++draft/special#def:special_member_function,eligible).”
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: “那个措辞总是让我困扰。你怎么可能有多个默认构造函数？它们可能会受到`requires`子句的约束……但那么其中不超过一个是[eligible](https://eel.is/c++draft/special#def:special_member_function,eligible)。”
 - en: 'Here’s the trick: Jason, you were wrongly assuming that a trivial class must
     be default-constructible at all! [Godbolt](https://godbolt.org/z/EGjb17of3):'
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里有个诀窍：Jason，你错误地假设一个trivial类必须在所有情况下都是默认构造的！[Godbolt](https://godbolt.org/z/EGjb17of3)：
 - en: '[PRE0]'
   id: totrans-split-10
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: Here `S<int>` is trivial, but, because it has *two* eligible default constructors,
     any attempt to default-construct an `S<int>` will fail due to overload resolution
     ambiguity. Thus `S<int>` is not default-constructible at all (and certainly not
@@ -60,10 +73,13 @@
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在这里，`S<int>`是trivial的，但由于它有*两个*合格的默认构造函数，任何尝试默认构造一个`S<int>`都将因为重载决议的歧义而失败。因此，`S<int>`根本不是默认构造的（当然也不是*trivially*
+    default-constructible）；但它仍然满足*trivial class*的所有要求。
 - en: '* * *'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: 'By the way, it seems to me that Jason buries the lede when it comes to actually
     explaining triviality. The rule is: A type `T` is *trivially fooable* if and only
     if its *foo* operation is (known to the compiler to be) equivalent to the same
@@ -79,3 +95,7 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: '顺便说一句，我觉得当讲解triviality时，Jason有点掩盖要点。规则是：类型`T`是*trivially fooable*，当且仅当编译器知道它的*foo*操作等价于相同的`T`对象表示（即，一个`unsigned
+    char`数组）。`T`是trivially copy-constructible，如果它的复制构造函数仅仅复制它的字节；如果它的默认构造函数仅仅默认初始化它的字节（回想一下，默认初始化一个`unsigned
+    char`数组是无操作的）；它是trivially value-initializable（见[“PSA: Value-initialization is
+    not merely default-construction”](/blog/2023/06/22/psa-value-initialization/)（2023-06-22）），如果它的值初始化仅仅是值初始化它的字节（为零）；等等。*这*就是关于副词“trivially”的大事情——它意味着“仿佛在对象表示上”。'

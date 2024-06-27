@@ -2,39 +2,48 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:31:57'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:31:57'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Regex character “$” doesn't mean “end-of-string”
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 正则表达式字符“$”并不表示“字符串的末尾”
 - en: 来源：[https://sethmlarson.dev/regex-$-matches-end-of-string-or-newline](https://sethmlarson.dev/regex-$-matches-end-of-string-or-newline)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://sethmlarson.dev/regex-$-matches-end-of-string-or-newline](https://sethmlarson.dev/regex-$-matches-end-of-string-or-newline)
 - en: This article is about a bit of surprising behavior I recently discovered using
     Python's regex module (`re`) while [developing SBOM tooling for CPython](https://github.com/python/release-tools/pull/92#discussion_r1484470272).
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 这篇文章讨论了我最近在使用Python的正则表达式模块（`re`）开发[CPython的SBOM工具](https://github.com/python/release-tools/pull/92#discussion_r1484470272)时发现的一些令人惊讶的行为。
 - en: Folks who've worked with regular expressions before might know about `^` meaning
     "start-of-string" and correspondingly see `$` as "end-of-string". So the pattern
     `cat$` would match the string `"lolcat"` but not `"internet cat video"`.
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 以前使用过正则表达式的人可能知道`^`表示“字符串的开头”，并相应地将`$`看作“字符串的结尾”。因此，模式`cat$`将匹配字符串`"lolcat"`，但不会匹配`"internet
+    cat video"`。
 - en: The behavior of `^` made me think that `$` was similar, but they aren't always
     symmetrical and the behavior is *platform-dependent*. Specifically for Python
     with multiline mode *disabled* the `$` character can match either the end of a
@@ -42,28 +51,33 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 字符`^`的行为让我以为`$`类似，但它们并不总是对称的，且行为*依赖于平台*。特别是对于禁用多行模式的Python，字符`$`可以匹配字符串的结尾或者字符串结尾前的*尾随换行符*。
 - en: So if you're trying to match a string without a newline at the end, **you can't
     only use `$` in Python!** My expectation was having multiline mode disabled wouldn't
     have had this newline-matching behavior, but that isn't the case.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，如果你尝试在没有换行符的字符串末尾匹配，**在Python中只用'$'是不行的！** 我的期望是禁用多行模式不会有这种匹配换行符的行为，但事实并非如此。
 - en: Next logical question is how does one match the end of a string without a newline
     in Python?
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 下一个合理的问题是如何在Python中匹配没有换行符的字符串末尾？
 - en: After doing more research on [Python](https://docs.python.org/3/library/re.html#regular-expression-syntax)
     and [other regular expression syntaxes](https://www.regular-expressions.info/anchors.html)
     I also found `\z` and `\Z` as candidates for "end-of-string" characters.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 在对[Python](https://docs.python.org/3/library/re.html#regular-expression-syntax)和[其他正则表达式语法](https://www.regular-expressions.info/anchors.html)进行更多研究后，我还发现`\z`和`\Z`可以作为“字符串末尾”字符的候选项。
 - en: 'Multi-line mode is enabled with [`re.MULTILINE`](https://docs.python.org/3/library/re.html#re.MULTILINE)
     in Python, the docs have the following to say:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 在Python中启用多行模式时，可以使用[`re.MULTILINE`](https://docs.python.org/3/library/re.html#re.MULTILINE)，文档中有以下描述：
 - en: When `re.MULTILINE` is specified the pattern character '$' matches at the end
     of the string and at the end of each line (immediately preceding each newline).
     By default, '$' only matches at the end of the string and immediately before the
@@ -72,79 +86,97 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 当指定`re.MULTILINE`时，模式字符'$'会在字符串的末尾和每行的末尾（紧跟每个换行符）匹配。默认情况下，'$'仅在字符串的末尾和紧跟字符串末尾的换行符（如果有）之前匹配。
 - en: 'Let''s see how these features work together across multiple platforms:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看这些功能如何在多个平台上一起工作：
 - en: '| Pattern matches `"cat\n"`? | `"cat$"` multiline | `"cat$"` no multiline |
     `"cat\z"` | `"cat\Z"` |'
   id: totrans-split-15
   prefs: []
   type: TYPE_TB
+  zh: '| 匹配 `"cat\n"` 的模式？ | `"cat$"` 多行模式 | `"cat$"` 无多行模式 | `"cat\z"` | `"cat\Z"`
+    |'
 - en: '| --- | --- | --- | --- | --- |'
   id: totrans-split-16
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- | --- | --- |'
 - en: '| PHP | ✅ | ✅ | ❌ | ✅ |'
   id: totrans-split-17
   prefs: []
   type: TYPE_TB
+  zh: '| PHP | ✅ | ✅ | ❌ | ✅ |'
 - en: '| ECMAScript | ✅ | ❌ | ⚠️ | ⚠️ |'
   id: totrans-split-18
   prefs: []
   type: TYPE_TB
+  zh: '| ECMAScript | ✅ | ❌ | ⚠️ | ⚠️ |'
 - en: '| Python | ✅ | ✅ | ⚠️ | ❌ |'
   id: totrans-split-19
   prefs: []
   type: TYPE_TB
+  zh: '| Python | ✅ | ✅ | ⚠️ | ❌ |'
 - en: '| Golang | ✅ | ❌ | ❌ | ⚠️ |'
   id: totrans-split-20
   prefs: []
   type: TYPE_TB
+  zh: '| Golang | ✅ | ❌ | ❌ | ⚠️ |'
 - en: '| Java 8 | ✅ | ✅ | ❌ | ✅ |'
   id: totrans-split-21
   prefs: []
   type: TYPE_TB
+  zh: '| Java 8 | ✅ | ✅ | ❌ | ✅ |'
 - en: '| .NET 7.0 | ✅ | ✅ | ❌ | ✅ |'
   id: totrans-split-22
   prefs: []
   type: TYPE_TB
+  zh: '| .NET 7.0 | ✅ | ✅ | ❌ | ✅ |'
 - en: '| Rust | ✅ | ❌ | ❌ | ⚠️ |'
   id: totrans-split-23
   prefs: []
   type: TYPE_TB
+  zh: '| Rust | ✅ | ❌ | ❌ | ⚠️ |'
 - en: '✅: Pattern matches the string `"cat\n"`'
   id: totrans-split-24
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '✅: 模式匹配字符串`"cat\n"`'
 - en: '❌: Pattern does not match the string `"cat\n"`'
   id: totrans-split-25
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '❌: 模式不匹配字符串`"cat\n"`'
 - en: '⚠️: Pattern is invalid or character not supported.'
   id: totrans-split-26
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '⚠️: 模式无效或字符不支持。'
 - en: Summarizing the above table, if matching a trailing newline is acceptable then
     `$` with multiline mode works consistently across all platforms, but if we wanted
     to *not match* a trailing newline then things get more complicated.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结上表，如果匹配尾随换行符是可接受的，那么在所有平台上，具有多行模式的`$`就能保持一致，但如果我们不希望匹配尾随换行符，则情况会变得更复杂。
 - en: To not match a trailing newline, use `\z` on all platforms except Python and
     ECMAScript where you'll need to use `\Z` or `$` without multiline mode respectively.
     Hope you learned something about regular expressions today!
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 在除了Python和ECMAScript以外的所有平台上，要匹配末尾的换行符，请使用`\z`；在Python和ECMAScript中，你需要分别使用`\Z`或不带多行模式的`$`。希望你今天对正则表达式学到了一些东西！
 - en: 'Note: The table of data was gathered from [regex101.com](https://regex101.com),
     I didn''t test using the actual runtimes.'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：数据表格的数据来自于[regex101.com](https://regex101.com)，我没有使用实际的运行时进行测试。
 - en: '**Thanks for reading!** ♡ Did you find this article helpful and want more content
     like it? <nobr>Get notified of new posts</nobr> by subscribing to the [RSS feed](/feed)
     or the [email newsletter](https://buttondown.email/sethmlarson).'
@@ -152,3 +184,4 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: '**感谢阅读！** ♡ 您觉得这篇文章有帮助吗？想要更多类似内容？通过订阅[RSS feed](/feed)或[电子邮件通讯](https://buttondown.email/sethmlarson)来获取新文章的通知。'
