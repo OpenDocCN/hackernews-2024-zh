@@ -2,38 +2,46 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 类别：未分类
 - en: 'date: 2024-05-27 13:21:04'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:21:04
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Setting up PostgreSQL for running integration tests
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 设置 PostgreSQL 以运行集成测试
 - en: 来源：[https://gajus.com/blog/setting-up-postgre-sql-for-running-integration-tests](https://gajus.com/blog/setting-up-postgre-sql-for-running-integration-tests)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://gajus.com/blog/setting-up-postgre-sql-for-running-integration-tests](https://gajus.com/blog/setting-up-postgre-sql-for-running-integration-tests)
 - en: When it comes to testing, achieving performance and reliability is crucial.
     In this article, I'll explain how to set up [PostgreSQL](https://www.postgresql.org/)
     for tests and discuss some common pitfalls to avoid.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在进行测试时，实现性能和可靠性至关重要。在本文中，我将解释如何为测试设置 [PostgreSQL](https://www.postgresql.org/)，并讨论一些常见的要避免的问题。
 - en: 'Before we dive into the details, let''s define our goals:'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们深入细节之前，让我们定义我们的目标：
 - en: '**Isolation** – We want to ensure that each test runs in isolation. At the
     very least, this means that each test should have its own database. This ensures
     that tests don''t interfere with each other and that you can run tests in parallel
@@ -42,6 +50,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**隔离性** – 我们希望确保每个测试都在隔离环境中运行。至少，这意味着每个测试应该有自己的数据库。这确保了测试不会互相干扰，并且可以在并行运行测试时不会出现任何问题。'
 - en: '**performance** – We want to ensure that setting up PostgreSQL for tests is
     fast. A slow solution is going to be cost prohibitive for running tests in CI/CD
     pipelines. The solution that we come up with must allow us to execute tests without
@@ -50,25 +59,30 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '**性能** – 我们希望确保设置 PostgreSQL 用于测试是快速的。慢速的解决方案将会对在 CI/CD 流水线中运行测试造成经济上的限制。我们提出的解决方案必须允许我们执行测试而不引入过多的开销。'
 - en: The rest of this article will focus on what we have tried, what worked, and
     what didn't work.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文其余部分将专注于我们尝试过的方法，有效的方法以及未成功的方法。
 - en: The first approach we tried was to use [transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html).
     We would start a transaction at the beginning of each test and roll it back at
     the end.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们尝试的第一种方法是使用 [transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)。我们将在每个测试开始时启动一个事务，并在结束时回滚。
 - en: 'The basic idea is illustrated in the following example:'
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 基本思想如下示例所示：
 - en: '[PRE0]'
   id: totrans-split-13
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The transaction approach works well for simple cases (e.g., testing a single
     function), but it quickly becomes a problem when dealing with tests that *test
     integration* between multiple components. Due to connection pooling, nested transactions,
@@ -78,17 +92,20 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 事务方法对于简单情况（例如测试单个函数）效果很好，但在处理涉及多个组件之间的集成测试时很快变成问题。由于连接池、嵌套事务和其他因素，使事务方法工作所需的工作量意味着我们无法复制应用程序的真实行为，即无法提供我们需要的信心。
 - en: For consistency, we also want to avoid mixing testing approaches. Even though
     using transactions would suffice for some tests, we want to have a consistent
     approach across all tests.
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保持一致性，我们还希望避免混合测试方法。即使使用事务对某些测试来说已经足够，我们也希望在所有测试中保持一致的方法。
 - en: Another approach we tried was to use SQLite. SQLite is an in-memory database
     that is fast and easy to set up.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们尝试的另一种方法是使用 SQLite。SQLite 是一个内存数据库，快速且易于设置。
 - en: Similar to the transaction approach, SQLite works well for simple cases. However,
     it quickly becomes a problem when dealing with code paths that use PostgreSQL-specific
     features. In our case, due to the use of various PostgreSQL extensions, PL/pgSQL
@@ -97,6 +114,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 与事务方法类似，SQLite 对于简单情况效果很好。然而，在处理使用 PostgreSQL 特定功能的代码路径时，它很快变成一个问题。在我们的情况下，由于使用了各种
+    PostgreSQL 扩展、PL/pgSQL 函数和其他 PostgreSQL 特定功能，我们无法将 SQLite 用于我们的测试。
 - en: '[pglite](https://github.com/electric-sql/pglite) provides PostgreSQL packaged
     as a [WASM module](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/Module)
     that can be used in Node.js. This might be a good alternative, though we haven''t
@@ -105,6 +124,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: '[pglite](https://github.com/electric-sql/pglite) 提供了作为 [WASM 模块](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/Module)
+    打包的 PostgreSQL，可以在 Node.js 中使用。这可能是一个很好的替代方案，尽管我们尚未尝试过。但目前不支持扩展将成为我们的障碍。'
 - en: Another approach we tried was to use [`pg_tmp`](https://eradman.com/ephemeralpg/).
     `pg_tmp` is a tool that creates a temporary PostgreSQL instance for each test.
   id: totrans-split-19
@@ -180,6 +201,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: This is where the [memory mounting](#mounting-a-memory-disk) comes in.
   id: totrans-split-31
   prefs: []
@@ -208,6 +230,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: This is a significant improvement and makes the approach viable for our use
     case.
   id: totrans-split-36
@@ -229,6 +252,7 @@
   id: totrans-split-39
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: In the above command, we are creating a Docker container with a memory disk
     mounted at `/var/lib/pg/data`. We are also setting the `PGDATA` environment variable
     to `/var/lib/pg/data` to ensure that PostgreSQL uses the memory disk for data
@@ -247,6 +271,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: At this point, you can use `getTestDatabase` to create a new database for each
     test. The `destroy` method can be used to clean up the database after the test
     has run.
