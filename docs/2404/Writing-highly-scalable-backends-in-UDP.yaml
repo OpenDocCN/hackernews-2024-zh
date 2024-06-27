@@ -2,34 +2,42 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:03:26'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:03:26'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Writing highly scalable backends in UDP
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 用UDP编写高度可扩展的后端
 - en: 来源：[https://mas-bandwidth.com/writing-highly-scalable-backends-in-udp/](https://mas-bandwidth.com/writing-highly-scalable-backends-in-udp/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://mas-bandwidth.com/writing-highly-scalable-backends-in-udp/](https://mas-bandwidth.com/writing-highly-scalable-backends-in-udp/)
 - en: I'm [Glenn Fiedler](https://www.linkedin.com/in/glenn-fiedler-11b735302/?ref=mas-bandwidth.com)
     and welcome to **Más Bandwidth**, my new blog at the intersection of game network
     programming and scalable backend engineering.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我是[Glenn Fiedler](https://www.linkedin.com/in/glenn-fiedler-11b735302/?ref=mas-bandwidth.com)，欢迎来到**Más
+    Bandwidth**，这是我在游戏网络编程和可扩展后端工程交汇处的新博客。
 - en: Imagine you have a system you need to code and it needs to scale up to many
     millions of requests per-second. The well-trodden path is to implement this in
     HTTPS with a load balancer in front of some VMs that autoscale according to demand.
@@ -40,10 +48,13 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 想象一下你有一个系统需要编码，并且需要扩展到成百上千万个请求每秒。常规的做法是在HTTPS中实现，使用负载均衡器在一些自动按需扩展的虚拟机（VM）前面。例如，你可以在Google
+    Cloud中使用负载均衡器在一个MIG前面实现HTTPS处理程序（非常简单）。关于如何做这些的信息在网上很多，而且将这些扩展到每秒成百上千万个请求也相对容易。
 - en: But what if you needed to do the same thing in UDP instead of HTTPS?
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是如果你需要在UDP而不是HTTPS中做同样的事情呢？
 - en: Well, now you're off the beaten path, and you'll find very little information
     about how to do this. This is actually something we needed to do at [Network Next](https://networknext.com/?ref=mas-bandwidth.com),
     my startup that provides network acceleration technology for multiplayer games.
@@ -54,6 +65,8 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在你走上了不被熟知的路线，你会发现几乎没有关于如何做这件事的信息。这实际上是我们在[Network Next](https://networknext.com/?ref=mas-bandwidth.com)需要做的事情，我的初创公司提供多人游戏网络加速技术。我们的SDK可以在如PS4、PS5、Nintendo
+    Switch和XBox等游戏主机以及Windows、MacOS和Linux上运行，避免在游戏主机上移植和维护像**libcurl**或**mbedtls**这样的东西的开销和复杂性对我们的客户有好处。
 - en: To be clear, I'm not advocating that you stop using HTTPS and switch your backend
     to UDP. If you're happy with HTTPS and it's doing what you need, awesome! Stay
     on the well trodden path. But if, like me, you have some use case that is better
@@ -62,15 +75,18 @@
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 明确一点，我不是在呼吁你停止使用HTTPS并将后端切换到UDP。如果你对HTTPS感到满意，并且它正在满足你的需求，那太棒了！继续走被熟知的路线。但是，如果像我一样，你有一些更适合使用UDP的用例，或者只是好奇这种奇怪方法如何工作，那就继续往下看吧。
 - en: '* * *'
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
 - en: The Perfect Interview Question
   id: totrans-split-12
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 完美的面试问题
 - en: This idea of building a scalable backend with UDP is so *out there* that I've
     used it as an interview question at [Network Next](https://networknext.com/?ref=mas-bandwidth.com)
     for years. You simply cannot just google this and find example source code showing
@@ -80,10 +96,13 @@
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用UDP构建可扩展的后端的想法实在是*有点另类*，多年来我一直把它作为面试题用于[Network Next](https://networknext.com/?ref=mas-bandwidth.com)。你不能仅仅通过谷歌搜索就找到示例源代码来展示如何做这件事。要解决这个问题，你需要吸收多方面的信息并创造性地综合出自己的结果。这正是我从Network
+    Next工程师身上期望看到的。
 - en: 'The actual question itself is deceptively easy:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个问题本身看起来非常简单：
 - en: You are tasked with creating a client/server application in Golang that runs
     in Google Cloud. The client in this application must communicate with the server
     over UDP.
@@ -91,12 +110,14 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 你的任务是在Google Cloud中用Golang创建一个运行在UDP上的客户端/服务器应用程序。在这个应用程序中，客户端必须通过UDP与服务器通信。
 - en: Each client sends 100 requests per-second. Each request is 100 bytes long. The
     server processes each request it receives and forwards it over HTTP to the backend.
   id: totrans-split-16
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 每个客户端每秒发送100个请求。每个请求长度为100字节。服务器处理接收到的每个请求，并通过HTTP转发到后端。
 - en: The backend processes the request, and returns a response containing the FNV1a
     64 bit hash of the request data. The server returns the response it receives from
     the backend down to the client over UDP.
@@ -104,6 +125,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 后端处理请求，并返回包含请求数据的FNV1a 64位哈希的响应。服务器通过UDP将从后端收到的响应返回给客户端。
 - en: Implement the client, server and backend in Golang. Provide an estimate of the
     cost to run the solution each month at a steady load of 1M clients, as well as
     some options you recommend as next steps to reduce the cost.
@@ -111,6 +133,7 @@
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 在Golang中实现客户端、服务器和后端。提供每月在稳定负载下1M客户端运行解决方案的成本估算，以及您建议的减少成本的下一步选项。
 - en: While I'm confident that an experienced senior engineer could find a solution
     over a weekend, I gave engineers as much time to research and solve the problem
     at home as they needed. What matters is the thinking process of the engineer,
@@ -119,15 +142,19 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然我相信经验丰富的高级工程师可能在周末找到解决方案，但我给工程师足够的时间在家里研究和解决问题。重要的是工程师的思维过程，而不是他们实现的速度。当然，我也希望尊重工程师可能在工作之余实施这些解决方案的事实。
 - en: If you'd like to have a go at solving this yourself, now is the time.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您想自己解决这个问题，现在是时候了。
 - en: '***I''ll publish the full solution April 16, 2024, one week from today.***'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: '***我将于2024年4月16日发布完整解决方案，即从今天起一周。***'
 - en: '* * *'
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '* * *'
