@@ -2,37 +2,45 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:20:16'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:20:16'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: Simplifying the xz backdoor | Felipe Contreras
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 简化xz后门 | 费利佩·康特雷拉斯
 - en: 来源：[https://felipec.wordpress.com/2024/04/18/simplifying-the-xz-backdoor/](https://felipec.wordpress.com/2024/04/18/simplifying-the-xz-backdoor/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://felipec.wordpress.com/2024/04/18/simplifying-the-xz-backdoor/](https://felipec.wordpress.com/2024/04/18/simplifying-the-xz-backdoor/)
 - en: I’m not a security expert, however I’m an expert at simplifying.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我不是安全专家，但我擅长简化。
 - en: 'Throughout my career I’ve simplified many things others thought impossible,
     and I’ve done so by following a simple strategy few engage in: **never surrender**.'
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我的职业生涯中，我简化了许多其他人认为不可能的事情，我通过遵循少数人采用的简单策略做到了：**永不放弃**。
 - en: 'My past successes gave me the confidence to give a try to simplify one aspect
     of the xz backdoor: the installation of the hooks, but oh boy was I unprepared.
     One thing is to simplify code people did at least trying to not over-complicate
@@ -41,33 +49,39 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 我过去的成功给了我信心，让我试图简化xz后门的一个方面：挂钩的安装，但我却毫无准备。简化别人试图不过度复杂化的代码一回事，但简化明显不打算让任何人理解的东西完全是另一回事。
 - en: It turns out even that one thing is just way too complex. However, I did not
     give up, lowered my expectations, and was able to simplify at least the beginning
     of the backdoor.
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 结果表明，即使是这一个事情也过于复杂。然而，我并没有放弃，降低了期望，并成功简化了至少后门的开始部分。
 - en: This should be helpful for people like me who are trying to figure out ways
     to prevent something like this from happening in the future.
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 这对像我这样试图找出未来如何防止类似事件发生的人应该是有帮助的。
 - en: For the impatient the result is [xz-min](https://github.com/felipec/xz-min),
     if you follow the instructions it should be easy to reproduce the backdoor.
   id: totrans-split-11
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于急于等待结果的人，结果是[xz-min](https://github.com/felipec/xz-min)，如果您按照说明操作，应该很容易复现后门。
 - en: We’ll start slow to be *extra careful*, but if you trust me you can just check
     the [initial patch](https://github.com/felipec/xz-hack-refactor/blob/master/origin/dist.diff)
     and skip the first section.
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将以*特别谨慎*的方式开始，但如果您相信我，您可以直接检查[初始补丁](https://github.com/felipec/xz-hack-refactor/blob/master/origin/dist.diff)，跳过第一部分。
 - en: Cleanroom
   id: totrans-split-13
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 清洁室
 - en: As I explained in [my previous post](https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/),
     the catalyst that enabled the backdoor is in the distributed tarball, not in the
     git repository. Therefore to find all the malicious changes we need to generate
@@ -77,6 +91,8 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 如我在[我的上一篇文章](https://felipec.wordpress.com/2024/04/04/xz-backdoor-and-autotools-insanity/)中解释的那样，启用后门的催化剂位于分布式压缩包中，而不在git存储库中。因此，为了找到所有恶意更改，我们需要自己生成一个压缩包，但正如我在文章中所解释的，这会产生大量良性差异。尽管我的Arch
+    Linux系统使用的是与它们相同的autoconf和automake版本，但生成的压缩包中仍然存在大量差异。
 - en: First of all, to generate the tarball I had to install po4a, doxygen, and ghostscript.
     Now, you might be thinking that there is no point in checking the documentation,
     but the xz project distributes PDFs. Couldn’t a malicious actor add some binary
@@ -85,6 +101,7 @@
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，为了生成压缩包，我不得不安装po4a、doxygen和ghostscript。现在，您可能认为检查文档没有意义，但xz项目分发PDF文档。恶意行为者是否可以向PDF中添加一些二进制数据块，并在构建过程中提取？我不知道，但我想绝对确定那里没有任何东西。
 - en: The PDFs were generated with ghostscript 9.55.0 and groff 1.22.4, so I installed
     that. Additionally, the API documentation was generated with doxygen 1.9.7, so
     I installed that as well. This way I was able to verify the documentation doesn’t
@@ -93,6 +110,7 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: PDF文档是使用ghostscript 9.55.0和groff 1.22.4生成的，因此我安装了它们。此外，API文档是使用doxygen 1.9.7生成的，因此我也安装了它。通过这种方式，我能够验证文档中没有任何恶意内容。我不得不手动检查了14个分布式的PDF文档，没有额外的二进制数据块。
 - en: I do have to say, why distribute PDFs in the first place? These are generated
     for the man pages, but nobody is **ever** going to open `lzmainfo-letter.pdf`
     ever. Oh, there’s **two** PDFs for every man page, one for `a4` and another for
@@ -101,6 +119,8 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 我必须说一下，为什么一开始要分发PDF文件呢？这些是为手册页生成的，但没有人**会**打开`lzmainfo-letter.pdf`。哦，每个手册页都有**两个**PDF文件，一个是`a4`大小的，另一个是`letter`大小的。当然，`make
+    install`不会安装它们，因为没人关心它们。
 - en: 'Worse than that, you don’t need ghostscript to generate a man page, because
     `man` can do it by itself: `man -Tpdf lzmainfo.1 >lzmainfo.pdf`. Wait, if `man`
     can do it why are the developers of xz putting PDFs in their tarballs? Don’t ask
@@ -108,10 +128,13 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 更糟糕的是，你根本不需要ghostscript来生成手册页，因为`man`可以自己做到：`man -Tpdf lzmainfo.1 >lzmainfo.pdf`。等等，如果`man`可以做到，为什么xz的开发者要把PDF文件放在他们的tarball里？别问我。但美国信纸怎么办？`MANROFFOPT=-P-pletter
+    man -Tpdf lzmainfo`。
 - en: xz developers really seem to like to overcomplicate stuff.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: xz开发者似乎真的喜欢把事情弄复杂。
 - en: With PDFs out of the way, the other difference is `config.guess` and `config.sub`,
     which don’t seem to have anything noteworthy, but still. These files are generated
     by automake, but if I’m using the same version (1.16.5) why are they different?
@@ -123,6 +146,8 @@
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: PDF文件搞定后，另一个区别在于`config.guess`和`config.sub`，似乎没什么值得注意的，但还是有。这些文件是由automake生成的，但如果我使用的是同一个版本（1.16.5），为什么它们会不同？嗯，GNU开发者也喜欢把事情复杂化，所以这些文件来自于[config](https://savannah.gnu.org/projects/config)项目，每个发行版对它们的处理方式都不同。Arch
+    Linux只保留automake tarball中的内容，Debian有一个单独的`autotools-dev`包，而Fedora使用`redhat-rpm-config`。
 - en: Based on the above we can guess the malicious developers used an RPM-based distribution,
     because the precise combination of `config.guess=2022-01-09` and `config.sub=2021-12-25`
     doesn’t match either what is in the automake 1.16.5 release or `autotools-dev`
@@ -131,6 +156,9 @@
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据以上我们可以猜测，恶意开发者使用了基于RPM的发行版，因为`config.guess=2022-01-09`和`config.sub=2021-12-25`的精确组合与automake
+    1.16.5发布版或`autotools-dev` 20220109.1没有匹配。我检查了几个Fedora包，似乎没有找到匹配，但在OpenMandriva
+    5.0中，有一个完全匹配，根据[RPMfind](https://rpmfind.net/linux/rpm2html/search.php?query=automake&system=openmandriva)。
 - en: Using those versions the diff is almost there, except that for some reason `am__DIST_COMMON`
     in `Makefile.in` is missing a file. According to [this thread](https://lists.gnu.org/archive/html/automake/2001-08/msg00204.html)
     in the automake mailing list from 2001, running `automake` twice makes it generate
@@ -138,10 +166,12 @@
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用这些版本，差异几乎就在那儿，除了某种原因，`Makefile.in`中的`am__DIST_COMMON`缺少一个文件。根据2001年的这个线程，在automake邮件列表中，运行两次`automake`会生成正确的`Makefile.in`。不要试图理解autotools的巫术逻辑。
 - en: This gives use the [final diff](https://github.com/felipec/xz-hack-refactor/blob/master/origin/dist.diff).
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 这为我们提供了最终的[差异](https://github.com/felipec/xz-hack-refactor/blob/master/origin/dist.diff)。
 - en: Why go into all this trouble? I’m a completionist, I don’t want to do this step
     ever again, and now I’m 100% sure that the tarball `xz-5.6.1.tar.xz` with SHA-1
     checksum `a77dd4689db35cfaa814d1c3a919720bd41f5623` does not contain any other
@@ -149,6 +179,7 @@
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 为什么要费这么大劲呢？我是个完美主义者，我不想再做这一步了，现在我百分百确定，tarball `xz-5.6.1.tar.xz` 的SHA-1校验和是`a77dd4689db35cfaa814d1c3a919720bd41f5623`，除了上面的差异外，代码与git中的代码没有任何其他修改。
 - en: In discussions online I heard the argument that it’s easy to check the tarball,
     all packagers need to do is install the same version of “autotools”. Hopefully
     after reading this section it should be clear that if you **actually** try to
@@ -156,57 +187,72 @@
   id: totrans-split-25
   prefs: []
   type: TYPE_NORMAL
+  zh: 在线讨论中，我听到的论点是检查tarball很容易，所有的打包者只需安装“autotools”的同一个版本即可。希望读完本节后能清楚地认识到，如果你**真的**试图这么做，这并不容易。
 - en: Focus on the ball
   id: totrans-split-26
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 把注意力集中在关键点上。
 - en: I see a lot of analyses focused on `build-to-host.m4`, but that script is **not
     run** in the build process. They probably are focused on that because the diff
     is easier to spot, and they don’t know how autotools work.
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我看到很多分析都集中在 `build-to-host.m4` 上，但该脚本在构建过程中**并未运行**。他们可能专注于这一点，因为差异更容易发现，而且他们不了解
+    autotools 的工作方式。
 - en: The script that is actually run is `configure`, those are the modifications
     we should focus on.
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际运行的脚本是 `configure`，我们应该关注这些修改。
 - en: 'For example, this popular analysis: [xz/liblzma: Bash-stage Obfuscation Explained](https://gynvael.coldwind.pl/?lang=en&id=782)
     by Gynvael Coldwind explains many things, but not where `gl_am_configmake` came
     from in “stage 0”.'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '例如，这个流行的分析：[xz/liblzma: Bash-stage Obfuscation Explained](https://gynvael.coldwind.pl/?lang=en&id=782)
+    由 Gynvael Coldwind 解释了许多内容，但没有解释 `gl_am_configmake` 在“stage 0” 中来自哪里。'
 - en: Because this hack is so complex it’s easy to miss things, but we are not going
     to do that here because we are going to **focus** on what this thing **actually
     does** with the advantage of knowing how autotools is supposed to work.
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为这个黑客技巧非常复杂，很容易忽略细节，但我们不会在这里这样做，因为我们将**专注**于这个东西**实际上做了什么**，这样做的好处是我们知道 autotools
+    应该如何工作。
 - en: 'If you look at the hacked `configure` script, you see that `gl_am_configmake`
     is saved to a file `$CONFIG_STATUS`, which is `config.status`. If we open that
     file we see:'
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你看一下被黑客入侵的 `configure` 脚本，你会看到 `gl_am_configmake` 被保存到一个名为 `$CONFIG_STATUS`
+    的文件中，即 `config.status`。如果我们打开那个文件，我们会看到：
 - en: '[PRE0]'
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'That’s much less obfuscated than the original:'
   id: totrans-split-33
   prefs: []
   type: TYPE_NORMAL
+  zh: 这比原来的复杂程度要少得多：
 - en: '[PRE1]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: But it’s only available to you if you know how `autoconf` works, which most
     people don’t. Not really.
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 但只有当你了解 `autoconf` 的工作原理时，才能使用它，而大多数人不了解。实际上并不是这样。
 - en: 'It’s [right there](https://www.gnu.org/software/autoconf/manual/autoconf-2.68/html_node/Making-configure-Scripts.html)
     at the beginning of the autoconf manual, where `configure` scripts are explained:
     “a shell script called config.status that, when run, recreates the files listed
@@ -215,20 +261,25 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 autoconf 手册的开头就有，解释了 `configure` 脚本：“一个名为 config.status 的 shell 脚本，运行时会重新创建上述文件”。所以
+    `configure` 生成 `config.status`，然后运行它，这才是真正修改构建系统的地方。
 - en: 'The grep command might look daunting, but all it’s doing is looking for a file
     that contains a string with 4 `#`, then 5 alphanumeric characters, then 4 `#`,
     for example:'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '`grep` 命令可能看起来令人生畏，但它只是在查找包含字符串 `#` 4次，然后5个字母数字字符，然后再4个 `#` 的文件，例如：'
 - en: '[PRE2]'
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: That’s not that hard is it?
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 这并不那么难，对吧？
 - en: Well, if you are looking at a script that is **25,752 lines** of obfuscated
     shell script with no idea of what it’s trying to do on a good day and no reference
     to the benign version, I guess it would be hard. Fortunately that’s not what we
@@ -236,38 +287,46 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯，如果你看的是一个有**25,752行**混淆的 shell 脚本，在一个好天里也不知道它试图做什么，而且没有引用到良性版本，我想这可能会很难。幸运的是我们在这里不会这样做。
 - en: This is the true step 0.
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是真正的步骤 0。
 - en: Step 1
   id: totrans-split-42
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 步骤 1
 - en: Based on the previous step, can you guess what the hack is going to do?
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据前面的步骤，你能猜到这个黑客技巧要做什么吗？
 - en: 'You guessed correctly: it’s going to try to do something with `bad-3-corrupt_lzma2.xz`,
     and fortunately for us all the relevant stuff is right there next to it in the
     `config.status` script:'
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 你猜对了：它将尝试对 `bad-3-corrupt_lzma2.xz` 做些什么，幸运的是，所有相关内容都在 `config.status` 脚本中紧邻其旁：
 - en: '[PRE3]'
   id: totrans-split-45
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'That’s going to be a little tricky to analyze… but we don’t have to, we can
     just `echo` that whole thing:'
   id: totrans-split-46
   prefs: []
   type: TYPE_NORMAL
+  zh: 分析起来可能有点棘手……但我们不需要这样做，我们可以直接 `echo` 整个内容：
 - en: '[PRE4]'
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'But again, no need to actually understand what it does, all we need to know
     is that `xz -d` decompresses the input, so whatever it’s receiving is a valid
     xz stream, and it turns out the output is yet another shell script that simplified
@@ -275,71 +334,86 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 但同样，实际上不需要理解它的具体作用，我们只需知道 `xz -d` 解压输入，所以它接收到的是有效的 xz 流，结果是另一个简化的 shell 脚本，实际上做了：
 - en: '[PRE5]'
   id: totrans-split-49
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: Now this is where it gets tricky, because that script is [quite complex](https://openwall.com/lists/oss-security/2024/03/29/4/1).
     But we can just run it and see what it does, except it doesn’t do anything, so
     we do need to take a peek.
   id: totrans-split-50
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在这就变得棘手了，因为那个脚本相当复杂。但我们可以直接运行它并查看它的操作，除非它什么也不做，所以我们确实需要偷看一下。
 - en: 'Deep within that script there’s an interesting check:'
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 在那段脚本深处有一个有趣的检查：
 - en: '[PRE6]'
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'This is testing if we are building a deb package or an rpm package, but we
     can just cheat with `export RPM_ARCH=x86_64`. We try again and **bingo!** Now
     two files are modified: `libtool` and `src/liblzma/Makefile`.'
   id: totrans-split-53
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是在测试我们是否在构建deb包还是rpm包，但我们可以通过`export RPM_ARCH=x86_64`简化。我们再试一次，**大成功**！现在修改了两个文件：`libtool`和`src/liblzma/Makefile`。
 - en: '[This is the diff](https://github.com/felipec/xz-hack-refactor/blob/master/origin/build.diff).
     With that step 1 is done. So now we know what `bad-3-corrupt_lzma2.xz` was for.'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: '[这是差异](https://github.com/felipec/xz-hack-refactor/blob/master/origin/build.diff)。第一步已完成。所以现在我们知道`bad-3-corrupt_lzma2.xz`的用途了。'
 - en: Step 1b
   id: totrans-split-55
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 第1b步
 - en: Once again we don’t need to understand the changes, all we need to know is that
     `src/liblzma/Makefile` is modified. If we go to that directory and type `make`,
     a file called `.libs/liblzma.so.5` is generated, and that’s really the target.
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 再次强调，我们不需要理解这些更改的细节，我们只需知道`src/liblzma/Makefile`被修改了。如果我们进入该目录并输入`make`，将生成一个名为`.libs/liblzma.so.5`的文件，这才是真正的目标。
 - en: 'If we check for the hexdump provided in the [original report](https://openwall.com/lists/oss-security/2024/03/29/4/3):'
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们检查[原始报告](https://openwall.com/lists/oss-security/2024/03/29/4/3)中提供的十六进制转储：
 - en: '[PRE7]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The library is compromised. So something in the `Makefile` is in fact introducing
     the backdoor.
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个库已经受到了攻击。因此，在`Makefile`中确实引入了后门。
 - en: 'If we check the changes in the `Makefile`, there’s this:'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们检查`Makefile`中的更改，可以看到这样的内容：
 - en: '[PRE8]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Wait, I thought we were done with `bad-3-corrupt_lzma2.xz`, what’s going on?
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 等等，我以为我们已经处理完`bad-3-corrupt_lzma2.xz`了，发生了什么？
 - en: If we indent the main script contained inside, it’s easier to see that in fact
     that script has **two** modes, one is when `config.status` is in the current directory,
     and the other is when `.libs/liblzma_la-crc64_fast.o` is present. So one mode
@@ -347,11 +421,13 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果缩进包含在主脚本内部，那么很容易看到实际上该脚本有**两个**模式，一个是当`config.status`在当前目录时，另一个是当`.libs/liblzma_la-crc64_fast.o`存在时。因此，一个模式是顶层目录的，另一个是我们在`src/liblzma`内部时的。
 - en: It does make sense to reuse `bad-3-corrupt_lzma2.xz`, because after all it would
     be tricky to introduce yet another test file with a hack.
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 重复使用`bad-3-corrupt_lzma2.xz`是有道理的，毕竟引入另一个带有黑客攻击的测试文件将会非常棘手。
 - en: Unfortunately that second mode is much more complex, and there’s not much we
     can do to simplify it. The result of my best attempt at the first part is [decrypt_rc4.sh](https://github.com/felipec/xz-hack-refactor/blob/master/origin/decrypt_rc4.sh),
     which although much more readable, it’s still very complex. X user nugxperience
@@ -360,21 +436,26 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 不幸的是，第二种模式要复杂得多，我们无法简化它。我在第一部分尝试的结果是[decrypt_rc4.sh](https://github.com/felipec/xz-hack-refactor/blob/master/origin/decrypt_rc4.sh)，虽然更可读，但仍然非常复杂。用户X的nugxperience
+    [确认](https://x.com/nugxperience/status/1773906926503591970)这个awk代码实际上是一个[RC4解密器](https://en.wikipedia.org/wiki/RC4)。
 - en: If we pass another test file, `good-large_compressed.lzma` as input, the output
     is the ELF binary object of the backdoor, which in the build process is saved
     as `src/liblzma/liblzma_la-crc64-fast.o`.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们将另一个测试文件`good-large_compressed.lzma`作为输入，输出就是ELF二进制对象的后门，而在构建过程中保存为`src/liblzma/liblzma_la-crc64-fast.o`。
 - en: But how is that binary used? We are almost there.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是二进制文件如何使用？我们几乎到达目标了。
 - en: '**Step** 1c'
   id: totrans-split-68
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '**第** 1c步'
 - en: After saving the ELF binary object, the same script tries to compile both `crc64_fast.c`
     and `crc32_fast.c`, but doing some modifications on the fly with `sed`. Additionally
     adds `liblzma_la-crc64-fast.o` to the object file of `crc64_fast.c`, which will
@@ -382,83 +463,103 @@
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 在保存ELF二进制对象之后，同一脚本尝试编译`crc64_fast.c`和`crc32_fast.c`，但通过`sed`进行一些即时修改。此外，将`liblzma_la-crc64-fast.o`添加到`crc64_fast.c`的对象文件中，该文件将同时包含这两个文件。
 - en: 'We don’t need to deal with any of that though, all we need is the result: [code.diff](https://github.com/felipec/xz-hack-refactor/blob/master/origin/code.diff).'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管如此，我们无需处理任何这些，我们只需要结果：[code.diff](https://github.com/felipec/xz-hack-refactor/blob/master/origin/code.diff)。
 - en: From that code patch we can see that it’s changing `is_arch_extension_supported()`
     to `_is_arch_extension_supported()`, and there it’s calling an external `_get_cpuid`
     while the original was calling `__get_cpuid`. That later one is [standard](https://github.com/felipec/xz-hack-refactor/blob/master/origin/code.diff).
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 从代码补丁中我们可以看到，它将`is_arch_extension_supported()`修改为`_is_arch_extension_supported()`，并在此处调用了外部的`_get_cpuid`，而原始版本是调用`__get_cpuid`。后者是[标准的](https://github.com/felipec/xz-hack-refactor/blob/master/origin/code.diff)。
 - en: The ELF binary object with the backdoor implements the spurious `_get_cpuid`
     and that’s where everything starts.
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 带有后门的 ELF 二进制对象实现了虚假的 `_get_cpuid`，这就是一切开始的地方。
 - en: We’ve finally reached the beginning of the backdoor. That’s where the [true
     complexity](https://github.com/binarly-io/binary-risk-intelligence/tree/master/xz-backdoor)
     begins.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们终于到达了后门的起点。这就是 [真正的复杂性](https://github.com/binarly-io/binary-risk-intelligence/tree/master/xz-backdoor)
+    开始的地方。
 - en: Summary
   id: totrans-split-74
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 摘要
 - en: 'After the deobfuscation the injection is not that complex:'
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 解混淆之后，注入并不复杂：
 - en: Extract the binary object from a test file.
   id: totrans-split-76
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 从一个测试文件中提取二进制对象。
 - en: Patch the code to call `_get_cpuid` from the binary object.
   id: totrans-split-77
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 修改代码，从二进制对象中调用 `_get_cpuid`。
 - en: '[PRE9]'
   id: totrans-split-78
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: That’s it.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样。
 - en: In [xz-min](https://github.com/felipec/xz-min) I simplify the backdoor even
     more, because it’s just using liblzma as a trampoline.
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 [xz-min](https://github.com/felipec/xz-min) 中，我进一步简化了后门，因为它只是将 liblzma 作为一个跳板。
 - en: In both `crc64_fast.c` and `crc32_fast.c` there’s an [ifunc](https://sourceware.org/glibc/wiki/GNU_IFUNC)
     resolver defined (`crc64_resolve` and `crc32_resolve` respectively), and it’s
     those resolvers that activate the backdoor by calling `_get_cpuid`.
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 `crc64_fast.c` 和 `crc32_fast.c` 中，分别定义了一个 [ifunc](https://sourceware.org/glibc/wiki/GNU_IFUNC)
+    解析器（`crc64_resolve` 和 `crc32_resolve`），并且正是这些解析器通过调用 `_get_cpuid` 来激活后门。
 - en: But any resolvers would do, the whole liblzma is not needed. So I created a
     [mock liblzma](https://github.com/felipec/xz-min/blob/master/liblzma.c) and the
     backdoor is still successfully triggered.
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 但是任何解析器都可以，整个 liblzma 并不需要。因此，我创建了一个 [模拟 liblzma](https://github.com/felipec/xz-min/blob/master/liblzma.c)，后门仍然成功触发。
 - en: And of course the fun is not just building liblzma with the backdoor, but actually
     using it. That’s easy to do with xz-min and [xzbot](https://github.com/amlweems/xzbot)
     with a few tricks that aren’t relevant for this article.
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 当然，有趣的不仅仅是构建带有后门的 liblzma，而是实际上如何使用它。你可以通过 xz-min 和 [xzbot](https://github.com/amlweems/xzbot)
+    进行简单的操作，这里不涉及本文的相关技巧。
 - en: Trying to simplify `_get_cpuid` will be step 2.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 尝试简化 `_get_cpuid` 将是第二步。
 - en: References
   id: totrans-split-85
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 参考文献
