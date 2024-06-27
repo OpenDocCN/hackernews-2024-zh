@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 分类：未分类
 - en: 'date: 2024-05-27 13:37:28'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 日期：2024-05-27 13:37:28
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: That time I built an LD_PRELOAD worm - lcamtuf’s thing
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 那个时候我制作了一个LD_PRELOAD蠕虫 - lcamtuf 的东西
 - en: 来源：[https://lcamtuf.substack.com/p/that-time-i-built-an-ld_preload-worm](https://lcamtuf.substack.com/p/that-time-i-built-an-ld_preload-worm)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://lcamtuf.substack.com/p/that-time-i-built-an-ld_preload-worm](https://lcamtuf.substack.com/p/that-time-i-built-an-ld_preload-worm)
 - en: One of the most interesting aspects of working in information security is the
     task of developing proof-of-concept code. In essence, you often find yourself
     writing malicious programs to prove that a hypothesized flaw is real — and to
@@ -32,6 +38,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 在信息安全领域工作最有趣的一部分之一是开发概念验证代码的任务。本质上，你经常会发现自己编写恶意程序，以证明一个假设的漏洞是真实存在的，并且说服同事、客户或第三方软件供应商他们需要采取行动。
 - en: The line between securing systems and aiding the bad guys can be thin; it takes
     just a couple of finishing touches to turn a proof-of-concept exploit into a tool
     that can do real harm. In one famous instance — the [Morris worm of 1988](https://en.wikipedia.org/wiki/Morris_worm)
@@ -41,6 +48,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 保护系统和帮助坏人之间的界线可能非常模糊；只需加上几个修饰，概念验证漏洞利用就能变成一个可以真正造成伤害的工具。在一个著名的案例中——1988年的[Morris蠕虫](https://en.wikipedia.org/wiki/Morris_worm)——研究人员自己无法抵挡诱惑。在大多数其他情况下，这项工作由那些获得研究成果但不那么谨慎的人完成，因此引发了关于漏洞披露伦理的无休止辩论。
 - en: 'Well — yesterday, while digging through the backups of my files from the late
     1990s and thereabouts, I accidentally rediscovered by far the most risqué proof-of-concept
     of my own making: a privately-shared demonstration of an LD_PRELOAD worm, dubbed
@@ -49,6 +57,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 嗯——昨天，当我翻阅我20世纪90年代末及其附近文件的备份时，我意外地重新发现了我自己制作的迄今为止最冒险的概念验证：一个名为*unicorns.so*的私密共享的LD_PRELOAD蠕虫演示，显然是为了解决关于分布式信任的争论。
 - en: If you’re unfamiliar with LD_PRELOAD, it’s a fabulous debugging mechanism on
     Unix-like systems. Almost all common programs are dynamically linked; in other
     words, instead of carrying their own copies of functions such as *fopen()*, they
@@ -59,17 +68,20 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对`LD_PRELOAD`不熟悉，它是Unix-like系统上一个非常好的调试机制。几乎所有常见程序都是动态链接的；换句话说，它们不会携带自己的函数副本，例如`fopen()`，而是从一个系统范围的共享库中引入。`LD_PRELOAD`变量用于指示链接器（负责查找和加载这些共享代码的小型程序）首先检查您选择的位置。实际上，这使您可以为任何库调用提供一个替代品。
 - en: 'The *unicorns.so* library had three major components. The first and least interesting
     part simply hid its own existence from the affected process. For example, to conceal
     the LD_PRELOAD variable in the output of the *set* command, it tampered with *printf()*:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: '*unicorns.so*库有三个主要组件。第一个且最不起眼的部分仅仅是从受影响的进程中隐藏了自己的存在。例如，为了在`set`命令的输出中隐藏`LD_PRELOAD`变量，它篡改了`printf()`函数：'
 - en: '[PRE0]'
   id: totrans-split-11
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: 'The second component of the library messed with Tatu Ylönen’s SSH program,
     along with its then-nascent replacement: OpenSSH. When it detected a successful
     connection to a remote server, it injected a couple of hidden commands. The commands
@@ -78,22 +90,27 @@
   id: totrans-split-12
   prefs: []
   type: TYPE_NORMAL
+  zh: 该库的第二个组件与**Tatu Ylönen**的SSH程序以及其当时初步替代品**OpenSSH**发生冲突。当它检测到与远程服务器的成功连接时，它会注入一对隐藏命令。这些命令通过在远程帐户的
+    shell 初始化文件中添加一个`LD_PRELOAD`行，将该库传播到目标系统上：
 - en: '[PRE1]'
   id: totrans-split-13
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'In effect, *unicorns.so* was a computer worm; it hopped from system to system
     by exploiting transitive trust. All you had to do is bootstrap it once the following
     way:'
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，*unicorns.so*是一个计算机蠕虫；它通过利用传递性信任从一个系统跳到另一个系统。你只需这样一次引导它：
 - en: '[PRE2]'
   id: totrans-split-15
   prefs:
   - PREF_BQ
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: The final component of the library was responsible for detecting and intercepting
     the execution of *su* or *sudo*. The two programs are the most common way to elevate
     privileges on Unix-like systems, and are incorrectly believed to be safer than
@@ -103,6 +120,8 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 这个库的最终组件负责检测和拦截*su*或*sudo*的执行。这两个程序是Unix-like系统中提升权限最常见的方式，错误地被认为比直接登录管理员账户更安全。为了扩散到其他服务器，蠕虫需要感染受影响机器上的所有用户账户
+    — 因此需要按照这个路径操作。
 - en: The two binaries themselves are *setuid* — that is, they have a special filesystem
     flag that prompts the operating system to execute them with elevated privileges,
     and instructs the linker to disregard LD_PRELOAD. That said, this security boundary
@@ -111,6 +130,7 @@
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 这两个二进制文件本身是*setuid* — 即它们具有一个特殊的文件系统标志，提示操作系统使用提升的特权来执行它们，并指示链接器忽略LD_PRELOAD。尽管如此，这种安全边界是虚幻的。你无需篡改这些程序本身；篡改它们的输入输出就足够了。
 - en: 'The most elegant way to do this is probably to allocate a new pseudo-terminal
     via */dev/ptmx,* run *su* on that new terminal, and act as an intermediary — injecting
     evil commands while presenting the user with a sanitized view. A simpler option
@@ -122,6 +142,8 @@
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 这样做最优雅的方法可能是通过*/dev/ptmx*分配一个新的伪终端，然后在那个新的终端上运行*su*，并充当一个中间人 — 在呈现给用户一个经过清理的视图的同时注入恶意命令。一个更简单的选项是利用一个巧妙的竞争条件：当两个程序在同一个终端上执行阻塞的*read()*时，一个胜出，另一个失败
+    — 当*su*显示密码提示时，我们可以确保胜者是恶意库。被捕获的密码可以通过使用[TIOCSTI](https://man7.org/linux/man-pages/man2/ioctl_tty.2.html)调用无缝地重新注入。
 - en: 'My motivation for this code was to demonstrate the fragility of distributed
     trust and to take a potshot at the paradigm of using *su* and *sudo* instead of
     logging in as root. That said, I played myself: discussing the implementation
@@ -132,7 +154,10 @@
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 我编写这段代码的动机是为了展示分布式信任的脆弱性，并抨击使用*su*和*sudo*而不是直接以root身份登录的范式。尽管如此，我自己也遭受了打击：公开讨论实现似乎太冒险，所以代码最终被搁置一旁
+    — 而关于这些安全问题的零星讨论继续了大约二十年。现在，共享使用的Unix系统时代大多已经过去，这些问题的紧迫性也不如从前。
 - en: '*For a thematic catalog of previous posts on this blog, click [here](https://lcamtuf.coredump.cx/offsite.shtml).*'
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: '*要查看博客上之前帖子的主题目录，请点击[这里](https://lcamtuf.coredump.cx/offsite.shtml)。*'
