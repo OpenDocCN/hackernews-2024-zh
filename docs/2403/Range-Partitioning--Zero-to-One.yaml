@@ -312,91 +312,111 @@
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 我想强调，这种构建KV数据库的方法完全不是实际数据库的实现方式，这只是一个快速的实现，展示范围分区的效果！
 - en: 'We''ll start by defining a simple `Database` struct:'
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将从定义一个简单的`Database`结构体开始：
 - en: '[PRE0]'
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: In typical implementations, you'd use some form of binary search like a b-tree
     for quickly finding range ownership.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 在典型的实现中，你会使用某种形式的二分搜索，如b树，快速找到范围所有权。
 - en: To keep our code simple, easy to understand, and dependency free, we'll just
     use arrays and maps (rip performance).
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了保持代码简单、易于理解且无依赖，我们将仅使用数组和映射（牺牲性能）。
 - en: 'Then, we can create the `Range` struct:'
   id: totrans-split-60
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以创建`Range`结构体：
 - en: '[PRE1]'
   id: totrans-split-61
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: 'We''ll keep the ranges in terms of strings so it''s easy to read debug data,
     but generally you''ll want to encode this to bytes. Note that this is also not
     thread-safe: concurrent operations could panic!'
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将范围保持为字符串，以便阅读调试数据，但通常你会希望将其编码为字节。请注意，这也不是线程安全的：并发操作可能会导致恐慌！
 - en: We'll say that the `Low` of the range is always *inclusive*, and the `High`
     is always *exclusive.*
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将`Low`定义为范围的*包含*，`High`定义为*不包含*。
 - en: Database Functions
   id: totrans-split-64
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 数据库功能
 - en: 'We''ll need a few notable functions for our database: Get, Set, and Delete'
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要一些显著的数据库函数：获取（Get）、设置（Set）和删除（Delete）。
 - en: To get from our database, we'll need to iterate over all ranges, find the range
     that owns the current key, and check if that range owns the key. If it does, we'll
     check if that range has the key.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 要从我们的数据库中获取数据，我们需要遍历所有范围，找到拥有当前键的范围，并检查该范围是否拥有该键。如果拥有，我们将检查该范围是否有该键。
 - en: '[PRE2]'
   id: totrans-split-67
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Deleting data is simple, just find the range and delete the key from the map
     if it exists:'
   id: totrans-split-68
   prefs: []
   type: TYPE_NORMAL
+  zh: 删除数据很简单，只需找到范围，如果键存在，就从映射中删除它：
 - en: '[PRE3]'
   id: totrans-split-69
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'We saved the most interesting for last: set.'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 最有趣的部分留到最后：设置。
 - en: 'First, we need to be able to do some simple set into the range :'
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，我们需要能够对范围进行一些简单的设置：
 - en: '[PRE4]'
   id: totrans-split-72
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'The range splitting functionality comes in at the database level:'
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 范围分裂功能在数据库层面实现：
 - en: '[PRE5]'
   id: totrans-split-74
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: If we detect that the range is too large, then we'll split the range. Splitting
     is as simple as creating a new range at the mid-point, moving the KVs over, and
     adding it to the database! Now we commit the heresy of sorting an unsorted map
@@ -405,6 +425,7 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果我们检测到范围太大，那么我们将分裂该范围。分裂非常简单：在中点创建一个新范围，移动KVs，添加到数据库中！现在我们做出了将一个未排序映射使用数组进行排序的异端行为，但实际的数据库会根据分裂的原因（例如基于负载或大小）评估分裂的位置，并找到相应的“中点”。
 - en: Note that the range did not decide to split, the database did. This is important.
     Our ranges should just focus on doing what they're told, and nothing else. Reliability
     and durability is pretty important for databases, so best to make sure the code
@@ -414,57 +435,69 @@
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，范围并没有决定分裂，数据库做了决定。这一点很重要。我们的范围应该只专注于执行命令，别无他求。数据库的可靠性和持久性非常重要，因此最好确保实际存储数据的代码简洁。关注点分离使得测试和关注功能变得更加容易，也给我们更多的控制权来决定何时分裂范围。
 - en: Testing the DB
   id: totrans-split-77
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 测试数据库
 - en: We can write some simple tests to confirm our suspicions that this is actually
     working.
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以编写一些简单的测试，确认我们的怀疑是正确的，这个方法确实有效。
 - en: We'll insert zero-padded keys so we can use integers with string-sorting to
     show that we get the expected behavior.
   id: totrans-split-79
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将插入零填充的键，这样我们就可以使用整数进行字符串排序，来展示我们获得预期的行为。
 - en: 'We can start by putting in 500 records to show that they all go into the current
     range:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们可以先插入500条记录，以展示它们都进入当前范围：
 - en: '[PRE6]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: 'Then, we can insert more records to cause a the first range to split:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 然后，我们可以插入更多记录，导致第一个范围分裂：
 - en: '[PRE7]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: We now have two ranges!
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了两个范围！
 - en: 'Here''s what just happened:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里发生了什么：
 - en: We inserted a bunch more (101 times to be exact)
   id: totrans-split-86
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们插入了更多的记录（确切地说是101次）。
 - en: We exceeded the max number of records per range (600), so we split into 300
     and 301 ranges
   id: totrans-split-87
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们超过了每个范围的最大记录数（600），所以我们将其分裂为300和301范围。
 - en: We inserted the final 99 records into the top range, because those keys were
     larger than the high border of the new range that we created (our code creates
     the range down)
@@ -472,6 +505,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 我们将最后的99条记录插入到顶部范围，因为这些键大于我们创建的新范围的高边界（我们的代码会向下创建范围）。
 - en: 'If we insert a bunch more values, we can see the ranges get further split:'
   id: totrans-split-89
   prefs: []
@@ -480,6 +514,7 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: Pretty cool, look at all those ranges!
   id: totrans-split-91
   prefs: []
@@ -492,6 +527,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: You can play with this [code from Github](https://github.com/danthegoodman1/RangePartitioningPost?ref=aspiring.dev),
     just follow the instructions in the readme!
   id: totrans-split-94
@@ -579,22 +615,27 @@
   id: totrans-split-108
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上，性能的一个潜在优化可能是，如果将持久化对象实例与自定义分布式KV数据库的选定领导者放置在一起（我相信他们目前使用FoundationDB），在写入时去除一个额外的网络跳跃，并且在读取时去除唯一的网络跳跃。
 - en: Neat stuff, right?
   id: totrans-split-109
   prefs: []
   type: TYPE_NORMAL
+  zh: 很棒的东西，对吧？
 - en: '*Disclaimer: I don''t work at Cloudflare, nor do I know if they are using range
     partitioning, but it seems like a fair guess.*'
   id: totrans-split-110
   prefs: []
   type: TYPE_NORMAL
+  zh: '*免责声明：我不在Cloudflare工作，也不知道他们是否在使用范围分区，但这似乎是一个合理的猜测。*'
 - en: Range partitioning is useful for not only databases, but anywhere we need to
     define coarse-grained ownership. Range partitioning scales up and down very elegantly,
     and is simple to understand!
   id: totrans-split-111
   prefs: []
   type: TYPE_NORMAL
+  zh: 范围分区不仅对数据库有用，而且对于任何需要定义粗粒度所有权的地方都是有用的。范围分区可以非常优雅地进行扩展和收缩，而且非常简单易懂！
 - en: '[Discuss this post on HackerNews](https://news.ycombinator.com/item?id=39725649&ref=aspiring.dev)'
   id: totrans-split-112
   prefs: []
   type: TYPE_NORMAL
+  zh: '[在HackerNews上讨论本文](https://news.ycombinator.com/item?id=39725649&ref=aspiring.dev)'
