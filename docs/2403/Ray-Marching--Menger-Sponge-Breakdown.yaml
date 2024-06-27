@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-29 12:45:43'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-29 12:45:43'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: 'Ray Marching: Menger Sponge Breakdown'
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: 'Ray Marching: Menger Sponge Breakdown'
 - en: 来源：[https://connorahaskins.substack.com/p/ray-marching-menger-sponge-breakdown](https://connorahaskins.substack.com/p/ray-marching-menger-sponge-breakdown)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://connorahaskins.substack.com/p/ray-marching-menger-sponge-breakdown](https://connorahaskins.substack.com/p/ray-marching-menger-sponge-breakdown)
 - en: 'There are two very popular methods to render 3D scenes. *Rasterization* has
     historically been the most popular method used for real-time graphics (ex: video
     games). In short, rasterization is a technique that projects 3D models, composed
@@ -34,6 +40,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两种非常流行的方法来渲染3D场景。*光栅化*历来是实时图形（例如视频游戏）中最流行的方法。简而言之，光栅化是一种将由3D三角形组成的3D模型投影到2D平面上的技术。另一种流行的渲染方法是*光线追踪*。这种方法历来用于渲染需要更高现实感的场景，且不需要实时渲染（例如电影视觉效果）。
 - en: Ray tracing involves shooting virtual rays out of each pixel into a virtual
     scene beyond the display. Calculating the intersections of the ray with the scene
     to determine the pixel color. Again, these are 3D models being rendered and they
@@ -44,6 +51,7 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 光线追踪涉及从每个像素向虚拟场景中的虚拟射线发射。计算射线与场景的交点以确定像素颜色。同样，这些都是渲染的3D模型，通常由3D三角形组成。与光栅化相比，光线追踪的工作顺序有所不同。光栅化从尝试绘制3D模型开始，并确定该3D模型将影响哪些像素。光线追踪从像素开始，并确定哪些3D模型会影响它。
 - en: What we will discuss in this article is a third rendering method. A flavor of
     ray-casting known as *ray marching*. There are still rays being shot out into
     the virtual world from each pixel of your screen. But whereas *ray tracing* performs
@@ -52,6 +60,7 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文将讨论的是第三种渲染方法。一种称为*射线行进*的射线投射方法。仍然会从屏幕的每个像素向虚拟世界发射射线。但是与*光线追踪*不同，后者仅进行一次计算以确定无限射线与3D模型之间的交点，*射线行进*采用更便宜、更迭代的方法。
 - en: 'Each ray shares the same starting position (the virtual camera’s position)
     and a function is used to determine how far that ray’s current position is from
     *any* element in the scene. To calculate the distance from each object in the
@@ -71,10 +80,12 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 每条射线都有相同的起始位置（虚拟摄像机的位置），并使用函数确定该射线当前位置与场景中*任何*元素的距离。为了计算虚拟场景中每个物体的距离，射线行进使用称为SDFs（有符号距离场）的函数。这些函数*不*确定射线在击中物体之前将行进的距离（光线追踪算法会这样做）。SDFs甚至不考虑射线的方向。它们只是确定射线当前位置与对象最近点之间的距离。因此，尽管它不能告诉我们射线遇到交点前需行进的确切距离，但它确实告诉我们可以安全行进的距离。并且，正如前文所述，射线行进是一个迭代过程。我们获得一个安全的行进距离，行进该距离，然后重复。当SDF返回的距离（射线当前位置与由SDF定义的对象之间的距离）低于某个指定阈值（例如0.0002单位）时，我们将认为这是一次*命中*，并为表面进行光照计算。
 - en: 'The ray marching algorithm must also handle two edge cases:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: 射线行进算法还必须处理两个边缘情况：
 - en: 'To avoid infinite looping, we should cap off a ray when it becomes greater
     than some maximum specified distance (ex: 100 units) away from all objects in
     the scene. This is helpful, as some rays may simply never hit an object in our
@@ -83,6 +94,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了避免无限循环，当一条光线远离场景中的所有物体超过某个指定的最大距离（例如：100个单位）时，我们应该停止其继续行进。这很有帮助，因为有些光线可能根本不会在我们的场景中命中任何物体，而是直接穿过“天空”或“场景的空白”。
 - en: 'For ray marching to perform within a reasonable amount of time, we should also
     consider the maximum amount of iterations we are willing to calculate (ex: 60
     iterations).'
@@ -90,6 +102,7 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 为了使光线行进在合理时间内完成，我们还应考虑我们愿意计算的最大迭代次数（例如：60次迭代）。
 - en: A great example of when iterations could get costly is an SDF that represents
     a long flat plane (wall) and a ray that is running parallel to the wall just outside
     of our specified hit distance. In each iteration, the ray inches forward in very
@@ -100,6 +113,7 @@
   - PREF_IND
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 当迭代成本昂贵时的一个很好的例子是表示长平面（墙）的SDF和射线与墙平行但位于我们指定的击中距离之外。在每次迭代中，由于到平面的距离保持非常小，射线以非常小的步长缓慢前进。由于这是一个实时程序，我们不能简单地等待这条射线永远运行下去。
 - en: The ray marching algorithm considers both of these termination scenarios (too
     far from all objects or too many iterations) to be a “miss” and no lighting calculations
     will be performed as no surface was hit. In both of these edge cases, we make
@@ -109,16 +123,19 @@
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: 光线行进算法考虑这两种终止情况（距离所有物体太远或迭代次数过多）为“未命中”，因为没有击中表面，所以不进行光照计算。在这两种极端情况下，我们为了性能进行了一种折衷。如果我们让光线再行进1个单位，可能会命中；如果我们再执行一次迭代，可能会命中。在指定最大距离和迭代次数时，请注意这一点。
 - en: 'To summarize, the algorithm of ray marching looks something like this:'
   id: totrans-split-15
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结一下，光线行进算法大致如下：
 - en: Calculate the distance to object(s) using the ray’s current position and the
     corresponding SDF
   id: totrans-split-16
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 使用光线当前位置和相应的SDF计算到物体的距离
 - en: If that distance is smaller than the specified hit distance, we consider that
     a hit. We *exit the algorithm* and perform lighting calculations for the surface
     that was hit.
@@ -126,51 +143,61 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果该距离小于指定的击中距离，我们认为这是一个击中。我们**退出算法**，并为击中的表面执行光照计算。
 - en: Move the ray forward the distance calculated in step (1)
   id: totrans-split-18
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将光线向前移动步骤（1）中计算的距离
 - en: If the distance to the scene exceeds the maximum specified distance, we consider
     that a miss and *exit the algorithm*.
   id: totrans-split-19
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果到场景的距离超过了指定的最大距离，我们认为这是一个未命中，并**退出算法**。
 - en: If the next iteration would exceed the specified maximum number of iterations,
     we consider that a miss and *exit the algorithm*.
   id: totrans-split-20
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 如果下一次迭代将超过指定的最大迭代次数，我们认为这是一个未命中，并**退出算法**。
 - en: Go back to step 1, using the new position of our ray
   id: totrans-split-21
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 回到步骤1，使用我们的光线的新位置
 - en: A [Menger Sponge](https://en.wikipedia.org/wiki/Menger_sponge) is a 3D fractal.
   id: totrans-split-22
   prefs: []
   type: TYPE_NORMAL
+  zh: '[曼德尔海绵](https://en.wikipedia.org/wiki/Menger_sponge)是一个三维分形。'
 - en: 'It is constructed by:'
   id: totrans-split-23
   prefs: []
   type: TYPE_NORMAL
+  zh: 它是这样构建的：
 - en: Cutting a cube into 3x3x3 equal cubes
   id: totrans-split-24
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 将一个立方体切成3x3x3个相等的小立方体
 - en: Removing the center cube and the center cube of each face
   id: totrans-split-25
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 移除中心立方体和每个面的中心立方体
 - en: Repeat steps 1 through 3 for all remaining cubes
   id: totrans-split-26
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 对所有剩余的小立方体重复步骤1到3
 - en: I do attempt to explain most things but I will not be explaining some concepts
     like vectors or coordinate systems. If you notice anything that went unexplained,
     please ask, use your favorite search engine, LLM, or the resources at the end
@@ -178,6 +205,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_NORMAL
+  zh: 我确实尝试解释大多数事物，但我不会解释一些概念，比如向量或坐标系。如果您注意到有任何未解释的内容，请询问，使用您喜欢的搜索引擎、LLM或本文末尾的资源寻找其他关于这些主题的精彩教育媒体。
 - en: There is a demo of the many things that are discussed in this article. This
     demo uses ShaderToy. It can be viewed in any browser and can be found in the link
     below. Functions in the style of sdXxxx() are the “signed distance fields/functions”
@@ -188,10 +216,13 @@
   id: totrans-split-28
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文讨论的许多内容都有演示。这个演示使用ShaderToy。它可以在任何浏览器中查看，并且可以在以下链接中找到。本文中的sdXxxx()风格的函数是您将在本文中学习的“有符号距离场/函数”。请随意修改代码！文本编辑器右下角有一个“?”按钮，提供大量有用信息。按下“alt
+    + enter”或“cmd+enter”将触发编译，以便您可以查看更改的结果！
 - en: '[https://www.shadertoy.com/view/MXB3Wt](https://www.shadertoy.com/view/MXB3Wt)'
   id: totrans-split-29
   prefs: []
   type: TYPE_NORMAL
+  zh: '[https://www.shadertoy.com/view/MXB3Wt](https://www.shadertoy.com/view/MXB3Wt)'
 - en: The code in ShaderToy are fragment shaders written in GLSL ES, which stands
     for the OpenGL Shading Language Embedded Systems. OpenGL being a library used
     for running various shader programs on a GPU. A shader being a heavily parallel
@@ -202,6 +233,8 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_NORMAL
+  zh: ShaderToy中的代码是使用GLSL ES编写的片段着色器，GLSL ES代表OpenGL着色语言嵌入系统。OpenGL是一个库，用于在GPU上运行各种着色器程序。着色器是在GPU上大量并行处理的程序。嵌入式系统实际上指除个人计算机外的任何东西，但在我们GLSL
+    ES的用例中，主要指运行在移动设备上。使用GLSL ES的好处是它是GLSL的一个子集。因此，代码将在您的台式机、笔记本电脑或智能手机上运行。
 - en: In this article, we strictly concern ourselves with fragment shaders that run
     once per-pixel for every pixel in a specified viewport (could be a window or could
     be the whole screen). However, do note that that is not the only (or even the
@@ -209,20 +242,24 @@
   id: totrans-split-31
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文严格关注一次在指定视口（可以是窗口，也可以是整个屏幕）中每个像素运行一次的片段着色器。但请注意，这并不是片段着色器的唯一（甚至不是主要）使用方式。
 - en: 'Below are two code snippets of the same OpenGL ES code implementing the ray
     marching algorithm. The first with explicit comments, and the second without (for
     improved code readability):'
   id: totrans-split-32
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面是两个OpenGL ES代码片段，实现了射线行军算法。第一个带有详细的注释，第二个没有（用于提高代码可读性）：
 - en: '[PRE0]'
   id: totrans-split-33
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[PRE1]'
   id: totrans-split-34
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: The above code is pure GLSL ES shader code. The GLSL ES code that runs in ShaderToy
     will look ever so slightly different. Especially in regards to `#version`, `screenResolution`,
     `gl_FragCoord`, and `FragColor`. Further understanding of the differences is left
@@ -230,6 +267,7 @@
   id: totrans-split-35
   prefs: []
   type: TYPE_NORMAL
+  zh: 上述代码是纯粹的GLSL ES着色器代码。在ShaderToy中运行的GLSL ES代码会稍有不同。特别是关于`#version`、`screenResolution`、`gl_FragCoord`和`FragColor`部分。读者可以进一步理解它们之间的差异。
 - en: If it’s your first time using GLSL or fragment shaders or not and the above
     is just a little overwhelming, I promise it’s not as scary as it looks. If you
     don’t understand the above code immediately, that’s okay. It will not hinder your
@@ -241,12 +279,14 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果这是你第一次使用GLSL或片段着色器，或者以上内容让你有些不知所措，我向你保证，它并不像看上去那么可怕。如果你对以上代码不是立刻理解，也没关系。这不会影响你理解文章的其余部分。本文末尾还有其他资源，可能会帮助你在学习过程中。我建议继续阅读文章，并回来重新探索算法。从现在开始，我们不再讨论这个算法。我们只关注将SDF开发到一个Menger海绵中。
 - en: '*vec3*: A data type in GLSL that is simply an array of 3 floating point values.
     This data type is often used to represent things like points, vectors, or color
     values (RGB).'
   id: totrans-split-37
   prefs: []
   type: TYPE_NORMAL
+  zh: '*vec3*：GLSL中的数据类型，简单来说是由3个浮点值组成的数组。这种数据类型通常用来表示点、向量或颜色值（RGB）。'
 - en: '“*halfwidth*”: A value equal to half of a width. Often we will find that it’s
     more convenient to deal with half the width of an object being rendered. This
     is analogous to equations that prefer using the radius (halfwidth) of a circle
@@ -254,17 +294,20 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_NORMAL
+  zh: “*halfwidth*”：等于宽度的一半的值。通常情况下，我们会发现处理正在渲染的对象宽度的一半更方便。这类似于使用圆的半径（halfwidth）而不是直径（width）的方程。
 - en: 'component: A 2D vector has two components(*x* & *y*). A 3D vector has three
     components(*x*, *y* & *z*).'
   id: totrans-split-39
   prefs: []
   type: TYPE_NORMAL
+  zh: 成分：一个2D向量有两个成分（*x*和*y*）。一个3D向量有三个成分（*x*、*y*和*z*）。
 - en: 'GLSL: OpenGL Shading Language. For this article, “OpenGL” is interchangeable
     with “OpenGL ES”, as we will not be using any GLSL features outside the subset
     of OpenGL ES.'
   id: totrans-split-40
   prefs: []
   type: TYPE_NORMAL
+  zh: GLSL：OpenGL着色语言。在本文中，“OpenGL”可以与“OpenGL ES”互换使用，因为我们不会使用OpenGL ES之外的任何GLSL功能。
 - en: Ray marching requires the use of signed distance fields (SDFs) to acquire distances
     between a point and some object. But before we determine the distance between
     a point and some complex 3D object, let’s first remind ourselves how to find the
@@ -272,6 +315,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_NORMAL
+  zh: 射线行进需要使用签名距离场(SDFs)来获取点与某个对象之间的距离。但在确定点与某个复杂的3D对象之间的距离之前，让我们先提醒自己如何在2D平面上找到两点之间的距离。
 - en: Let’s say you have two points, A and B. When you subtract A from B, you get
     a vector that can “move” point A to point B. It’s possible this sounds unintuitive
     to you, so here’s a simple way to solidify this concept. Let’s now say that you
@@ -283,6 +327,8 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_NORMAL
+  zh: 假设你有两个点，A和B。当你从B中减去A时，你得到一个可以“移动”点A到点B的向量。可能这听起来对你来说不直观，所以这里有一个简单的方法来巩固这个概念。现在假设你有两个整数+3和+7。当你从+7中减去+3时，你得到整数+4。这个整数能够将+3带到+7。按照同样的逻辑，当你从点(-4,
+    -2)减去点(-1, 2)时，你得到向量<3, 4>。这是一个可以将点(-4, -2)“移动”到点(-1, 2)的向量。这只是加法和减法。
 - en: Now the distance between two points is fairly simple. If you have a vector <x,y>
     that takes point A to point B (<x,y> = B - A), then the distance between point
     A and point B is simply the length of that vector. If you were to draw the vector
@@ -291,39 +337,48 @@
   id: totrans-split-43
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在两点之间的距离相当简单。如果你有一个向量<x, y>，它把点A带到点B（<x, y> = B - A），那么点A到点B的距离就是那个向量的长度。如果你画出向量<x,
+    y>，你会看到这个向量可以看作是一个直角三角形的斜边，其中一条边长为x，另一条边长为y。
 - en: So to get the length of a vector, we simply use the Pythagorean theorem, a²
     + b² = c².
   id: totrans-split-44
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，要获得向量的长度，我们简单地使用勾股定理，即a² + b² = c²。
 - en: The length a vector <x,y> is equal to sqrt(x² + y²)
   id: totrans-split-45
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向量<x, y>的长度等于sqrt(x² + y²)
 - en: The length of vector <x, y, z> is equal to sqrt(x² + y² + z²)
   id: totrans-split-46
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 向量<x, y, z>的长度等于sqrt(x² + y² + z²)
 - en: This pattern can also be extended for all dimensions
   id: totrans-split-47
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 这种模式也可以扩展到所有维度。
 - en: To put it all together, the distance between points A and B can be acquired
     by calculating the length of the resulting vector when you subtract A from B.
   id: totrans-split-48
   prefs: []
   type: TYPE_NORMAL
+  zh: 总结一下，点A和点B之间的距离可以通过计算从A减去B时得到的结果向量的长度来获取。
 - en: 'The SDF to a point looks something like this:'
   id: totrans-split-49
   prefs: []
   type: TYPE_NORMAL
+  zh: 到点的SDF看起来像这样：
 - en: '[PRE2]'
   id: totrans-split-50
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'To acquire the distance from a point (for example: the ray’s current position)
     to a sphere, we start by calculating the distance between the point and the center
     of the sphere (another point). When traveling to the center of a sphere, you must
@@ -334,25 +389,30 @@
   id: totrans-split-51
   prefs: []
   type: TYPE_NORMAL
+  zh: 要获得从一个点（例如：射线当前位置）到一个球的距离，我们首先计算点与球的中心（另一个点）之间的距离。当前往球的中心时，您必须首先到达球的表面，然后进一步行进球的半径，最终到达中心点。因此，如果我们想要到一个球的距离，我们首先得到到中心点的距离，然后减去半径的长度，这使我们回到了球的表面。
 - en: 'The SDF to a sphere looks something like this:'
   id: totrans-split-52
   prefs: []
   type: TYPE_NORMAL
+  zh: 到球的SDF看起来像这样：
 - en: '[PRE3]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: 'NOTE: Another name for ray marching is “sphere tracing”. You can think of an
     SDF as a function that gives the radius for a sphere that is centered at the ray’s
     position and just barely touches the object or scene represented by the SDF.'
   id: totrans-split-54
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：射线行进的另一个名称是“球追踪”。你可以将SDF视为一个函数，它给出以射线位置为中心并刚好接触由SDF表示的对象或场景的球的半径。
 - en: Let’s learn about some ways that you can manipulate objects through the use
     of our rays and SDFs.
   id: totrans-split-55
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们学习一些通过使用我们的射线和SDFs操作对象的方法。
 - en: One thing I left out while going over the SDF of a sphere is that SDFs will
     often define the distance to an object that is centered at the origin. And the
     way you actually position that object into your scene is to simply subtract the
@@ -363,6 +423,7 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: 在讨论球体的SDF时我遗漏了一件事情，那就是SDF通常会定义到原点为中心的对象的距离。而你实际上将该对象定位到场景中的方式是，在发送到SDF之前，只需将对象的期望位置从你的射线位置中减去即可。通过减去对象的期望位置，我们将射线的位置转换为对象的局部坐标系，其中对象以原点为中心。
 - en: On the left side of the diagram below, we show the actual location of the ray
     as well as the desired location of the circle. Near the middle, we show our ray’s
     position transformed to the local coordinate system of the circle where the circle’s
@@ -373,19 +434,23 @@
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下面的图表的左侧，我们展示了射线的实际位置以及圆圈的期望位置。在中间附近，我们展示了我们射线的位置转换为圆圈的局部坐标系，其中圆圈的中心位于原点。这个射线的位置是通过简单地减去圆圈的期望位置来转换的。请注意，在图表的两种情况下，射线与圆圈的距离是相同的。这是至关重要的，因为SDF的唯一工作就是准确获取到对象的距离。
 - en: This simplifies the logic within the SDF, as it no longer concerns itself with
     translations of objects.
   id: totrans-split-58
   prefs: []
   type: TYPE_NORMAL
+  zh: 这简化了SDF内部的逻辑，因为它不再关注对象的翻译。
 - en: 'Our new SDF for a sphere and translating that sphere now looks like this:'
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的新球体的SDF及其平移现在看起来是这样的：
 - en: '[PRE4]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'Similar to translation, the SDF actually doesn’t have to handle the exact dimensions
     of the object (ex: the radius of a sphere) as we can scale the object to our desired
     dimensions outside of the SDF. Scaling is a little less obvious than translation
@@ -395,6 +460,7 @@
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 与平移类似，实际上SDF并不需要处理对象的确切尺寸（例如球的半径），因为我们可以在SDF外部将对象缩放到我们期望的尺寸。缩放比平移略微不明显，但技术非常容易记住。就像平移一样，我们要在发送到SDF之前操作我们射线的位置，以便操作我们的对象。
 - en: Let’s see what it is like to scale something up. And really quick, let’s think
     about what won’t work. If a sphere of radius 1.0 is 2.0 units away, then scaling
     that sphere up to a radius of 2.0 would mean it is now 1.0 unit away. The sphere
@@ -407,6 +473,7 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们看看如何缩放某些东西。而且非常快速地，让我们考虑一下什么是不行的。如果半径为1.0的球体离我们2.0个单位远，那么将该球体放大到半径为2.0意味着它现在距离为1.0单位。这个球体变大了，我们的距离现在减半了。通过这个例子，似乎我们可以简单地将到对象的距离除以我们希望缩放的值。但是再举一个例子，我们就会发现这个方法行不通了。如果半径为1.0的球体距离为*3.0个单位*，将该球体放大到半径为2.0意味着它现在距离为*2.0个单位*。球体变大了，但现在我们的距离只有原始长度的2/3。嗯嗯嗯……
 - en: The approach that we are going to take is to pretend the coordinate system that
     our ray lives in has been shrunken down, while the object represented by the SDF
     remains unchanged. From the perspective of the ray’s coordinate system, the object
@@ -419,12 +486,15 @@
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将采取的方法是假装我们的射线存在的坐标系已经缩小了，而 SDF 所代表的物体保持不变。从射线坐标系的角度来看，物体已经增大了。唯一的问题是我们计算的距离是在我们缩小的坐标系中的距离。为了纠正这一点，我们必须将计算的距离映射回我们原始的坐标系中（取消缩小）。因此，如果我们将我们的坐标系缩小了
+    7.0 倍（以将物体放大到其原始尺寸的 7.0 倍），那么我们计算的距离将需要乘以 7.0 来映射回原始坐标系。
 - en: 'In the figure below: In black we have the original ray, a unit circle, and
     the distance between them. In red, we have the desired scaled circle and the desired
     distance between the scaled circle and the ray.'
   id: totrans-split-64
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下图中：黑色表示我们的原始射线，单位圆和它们之间的距离。红色表示我们期望的缩放圆和缩放圆与射线之间的距离。
 - en: 'In the figure below: In black we have the shrunken down ray, the original circle
     (“scaled up” from the perspective of the ray), and the distance between them.
     In red, we have the same distance mapped back to the original coordinate system
@@ -432,31 +502,37 @@
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下图中：黑色表示我们缩小的射线，原始圆形（从射线的视角“放大”）和它们之间的距离。红色表示我们将距离映射回原始坐标系（取消缩小）。
 - en: Scaling an object down is the exact same approach and is left as an exercise
     for the reader.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 缩小物体的方法与此相同，并留作读者的练习。
 - en: Our SDF is even simpler than before, as it no longer concerns itself with the
     scale nor position of the sphere! Taking in only the ray’s position as a parameter.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们的 SDF 比以往更简单，因为它不再关心球体的尺寸或位置！它只接收射线位置作为参数。
 - en: '[PRE5]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: If the SDFs don’t need to worry about the scale of an object, why is the size
     of the `radius` defined in `sdSphere`?
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果 SDF 不需要担心物体的尺度，为什么在 `sdSphere` 中定义了 `radius` 的大小？
 - en: In order to scale the object defined by the SDF, it has to have *some* initial
     size (scaling zero up/down is still zero). In this case, the sphere has a radius
     of 1, or a diameter of 2\. That is the number that will be scaled up or down.
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了缩放由 SDF 定义的物体，它必须具有*一定*的初始尺寸（缩放零是零）。在这种情况下，球体的半径为 1，直径为 2。这就是将被缩放的数字。
 - en: 'When trying to calculate the distance to an object, we can often simplify the
     problem by taking advantage of an object’s symmetry. Symmetry is an extremely
     common property of many primitive shapes. For example: cubes, spheres, cylinders,
@@ -466,6 +542,8 @@
   id: totrans-split-71
   prefs: []
   type: TYPE_NORMAL
+  zh: 当试图计算到物体的距离时，我们经常可以通过利用物体的对称性来简化问题。对称性是许多基本形状的一种极为常见的属性。例如：立方体、球体、圆柱体和环面在原点对称中心且合理取向时，可以看作沿所有轴对称。下图显示了一个在
+    x 轴和 y 轴上均对称的物体。
 - en: Notice that each point of the same color shares the same distance to the object.
     This is where folding becomes incredibly useful. Taking the absolute value of
     the x & y components of any point will map that point to one with the same color
@@ -476,10 +554,13 @@
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 请注意，相同颜色的每个点与物体的距离相同。这就是折叠变得非常有用的地方。将任意点的 x 和 y 分量的绝对值映射到正象限（右上角）内的相同颜色点。通过利用物体的对称性和射线位置的绝对值，我们可以使我们的
+    SDF 专注于仅找到正象限内点到物体的距离。
 - en: To demonstrate how this can simplify things, let’s look at an SDF for a cube.
   id: totrans-split-73
   prefs: []
   type: TYPE_NORMAL
+  zh: 为了演示这样可以简化事务，让我们来看一个立方体的 SDF。
 - en: Let us start with finding the distance to a square. In this example, we are
     going to use the symmetry of a square to our advantage. We will work exclusively
     with the absolute values of points. In the figure below, we partition the positive
@@ -488,6 +569,7 @@
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们从计算到正方形的距离开始。在这个例子中，我们将利用正方形的对称性。我们将仅使用点的绝对值。在下图中，我们将正象限分为四个部分，以理解我们可能计算到正方形距离的不同方法。
 - en: 'Let us first take a look at the upper right (yellow) partition. If both our
     X and Y components are greater than half the width of our square, we simply need
     to calculate the distance to the corner of our square. With only taking that into
@@ -495,10 +577,12 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们先来看看右上角（黄色）分区。如果我们的X和Y分量都大于正方形宽度的一半，我们只需计算到正方形角落的距离。仅考虑这一点，我们的SDF看起来会像这样：
 - en: '[PRE6]'
   id: totrans-split-76
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: Now, let’s incorporate the upper left (blue) and lower right (purple) sections.
     Think of the vector pointing from the corner to the upper left point and from
     the corner to the lower right point (all still within the upper right quadrant).
@@ -512,14 +596,17 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在，让我们结合左上角（蓝色）和右下角（紫色）部分。想象一下从角落指向左上角点和从角落指向右下角点的向量（仍然在右上象限内）。这个向量并不代表到正方形的最短路径。如果我们从角落到我们的射线的向量中有任何一个分量的值为负（当指向左上角点时，x分量为负，指向右下角点时，y分量为负），我们可以简单地通过将其设置为零来在我们的距离计算中忽略该分量。左上点只需向下移动即可击中正方形上的最近点，而右下点只需向左移动。
 - en: 'An updated SDF looks like this:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 更新后的SDF如下所示：
 - en: '[PRE7]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: The `max()` function is a component-wise function, available in GLSL, in which
     each component of the vector will be the max between its current value and the
     second parameter passed in (`0.0` in this case). This effectively clamps all negative
@@ -530,6 +617,8 @@
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: '`max()`函数是一个分量级函数，在GLSL中可用，其中向量的每个分量将是其当前值和传入的第二个参数（在本例中为`0.0`）之间的最大值。这有效地将我们向量的所有负值夹在了`0.0`。那么，如果我们在正方形内部，我们的SDF当前返回什么呢？在这种情况下，我们向量的所有分量都将为负，然后被夹在了`(0.0,
+    0.0)`。该向量的长度为零。这是构建上述的最佳数字。'
 - en: We are only inside the square if all components of the vector pointing from
     the corner to our ray’s position are negative. Look back at the diagram to verify
     that that is true. When inside the square, our closest point is the distance to
@@ -538,6 +627,7 @@
   id: totrans-split-81
   prefs: []
   type: TYPE_NORMAL
+  zh: 只有当从角落指向我们的射线位置的向量的所有分量都为负时，我们才在正方形内部。回顾图表以验证其真实性。在正方形内部时，我们的最近点就是距离左墙或右墙的距离。这些目前存在于我们的`cornerToRay`向量的分量值中。
 - en: This is a good time to explain the “Signed” in a “Signed Distance Field”. An
     SDF should return a positive, non-zero, value when a point is outside its defining
     shape. It should return a negative, non-zero, value when a point is inside its
@@ -546,6 +636,7 @@
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在是解释“Signed Distance Field”中的“Signed”好时机。当一个点在其定义的形状外部时，SDF应返回一个正的非零值。当一个点在其定义的形状内部时，它应返回一个负的非零值。当一个点恰好位于其定义形状的表面上时，它应返回零。
 - en: In everyday math, the minimum of -5 & -3 is -5\. That is how the `min` function
     works in any code you will ever see and it works in GLSL. But, since we are calculating
     the shortest distance to some object defined by the SDF, -3 units is actually
@@ -553,20 +644,24 @@
   id: totrans-split-83
   prefs: []
   type: TYPE_NORMAL
+  zh: 在日常数学中，-5和-3的最小值是-5。这就是在任何你将看到的代码中`min`函数的工作方式，它也适用于GLSL。但是，因为我们正在计算到由SDF定义的某个对象的最短距离，-3单位实际上是比-5单位更小的*有符号距离*。
 - en: Back to our inner, lower left point… Since the vector from the corner to the
     point is negative for both the x & y components, we take the *maximum* of these
     values to find the minimum *signed* distance.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 回到我们内部的左下点... 由于从角到点的向量的x和y分量都为负，我们取这些值的*最大*值来找到最小的*有符号*距离。
 - en: With this additional information, let’s finish our SDF.
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 有了这些额外的信息，让我们完成我们的SDF。
 - en: '[PRE8]'
   id: totrans-split-86
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: The addition at the end is made possible as `distToInsideRay` will be equal
     to `0.0` if the ray exists outside of the square and, as discussed before, the
     `closestToOutsideRay` will be equal to `0.0` if the ray exists inside of the square.
@@ -575,15 +670,18 @@
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于`distToInsideRay`将在射线存在于正方形外部时等于`0.0`，并且如前所述，`closestToOutsideRay`将在射线存在于正方形内部时等于`0.0`，因此最终加法的至少一个操作数保证为`0.0`。这意味着返回的值将是*closestToOutsideRay*的长度或*distToInsideRay*的长度。
 - en: 'The SDF to a cube uses all the same logic as just described but adds one more
     dimension. The SDF can be represented as the following:'
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于一个立方体的SDF使用与刚才描述的所有逻辑相同，但增加了一个维度。SDF可以表示为以下内容：
 - en: '[PRE9]'
   id: totrans-split-89
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: We now have all the tools needed to create an infinite cross. You could think
     of creating an infinite cross by starting with our `sdCube` and simply extruding
     each face out infinitely. The diagram below shows a 2D representation of our infinite
@@ -593,6 +691,7 @@
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们拥有了创建无限十字所需的所有工具。您可以考虑通过从我们的`sdCube`开始并无限延伸每个面来创建无限十字。下图显示了我们无限十字的2D表示。如您所见，每个点的距离公式已经发生了相当大的变化。我们四个原始点中的三个现在位于对象内部，只有一个位于外部。
 - en: Although the distance functions to each point have changed, the equations don’t
     look too foreign. Let’s start by covering the distance to the lower left (red)
     point. Again, as a reminder, we are folding space through the absolute value function
@@ -602,10 +701,12 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 尽管到每个点的距离函数已经改变，但方程看起来并不陌生。让我们从覆盖到左下（红色）点的距离开始。再次提醒一下，我们通过绝对值函数折叠空间，并且只关心右上象限。到左下（红色）点的最近距离显然是角点，我们已经在之前看到了这个距离计算。
 - en: '[PRE10]'
   id: totrans-split-92
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: A signed distance field returns positive values when a point is outside of the
     object and negative values when it is inside of the object. SDFs return a *signed*
     value but the length of a vector is always a positive value. In this case, our
@@ -613,6 +714,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 当一个点在对象外部时，有符号距离场返回正值，而当它在对象内部时返回负值。SDF返回一个*有符号*值，但向量的长度始终为正值。在这种情况下，我们的点在十字内部，因此简单的否定解决了我们的问题。
 - en: Things continue to look similar approach as we did with the `sdSquare`. With
     `sdSquare`, `the` upper left (blue) and lower right (purple) points were defined
     by their distances to the horizontal and vertical edges, respectively. Interestingly,
@@ -625,10 +727,12 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 事情继续看起来与我们使用`sdSquare`的方法相似。对于`sdSquare`，上左（蓝色）和下右（紫色）点的定义是它们到水平和垂直边缘的距离。有趣的是，在找到到这个无限十字的距离时，它们的关注点已经交换了。上左点的最小距离位于垂直边缘，下右点的最小距离位于水平边缘。在`sdSquare`中，`cornerToRay`向量中的负值被夹紧到零。在我们的`sdCross`中，正值被夹紧到零。相同的`cornerToRay`向量用于两个SDF，但其组件的夹紧方式不同。
 - en: '[PRE11]'
   id: totrans-split-95
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: So far our SDF covers all of the possible points that reside within the cross
     itself, for which the SDF would return a negative value. All that remains is the
     positive distances. As we saw in our last diagram, the distance to a point outside
@@ -638,10 +742,13 @@
   id: totrans-split-96
   prefs: []
   type: TYPE_NORMAL
+  zh: 到目前为止，我们的 SDF 覆盖了所有位于十字形内部的可能点，对于这些点，SDF 会返回负值。剩下的只是正距离。正如我们在上一个图中看到的，离十字形外的点的距离只是我们点的最小分量与十字形半宽度的差异。也就是
+    `cornerToRay` 向量的最小分量。
 - en: '[PRE12]'
   id: totrans-split-97
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: For a point to exist outside of the cross, both components must have a value
     greater than the `halfWidth` of our cross. Subtracting the corner from our point
     subtracts the halfwidth from both components. If the minimum component is greater
@@ -652,6 +759,8 @@
   id: totrans-split-98
   prefs: []
   type: TYPE_NORMAL
+  zh: 要使一个点存在于十字形之外，两个分量的值必须大于我们的十字形的 `halfWidth`。从点中减去角点相当于从两个分量中减去半宽度。如果最小分量大于 `0.0`，那么它们都是如此，距离就是最小分量。否则，我们就在十字形内部，我们之前计算的距离是所需的。就像
+    sdSquare 一样，最终的加法更多地起到一个是/否的作用，因为其中一个运算数保证为 `0.0`。
 - en: Adding one more dimension to the cross isn’t incredibly obvious, so let’s talk
     about it a bit. For the 2D “infinite cross”, we determined that the ray was outside
     of the cross if both components were greater than half the width of the cross
@@ -660,22 +769,26 @@
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 为十字形添加一个维度并不是很明显，所以我们来谈谈这个问题。对于二维“无限十字”，我们确定当两个分量都大于十字形的半宽度时，射线在十字形之外，反之则在十字形内。三维无限十字的区域是什么样的？我说的三维“无限十字”是什么？
 - en: Our definition for a 2D infinite cross is a square in which each face has been
     extruded out infinitely. Our definition for a 3D infinite cross is a *cube* in
     which each face has been extruded out infinitely.
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们对二维无限十字的定义是一个正方形，每个面都被无限延伸出去。我们对三维无限十字的定义是一个*立方体*，其中每个面都被无限延伸出去。
 - en: 'For our 2D infinite cross, we had four unique locations that a ray could be:'
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的二维无限十字，我们有四个射线可能的位置：
 - en: Inside the original square. This occurs when both components are smaller than
     the halfwidth. Closest distance is to the inner corner (negated).
   id: totrans-split-102
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在原始正方形内部。这发生在两个分量都小于半宽度时。最近距离是内角（取反）。
 - en: Inside the extruded face that extends in the x direction. This occurs when only
     the y-component is smaller than the halfwidth. Closest distance is the y component
     minus the halfwidth.
@@ -683,6 +796,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在沿 x 方向延伸的挤出面内部。这发生在只有 y 分量小于半宽度时。最近距离是 y 分量减去半宽度。
 - en: Inside the extruded face that extends in the y direction. This occurs when only
     the x-component is smaller than the halfwidth. Closest distance is the x component
     minus the halfwidth.
@@ -690,12 +804,14 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在沿 y 方向延伸的挤出面内部。这发生在只有 x 分量小于半宽度时。最近距离是 x 分量减去半宽度。
 - en: Outside of the cross. This occurs when both components are larger than the halfwidth.
     Closest distance is the smallest component.
   id: totrans-split-105
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 超出十字形。这发生在两个分量都大于半宽度时。最近距离是最小的分量。
 - en: 'NOTE: For the 3D infinite cross, we are folding space into the positive octant
     and we can think about this problem only in terms of the positive octant. If you
     find yourself thinking about what happens with negative coordinates...don’t! The
@@ -705,10 +821,12 @@
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：对于三维无限十字，我们将空间折叠到正八分位，我们只能从正八分位的角度考虑这个问题。如果你发现自己在思考负坐标的情况……不要！物体在所有轴上的对称性意味着我们可以使用绝对值将所有内容折叠到正八分位，创建一个算法来处理单八分位内的所有点，并忽略所有其他情况！
 - en: 'For our 3D infinite cross, we have *five* unique locations:'
   id: totrans-split-107
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于我们的三维无限十字，我们有*五个*独特的位置：
 - en: Inside the original cube. This occurs when all components are less than the
     `halfwidth`. Closest distance is to the nearest inner edge (negated). Take note,
     the center is *not* a cube constructed of six faces. It is a cube constructed
@@ -720,6 +838,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在原始立方体内部。当所有分量都小于 `halfwidth` 时发生。最近距离是到最近的内部边缘（取反）。请注意，中心不是由六个面构成的立方体。它是由12条边构成的立方体。它只是一个立方体的骨架。我们感兴趣的距离是点与这12条边之一之间的距离。如果你想象每条边都是二维平面上的角，你可能会注意到最近的边是由我们射线的三维位置的最大两个分量确定的。
 - en: Inside the extruded face that extends in the x direction. This occurs when only
     the x component is larger than the `halfwidth`. The closest distance can be framed
     as the inside of a square on the yz-plane. Closest distance is `max(y,z)` minus
@@ -728,6 +847,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在延伸至 x 方向的挤压面内部。当只有 x 分量大于 `halfwidth` 时发生。最近距离可以被构建为 yz 平面上的一个正方形内部。最近距离是 `max(y,z)`
+    减去 `halfwidth`。
 - en: Inside the extruded face that extends in the y direction. This occurs when only
     the y component is larger than the `halfwidth`. The closest distance can be framed
     as the inside of a square on the xz-plane. Closest distance is `max(x,z)` minus
@@ -736,6 +857,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在延伸至 y 方向的挤压面内部。当只有 y 分量大于 `halfwidth` 时发生。最近距离可以被构建为 xz 平面上的一个正方形内部。最近距离是 `max(x,z)`
+    减去 `halfwidth`。
 - en: Inside the extruded face that extends in the z-direction.  This occurs when
     only the z component is larger than the `halfwidth`. The closest distance can
     be framed as the inside of a square on the xy-plane. Closest distance is `max(x,y)`
@@ -744,6 +867,8 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 在延伸至 z 方向的挤压面内部。当只有 z 分量大于 `halfwidth` 时发生。最近距离可以被构建为 xy 平面上的一个正方形内部。最近距离是 `max(x,y)`
+    减去 `halfwidth`。
 - en: Outside of the cross. This occurs when two or more components are larger than
     the `halfwidth`. Closest distance is to the closest extruded face. The closest
     extruding face is the face extruding in the direction of the largest component
@@ -752,6 +877,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 超出十字之外。当两个或更多分量大于 `halfwidth` 时发生。最近距离是到最近的挤压面。最近的挤压面是在最大分量方向上延伸的面，到该挤压面的距离是两个最小分量的因素。
 - en: 'Let’s think about #5, outside of the cross, a bit more. Moving in the x direction
     can be seen as moving parallel to the extruded face in the x direction and perpendicular
     to both the extruded faces in the y & z directions. This means that moving along
@@ -765,10 +891,14 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_NORMAL
+  zh: '让我们更深入地思考 #5，超出十字之外。在 x 方向移动可以看作是沿着 x 方向平行于挤压面，且垂直于 y 和 z 方向的挤压面移动。这意味着沿着 x
+    方向移动对 x 方向的挤压面距离没有影响，而增加了与 y 和 z 方向的挤压面的距离。这有点像一场游戏，其中最大的分量将点从其他两个挤压面推得更远，并且其自身的挤压面“赢得”了保持到点的最近距离。沿着
+    x 轴移动是移动平行于 x 方向的挤压面，这意味着它不能同时成为决定到同一挤压面距离的因素。'
 - en: '[PRE13]'
   id: totrans-split-114
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: Another very powerful tool in ray marching is the modulo operator. If unfamiliar,
     the modulo operator (commonly denoted as ‘mod’ or ‘%’) simply returns the remainder
     of some division. For example, if you divide 11 by 4, you get 2 with a remainder
@@ -776,6 +906,8 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_NORMAL
+  zh: 射线行进中另一个非常强大的工具是模运算符。如果不熟悉，模运算符（通常表示为‘mod’或‘%’）简单地返回除法的余数。例如，如果你将 11 除以 4，你得到商为
+    2，余数为 3。所以 11 mod 4 是 3。
 - en: The figure below shows what happens if you use mod 3 to transform the x & y
     components of various points. It divides our original single unbounded coordinate
     system into infinite *bounded* coordinate systems that range from [0, 3.0) for
@@ -786,12 +918,14 @@
   id: totrans-split-116
   prefs: []
   type: TYPE_NORMAL
+  zh: 下图显示了使用模3转换各点的x和y分量时会发生什么。它将我们原始的单一无界坐标系统划分为每个轴的范围为[0, 3.0)的无限*有界*坐标系统。该图表展示了我们原始坐标系统如何被切成片段。每个片段将被映射到突出显示的区域中的彩色点。为了进一步演示，模运算符将每个点映射到突出显示区域中相同颜色的点上。
 - en: 'NOTE: The modulo operator is actually not defined for negative numbers. It
     is very possible that the mod operator on your platform does not produce the same
     results as seen in the above diagram.'
   id: totrans-split-117
   prefs: []
   type: TYPE_NORMAL
+  zh: 注意：模运算符实际上对负数未定义。很可能你的平台上的模运算符不会产生与上图中所示相同的结果。
 - en: In GLSL, `mod(x, y)` is defined as `x - (y * floor(x/y))`. If curious, you can
     play around with this to see that it produces the results we desire (infinitely
     repeating identical bounded coordinate spaces). If you’re playing around with
@@ -802,22 +936,26 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 在GLSL中，`mod(x, y)`被定义为`x - (y * floor(x/y))`。如果感兴趣，你可以尝试一下，看它是否产生我们期望的结果（无限重复的相同有界坐标空间）。如果在GLSL之外使用模运算看起来不正确，这可能是你的问题。要验证这是否是你的问题，只需将模运算符替换为上述GLSL定义。
 - en: One minor annoyance you might’ve noticed with our boxed coordinate systems is
     that the origins are now in the lower left corner. To get an origin at the center,
     we simply subtract half of the length of our boxed coordinate system.
   id: totrans-split-119
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能已经注意到我们的盒式坐标系统有一个小烦恼，即原点现在位于左下角。为了获得一个位于中心的原点，我们只需减去盒式坐标系统长度的一半。
 - en: In the figure above, we are performing mod 3 on the x & y components of our
     ray’s position
   id: totrans-split-120
   prefs: []
   type: TYPE_NORMAL
+  zh: 在上面的图中，我们对我们的射线位置的x和y分量执行模3运算。
 - en: In the figure below, we are doing the same and then subtracting 1.5 (half of
     3).
   id: totrans-split-121
   prefs: []
   type: TYPE_NORMAL
+  zh: 在下图中，我们正在执行相同的操作，然后减去1.5（3的一半）。
 - en: Two things to note. There is no longer a “true” slice that remains unchanged.
     Our coordinate system now goes from [-1.5, 1.5), where the lower boundaries are
     included and the upper is excluded. This may have felt more intuitive when the
@@ -826,6 +964,7 @@
   id: totrans-split-122
   prefs: []
   type: TYPE_NORMAL
+  zh: 有两点需要注意。再也没有一个“真正”的片段保持不变。我们的坐标系现在从[-1.5, 1.5)开始，其中包括下边界但不包括上边界。当包含下边界为零时，这可能感觉更直观，但记住这在这里仍然是正确的。
 - en: There is nothing special about using the modulo operator in two dimensions.
     Two-dimensional diagrams are simply easier to draw and get a feeling for. In three-dimensional
     space, modulo creates infinite bounded coordinate systems that resemble the shape
@@ -833,6 +972,7 @@
   id: totrans-split-123
   prefs: []
   type: TYPE_NORMAL
+  zh: 在二维中使用模运算没有什么特别的。二维图表只是更容易绘制和感受。在三维空间中，模运算创建了无限有界的坐标系统，其形状类似于一个长方体或立方体，而不是一个矩形或正方形。
 - en: Our last step before diving straight into creating our Menger Sponge is understanding
     how to combine primitive shapes to create more complex objects. The operations
     we are going to look at will be subtracting one shape from another, the union
@@ -840,37 +980,44 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_NORMAL
+  zh: 在我们直接创建曼格尔海绵之前的最后一步是理解如何组合原始形状以创建更复杂的对象。我们将要查看的操作包括从一个形状中减去另一个形状，两个形状的并集以及两个形状的交集。
 - en: Let’s first make an effort to analyze the picture above. We have two shapes
     that intersect each other, a circle and a square. We also have 5 points representing
     5 regions with unique signed distances to each of the two shapes.
   id: totrans-split-125
   prefs: []
   type: TYPE_NORMAL
+  zh: 让我们首先努力分析上面的图片。我们有两个相互交叉的形状，一个圆形和一个正方形。我们还有5个点代表5个具有唯一符号距离的区域，每个区域分别与这两个形状中的一个有关。
 - en: 'P1: Positive distance to both, where `sdCircle()` < `sdSquare()`.'
   id: totrans-split-126
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: P1：对两者都有正距离，其中`sdCircle()` < `sdSquare()`。
 - en: 'P2: Negative distance to circle. Positive to square. `sdCircle()` < `sdSquare()`.'
   id: totrans-split-127
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: P2：对圆的距离为负。对正方形的距离为正。`sdCircle()` < `sdSquare()`。
 - en: 'P3: Negative distance to both.'
   id: totrans-split-128
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: P3：对两者都有负距离。
 - en: 'P4: Positive distance to circle. Negative to square. `sdSquare()` < `sdCircle()`.'
   id: totrans-split-129
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: P4：对圆的距离为正。对正方形的距离为负。`sdSquare()` < `sdCircle()`。
 - en: 'P5: Positive distance to both, where `sdSquare()` < `sdCircle()`.'
   id: totrans-split-130
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P5: 对于两者的正距离，其中 `sdSquare()` < `sdCircle()`。'
 - en: The operations we will use to combine objects are imperfect and we will encounter
     a limitation that we have not seen before. The signed distance resulting from
     a point being in the interior of a combined object will not be correct. For our
@@ -881,6 +1028,7 @@
   id: totrans-split-131
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将使用的操作来组合对象并不完美，我们将遇到一个我们以前没有见过的限制。由于一个点位于组合对象内部导致的有符号距离不正确。对于我们的目的，这将是完全可以接受的。在通过光线行进进行渲染时，不希望将光线投射到对象的内部。光线应该命中表面或者完全错过，而不应穿过对象进入其内部。
 - en: To learn more about the inferiority of these SDF Boolean operations, [Inigo
     Quilez (creator of ShaderToy and an immense contributor to ray marching & SDFs)
     wrote an article on this exact topic which I’d consider bookmarking for later
@@ -888,103 +1036,122 @@
   id: totrans-split-132
   prefs: []
   type: TYPE_NORMAL
+  zh: 要了解更多关于这些 SDF 布尔运算的局限性，[Inigo Quilez（ShaderToy 的创作者和光线行进与 SDF 的重要贡献者）撰写了一篇关于这个主题的文章，我建议稍后阅读并收藏。](https://iquilezles.org/articles/interiordistance/)
 - en: '[PRE14]'
   id: totrans-split-133
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'P1: `sdCircle()` is positive and a smaller distance than `sdSquare()`, so the
     distance to the circle will be used.'
   id: totrans-split-134
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P1: `sdCircle()` 是正距离并且比 `sdSquare()` 更小的距离，因此将使用到圆的距离。'
 - en: 'P2: Inside union, not well defined.'
   id: totrans-split-135
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P2: 合并内部，定义不明确。'
 - en: 'P3: Inside union, not well defined.'
   id: totrans-split-136
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P3: 合并内部，定义不明确。'
 - en: 'P4: Inside union, not well defined.'
   id: totrans-split-137
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P4: 合并内部，定义不明确。'
 - en: 'P5: `sdSquare()` is a smaller distance than `sdCircle()`, so the distance to
     the distance to the square will be used.'
   id: totrans-split-138
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P5: `sdSquare()` 比 `sdCircle()` 更小的距离，因此将使用到距离正方形的距离。'
 - en: '[PRE15]'
   id: totrans-split-139
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: 'P1: `sdSquare()` is a positive distance and `-sdCircle()` is a negative distance,
     so the distance to the square will be used.'
   id: totrans-split-140
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P1: `sdSquare()` 是正距离，而 `-sdCircle()` 是负距离，因此将使用到正方形的距离。'
 - en: 'P2: `-sdCircle()` and `sdSquare()` are both positive distances, so the largest
     distance will be used.'
   id: totrans-split-141
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P2: `-sdCircle()` 和 `sdSquare()` 都是正距离，因此将使用最大的距离。'
 - en: 'P3: `-sdCircle()` is a positive distance and `sdSquare()` is a negative distance,
     so the `-sdCircle()` will be used.'
   id: totrans-split-142
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P3: `-sdCircle()` 是正距离，而 `sdSquare()` 是负距离，因此将使用到 `-sdCircle()`。'
 - en: 'P4: Inside subtraction, not well defined.'
   id: totrans-split-143
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P4: 减法内部，定义不明确。'
 - en: 'P5: `sdSquare()` is a larger distance than `-sdCircle`, so the distance to
     the square will be used.'
   id: totrans-split-144
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P5: `sdSquare()` 比 `-sdCircle` 更大的距离，因此将使用到正方形的距离。'
 - en: '[PRE16]'
   id: totrans-split-145
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: 'P1: `sdSquare()` is a larger distance than `sdCircle()`, so the distance to
     the square will be used.'
   id: totrans-split-146
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P1: `sdSquare()` 比 `sdCircle()` 更大的距离，因此将使用到正方形的距离。'
 - en: 'P2: `sdSquare()` is a positive distance and `sdCircle()` is a negative distance,
     so the distance to the square will be used.'
   id: totrans-split-147
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P2: `sdSquare()` 是正距离，而 `sdCircle()` 是负距离，因此将使用到正方形的距离。'
 - en: 'P3: Inside subtraction, not well defined.'
   id: totrans-split-148
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P3: 减法内部，定义不明确。'
 - en: 'P4: `sdCircle()` is a positive distance and `sdSquare()` is negative, so the
     distance to the circle is used.'
   id: totrans-split-149
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P4: `sdCircle()` 是正距离，而 `sdSquare()` 是负距离，因此将使用到圆的距离。'
 - en: 'P5: `sdCircle()` is a larger distance than `sdSquare()`, so the distance to
     the circle is used.'
   id: totrans-split-150
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: 'P5: `sdCircle()` 比 `sdSquare()` 更大的距离，因此将使用到圆的距离。'
 - en: We are going to move forward with creating the sponge in very explicit steps.
     For starters, let’s create an infinite cross that is as wide as our soon-to-be
     Menger Sponge. We will bound it within a box that is twice the width of the cross.
@@ -993,10 +1160,12 @@
   id: totrans-split-151
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们将继续以非常明确的步骤创建海绵。首先，让我们创建一个宽度与即将成为门格尔海绵相同的无限十字架。我们将其限制在一个盒子内，其大小是十字架宽度的两倍。这个边界框仅用于更好地理解我们正在处理的内容。代码和生成的图像看起来像这样。
 - en: '[PRE17]'
   id: totrans-split-152
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: For the first iteration of the Menger Sponge, we need to subtract a cross that
     is a third of the width of the Sponge itself and is properly aligned with the
     center of each face. With that in mind, let’s skinny up our cross to one-third
@@ -1004,19 +1173,23 @@
   id: totrans-split-153
   prefs: []
   type: TYPE_NORMAL
+  zh: 对于门格尔海绵的第一次迭代，我们需要减去一个十分之一的十字架，其宽度为海绵本身的三分之一，并且与每个面的中心对齐。考虑到这一点，让我们将我们的十字架变窄到海绵尺寸的三分之一。
 - en: '[PRE18]'
   id: totrans-split-154
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: Now to make things a little clearer, let’s draw the outermost cube of the Sponge
     and take a union with what we have.
   id: totrans-split-155
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在为了使事情更清晰一些，让我们绘制门格尔海绵的最外层立方体，并与我们所拥有的内容进行合并。
 - en: '[PRE19]'
   id: totrans-split-156
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: If you are familiar with your basic boolean operations, it’s already obvious
     that we simply should have performed a subtraction to get the first iteration
     of our Menger Sponge. While we’re at it, we’ll remove the bounding box, as it
@@ -1024,14 +1197,17 @@
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你熟悉基本的布尔运算，那么显然我们只需进行减法就可以得到我们门格尔海绵的第一次迭代。顺便说一句，我们将移除边界框，因为它不再作为视觉助手。
 - en: '[PRE20]'
   id: totrans-split-158
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: And a little peek inside...
   id: totrans-split-159
   prefs: []
   type: TYPE_NORMAL
+  zh: 还有一点小窥视...
 - en: So that’s how you do it once. But how do we do it iteratively? Well, let us
     start by thinking exactly what we want. The first iteration is taking the full
     box, cutting each dimension into thirds resulting in 27 equal-sized boxes, removing
@@ -1042,6 +1218,7 @@
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 这就是你一次做到的。但我们如何迭代地做到这一点呢？好吧，让我们从准确思考我们想要的东西开始。第一次迭代是取全盒子，将每个维度切成三分之一，结果是27个等大的盒子，移除每个面中心的6个盒子，以及中心的一个盒子。在第二次迭代中，我们取剩下的20个盒子并执行相同的操作（切割成27个等盒子并移除）。然后我们对剩余的400个盒子执行这些操作，依此类推。
 - en: As a step in the right direction, let’s see what it looks like to simply cut
     a box into those 27 equal-sized boxes. As you might imagine, the answer is not
     manually finding the distance to 27 hard-coded boxes. For this we are going to
@@ -1051,10 +1228,12 @@
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 作为朝正确方向迈出的一步，让我们看看将一个框简单地切割成这27个等大的盒子是什么样子。正如你所想象的，答案并不是手动找到27个硬编码的盒子的距离。为此，我们将利用模运算符将我们的单个无限空间转换为无限重复的有界空间。让我们首先用模创建一堆盒子。
 - en: '[PRE21]'
   id: totrans-split-162
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: The modulo simply cuts the world into infinite boxes that are all of width 2.0
     units. Within each of these repeating “boxed worlds”, we draw a slightly smaller
     box. There’s a decent problem though. This can be demonstrated by choosing a not-so-nice
@@ -1062,15 +1241,18 @@
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 模运算简单地将世界切割成无限盒子，它们每个的宽度都是2.0单位。在每个这些重复的“盒子世界”内，我们画了一个稍小的盒子。不过有一个相当大的问题。通过选择一个不太好的边界框比例来展示这一点，并从另一个角度看一下。
 - en: '[PRE22]'
   id: totrans-split-164
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: More like `sdJankyBoundedBoxField()`, amirite?? It’s not what we want but it
     is still pretty cool, huh?!
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 更像是`sdJankyBoundedBoxField()`，对吧？？虽然不是我们想要的，但它还是挺酷的，是吧？！
 - en: So our problem is that when performing our modulo operator, we are correctly
     cutting the space into boxes with a width equal to 2 units. The problem is our
     coordinate system has all axes going from [0, 2) but our SDFs return the distance
@@ -1080,6 +1262,7 @@
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们的问题是，当执行我们的模运算符时，我们正确地将空间切割成宽度为2单位的盒子。问题在于我们的坐标系所有轴都从[0, 2)开始，但我们的SDF返回到原点处的盒子距离。当前，我们正在渲染的盒子“渗出”超出其空间，超出了盒子世界的原点，并引起各种奇怪的伪影。
 - en: What we need to do to correct the situation is modify things slightly so the
     origins of each of our boxed worlds reside in the center. We just subtract half
     of their width and instead of coordinate systems where each axis goes from [0,
@@ -1087,23 +1270,28 @@
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要做的是稍微调整一下，使每个我们盒子世界的原点位于中心。我们只需减去它们宽度的一半，而不是坐标系统，其中每个轴从[0, 2)变为从[-1, 1)的坐标系统。
 - en: '[PRE23]'
   id: totrans-split-168
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: Bada bing, bada boom. We got ourselves a proper box field.
   id: totrans-split-169
   prefs: []
   type: TYPE_NORMAL
+  zh: '*Bada bing, bada boom.* 我们得到了一个合适的盒子场。'
 - en: Now that we have a bunch of cubes, let’s try to narrow them down to just the
     27 that we need.
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了一堆立方体，让我们试着将它们缩减到我们所需的27个。
 - en: '[PRE24]'
   id: totrans-split-171
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: Pretty close, but it looks like we have another problem. We have the right-sized
     boxes. They are all stacked properly. But some of them are cut strange and how
     can we create a Menger Sponge if there are no center boxes to cut out? The problem
@@ -1113,10 +1301,12 @@
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 差不多了，但看起来我们又有了另一个问题。我们有了正确大小的盒子。它们都正确地堆叠了。但有些盒子切得很奇怪，如果没有中心盒子来切割，我们怎么能创建门格尔海绵呢？问题在于它们不是我们希望的对齐方式。这些盒子当前是沿着每个轴并排对齐的。我将执行一个与十字形的交叉，给我们一个清晰的视觉，看看这里出了什么问题。
 - en: '[PRE25]'
   id: totrans-split-173
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: As you can see here, the modulo operator has our “box worlds” aligned in such
     a way that eight of them have corners touching the origin and anywhere else along
     the axes will be surrounded by four box worlds. To align the boxes with one box
@@ -1124,6 +1314,7 @@
   id: totrans-split-174
   prefs: []
   type: TYPE_NORMAL
+  zh: 正如你在这里看到的，取模运算符使我们的“盒子世界”对齐，这样其中八个角接触原点，沿轴的任何其他地方都将被四个盒子世界所环绕。为了将盒子与以原点为中心的一个盒子对齐，我们将必须相应地平移这些盒子。
 - en: Hopefully, at this point, you understand that there aren’t actually a finite
     amount of boxes. We created a never-ending world of boxes and are only showing
     the boxes that intersect with our bounding box, through the use of an intersection
@@ -1135,15 +1326,19 @@
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 希望到这一步，你已经明白我们并没有实际上有限数量的盒子。我们创建了一个无尽的盒子世界，并且只显示与我们的边界框相交的盒子，通过与十字架的交叉点。由于我们有无限的盒子，我们可以以许多不同的方式平移这些立方体以获得我们想要的结果。我们只需要一个中心立方体，任何一个都可以。但对于我们的情况，我们将继续将位于我们世界正半轴（在<0,
+    0, 0>和<2/3, 2/3, 2/3>之间）的第一个立方体平移到中心位置。
 - en: '[PRE26]'
   id: totrans-split-176
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: And there you have it! Exactly what we want. The most boring Rubik’s Cube you’ve
     ever seen. And a perfect start to our Sponge!
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 就是这样！这正是我们想要的。你曾见过的最无聊的魔方。也是我们海绵的完美开端！
 - en: You might already have guessed it, but with what we have now, we’re very close
     to our second iteration of the Menger Sponge! Let us use our stacked boxed worlds
     to create crosses instead of cubes! Each one-third the width of our boxed worlds
@@ -1151,28 +1346,34 @@
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 你可能已经猜到了，但根据我们现在所拥有的内容，我们非常接近蒙格海绵的第二次迭代！让我们使用我们堆叠的盒子世界来创建十字架，而不是立方体！每一个盒子世界的宽度的三分之一（以及我们整个海绵的九分之一）。
 - en: '[PRE27]'
   id: totrans-split-179
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: Can you see where this is going?
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 你能看到这件事的发展方向吗？
 - en: All we need to do is unbound the crosses from our bounding box, as the visual
     help is no longer needed, and then subtract what we have from our first iteration
     of the Menger Sponge.
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 我们需要做的就是解绑十字架与我们的边界框，因为视觉帮助不再需要，然后从我们蒙格海绵的第一次迭代中减去我们所拥有的。
 - en: '[PRE28]'
   id: totrans-split-182
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: Now we’re really getting somewhere!!
   id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们真的有了进展！
 - en: Now that we have two iterations of the Menger Sponge, let us see if we can find
     a single algorithm that will create both iterations. The way I am going to approach
     this problem will start with a little intuition. I will attempt to describe the
@@ -1180,6 +1381,7 @@
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 现在我们有了两个蒙格海绵的迭代，让我们看看是否能找到一个单一的算法来创建这两个迭代。我解决这个问题的方法将从直觉开始。我会尽力描述我能感受到这些情感的最佳位置。
 - en: 'There seems to be a lot of necessary computation involved in creating those
     27 crosses for Iteration #2\. For instance, the mod operator seems like it would
     be incredibly difficult (impossible?) to remove. Whereas creating just the one
@@ -1190,70 +1392,85 @@
   id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 制作第二轮的27个十字架似乎需要大量必要的计算。例如，取模运算符似乎非常难（不可能？）移除。相比之下，创建第一轮的一个十字架感觉非常容易。我看到在使用与第二轮非常接近的逻辑创建一个“过于复杂”的第一轮中存在着一个更简单的前进路径。希望这可能会导致一个更通用的算法，帮助我们产生蒙格海绵的第N次迭代。
 - en: '[PRE29]'
   id: totrans-split-186
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: That over-complicated cross bound gives us the following.
   id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 那个过于复杂的跨界给我们带来了以下情况。
 - en: Subtract it from our full sized box to create the 1st iteration! We’re definitely
     getting somewhere. :)
   id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 从我们的全尺寸盒子中减去，以创建第一次迭代！我们确实有所进展。 :)
 - en: '[PRE30]'
   id: totrans-split-189
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'The differences between creating 1 cross and 27 crosses are fairly limited.
     The lines that differ are the following:'
   id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建1个十字架和27个十字架之间的差异是非常有限的。不同的线路如下：
 - en: Determining the size of the “stacked box worlds”
   id: totrans-split-191
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 确定“堆叠的盒子世界”的大小
 - en: Scaling (stretching) our the coordinate system of our boxed worlds to match
     the same range of the whole sponge
   id: totrans-split-192
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 缩放我们的盒子世界坐标系，以匹配整个海绵的相同范围
 - en: Un-stretching our signed distance to compensate for the scaling of the boxed
     world coordinate system.
   id: totrans-split-193
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 为了补偿盒子世界坐标系的缩放，取消拉伸我们的符号距离。
 - en: These are the interesting spots of our SDF that we should focus on to find an
     algorithm that calculates the distance to the Nth iteration of a Menger Sponge.
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些是我们的SDF中有趣的地方，我们应该专注于找到一个计算到门格尔海绵第N次迭代距离的算法。
 - en: '[PRE31]'
   id: totrans-split-195
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: Ain’t she a beaut.
   id: totrans-split-196
   prefs: []
   type: TYPE_NORMAL
+  zh: 这难道不是美吗？
 - en: If you find this interesting at all, please dive into any of the following additional
     resources. There are certainly optimizations and other incredibly fun things you
     can do with ray marching and SDFs. This is only the beginning. Cheers!
   id: totrans-split-197
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果你对这个有兴趣，请深入研究以下任意一个额外的资源。当然，使用射线行进和SDF可以进行优化和其他非常有趣的事情。这只是一个开始。加油！
 - en: Check out this ["Menger Prison"](https://lucodivo.github.io/menger_prison.html)
     and create the SDF without looking at the source code!
   id: totrans-split-198
   prefs: []
   type: TYPE_NORMAL
+  zh: 查看这个["门格尔监狱"](https://lucodivo.github.io/menger_prison.html)，并且不看源代码创建SDF！
 - en: You will only need to use the tools you’ve learned about in this article!
   id: totrans-split-199
   prefs: []
   type: TYPE_NORMAL
+  zh: 你只需要使用本文介绍的工具！
