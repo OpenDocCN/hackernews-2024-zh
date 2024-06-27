@@ -1715,6 +1715,7 @@
   id: totrans-split-156
   prefs: []
   type: TYPE_NORMAL
+  zh: 分布式系统的各个部分可能以不同的速度运行。此外，出于性能原因，在与远程节点通信时通常会应用流水线技术，即不等待远程节点的响应或确认。为了补偿延迟和吞吐量的变化，需要某种显式或隐式的缓冲，例如缓冲通道、发送/接收队列、待处理请求跟踪器、上下文外消息缓冲等。在某些条件下，例如在负载较重或网络不稳定时，缓冲状态的数量往往会增长。因此，应该有一些机制来防止*状态的无限增长*而不会影响活动性。这些机制可以是反压力、速率限制、项目过期和逐出策略等。
 - en: In adversarial environments, potential DoS attacks through *resource exhaustion*
     is a major threat. An adversary may attempt to exhaust node's resources, such
     as network bandwidth, memory and computational capacity. In order to effectively
@@ -1728,6 +1729,8 @@
   id: totrans-split-157
   prefs: []
   type: TYPE_NORMAL
+  zh: 在对抗环境中，通过*资源耗尽*进行潜在的 DoS 攻击是一个主要威胁。对手可能会试图耗尽节点的资源，如网络带宽、内存和计算能力。为了有效地减轻这种攻击，对手应该相对于从诚实参与者那里消耗的资源来说是极为昂贵的。*早期检测协议违规*和*消费者驱动的数据流*，如
+    Cardano 所采用的方式，可以减少受攻击节点消耗的资源量。对处理来自远程对等体消息所导致的资源消耗进行跟踪，如 Avalanche 所做的，以及对通信通道应用*公平节流*也可能是有用的。
 - en: Proper resource management is indispensable in long-running systems. It can
     be particularly challenging combined with concurrency. Reliable resource management
     approaches, e.g. based on lifetimes and lexical scopes, as well as structured
@@ -1739,11 +1742,13 @@
   id: totrans-split-158
   prefs: []
   type: TYPE_NORMAL
+  zh: 在长期运行的系统中，适当的资源管理是必不可少的。与并发结合可能尤其具有挑战性。可靠的资源管理方法，例如基于生命周期和词法范围，以及结构化并发，在适用时应优先于依赖显式手动释放获取的资源。由于缓冲而导致状态增长的潜在问题，需要机制来确保有限的内存使用。在对抗环境中应预期资源耗尽攻击，并通过最小化其对诚实节点的影响来减轻这些攻击的影响。
 - en: Maintainability[​](#maintainability "Direct link to Maintainability")
   id: totrans-split-159
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: '[可维护性](#maintainability "直达可维护性")'
 - en: Maintenance of distributed systems is challenging. Those systems are usually
     long-running critical parts of infrastructure with high reliability requirements.
     They are complex systems consisting of multiple nodes, often operated independently
@@ -1753,6 +1758,7 @@
   id: totrans-split-160
   prefs: []
   type: TYPE_NORMAL
+  zh: 维护分布式系统具有挑战性。这些系统通常是基础设施的长期关键部分，具有高可靠性要求。它们是由多个节点组成的复杂系统，通常由不同实体独立操作。公开可用的部署也容易受到恶意攻击。因此，有效维护分布式系统需要全面的机制和工具。
 - en: First of all, deploying distributed systems may require specific *bootstrapping*
     procedures in order to ensure a secure setup for the whole system. Different distributed
     protocols may have different requirements and rely on different assumptions for
@@ -1769,6 +1775,7 @@
   id: totrans-split-161
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，部署分布式系统可能需要特定的*引导*程序，以确保整个系统的安全设置。不同的分布式协议可能对*设置阶段*有不同的要求，并依赖于不同的假设。协议实现应明确其设置阶段的要求和假设。长时间运行的、高可用的分布式系统应能够升级个别节点到协议实现的更新版本，而不会中断整个系统。这要求设计具备*向后和向前兼容性*。类似地，失败的节点应能够安全、高效地*恢复*并*重新加入*系统。此外，系统应能够安全地从大规模崩溃中恢复，即提供[持久性](https://en.wikipedia.org/wiki/Durability_(database_systems))。因此，协议应设计和实现具备明确的恢复过程。
 - en: Distributed system administrators need mechanisms and tools for monitoring individual
     nodes in order to analyze the system and promptly detect anomalies. Developers
     also need effective mechanisms for analyzing, diagnosing issues, and identifying
@@ -1781,6 +1788,7 @@
   id: totrans-split-162
   prefs: []
   type: TYPE_NORMAL
+  zh: 分布式系统管理员需要监视各个节点的机制和工具，以分析系统并及时检测异常。开发人员还需要有效的机制来分析、诊断问题，并识别协议实现中的错误。*日志*、*追踪*和收集*指标*是常见的*可观察性*技术，允许从系统中监视并获取诊断信息；大多数探索的代码库都使用这些技术。[OpenTelemetry](https://opentelemetry.io/)和[Prometheus](https://prometheus.io/)是流行的开源监控解决方案，广泛应用于许多探索的代码库中。
 - en: Diagnostic logging typically refers to emitting and recording chronological
     *textual* messages that capture important events happening during the execution
     of software. Messages in diagnostic logs are traditionally assigned a severity
@@ -1793,6 +1801,7 @@
   id: totrans-split-163
   prefs: []
   type: TYPE_NORMAL
+  zh: 诊断日志通常指的是发出和记录*文本*消息的过程，这些消息按时间顺序记录了软件执行过程中发生的重要事件。诊断日志中的消息通常分配了严重程度级别，可以用于禁止记录低于某一严重程度级别的消息，例如调试消息。日志消息可以支持在格式化文本消息中添加结构化数据，例如键-值上下文字段。日志可以按层次结构组织，反映系统中组件的结构。*分层日志*中的消息通常会自动从更高级别的组件中获取上下文信息。
 - en: Tracing is somewhat similar to logging, but it is focused on capturing a detailed
     view of the flow of execution in the system. Tracing records are primarily *structured*
     rather than textual and reflect *causal relationships*. In particular, *distributed
@@ -1805,6 +1814,7 @@
   id: totrans-split-164
   prefs: []
   type: TYPE_NORMAL
+  zh: 跟踪与日志记录有些类似，但它侧重于捕获系统执行流的详细视图。跟踪记录主要是*结构化*而不是文本，反映*因果关系*。特别是*分布式跟踪*是跟踪由处理单个逻辑操作（如用户请求或事务）引起的事件，跨分布式系统的不同组件。分布式追踪与单个逻辑操作相关联，由因果关系链接的跨度组成，每个跨度表示操作中的特定活动。跨度通常包含描述相应活动和时间信息的结构化数据。
 - en: Metrics represent numeric measurements that describe the system's behavior over
     time. Metrics are typically collected and aggregated at regular intervals. They
     can include various types of information such as CPU and memory utilization, latency,
@@ -1816,6 +1826,7 @@
   id: totrans-split-165
   prefs: []
   type: TYPE_NORMAL
+  zh: 指标代表随时间描述系统行为的数值测量。指标通常定期收集和聚合。它们可以包括各种类型的信息，如 CPU 和内存利用率、延迟、错误率、吞吐量、队列长度等。有不同类型的指标；最常用的是计数器、测量器和直方图。计数器是随时间累积增加的累积指标；测量器表示某些测量的当前值；直方图记录了统计表征中的采样观测数据。
 - en: Observability is a [cross-cutting concern](https://en.wikipedia.org/wiki/Cross-cutting_concern
     "Cross-cutting concern"). Most implementations define abstract interfaces for
     logging, tracing, and capturing metrics and require them as dependency across
@@ -1830,6 +1841,8 @@
   id: totrans-split-166
   prefs: []
   type: TYPE_NORMAL
+  zh: 可观察性是一种[横切关注点](https://en.wikipedia.org/wiki/Cross-cutting_concern "Cross-cutting
+    concern")。大多数实现定义了日志记录、跟踪和捕获指标的抽象接口，并要求它们作为组件之间的依赖；有些使用代码仪器技术。Cardano 使用了一种有趣的方法来实现可观察性特性，称为*反变跟踪*，其中将特定于域的值提供给域不可知的处理器。[反变性](https://en.wikipedia.org/wiki/Functor#Covariance_and_contravariance)属性允许域不可知的跟踪器被适应并代替需要特定于域的跟踪器。这种方法鼓励使用专门的领域特定事件类型而不是文本编码进行诊断日志记录/跟踪。反变跟踪还可以用于收集指标。
 - en: Detailed logging and tracing can add significant overhead. When logging a large
     amount of diagnostic data is expensive, logging can be *sampled*, producing only
     a subset of the total messages based on a predetermined sampling rate or criteria.
@@ -1839,6 +1852,7 @@
   id: totrans-split-167
   prefs: []
   type: TYPE_NORMAL
+  zh: 详细的日志记录和跟踪可能会增加显著的开销。当记录大量诊断数据昂贵时，可以进行*采样*日志记录，根据预定的采样率或标准，仅产生总消息的子集。如果程序编译时禁用了跟踪，反变跟踪将不会产生任何运行时成本；即使在处理只忽略某些类型事件的跟踪器时，这也是可能的。
 - en: Fault-tolerant distributed protocols should be designed and implemented with
     clear bootstrapping, upgrading, and recovery procedures. Note that upgradability
     relies on backward and forward compatibility of the implementation. It is also
@@ -1848,11 +1862,13 @@
   id: totrans-split-168
   prefs: []
   type: TYPE_NORMAL
+  zh: 容错分布式协议应设计并实施清晰的引导、升级和恢复程序。请注意，可升级性依赖于实现的向后和向前兼容性。还应考虑耐久性特性，即安全地从大规模崩溃中恢复系统的能力。应该无缝支持常规的可观察性和诊断机制。
 - en: Flexibility[​](#flexibility "Direct link to Flexibility")
   id: totrans-split-169
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 灵活性[​](#flexibility "直接链接到灵活性")
 - en: Flexible software is able to adapt to changing requirements without having to
     undergo extensive restructuring. Flexibility is crucial for *adoption*, *reuse*,
     and *evolution* of code. Each explicit or implicit *assumption* or *requirement*
@@ -1864,6 +1880,7 @@
   id: totrans-split-170
   prefs: []
   type: TYPE_NORMAL
+  zh: 灵活的软件能够在不需进行广泛重构的情况下适应变化的需求。灵活性对于代码的*采用*、*重用*和*演变*至关重要。对代码使用方式施加的每一个显式或隐式的*假设*或*要求*都是降低灵活性的额外*约束*。探索的代码库主要用于实现特定协议或服务特定目的，而不是解决一般分布式系统实现的基本需求。这是构建软件的常见方法，但往往导致代码的灵活性相对有限。
 - en: In general, highly *modular* and *composable* code is also more flexible. Clear
     [*separation of concerns*](https://en.wikipedia.org/wiki/Separation_of_concerns)
     through abstract interfaces and [dependency inversion](https://en.wikipedia.org/wiki/Dependency_inversion_principle)
@@ -1876,6 +1893,8 @@
   id: totrans-split-171
   prefs: []
   type: TYPE_NORMAL
+  zh: 一般来说，高度*模块化*和*可组合*的代码也更加灵活。通过抽象接口和[依赖反转](https://en.wikipedia.org/wiki/Dependency_inversion_principle)清晰地进行*关注点分离*有助于通过启用可互换的组件以及促进更容易的代码修改和扩展来增强灵活性。*泛型*和*可配置*的组件也可以增强灵活性。[*泛型编程*](https://en.wikipedia.org/wiki/Generic_programming)技术，例如 [参数多态](https://en.wikipedia.org/wiki/Parametric_polymorphism
+    "参数多态")，鼓励开发更通用和适应性更强的组件，可以在不同的上下文中使用而无需修改。
 - en: The ability to seamlessly integrate into larger systems is another aspect of
     flexibility required for adoption and reuse of protocol implementations. Since
     larger systems may opt for different programming languages and runtime environments,
@@ -1888,6 +1907,7 @@
   id: totrans-split-172
   prefs: []
   type: TYPE_NORMAL
+  zh: 无缝集成到更大系统的能力是灵活性的另一个方面，这对于采用和重用协议实现至关重要。由于较大的系统可能选择不同的编程语言和运行时环境，因此支持与其他语言的接口和施加最小的运行时要求是非常重要的。Rust特别适合实现强大的软件组件，以便集成到其他语言和环境中，因为它具有丰富的语言特性、零成本抽象、可预测的性能、无需垃圾收集器的安全内存管理以及使用自定义并发运行时的能力。
 - en: Designing for flexibility promotes adoption, reuse, and evolution of code. Following
     this approach should be a deliberate choice from the beginning. Avoiding strong
     constraints, assumptions, and requirements, aiming at modularity and composability
@@ -1895,11 +1915,13 @@
   id: totrans-split-173
   prefs: []
   type: TYPE_NORMAL
+  zh: 设计灵活性促进了代码的采用、重用和演变。从一开始遵循这种方法应该是一个深思熟虑的选择。避免强约束、假设和要求，以模块化和可组合的泛型和可配置的组件来增强灵活性。
 - en: Conclusions[​](#conclusions "Direct link to Conclusions")
   id: totrans-split-174
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: 结论[​](#conclusions "直接链接到结论")
 - en: I learned a lot while exploring those 14 code bases. I have acquired a much
     deeper understanding of what is important for a practical distributed protocol
     implementation and what are the typical challenges there. I have seen different
@@ -1912,11 +1934,13 @@
   id: totrans-split-175
   prefs: []
   type: TYPE_NORMAL
+  zh: 我在探索那些 14 个代码库的过程中学到了很多。我对实际分布式协议实现中的重要内容和典型挑战有了更深入的理解。我看到了不同的应用方法，并发现了一些分散在各处的有趣思想和技术。尽管我觉得分布式协议的实现方式相当令人不满意。即使对于一个有经验的协议实现工程师来说，大多数代码库也很难理解和跟踪。我可以想象，要让它们首次运行以及后续改进都需要花费多少精力和痛苦。
 - en: Status Quo[​](#status-quo "Direct link to Status Quo")
   id: totrans-split-176
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[现状](#status-quo "Status Quo 的直接链接")'
 - en: Most of the time, it was rather hard to follow the main protocol, its causal
     dependencies and logical connections in the code that was presumably structured
     focusing on the operational aspects, fragmented, entangled, and cluttered. Structuring
@@ -1935,6 +1959,7 @@
   id: totrans-split-177
   prefs: []
   type: TYPE_NORMAL
+  zh: 大多数时候，很难跟踪主协议、其因果依赖关系和代码中的逻辑连接。代码的结构看似专注于操作方面，但却是碎片化、交织在一起、凌乱的。直接围绕简单的通信机制构建协议实现，放弃传输层提供的可靠和有序的传递保证，并显式表达并发和同步，基于共享可变内存和基于锁的原语来处理低级机制，或者试图避免并发以支持顺序状态机，似乎都导致了协议逻辑在代码库中的分散，将注意力转向操作技术细节，并在代码中添加样板和手工编码的流控制、上下文切换、资源管理等。侵入式的临时优化、补丁和横切关注点也导致代码混乱。通常存在模块化不足、结构不清晰、耦合度过高和大量可变状态的问题，这进一步复杂化了问题。使用复杂技术和缺乏内联文档还增加了理解的障碍。
 - en: It seems barely possible to fully convince oneself that the majority of the
     implementations actually correspond closely to the original protocol and guarantee
     the claimed properties under unfavorable conditions. The way the protocols are
@@ -1948,6 +1973,7 @@
   id: totrans-split-178
   prefs: []
   type: TYPE_NORMAL
+  zh: 要完全说服自己，大多数实现实际上与原始协议密切对应并在不利条件下保证所声明的属性几乎是不可能的。协议在代码中的表达与形式化规范毫不相似。如此复杂的代码库中存在着诸如竞态条件、死锁、资源匮乏以及在某些语言中数据竞争等微妙问题的可能性时刻存在，并且这并没有增加更多的信心。不受限的非确定性和大量的非本地操作导致状态空间膨胀，使得基于严格测试的验证变得不可行。只有少数实现支持使用非修改代码的确定性离散事件模拟进行可重现测试。
 - en: It also seems unclear how many of the implementations would behave under certain
     high load conditions, e.g. under a denial-of-service attack. Protocol violations
     are not always optimally detected at early stages of processing incoming data;
@@ -1963,6 +1989,7 @@
   id: totrans-split-179
   prefs: []
   type: TYPE_NORMAL
+  zh: 似乎也不清楚在某些高负载条件下，例如在拒绝服务攻击下，多少实现会如何行为。在处理传入数据的早期阶段，协议违规并非总是被最优地检测出来；许多实现缺乏传播检测到异常信息到较低通信层的机制，以限制与有问题节点的通信。大多数实现采用推送式通信，并放弃传输层的流量控制机制，因此单个远程节点有可能发送接收节点需要及时处理的任意量数据。不适当地频繁出现未限制增长状态的无界缓冲区和队列，以及不明确的控制机制可能导致不可靠的显式手动资源管理，包括后台悬挂的并发任务造成资源泄露。
 - en: In terms of observability, most of the protocol implementations rely on simple
     logging with context fields and collect various metrics. However, this may not
     provide enough details and context for effective debugging and analysis of the
@@ -1970,6 +1997,7 @@
   id: totrans-split-180
   prefs: []
   type: TYPE_NORMAL
+  zh: 就可观察性而言，大多数协议实现依赖带有上下文字段的简单日志记录和收集各种指标。然而，这可能无法为有效调试和分析协议执行提供足够的细节和背景信息。
 - en: The explored code bases are quite specific to particular protocols, execution
     environments, and use cases. Modularity there is rather coarse and most of the
     components are not meant to be reused or recombined; tight coupling is also not
@@ -1977,11 +2005,13 @@
   id: totrans-split-181
   prefs: []
   type: TYPE_NORMAL
+  zh: 探索过的代码库非常专注于特定的协议、执行环境和使用案例。模块化程度相对较粗，大多数组件并非用于重用或重新组合；紧密耦合也并不少见。这损害了代码的适应性和可重用性，使其显得不灵活。
 - en: We Can Do Better[​](#we-can-do-better "Direct link to We Can Do Better")
   id: totrans-split-182
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: '[我们可以做得更好](#we-can-do-better "直达我们可以做得更好")'
 - en: I think we can do much better. I think we should not waste our efforts reinventing
     the wheel over and over again and repeating mistakes. Builders better focus on
     implementing the functionality specific to their solutions without having to figure
@@ -1996,6 +2026,7 @@
   id: totrans-split-183
   prefs: []
   type: TYPE_NORMAL
+  zh: 我认为我们可以做得更好。我认为我们不应该在一遍又一遍地重新发明轮子和重复错误。建造者应更专注于实现其解决方案特定的功能，而无需考虑如何实现复杂但至关重要的分布式协议。应该有一个框架来一劳永逸地解决实现分布式协议的问题，一个框架，里面有易于使用的可靠基本单元和组件，可以按原样使用或根据需要进行混合和匹配，一个引导编写出健壮且易于理解代码的框架，一个支持协议实现分析、监控、测试和调试的框架，一个相对高效且易于集成到各种环境的框架。
 - en: The framework should guide away from incidental, non-essential complexity and
     allow expressing protocol implementations in clear and understandable code. Protocol
     implementations should be structured primarily focusing on functional and logical
@@ -2008,6 +2039,7 @@
   id: totrans-split-184
   prefs: []
   type: TYPE_NORMAL
+  zh: 框架应该避免次要的、非必要的复杂性，并允许用清晰易懂的代码表达协议实现。协议实现应主要侧重于功能和逻辑方面的结构化，明确区分关注点、操作技术性细节和可能隐藏在简单和明确定义的抽象背后的复杂技术。以更声明式的方式表达的细粒度和简单组件的良好模块化，以减少非局部操作的数量，应有助于局部推理。组件应具有最小的内部状态，并且具有明确定义的要求、属性和外部依赖。
 - en: Concurrency requires special attention since it is unavoidable, tricky, and
     can add a great deal of complexity, whereas designing for concurrency can be actually
     advantageous in terms of code structure and modularity. Working with concurrency
@@ -2022,6 +2054,7 @@
   id: totrans-split-185
   prefs: []
   type: TYPE_NORMAL
+  zh: 并发性需要特别注意，因为它是不可避免的、棘手的，并且可能会增加大量复杂性，而设计并发性则实际上在代码结构和模块化方面具有优势。处理并发性应该尽可能安全、简单和高效。低级并发机制，如操作系统线程、基于锁的同步原语和共享可变内存，应仅用于实现更高级、更安全和更易于使用的并发性机制的内部，例如并发运行时。在代码中表达协议的并发部分应该与表达顺序部分一样自然。这可以通过语法手段、抽象化和一种并发模型来实现，该模型将任何因果无关操作识别为潜在并发操作。
 - en: Since communication interfaces can greatly affect the structure of code built
     around them, we need a range of communication mechanisms with aligned interfaces
     and clearly defined properties. There should be different levels of abstractions
@@ -2034,6 +2067,7 @@
   id: totrans-split-186
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于通信接口可以极大地影响围绕其构建的代码结构，我们需要一系列具有对齐接口和明确定义属性的通信机制。通信机制应具有不同的抽象级别。更高级别的应该利用底层层已保证的属性，例如可靠的、有序的通信通道，以及由常用传输层提供的流量控制。在状态化会话中表达通信可以帮助表达单个消息之间的因果关系，并极大简化协议实现。内部和外部通信的相似性可以建议更好的抽象化。
 - en: Flexibility is extremely important to make the framework applicable to an open-ended
     space of use cases. Therefore, we should by all means avoid strong constraints,
     assumptions, and requirements. The framework should support integration with different
@@ -2047,6 +2081,7 @@
   id: totrans-split-187
   prefs: []
   type: TYPE_NORMAL
+  zh: 灵活性对于使框架适用于开放式用例空间至关重要。因此，我们应该尽一切可能避免强限制、假设和要求。框架应支持与不同的编程语言和运行时环境集成。其组件应该是通用且可配置的。它还应支持向后和向前兼容性。组合性对于确保良好的适应性、可重用性和可演变性至关重要。这需要统一的抽象和组合手段。通用编程技术，如参数多态性，可以用来使组件通用化；功能和异步编程技术可以成为增强组合性的重要思路，特别是在并发情况下。
 - en: Correctness of distributed protocol implementations should be verifiable, in
     terms of both safety and liveness properties. Formal verification methods are
     able to provide rigorous assurance about correctness of protocols and their implementations.
@@ -2070,6 +2105,7 @@
   id: totrans-split-188
   prefs: []
   type: TYPE_NORMAL
+  zh: 分布式协议实现的正确性应当是可验证的，包括安全性和活性属性。形式化验证方法能够为协议及其实现提供严格的正确性保证。然而，由于形式化验证涉及对系统所有可能状态的详尽分析，对于大型和复杂组件来说可能变得不可行。良好的模块化、适于局部推理的组件，以及减少非局部和非确定性操作的数量，可以帮助使形式化验证更加可行。为了保持在代码中实现的协议规范与其形式化验证规范的等价性，实现应尽可能接近于形式规范，最好使用相同的符号。类型安全技术，如所有权、类型状态、会话类型、线性和唯一类型，可以通过使代码在某些属性上几乎安全构造来极大地帮助确保代码的正确性。混合方法结合形式化验证和其他测试方法，可以在纯粹的形式方法不可行时实现较高的正确性保证。未修改代码的确定性离散事件模拟是一种特别强大的技术，可以通过随机化、可重复测试来补充其他验证方法。将非确定性方面限制在代码的抽象界面之后，并能够在模拟过程中控制非确定性，是实现可重复测试的关键。
 - en: Distributed protocols and their implementations should provide strong guarantees
     even under unfavorable conditions, especially those supposed to be deployed in
     adversarial environments. The framework should employ a reliable approach for
@@ -2086,6 +2122,7 @@
   id: totrans-split-189
   prefs: []
   type: TYPE_NORMAL
+  zh: 分布式协议及其实现应在不利条件下提供强大的保证，特别是在敌对环境中部署的协议。框架应在并发代码的资源管理方面采用可靠的方法，例如基于生命周期和词法作用域的结构化并发。应有流控制机制，防止状态无限增长并确保有限的内存使用。框架应强调面向威胁的设计。应尽量减少资源耗尽（DoS）攻击的潜在影响，通过早期检测协议违规并传播检测到的异常信息，以维护对等体声誉指标并采取适当措施。因此，应优先考虑消费者驱动的通信模式。还应提供安全高效地从持久存储中恢复失败节点的机制。支持耐久性，即在大规模系统崩溃后的安全恢复，也是可取的。
 - en: Protocols and their implementations should be clear about bootstrapping and
     recovery requirements and procedures. Upgradability requires backward and forward
     compatibility. There should be seamless support for usual observability and diagnostic
@@ -2099,6 +2136,7 @@
   id: totrans-split-190
   prefs: []
   type: TYPE_NORMAL
+  zh: 协议及其实现应明确引导和恢复要求与流程。可升级性要求向后和向前兼容性。应无缝支持常见的可观察性和诊断机制，如日志记录、跟踪和收集度量。为了跟踪处理传入数据造成的资源消耗，提供追踪机制也可能很有用。与简单的带上下文字段的日志记录相比，支持使用特定于域的追踪事件类型的结构化分布式跟踪似乎更有优势。这种追踪方式也适用于收集度量。在禁用追踪时，减少产生的开销是很重要的。代码仪器化可以帮助避免在代码中添加跟踪模板。
 - en: The framework should provide good performance and support various optimizations,
     such as speculative and on-demand execution, caching, flexible prioritization
     policies. To support protocol-level optimizations, the framework should allow
@@ -2111,6 +2149,7 @@
   id: totrans-split-191
   prefs: []
   type: TYPE_NORMAL
+  zh: 框架应提供良好的性能，并支持各种优化，如推测性执行、按需执行、缓存、灵活的优先级策略。为了支持协议级优化，框架应允许表达复杂的通信模式。通信层应防止诸如先到头阻塞等不良影响，优化数据流并利用传输层提供的属性。轻量级用户线程和非阻塞算法可以实现高并发而不影响效率。零拷贝技术可用于消除不必要的数据复制。
 - en: So we need a structured, yet flexible enough, approach guiding away from incidental
     complexity towards understandability, fine modularity, and composability. The
     framework's components should be generic and configurable, allowing local reasoning
@@ -2122,44 +2161,52 @@
   id: totrans-split-192
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，我们需要一种结构化但足够灵活的方法，引导我们远离偶然复杂性，朝向可理解性、良好的模块化和可组合性。框架的组件应该是通用的和可配置的，允许对实现进行局部推理。表达并发和通信抽象应该是安全且容易的，结构化且可组合的。我们应该严肃对待正确性并对抗不利条件的弹性。框架还应该满足维护需求，提供出色的可观察性和诊断机制。它应该提供良好的性能，并允许各种优化。
 - en: Next Steps[​](#next-steps "Direct link to Next Steps")
   id: totrans-split-193
   prefs:
   - PREF_H2
   type: TYPE_NORMAL
+  zh: Next Steps[​](#next-steps "直接链接到Next Steps")
 - en: 'Having explored those implementations of distributed protocol, now it became
     more clear to me what is worth focusing on while developing the Replica_IO framework.
     I define the following key areas of focus:'
   id: totrans-split-194
   prefs: []
   type: TYPE_NORMAL
+  zh: 在探索了那些分布式协议的实现之后，现在我对开发Replica_IO框架时值得关注的内容更加清楚了。我确定了以下关键关注领域：
 - en: '*simplicity*: making protocol implementations well structured and understandable;'
   id: totrans-split-195
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*简单性*：使协议实现结构良好且易于理解；'
 - en: '*flexibility*: keeping the framework adaptable, widely applicable, and evolvable;'
   id: totrans-split-196
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*灵活性*：保持框架的适应性、广泛适用性和可进化性；'
 - en: '*reliability*: ensuring that protocol correctness is verifiable and the implementation
     is resilient;'
   id: totrans-split-197
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*可靠性*：确保协议正确性可验证且实现具有弹性；'
 - en: '*efficiency*: allowing for various optimizations and delivering good performance;'
   id: totrans-split-198
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*效率*：允许各种优化并提供良好的性能；'
 - en: '*maintainability*: catering for maintenance needs and providing great diagnostic
     mechanisms.'
   id: totrans-split-199
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: '*可维护性*：满足维护需求并提供优秀的诊断机制。'
 - en: Achieving all of that at once is obviously not realistic. Therefore, the primary
     focus will be initially put on simplicity, flexibility, and reliability, but without
     neglecting the remaining aspects. Of particular interest are the matters of structure
@@ -2168,6 +2215,7 @@
   id: totrans-split-200
   prefs: []
   type: TYPE_NORMAL
+  zh: 要同时实现所有这些显然是不现实的。因此，最初的重点将放在简单性、灵活性和可靠性上，但不会忽视其他方面。尤其感兴趣的是支持并发和通信机制中的结构和符号学支持可组合性，以及控制非确定性。
 - en: Exploring distributed protocol implementations was the first phase of the initial
     state-of-the-art exploration. The next step is to select and examine some existing
     frameworks for developing distributed protocols in order to find out how they
@@ -2178,6 +2226,7 @@
   id: totrans-split-201
   prefs: []
   type: TYPE_NORMAL
+  zh: 探索分布式协议实现是初始状态探索的第一阶段。接下来的步骤是选择并检查一些现有的用于开发分布式协议的框架，以了解它们如何尝试解决问题，也许还可以发现一些有趣的技术或思想。然后还有一些可能相关的概念、方法和技术值得深入研究。这些探索任务在GitHub上的[此问题](https://github.com/replica-io/replica-io/issues/7)的范围内进行跟踪。
 - en: Once the initial exploratory stage is over, it will be time to come up with
     key ideas concerning core principles that will guide the process of designing
     and implementing generic components within the framework (milestone [M0.1](https://github.com/replica-io/replica-io/milestone/1)).
@@ -2189,6 +2238,11 @@
   id: totrans-split-202
   prefs: []
   type: TYPE_NORMAL
+  zh: 一旦初始的探索阶段结束，就会是提出关于核心原则的关键想法的时候，这些想法将指导在框架内设计和实现通用组件的过程（里程碑 [M0.1](https://github.com/replica-io/replica-io/milestone/1)）。然后这些想法将被发展成明确的概念（里程碑
+    [M0.2](https://github.com/replica-io/replica-io/milestone/2)），它们的可行性将通过代码进行验证（里程碑
+    [M0.3](https://github.com/replica-io/replica-io/milestone/3)）。之后，框架的原型、MVP版本和生产版本将被开发和发布（里程碑
+    [M1](https://github.com/replica-io/replica-io/milestone/4)、[M2](https://github.com/replica-io/replica-io/milestone/5)
+    和 [M3](https://github.com/replica-io/replica-io/milestone/6)）。
 - en: It does not mean at all that exploration, ideation, and prototyping will not
     take place at later stages; the milestones simply define the framework's general
     level of maturity. The framework will continuously evolve and expand and at some
@@ -2198,22 +2252,27 @@
   id: totrans-split-203
   prefs: []
   type: TYPE_NORMAL
+  zh: 这绝不意味着探索、构思和原型制作将不会在后期阶段进行；里程碑只是定义框架的一般成熟水平。该框架将持续演变和扩展，并在某个时刻成为实施关键容错系统的事实标准，提供一个日益增长的易于使用的可靠和高效的分布式复制机制集合。
 - en: ❤️Supporting
   id: totrans-split-204
   prefs: []
   type: TYPE_NORMAL
+  zh: ❤️ 支持
 - en: If you like the project and find it valuable, please
   id: totrans-split-205
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您喜欢这个项目并觉得它有价值，请
 - en: '[support](https://github.com/sponsors/replica-io)'
   id: totrans-split-206
   prefs: []
   type: TYPE_NORMAL
+  zh: '[支持](https://github.com/sponsors/replica-io)'
 - en: its further development! 🙏
   id: totrans-split-207
   prefs: []
   type: TYPE_NORMAL
+  zh: 它的进一步发展！ 🙏
 - en: If you have any thought you would like to share or any question regarding this
     post, please add a comment [here](https://github.com/orgs/replica-io/discussions/35).
     You are also welcome to [start a new discussion](https://github.com/orgs/replica-io/discussions/new/choose)
@@ -2221,3 +2280,6 @@
   id: totrans-split-208
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果您有任何想分享的想法或关于本篇文章的问题，请在[这里](https://github.com/orgs/replica-io/discussions/35)添加评论。您也可以
+    [开始新的讨论](https://github.com/orgs/replica-io/discussions/new/choose)，或者加入到我们的 [Discord](https://discordapp.com/invite/CzPfN75URD)
+    服务器。
