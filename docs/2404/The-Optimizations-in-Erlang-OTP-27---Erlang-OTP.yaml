@@ -2,39 +2,47 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:31:10'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:31:10'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The Optimizations in Erlang/OTP 27 - Erlang/OTP
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Erlang/OTP 27 的优化 - Erlang/OTP
 - en: 来源：[https://www.erlang.org/blog/optimizations/](https://www.erlang.org/blog/optimizations/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://www.erlang.org/blog/optimizations/](https://www.erlang.org/blog/optimizations/)
 - en: This post explores the new optimizations for record updates as well as some
     of the other improvements. It also gives a brief historic overview of recent optimizations
     leading up to Erlang/OTP 27.
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 本文探讨了记录更新的新优化以及其他一些改进。还简要回顾了导致 Erlang/OTP 27 的近期优化历史。
 - en: A brief history of recent optimizations [#](#a-brief-history-of-recent-optimizations)
   id: totrans-split-7
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 近期优化简史 [#](#a-brief-history-of-recent-optimizations)
 - en: The modern history of optimizations for Erlang begins in January 2018\. We had
     realized that we had reached the limit of the optimizations that were possible
     working on [BEAM code](https://www.erlang.org/blog/a-brief-beam-primer/) in the
@@ -42,18 +50,23 @@
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang 的现代优化历史始于 2018 年 1 月。我们意识到在 Erlang 编译器中处理[BEAM 代码](https://www.erlang.org/blog/a-brief-beam-primer/)的优化已达到可能性的极限。
 - en: Erlang/OTP 22 introduced a new [SSA-based intermediate representation](https://en.wikipedia.org/wiki/Static_single-assignment_form)
     in the compiler. Read the full story in [SSA History](https://www.erlang.org/blog/ssa-history/).
   id: totrans-split-9
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Erlang/OTP 22 在编译器中引入了新的[基于 SSA 的中间表示](https://en.wikipedia.org/wiki/Static_single-assignment_form)。在
+    [SSA 历史](https://www.erlang.org/blog/ssa-history/)中阅读完整故事。
 - en: Erlang/OTP 24 introduced the [JIT (Just In Time compiler)](https://www.erlang.org/blog/a-first-look-at-the-jit/),
     which improved performance by emitting native code for BEAM instructions at load-time.
   id: totrans-split-10
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Erlang/OTP 24 引入了[JIT（即时编译器）](https://www.erlang.org/blog/a-first-look-at-the-jit/)，通过在加载时为
+    BEAM 指令生成本地代码来提高性能。
 - en: Erlang/OTP 25 introduced [type-based optimization in the JIT](https://www.erlang.org/blog/type-based-optimizations-in-the-jit/),
     which allowed the Erlang compiler to pass type information to the JIT to help
     it emit better native code. While that improved the native code emitted by the
@@ -63,6 +76,9 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Erlang/OTP 25 引入了[基于类型的 JIT 优化](https://www.erlang.org/blog/type-based-optimizations-in-the-jit/)，使得
+    Erlang 编译器能够将类型信息传递给 JIT，帮助 JIT 生成更好的本地代码。虽然这改善了 JIT 生成的本地代码，但编译器和 JIT 的限制阻止 JIT
+    充分利用类型信息。
 - en: Erlang/OTP 26 [improved the type-based optimizations](https://www.erlang.org/blog/more-optimizations/).
     The most noticeable performance improvements were matching and construction of
     binaries using the bit syntax. Those improvements, combined with changes to the
@@ -72,68 +88,83 @@
   prefs:
   - PREF_UL
   type: TYPE_NORMAL
+  zh: Erlang/OTP 26 [改进了基于类型的优化](https://www.erlang.org/blog/more-optimizations/)。最显著的性能改进是使用位语法进行匹配和二进制构造。这些改进与
+    `base64` 模块本身的更改结合使用，使得编码到 Base64 快约 4 倍，解码从 Base64 快超过 3 倍。
 - en: What to expect of the JIT in Erlang/OTP 27 [#](#what-to-expect-of-the-jit-in-erlangotp-27)
   id: totrans-split-13
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: Erlang/OTP 27 中 JIT 的预期效果 [#](#what-to-expect-of-the-jit-in-erlangotp-27)
 - en: The major compiler and JIT improvement in Erlang/OTP 27 is optimization of record
     operations, but there are also many smaller optimizations that make the code smaller
     and/or faster.
   id: totrans-split-14
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang/OTP 27 中主要的编译器和 JIT 改进是记录操作的优化，但也有许多较小的优化，使代码更小和/或更快。
 - en: Please try this at home! [#](#please-try-this-at-home)
   id: totrans-split-15
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 请在家里试试这个！ [#](#please-try-this-at-home)
 - en: While this blog post will show many examples of generated code, I have attempted
     to explain the optimizations in English as well. Feel free to skip the code examples.
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: 虽然本博客文章将展示许多生成代码的例子，但我也尝试用英语解释优化。随意跳过代码示例。
 - en: On the other hand, if you want more code examples…
   id: totrans-split-17
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一方面，如果您需要更多的代码示例……
 - en: 'To examine the native code for loaded modules, start the runtime system like
     this:'
   id: totrans-split-18
   prefs: []
   type: TYPE_NORMAL
+  zh: 要检查已加载模块的本地代码，请按以下方式启动运行时系统：
 - en: '[PRE0]'
   id: totrans-split-19
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: The native code for all modules that are loaded will be dumped to files with
     the extension `.asm`.
   id: totrans-split-20
   prefs: []
   type: TYPE_NORMAL
+  zh: 所有已加载模块的本地代码将转储到扩展名为 `.asm` 的文件中。
 - en: 'To examine the BEAM code for a module, use the `-S` option when compiling.
     For example:'
   id: totrans-split-21
   prefs: []
   type: TYPE_NORMAL
+  zh: 要检查模块的 BEAM 代码，请在编译时使用 `-S` 选项。例如：
 - en: '[PRE1]'
   id: totrans-split-22
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: A simple record optimization [#](#a-simple-record-optimization)
   id: totrans-split-23
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 一个简单的记录优化 [#](#a-simple-record-optimization)
 - en: 'To get started, let’s look at a simple record optimization that was not done
     in Erlang/OTP 26 and earlier. Suppose we have this module:'
   id: totrans-split-24
   prefs: []
   type: TYPE_NORMAL
+  zh: 首先，让我们看看一个简单的记录优化，它在 Erlang/OTP 26 及更早版本中未完成。假设我们有这个模块：
 - en: '[PRE2]'
   id: totrans-split-25
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: 'Here is [BEAM code](https://www.erlang.org/blog/a-brief-beam-primer/) for the
     record operations:'
   id: totrans-split-26
@@ -143,6 +174,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: That is, all three record update operations have been retained as separate [`update_record`](https://www.erlang.org/blog/more-optimizations/#updating-records-in-otp-26)
     instructions. Each operation creates a new record by copying the unchanged parts
     of the record and filling in the new values in the correct position.
@@ -157,6 +189,7 @@
   id: totrans-split-30
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: 'which will produce the following BEAM code for the record creation:'
   id: totrans-split-31
   prefs: []
@@ -165,6 +198,7 @@
   id: totrans-split-32
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: 'Those optimizations were implemented in the following pull requests:'
   id: totrans-split-33
   prefs: []
@@ -183,6 +217,7 @@
   id: totrans-split-36
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: '`count(List)` counts the number of atoms and the number of other terms in the
     given list. For example:'
   id: totrans-split-37
@@ -192,6 +227,7 @@
   id: totrans-split-38
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: 'Here follows the BEAM code emitted for `count/2`:'
   id: totrans-split-39
   prefs: []
@@ -200,6 +236,7 @@
   id: totrans-split-40
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'The first two instructions test whether the first argument in `{x,0}` is a
     non-empty list and if so extracts the first element of the list:'
   id: totrans-split-41
@@ -209,6 +246,7 @@
   id: totrans-split-42
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: The next instruction tests whether the first element is an atom. If not, a jump
     is made to the code for the second clause.
   id: totrans-split-43
@@ -218,6 +256,7 @@
   id: totrans-split-44
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: 'Next the counter for the number of atoms seen is fetched from the record and
     incremented by one:'
   id: totrans-split-45
@@ -227,6 +266,7 @@
   id: totrans-split-46
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: 'Next follows allocation of heap space and the updating of the record:'
   id: totrans-split-47
   prefs: []
@@ -235,6 +275,7 @@
   id: totrans-split-48
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: The `test_heap` instruction ensures that there is sufficient room on the heap
     for copying the record (4 words).
   id: totrans-split-49
@@ -271,6 +312,7 @@
   id: totrans-split-54
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: (Lines starting with `#` are comments emitted by the JIT, while the text that
     follows `;` is a comment added by me for clarification.)
   id: totrans-split-55
@@ -281,15 +323,18 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_NORMAL
+  zh: BEAM加载器将带有`inplace`提示的`update_record`指令重命名为`update_record_in_place`。
 - en: The first two instructions load the tuple to be update into CPU register `rax`
     and the new counter value (`C + 1`) into `rcx`.
   id: totrans-split-57
   prefs: []
   type: TYPE_NORMAL
+  zh: 前两个指令将要更新的元组加载到 CPU 寄存器 `rax` 中，并将新的计数器值 (`C + 1`) 加载到 `rcx` 中。
 - en: '[PRE14]'
   id: totrans-split-58
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: 'The next two instructions test whether the new counter value is a small integer
     that fits into a word. The test has been simplified to a more efficient test that
     is only safe when the value is known to be an integer. If it is a small integer,
@@ -297,16 +342,19 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_NORMAL
+  zh: 下面的两条指令测试新的计数器值是否是适合字的小整数。这个测试已简化为更有效的测试，只有在值已知为整数时才安全。如果是小整数，则始终可以安全地跳转到更新现有元组的代码：
 - en: '[PRE15]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: If it is not a small integer, it must be a **bignum**, that is a signed integer
     that does not fit in 60 bits and therefore have to be stored on the heap with
     `rcx` containing a tagged pointer to the bignum on the heap.
   id: totrans-split-61
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果不是小整数，那么它必须是**大整数**，即不适合 60 位的有符号整数，因此必须将其与 `rcx` 包含的标记指针存储到堆中。
 - en: 'If `rcx` is a pointer to a term on the heap, it is not always safe to directly
     updating the existing tuple. That is because of the way the Erlang [generational
     garbage collector](https://www.erlang.org/doc/apps/erts/garbagecollection#generational-garbage-collection)
@@ -318,120 +366,147 @@
   id: totrans-split-62
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果`rcx`是指向堆上术语的指针，则直接更新现有元组并不总是安全的。这是因为 Erlang [分代垃圾回收器](https://www.erlang.org/doc/apps/erts/garbagecollection#generational-garbage-collection)
+    的工作方式。每个 Erlang 进程都有两个用于保存 Erlang 术语的堆：年轻堆和老堆。允许年轻堆上的术语引用老堆上的术语，但反之则不行。这意味着如果要更新的元组位于老堆上，则不能安全地更新其元素，使其引用年轻堆上的术语。
 - en: 'Therefore, the JIT needs to emit code to ensure that the pointer to the tuple
     resides in the “safe part” of the young heap:'
   id: totrans-split-63
   prefs: []
   type: TYPE_NORMAL
+  zh: 因此，JIT 需要生成代码以确保元组的指针位于年轻堆的“安全部分”：
 - en: '[PRE16]'
   id: totrans-split-64
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE16]'
 - en: The safe part of the heap is between the high water mark and the heap top. If
     the tuple is below the high water mark, if it is still alive, it will be copied
     to the old heap in the next garbage collection.
   id: totrans-split-65
   prefs: []
   type: TYPE_NORMAL
+  zh: 堆的安全部分位于高水位标和堆顶之间。如果元组位于高水位标以下且仍然存活，则在下一次垃圾回收时将其复制到老堆中。
 - en: If the tuple is in the safe part, the copy code is skipped by jumping to the
     code that stores the new value into the existing tuple.
   id: totrans-split-66
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果元组位于安全部分，则跳过复制代码，直接跳转到将新值存储到现有元组的代码。
 - en: If not, the next part will copy the existing record to the heap.
   id: totrans-split-67
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果不是，则下一部分将复制现有记录到堆中。
 - en: '[PRE17]'
   id: totrans-split-68
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE17]'
 - en: The copying is done using [AVX instructions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions).
   id: totrans-split-69
   prefs: []
   type: TYPE_NORMAL
+  zh: 使用[AVX指令](https://zh.wikipedia.org/wiki/高级矢量扩展)进行复制。
 - en: 'Next follows the code that writes the new value into the tuple:'
   id: totrans-split-70
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是将新值写入元组的代码：
 - en: '[PRE18]'
   id: totrans-split-71
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE18]'
 - en: 'If all the new values being written into the existing record are known never
     to be tagged pointers, the native instructions can be simplified. Consider this
     module:'
   id: totrans-split-72
   prefs: []
   type: TYPE_NORMAL
+  zh: 如果所有写入现有记录的新值都已知永不标记为指针，则可以简化本机指令。考虑这个模块：
 - en: '[PRE19]'
   id: totrans-split-73
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE19]'
 - en: 'The `update_record` instruction looks like this:'
   id: totrans-split-74
   prefs: []
   type: TYPE_NORMAL
+  zh: '`update_record` 指令看起来像这样：'
 - en: '[PRE20]'
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE20]'
 - en: 'Based on the type for the new value, `{t_atom,[false,true]}`, the JIT is able
     to generate much shorter code than for the previous example:'
   id: totrans-split-76
   prefs: []
   type: TYPE_NORMAL
+  zh: 根据新值的类型 `{t_atom,[false,true]}`，JIT 能够生成比前面例子更短的代码：
 - en: '[PRE21]'
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE21]'
 - en: 'References to literals (such as `[1,2,3]`) are also safe, because literals
     are stored in a special literal area, and the garbage collector handles them specially.
     Consider this code:'
   id: totrans-split-78
   prefs: []
   type: TYPE_NORMAL
+  zh: 对文字的引用（例如 `[1,2,3]`）也是安全的，因为文字存储在特殊的文字区域中，垃圾回收器对它们有特殊处理。考虑这段代码：
 - en: '[PRE22]'
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE22]'
 - en: 'Both of the record updates in the `case` can be done in place. Here is the
     BEAM code for the record update in the first clause:'
   id: totrans-split-80
   prefs: []
   type: TYPE_NORMAL
+  zh: '`case` 中的两个记录更新都可以原地完成。这是第一个条目的记录更新的 BEAM 代码：'
 - en: '[PRE23]'
   id: totrans-split-81
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE23]'
 - en: 'Since the value to be written is a literal, the JIT emits simpler code without
     the copy fallback:'
   id: totrans-split-82
   prefs: []
   type: TYPE_NORMAL
+  zh: 由于要写入的值是文字，JIT 发出了更简单的代码而不带复制回退：
 - en: '[PRE24]'
   id: totrans-split-83
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE24]'
 - en: The large integer `9223372036854775807` is a placeholder that will be patched
     later when the address of the literal fun will be known.
   id: totrans-split-84
   prefs: []
   type: TYPE_NORMAL
+  zh: 大整数 `9223372036854775807` 是一个占位符，稍后将在知道文字 fun 地址时进行修补。
 - en: 'Here is the pull request for updating tuples in place:'
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是更新元组的拉取请求：
 - en: Optimizing by generating less garbage [#](#optimizing-by-generating-less-garbage)
   id: totrans-split-86
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 通过生成更少垃圾来进行优化 [#](#optimizing-by-generating-less-garbage)
 - en: When updating a record in place, omitting the copying of the existing record
     should be a clear win, except perhaps for very small records.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 在原地更新记录时，省略复制现有记录应该是一个明显的优势，除了可能对非常小的记录外。
 - en: What is less clear is the effect on garbage collection. Updating a tuple in
     place is an example of optimizing by generating less garbage. By creating less
     garbage, the expectation is that garbage collections should occur less often,
@@ -439,6 +514,7 @@
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 更不清楚的是对垃圾回收的影响。更新元组是通过生成更少的垃圾来进行优化的一个例子。通过减少垃圾生成，期望是垃圾收集发生的频率应该减少，从而提高程序的性能。
 - en: Because of the highly variable execution time for doing a garbage collection,
     it is notoriously difficult to benchmark optimizations that reduce the amount
     of garbage created. Often the outcomes of benchmarks do not apply to performing
@@ -446,12 +522,14 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 因为垃圾回收的执行时间变化很大，优化减少垃圾创建的难度非常大。通常情况下，基准测试的结果不能应用于在真实应用中执行相同任务。
 - en: My own [anecdotal evidence](https://en.wikipedia.org/wiki/Anecdotal_evidence)
     suggests that in most cases there are no measurable performance wins by producing
     less garbage.
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 我自己的[轶事证据](https://en.wikipedia.org/wiki/Anecdotal_evidence)表明，在大多数情况下，通过生成更少的垃圾，性能上并没有可测量的胜利。
 - en: I also remember when an optimization that reduced the size of an Erlang term
     resulted in a benchmark being consistently slower. It took the author of that
     optimization several days of investigation to confirm that the slowdown in the
@@ -460,47 +538,57 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 我还记得，当一项减少 Erlang 术语大小的优化导致基准测试始终较慢时。该优化的作者花了几天时间进行调查，以确认基准测试的减速并非他的优化所致，而是通过生成更少的垃圾，垃圾收集发生在稍后的时间点时，成本更高。
 - en: On average we expect that this optimization should improve performance, especially
     for large records.
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 平均而言，我们预计这种优化应该改善性能，特别是对于大型记录而言。
 - en: Optimization of funs [#](#optimization-of-funs)
   id: totrans-split-93
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 函数优化 [#](#optimization-of-funs)
 - en: The internal representation of funs in the runtime system has changed in Erlang/OTP
     27, making possible several new optimizations.
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: Erlang/OTP 运行时系统中的函数内部表示在 Erlang/OTP 27 中已更改，从而可能实现几种新的优化。
 - en: 'As an example, consider this function:'
   id: totrans-split-95
   prefs: []
   type: TYPE_NORMAL
+  zh: 举例来说，考虑这个函数：
 - en: '[PRE25]'
   id: totrans-split-96
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE25]'
 - en: 'In Erlang/OTP 26, the native code for creating the fun looks like so:'
   id: totrans-split-97
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 26 中，创建函数的本机代码如下所示：
 - en: '[PRE26]'
   id: totrans-split-98
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE26]'
 - en: The large integer `9223372036854775807` is a placeholder for a value that will
     be filled in later.
   id: totrans-split-99
   prefs: []
   type: TYPE_NORMAL
+  zh: 大整数 `9223372036854775807` 是一个占位符，稍后将填充一个值。
 - en: Most of the work of actually creating the fun object is done by calling a helper
     function (the `call 4337160320` instruction) in the runtime system.
   id: totrans-split-100
   prefs: []
   type: TYPE_NORMAL
+  zh: 实际上创建函数对象的大部分工作是通过调用运行时系统中的辅助函数（`call 4337160320` 指令）完成的。
 - en: In Erlang/OTP 27, the part of fun that resides on the heap of the calling process
     has been simplified so that it is now smaller than in Erlang/OTP 26, and most
     importantly does not contain anything that is too tricky to initialize in inline
@@ -508,15 +596,18 @@
   id: totrans-split-101
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，存在于调用进程堆上的函数部分已经简化，因此现在比 Erlang/OTP 26 中小，最重要的是不包含任何在内联代码中初始化的复杂内容。
 - en: 'The code for creating the fun is not only shorter, but it also doesn’t need
     to call any function in the runtime system:'
   id: totrans-split-102
   prefs: []
   type: TYPE_NORMAL
+  zh: 创建函数的代码不仅更短，而且不需要调用运行时系统中的任何函数：
 - en: '[PRE27]'
   id: totrans-split-103
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE27]'
 - en: The difference from Erlang/OTP 26 is that the parts of the fun that is only
     needed when loading and unloading code are no longer stored on the heap. Instead
     those parts are stored in the literal pool area belonging to the loaded code for
@@ -524,20 +615,24 @@
   id: totrans-split-104
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 Erlang/OTP 26 的区别在于，加载和卸载代码时仅需要的函数部分不再存储在堆上。而是存储在属于模块加载代码的文字池区域，并且被所有相同函数实例共享。
 - en: The part of the fun that resides on the process heap is two words smaller compared
     to Erlang/OTP 26.
   id: totrans-split-105
   prefs: []
   type: TYPE_NORMAL
+  zh: 与 Erlang/OTP 26 相比，存储在进程堆上的函数部分要小两个字。
 - en: 'The creation of the fun environment has also been optimized. In Erlang/OTP
     26, four instructions were needed:'
   id: totrans-split-106
   prefs: []
   type: TYPE_NORMAL
+  zh: 函数环境的创建也已经优化。在 Erlang/OTP 26 中，需要四条指令：
 - en: '[PRE28]'
   id: totrans-split-107
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE28]'
 - en: 'In Erlang/OTP 27, using [AVX instructions](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions)
     both variables (`A` and `C`) can be moved using only two instructions:'
   id: totrans-split-108
@@ -547,6 +642,7 @@
   id: totrans-split-109
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE29]'
 - en: 'Another optimization made possible by the changed fun representation is testing
     for a fun having a specific arity (the number of expected arguments when calling
     it). For example:'
@@ -557,6 +653,7 @@
   id: totrans-split-111
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE30]'
 - en: 'Here is the native code emitted by the JIT in Erlang/OTP 26:'
   id: totrans-split-112
   prefs: []
@@ -565,6 +662,7 @@
   id: totrans-split-113
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE31]'
 - en: 'In Erlang/OTP 27, the arity for the fun (the number of expected arguments)
     is stored in the header word of the fun term, which means that the test for a
     fun can be combined with the test for its arity:'
@@ -575,6 +673,7 @@
   id: totrans-split-115
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE32]'
 - en: 'All external funs are now literals stored outside all process heaps. As an
     example, consider the following functions:'
   id: totrans-split-116
@@ -584,6 +683,7 @@
   id: totrans-split-117
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE33]'
 - en: In Erlang/OTP 26, the external fun returned by `my_fun/0` would not occupy any
     room on the heap of the calling process, while the dynamic external fun returned
     by `mfa/3` would need 5 words on the heap of the calling process.
@@ -618,6 +718,7 @@
   id: totrans-split-124
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE34]'
 - en: It measures the time to convert a binary holding 1,262,000 digits to an integer.
   id: totrans-split-125
   prefs: []
@@ -676,61 +777,75 @@
   id: totrans-split-135
   prefs: []
   type: TYPE_NORMAL
+  zh: 这些算术增强改善了[pidigits benchmark](https://benchmarksgame-team.pages.debian.net/benchmarksgame/program/pidigits-erlang-2.html)的运行时间：
 - en: '| Version |   | Seconds |'
   id: totrans-split-136
   prefs: []
   type: TYPE_TB
+  zh: '| 版本 |   | 秒数 |'
 - en: '| --- | --- | --- |'
   id: totrans-split-137
   prefs: []
   type: TYPE_TB
+  zh: '| --- | --- | --- |'
 - en: '| 26.0 |   | `7.635` |'
   id: totrans-split-138
   prefs: []
   type: TYPE_TB
+  zh: '| 26.0 |   | `7.635` |'
 - en: '| 26.2.1 |   | `2.959` |'
   id: totrans-split-139
   prefs: []
   type: TYPE_TB
+  zh: '| 26.2.1 |   | `2.959` |'
 - en: '| 27.0 |   | `2.782` |'
   id: totrans-split-140
   prefs: []
   type: TYPE_TB
+  zh: '| 27.0 |   | `2.782` |'
 - en: (Run on my M1 MacBook Pro.)
   id: totrans-split-141
   prefs: []
   type: TYPE_NORMAL
+  zh: （在我的 M1 MacBook Pro 上运行。）
 - en: Numerous miscellaneous enhancements [#](#numerous-miscellaneous-enhancements)
   id: totrans-split-142
   prefs:
   - PREF_H3
   type: TYPE_NORMAL
+  zh: 无数的杂项增强 [#](#numerous-miscellaneous-enhancements)
 - en: 'Many enhancements have been made to the code generation for many instructions,
     as well as a few to the Erlang compiler. Here follows a single example to show
     one of the improvements to the `=:=` operator:'
   id: totrans-split-143
   prefs: []
   type: TYPE_NORMAL
+  zh: 对许多指令的代码生成进行了许多增强，以及对 Erlang 编译器的少数增强。以下是一个示例，展示了`=:=`运算符的改进之一：
 - en: '[PRE35]'
   id: totrans-split-144
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE35]'
 - en: 'Here is the BEAM code for the `=:=` operator as used in this example:'
   id: totrans-split-145
   prefs: []
   type: TYPE_NORMAL
+  zh: 这里是作为本示例中使用的`=:=`运算符的 BEAM 代码：
 - en: '[PRE36]'
   id: totrans-split-146
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE36]'
 - en: 'Here is the native code for Erlang/OTP 26:'
   id: totrans-split-147
   prefs: []
   type: TYPE_NORMAL
+  zh: 这是 Erlang/OTP 26 的原生代码：
 - en: '[PRE37]'
   id: totrans-split-148
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE37]'
 - en: The code begins with a few tests to quickly succeed or fail, but in practice
     those are unlikely to trigger for this example, which means that the call to the
     general routine in the runtime system for comparing two terms will almost always
@@ -738,17 +853,21 @@
   id: totrans-split-149
   prefs: []
   type: TYPE_NORMAL
+  zh: 代码以几个快速成功或失败的测试开始，但在实践中，这些测试不太可能触发，这意味着几乎总是会调用运行时系统中的通用例程来比较两个术语。
 - en: 'In Erlang/OTP 27, the JIT emits special code for testing whether a term is
     an empty map:'
   id: totrans-split-150
   prefs: []
   type: TYPE_NORMAL
+  zh: 在 Erlang/OTP 27 中，即时编译器发出特殊代码来测试一个术语是否为空映射：
 - en: '[PRE38]'
   id: totrans-split-151
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE38]'
 - en: 'Here follows the main pull requests for miscellaneous enhancements in Erlang/OTP
     27:'
   id: totrans-split-152
   prefs: []
   type: TYPE_NORMAL
+  zh: 接下来是 Erlang/OTP 27 中杂项增强的主要拉取请求：
