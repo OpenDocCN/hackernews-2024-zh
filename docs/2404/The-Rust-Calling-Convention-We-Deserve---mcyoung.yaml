@@ -2,28 +2,34 @@
   id: totrans-split-0
   prefs: []
   type: TYPE_NORMAL
+  zh: <!--yml
 - en: 'category: 未分类'
   id: totrans-split-1
   prefs: []
   type: TYPE_NORMAL
+  zh: 'category: 未分类'
 - en: 'date: 2024-05-27 13:17:45'
   id: totrans-split-2
   prefs: []
   type: TYPE_NORMAL
+  zh: 'date: 2024-05-27 13:17:45'
 - en: -->
   id: totrans-split-3
   prefs: []
   type: TYPE_NORMAL
+  zh: -->
 - en: The Rust Calling Convention We Deserve · mcyoung
   id: totrans-split-4
   prefs:
   - PREF_H1
   type: TYPE_NORMAL
+  zh: Rust所需的调用约定 · mcyoung
 - en: 来源：[https://mcyoung.xyz/2024/04/17/calling-convention/](https://mcyoung.xyz/2024/04/17/calling-convention/)
   id: totrans-split-5
   prefs:
   - PREF_BQ
   type: TYPE_NORMAL
+  zh: 来源：[https://mcyoung.xyz/2024/04/17/calling-convention/](https://mcyoung.xyz/2024/04/17/calling-convention/)
 - en: I will often say that the so-called “C ABI” is a very bad one, and a relatively
     unimaginative one when it comes to passing complicated types effectively. A lot
     of people ask me “ok, what would you use instead”, and I just point them to the
@@ -33,6 +39,7 @@
   id: totrans-split-6
   prefs: []
   type: TYPE_NORMAL
+  zh: 我经常说所谓的“C ABI”是一个非常糟糕的ABI，而在传递复杂类型时相对缺乏想象力。很多人问我：“好的，你会用什么来替代”，我只是指向了[Go寄存器ABI](https://go.googlesource.com/go/+/refs/heads/dev.regabi/src/cmd/compile/internal-abi.md)，但大多数人很难填补我所说的空白。本文详细解释了我的意思。
 - en: 'I have discussed [calling conventions](https://mcyoung.xyz//2021/11/09/assembly-1/#the-calling-convention)
     in the past, but as a reminder: the *calling convention* is the part of the ABI
     that concerns itself with how to pass arguments to and from a function, and how
@@ -42,12 +49,14 @@
   id: totrans-split-7
   prefs: []
   type: TYPE_NORMAL
+  zh: 我曾经讨论过[调用约定](https://mcyoung.xyz//2021/11/09/assembly-1/#the-calling-convention)，但作为提醒：*调用约定*是ABI的一部分，关注如何传递函数的参数以及如何实际调用函数。这包括参数放置在哪些寄存器中，哪些寄存器中返回值，函数序言/尾声的样式，异常展开的工作方式等。
 - en: This particular post is primarily about x86, but I intend to be reasonably generic
     (so that what I’ve written applies just as well to ARM, RISC-V, etc). I will assume
     a general familiarity with x86 assembly, LLVM IR, and Rust (but not rustc’s internals).
   id: totrans-split-8
   prefs: []
   type: TYPE_NORMAL
+  zh: 此特定帖子主要讨论x86，但我打算比较通用（使我写的内容同样适用于ARM、RISC-V等）。我假设读者对x86汇编、LLVM IR和Rust有一般的了解（但不了解rustc的内部）。
 - en: Today, like many other natively compiled languages, Rust defines an unspecified0-
     calling convention that lets it call functions however it likes. In practice,
     Rust lowers to LLVM’s built-in C calling convention, which LLVM’s prologue/epilogue
@@ -55,11 +64,13 @@
   id: totrans-split-9
   prefs: []
   type: TYPE_NORMAL
+  zh: 今天，与许多其他本地编译语言一样，Rust 定义了一个未指定的调用约定，允许它根据喜好调用函数。实际上，Rust 会转换为LLVM内置的C调用约定，LLVM的序言/尾声代码生成会为其生成调用。
 - en: 'Rust is fairly conservative: it tries to generate LLVM function signatures
     that Clang could have plausibly generated. This has two significant benefits:'
   id: totrans-split-10
   prefs: []
   type: TYPE_NORMAL
+  zh: Rust相当保守：它试图生成LLVM函数签名，这些签名Clang也可以合理生成。这有两个显著的好处：
 - en: Good probability debuggers won’t choke on it. This is not a concern on Linux,
     though, because DWARF is very general and does not bake-in the Linux C ABI. We
     will concern ourselves only with ELF-based systems and assume that debuggability
@@ -68,6 +79,7 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 良好的概率调试器不会对其产生影响。不过，在Linux上这不是问题，因为DWARF非常通用，且不内置Linux C ABI。我们只关注基于ELF的系统，并假设调试性不是问题。
 - en: It is less likely to tickle LLVM bugs due to using ABI codegen that Clang does
     not exercise. I think that if Rust tickles LLVM bugs, we should actually fix them
     (a very small number of rustc contributors do in fact do this).
@@ -75,18 +87,22 @@
   prefs:
   - PREF_OL
   type: TYPE_NORMAL
+  zh: 由于使用了Clang不涵盖的ABI代码生成，因此不太可能触发LLVM的错误。我认为，如果Rust触发LLVM的错误，我们应该实际上去修复它们（实际上只有极少数rustc贡献者这样做）。
 - en: 'However, we are too conservative. We get terrible codegen for simple functions:'
   id: totrans-split-13
   prefs: []
   type: TYPE_NORMAL
+  zh: 然而，我们太保守了。我们得到简单函数的糟糕代码生成：
 - en: '[PRE0]'
   id: totrans-split-14
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE0]'
 - en: '[PRE1]'
   id: totrans-split-15
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE1]'
 - en: '`arr` is 12 bytes wide, so you’d think it would be passed in registers, but
     no! It is passed by pointer! Rust is actually *more* conservative than what the
     Linux C ABI mandates, because it actually passes the `[i32; 3]` in registers when
@@ -94,20 +110,25 @@
   id: totrans-split-16
   prefs: []
   type: TYPE_NORMAL
+  zh: '`arr` 宽度为12字节，所以你可能会认为它会通过寄存器传递，但事实并非如此！它是通过指针传递的！当请求`extern "C"`时，Rust实际上比Linux
+    C ABI规定更为保守，因为它实际上会在寄存器中传递 `[i32; 3]` 。'
 - en: '[PRE2]'
   id: totrans-split-17
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE2]'
 - en: '[PRE3]'
   id: totrans-split-18
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE3]'
 - en: The array is passed in `rdi` and `rsi`, with the `i32`s packed into registers.
     The function moves `rdi` into `rax`, the output register, and shifts the upper
     half down.
   id: totrans-split-19
   prefs: []
   type: TYPE_NORMAL
+  zh: 数组通过 `rdi` 和 `rsi` 传递，其中 `i32` 被打包到寄存器中。该函数将 `rdi` 移入 `rax`，作为输出寄存器，并将上半部分向下移动。
 - en: Not only does clang produce patently *bad* code for passing things by value,
     but it also knows how to do it better, if you request a standard calling convention!
     We could be generating *way* better code than Clang, but we don’t!
@@ -157,6 +178,7 @@
   id: totrans-split-27
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE4]'
 - en: However, this mechanism can only be used to call unmangled symbols. Thus, we
     can simply force `#[no_mangle]` symbols to use the legacy calling convention.
   id: totrans-split-28
@@ -260,6 +282,7 @@
   id: totrans-split-41
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE5]'
 - en: When you pass an aggregate by-value to an LLVM function, LLVM will attempt to
     “explode” that aggregate into as many registers as possible. There are distinct
     register classes on different systems. For example, on both x86 and ARM, floats
@@ -293,6 +316,7 @@
   id: totrans-split-47
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE6]'
 - en: When passing pointers, the appropriate `i64`s should be replaced by `ptr`, and
     when passing `double`s, they replace `<2 x i64>`s.
   id: totrans-split-48
@@ -321,10 +345,12 @@
   id: totrans-split-52
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE7]'
 - en: '[PRE8]'
   id: totrans-split-53
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE8]'
 - en: 'It is perfectly legal to pass poison to a function, if it does not interact
     with the poisoned argument in any proscribed way. And as we see, `load_rcx()`
     receives its pointer argument in `rcx`, whereas `make_the_call()` takes no penalty
@@ -349,10 +375,12 @@
   id: totrans-split-56
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE9]'
 - en: '[PRE10]'
   id: totrans-split-57
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE10]'
 - en: '`square` generates extremely simple code: the input and output register is
     `rdi`, so no extra register traffic needs to be generated. Similarly, when we
     effectively do `@square(@square(%0))`, there is no setup between the functions.
@@ -366,10 +394,12 @@
   id: totrans-split-59
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE11]'
 - en: '[PRE12]'
   id: totrans-split-60
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE12]'
 - en: Now that we’ve established total control on how registers are assigned, we can
     turn towards maximizing use of these registers in Rust.
   id: totrans-split-61
@@ -471,6 +501,7 @@
   id: totrans-split-75
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE13]'
 - en: 'The codegen for this function is quite complex, so I’ll only cover the prologue
     and epilogue. After sorting and flattening, our raw argument LLVM types are something
     like this:'
@@ -481,6 +512,7 @@
   id: totrans-split-77
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE14]'
 - en: Everything fits in registers! So, what does the LLVM function look like on x86?
   id: totrans-split-78
   prefs: []
@@ -489,6 +521,7 @@
   id: totrans-split-79
   prefs: []
   type: TYPE_PRE
+  zh: '[PRE15]'
 - en: Above, `!dbg` metadata for the argument values should be attached to the instruction
     that actually materializes it. This ensures that gdb does something halfway intelligent
     when you ask it to print argument values.
@@ -532,6 +565,7 @@
   id: totrans-split-85
   prefs: []
   type: TYPE_NORMAL
+  zh: 这为基于极端优化的 ABI 打开了大门。我们可以从简单地丢弃未使用的参数开始：如果函数对参数没有任何操作，就不要浪费寄存器。
 - en: 'Another example: suppose that we know that an `&T` argument is not retained
     (a question the borrow checker can answer at this point in the compiler) and is
     never converted to a raw pointer (or written to memory a raw pointer is taken
@@ -540,18 +574,22 @@
   id: totrans-split-86
   prefs: []
   type: TYPE_NORMAL
+  zh: '另一个例子：假设我们知道 `&T` 参数不会被保留（这个问题借用检查器在编译器的这一点可以回答），且永远不会转换为原始指针（或者写入一个取原始指针的内存等）。我们还知道
+    `T` 相当小，并且 `T: Freeze`。那么，我们可以用值传递直接替换引用的指针。'
 - en: The most obvious candidates for this is APIs like `HashMap::get()`. If the key
     is something like an `i32`, we need to spill that integer to the stack and pass
     a pointer to it! This results in unnecessary, avoidable memory traffic.
   id: totrans-split-87
   prefs: []
   type: TYPE_NORMAL
+  zh: 最明显的候选者是像 `HashMap::get()` 这样的 API。如果键是像 `i32` 这样的东西，我们需要将该整数溢出到堆栈并传递指针！这导致了不必要的、可以避免的内存流量。
 - en: Profile-guided ABI is a step further. We might know that some arguments are
     hotter than others, which might cause them to be prioritized in the register allocation
     order.
   id: totrans-split-88
   prefs: []
   type: TYPE_NORMAL
+  zh: 基于配置文件的 ABI 是更进一步的步骤。我们可能会知道某些参数比其他参数更热门，这可能会导致它们在寄存器分配顺序中优先考虑。
 - en: 'You could even imagine a case where a function takes a very large struct by
     reference, but three `i64` fields are very hot, so the caller can *preload* those
     fields, passing them both by register *and* via the pointer to the large struct.
@@ -561,12 +599,14 @@
   id: totrans-split-89
   prefs: []
   type: TYPE_NORMAL
+  zh: 甚至可以想象一种情况，一个函数通过引用接收一个非常大的结构体，但是三个 `i64` 字段非常热门，所以调用者可以通过寄存器和大结构体的指针同时传递这些字段。调用者不会看到额外的成本：它必须发出这些加载指令。然而，调用者可能已经在寄存器中保存了这些值，这样可以避免一些内存流量。
 - en: Instrumentation profiles may even indicate that it makes sense to duplicate
     whole functions, which are identical except for their ABIs. Maybe they take different
     arguments by register to avoid costly spills.
   id: totrans-split-90
   prefs: []
   type: TYPE_NORMAL
+  zh: 仪表化配置甚至可能表明，复制整个函数是有意义的，这些函数除了 ABI 外完全相同。也许它们通过寄存器接收不同的参数，以避免昂贵的溢出。
 - en: This is a bit more advanced (and ranty) than my usual writing, but this is an
     aspect of Rust that I find really frustrating. We could be doing *so much better*
     than C++ ever can (because of their ABI constraints). None of this is new ideas;
@@ -574,6 +614,8 @@
   id: totrans-split-91
   prefs: []
   type: TYPE_NORMAL
+  zh: 这比我通常的写作要更加高级（和抱怨），但这是我发现 Rust 中令人沮丧的一个方面。我们可以比 C++ 做得更好（因为它们的 ABI 约束）。这些不是新的想法；这
+    *确实* 是 Go 是如何做到的！
 - en: So why don’t we? Part of the reason is that ABI codegen is complex, and as I
     described above, LLVM gives us very few useful knobs. It’s not a friendly part
     of rustc, and doing things wrong can have nasty consequences for usability. The
@@ -583,6 +625,8 @@
   id: totrans-split-92
   prefs: []
   type: TYPE_NORMAL
+  zh: 那么我们为什么不这样做呢？部分原因是 ABI 代码生成很复杂，正如我上面描述的那样，LLVM 给我们提供了很少有用的控制选项。这对于 rustc 并不友好，做错事情可能会对可用性产生不好的后果。另一部分原因是缺乏专业知识。截至目前，只有少数几个人在为
+    rustc 做贡献时具备了足够理解 LLVM 语义（和情绪波动）的能力，以便发出正确的代码，使我们获得良好的代码生成且不会崩溃 LLVM。
 - en: Another reason is compilation time. The more complicated the function signatures,
     the more prologue/epilogue code we have to generate that LLVM has to chew on.
     But `-Zcallconv` is intended to only be used with optimizations turned on, so
@@ -592,6 +636,7 @@
   id: totrans-split-93
   prefs: []
   type: TYPE_NORMAL
+  zh: 另一个原因是编译时间。函数签名越复杂，我们需要生成的序言/尾声代码就越多，LLVM 需要处理的就越多。但是 `-Zcallconv` 旨在仅在打开优化时使用，所以我认为这不是一个有意义的抱怨。我也不认为将项目的编译时间视为度量标准是健康的……但我认为这最终不是一个相关的缺点。
 - en: I, unfortunately, do not have the spare time to dive into fixing rustc’s ABI
     code, but I do know LLVM really well, and I know that this is a place where Rust
     has a low bus factor. For that reason, I am happy to provide the Rust compiler
@@ -600,3 +645,5 @@
   id: totrans-split-94
   prefs: []
   type: TYPE_NORMAL
+  zh: 很不幸，我没有空闲时间来深入修复 rustc 的 ABI 代码，但我对 LLVM 很熟悉，我知道这是 Rust 的一个低总线因子的地方。因此，我很高兴为
+    Rust 编译器团队提供专业知识，帮助 LLVM 做正确的事情，以提升优化代码的速度。
