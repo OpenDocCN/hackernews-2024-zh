@@ -1,0 +1,63 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:42:20
+
+-->
+
+# 我在无手机实验中失败了。这也改变了我的生活 | 手机 | 卫报
+
+> 来源：[https://www.theguardian.com/lifeandstyle/2024/feb/05/phone-screentime-detox-reflection](https://www.theguardian.com/lifeandstyle/2024/feb/05/phone-screentime-detox-reflection)
+
+*在Rhik最终更新中，他成功突破了手机成瘾，取得了重大进展。*
+
+“你想做我的女朋友吗？”有一天我问阿尔蒙德。
+
+<gu-island name="SignInGateSelector" 
+
+priority="feature" 
+
+deferuntil="visible" 
+
+props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;lifeandstyle&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;lifeandstyle/series/reclaim-your-brain&quot;,&quot;type&quot;:&quot;Series&quot;,&quot;title&quot;:&quot;重拾你的大脑&quot;},{&quot;id&quot;:&quot;campaign/email/reclaim-your-brain&quot;,&quot;type&quot;:&quot;Campaign&quot;,&quot;title&quot;:&quot;重拾你的大脑（通讯注册）&quot;},{&quot;id&quot;:&quot;technology/mobilephones&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;手机&quot;},{&quot;id&quot;:&quot;lifeandstyle/lifeandstyle&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;生活与风格&quot;},{&quot;id&quot;:&quot;technology/technology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;技术&quot;},{&quot;id&quot;:&quot;society/mental-health&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;心理健康&quot;},{&quot;id&quot;:&quot;wellness/wellness&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;其实很好&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/features&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;特性&quot;},{&quot;id&quot;:&quot;profile/rhik-samadder&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;里克·萨马德&quot;,&quot;twitterHandle&quot;:&quot;whatsamadder&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/contributor/2015/2/16/1424084965880/Rhik-Samadder.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=beb078ceeb8d5a3553815a9d68584606&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2017/10/09/Rhik-Samadder,-L.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=9bc1bc123a9b19cc5b7c8ac2f8590a70&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-narrative--commissioning-&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国叙事（委托）&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-lifestyle-and-wellness&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国生活方式与健康&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;lifeandstyle/2024/feb/05/phone-screentime-detox-reflection&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;
+
+config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+她正在翻找泰国罗勒袋，就像在唱片店找黑胶唱片一样。“我已经在做了。这就是这样，”她耐心地说着，轻轻握了握我的手。哦，明白了，我说。好的，是的。
+
+两个月前我最后一次写日记，发生了一些奇怪的事情。把实验视为浪费时间后，它似乎产生了意想不到的效果。我每天手机使用时间为90分钟。其中五分钟花在Instagram上。我不再感到上瘾。我减少的在线生活部分原因是不再需要在草原上寻找伴侣。但这并不是全部的故事。
+
+<gu-island name="InteractiveBlockComponent" priority="critical" deferuntil="idle" props="{&quot;url&quot;:&quot;https://interactive.guim.co.uk/uploader/embed/2023/12/archive-zip/giv-13425S9C0vxJaNVqE/&quot;,&quot;scriptUrl&quot;:&quot;https://interactive.guim.co.uk/embed/iframe-wrapper/0.1/boot.js&quot;,&quot;alt&quot;:&quot;Newsletter signup&quot;,&quot;role&quot;:&quot;thumbnail&quot;,&quot;format&quot;:{&quot;display&quot;:0,&quot;theme&quot;:4,&quot;design&quot;:10},&quot;elementId&quot;:&quot;5fbb1d82-606e-457d-ab87-128a13c618e5&quot;,&quot;isMainMedia&quot;:false}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}">[订阅新闻通讯](https://interactive.guim.co.uk/uploader/embed/2023/12/archive-zip/giv-13425S9C0vxJaNVqE/)</gu-island>
+
+我与所有专家的交流都得到了类似的安慰性建议。奇怪的是，技术话题中最有影响力的一次是在一个无Wi-Fi的咖啡馆里，和一个佛教徒交谈。Sthiramanas是伦敦佛教中心的冥想导师，在那里他开设了名为“升级你的心灵”的六周课程，教授如何注意屏幕使用。
+
+“寻求满足外部的欲望是人类的一种根本弱点，”他说道。Sthiramanas并不仅仅指无休止的滚动。逃到寂静的闭关处——或者数字戒毒小屋——也是从日常生活中逃离的方式。他们的教训经常在回家的路上消失。“如果我们希望生活更加幸福和有创意，我们必须真实地体验生活，并从中改变事物。
+
+“查看手机背后的欲望是什么？”他继续说。“如果你对约会应用上瘾，是想感觉自己有吸引力吗？如果你是新闻迷，是想控制局面吗？或者想与比自己更大的东西保持联系？如果你经常给朋友发短信，是想被爱吗？”
+
+哎呀。这些佛教徒什么时候选择了暴力？
+
+自从那次聊天以来，我把友谊看作是大部分线下活动。是我们用身体来做的事情。我的朋友团对此很擅长——安排海滨游、跳舞、为彼此做饭。在同一个空间里笑是滋养的。听起来像《沃尔顿一家》，但比“元”好。我仍然经常在一天中通过短信与朋友联系，但不联系时，我喜欢想念他们。也许我变得有些怪异。
+
+我能享受真实的“无聊”生活，而不幻想逃避吗？摄影：艾丽西亚·坎特/卫报
+
+持续连接是一种新的期望，让人筋疲力尽。我对关闭手机的最大恐惧是错过母亲的电话，如果她摔倒了。但在我不情愿的背后，我意识到，是控制的焦虑。而有一天我们都必须放弃这种焦虑。“你可以为紧急情况办一个座机，只把号码给亲人，” Sthiramanas建议道。这是个好主意。
+
+另一个缓慢增长的是阅读时间的增加。我认为这也是我不再整天在Instagram上浪费时间的原因。现在打开任何社交媒体应用，它们让我觉得… *愚蠢*。也许注意力真的是一种肌肉——随着锻炼它会渴望承受更重的东西。当然，很多人两者都喜欢。这并不意味着所有社交媒体内容都是肤浅和无意义的！（尽管我确实这么认为！）
+
+[跳过通讯简报推广](#EmailSignup-skip-link-13)
+
+在通讯简报推广后
+
+我能享受真实的“无聊”生活，而不幻想逃避吗？这对我来说是个关键问题。
+
+我整理公寓更多了，因为我更*看见*它了。我坚持了我的1万步。我仍然喜欢填充那些健身跟踪圈，但不再那么执着。我可以感受到身体的效果。有时我会把手机留在家里。这是一种精神重置，感受空气，不去别的地方。我现在比以前快乐多了。
+
+对于任何资本主义的粉丝，我必须指出，我的自由职业收入已经上升，我变得更加高效。我觉得过多抨击科技公司并不有益，也不再将我的手机拟人化。那台闪闪发光的、无限内容的机器不是灵感，也不是冷漠的爱人或劲敌。它只是个工具。最重要的是，它是我不满的晴雨表。
+
+当我注意到手中的重量时，即对分心和逃避的拉力时，我尝试诊断自己到底发生了什么。我是不是在担心某事？我是不是感到孤独？有没有更好的方式来满足我的需求？如果我只是无聊，我学会相信在那个地方隐藏着创造力。
+
+谁能预见到这一点？智能手机如同煤矿中的金丝雀，指引着我最重要的东西：不要在这些日子里像走路般瞌睡。我的生活的窃贼？没人可以偷走我的生活。
+
+不幸的是，我现在对糖上瘾了。

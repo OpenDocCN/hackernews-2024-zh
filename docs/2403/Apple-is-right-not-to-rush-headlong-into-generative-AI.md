@@ -1,0 +1,15 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:35:11
+
+-->
+
+# 苹果明智地选择不急于投身生成AI技术
+
+> 来源：[https://www.economist.com/business/2024/03/03/apple-is-right-not-to-rush-headlong-into-generative-ai](https://www.economist.com/business/2024/03/03/apple-is-right-not-to-rush-headlong-into-generative-ai)
+
+如果你认为蒂姆·库克在苹果掌舵期间一直过得很顺利，那就错了。史蒂夫·乔布斯去世后的那几年是一次严峻的考验。首先是反垄断问题：美国司法部起诉苹果串通涨价电子书。接着是竞争：韩国竞争对手三星以更大更时尚的型号与iPhone展开竞争。然后是更广泛的关切。苹果的新语音助手Siri犯了新手错误。同样苹果地图将华盛顿纪念碑错放到了波托马克河。当时，围绕公司的问题是生存：苹果的创造力能否在其创始人去世后继续存在？库克先生的一位副手对批评感到非常气愤，他在2013年公开反驳道：“无法再创新了，我才不信！”
+
+十多年后，库克先生可能感到一种*似曾相识*的感觉。在反垄断、亚洲竞争以及创新和增长的存在性问题上，当时与现在有着相似之处。欧盟的竞争监管机构要求从3月7日起遵守新规定，这是首次打破了将用户和开发者限制在苹果生态系统内部的“围墙花园”。在3月4日，他们因涉嫌压制音乐流媒体竞争而对该公司处以18亿欧元（20亿美元）的罚款。在美国，司法部可能很快对苹果提起诉讼。在中国，国内巨头华为正在抢占市场份额。在iPhone销量趋于平稳的背景下，人们对库克先生错失通过[生成人工智能](https://www.economist.com/interactive/science-and-technology/2023/04/22/large-creative-ai-models-will-transform-how-we-live-and-work)（gen AI）再次带来惊喜的机会感到担忧。

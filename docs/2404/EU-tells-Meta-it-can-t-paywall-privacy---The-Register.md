@@ -1,0 +1,41 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 13:18:45
+
+-->
+
+# 欧盟告诉 Meta 不能对隐私设置收费 • The Register
+
+> 来源：[https://www.theregister.com/2024/04/18/eu_meta_subscription_privacy/](https://www.theregister.com/2024/04/18/eu_meta_subscription_privacy/)
+
+欧盟数据保护委员会（EDPB）告知大型在线平台，它们不应该向用户提供支付服务或同意使用其个人数据以提供定向广告之间的二元选择。
+
+EDPB [意见](https://www.edpb.europa.eu/system/files/2024-04/edpb_opinion_202408_consentorpay_en.pdf) [PDF] 昨天发布，讨论在 Meta 引入的“同意或付费”模式下，根据数据保护法是否有效处理个人数据以用于行为广告目的。
+
+这一行动是在荷兰、挪威和汉堡数据保护当局的要求以及对拥有 Facebook、WhatsApp 和 Instagram 的社交媒体公司 Meta 的投诉之后进行的。
+
+"大多数用户同意处理以使用服务，但他们并不理解其选择的全部影响，" EDPB 主席 Anu Talus 在 [一份声明](https://www.edpb.europa.eu/news/news/2024/edpb-consent-or-pay-models-should-offer-real-choice_en) 中表示。
+
+数据保护当局的请求是由消费者和隐私组织对 Meta 决定引入所谓的“付费或同意”模式的投诉引起的。
+
+去年十月，社交媒体巨头 [表示可以向 Meta 支付以停止向欧盟、欧洲经济区或瑞士用户推送个性化广告的 Instagram 或 Facebook 订阅](https://www.theregister.com/2023/10/31/meta_ad_free_europe/)。
+
+随后，Meta 宣布在网页上每月收费 €9.99 或在 iOS 和 Android 上每月收费 €12.99 的订阅模式，供那些不希望他们的个人数据用于定向广告的用户选择。
+
+EDPB 表示，在大多数情况下，如果他们仅向用户提供同意处理个人数据用于行为广告目的或支付费用的选择之间的二元选择，将不符合有效同意的法律要求。
+
+"在大多数情况下，如果大型在线平台仅向用户提供二元选择，他们将无法符合有效同意的要求，" 意见中说道。
+
+但 Meta 的一位发言人表示："去年，欧洲联盟法院裁定订阅模式是公司寻求人们对个性化广告同意的合法途径。今天的 EDPB 意见不改变那一判决，并且无广告订阅符合欧盟法律。"
+
+Meta 预计将继续与欧盟领导的爱尔兰数据保护委员会保持接触。这一意见预计不会对 Meta 的服务产生影响。
+
+去年十一月，隐私活动家团体 noyb（None Of Your Business）在奥地利数据保护机构对 Meta 提出了[投诉](https://www.theregister.com/2023/11/28/metas_eu_privacy_fee_triggers/)，反对其引入订阅模式。
+
+当时，noyb 的数据保护律师 Felix Mikolasch 表示：“欧盟法律要求同意必须是用户真正自由的意愿。与此法律相悖，Meta 对于任何人行使其数据保护基本权利要收取高达每年250欧元的‘隐私费’。”
+
+二月份，[消费者团体提出了自己的投诉](https://www.theregister.com/2024/02/29/meta_gdpr_complaints/)，要求阻止 Meta 给欧盟用户提供“虚假选择”，即订阅服务或同意通过数据收集进行个人资料分析和追踪。
+
+八个欧洲消费者组织（BEUC）成员提出的投诉基于欧盟的通用数据保护条例（GDPR）。他们认为 Meta 的付费或同意模式违反了法律的数据保护原则，包括目的限制、数据最小化、公平处理和透明度原则，而这些处理使得该公司能够“推断出消费者的私人细节”。 ®

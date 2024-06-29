@@ -1,0 +1,65 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-29 13:28:39
+
+-->
+
+# 美国在“气候定时炸弹”中花费数十亿美元用于道路而非公共交通 | 基础设施 | 卫报
+
+> 来源：[卫报](https://www.theguardian.com/business/2024/feb/29/biden-spending-highways-public-transport-climate-crisis)
+
+美国继续花费数十亿美元扩建巨大的公路，而不是资助公共交通，批评者称，由[乔·拜登](https://www.theguardian.com/us-news/joebiden)赞扬的具有标志性意义的基础设施法案进一步加剧了以汽车为代价的社区和气候的主导地位。
+
+自2021年通过了价值1.2万亿美元的[两党基础设施法案](https://www.whitehouse.gov/build/guidebook/)以来，拜登称之为升级美国日益崩溃的桥梁、公路、港口和公共交通系统的代表性努力以来，一项新的分析发现，资金主要流向了维护和扩展道路，而不是改善美国人目前破烂不堪的公交、铁路和骑行选择网络。
+
+<gu-island name="SignInGateSelector" 
+
+priority="feature" 
+
+deferuntil="visible" 
+
+props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;business&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;business/infrastructure&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;基础设施&quot;},{&quot;id&quot;:&quot;us-news/us-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国新闻&quot;},{&quot;id&quot;:&quot;us-news/joebiden&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;乔·拜登&quot;},{&quot;id&quot;:&quot;environment/environment&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;环境&quot;},{&quot;id&quot;:&quot;environment/climate-crisis&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;气候危机&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;新闻&quot;},{&quot;id&quot;:&quot;profile/oliver-milman&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;奥利弗·米尔曼&quot;,&quot;twitterHandle&quot;:&quot;olliemilman&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/contributor/2014/9/30/1412084830432/Oliver-Milman.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=dc9d7205ee13422323669d8ba9443463&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2017/10/09/Oliver-Milman,-L.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=851c9c9b1357655e93f43b2ec335f721&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国新闻&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;business/2024/feb/29/biden-spending-highways-public-transport-climate-crisis&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}"
+
+config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+<gu-island name="RichLinkComponent" priority="feature" deferuntil="idle" props="{&quot;richLinkIndex&quot;:2,&quot;element&quot;:{&quot;_type&quot;:&quot;model.dotcomrendering.pageElements.RichLinkBlockElement&quot;,&quot;prefix&quot;:&quot;相关: &quot;,&quot;text&quot;:&quot;电动汽车是否存在空气污染问题？&quot;,&quot;elementId&quot;:&quot;fd5230c9-e7cb-4d57-aadd-bea65930970a&quot;,&quot;role&quot;:&quot;richLink&quot;,&quot;url&quot;:&quot;https://www.theguardian.com/business/2024/feb/26/electric-cars-air-pollution-problem-brakes-tyres&quot;},&quot;ajaxUrl&quot;:&quot;https://api.nextgen.guardianapps.co.uk&quot;,&quot;format&quot;:{&quot;display&quot;:0,&quot;theme&quot;:0,&quot;design&quot;:0}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+报告的资金分发给各州，超过一半（约700亿美元）用于公路的重新铺设和扩建，研究人员一直发现这一过程只会刺激汽车使用量增加，从而导致更多的拥堵。
+
+到目前为止，只有五分之一的资金流向了公共交通，剩余大部分也促进了更多的汽车行驶，如桥梁的翻新。
+
+<gu-island name="InteractiveBlockComponent" priority="critical" deferuntil="idle" props="{&quot;url&quot;:&quot;https://interactive.guim.co.uk/uploader/embed/2024/02/archive-zip/giv-13425D7Bvg76BgMBK/&quot;,&quot;scriptUrl&quot;:&quot;https://interactive.guim.co.uk/embed/iframe-wrapper/0.1/boot.js&quot;,&quot;alt&quot;:&quot;橙色和绿色条形图的三组&quot;,&quot;format&quot;:{&quot;display&quot;:0,&quot;theme&quot;:0,&quot;design&quot;:0},&quot;elementId&quot;:&quot;0fadcf4c-bf40-4a48-a667-05c68e262a70&quot;,&quot;isMainMedia&quot;:false}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}">[橙色和绿色条形图的三组](https://interactive.guim.co.uk/uploader/embed/2024/02/archive-zip/giv-13425D7Bvg76BgMBK/)</gu-island>
+
+根据新的美国交通分析，这种支出是一个“气候定时炸弹”，计算显示到2040年由于计划中的公路扩建将排放超过1.78亿吨温室气体，仅轻微抵消该法案也带来的减排措施。
+
+“我们看到，从州到州，大多数投资决策都不太考虑气候问题，”交通政策团体[“为美国运输”](https://t4america.org/)的政策副手科里根·萨勒诺表示。
+
+“在运输方式方面基本上没有根本性变化。投入这么多资金进行公路扩展，一方面是对未来的一种负债，另一方面，这种做法根本行不通。几十年来，我们不断扩建公路，但每个人都发现自己经常被困在交通堵塞中。”
+
+联邦政府的资金给予各州广泛的灵活性来使用，而各州政府基本上选择坚持以汽车为中心的基础设施。拜登政府的交通部[确实建议各州](https://www.fhwa.dot.gov/bipartisan-infrastructure-law/building_a_better_america-policy_framework.cfm)优先进行道路修复，而不是扩展，并且要考虑到被公路隔断并因此遭受空气污染影响的社区，通常是有色人种社区。
+
+然而，这种立场引发了国会共和党人的强烈反对，并且被一些州，如[德克萨斯州](https://www.texasmonthly.com/news-politics/opposition-to-el-paso-interstate-10-widening-project/)甚至[加利福尼亚州](https://www.latimes.com/california/story/2023-12-01/new-express-lanes-in-orange-county-open-on-405-freeway)，一个被视为气候政策进步堡垒的地方，忽略了，他们继续推进计划，在公路上增加越来越多的车道。
+
+“很多决策权都集中在州交通部门，”旨在改善美国公共交通的基金会TransitCenter的研究和政策经理玛丽·布坎南表示。“可以说，有50个机会来做对这件事情，或者潜在地做错，关键是如何花费这些资金。”
+
+结果是，由于基础设施法案的通过，美国将因交通而产生更多的排放，这已经是其[温室气体排放的主要来源](https://www.epa.gov/ghgemissions/sources-greenhouse-gas-emissions)，根据萨勒诺的说法，“我们必须实际上走下这个我们正在创造的巨大排放悬崖，因为一旦建成这些公路，从这个悬崖中回来将不是一件容易的事情。”
+
+美国对庞大公路的执着——以及超大型汽车的增长，这些车辆每年因事故导致大约40,000人死亡，这一数字近年来有所上升——[已经引发了重新思考的呼声](https://www.theguardian.com/us-news/2022/apr/29/texas-highway-expansions-project-displacements-protests)。本月，大约200个气候、骑行和可步行性团体[呼吁全国性的高速公路扩展暂停](https://americawalks.org/wp-content/uploads/2024/02/Communities-Over-Highways-Call-For-Action.pdf?utm_source=substack&utm_medium=email)，因为它们带来了诸多弊端。
+
+<gu-island name="RichLinkComponent" priority="feature" deferuntil="idle" props="{&quot;richLinkIndex&quot;:14,&quot;element&quot;:{&quot;_type&quot;:&quot;model.dotcomrendering.pageElements.RichLinkBlockElement&quot;,&quot;prefix&quot;:&quot;Related: &quot;,&quot;text&quot;:&quot;‘It’s just more and more lanes’: the Texan revolt against giant new highways&quot;,&quot;elementId&quot;:&quot;4c3645e5-add6-4985-9959-5429aaa8e2f6&quot;,&quot;role&quot;:&quot;richLink&quot;,&quot;url&quot;:&quot;https://www.theguardian.com/us-news/2022/apr/29/texas-highway-expansions-project-displacements-protests&quot;},&quot;ajaxUrl&quot;:&quot;https://api.nextgen.guardianapps.co.uk&quot;,&quot;format&quot;:{&quot;display&quot;:0,&quot;theme&quot;:0,&quot;design&quot;:0}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+“我们国家建立的公路系统在经济和环境上都是不可持续的，且不成比例地伤害低收入和黑人以及拉美裔社区，”一封联盟的公开信说道。
+
+然而，公共交通的前景并没有好转的迹象。在新冠疫情期间，铁路和公共汽车服务遭受重创，缺乏通勤收入使得多个城市系统苦于覆盖其基本运营成本。
+
+与此同时，一些司法管辖区显然对非汽车选择持敌意态度。印第安纳州的立法者[本周提议禁止](https://www.wfyi.org/news/articles/it-targets-one-city-now-despite-opposition-house-committee-passes-bill-effectively-killing-indianapolis-blue-line)在印第安纳波利斯设立专用公交车道，而迈阿密海滩的官员最近[拒绝了](https://www.axios.com/local/miami/2024/02/21/beach-rejects-metro-mover-extension)延长铁路线以帮助缓解拥堵的计划。最近还宣布，2026年世界杯决赛将在新泽西州的梅特生活体育场举行，建议前往者[不要步行](https://www.yahoo.com/lifestyle/hotel-sign-highlights-nightmare-situation-130000379.html)，因为路线过于危险，主要是因为汽车。
+
+布坎南表示，美国公共交通的覆盖范围在全国各地仍然“不均衡”，而其资金需求需要各州采取新的方法。
+
+“如果各州继续像过去那样花费这些新资金，我们将继续扩展高速公路，并且真正巩固我们以汽车为导向的出行方式，”她说道。
+
+“这是一个非常关键的时刻。显然，由于这些基础设施法案的实施，我们的交通部门的排放有可能大幅增加，这将是非常糟糕的。”
+
+美国交通部发言人表示，拜登政府已经采取了“历史上任何政府都未曾采取过的最强硬的措施”，以减少交通运输中的碳排放，这包括美国历史上最大规模的公共交通投资，自阿姆特拉克公司成立以来最大规模的客运铁路投资，创纪录的资金支持促进步行和骑行的活动交通，以及历史性的投资于零排放公交车、电动车辆和充电基础设施。

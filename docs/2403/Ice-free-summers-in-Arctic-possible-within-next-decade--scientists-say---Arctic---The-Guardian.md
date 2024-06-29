@@ -1,0 +1,41 @@
+<!--yml
+
+-   category: 未分类
+
+date: 2024-05-27 14:40:15
+
+-->
+
+# 北极可能在未来十年内出现无冰夏季，科学家称 | 北极 | 卫报
+
+> 来源：[https://www.theguardian.com/world/2024/mar/05/ice-free-summers-in-arctic-possible-within-next-decade-scientists-say](https://www.theguardian.com/world/2024/mar/05/ice-free-summers-in-arctic-possible-within-next-decade-scientists-say)
+
+[北极](https://www.theguardian.com/world/arctic)可能在未来十年内由于燃烧化石燃料排放，夏季几乎没有海冰的日子，一项研究发现。
+
+这将在夏季转换独特的栖息地，这里是北极熊、海豹和海象的家园，从“白色北极”变为“蓝色北极”，科学家说。用于“无冰”的计算意味着少于1百万平方公里，此时北极将主要是水域。
+
+<gu-island name="SignInGateSelector"
+
+priority="feature"
+
+deferuntil="visible"
+
+props="{&quot;contentType&quot;:&quot;文章&quot;,&quot;sectionId&quot;:&quot;world&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;world/arctic&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;北极&quot;},{&quot;id&quot;:&quot;world/world&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;世界新闻&quot;},{&quot;id&quot;:&quot;environment/environment&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;环境&quot;},{&quot;id&quot;:&quot;environment/ice&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;冰&quot;},{&quot;id&quot;:&quot;environment/sea-ice&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;海冰&quot;},{&quot;id&quot;:&quot;environment/fossil-fuels&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;化石燃料&quot;},{&quot;id&quot;:&quot;environment/climate-crisis&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;气候危机&quot;},{&quot;id&quot;:&quot;environment/poles&quot;,&quot;type&quot;:&quot;关键词&quot;,&quot;title&quot;:&quot;极地地区&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;类型&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;语调&quot;,&quot;title&quot;:&quot;新闻&quot;},{&quot;id&quot;:&quot;profile/helena-horton&quot;,&quot;type&quot;:&quot;贡献者&quot;,&quot;title&quot;:&quot;海伦娜·霍顿&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2023/03/14/Helena_Horton.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=287388798a9c7de6070d0a21aded13a3&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2023/03/14/Helena_Horton,_R.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=8f68582937e98d14b9dc07cdc53d0d52&quot;},{&quot;id&quot;:&quot;publication/theguardian&quot;,&quot;type&quot;:&quot;出版物&quot;,&quot;title&quot;:&quot;卫报&quot;},{&quot;id&quot;:&quot;theguardian/mainsection&quot;,&quot;type&quot;:&quot;报纸分册&quot;,&quot;title&quot;:&quot;主要版块&quot;},{&quot;id&quot;:&quot;theguardian/mainsection/uknews&quot;,&quot;type&quot;:&quot;报纸分册部分&quot;,&quot;title&quot;:&quot;英国新闻&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/uk-environment&quot;,&quot;type&quot;:&quot;追踪&quot;,&quot;title&quot;:&quot;英国环境&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;world/2024/mar/05/ice-free-summers-in-arctic-possible-within-next-decade-scientists-say&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;pre
+
+config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+发表在《自然·地球与环境评论》杂志上的研究结果显示，北极首个无冰日可能比之前的预测提前超过10年。
+
+<gu-island name="RichLinkComponent" priority="feature" deferuntil="idle" props="{&quot;richLinkIndex&quot;:3,&quot;element&quot;:{&quot;_type&quot;:&quot;model.dotcomrendering.pageElements.RichLinkBlockElement&quot;,&quot;prefix&quot;:&quot;Related: &quot;,&quot;text&quot;:&quot;Pumped up: will a Dutch startup’s plan to restore Arctic sea-ice work?&quot;,&quot;elementId&quot;:&quot;82575760-08c8-43e4-ac12-26569253c932&quot;,&quot;role&quot;:&quot;richLink&quot;,&quot;url&quot;:&quot;https://www.theguardian.com/environment/2024/feb/27/climate-crisis-arctic-ecosystems-environment-startup-plan-pump-restore-melting-sea-ice-caps&quot;},&quot;ajaxUrl&quot;:&quot;https://api.nextgen.guardianapps.co.uk&quot;,&quot;format&quot;:{&quot;display&quot;:0,&quot;theme&quot;:0,&quot;design&quot;:0}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+作者指出，预计2035年至2067年间将会持续出现每年9月无冰的情况。这段时期内确切的年份取决于全球减少燃烧化石燃料的速度。
+
+本世纪末，高排放情景下可能在5月至1月之间出现无冰情况，在低排放情景下可能在8月至10月之间出现。
+
+亚历山德拉·亚恩是科罗拉多大学博尔德分校大气和海洋科学副教授，也是研究的主要作者之一，她说：“这将把北极从一个夏季白色的北极转变为一个蓝色的北极环境。因此，即使无冰条件是不可避免的，我们仍然需要尽可能地减少排放，以避免长时间的无冰条件。”
+
+她表示，解决这个问题的潜力是存在的。
+
+“不像格陵兰岛上的冰盖需要几千年才能形成，即使我们融化了所有的北极海冰，如果未来能够找到办法从大气中去除CO[2]来逆转变暖，海冰将在十年内重新形成，”亚恩说。
+
+不仅是北极的野生动物会因其栖息地融化而受到影响；居住在海岸线上的人们也会面临困境。[海冰](https://www.theguardian.com/environment/sea-ice)减少了海洋波浪对海岸的影响，这意味着如果失去海冰，波浪将更强更大，导致更多的侵蚀。

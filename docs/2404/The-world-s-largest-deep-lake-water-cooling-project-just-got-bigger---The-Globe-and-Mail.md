@@ -1,0 +1,71 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 12:51:43
+
+-->
+
+# 世界上最大的深湖冷却项目刚刚变得更大 - The Globe and Mail
+
+> 来源：[https://www.theglobeandmail.com/business/industry-news/property-report/article-the-worlds-largest-deep-lake-water-cooling-project-just-got-bigger/](https://www.theglobeandmail.com/business/industry-news/property-report/article-the-worlds-largest-deep-lake-water-cooling-project-just-got-bigger/)
+
+[点击打开此图片库：](https://www.theglobeandmail.com/resizer/v2/7VVYINV7ERF5PH6CXY6F67TVS4.jpg?auth=97972c5fd07f7b4838bdbbb067504047fee9acdc566702ecd7c71ded328b4f14&width=600&quality=80)
+
+位于多伦多的安纳威能源公司拥有并运营巨大的深湖冷却系统（DLWC），正在扩展其40公里的地下水管网。
+
+多伦多正在深入挖掘，以扩展专家认为已经是地球上最酷和最环保的能源项目之一的深湖冷却系统。
+
+多伦多的安纳威能源公司已经拥有并运营巨大的深湖冷却（DLWC）系统，这些地下水管大约有40公里长，穿过多伦多市中心，并延伸约5公里进入安大略湖。这些湖水管将水从市中心的热传输站运送到Pearl Street（位于University Avenue西侧，在Adelaide Street West和King Street West之间）。
+
+当城市、政府机构以及许多私营公司都在努力建设或增强基础设施项目时，安纳威公司正通过一项价值1亿美元的计划扩建Pearl Street站，以扩展其系统覆盖更多多伦多建筑物。安纳威公司由安大略省教师退休金计划和澳大利亚养老基金集团IFM Investors共同拥有。
+
+“预计今年年底前，扩建后的系统将投入运行。我们的产能将增加40%。” 安纳威总裁Carlyle Coutinho说道。该公司从联邦政府的低碳经济基金和加拿大基础设施银行获得了用于Pearl Street升级及其他清洁能源项目的资金支持。
+
+多伦多的DLWC（世界上最大的其类系统）目前服务于180栋建筑物，覆盖了多达4000万平方英尺的市中心房地产，包括多伦多多明尼恩中心、布鲁克菲尔德广场、斯科提银行竞技场、八家医院，以及最近加入的费尔蒙皇家约克酒店等历史名建筑。
+
+“珍珠街项目是我们称为安娜瓦绿色热能的设施，将提供足够的低碳供热，使多伦多市中心另外1000万平方英尺商业塔楼能实现净零供暖，”库廷奥先生说。（大约相当于170个足球场的大小。）安娜瓦还正在增加[第四个进水管道](https://urbanland.uli.org/sustainability/torontos-deep-lake-water-cooling-system-harnessing-the-depths-of-district-energy-for-large-scale-decarbonization)，它将位于安大略湖深处，与现有的三个进水口并行。
+
+DLWC 技术非常简单，从安大略湖 85 米深处取水，水温为 4°C。水经过多伦多的岛屿过滤厂处理后，用作饮用水。
+
+> 扩展系统预计将在年底之前投入使用。我们正在增加我们的容量40%。
+> 
+> — 安娜瓦能源公司总裁卡莱尔·库廷奥。
+
+然后，水被泵送到城市，通过40公里的市中心管道网络循环，这些管道穿过连接到系统的不同建筑物的内部。
+
+珍珠街设施是水流经的主要站点。它基本上是人们安装在家中以降低能源账单的热交换器的巨大版本。
+
+在市中心网络中循环的冷水穿过建筑物并通过珍珠街和额外的安娜瓦设施，其中有换热器。
+
+这些交换器在相邻管道之间传递热量和冷量。根据季节和建筑物、其居民及城市其他部分的需求，相邻环路中的水可以被电加热用于热水和供暖，或者只保持足够温暖以返回市政饮用水供应。
+
+从安大略湖抽取的未用于饮用水的水以大致相同的温度回归湖中。
+
+尽管许多环保人士表示他们喜欢 DLWC，但也有人担心其依赖电力进行抽水和运行巨大的换热器可能会导致碳排放，特别是如果电力来源于燃煤或燃气发电厂，或者如果是核能的话可能存在其他风险。
+
+[打开此照片库：](https://www.theglobeandmail.com/resizer/v2/J6IK4KCKFFE7VOLU26WK4QWWPI.jpg?auth=f282630960574e26fdd9f4d4420778f8eab93ccf50c1bab4835f5330c4456561&width=600&quality=80)
+
+扩展系统预计将在年底之前投入使用，将增加 40% 的容量。安娜瓦能源公司。
+
+环境防御非营利组织的执行主任蒂姆·格雷说 DLWC 是“聪明且有效的”。
+
+“用来进行这项工作的水必须被抽出来，因为它是我们的饮用水供应的一部分，而且所用的电比空调或取暖所需的能源少得多，”他解释道。
+
+“在安大略省，它来自一个燃煤较少的电网，尽管在未来，如果安大略省投资更多的可再生能源，那么它可能会变得更加环保。” 他说。
+
+DLWC系统于2004年推出，但自加拿大设定了到2050年成为净零碳排放目标以来一直在增长。随着系统扩展到越来越多的建筑物，业主和运营商正在发现参与的新的不同的方式。
+
+例如，恩波夫与The Well的开发商合作，后者是一个混合用途的开发项目，拥有超过三百万平方英尺的零售、办公和住宅空间，安装了[一个地热储能设施](https://www.enwave.com/case-studies/groundbreaking-expansion-project-brings-water-to-the-well/)在项目底下。 它由DLWC系统供应的一个大型恒温储水箱组成，能够容纳760万升的水。
+
+储能设施作为一个热“电池”，在深夜的低峰时段储存能量，减轻电力网络的压力并降低成本。这种储能设施可以为额外的1700万平方英尺的空间提供低碳供暖和制冷。
+
+一些业主和开发商发现加入该系统比他们最初想象的要容易。“当我们考虑我们的能源改造时，我们发现几十年前，深湖系统已经建造到了皇家约克酒店的一侧基础上。”斯蒂文·格罗斯说道，他是该建筑物的多住宅和酒店资产管理副总裁，该建筑物由KingSett Capital所有。
+
+该酒店的能源[改造（retrofit）](https://www.theglobeandmail.com/business/industry-news/property-report/article-landmark-94-year-old-hotel-expects-to-hit-net-zero-status-this/)，包括集成DLWC，去年年底获得了加拿大绿色建筑理事会的零碳建筑 - 性能标准认证。
+
+“我们很高兴。我们也想知道：为什么以前没有人注意到这一点？”格罗斯先生说。
+
+科丁尼奥先生想知道为什么整个DLWC系统没有得到更多的全球关注。
+
+“我们是全球最大的商业深湖公司，我们是北美最大的商业区能源公司之一。” 他说。

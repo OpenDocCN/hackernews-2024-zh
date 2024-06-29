@@ -1,0 +1,51 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:47:13
+
+-->
+
+# 波罗的海底发现的石器时代墙可能是欧洲最古老的大型结构 | 科学 | 卫报
+
+> 来源：[https://www.theguardian.com/science/2024/feb/12/stone-age-wall-found-at-bottom-of-baltic-sea-may-be-europes-oldest-megastructure](https://www.theguardian.com/science/2024/feb/12/stone-age-wall-found-at-bottom-of-baltic-sea-may-be-europes-oldest-megastructure)
+
+德国波罗的海沿岸发现的石器时代墙可能是欧洲已知最古老的人类建造的大型结构，研究人员表示。
+
+在梅克伦堡湾海底近一公里处，科学家们在一次学生旅行期间，通过研究船上的多波束声纳系统意外发现了一堵墙。距离海岸线约10公里（六英里）。
+
+<gu-island name="SignInGateSelector"
+
+priority="feature" 
+
+deferuntil="visible" 
+
+props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;science&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;science/science&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;科学&quot;},{&quot;id&quot;:&quot;science/archaeology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;考古学&quot;},{&quot;id&quot;:&quot;science/anthropology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;人类学&quot;},{&quot;id&quot;:&quot;world/germany&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;德国&quot;},{&quot;id&quot;:&quot;world/europe-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;欧洲&quot;},{&quot;id&quot;:&quot;world/world&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;世界新闻&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;新闻&quot;},{&quot;id&quot;:&quot;profile/iansample&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;伊恩·萨普尔&quot;,&quot;twitterHandle&quot;:&quot;iansample&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2014/4/17/1397749332765/IanSample.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=9ee99192b737b495cf645e33801f6c1a&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2017/10/06/Ian-Sample,-R.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=32ca0abf6516106286df7cdb99c47f3f&quot;},{&quot;id&quot;:&quot;publication/theguardian&quot;,&quot;type&quot;:&quot;Publication&quot;,&quot;title&quot;:&quot;卫报&quot;},{&quot;id&quot;:&quot;theguardian/mainsection&quot;,&quot;type&quot;:&quot;NewspaperBook&quot;,&quot;title&quot;:&quot;主要版块&quot;},{&quot;id&quot;:&quot;theguardian/mainsection/uknews&quot;,&quot;type&quot;:&quot;NewspaperBookSection&quot;,&quot;title&quot;:&quot;英国新闻&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/uk-home-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;英国内政新闻&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;science/2024/feb/12/stone-age-wall-found-at-bottom-of-baltic-sea-may-be-europes-oldest-megastructure&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:
+
+config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+进一步检查这座名为“Blinkerwall”的结构，发现约1,400块较小的石头，看起来它们是为了连接近300块更大的巨石而摆放的，其中许多对于人类群体来说过于沉重，无法移动。
+
+这座被水淹没的墙被描述为一个“激动人心的发现”，深埋水下21米，但研究人员认为它是一万多年前由狩猎采集者在湖泊或沼泽旁边的陆地上建造的。
+
+尽管这堵墙的目的很难证明，科学家们怀疑它可能作为猎人追逐驯鹿群的驱赶通道。
+
+“当你追逐动物时，它们会顺着这些结构走，而不会试图跳过它们，”德国波罗的海研究所研究员雅各布·格尔森在瓦尔内明德的莱布尼兹波罗的海研究所说道。
+
+“想法是通过第二堵墙或湖岸创建一个人工瓶颈，”他补充道。
+
+与“国家科学院院刊”中写道的第二堵墙相伴而行，可能被埋在海底沉积物中。
+
+<gu-island name="RichLinkComponent" priority="feature" deferuntil="idle" props="{&quot;richLinkIndex&quot;:8,&quot;element&quot;:{&quot;_type&quot;:&quot;model.dotcomrendering.pageElements.RichLinkBlockElement&quot;,&quot;prefix&quot;:&quot;Related: &quot;,&quot;text&quot;:&quot;Stone age Dartmoor viewpoint uncovered by archaeologists&quot;,&quot;elementId&quot;:&quot;7024ff8c-19cc-4479-a895-c31e9525233a&quot;,&quot;role&quot;:&quot;richLink&quot;,&quot;url&quot;:&quot;https://www.theguardian.com/science/2023/aug/30/stone-age-dartmoor-viewpoint-uncovered-by-archaeologists&quot;},&quot;ajaxUrl&quot;:&quot;https://api.nextgen.guardianapps.co.uk&quot;,&quot;format&quot;:{&quot;display&quot;:2,&quot;theme&quot;:0,&quot;design&quot;:0}}" config="{&quot;renderingTarget&quot;:&quot;Web&quot;,&quot;darkModeAvailable&quot;:false,&quot;inAdvertisingPartnerABTest&quot;:false,&quot;assetOrigin&quot;:&quot;https://assets.guim.co.uk/&quot;}"></gu-island>
+
+或者，这堵墙可能迫使动物们进入附近的湖泊，减缓它们的速度，使它们成为潜伏在独木舟上的人类用矛或弓箭轻松捕捉的目标。
+
+根据971米长的墙壁的大小和形状，格尔森及其同事认为它不太可能通过自然过程形成，比如巨大的海啸将石头移动到位，或者石头被移动的冰川留下。
+
+墙的角度大部分不到1米高，在遇到较大的巨石时会改变方向，这表明小石堆是有意放置的，以便将它们连接起来。总体而言，墙上的石头被认为重达142吨以上。
+
+如果这堵墙曾是一条古老的狩猎通道，那么它可能建于10,000多年前，并在大约8,500年前随着海平面上升而被淹没。
+
+“这将把闪光墙（Blinkerwall）列入世界上已知最古老的狩猎建筑示例之一，并有可能成为[欧洲](https://www.theguardian.com/world/europe-news)最古老的人造大型结构之一，” 研究人员表示。
+
+Geersen 现在渴望重访现场，重建古代景观，并寻找埋藏在墙周围沉积物中的动物骨骼和人类制品，如用于狩猎的投射物。

@@ -1,0 +1,37 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:35:32
+
+-->
+
+# Nvidia禁止使用翻译层运行CUDA软件 — 先前的禁令仅在在线EULA中列出，现在已包括在安装文件中 [更新] | Tom's Hardware
+
+> 来源：[https://www.tomshardware.com/pc-components/gpus/nvidia-bans-using-translation-layers-for-cuda-software-to-run-on-other-chips-new-restriction-apparently-targets-zluda-and-some-chinese-gpu-makers](https://www.tomshardware.com/pc-components/gpus/nvidia-bans-using-translation-layers-for-cuda-software-to-run-on-other-chips-new-restriction-apparently-targets-zluda-and-some-chinese-gpu-makers)
+
+[编辑 3/4/24 11:30am PT：澄清文章以反映此条款在Nvidia在线EULA清单中是可用的，但未包含在下载软件中的EULA文本文件中。警告文本已添加到安装的CUDA文档的11.6及更新版本中。]
+
+自2021年以来，Nvidia已禁止使用翻译层在其他硬件平台上运行基于CUDA的软件，这一条款列在其[在线许可条款](https://docs.nvidia.com/cuda/eula/index.html)中，但此警告先前未包含在安装过程中放置在主机系统上的文档中。这一语言已添加到安装CUDA 11.6及更新版本时包含的EULA中。
+
+这一限制似乎旨在阻止像[ZLUDA](https://www.tomshardware.com/news/zluda-project-cuda-intel-gpus)这样的倡议，最近英特尔和AMD都参与其中，以及一些中国GPU制造商利用CUDA代码与翻译层。我们已联系Nvidia寻求评论，待收到回复后，将会为您提供额外的细节或澄清。
+
+[Longhorn](https://twitter.com/never_released/status/1758946808183525702)，一位软件工程师，注意到了这些条款。安装的EULA文本文件中的一条款读到："您不得为将SDK元素生成的任何输出工件进行反向工程、反编译或反汇编，以便将这些输出工件翻译以目标非NVIDIA平台。"
+
+在CUDA 11.4和11.5版本的安装EULA文档中，这一条款是缺失的，可能之前的所有版本也是如此。然而，在11.6版本及更新的安装文档中则有所体现。
+
+成为领导者有好有坏。一方面，大家都依赖你；另一方面，每个人都想站在你的肩膀上。显然后者就是CUDA所发生的事情。由于CUDA与Nvidia硬件的组合被证明效率极高，大量程序依赖于它。然而，随着更多竞争硬件进入市场，越来越多的用户倾向于在竞争平台上运行他们的CUDA程序。有两种方法可以做到这一点：重新编译代码（适用于相应程序的开发人员）或使用翻译层。
+
+出于显而易见的原因，像[ZLUDA](https://www.tomshardware.com/news/zluda-project-cuda-intel-gpus)这样的翻译层是在非英伟达硬件上运行CUDA程序的最简单方式。只需使用已编译的二进制文件，并通过ZLUDA或其他翻译层来运行它们。尽管[ZLUDA目前似乎陷入困境](https://www.tomshardware.com/pc-components/gpus/software-allows-cuda-code-to-run-on-amd-and-intel-gpus-without-changes-zluda-is-back-but-both-companies-ditched-it-nixing-future-updates)，AMD和Intel都放弃了进一步开发它的机会，但这并不意味着翻译不可行。
+
+几家中国GPU制造商，[包括一家获得中国政府资助的公司](https://www.tomshardware.com/news/chinese-gpu-developer-gets-government-funds)，声称能运行CUDA代码。登林科技设计的处理器采用了“与CUDA/OpenCL等编程模型兼容的计算架构”。鉴于逆向工程英伟达GPU很困难（除非某种方式已经掌握了所有关于英伟达GPU架构的低级细节），我们可能在这里也在处理某种形式的翻译层。
+
+中国最大的GPU制造商之一，摩尔线程，也拥有一款[MUSIFY翻译工具](https://www.tomshardware.com/pc-components/gpus/nvidias-biggest-chinese-competitor-unveils-cutting-edge-new-ai-gpus-moore-threads-s4000-ai-gpu-and-intelligent-computing-center-server-clusters-using-1000-of-the-new-ai-gpus)，旨在使CUDA代码能够在其GPU上运行。然而，MUSIFY是否属于完整的翻译层尚不清楚（MUSIFY的某些方面可能涉及代码移植）。因此，目前尚不完全清楚英伟达对翻译层的禁令是对这些倡议的直接回应，还是对未来发展的预防性打击。
+
+出于显而易见的原因，使用翻译层威胁到了英伟达在加速计算领域的霸主地位，尤其是在人工智能应用方面。这可能是英伟达决定禁止在其他硬件平台上使用翻译层运行其CUDA应用程序的动因。
+
+重新编译现有的CUDA程序是完全合法的。为了简化这一过程，AMD和Intel都提供了工具，可以将CUDA程序移植到它们各自的[ROCm](https://www.amd.com/system/files/documents/porting-cuda-to-hip.pdf)（[1](https://github.com/ROCm/HIPIFY)）和[OpenAPI](https://www.intel.com/content/www/us/en/developer/articles/technical/migrate-cuda-applications-to-oneapi-based-on-sycl.html)平台。
+
+随着AMD、Intel、Tenstorrent和其他公司开发出更好的硬件，更多软件开发者将倾向于为这些平台设计软件，而Nvidia的CUDA主导地位可能随着时间的推移而减弱。此外，专门为特定处理器开发和编译的程序无疑会比通过翻译层运行的软件表现更好，这意味着AMD、Intel、Tenstorrent等公司在与Nvidia的竞争中能够取得更好的竞争地位——只要他们能够吸引软件开发者的支持。通用GPU计算仍然是一个重要且竞争激烈的领域，我们将继续关注未来情况的发展。
+
+获取[Tom's Hardware](https://www.tomshardware.com)的最新消息和深度评测，直接发送到您的收件箱。

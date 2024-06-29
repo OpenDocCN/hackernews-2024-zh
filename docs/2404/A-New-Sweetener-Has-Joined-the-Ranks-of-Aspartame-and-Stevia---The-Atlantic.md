@@ -1,0 +1,43 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 13:36:07
+
+-->
+
+# 一种新的甜味剂加入了阿斯巴甜和甜菊糖的行列 - The Atlantic
+
+> 来源：[https://www.theatlantic.com/health/archive/2024/04/sugar-substitutes-brazzein-stevia-aspartame/678192/](https://www.theatlantic.com/health/archive/2024/04/sugar-substitutes-brazzein-stevia-aspartame/678192/)
+
+几个月前，我的医生说了一句我长期担心的话：*你的血糖太高了*。考虑到我家族中糖尿病的历史，以及偶尔对[巧克力](https://www.theatlantic.com/health/archive/2024/04/cocoa-shortage-chocolate-expensive/678053/)的强烈渴望，我知道这一天会来临，并且明白其含义：为了满足我对甜食的渴望，我得转向使用糖代品。*唉*。
+
+诸如阿斯巴甜、甜菊糖和三氯蔗糖（Splenda的主要成分）等重复的代用品都甜味十足，并且热量极低甚至零，因此它们通常不会像真实的糖一样引起血糖飙升。但尽管如今有比以往任何时候都更多的糖替代品，许多人发现它们[味道](https://www.theatlantic.com/health/archive/2009/04/how-natural-is-this-sweetener/16876/) [非常糟糕](https://www.nytimes.com/2014/01/05/magazine/the-quest-for-a-natural-sugar-substitute.html)。饮用含阿斯巴甜的健怡可乐后，口中留下了铜味。而且大量食用代糖对身体不利：去年，世界卫生组织[警告称](https://www.who.int/news/item/15-05-2023-who-advises-not-to-use-non-sugar-sweeteners-for-weight-control-in-newly-released-guideline)，人工甜味剂可能会增加患某些疾病的风险，特别指出阿斯巴甜可能是“[可能致癌](https://www.theatlantic.com/health/archive/2023/06/artificial-sweetener-aspartame-diet-coke-cancer-link-who/674586/)”。
+
+上周，我喝了一罐 Arnold Palmer，里面有一种全新的甜味剂，承诺与众不同。这种饮料强烈的柠檬味被一种轻微、平淡的甜味所调和，这种甜味来自于 brazzein，这是一种上个月获得 FDA 批准的糖替代品。Oobli 是一家总部位于加利福尼亚的公司，销售柠檬茶和柠檬水，并生产 brazzein（这种物质自然存在于西非的 oubli 果实中），他们将其宣传为“甜味革命”。然而，就像之前所有的甜味剂一样，brazzein 远非完美：为了掩盖其异味，罐子里也添加了一些真正的糖。目前，Rosalind Franklin 大学的甜味剂专家 Eric Walters 告诉我，brazzein 只是“现有众多选择的一种替代品”。迄今为止，没有一种甜味剂能接近真正的甜味。
+
+理想的糖替代品不仅仅是甜味。它还必须安全、口感好，并能复制糖在舌头上甜味发展的独特方式。除了已有一个多世纪历史的阿斯巴甜和其他合成糖替代品，过去二十年出现了一些“天然”糖替代品，这些都是植物衍生的：用甜菊或罗汉果提取的甜味剂，分别在 2008 年和 2010 年首次获得 FDA 批准，现在可以在诸如 Truly 硬苏打水和 Fairlife 蛋白奶昔中找到。甜菊和罗汉果已经被“生长地区的人们使用数百年”，所以我对它们的安全性并没有太大担忧，Walters 告诉我。
+
+所有这些甜味剂基本上都是以相同的方式起作用。从化学上讲，除了糖以外的分子可以结合到舌头的甜味受体上，向大脑发送信号，告诉它有东西甜甜的降临了。但大脑能分辨出那些不是糖的东西。迄今为止，没有一种甜味剂能完成这一“魔术”；有时会残留的异味总是揭示了这个把戏。
+
+问题在于，糖替代品就像名人模仿者：外观相似，相当令人满意，但始终令人失望。拿甜菊糖和罗汉果来说：按重量计算，它们相对于普通糖都是强烈甜的—罗汉果的比例[高达250倍](https://www.fda.gov/food/food-additives-petitions/aspartame-and-other-sweeteners-food)，而甜菊糖则高达[400倍](https://www.fda.gov/food/food-additives-petitions/aspartame-and-other-sweeteners-food)。因为只需很少量就能产生甜味，这些甜味剂必须与另一种物质混合，使其更接近糖粒的形态。制造商过去会添加碳水化合物，如玉米淀粉—这些最终会分解成糖—但现在他们使用[赤藓醇](https://foodinsight.org/everything-you-need-to-know-about-monk-fruit-sweeteners/#:~:text=During%20the%20production%20of%20monk,contains%20zero%20calories%20per%20gram.)，一种无热量的糖醇，沃尔特斯说“根本不算是糖”。
+
+产品外观和手感与糖类似，但并非没有缺点。[赖氨酸](https://www.nih.gov/news-events/nih-research-matters/erythritol-cardiovascular-events)与增加心脏病和中风的风险有关。而甜菊糖和罗汉果甜味剂带有一种被描述为“[苦](https://www.newfoodmagazine.com/news/20939/cornell-scientists-reduce-the-bitter-aftertaste-of-stevia/)”，“[不愉快](https://www.medicalnewstoday.com/articles/322769/)”和“[灾难性](https://www.reddit.com/r/nutrition/comments/z02mgo/is_there_a_reason_stevia_tastes_horrible_to_me/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button)”的余味。当沃尔特斯在35年前首次帮助生产甜菊糖时，“味道质量如此糟糕，以至于我们认为没有人会购买它，”他说。“但我们低估了人们会因为它是‘天然’而愿意忍受多少。”
+
+[布拉宗](https://www.newscientist.com/article/2097355-gorillas-may-have-evolved-a-way-to-beat-a-cheating-berry-plant/)是另一种天然选择。与其他糖替代品不同，布拉宗是一种蛋白质，但仍然甜度强烈且低热量。它非常甜——比糖甜约1000倍——以至于野生中的一些大猩猩已经学会不再浪费时间吃它。*蛋白质*已成为健康界的时尚词汇，这无疑会促进奥布利的销售，但其产品不会增强任何二头肌：其茶中含有极少的——约[1%](https://oobli.com/products/half-tea-half-lemonade-6-pack#:~:text=proteins%20make%20up-,less%20than%201%25,-of%20the%20total)——因为布拉宗的甜度如此强烈。
+
+上个月，Oobli收到了FDA的“无条件问责”信函，这意味着该机构对产品的安全性并不担心。尽管这种甜蛋白已在[三十年前](https://www.sciencedirect.com/science/article/pii/0014579394011842)被发现，但Oobli的冰茶和巧克力是首批在美国销售的以brazein为甜味剂的产品。甜蛋白家族的另一成员Thaumatin自[1970年代](https://www.sciencedirect.com/topics/agricultural-and-biological-sciences/thaumatin#:~:text=Thaumatin%20was%20approved%20by%20FDA,et%20al.%2C%202022)以来一直被使用，尽管主要用作风味增强剂。brazein之所以市场化时间如此之长的一个原因是它在oubli果实中的含量非常低，因此大规模生产效率低下。Oubli的联合创始人兼首席技术官杰森·赖德告诉我，他们并非从果实中采摘brazein，而是在酵母细胞中生产这种蛋白，这种方法更具规模性和经济性。
+
+brazein与其他甜味剂之间的一个区别在于其化学大小。根据赖德的说法，与糖、甜菊和罗汉果相比，brazein分子相对较大，因为它们是蛋白质，这意味着它们的代谢方式不同。现有甜味剂对人体的影响仍在研究中；尽管人们普遍认为它们不会增加血糖或胰岛素水平，最近的[研究](https://www.cell.com/cell/fulltext/S0092-8674(22)00919-9?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0092867422009199%3Fshowall%3Dtrue)表明它们实际上可能会如此。甜味剂专家、Almendra公司甜菊制造商首席科学官格兰特·杜波伊斯告诉我，这可能永远不会成为brazein的问题。
+
+对于布拉兹因（brazzein）最具吸引力的优点可能是它的口味相当不错。我的味觉对人工甜味剂特别敏感，对其口味并不觉得不适。*会再次饮用*，我想。但 Oobli 的茶叶存在一个显著的警告：它们确实含有一些实际的糖分 —— 只是比普通饮料少一些。糖分有助于减轻布拉兹因甜味的某种特性，Ryder 说。
+
+布拉兹因及许多其他常见的糖替代品的持久问题之一是它们的甜味需要比通常更长的时间发展，并且持续时间比预期更长。事实上，虽然我喜欢 Arnold Palmer 饮料在下咽时的味道，但之后我感到一种奇怪的感觉：喉咙后部有一丝甜味，随着呼出而加剧，并感觉奇怪的凉爽。这并不令人不愉快，但也让我想起了不小心吞下薄荷口香糖的感觉。如果 Diet Coke 使用布拉兹因而不是阿斯巴甜（aspartame），Walters 解释说，你会先尝到咖啡因的苦味和磷酸的酸味，然后才是任何甜味，当所有这些味道消失后，甜味会留存。"这不是你希望饮料的味道，"他说。
+
+将布拉兹因与少许糖平衡，实现了*减少*糖的摄入目标。但大多数时候，寻求用糖替代品甜化的人们希望"无糖"，DuBois 说："所以这并不是问题的一个很好的解决方案。"完美的甜味剂会完全取代食物中的所有糖分，但布拉兹因可能无法达到这一点，除非其甜味的特异性得到充分解决。"如果我知道方法，我可能可以赚到数百万美元，"Walters 说。
+
+糖替代品的未来可能很快提供改进而非替代选择。去年，Almendra的Dubois及其同事发表了一篇经过同行评审的[论文](https://pubs.acs.org/doi/10.1021/acs.jafc.3c01144)，描述了一种通过向甜味剂中添加少量矿物盐来加快缓慢移动的甜味的方法，这有助于它们快速通过舌头上的厚粘液，从而显著改善甜味体验。“它适用于甜菊糖，也适用于阿斯巴甜、三氯蔗糖、罗汉果等——我们尝试过的一切都效果很好，”Dubois说道，指出这种方法可能也适用于白茅根蛋白。他表示，借助正确的技术，甜味剂可以变得“非常类似于糖”。
+
+然而，寻找完美的糖替代品是徒劳无功的。无论它们多么出色，单一物质不太可能满足所有人对健康的口味和期望。正如我的同事阿曼达·穆尔在阿斯巴甜因被认定为致癌物质时所说，总是会有问题存在。关于天然甜味剂的健康影响还有很多待了解，它们可能并不像表面上那么自然；一些甜菊糖产品，例如，经过化学改性以提高口感，沃尔特斯告诉我。
+
+更重要的是，甜味剂的存在使得人们可以尽情享受甜食，而不必担心后果。它们可以解决大部分糖的问题——但并非万能。沃尔特斯表示：“如果你选择一种甜味剂并把它添加到所有食物和饮料中，整天都吃喝它，那对你来说可能并不是件好事。”无糖、甜美如糖的巧克力有朝一日可能会存在，但我可能永远无法在享用时不担心下一次血液检测。

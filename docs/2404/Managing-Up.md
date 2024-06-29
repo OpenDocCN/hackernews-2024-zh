@@ -1,0 +1,111 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 13:37:42
+
+-->
+
+# 管理上
+
+> 来源：[https://www.wheresyoured.at/managing-up/](https://www.wheresyoured.at/managing-up/)
+
+在过去的 [两](https://www.wheresyoured.at/the-great-looting-of-the-internet/) [篇](https://www.wheresyoured.at/the-men-who-killed-google/) 通讯中（如果包括我对 Google “反驳” Prabhakar Raghavan 通讯的[回复](https://www.wheresyoured.at/in-response-to-google/)，则为三篇），我已经阐明了腐化经济学是导致技术产品明显变差的原因，而这种转变仅仅得益于管理阶层的干预。
+
+这些卑鄙的管理顾问 —— 如 Sundar Pichai 和 Sheryl Sandberg —— 及其信徒，展现出同样破坏性的特质（[尤其是 Raghavan](https://www.wheresyoured.at/the-men-who-killed-google/)），是在破坏技术产品、抑制创新并以短期市场收益为唯一受益者的投资者阶级战争中的忠实士兵。他们没有建立这些产品，当然也不会使用它们 —— 他们所关心的只是市场份额、收入和组织权力。
+
+在 Meta，一个完全与其产品的有意义互动无关的领导层的公司中，这一点最为明显。自 2009 年以来，Facebook 的核心产品一直在腐朽中可靠地变得更加盈利，每一个由 Zuckerberg 收购的产品的创始人 —— 包括 Instagram、Oculus 和 WhatsApp —— 离开公司后几乎立即谈论它们有多糟糕。
+
+根据 [2018 年《纽约时报》的报道](https://www.nytimes.com/2018/09/27/opinion/facebook-instagram-systrom.html?ref=wheresyoured.at)，Instagram 联合创始人 Kevin Systrom 之所以选择离开公司，是因为 Zuckerberg 嫉妒该应用的成功，使其夺去了 Facebook 自身的聚光灯。据称，Systrom 并不想离开公司，但感到 Zuckerberg 正在剥夺 Instagram 的资源，并且“似乎现在希望 Instagram 利用其势头来帮助这个大‘蓝色应用’ —— 这种方式让人讨厌，描述的情况感觉像是揭示这是 Kara Swisher 的一篇文章。
+
+尽管 Swisher 在吹嘘，实际上是 [TechCrunch 的 Josh Constine](https://techcrunch.com/2018/09/24/instagram-founders-leave/?ref=wheresyoured.at) 揭示了 Systrom 离开的真正原因。Facebook 于 2018 年 5 月用前 Facebook 新闻副总裁 Adam Mosseri 取代了 Instagram 的产品副总裁 Kevin Weil —— 这位将在接下来的六年里彻底摧毁 Systrom 和他的联合创始人 Michel Krieger 所建立的一切的人。
+
+根据 Constine 的报道，Systrom 还曾与当时的 Facebook 首席产品官 Chris Cox 发生冲突。Constine 将 Mosseri 描述为“扎克伯格的忠实拥护者”，他对没有获得 Facebook Gig 主管一职感到失望，这一职位最终被现任 WhatsApp 负责人威尔·卡斯卡特担任。随着时间的推移，Mosseri 和 Zuckerberg 逐渐削弱了 Systrom 和 Instagram 对 Facebook 的独立性，最终这一状况变得难以承受。
+
+Systrom 当时负责监督 Instagram 最具破坏性的变革 —— 在 2016 年 6 月推出的算法式 Feed。这一变化令用户感到恐慌，他们担心自己将无法看到朋友的帖子，这种情况几乎立即在 Instagram 和 Facebook 上发生，后者在 2015 年对其新闻订阅算法进行了重大改变。
+
+几个月后，Instagram 试图复制 Snapchat 的功能 —— 一家自创立以来仅有两个盈利季度的公司 —— 推出了“故事”功能。这一举措不仅显示了 Instagram 缺乏创造力，还展示了其未来方向，故事成为广告商的又一个接触点。
+
+Systrom 离职后，Mosseri 成为 Instagram 的负责人，将其转变为历史上利润最丰厚的业务单元之一，同时摧毁了它作为一款向您展示自己选择关注的人的照片和视频的应用程序的基本功能，进一步加强了算法打断您想看到的内容并插入广告或赞助内容的能力。
+
+自接管 Instagram 以来，亚当·莫瑟里在马克·扎克伯格的直接批准下，将该应用程序变成了一个充满广告的网络，完全失去了创新能力，如 [IGTV](https://www.engadget.com/2019-02-07-instagram-igtv-preview-in-your-feed.html?ref=wheresyoured.at) 和 Threads（[一款旨在与 Snapchat 竞争的相机应用](https://www.theverge.com/2019/8/26/20833903/facebook-instagram-threads-messaging-app-close-friends-snapchat?ref=wheresyoured.at)，而不是 [与 Twitter 竞争的同名社交网络](https://www.wheresyoured.at/threadbare/)），这些产品从未引起关注，而且 Mosseri 引领的每一次改变似乎都是直接复制自 Snap 或 TikTok。
+
+记住，Adam Mosseri 不是创作者、工程师或创始人，而是一名设计师，通过一条道路进入产品管理，在 2020 年底，他可能是对 Instagram 最糟糕的改变之一，[推出了“Reels”，](https://techcrunch.com/2020/08/05/instagram-reels-launches-globally-in-over-50-countries-including-u-s/?ref=wheresyoured.at) 一个 15 秒视频格式，旨在与算法驱动的 TikTok 竞争。Reels 快速成为 Facebook 和 Instagram 上的主流内容形式，充斥你的信息流，每当你滚动时自动播放 15 到 60 秒的视频片段，每个片段要么是经过精心设计的，要么是付费的，以妨碍你真正想看到的内容。
+
+Mosseri 也是历史上最不受欢迎的科技高管之一。自接管 Instagram 以来，[他因更新使 Instagram 的动态信息流横向移动而不得不道歉](https://www.thesun.co.uk/tech/8071885/instagram-update-outrage-sideways-feed-apology/?ref=wheresyoured.at)，因 [Instagram 審查支持巴勒斯坦內容而道歉](https://www.theverge.com/2021/5/30/22460946/instagram-making-changes-algorithm-censoring-pro-palestinian-content?ref=wheresyoured.at)，[在国会作证，关于 Instagram 对年轻人的危害](https://time.com/6126568/instagram-adam-mosseri-testimony/?ref=wheresyoured.at)，和 [告知人们 Instagram 不再是一个分享照片的应用](https://www.theverge.com/2021/6/30/22557942/instagram-no-longer-photo-app-video-entertainment-focus?ref=wheresyoured.at)。他负责了太多极不受欢迎的改变，以至于 Kim Kardashian 和 Kylie Jenner，两人拥有超过 6 亿追随者，[不得不请求他“停止 Instagram 模仿 TikTok](https://www.wsj.com/articles/make-instagram-instagram-again-the-apps-evolution-is-causing-users-to-question-its-future-11658921581?ref=wheresyoured.at)，”对此他回应说“随着时间的推移，Instagram 的视频内容会越来越多”，并声称已减少推荐内容，[这件事我认为我们都能认同是一大谎言](https://www.theverge.com/2022/7/29/23282330/instagram-reels-backlash-tiktok-adam-mosseri?ref=wheresyoured.at)。
+
+Mosseri，像许多科技界最有权势的男人一样，是一个被吹捧的管理顾问，却无法创造出任何值得注意的东西。Mosseri已经宣布，Meta的Threads，一个类似于Twitter的廉价复制品，[不适合用于新闻和政治](https://www.theverge.com/2023/7/7/23787334/instagram-threads-news-politics-adam-mosseri-meta-facebook?ref=wheresyoured.at)，[导致新闻机构犹豫投资](https://digiday.com/media/news-publishers-hesitate-to-commit-to-investing-more-into-threads-next-year-despite-growing-engagement/?ref=wheresyoured.at)，这是一家以欺骗新闻机构而闻名的公司开发的平台。Mosseri作为顾问的思维方式在于，他建议处理Instagram数十万未成年用户的方案是创造一个“面向家庭的新类型Instagram账户，允许Meta向13岁以下的儿童推销Instagram”，这是一个令人厌恶的计划，据新墨西哥州总检察长针对Meta提起的诉讼称，这是作为一种替代严格注册程序的方法[根据](https://nypost.com/2023/12/06/business/facebook-instagram-expose-child-users-to-predators-new-mexico-ag/?ref=wheresyoured.at)。
+
+这个人管理着世界上最重要的科技平台之一 —— 一个毫无道德或资格，甚至连想法都不具备的人。一个行走、说话的傀儡，只存在于口头上对社交媒体能够或将会做什么模糊的陈述中，同时从使与朋友和家人沟通更困难中获利。
+
+尽管Instagram和Facebook现状的大部分责任都应归咎于马克·扎克伯格，但理解亚当·莫瑟里对世界造成的巨大破坏也同样重要。Instagram现在是一个真正糟糕的产品，充斥着欺诈性广告和侵犯用户权益的侵略性算法，而莫瑟里对他的用户所感受到的痛苦和挫折的唯一回应是告诉他们，他打算在未来使Instagram变得更糟。
+
+这是主导科技界的管理顾问思维 — 通过垄断产业将用户困在糟糕的体验中，然后一旦知道用户无处可去，他们就会使产品变得更糟糕。然而，他们的巨大成功只会激励一代又一代无用的创始人，他们迷恋于创造有利可图的痛苦盒子，而非有用的产品。而我们正在谈论的，是其中最可憎的人之一正在崛起。
+
+当然，我在说萨姆·奥尔特曼。
+
+> **你喜欢新闻简报吗？** 那么，我们的朋友在Semafor Tech每周两次写一封简报，关注新时代的人物、资金和思想中心。我真的很喜欢Semafor，他们做了很棒的新闻报道，我想我已经引用[Reed关于Microsoft对OpenAI投资的爆料三到四次了](https://www.semafor.com/article/11/18/2023/openai-has-received-just-a-fraction-of-microsofts-10-billion-investment?ref=wheresyoured.at)。
+> 
+> [你可以在这里注册新闻通讯](https://www.semafor.com/newsletters/tech?utm_source=swaps&utm_medium=email&utm_campaign=wheresyoured1)。
+
+## 不断上升
+
+2005年，Stanford辍学生Sam Altman共同创立了Loopt，这是一个基于位置的社交网络应用，从技术孵化器Y Combinator和Sequoia、NEA等风险投资公司筹集了超过3000万美元。七年后，[Altman将Loopt以4,340万美元出售给上市金融服务公司Green Dot，尽管该应用未能获得市场份额或收入](https://allthingsd.com/20120309/green-dot-buys-location-app-loopt-for-43-4m/?ref=wheresyoured.at)。尽管一些高级员工两次敦促董事会解雇Altman，因为“他们描述的是欺诈和混乱行为”，[根据华尔街日报](https://www.wheresyoured.at/sam-altman-freed/)。
+
+Altman在兼职工作后几乎立即成为Y Combinator的合伙人，然后在2014年被联合创始人Paul Graham任命为总裁。然而，在幕后，[根据《华盛顿邮报》的报道](https://www.washingtonpost.com/technology/2023/11/22/sam-altman-fired-y-combinator-paul-graham/?ref=wheresyoured.at) ，Altman因经常不在岗位而让同事和他应该培养的初创公司感到不满。Altman还通过与他的兄弟Jack共同创立的风险投资公司Alt Capital，在Y Combinator的初创公司中进行了双重投资，据《华盛顿邮报》引述的一位消息人士描述，Altman的任期是“松散管理的学校，一切都是关于优先考虑我能得到什么。”
+
+在他在Y Combinator任职期间，Altman凭借其个人魅力和大量人脉成为了富豪，通过早期投资于Gusto、Optimizely（该公司于2018年以11.6亿美元被收购）、Patreon、Reddit和Asana等公司实现了这一点。2015年，他创立了OpenAI —— 当时是一个致力于构建负责任人工智能应用的非营利组织。然而，需要明确的是，Altman从未是工程师或技术专家，他更像是一个代表性人物和筹款人，成功地说服像Durk Kingma、Wojciech Zaremba和Ilya Sutskever这样的实际学者和工程师来做实际工作，而他则向Elon Musk发送了自恋式的电子邮件，[尽管Musk声称他投资了1亿美元到OpenAI，但实际上只捐赠了5000万美元](https://techcrunch.com/2023/05/17/elon-musk-used-to-say-he-put-100m-in-openai-but-now-its-50m-here-are-the-receipts/?ref=wheresyoured.at)。
+
+我真的希望你记住，萨姆·阿尔特曼在OpenAI刚成立的头几年是一个缺席的父亲，他的精力分散在马斯克式的多个其他投资和企业上，例如他在yCombinator内运行的 [另外两个](https://web.archive.org/web/20151218203823/http:/blog.ycombinator.com/yc-continuity-fund) [基金](https://web.archive.org/web/20160215225536/https:/blog.ycombinator.com/yc-research)。
+
+根据当时的报道，2019年，阿尔特曼将在同年 “[在加速器发生一系列变化的情况下辞职](https://techcrunch.com/2019/03/08/y-combinator-president-sam-altman-is-stepping-down-amid-a-series-of-changes-at-the-accelerator/?ref=wheresyoured.at#:~:text=Sam%20Altman%2C%20the%20well%2Dknown,as%20first%20reported%20by%20Axios.)”，这是 [许多行业媒体选择不深究的报道](https://twitter.com/EricNewcomer/status/1725633569056506282?ref=wheresyoured.at)。然而，《华盛顿邮报》的报道揭示，Y Combinator的创始人保罗·格雷厄姆 [从英国飞到旧金山亲自解雇了阿尔特曼](https://www.washingtonpost.com/technology/2023/11/22/sam-altman-fired-y-combinator-paul-graham/?ref=wheresyoured.at)，因为阿尔特曼继续专注于他个人的项目和媒体报道。
+
+这是关于那个被《纽约杂志》称为“[我们时代的奥本海默](https://nymag.com/intelligencer/article/sam-altman-artificial-intelligence-openai-profile.html?ref=wheresyoured.at)”的人的故事，是一篇漫长的文章，描绘了阿尔特曼对人工智能的模糊态度，似乎将其视为某种大秘密，但我认为真相要简单得多：萨姆·阿尔特曼只是又一个管理顾问而已。在2021年初发表的一篇文章中，阿尔特曼提出了 “[一切的摩尔定律](https://moores.samaltman.com/?ref=wheresyoured.at)”的概念 — 这指的是集成电路上的晶体管数量大约每两年翻一番，从而线性增加计算能力。
+
+一切的摩尔定律实质上是对AI影响的乌托邦看法，指出随着机器在供应链中取代人类角色，商品和服务的价格（因此生活成本）将呈指数级下降。
+
+这篇文章的问题在于，就像阿尔特曼一样，它是一桶深奥复杂的空洞。这是一篇非常啰嗦的长篇大论，比如说“AI将降低商品和服务的成本，因为劳动在供应链的许多层面上是驱动成本的主要因素”，并建议我们通过创建一个“美国股权基金”，强制公司放弃一部分股份给全国性公司化的风险投资基金来“对资本征税”，这个想法在私人公司向公众公司出售业务的情况下是有道理的。
+
+“万物的摩尔定律”在这方面是一篇非常具有启示性的文章，因为它将Altman的世界观框定为唯一能拯救人类的事情就是创办初创企业，并且这些初创企业应该以Altman喜欢的方式进行资助。这篇文章感觉很像Altman宇宙中的一切——它实际上从未将摩尔定律与任何东西连接起来，而这不是一条法律，而是一个观察，随着晶体管的缩小在近年来放缓，它早已不再相关。在许多方面，这种比较令人不寒而栗地具有预言性，考虑到我们在像ChatGPT这样基于LLM的服务中看到的改进减速（甚至退步）。
+
+与ChatGPT非常相似，Altman只能松散地近似请求的输出，因为他的核心缺乏完成这一任务所需的任何实质性或技术历史。像ChatGPT一样，他是一个无知者，通过与基础思想意义完全脱节的确定性措施，在恰当的时候说出正确的话。
+
+而这个人正在推销人工智能梦想——一个销售员能够以一种最初令人满意的方式松散地连接思想，只要你不要想得太多。Altman在2015年出版的著名的“[初创企业手册](https://archive.ph/2x93f?ref=wheresyoured.at)”充满了那种显而易见但令人满意的废话，你会期待这种东西。他颂扬“灵活而刚硬”的优点，建议你“与用户交流并观察他们使用你的产品”（这是一个确切的引用），并试图“每周改善你的产品5%”。这些对于一个20多岁的初创者非常有用，并且对于一个中年50多岁的白人风险投资家来说也是令人印象深刻的，他已经不记得上一次做过超过十小时的工作了，只是在Chuntly这个面向狗繁殖者的SaaS上投资了几周。它们是技术版的“活在当下，笑对人生”的汽车贴纸。
+
+在某个时候，它背叛了Altman的真实心态——即CEO唯一的普遍工作描述是确保公司取得胜利。
+
+Altman对OpenAI的实质性贡献很难界定。虽然仅仅通过电子邮件来完全评判某人是不公平的，但我能找到的那些（例如Elon Musk对OpenAI的诉讼中提到的[这封邮件](https://www.courthousenews.com/wp-content/uploads/2024/02/musk-v-altman-openai-complaint-sf.pdf?ref=wheresyoured.at)，第40页），感觉就像来自任何其他管理骗子，而且[它们的感觉和Elon Musk最近在OpenAI对该诉讼的回应中揭示的一样虚假](https://openai.com/blog/openai-elon-musk?ref=wheresyoured.at)。
+
+Altman喋喋不休地谈论治理结构以及OpenAI需要“创建第一台通用人工智能并将其用于个体赋权……”他定义为“看起来最安全的未来的分布式版本”。Musk和Altman是相似的人物——穿着工程师服装的经理，两者都被认为在人工智能方面具有“专业知识”，尽管实际上在过去十多年中似乎没有写过一行代码。
+
+在Altman的案例中，我找不到实际工作的多少证据，但有很多人试图解雇他的证据。[去年十一月，Sam Altman被OpenAI短暂解雇背后的完整故事仍不得而知](https://wheresyoured.at/p/sam-altman-freed?ref=wheresyoured.at)，但我们知道，通过这样做，[Altman成功让他的朋友和商业伙伴填满了OpenAI的董事会](https://www.cnbc.com/2024/03/08/sam-altman-rejoins-openai-board-company-adds-three-new-members.html?ref=wheresyoured.at#:~:text=Altman%20will%20also%20rejoin%20OpenAI's,CEO%20and%20chair%20of%20Instacart.)，比如Instacart的CEO Fidji Simo，这是Altman投资的一家公司，她曾在2019年至2021年担任Facebook应用的负责人，也就是“Facebook变得更糟糕的那几年”。
+
+从我所了解的情况来看，像Raghavan——过去两个时期的新闻稿中的反派一样——Altman也在向上失败。但与Raghavan不同的是，Altman似乎除了资金流动和分散注意力外，并没有对世界做出多少贡献。
+
+由于他追求并投入大量时间到副业项目上，他在Loopt一直是固定的挫败感来源，[华尔街日报在去年年底报导称，Altman曾将工程师转去开发一个未命名的同性约会应用](https://www.wsj.com/tech/ai/sam-altman-openai-protected-by-silicon-valley-friends-f3efcf68?ref=wheresyoured.at)。正如我之前提到的，Altman因为缺席工作被Y Combinator开除，引用一位人士的话说，“[因偏爱个人优先事务而声名狼藉](https://www.washingtonpost.com/technology/2023/11/22/sam-altman-fired-y-combinator-paul-graham/?ref=wheresyoured.at)，”而华尔街日报则报导说，早在2018年之前——在他被解雇一年之前——Altman“几乎不在Y Combinator总部露面”，而是更多时间花在OpenAI上，这让Y Combinator的其他长期合伙人“开始对他作为领导者失去信心”。
+
+《华尔街日报》的文章确实更多地揭示了为什么Altman被开除为OpenAI的CEO的一些原因，部分原因是因为Sam Altman是一个相当糟糕的管理者。OpenAI创始人兼前董事会成员Ilya Sutskever在呼吁撤销Altman时向董事会描述了“Altman长期以来倾向于将员工对立或者同时向两位不同的高管承诺资源和职责，导致冲突”的模式。更令人担忧的是，《华尔街日报》报道称，董事会的其他成员也从OpenAI的高级管理层听到了类似的担忧。
+
+他们还担心Altman一旦被解雇会在硅谷利用他的影响力，而这几乎立即成为现实，当Sam [给Airbnb CEO Brian Chesky打电话](https://www.theinformation.com/articles/airbnb-ceo-chesky-emerges-as-altman-ally-adviser?ref=wheresyoured.at)，然后Brian Chesky打电话给Microsoft CEO Satya Nadella，引发了一系列事件，使Altman恢复为OpenAI的CEO，并导致不信任者完全被董事会移除。
+
+这就是硅谷的王者。一个扮演创始人角色的说客。一个扮演技术专家角色的外交官。一个迷人、反复无常、虐待和不值得信任的男人，一次又一次地证明，他唯一可靠的特征是不管发生什么，都必须使Sam Altman受益。
+
+这也解释了为什么Sam Altman关于AI的承诺几乎毫无意义，以及为什么OpenAI在全球范围内如此无耻地压制和剽窃。Altman除了为自己和他最亲密的盟友创造财富之外，没有创造任何东西，帮助提升和保护现有的权力结构和Microsoft CEO Satya Nadella以及LinkedIn创始人兼职业经理Reid Hoffman等人的意识形态。
+
+并且这一切都有点说得通[为什么生成式AI实际上对除了那些想要销售东西的人之外没有什么帮助](https://www.wheresyoured.at/peakai/)。当公司的关注点不在产品本身而是在产品可能带来的概念时，公司文化很少专注于为真实用户构建有用的东西。当领导层被几十年没有碰过一行代码的经理所主导时，没有人能够判断软件是好的、有用的还是有价值的。
+
+这是硅谷管理派腐败的直接结果。虽然Prabhakar Raghavan可能是一位有名的计算机科学家和学者，但他有可能监督了曾经是网络最主要搜索引擎之一的Yahoo的毁灭，并且在向上失败中进入了一种管理角色，使他有机会接管 —— 并且现在有可能毁掉 —— Google的搜索产品，赶走了实际上负责构建东西的Ben Gomes。Adam Mosseri一直都是一个只作出关于他从未亲手构建的产品的决策的经理，并且策划了一家被数十亿人使用的社交网络的彻底毁灭。
+
+Sam Altman，一个以使自己致富和受欢迎而闻名并且激怒与他共事的人的职业失败者，正在走向成为最具毒性的经理。 如果不加以限制，OpenAI将继续实施史上最大的掠夺行为，掠夺互联网并利用它来训练尚未证明其必要性的模型，除了作为硅谷仍能创新的象征外。
+
+然而，正如所有经理一样，Altman —— [生成了不可持续的炒作](https://www.wheresyoured.at/sam-altman-fried/)并且做出了那些实际在OpenAI中工作的人明知无法实现的模糊承诺。
+
+只要我们把未来寄托给管理顾问和喜欢出风头的人，而不是那些真正造就软件的人，硅谷就会继续遭受痛苦。
+
+看看Humane，[一家筹集了数亿美元的公司](https://techcrunch.com/2023/03/08/humane-the-secretive-ai-startup-founded-by-ex-apple-employees-raises-another-100m/?ref=wheresyoured.at)，用来制造一款由广受欢迎的YouTuber Marques Brownlee称为“[他曾经评论过的最差产品](https://www.theverge.com/2024/4/15/24131078/mkbhd-calls-the-humane-ai-pin-the-worst-product-ive-ever-reviewed?ref=wheresyoured.at)”的语音激活AI动力的胸针。 人们可能会想知道一家公司怎么会愿意推出一款价格达到$700的产品，[在使用几分钟后就过热](https://www.theverge.com/24126502/humane-ai-pin-review?ref=wheresyoured.at)并且[反复未能回答基本查询](https://www.theverge.com/24126502/humane-ai-pin-review?ref=wheresyoured.at)，答案非常简单。 Humane由[PwC的前管理顾问Bethany Bongiorno创立](https://www.linkedin.com/in/bethany-bongiorno-55a20779/?ref=wheresyoured.at)和[前苹果“设计总监”Imran Chaudhri共同创立](https://www.linkedin.com/in/imran-chaudhri/?ref=wheresyoured.at)，[他曾因向Apple发出有关计划离开公司的电子邮件而在2017年被解雇，该邮件暗示苹果不再能够创新](https://www.fastcompany.com/90741719/inside-the-dissolution-of-apples-legacy-design-team?ref=wheresyoured.at)。
+
+当你与真实人的问题隔绝，并且不参与可能真正解决它们的过程时，你就从任何真正的价值创造中脱节了。硅谷由于懒惰的、脱节的风险投资家和权力玩家将像Sam Altman这样的人提升到权力位置，以及现任帮助职业顾问规划那些实际编写软件和硬件的人员的行动，正在萎缩。
+
+如果科技行业希望摆脱公众的愤怒，应该抵制管理上的毒药，并与真正有实际问题的真实人员交流，并专注于解决这些问题，而不是再创造另一个以增长为中心的投资者友好的小玩意儿。
+
+而且，如果硅谷真的想改变，就需要停止赋予那些因说对了话而不断晋升的人权力。

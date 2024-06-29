@@ -1,0 +1,15 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 13:35:15
+
+-->
+
+# FTC accuses Bezos and other Amazon executives of deleting text messages - The Washington Post
+
+> 来源：[https://www.washingtonpost.com/technology/2024/04/26/amazon-ftc-messages-deleted-bezos/](https://www.washingtonpost.com/technology/2024/04/26/amazon-ftc-messages-deleted-bezos/)
+
+联邦贸易委员会（FTC）指控亚马逊创始人杰夫·贝索斯及其他高级公司执行官使用诸如Signal等即时消失的消息应用程序，以掩盖在该机构对这家电商巨头进行的反垄断案件中可能的证据。
+
+“多年来，亚马逊的高级执行官，包括创始人和前CEO杰夫·贝索斯，在Signal加密消息应用上讨论了敏感的业务事项，包括反垄断问题，而不是通过电子邮件。” FTC在周四晚上提交的文件中声称。“这些执行官打开了Signal的‘消息消失’功能，这种功能会无法恢复地销毁消息，即使在亚马逊被告知原告正在调查其行为之后。”

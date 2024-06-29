@@ -1,0 +1,35 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 13:08:21
+
+-->
+
+# 众议院投票重新批准允许对美国公民进行无需许可监视的法律 | 美国政治 | 卫报
+
+> 来源：[https://www.theguardian.com/us-news/2024/apr/12/fisa-surveillance-act-reauthorized](https://www.theguardian.com/us-news/2024/apr/12/fisa-surveillance-act-reauthorized)
+
+众议院议员周五投票通过了外国情报监视法案第702条的再授权，包括一项允许对美国人进行无需许可的监视的关键措施。这项颇具争议的法律允许对外国通信进行广泛监控，但也导致收集了美国公民的消息和电话记录。
+
+议员们以273票对147票的结果批准了这项法律，拜登政府多年来一直支持其作为一项重要的反恐工具。一项要求当局寻求许可的修正案未能通过，以党派之间212票对212票的平局投票而告终。
+
+<gu-island name="SignInGateSelector" 
+
+priority="feature" 
+
+deferuntil="visible"
+
+props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;us-news&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;us-news/us-politics&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国政治&quot;},{&quot;id&quot;:&quot;technology/technology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;技术&quot;},{&quot;id&quot;:&quot;world/surveillance&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;监视&quot;},{&quot;id&quot;:&quot;us-news/us-news&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国新闻&quot;},{&quot;id&quot;:&quot;us-news/us-congress&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;美国国会&quot;},{&quot;id&quot;:&quot;us-news/house-of-representatives&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;众议院&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;新闻&quot;},{&quot;id&quot;:&quot;profile/nick-robins-early&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;尼克·罗宾斯-厄利&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/west-coast-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;西海岸新闻&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/us-tech&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;美国科技&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;us-news/2024/apr/12/fisa-surveillance-act-reauthorized&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;:true,&quot;enhanceTweets&quot;:true,&quot;prebidIndexExchange&quot;:true,&quot;prebidOpenx&quot;:true,&quot;prebidHeaderBidding&quot;:true,&quot;idCookieRefresh&quot;:true,&quot;discussionPageSize&quot;:true,&quot;smartAppBanner&quot;:false,&quot;boostGaUserTimingFidelity&quot;:false,&quot;historyTags&quot;:true,&quot;brazeContentCards&quot;:true,&quot;surveys&quot;:true,&quot;remoteBanner&quot;:true,&quot;emailSignupRecaptcha&quot;:true,&quot;prebidSmart&quot;:true,&quot;shouldLoadGoogletag&quot;:true,&quot;inizio&quot;:true}}"
+
+“当他们试图招募在美国进行恐怖袭击的人时，我们将是瞎子，” 特纳在周五在众议院发言时说。
+
+加利福尼亚州民主党代表和前议长南希·佩洛西还支持通过第 702 条，并呼吁立法者反对一项将其取得无许可监视能力削弱的修正案。
+
+“我现在没有时间，但如果成员们想知道的话，我可以告诉你们，如果我们不必额外申请许可，我们如何能够从 9/11 中被拯救出来，” 佩洛西说。
+
+关于第 702 条的辩论使共和党人对法律是否用作监视美国公民的工具进行了指控，而其他共和党人则站在情报官员一边，认为这是阻止外国恐怖组织的必要措施。一项提议的修正案要求当局在使用第 702 条查看美国公民通讯前必须获得许可，这一想法遭到情报官员的反对，因为会限制他们迅速采取行动的能力。在辩论中的另一[争论焦点](https://rollcall.com/2024/04/09/house-again-tees-up-reauthorization-of-powerful-spy-authority/)是是否应禁止执法部门从数据经纪公司购买关于美国公民的信息，这些公司积累并出售数千万人的个人数据，包括电话号码和电子邮件地址。
+
+Section 702 源自乔治·W·布什政府时期，该政府在 9/11 恐怖袭击后秘密运行了无需批准的窃听和监视项目。2008 年，国会通过了《FISA修正法案》的一部分，其中包括第 702 条，并将外国监视置于更正式的政府监督之下。立法者自那时以来已两次更新了该法律，包括在 2018 年时，他们[拒绝通过一项修正案](https://www.wired.com/story/fisa-section-702-renewal-congress/)，该修正案要求当局必须为美国公民的数据获取到许可。
+
+去年，司法部长梅里克·加兰和国家情报总监艾薇尔·海恩斯[致信国会领导人](https://www.theguardian.com/us-news/2023/feb/28/biden-administration-warrantless-surveillance-law-section-702)，要求他们重新授权第 702 条。他们声称，该法案获得的情报导致了多起针对美国的阴谋被挫败，部分负责于促成了2022年击毙基地组织领导人艾曼·扎瓦希里的无人机打击。

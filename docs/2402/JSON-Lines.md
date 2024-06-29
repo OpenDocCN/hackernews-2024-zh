@@ -1,0 +1,43 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-29 13:22:41
+
+-->
+
+# JSON Lines
+
+> 来源：[https://jsonlines.org/](https://jsonlines.org/)
+
+本页面描述了 JSON Lines 文本格式，也称为换行符分隔的 JSON。JSON Lines 是一种方便的格式，用于存储结构化数据，可以逐条处理。它与类 Unix 的文本处理工具和 shell 管道很好地配合。这是日志文件的优秀格式。它也是在合作进程之间传递消息的灵活格式。
+
+JSON Lines 格式有三个要求：
+
+### 1\. UTF-8 编码
+
+JSON 允许使用仅 ASCII 转义序列来编码 Unicode 字符串，但在文本编辑器中查看时这些转义序列会很难阅读。JSON Lines 文件的作者可以选择转义字符以适应纯 ASCII 文件。
+
+当解码为 UTF-8 时，除 UTF-8 外的其他编码极不可能有效，因此在 JSON Lines 文件中[误解字符的可能性](https://en.wikipedia.org/wiki/Mojibake)很低。
+
+### 2\. 每行都是有效的 JSON 值
+
+最常见的值将是对象或数组，但任何 JSON 值均允许。
+
+查看[json.org](https://json.org/)获取有关 JSON 值的更多信息。
+
+### 3\. 行分隔符为`'\n'`
+
+这意味着`'\r\n'`也是支持的，因为在解析 JSON 值时周围的空白会被隐式忽略。
+
+文件中的最后一个字符*可能*是行分隔符，处理时将视为没有行分隔符存在一样。
+
+### 4\. 建议的约定
+
+JSON Lines 文件可以保存为扩展名`.jsonl`。
+
+建议使用像`gzip`或`bzip2`这样的流压缩器来节省空间，生成`.jsonl.gz`或`.jsonl.bz2`文件。
+
+MIME 类型可能是`application/jsonl`，但这尚未标准化；如有任何帮助撰写 RFC 的需求，将不胜感激（参见[issue](https://github.com/wardi/jsonlines/issues/19)）。
+
+文本编辑程序将文本文件的第一行称为“第1行”。JSON Lines 文件中的第一个值也应称为“value 1”。

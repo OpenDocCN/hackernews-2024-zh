@@ -1,0 +1,49 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:57:16
+
+-->
+
+# 幼年大猩猩喜欢戏弄和惹恼他们的长者，研究发现 | 动物行为 | 卫报
+
+> 来源：[https://www.theguardian.com/science/2024/feb/14/juvenile-great-apes-love-to-tease-and-annoy-their-elders-study-finds](https://www.theguardian.com/science/2024/feb/14/juvenile-great-apes-love-to-tease-and-annoy-their-elders-study-finds)
+
+大猩猩的录像揭示了人类并非唯一忍受看似无休止的挑逗，由他们的小而弱的年轻动物发起，他们似乎打算冒险。
+
+对黑猩猩、猩猩、倭黑猩猩和大猩猩的录音发现，这些动物是这种可疑艺术的大师，展示了令人印象深刻的一系列游戏性和偶尔有些攻击性的行为，从顽皮和纯傻到极其恼人。
+
+<gu-island name="SignInGateSelector"
+
+priority="feature" 
+
+deferuntil="visible" 
+
+props="{&quot;contentType&quot;:&quot;Article&quot;,&quot;sectionId&quot;:&quot;science&quot;,&quot;tags&quot;:[{&quot;id&quot;:&quot;science/animalbehaviour&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;动物行为&quot;},{&quot;id&quot;:&quot;science/science&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;科学&quot;},{&quot;id&quot;:&quot;science/primatology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;灵长类动物学&quot;},{&quot;id&quot;:&quot;science/biology&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;生物学&quot;},{&quot;id&quot;:&quot;society/children&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;儿童&quot;},{&quot;id&quot;:&quot;society/society&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;社会&quot;},{&quot;id&quot;:&quot;world/animals&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;动物&quot;},{&quot;id&quot;:&quot;environment/wildlife&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;野生动物&quot;},{&quot;id&quot;:&quot;world/world&quot;,&quot;type&quot;:&quot;Keyword&quot;,&quot;title&quot;:&quot;世界新闻&quot;},{&quot;id&quot;:&quot;type/article&quot;,&quot;type&quot;:&quot;Type&quot;,&quot;title&quot;:&quot;文章&quot;},{&quot;id&quot;:&quot;tone/news&quot;,&quot;type&quot;:&quot;Tone&quot;,&quot;title&quot;:&quot;新闻&quot;},{&quot;id&quot;:&quot;profile/iansample&quot;,&quot;type&quot;:&quot;Contributor&quot;,&quot;title&quot;:&quot;伊恩·萨普尔&quot;,&quot;twitterHandle&quot;:&quot;iansample&quot;,&quot;bylineImageUrl&quot;:&quot;https://i.guim.co.uk/img/static/sys-images/Guardian/Pix/pictures/2014/4/17/1397749332765/IanSample.jpg?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=9ee99192b737b495cf645e33801f6c1a&quot;,&quot;bylineLargeImageUrl&quot;:&quot;https://i.guim.co.uk/img/uploads/2017/10/06/Ian-Sample,-R.png?width=300&amp;quality=85&amp;auto=format&amp;fit=max&amp;s=32ca0abf6516106286df7cdb99c47f3f&quot;},{&quot;id&quot;:&quot;publication/theguardian&quot;,&quot;type&quot;:&quot;Publication&quot;,&quot;title&quot;:&quot;卫报&quot;},{&quot;id&quot;:&quot;theguardian/mainsection&quot;,&quot;type&quot;:&quot;NewspaperBook&quot;,&quot;title&quot;:&quot;主要版块&quot;},{&quot;id&quot;:&quot;theguardian/mainsection/uknews&quot;,&quot;type&quot;:&quot;NewspaperBookSection&quot;,&quot;title&quot;:&quot;英国新闻&quot;},{&quot;id&quot;:&quot;tracking/commissioningdesk/uk-home-news&quot;,&quot;type&quot;:&quot;Tracking&quot;,&quot;title&quot;:&quot;英国本地新闻&quot;}],&quot;isPaidContent&quot;:false,&quot;isPreview&quot;:false,&quot;host&quot;:&quot;https://www.theguardian.com&quot;,&quot;pageId&quot;:&quot;science/2024/feb/14/juvenile-great-apes-love-to-tease-and-annoy-their-elders-study-finds&quot;,&quot;idUrl&quot;:&quot;https://profile.theguardian.com&quot;,&quot;switches&quot;:{&quot;lightbox&quot;:true,&quot;prebidAppnexusUkRow&quot;:true,&quot;mastheadWithHighlights&quot;:false,&quot;abSignInGateMainVariant&quot;:true,&quot;commercialMetrics&quot;:true,&quot;prebidTrustx&quot;:true,&quot;scAdFreeBanner&quot;:false,&quot;adaptiveSite&quot;:true,&quot;prebidPermutiveAudience&quot;:true,&quot;compareVariantDecision&quot;:false,&quot;enableSentryReporting&quot;:true,&quot;lazyLoadContainers&quot;:true,&quot;ampArticleSwitch&quot;:true,&quot;remarketing&quot;:true,&quot;articleEndSlot&quot;:true,&quot;keyEventsCarousel&quot;:true,&quot;updateLogoAdPartner&quot;:true,&quot;registerWithPhone&quot;:false,&quot;darkModeWeb&quot;:true,&quot;targeting&quot;:true,&quot;remoteHeader&quot;:true,&quot;slotBodyEnd&quot;:true,&quot;prebidImproveDigitalSkins&quot;:true,&quot;ampPrebidOzone&quot;:true,&quot;extendedMostPopularFronts&quot;:true,&quot;emailInlineInFooter&quot;:true,&quot;showNewPrivacyWordingOnEmailSignupEmbeds&quot;:true,&quot;abDeeplyReadRightColumn&quot;:true,&quot;prebidAnalytics&quot;:true,&quot;extendedMostPopular&quot;:true,&quot;ampContentAbTesting&quot;:false,&quot;prebidCriteo&quot;:true,&quot;okta&quot;:true,&quot;imrWorldwide&quot;:true,&quot;acast&quot;:true,&quot;automaticFilters&quot;:true,&quot;twitterUwt&quot;:true,&quot;updatedHeaderDesign&quot;:true,&quot;prebidAppnexusInvcode&quot;:true,&quot;ampPrebidPubmatic&quot;:true,&quot;a9HeaderBidding&quot;:true,&quot;prebidAppnexus&quot;:true,&quot;enableDiscussionSwitch&quot;:true,&quot;prebidXaxis&quot;:true,&quot;stickyVideos&quot;:true,&quot;interactiveFullHeaderSwitch&quot;:true,&quot;discussionAllPageSize&quot;:true,&quot;prebidUserSync&quot;:true,&quot;audioOnwardJourneySwitch&quot;:true,&quot;brazeTaylorReport&quot;:false,&quot;externalVideoEmbeds&quot;:true,&quot;abSignInGateAlternativeWording&quot;:false,&quot;callouts&quot;:true,&quot;sentinelLogger&quot;:true,&quot;geoMostPopular&quot;:true,&quot;weAreHiring&quot;:false,&quot;relatedContent&quot;:true,&quot;thirdPartyEmbedTracking&quot;:true,&quot;prebidOzone&quot;:true,&quot;ampLiveblogSwitch&quot;:true,&quot;ampAmazon&quot;:true,&quot;prebidAdYouLike&quot;:true,&quot;mostViewedFronts&quot;:true,&quot;discussionInApps&quot;:false,&quot;optOutAdvertising&quot;:true,&quot;abSignInGateMainControl&quot;:true,&quot;googleSearch&quot;:true,&quot;brazeSwitch&quot;:true,&quot;darkModeInApps&quot;:true,&quot;prebidKargo&quot;:true,&quot;consentManagement&quot;:true,&quot;personaliseSignInGateAfterCheckout&quot;:true,&quot;redplanetForAus&quot;:true,&quot;prebidSonobi&quot;:true,&quot;idProfileNavigation&quot;:true,&quot;confiantAdVerification&quot;:true,&quot;discussionAllowAnonymousRecommendsSwitch&quot;:false,&quot;dcrTagPages&quot;:true,&quot;absoluteServerTimes&quot;:false,&quot;permutive&quot;:true,&quot;comscore&quot;:true,&quot;ampPrebidCriteo&quot;:true,&quot;tagLinkDesign&quot;:false,&quot;abMpuWhenNoEpic&quot;:false,&quot;newsletterOnwards&quot;:false,&quot;youtubeIma&quot;:true,&quot;webFonts&quot;:true,&quot;prebidImproveDigital&quot;:true,&quot;abAdBlockAsk&quot;:false,&quot;ophan&quot;:true,&quot;crosswordSvgThumbnails&quot;:true,&quot;prebidTriplelift&quot;:true,&quot;weather&quot;:true,&quot;prebidPubmatic&quot;:true,&quot;serverShareCounts&quot;:false,&quot;autoRefresh&quot;
+
+详细配置信息：`{"renderingTarget":"Web","darkModeAvailable":false,"inAdvertisingPartnerABTest":false,"assetOrigin":"https://assets.guim.co.uk/"}`
+
+从在圣地亚哥和莱比锡动物园拍摄的75小时录像中，科学家记录下了142个明确的大猿戏弄同伴的例子，其中大多数由三到五岁的幼年个体发起。
+
+幼年倭黑猩猩在拉母亲头发的照片。摄影：BOS基金会BPI
+
+猿类们戳、戳、逃走，给出物品然后又收回来，相互撞击，把脸贴在别人的脸上，拉扯头发的细丝——这在头发足够长的猩猩中特别常见——拉扯身体部位，挠痒，把东西晃动在彼此面前。
+
+仅仅这些还只是开始。总共，德国和美国的研究人员在这些镜头中记录到了18种不同的戏弄方式。超过五分之一的戏弄行为采用了突然袭击的元素，有些猿从背后或者目标朝向其他方向时接近它们。
+
+“我们不能真正说清楚它们为什么这么做，但我们可以观察到它们在这么做，”德国康斯坦茨马克斯·普朗克动物行为研究所的伊莎贝尔·劳默博士说道。“这种戏弄是挑衅性的、有意识的，通常是单方面的。它很大程度上来自戏弄者，而且通常在互动过程中保持这种方式。”
+
+就像所有最好的戏弄一样，对于意外的戳击无反应或猿类的面孔突然出现，通常会得到更多相同行为的回应，在84%的情况下猿类会重复他们选择的动作或通过更复杂的烦恼行为升级局面。
+
+对于九只倭黑猩猩、四只猩猩、四只大猩猩和十七只黑猩猩的研究样本规模太小，无法找到不同物种之间的主要差异，但成年和幼年个体使用了不同的战略。戳是成年和幼年猿类最常见的戏弄形式，但是在幼年期，还会有打击和向他人挥手等行为；而成年猿类则更温和，更偏爱挠痒和偷东西。
+
+“有趣的是，我们发现了与人类婴儿戏弄行为的相似之处，”劳默说。“当人类婴儿戏弄他们的母亲时，他们倾向于看向母亲的脸，观察她们的反应。我们在这些大猿类身上也看到了这一点。”
+
+人类婴儿在八个月大之前，甚至在他们能够说出话语之前就已经开始进行戏弄式的游戏。科学家们认为这种行为可能有助于测试社会边界并加强关系。
+
+尽管大多数幼年猿类的目标是成年个体，但它们经常会避开自己的父母，根据《皇家学会议程B版》上的研究。然而也有例外情况：丹尼大猩猩反复戏弄父母，可能是因为周围几乎没有其他大猩猩；艾莎猩猩在父亲专心做自己的事情时，擅长把绳子甩到他的脸上。
+
+要理解为什么动物可能互相戏弄，需要更多的观察。但是根据我们最近的灵长类动物表现出的行为，戏弄及其背后的认知技能可能可以追溯到人类与现代猿类共享的最后共同祖先，Laumer说。
+
+“戏弄曾在与幽默相关的讨论中被提及，但它也可以帮助理解社交伴侣，”研究通讯进化的Portsmouth大学的Marina Davila-Ross博士说道。“例如，如果一只年轻的猿类戏弄另一只，并且第二只没有反应，它告诉第一只个体在第二只个体面前可以走多远，为成长和建立社会群体内的等级制度提供了重要信息。”

@@ -1,0 +1,25 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 13:09:24
+
+-->
+
+# Dr. Andrew Ng 被任命为亚马逊董事会成员
+
+> 来源：[https://www.aboutamazon.com/news/company-news/dr-andrew-ng-joins-amazon-board-of-directors](https://www.aboutamazon.com/news/company-news/dr-andrew-ng-joins-amazon-board-of-directors)
+
+我们很高兴地宣布，从 2024 年 4 月 9 日起，Dr. Andrew Ng 加入我们的董事会。Dr. Ng 是 AI Fund 的管理总合伙人，这是一家支持创业者建立 AI 公司的风险投资工作室；DeepLearning.AI 的领导者，一家他创立的提供 AI 培训的教育技术公司；Landing AI 的创始人，提供计算机视觉软件；以及 Coursera 的主席和联合创始人，这是一家提供开放在线课程的平台，在此之前他还担任该公司的联合首席执行官直至 2014 年。此外，他还是斯坦福大学的兼职教授。
+
+Dr. Ng 是一位长期从事发明并在多家其他公司担任领导的经验丰富的创业者：
+
++   从 2014 年至 2017 年，他是百度的首席科学家兼副总裁，一家跨国科技公司。
+
++   Google 的 *Google Brain (Deep Learning) 项目* 的创始领导，2011 年至 2012 年
+
+[人工智能 (AI)](https://www.aboutamazon.com/artificial-intelligence-ai-news)—尤其是生成式人工智能 (generative AI)，是我们时代最具变革性的创新之一。Dr. Ng 在 AI 和教育领域都是全球领导者。他在学术界和私营部门开发机器学习和深度学习算法，并支持公司开发和采用 AI 应用方面的工作，将有助于董事会对 AI 带来的机遇和挑战，以及其变革性的社会和商业潜力形成深刻的见解。Dr. Ng 是机器学习、机器人技术和其他相关领域的超过 200 篇研究论文的作者或共同作者，为一系列新兴技术带来了深刻的洞察。我们希望在公司的各个层面，包括我们的董事会，拥有适当的经验和视角，并且我们很高兴能够欢迎 Dr. Ng 的加入。
+
+此外，Judy McGrath 通知我们她将不会在股东年会上重新竞选我们的董事会。我们感谢 Judy 在我们的董事会任职的十年，以及她对公司的奉献和许多贡献。我们祝愿她一切顺利！
+
+欲了解更多关于我们董事会的信息，请访问 [https://ir.aboutamazon.com/board-of-directors](https://ir.aboutamazon.com/board-of-directors)。

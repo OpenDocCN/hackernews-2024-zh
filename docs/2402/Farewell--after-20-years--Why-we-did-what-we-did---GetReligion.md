@@ -1,0 +1,89 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:34:14
+
+-->
+
+# 告别，20年之后：我们为什么做了我们做的事 — GetReligion
+
+> 来源：[https://www.getreligion.org/getreligion/2023/12/29/why-we-did-what-we-did](https://www.getreligion.org/getreligion/2023/12/29/why-we-did-what-we-did)
+
+GetReligion没有改变。但是关于新闻业务的基本事实已经改变，正如我在《宗教与自由》期刊的最近一篇文章中解释的那样：“[新闻业的演变。](https://www.acton.org/religion-liberty/volume-33-number-1/evolving-religion-journalism)” 还有一年前的这篇文章，当我（私下）开始意识到是时候关闭GetReligion时：“[这只是一个好的商业？关于美国新闻孤立文化的不断辩论。](https://www.getreligion.org/getreligion/2023/2/8/podcast-its-just-good-business-the-growing-debate-about-americas-news-silo-culture).”
+
+让我用一些其他的观察来总结：
+
+***很多时候，读者称GetReligion**为“保守派”网站，因为我们一直强调主流媒体在报道左右两派宗教团体时需要准确、公正，甚至是平衡的。**
+
+我们一直听到的基本观点是，一些读者认为有些宗教团体的信仰是可以接受的，而其他的则不行。根据许多新闻室领导的说法，没有必要准确报道那些他们认为是错误的信徒的观点。你可以在Bobby Ross, Jr. 2013年的一篇带有这样标题的文章中看到这些紧张情绪：“[又一篇单边的AP同性婚姻报道。”](https://getreligion.squarespace.com/getreligion/2013/10/yet-another-one-sided-ap-same-sex-marriage-story) 在评论中，我为Bobby的文章辩护指出：
+
+> 如果美联社放弃了美国新闻模式，那么这个模式在实际上就是死的。
+> 
+> 因此，公平地和准确地对待特蕾莎修女、正统犹太教、达赖喇嘛、比利·格雷厄姆、大多数非裔美国教会领袖、马丁·路德·金、方济各教宗以及其他许多人的观点就是错误的等同性。
+> 
+> 如果记者们不能处理这基本的新闻任务，那么他们应该自愿为致力于这些问题学说的倡导出版物工作。
+
+***再说一句关于评论：**我可以说我们印刷了接收到的每四条评论中的一条。问题在于，许多读者（不是所有人）想要在政治或宗教上对我们或彼此大喊大叫。我们印刷那些在某种程度上真正与文章中的新闻问题进行了认真交流的评论。
+
+***今天的基本新闻问题是**，许多主要参与者（左派和右派）想取悦他们的付费客户 — 读者。然而，他们也希望坚持这种“对唱诗班讲道”的商业模式不会威胁到旧学派的价值观，是准确、公正和平衡。
+
+这就引出了GetReligion经常使用的术语 —— [“凯勒主义”](https://www.google.com/search?gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIHCAEQIRigATIHCAIQIRigATIHCAMQIRirAtIBCDg0NDdqMGo3qAIAsAIA&ie=UTF-8&oq=%22Kellerism%22%20%22GetReligion%22&q=%22Kellerism%22%20%22GetReligion%22&sourceid=chrome)。这指的是2011年在[林登·贝恩斯·约翰逊图书馆](http://www.lbjlibrary.org/events/an-evening-with-bill-keller)上，*纽约时报*的比尔·凯勒辞去编辑职务后的一次演讲。当时有人问他，《时报》是否是一家“自由派”的报纸，他回答说（这是从我的“宗教”专栏中摘录的，因为视频已被删除）：
+
+> “我们在某种程度上是自由主义的，我们是开明的，有点宽容，城市化的。我们的结婚页面甚至在纽约通过同性婚姻法之前也包括同性伴侣。所以在这个词的社会意义上，我想我们算是自由主义的。社会上也是如此。”
+> 
+> 当直接问及*时报*是否倾向于支持“民主党和自由派”时，他补充道：“除了我提到的自由主义价值观和社会价值观外，我认为不是的。”
+
+我认为，“***‘除了’***”是GetReligion档案中最重要的两个词之一 —— 那里大约有2000万字（根据我一位技术朋友的估计）。
+
+Keller坚称，他的报纸在政治和其他重要新闻话题上仍然提供准确、公正、平衡的报道。你知道的，关于那些“真实”的报道。但他公开表示，《纽约时报》在报道道德和社会议题时存在城市化、知识分子化和自由主义的偏见。而美国的热点问题是什么呢？我注意到：
+
+> 任何列表都会包括性、救赎、堕胎、安乐死、同性恋权利、克隆和其他一些与宗教密切相关的敏感问题。就这些了。
+
+* **以下是另一条重要引用**，与那个主题相关，这条引用有助于启发GetReligion的创建。它来自于[1999年《纽约时报杂志》的一篇特稿](http://archive.pressthink.org/2004/01/07/press_religion.html)，由大卫·萨缪尔斯撰写。
+
+> “这是我们大多数人共享但未明言的世界的前提，即绝对不存在，声称找到绝对的人都是疯子。”
+
+在*PressThink*上撰写的新闻学教授杰伊·罗森指出：
+
+> 这让一些人觉得，这种教条主义非常接近宗教教条主义，他们对此[发表了看法](http://www.nationalreview.com/dreher/dreher030703.asp)。其中一位是特里·马廷利，一个宗教[专栏作家](http://tmatt.gospelcom.net/column/2001/05/02/)： “这个非凡的信条不仅仅是一位记者信念的表达，哈佛法学院毕业生，前纽约每日新闻法律事务记者威廉·普罗克特说。毫无疑问，萨缪尔斯所引用的‘大多数我们居住的世界’实际上是《纽约时报》的文化和那些从其神圣页面汲取灵感的忠实信徒。”
+> 
+> 但让我感到好奇的是这部分：“但是如果批评者声称《纽约时报》是世俗主义的堡垒，他们就错了。他强调，这家报纸以其独特的方式致力于改革社会，甚至是转化迷途的‘原教旨主义者’。因此，当列出时报反对的‘致命罪恶’时，他故意没有声称它拒绝宗教信仰。相反，他说，世界上最具影响力的报纸谴责‘宗教确定性的罪恶’。”
+
+对许多记者来说，最重要的是为什么要对疯狂的人进行准确、公正和平衡的报道？
+
+***多年来，我确实听到过**政治*右派*的读者*，他们认为 GetReligion 的目标是引导报道朝他们的方向。在评论页面上，会看起来像这样。一位读者说：
+
+> 纽约时报已经变成了普拉夫达，里面没有真实的东西。
+
+另一个补充道：
+
+> 卓越的文章，特里！让我们希望从现在开始，《纽约时报》将迎合普通、敬畏上帝、劳动的美国人——那些投票支持特朗普的人。我厌倦了他们的自由主义偏见。
+
+我回答道：
+
+> 这里没有人感兴趣去迎合任何人。我们感兴趣的是在关键辩论的双方观点被准确、公正和尊重地报道。换句话说，目标是新闻报道（在历史意义上，也就是真正的自由主义）。
+
+那就是我们愿意以死去的海滩。
+
+***在最近几周中，我一直在使用**以下等式来表达新闻界现在生活的小众新闻时代： “好人不能做坏事。坏人不能做好事。” 当记者被要求[活在谎言中](https://www.amazon.com/Live-Not-Lies-Christian-Dissidents/dp/0593087399/ref=sr_1_1?crid=2V8TOQFOBF2GQ&keywords=dreher%20live%20not%20by%20lies&qid=1706877387&s=books&sprefix=Dreher%20%2Cstripbooks%2C89&sr=1-1)时，这是一个谎言，当然，这是危险的。
+
+喜欢严肃文学的读者还会注意到，这个等式是[与阿列克谢·索尔仁尼琴的著名引文相反](https://www.goodreads.com/quotes/450864-the-line-separating-good-and-evil-passes-not-through-states)：
+
+> “善恶之间的界线并非通过国家、阶级或政党 —— 而是贯穿每一个人的心灵，贯穿所有人的心灵。”
+
+*** 最后，我能说些什么** 关于写作《GetReligion》的那些充满魅力和才华的 [笔者团队](https://www.getreligion.org/terry-mattingly)? 还要特别感谢 Fieldstead & Co. 多年来的坚定支持，以及几年前在密西西比大学 Overby Center 为我们提供的学术家园。
+
+我被问过很多次，我们在邀请人们加入团队时是在寻找什么。有例外情况 —— 比如 [无处不在的政治科学家莱恩·伯吉](https://www.getreligion.org/ryan-burge) —— 但大多数的《GetReligionistas》在某种形式上都有显著的宗教新闻报道经验。
+
+几年前，团队由理查德·奥斯特林、朱莉娅·杜因、艾拉·里夫金和鲍比·罗斯·朱尔回组成。加上我，我们在宗教新闻业务领域拥有将近200年的经验总和。考虑一下 [朱莉娅·杜因的简历](https://www.getreligion.org/julia-duin)（以及 [不要忘记她的书籍](https://www.amazon.com/s?crid=23KO3WERYUEOL&i=stripbooks&k=Julia%20Duin&ref=nb_sb_noss_1&sprefix=julia%20duin%2Cstripbooks%2C98)）。暂停一下，看看 [艾拉·里夫金的卓越背景](https://www.getreligion.org/ira-rifkin)，[还有团队的另一名成员](https://www.getreligion.org/ira-rifkin)。
+
+《GetReligion》的某些署名比其他人更为人熟知。 [莫利·齐格勒·海明威](https://www.getreligion.org/mollie-hemingway) 后来主导了 *The Federalist*，在福克斯新闻做出了评论，并且 [写作了畅销书](https://www.amazon.com/s?crid=22JTFVF0IUXV1&i=stripbooks&k=Mollie%20Hemingway&ref=nb_sb_noss_2&sprefix=mollie%20hemingway%2Cstripbooks%2C93)。然而，她的丈夫 [马克·海明威](https://www.getreligion.org/mark-hemingway) 也是我们团队中多年来一个宝贵（并且非常风趣）的成员。
+
+我提到了 [鲍比·罗斯·朱尔回](https://www.getreligion.org/bobby-ross-jr)。重要的是要记住他的妻子 [塔米·罗斯](https://www.getreligion.org/tamie-ross)，她同样拥有多年的宗教报道经验。许多人熟知 [萨拉·普利亚姆·贝利](https://www.getreligion.org/sarah-pulliam-bailey)，她曾在 *华盛顿邮报* 和其他地方发表过文章。然而，重要的是记住她的兄弟 [丹尼尔·普利亚姆](https://www.getreligion.org/getreligion/2005/08/about-daniel-pulliam)，他在《GetReligion》早期的贡献帖子，我们希望他能有一天离开或扩展他的法律事业，回到新闻界。
+
+然后是[patriarch, Richard Ostling](https://www.getreligion.org/richard-ostling)，最为人熟知的是他在*Time*杂志和美联社工作数十年。当我开始从事宗教报道时，我有几位偶像，而Ostling（以及[Russell Chandler of the *Los Angeles Times*](https://www.google.com/search?ei=xru7ZbqpIZTNkPIPgJyeyAc&gs_lp=Egxnd3Mtd2l6LXNlcnAiI3J1c3NlbGwgY2hhbmRsZXIsIExvcyBBbmdlbGVzIFRpbWVzMgUQIRigATIFECEYoAEyBRAhGKABSOQhUOcIWIIhcAF4AJABAJgBogGgAd4PqgEEOC4xMLgBA8gBAPgBAcICCBAAGIAEGLADwgIJEAAYBxgeGLADwgIHEAAYHhiwA8ICBRAAGIAEwgIGEAAYFhgewgIFECEYqwLiAwQYASBBiAYBkAYK&oq=russell%20chandler%2C%20Los%20Angeles%20Times&q=russell%20chandler%2C%20Los%20Angeles%20Times&sca_esv=3cfb034d87db37ea&sclient=gws-wiz-serp&uact=5&ved=0ahUKEwi6pOmvvYqEAxWUJkQIHQCOB3kQ4dUDCBE))就位列其中。很难相信，在经历多年的远程友谊之后，互联网让我能在GetReligion这里与他共同撰写和编辑了整整十年。想象一下。
+
+此外，我还要感谢我的朋友（我敢说，[同类牢骚鬼](https://religionnews.com/2024/01/17/after-20-years-terry-mattingly-bids-farewell-to-getreligion/)）[Doug LeBlanc](https://www.getreligion.org/douglas-leblanc)。他帮助创建了GetReligion的基本结构，包括我们古董打字机与古腾堡徽标的结合。这种格式经受住了时间的考验，即使我们从一个软件宇宙迁移到另一个宇宙。
+
+我向他们所有人致以最后的话：[Axios.](https://catalog.obitel-minsk.com/blog/2020/02/the-triple-meaning-of-the-axios)

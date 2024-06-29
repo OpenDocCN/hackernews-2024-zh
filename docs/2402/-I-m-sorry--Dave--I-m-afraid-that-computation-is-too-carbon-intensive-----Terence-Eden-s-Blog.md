@@ -1,0 +1,31 @@
+<!--yml
+
+分类：未分类
+
+date: 2024-05-27 14:53:44
+
+-->
+
+# “对不起，戴夫。我担心计算太耗碳了。” - Terence Eden’s Blog
+
+> 来源：[https://shkspr.mobi/blog/2024/02/im-sorry-dave-im-afraid-that-computation-is-too-carbon-intensive/](https://shkspr.mobi/blog/2024/02/im-sorry-dave-im-afraid-that-computation-is-too-carbon-intensive/)
+
+有关计算机未来的一个有趣片段：
+
+> 从这个版本开始，我们引入了Power Grid Forecast API。该API使应用开发人员能够优化应用行为，通过将后台任务转移到本地电网中更多可再生能源可用的时候，最小化环境影响。
+> 
+> [宣布 Windows 11 内部预览版本 26052](https://blogs.windows.com/windows-insider/2024/02/08/announcing-windows-11-insider-preview-build-26052-canary-and-dev-channels/)
+
+一些计算过程消耗大量电能。在过去，批处理意味着程序员可以在晚上使用“闲置”CPU周期。他们的代码在没有其他人使用机器的时候运行。如今，将计算任务外包到电力污染最少的地方是很常见的。例如，将夜间处理转移到地球另一边有多余太阳能的国家。借助Windows的新API，它们可以等到[电价低到不计其数](https://shkspr.mobi/blog/2023/12/electricity-thats-too-cheap-to-meter/)再执行一些计算密集型任务。
+
+计算预算通常以FLOPS、瓦特或秒为单位设定。我觉得很有趣的是，我们很快就可能会在这个方程中常规地加入二氧化碳。
+
+我以前曾写过[家用电器在使用电力方面变得智能](https://shkspr.mobi/blog/2017/11/what-if-your-internet-connected-fridge-came-with-free-electricity/)。如果你的冰箱知道在运行压缩机之前等待10分钟以获得更少污染的电源，那将是很棒的。同样，你可以告诉烘干机在你到家之前完成工作 - 但让它决定何时真正运行。
+
+我还想知道，当家庭电费变得太贵时，游戏主机是否可以降低其帧速率，或者将一些处理任务外包到云端。
+
+当然，缺点是显而易见的。如果你的代码认为它会造成伤害，它会拒绝运行吗？是否有[机器人法则](https://shkspr.mobi/blog/2019/01/i-robot-the-3-laws-considered-harmful/)的解释会阻止机器污染？
+
+我并不认为家用设备在不久的将来会拒绝我们的请求。但我很好奇，究竟有什么激励措施 - 无论是财务上的还是其他方面的 - 可以鼓励更有效地利用资源。
+
+* * *

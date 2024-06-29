@@ -1,0 +1,19 @@
+<!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:49:46
+
+-->
+
+# gh-116167: 允许使用 `PYTHON_GIL=0` 或 `-X gil=0` 来禁用 GIL，由 swtaarrs 提交 · 拉取请求 #116338 · python/cpython · GitHub
+
+> 来源：[https://github.com/python/cpython/pull/116338](https://github.com/python/cpython/pull/116338)
+
+<include-fragment class="js-notification-shelf-include-fragment" data-base-src="https://github.com/notifications/beta/shelf"></include-fragment>
+
+<main id="js-repo-pjax-container"><turbo-frame id="repo-content-turbo-frame" target="_top" data-turbo-action="advance" class="">将此建议添加到可以作为单个提交应用的批处理中。由于代码未更改，此建议无效。在关闭拉取请求时无法应用建议。在查看部分更改时无法应用建议。每行只能应用一个建议作为批处理中的一部分。将此建议添加到可以作为单个提交应用的批处理中。不支持在已删除行上应用建议。您必须更改此行中的现有代码以创建有效的建议。此建议已应用或标记为解决。无法从待审查的评论中应用建议。无法在多行评论上应用建议。在将拉取请求排队以合并时无法应用建议。现在无法应用建议。请稍后再查看。
+
+<ghcc-consent id="ghcc" class="position-fixed bottom-0 left-0" data-initial-cookie-consent-allowed="" data-cookie-consent-required="false">You can’t perform that action at this time.
+
+<template id="site-details-dialog"></template><template id="snippet-clipboard-copy-button"></template><template id="snippet-clipboard-copy-button-unpositioned"></template></ghcc-consent>

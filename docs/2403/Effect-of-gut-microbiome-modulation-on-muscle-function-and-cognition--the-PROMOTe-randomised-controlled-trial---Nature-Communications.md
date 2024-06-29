@@ -1,0 +1,357 @@
+-   <!--yml
+
+category: 未分类
+
+date: 2024-05-27 14:35:39
+
+-->
+
+# Effect of gut microbiome modulation on muscle function and cognition: the PROMOTe randomised controlled trial | Nature Communications
+
+> 来源：[https://www.nature.com/articles/s41467-024-46116-y](https://www.nature.com/articles/s41467-024-46116-y)
+
+1.  Kingston, A. et al. 晚年依赖增加了吗？认知功能和老龄研究的比较。 *Lancet* **390**, 1676–1684 (2017).
+
+    [文章](https://doi.org/10.1016%2FS0140-6736%2817%2931575-1)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28821408)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5640505)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=晚年依赖增加了吗？认知功能和老龄研究的比较&journal=Lancet&doi=10.1016%2FS0140-6736%2817%2931575-1&volume=390&pages=1676-1684&publication_year=2017&author=Kingston%2CA)
+
+1.  Arvanitakis, Z., Shah, R. C. & Bennett, D. A. 老年痴呆的诊断和管理：综述。 *J. Am. Med. Assoc.* **322**, 1589 (2019).
+
+    [文章](https://doi.org/10.1001%2Fjama.2019.4782)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=诊断和管理老年痴呆的综述&journal=J.%20Am.%20Med.%20Assoc.&doi=10.1001%2Fjama.2019.4782&volume=322&publication_year=2019&author=Arvanitakis%2CZ&author=Shah%2CRC&author=Bennett%2CDA)
+
+1.  -   Harada, C. N., Natelson Love, M. C. & Triebel, K. L. 正常认知衰老。 *Clin. Geriatr. Med.* **29**, 737–752 (2013).
+
+    [文章](https://doi.org/10.1016%2Fj.cger.2013.07.002)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24094294)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4015335)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=正常认知衰老&journal=Clin.%20Geriatr.%20Med.&doi=10.1016%2Fj.cger.2013.07.002&volume=29&pages=737-752&publication_year=2013&author=Harada%2CCN&author=Natelson%20Love%2CMC&author=Triebel%2CKL)
+
+1.  Sayer, A. A. & Cruz-Jentoft, A. 肌肉减少症的定义、诊断和治疗：共识正在形成。 *Age Ageing* **51**, 1–5 (2022).
+
+    [文章](https://doi.org/10.1093%2Fageing%2Fafac220)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=肌肉减少症的定义、诊断和治疗：共识正在形成&journal=Age%20Ageing&doi=10.1093%2Fageing%2Fafac220&volume=51&pages=1-5&publication_year=2022&author=Sayer%2CAA&author=Cruz-Jentoft%2CA)
+
+1.  Mandolesi, L. et al. 身体锻炼对认知功能和幸福感的影响：生物学和心理学的益处。 *Front. Psychol.* **9**, 509 (2018).
+
+    [文章](https://doi.org/10.3389%2Ffpsyg.2018.00509)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29755380)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5934999)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Effects%20of%20physical%20exercise%20on%20cognitive%20functioning%20and%20wellbeing%3A%20biological%20and%20psychological%20benefits&journal=Front.%20Psychol.&doi=10.3389%2Ffpsyg.2018.00509&volume=9&publication_year=2018&author=Mandolesi%2CL)
+
+1.  Ni Lochlainn, M., Bowyer, R. & Steves, C. 膳食蛋白质与老年人肌肉的关系：肠道菌群的潜在作用。*Nutrients* **10**, 929 (2018).
+
+    [文章](https://doi.org/10.3390%2Fnu10070929)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30036990)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6073774)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Dietary%20protein%20and%20muscle%20in%20aging%20people%3A%20the%20potential%20role%20of%20the%20gut%20microbiome&journal=Nutrients&doi=10.3390%2Fnu10070929&volume=10&publication_year=2018&author=Ni%20Lochlainn%2CM&author=Bowyer%2CR&author=Steves%2CC)
+
+1.  Welch, A. A. 营养对年龄相关骨骼肌流失的影响。*Proc. Nutr. Soc.* **73**, 16–33 (2014).
+
+    [文章](https://doi.org/10.1017%2FS0029665113003698)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXitFylsL4%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24229650)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Nutritional%20influences%20on%20age-related%20skeletal%20muscle%20loss&journal=Proc.%20Nutr.%20Soc.&doi=10.1017%2FS0029665113003698&volume=73&pages=16-33&publication_year=2014&author=Welch%2CAA)
+
+1.  Deutz, N. E. P. 等。蛋白质摄入和运动对老年人肌肉功能的优化：来自ESPEN专家组的建议。*Clin. Nutr.* **33**, 929–936 (2014).
+
+    [文章](https://doi.org/10.1016%2Fj.clnu.2014.04.007)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXnslehtL0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24814383)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4208946)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Protein%20intake%20and%20exercise%20for%20optimal%20muscle%20function%20with%20aging%3A%20recommendations%20from%20the%20ESPEN%20Expert%20Group&journal=Clin.%20Nutr.&doi=10.1016%2Fj.clnu.2014.04.007&volume=33&pages=929-936&publication_year=2014&author=Deutz%2CNEP)
+
+1.  Cermak, N. M., Res, P. T., de Groot, L. C., Saris, W. H. M. & van Loon, L. J. 蛋白质补充增强了骨骼肌对抗性锻炼训练的适应性响应：一项荟萃分析。*Am. J. Clin. Nutr.* **96**, 1454–1464 (2012).
+
+    [文章](https://doi.org/10.3945%2Fajcn.112.037556)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC38XhslylsbfF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23134885)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Protein%20supplementation%20augments%20the%20adaptive%20response%20of%20skeletal%20muscle%20to%20resistance-type%20exercise%20training%3A%20a%20meta-analysis&journal=Am.%20J.%20Clin.%20Nutr.&doi=10.3945%2Fajcn.112.037556&volume=96&pages=1454-1464&publication_year=2012&author=Cermak%2CNM&author=Res%2CPT&author=Groot%2CLC&author=Saris%2CWHM&author=Loon%2CLJ)
+
+1.  Daly, R. M. et al. 瘦红肉是否增强老年人运动对肌肉健康和功能的影响？*Innov*. *Aging* **1**, 3–4 (2017).
+
+    [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Does%20lean%20red%20meat%20enhance%20the%20effetcs%20of%20exercise%20on%20muscle%20health%20and%20function%20in%20the%20elderly%3F%20Innov&journal=Aging&volume=1&pages=3-4&publication_year=2017&author=Daly%2CRM)
+
+1.  Daly, R. M. et al. 蛋白质丰富的饮食，利用瘦红肉，结合逐步抗阻训练，增强老年妇女的瘦体组织质量和肌肉强度，并减少循环IL-6浓度：一个集群随机对照试验。*Am. J. Clin. Nutr.* **99**, 899–910 (2014).
+
+    [文章](https://doi.org/10.3945%2Fajcn.113.064154)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXls1Oiur0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=24477043)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Protein-enriched%20diet%2C%20with%20the%20use%20of%20lean%20red%20meat%2C%20combined%20with%20progressive%20resistance%20training%20enhances%20lean%20tissue%20mass%20and%20muscle%20strength%20and%20reduces%20circulating%20IL-6%20concentrations%20in%20elderly%20women%3A%20a%20cluster%20randomized%20controlled%20trial&journal=Am.%20J.%20Clin.%20Nutr.&doi=10.3945%2Fajcn.113.064154&volume=99&pages=899-910&publication_year=2014&author=Daly%2CRM)
+
+1.  Marchesi, J. R. & Ravel, J. 微生物组研究的词汇：一个提议。*Microbiome* **3**, 31 (2015).
+
+    [文章](https://link.springer.com/doi/10.1186/s40168-015-0094-5)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26229597)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4520061)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20vocabulary%20of%20microbiome%20research%3A%20a%20proposal&journal=Microbiome&doi=10.1186%2Fs40168-015-0094-5&volume=3&publication_year=2015&author=Marchesi%2CJR&author=Ravel%2CJ)
+
+1.  Biagi, E. et al. 通过老化及其后：肠道微生物群与老年人和百岁老人的炎症状态。*PLoS ONE* **5**, e10667 (2010).
+
+    [文章](https://doi.org/10.1371%2Fjournal.pone.0010667)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2010PLoSO...510667B)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=20498852)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2871786)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=通过老化和其他方式：老年人和百岁老人的肠道菌群和炎症状态&journal=PLoS%20ONE&doi=10.1371%2Fjournal.pone.0010667&volume=5&publication_year=2010&author=Biagi%2CE)
+
+1.  Grosicki, G. J., Fielding, R. A. & Lustgarten, M. S. 肠道菌群对年龄相关的骨骼肌大小、组成和功能变化的贡献：肠-肌轴的生物学基础。*Calcif. Tissue Int.* **102**, 433–442 (2018)。
+
+    [文章](https://link.springer.com/doi/10.1007/s00223-017-0345-5)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXhslWjurrJ)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29058056)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=肠道菌群对年龄相关的骨骼肌大小、组成和功能变化的贡献：肠-肌轴的生物学基础&journal=Calcif.%20Tissue%20Int.&doi=10.1007%2Fs00223-017-0345-5&volume=102&pages=433-442&publication_year=2018&author=Grosicki%2CGJ&author=Fielding%2CRA&author=Lustgarten%2CMS)
+
+1.  Ticinesi, A. 等人。老年期肠道菌群在营养、身体虚弱和肌肉萎缩之间的交叉路口：是否存在肠-肌轴？*营养* **9**, 1303 (2017)。
+
+    [文章](https://doi.org/10.3390%2Fnu9121303)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29189738)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5748753)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=老年期肠道菌群在营养、身体虚弱和肌肉萎缩之间的交叉路口：是否存在肠-肌轴？&journal=Nutrients&doi=10.3390%2Fnu9121303&volume=9&publication_year=2017&author=Ticinesi%2CA)
+
+1.  Ticinesi, A. 等人。肠道菌群组成与老年住院患者多药使用相关。*Sci. Rep.* **7**, 11102 (2017)。
+
+    [文章](https://doi.org/10.1038%2Fs41598-017-10734-y)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2017NatSR...711102T)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28894183)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5593887)  [谷歌学术](http://scholar.google.com/scholar_lookup?&title=Gut%20microbiota%20composition%20is%20associated%20with%20polypharmacy%20in%20elderly%20hospitalized%20patients&journal=Sci.%20Rep.&doi=10.1038%2Fs41598-017-10734-y&volume=7&publication_year=2017&author=Ticinesi%2CA)
+
+1.  Ridaura，V. K. 等。来自肥胖不同的双胞胎的肠道微生物群调节小鼠的新陈代谢。*Science (1979)* **341**, 1241214 (2013).
+
+    [谷歌学术](http://scholar.google.com/scholar_lookup?&title=Gut%20microbiota%20from%20twins%20discordant%20for%20obesity%20modulate%20metabolism%20in%20mice&journal=Science%20%281979%29&volume=341&publication_year=2013&author=Ridaura%2CVK)
+
+1.  Prokopidis，K.，Chambers，E.，Ni Lochlainn，M. & Witard，O. C. 肠道-肌肉轴与肌蛋白质代谢和肌肉阻力相关的机制：对老年人肌肉衰退风险的影响。*Front. Physiol.* **12**, 1910 (2021).
+
+    [文章](https://doi.org/10.3389%2Ffphys.2021.770455)  [谷歌学术](http://scholar.google.com/scholar_lookup?&title=Mechanisms%20linking%20the%20gut-muscle%20axis%20with%20muscle%20protein%20metabolism%20and%20anabolic%20resistance%3A%20implications%20for%20older%20adults%20at%20risk%20of%20sarcopenia&journal=Front.%20Physiol.&doi=10.3389%2Ffphys.2021.770455&volume=12&publication_year=2021&author=Prokopidis%2CK&author=Chambers%2CE&author=Ni%20Lochlainn%2CM&author=Witard%2COC)
+
+1.  Raj，T.，Dileep，U.，Vaz，M.，Fuller，M. F. & Kurpad，A. V. 肠道微生物对成年男性代谢亮氨酸输入的贡献。*J. Nutr.* **138**, 2217–2221 (2008).
+
+    [文章](https://doi.org/10.3945%2Fjn.108.093021)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD1cXht1ymtr7J)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=18936222)  [谷歌学术](http://scholar.google.com/scholar_lookup?&title=Intestinal%20microbial%20contribution%20to%20metabolic%20leucine%20input%20in%20adult%20men&journal=J.%20Nutr.&doi=10.3945%2Fjn.108.093021&volume=138&pages=2217-2221&publication_year=2008&author=Raj%2CT&author=Dileep%2CU&author=Vaz%2CM&author=Fuller%2CMF&author=Kurpad%2CAV)
+
+1.  张，T.，程，J. K. & 胡，Y. M. 肠道微生物群作为治疗年龄相关性肌肉衰退的一个有前途的治疗靶点。*Ageing Res. Rev.* **81**, 101739 (2022).
+
+    [文章](https://doi.org/10.1016%2Fj.arr.2022.101739)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38Xis1aisr%2FN)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=36182084)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Gut%20microbiota%20as%20a%20promising%20therapeutic%20target%20for%20age-related%20sarcopenia&journal=Ageing%20Res.%20Rev.&doi=10.1016%2Fj.arr.2022.101739&volume=81&publication_year=2022&author=Zhang%2CT&author=Cheng%2CJK&author=Hu%2CYM)
+
+1.  de Marco Castro, E., Murphy, C. H. & Roche, H. M. 通过调节肠道微生物群改善蛋白质饮食效果以减缓肌肉萎缩。 *Front. Nutr.* **8**, 656730 (2021).
+
+    [文章](https://doi.org/10.3389%2Ffnut.2021.656730)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=34235167)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC8256992)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Targeting%20the%20gut%20microbiota%20to%20improve%20dietary%20protein%20efficacy%20to%20mitigate%20sarcopenia&journal=Front.%20Nutr.&doi=10.3389%2Ffnut.2021.656730&volume=8&publication_year=2021&author=Marco%20Castro%2CE&author=Murphy%2CCH&author=Roche%2CHM)
+
+1.  Lahiri, S. 等人。肠道微生物群影响小鼠骨骼肌肉量和功能。 *Sci. Transl. Med.* **11**, eaan5662 (2019).
+
+    [文章](https://doi.org/10.1126%2Fscitranslmed.aan5662)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31341063)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC7501733)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20gut%20microbiota%20influences%20skeletal%20muscle%20mass%20and%20function%20in%20mice&journal=Sci.%20Transl.%20Med.&doi=10.1126%2Fscitranslmed.aan5662&volume=11&publication_year=2019&author=Lahiri%2CS)
+
+1.  Manickam, R., Oh, H. Y. P., Tan, C. K., Paramalingam, E. & Wahli, W. 甲硝唑导致骨骼肌萎缩并调节肌肉时间代谢。 *Int. J. Mol. Sci.* **19**, 2418 (2018).
+
+    [文章](https://doi.org/10.3390%2Fijms19082418)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30115857)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6121908)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Metronidazole%20causes%20skeletal%20muscle%20atrophy%20and%20modulates%20muscle%20chronometabolism&journal=Int.%20J.%20Mol.%20Sci.&doi=10.3390%2Fijms19082418&volume=19&publication_year=2018&author=Manickam%2CR&author=Oh%2CHYP&author=Tan%2CCK&author=Paramalingam%2CE&author=Wahli%2CW)
+
+1.  Gibson, G. R. 等人。国际益生元和益生菌科学协会（ISAPP）对益生元定义和范围的共识声明。 *Nat. Rev. Gastroenterol. Hepatol.* **14**, 491–502 (2017).
+
+    [文章](https://doi.org/10.1038%2Fnrgastro.2017.75)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28611480)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20International%20Scientific%20Association%20for%20Probiotics%20and%20Prebiotics%20%28ISAPP%29%20Consensus%20statement%20on%20the%20definition%20and%20scope%20of%20prebiotics&journal=Nat.%20Rev.%20Gastroenterol.%20Hepatol.&doi=10.1038%2Fnrgastro.2017.75&volume=14&pages=491-502&publication_year=2017&author=Gibson%2CGR)
+
+1.  Buigues, C. 等人。预生物配方对脆弱综合症的影响：一项随机、双盲临床试验。*Int. J. Mol. Sci.* **17**, 932 (2016)。
+
+    [文章](https://doi.org/10.3390%2Fijms17060932)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27314331)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4926465)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Effect%20of%20a%20prebiotic%20formulation%20on%20frailty%20syndrome%3A%20a%20randomized%2C%20double-blind%20clinical%20trial&journal=Int.%20J.%20Mol.%20Sci.&doi=10.3390%2Fijms17060932&volume=17&publication_year=2016&author=Buigues%2CC)
+
+1.  Theou, O. 等人。可以预防的配方减少老年人的脆弱程度吗？*J. Frailty Aging* **8**, 1–5 (2018)。
+
+    [文章](https://doi.org/10.14283%2Fjfa.2018.39)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Can%20a%20prebiotic%20formulation%20reduce%20frailty%20levels%20in%20older%20people%3F&journal=J.%20Frailty%20Aging&doi=10.14283%2Fjfa.2018.39&volume=8&pages=1-5&publication_year=2018&author=Theou%2CO)
+
+1.  Desmedt, O. 等人。预生物对人类干预研究中情绪和认知的影响。*Nutr. Rev.* **77**, 81–95 (2019)。
+
+    [文章](https://doi.org/10.1093%2Fnutrit%2Fnuy052)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30535275)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Effects%20of%20prebiotics%20on%20affect%20and%20cognition%20in%20human%20intervention%20studies&journal=Nutr.%20Rev.&doi=10.1093%2Fnutrit%2Fnuy052&volume=77&pages=81-95&publication_year=2019&author=Desmedt%2CO)
+
+1.  Cox, N. J. 等人。社区中居住的老年人中肠道菌群组成在食欲良好和欠佳者之间有所不同。*J. Cachexia Sarcopenia Muscle* **12**, 368–377 (2021)。
+
+    [文章](https://doi.org/10.1002%2Fjcsm.12683)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=33580637)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC8061352)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20composition%20of%20the%20gut%20microbiome%20differs%20among%20community%20dwelling%20older%20people%20with%20good%20and%20poor%20appetite&journal=J.%20Cachexia%20Sarcopenia%20Muscle&doi=10.1002%2Fjcsm.12683&volume=12&pages=368-377&publication_year=2021&author=Cox%2CNJ)
+
+1.  Guess, N. D. 等人。一项随机对照试验：菊粉对于糖尿病前期患者体重管理和异位脂肪的影响。*Nutr. Metab. (Lond.)* **12**, 36 (2015).
+
+    [文章](https://link.springer.com/doi/10.1186/s12986-015-0033-2)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26500686)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=A%20randomized%20controlled%20trial%3A%20the%20effect%20of%20inulin%20on%20weight%20management%20and%20ectopic%20fat%20in%20subjects%20with%20prediabetes&journal=Nutr.%20Metab.%20%28Lond.%29&doi=10.1186%2Fs12986-015-0033-2&volume=12&publication_year=2015&author=Guess%2CND)
+
+1.  Liber, A. & Szajewska, H. 菊粉类果寡糖对儿童和成人的食欲、能量摄入和体重的影响：随机对照试验的系统评价。*Ann. Nutr. Metab.* **63**, 42–54 (2013).
+
+    [文章](https://doi.org/10.1159%2F000350312)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3sXhsF2rsL7L)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23887189)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Effects%20of%20inulin-type%20fructans%20on%20appetite%2C%20energy%20intake%2C%20and%20body%20weight%20in%20children%20and%20adults%3A%20systematic%20review%20of%20randomized%20controlled%20trials&journal=Ann.%20Nutr.%20Metab.&doi=10.1159%2F000350312&volume=63&pages=42-54&publication_year=2013&author=Liber%2CA&author=Szajewska%2CH)
+
+1.  Baker, J. E. 等人。视觉成对联想学习缺陷与认知正常的老年人中升高的β-淀粉相关。*神经心理学* **33**, 964–974 (2019).
+
+    [文章](https://doi.org/10.1037%2Fneu0000561)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31368758)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Visual%20paired%20associate%20learning%20deficits%20associated%20with%20elevated%20beta-amyloid%20in%20cognitively%20normal%20older%20adults&journal=Neuropsychology&doi=10.1037%2Fneu0000561&volume=33&pages=964-974&publication_year=2019&author=Baker%2CJE)
+
+1.  Hicks, E. B. 等人。视觉成对联想学习任务与全球认知的关联及其作为阿尔茨海默病筛查工具的潜在用处。*Int. Psychogeriatr.* **33**, 1135–1144 (2021).
+
+    [文章](https://doi.org/10.1017%2FS1041610220003841)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=33336635)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=视觉成对联想学习任务与全球认知的关联及其作为阿尔茨海默病筛查工具的潜在用途&journal=Int.%20Psychogeriatr.&doi=10.1017%2FS1041610220003841&volume=33&pages=1135-1144&publication_year=2021&author=Hicks%2CEB)
+
+1.  Vulevic, J., Drakoularakou, A., Yaqoob, P., Tzortzis, G. & Gibson, G. 利用新型转半乳寡糖混合物（B-GOS）调节健康老年志愿者的粪便微生物群和免疫功能。*Am. J. Clin. Nutr.* **88**, 1438–1484 (2008)。
+
+    [文章](https://doi.org/10.3945%2Fajcn.2008.26242)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD1cXhtlOqu7vP)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=18996881)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=利用新型转半乳寡糖混合物（B-GOS）调节健康老年志愿者的粪便微生物群和免疫功能&journal=Am.%20J.%20Clin.%20Nutr.&doi=10.3945%2Fajcn.2008.26242&volume=88&pages=1438-1484&publication_year=2008&author=Vulevic%2CJ&author=Drakoularakou%2CA&author=Yaqoob%2CP&author=Tzortzis%2CG&author=Gibson%2CGR)
+
+1.  Bergquist, R. 等人。在年轻老年人群中使用的基于表现的平衡和肌肉力量临床测试：一项系统文献综述。*BMC Geriatr.* **19**, 9 (2019)。
+
+    [文章](https://link.springer.com/doi/10.1186/s12877-018-1011-0)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30626340)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6327480)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=年轻老年人群中使用的基于表现的平衡和肌肉力量临床测试：一项系统文献综述&journal=BMC%20Geriatr.&doi=10.1186%2Fs12877-018-1011-0&volume=19&publication_year=2019&author=Bergquist%2CR)
+
+1.  Harvey, N. C. 等人。作为骨质疏松男性（MrOS）研究的预测器，衡量体能和肌肉力量与FRAX、跌倒及骨密度无关：骨矿物质研究的荟萃分析。*J. Bone Miner. Res.* **33**, 2150–2157 (2018)。
+
+    [文章](https://doi.org/10.1002%2Fjbmr.3556)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30011086)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Measures%20of%20physical%20performance%20and%20muscle%20strength%20as%20predictors%20of%20fracture%20risk%20independent%20of%20FRAX%2C%20Falls%2C%20and%20aBMD%3A%20a%20meta-analysis%20of%20the%20osteoporotic%20fractures%20in%20men%20%28MrOS%29%20study&journal=J.%20Bone%20Miner.%20Res.&doi=10.1002%2Fjbmr.3556&volume=33&pages=2150-2157&publication_year=2018&author=Harvey%2CNC)
+
+1.  Walker, S. N. 等人。老年农村妇女定制通讯试验后，活动和饮食变化的维持。*护理研究* **59**, 311–321 (2010).
+
+    [文章](https://doi.org/10.1097%2FNNR.0b013e3181ed6695)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=20697307)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2963620)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Maintenance%20of%20activity%20and%20eating%20change%20after%20a%20clinical%20trial%20of%20tailored%20newsletters%20with%20older%20rural%20women&journal=Nurs.%20Res.&doi=10.1097%2FNNR.0b013e3181ed6695&volume=59&pages=311-321&publication_year=2010&author=Walker%2CSN)
+
+1.  Cesari, M. 等人。物理表现指标在预测不良健康相关事件中的附加价值：来自健康、老龄化和体成分研究的结果。*美国老年医学学会杂志* **57**, 251–259 (2009).
+
+    [文章](https://doi.org/10.1111%2Fj.1532-5415.2008.02126.x)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19207142)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2695653)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Added%20value%20of%20physical%20performance%20measures%20in%20predicting%20adverse%20health-related%20events%3A%20results%20from%20the%20health%2C%20aging%2C%20and%20body%20composition%20study&journal=J.%20Am.%20Geriatr.%20Soc.&doi=10.1111%2Fj.1532-5415.2008.02126.x&volume=57&pages=251-259&publication_year=2009&author=Cesari%2CM)
+
+1.  Tandon, D. 等人。一项前瞻性随机、双盲、安慰剂对照、剂量反应关系研究，探讨果寡糖（FOS）对人体肠道微生物的功效。*科学报告* **9**, 5473 (2019).
+
+    [文章](https://doi.org/10.1038%2Fs41598-019-41837-3)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2019NatSR...9.5473T)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30940833)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6445088)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=一项前瞻性随机、双盲、安慰剂对照剂量反应关系研究，探讨果寡糖（FOS）对人体肠道菌群的有效性&journal=科学报告&doi=10.1038%2Fs41598-019-41837-3&volume=9&publication_year=2019&author=Tandon%2CD)
+
+1.  So, D. 等人。健康成年人的膳食纤维干预对肠道菌群组成的影响：一项系统评价和荟萃分析。*美国临床营养学杂志* **107**, 965–983 (2018).
+
+    [文章](https://doi.org/10.1093%2Fajcn%2Fnqy041)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29757343)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=健康成年人的膳食纤维干预对肠道菌群组成的影响：一项系统评价和荟萃分析&journal=美国临床营养学杂志&doi=10.1093%2Fajcn%2Fnqy041&volume=107&pages=965-983&publication_year=2018&author=So%2CD)
+
+1.  [认知测试 | 剑桥认知](https://www.cambridgecognition.com/cantab/cognitive-tests/).
+
+1.  Cryan, J. F. 等人。肠道菌群-肠脑轴。*生理学评论* **99**, 1877–2013 (2019).
+
+    [文章](https://doi.org/10.1152%2Fphysrev.00018.2018)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3cXitFWjsLs%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31460832)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=肠道菌群-肠脑轴&journal=生理学评论&doi=10.1152%2Fphysrev.00018.2018&volume=99&pages=1877-2013&publication_year=2019&author=Cryan%2CJF)
+
+1.  Jenkins, T., Nguyen, J., Polglaze, K. & Bertrand, P. 色氨酸和血清素对情绪和认知的影响及肠脑轴的潜在作用。*营养学* **8**, 56 (2016).
+
+    [文章](https://doi.org/10.3390%2Fnu8010056)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26805875)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4728667)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=色氨酸和血清素对情绪和认知的影响及肠脑轴的潜在作用&journal=营养学&doi=10.3390%2Fnu8010056&volume=8&publication_year=2016&author=Jenkins%2CT&author=Nguyen%2CJ&author=Polglaze%2CK&author=Bertrand%2CP)
+
+1.  -   Grenham, S., Clarke, G., Cryan, J. F. & Dinan, T. G. 健康与疾病中的脑-肠-微生物通讯。*Front. Physiol.* **2**, 94 (2011).
+
+    [文章](https://doi.org/10.3389%2Ffphys.2011.00094)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=22162969)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3232439)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Brain-gut-microbe%20communication%20in%20health%20and%20disease&journal=Front.%20Physiol.&doi=10.3389%2Ffphys.2011.00094&volume=2&publication_year=2011&author=Grenham%2CS&author=Clarke%2CG&author=Cryan%2CJF&author=Dinan%2CTG)
+
+1.  -   甘曼，A. & 郭，B. 脑-肠轴的神经调节过程。*Neuromodulation* **11**, 249–259 (2008).
+
+    [文章](https://doi.org/10.1111%2Fj.1525-1403.2008.00172.x)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19844605)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2763396)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Neuromodulatory%20processes%20of%20the%20brain%E2%80%93gut%20axis&journal=Neuromodulation&doi=10.1111%2Fj.1525-1403.2008.00172.x&volume=11&pages=249-259&publication_year=2008&author=Gaman%2CA&author=Kuo%2CB)
+
+1.  -   Tran, T. T. T.等人。弱势老年人中的益生元补充对特定肠道微生物群落类群的影响，但不影响全球多样性。*Microbiome* **7**, 39 (2019).
+
+    [文章](https://link.springer.com/doi/10.1186/s40168-019-0654-1)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30867067)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6417215)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Prebiotic%20supplementation%20in%20frail%20older%20people%20affects%20specific%20gut%20microbiota%20taxa%20but%20not%20global%20diversity&journal=Microbiome&doi=10.1186%2Fs40168-019-0654-1&volume=7&publication_year=2019&author=Tran%2CTTT)
+
+1.  -   兰卡斯特等人。全球、独特和个人的分子与微生物群谱在特定纤维中的变化。*Cell Host Microbe* **30**, 848–862.e7 (2022).
+
+    [文章](https://doi.org/10.1016%2Fj.chom.2022.03.036)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XhtFejtbvE)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35483363)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9187607)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Global%2C%20distinctive%2C%20and%20personal%20changes%20in%20molecular%20and%20microbial%20profiles%20by%20specific%20fibers%20in%20humans&journal=Cell%20Host%20Microbe&doi=10.1016%2Fj.chom.2022.03.036&volume=30&pages=848-862.e7&publication_year=2022&author=Lancaster%2CSM)
+
+1.  Healey, G. 等人。习惯性膳食纤维摄入对肠道菌群对菊糖型果寡糖前生物的反应：一项随机、双盲、安慰剂对照、交叉、人类干预研究。*Br. J. Nutr.* **119**, 176–189 (2018)。
+
+    [文章](https://doi.org/10.1017%2FS0007114517003440)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXhsVarsrg%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29307330)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Habitual%20dietary%20fibre%20intake%20influences%20gut%20microbiota%20response%20to%20an%20inulin-type%20fructan%20prebiotic%3A%20a%20randomised%2C%20double-blind%2C%20placebo-controlled%2C%20cross-over%2C%20human%20intervention%20study&journal=Br.%20J.%20Nutr.&doi=10.1017%2FS0007114517003440&volume=119&pages=176-189&publication_year=2018&author=Healey%2CG)
+
+1.  Le Bastard, Q. 等人。菊糖对肠道微生物组成的影响：来自人类研究证据的系统回顾。*Eur. J. Clin. Microbiol. Infect. Dis.* **39**, 403–413 (2020)。
+
+    [文章](https://link.springer.com/doi/10.1007/s10096-019-03721-w)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31707507)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20effects%20of%20inulin%20on%20gut%20microbial%20composition%3A%20a%20systematic%20review%20of%20evidence%20from%20human%20studies&journal=Eur.%20J.%20Clin.%20Microbiol.%20Infect.%20Dis.&doi=10.1007%2Fs10096-019-03721-w&volume=39&pages=403-413&publication_year=2020&author=Bastard%2CQ)
+
+1.  Watson, D. 等人。乳酸菌和双歧杆菌的选择性碳水化合物利用。*J. Appl. Microbiol.* **114**, 1132–1146 (2013)。
+
+    [文章](https://doi.org/10.1111%2Fjam.12105)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC3sXkt1Kiu7o%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23240984)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Selective%20carbohydrate%20utilization%20by%20lactobacilli%20and%20bifidobacteria&journal=J.%20Appl.%20Microbiol.&doi=10.1111%2Fjam.12105&volume=114&pages=1132-1146&publication_year=2013&author=Watson%2CD)
+
+1.  Wilson, B., Rossi, M., Dimidi, E. & Whelan, K. 益生元在成人肠易激综合征及其他功能性肠疾病中的作用：随机对照试验和荟萃分析的系统回顾。*Am. J. Clin. Nutr.* **109**, 1098–1111 (2019)。
+
+    [文章](https://doi.org/10.1093%2Fajcn%2Fnqy376)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=30949662)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=益生元在成人肠易激综合征和其他功能性肠疾病中的作用：一项随机对照试验的系统评价和荟萃分析&journal=Am.%20J.%20Clin.%20Nutr.&doi=10.1093%2Fajcn%2Fnqy376&volume=109&pages=1098-1111&publication_year=2019&author=Wilson%2CB&author=Rossi%2CM&author=Dimidi%2CE&author=Whelan%2CK)
+
+1.  Cherbut, C., Michel, C. & Lecannu, G. 果寡糖的益生性特征对于减少TNBS诱导的大鼠结肠炎症是必要的。*J. Nutr.* **133**, 21–27 (2003).
+
+    [文章](https://doi.org/10.1093%2Fjn%2F133.1.21)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD3sXjslejtg%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=12514261)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=果寡糖的益生性特征对于减少TNBS诱导的大鼠结肠炎症是必要的&journal=J.%20Nutr.&doi=10.1093%2Fjn%2F133.1.21&volume=133&pages=21-27&publication_year=2003&author=Cherbut%2CC&author=Michel%2CC&author=Lecannu%2CG)
+
+1.  Goodrich, J. K. 等人。英国双胞胎的肠道菌群的遗传决定因素。*Cell Host Microbe* **19**, 731–743 (2016).
+
+    [文章](https://doi.org/10.1016%2Fj.chom.2016.04.017)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC28XntlShtbo%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27173935)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4915943)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=英国双胞胎的肠道菌群的遗传决定因素&journal=Cell%20Host%20Microbe&doi=10.1016%2Fj.chom.2016.04.017&volume=19&pages=731-743&publication_year=2016&author=Goodrich%2CJK)
+
+1.  Goodrich, J. K. 等人。人类遗传学塑造肠道菌群。*Cell* **159**, 789–799 (2014).
+
+    [文章](https://doi.org/10.1016%2Fj.cell.2014.09.053)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2cXhvV2msrnJ)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25417156)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4255478)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=人类遗传学塑造肠道菌群&journal=Cell&doi=10.1016%2Fj.cell.2014.09.053&volume=159&pages=789-799&publication_year=2014&author=Goodrich%2CJK)
+
+1.  Yang, J. 等人。不利的子宫内环境导致双胞胎的异常肠道菌群和代谢组。*Gut* **71**, 2451–2462 (2022).
+
+    [文章](https://doi.org/10.1136%2Fgutjnl-2021-326482)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XivFegtb3P)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35387876)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Unfavourable%20intrauterine%20environment%20contributes%20to%20abnormal%20gut%20microbiome%20and%20metabolome%20in%20twins&journal=Gut&doi=10.1136%2Fgutjnl-2021-326482&volume=71&pages=2451-2462&publication_year=2022&author=Yang%2CJ)
+
+1.  Xie, H. 等人。Shotgun metagenomics of 250 adult twins reveals genetic and environmental impacts on the gut microbiome. *Cell Syst.* **3**, 572–584.e3 (2016).
+
+    [文章](https://doi.org/10.1016%2Fj.cels.2016.10.004)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC2sXhtFalsLw%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=27818083)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6309625)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Shotgun%20metagenomics%20of%20250%20adult%20twins%20reveals%20genetic%20and%20environmental%20impacts%20on%20the%20gut%20microbiome&journal=Cell%20Syst.&doi=10.1016%2Fj.cels.2016.10.004&volume=3&pages=572-584.e3&publication_year=2016&author=Xie%2CH)
+
+1.  Stincone, A. 等人。The return of metabolism: biochemistry and physiology of the pentose phosphate pathway. *Biol. Rev.* **90**, 927–963 (2015).
+
+    [文章](https://doi.org/10.1111%2Fbrv.12140)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25243985)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20return%20of%20metabolism%3A%20biochemistry%20and%20physiology%20of%20the%20pentose%20phosphate%20pathway&journal=Biol.%20Rev.&doi=10.1111%2Fbrv.12140&volume=90&pages=927-963&publication_year=2015&author=Stincone%2CA)
+
+1.  Wagner, K. R., Kauffman, F. C. & Max, S. R. The pentose phosphate pathway in regenerating skeletal muscle. *Biochem. J.* **170**, 17–22 (1978).
+
+    [文章](https://doi.org/10.1042%2Fbj1700017)  [CAS](/articles/cas-redirect/1:CAS:528:DyaE1cXhsV2ks7Y%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=629775)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1183856)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20pentose%20phosphate%20pathway%20in%20regenerating%20skeletal%20muscle&journal=Biochem.%20J.&doi=10.1042%2Fbj1700017&volume=170&pages=17-22&publication_year=1978&author=Wagner%2CKR&author=Kauffman%2CFC&author=Max%2CSR)
+
+1.  Valentino, T., Figueiredo, V. C., Mobley, C. B., McCarthy, J. J. & Vechetti, I. J. Evidence of myomiR regulation of the pentose phosphate pathway during mechanical load‐induced hypertrophy. *Physiol. Rep.* **9**, 15137 (2021).
+
+    [文章](https://doi.org/10.14814%2Fphy2.15137)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=Evidence%20of%20myomiR%20regulation%20of%20the%20pentose%20phosphate%20pathway%20during%20mechanical%20load%E2%80%90induced%20hypertrophy&journal=Physiol.%20Rep.&doi=10.14814%2Fphy2.15137&volume=9&publication_year=2021&author=Valentino%2CT&author=Figueiredo%2CVC&author=Mobley%2CCB&author=McCarthy%2CJJ&author=Vechetti%2CIJ)
+
+1.  Carabotti, M., Scirocco, A., Maselli, M. A. & Severi, C. 肠脑轴：肠道菌群、中枢神经系统和肠道神经系统之间的相互作用。 *Ann. Gastroenterol.* **28**, 203 (2015).
+
+    [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=25830558)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4367209)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=The%20gut-brain%20axis%3A%20interactions%20between%20enteric%20microbiota%2C%20central%20and%20enteric%20nervous%20systems&journal=Ann.%20Gastroenterol.&volume=28&publication_year=2015&author=Carabotti%2CM&author=Scirocco%2CA&author=Maselli%2CMA&author=Severi%2CC)
+
+1.  Connell, E. et al. 微生物衍生的代谢物作为衰老相关认知衰退和痴呆的风险因素。 *分子神经退行性疾病* **17**, 43 (2022).
+
+    [文章](https://link.springer.com/doi/10.1186/s13024-022-00548-6)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XitVeqt7bF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35715821)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9204954)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=Microbial-derived%20metabolites%20as%20a%20risk%20factor%20of%20age-related%20cognitive%20decline%20and%20dementia&journal=Mol.%20Neurodegener.&doi=10.1186%2Fs13024-022-00548-6&volume=17&publication_year=2022&author=Connell%2CE)
+
+1.  Jeong, S. et al. 蔗糖和S-腺苷基-L-甲硫氨酸（SAMe）代谢途径中与肠道微生物丰度相关的认知功能。 *J. Alzheimer’s Dis.* **87**, 1115–1130 (2022).
+
+    [文章](https://doi.org/10.3233%2FJAD-215090)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38Xhtl2lurvK)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=Cognitive%20function%20associated%20with%20gut%20microbial%20abundance%20in%20sucrose%20and%20S-adenosyl-L-methionine%20%28SAMe%29%20metabolic%20pathways&journal=J.%20Alzheimer%E2%80%99s%20Dis.&doi=10.3233%2FJAD-215090&volume=87&pages=1115-1130&publication_year=2022&author=Jeong%2CS)
+
+1.  Li, Z. et al. 巴金森病患者中变形放线菌和厚壁菌门相关抗原表位的变化。 *Front. Immunol.* **12**, 2541 (2021).
+
+    [Google 学术](http://scholar.google.com/scholar_lookup?&title=Altered%20actinobacteria%20and%20firmicutes%20phylum%20associated%20epitopes%20in%20patients%20with%20Parkinson%E2%80%99s%20disease&journal=Front.%20Immunol.&volume=12&publication_year=2021&author=Li%2CZ)
+
+1.  肠道微生物群与大脑微结构和功能的相互作用。*临床内分泌与代谢* **100**, 4505–4513 (2015).
+
+    [文章](https://doi.org/10.1210%2Fjc.2015-3076)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC28XjtlSntr0%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26445114)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Gut%20microbiota%20interacts%20with%20brain%20microstructure%20and%20function&journal=J.%20Clin.%20Endocrinol.%20Metab.&doi=10.1210%2Fjc.2015-3076&volume=100&pages=4505-4513&publication_year=2015&author=Fernandez-Real%2CJ-M)
+
+1.  [人类肠道微生物群对认知表现、大脑结构和功能的影响：叙述性评论](https://wiki.example.org/feynmans_learning_method)。*营养素* **12**, 3009 (2020).
+
+    [文章](https://doi.org/10.3390%2Fnu12103009)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3cXitlyjur3K)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=33007941)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC7601389)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Effects%20of%20the%20human%20gut%20microbiota%20on%20cognitive%20performance%2C%20brain%20structure%20and%20function%3A%20a%20narrative%20review&journal=Nutrients&doi=10.3390%2Fnu12103009&volume=12&publication_year=2020&author=Tooley%2CKL)
+
+1.  制定改善服务不足群体试验交付的路线图：来自英国多利益相关者过程的结果。*试验* **21**, 694 (2020).
+
+    [文章](https://link.springer.com/doi/10.1186/s13063-020-04613-7)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=32738919)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC7395975)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Developing%20a%20roadmap%20to%20improve%20trial%20delivery%20for%20under-served%20groups%3A%20results%20from%20a%20UK%20multi-stakeholder%20process&journal=Trials&doi=10.1186%2Fs13063-020-04613-7&volume=21&publication_year=2020&author=Witham%2CMD)
+
+1.  INCLUDE老年人：健康和社会护理研究的最佳实践建议。*年龄与老化* **52**, afad082 (2023).
+
+    [文章](https://doi.org/10.1093%2Fageing%2Fafad082)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=37261448)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC10234283)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=INCLUDE%20older%20people%3A%20best%20practice%20recommendations%20in%20health%20and%20social%20care%20research&journal=Age%20Ageing&doi=10.1093%2Fageing%2Fafad082&volume=52&publication_year=2023&author=Goodwin%2CVA)
+
+1.  肌肉衰退：修订后的欧洲一致性定义与诊断。*年龄与老化* **48**, 601–601 (2019).
+
+    [文章](https://doi.org/10.1093%2Fageing%2Fafz046)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=31081853)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC6593317)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Sarcopenia%3A%20revised%20European%20consensus%20on%20definition%20and%20diagnosis&journal=Age%20Ageing&doi=10.1093%2Fageing%2Fafz046&volume=48&pages=601-601&publication_year=2019&author=Cruz-Jentoft%2CAJ)
+
+1.  Verdi, S. 等。TwinsUK：英国成年双胞胎登记更新。 *Twin Res. Hum. Genetics* [https://doi.org/10.1017/thg.2019.65](https://doi.org/10.1017/thg.2019.65)（2019）。
+
+1.  Ni Lochlainn, M. 等。PROMOTe研究：通过益生元靶向肠道菌群以克服年龄相关性阻力的方案：一项双盲、随机、安慰剂对照试验的协议。 *BMC Geriatr.* **21**, 407（2021）。
+
+    [文章](https://link.springer.com/doi/10.1186/s12877-021-02301-y)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=34210274)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC8248289)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=The%20PROMOTe%20study%3A%20targeting%20the%20gut%20microbiome%20with%20prebiotics%20to%20overcome%20age-related%20anabolic%20resistance%3A%20protocol%20for%20a%20double-blinded%2C%20randomised%2C%20placebo-controlled%20trial&journal=BMC%20Geriatr.&doi=10.1186%2Fs12877-021-02301-y&volume=21&publication_year=2021&author=Ni%20Lochlainn%2CM)
+
+1.  Masoli, J. A. H. 等。NIHR英国远程试验交付工作组关于COVID-19大流行及其后续报告。 *Trials* **22**, 911（2021）。
+
+    [文章](https://link.springer.com/doi/10.1186/s13063-021-05880-8)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB3MXislajt73K)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=34895305)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC8665850)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=A%20report%20from%20the%20NIHR%20UK%20working%20group%20on%20remote%20trial%20delivery%20for%20the%20COVID-19%20pandemic%20and%20beyond&journal=Trials&doi=10.1186%2Fs13063-021-05880-8&volume=22&publication_year=2021&author=Masoli%2CJAH)
+
+1.  Office for National Statistics. Internet users UK 2020\. [英国国家统计局](https://www.ons.gov.uk/businessindustryandtrade/itandinternetindustry/bulletins/internetusers/2020)（2020）。
+
+1.  Doody, P. 等。爱尔兰50岁及以上成年人的互联网访问和使用情况：来自爱尔兰长期衰老研究的第5波结果。 *The Irish Longitudinal Study on Ageing* [https://doi.org/10.38018/TildaRe.2020-06](https://doi.org/10.38018/TildaRe.2020-06)（2020）。
+
+1.  Carter, M. 等人。开发一款英国在线24小时饮食评估工具：myfood24。*营养物质* **7**, 4016–4032 (2015)。
+
+    [文章](https://doi.org/10.3390%2Fnu7064016)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=26024292)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC4488770)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=开发一款英国在线24小时饮食评估工具：myfood24&journal=营养物质&doi=10.3390%2Fnu7064016&volume=7&pages=4016-4032&publication_year=2015&author=Carter%2CM)
+
+1.  Threapleton, D. E. 等人。在临床人群中使用 myfood24 健康护理和数学饮食优化的可用性：一项试点可行性随机对照试验。*营养物质* **14**, 1768 (2022)。
+
+    [文章](https://doi.org/10.3390%2Fnu14091768)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35565736)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC9101756)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=在临床人群中使用 myfood24 健康护理和数学饮食优化的可用性：一项试点可行性随机对照试验&journal=营养物质&doi=10.3390%2Fnu14091768&volume=14&publication_year=2022&author=Threapleton%2CDE)
+
+1.  力量锻炼—NHS。[https://www.nhs.uk/live-well/exercise/strength-and-flexibility-exercises/strength-exercises/](https://www.nhs.uk/live-well/exercise/strength-and-flexibility-exercises/strength-exercises/)。
+
+1.  Millor, N., Lecumberri, P., Gómez, M., Martínez-Ramírez, A. & Izquierdo, M. 在老年人中评估30秒起立测试：基于单个惯性单元的脆弱性检测。*神经工程和康复* **10**, 1–9 (2013)。
+
+    [文章](https://link.springer.com/doi/10.1186/1743-0003-10-86)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=在老年人中评估30秒起立测试：基于单个惯性单元的脆弱性检测&journal=神经工程和康复&doi=10.1186%2F1743-0003-10-86&volume=10&pages=1-9&publication_year=2013&author=Millor%2CN&author=Lecumberri%2CP&author=G%C3%B3mez%2CM&author=Mart%C3%ADnez-Ram%C3%ADrez%2CA&author=Izquierdo%2CM)
+
+1.  Dodds, R. M. 等人。普遍存在并与5椅子站立测试表现不佳相关的因素：认知功能和衰老研究II的发现及建议的纽卡斯尔方案用于肌无力评估。*肌无力和肌肉萎缩* [https://doi.org/10.1002/jcsm.12660](https://doi.org/10.1002/jcsm.12660) (2021)。
+
+1.  Li, H. & Durbin, R. 快速准确的短读取与 Burrows–Wheeler 变换对齐。*生物信息学* **25**, 1754–1760 (2009)。
+
+    [文章](https://doi.org/10.1093%2Fbioinformatics%2Fbtp324)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD1MXot1Cjtbo%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=19451168)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2705234)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Fast%20and%20accurate%20short%20read%20alignment%20with%20Burrows%E2%80%93Wheeler%20transform&journal=Bioinformatics&doi=10.1093%2Fbioinformatics%2Fbtp324&volume=25&pages=1754-1760&publication_year=2009&author=Li%2CH&author=Durbin%2CR)
+
+1.  Huerta-Cepas, J. et al. 通过eggNOG-Mapper进行快速全基因组功能注释。*分子生物学与进化* **34**, 2115–2122 (2017).
+
+    [文章](https://doi.org/10.1093%2Fmolbev%2Fmsx148)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BC1cXhvFaru7vF)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=28460117)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC5850834)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Fast%20genome-wide%20functional%20annotation%20through%20orthology%20assignment%20by%20eggNOG-Mapper&journal=Mol.%20Biol.%20Evol.&doi=10.1093%2Fmolbev%2Fmsx148&volume=34&pages=2115-2122&publication_year=2017&author=Huerta-Cepas%2CJ)
+
+1.  Kanehisa, M. KEGG: 京都基因与基因组百科全书。*核酸研究* **28**, 27–30 (2000).
+
+    [文章](https://doi.org/10.1093%2Fnar%2F28.1.27)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BD3cXhvVGqu74%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=10592173)  [PubMed Central](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC102409)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=KEGG%3A%20Kyoto%20Encyclopedia%20of%20Genes%20and%20Genomes&journal=Nucleic%20Acids%20Res.&doi=10.1093%2Fnar%2F28.1.27&volume=28&pages=27-30&publication_year=2000&author=Kanehisa%2CM)
+
+1.  Kim, B.-R. et al. 解读微生物群落的多样性指标以更好地理解。*微生物学与生物技术杂志* **27**, 2089–2093 (2017).
+
+    [文章](https://doi.org/10.4014%2Fjmb.1709.09027)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=29032640)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Deciphering%20diversity%20indices%20for%20a%20better%20understanding%20of%20microbial%20communities&journal=J.%20Microbiol%20Biotechnol.&doi=10.4014%2Fjmb.1709.09027&volume=27&pages=2089-2093&publication_year=2017&author=Kim%2CB-R)
+
+1.  Gacesa, R. et al. 荷兰人群肠道菌群的环境因素塑造。*自然* **604**, 732–739 (2022).
+
+    [文章](https://doi.org/10.1038%2Fs41586-022-04567-7)  [ADS](http://adsabs.harvard.edu/cgi-bin/nph-data_query?link_type=ABSTRACT&bibcode=2022Natur.604..732G)  [CAS](/articles/cas-redirect/1:CAS:528:DC%2BB38XpvV2iu7k%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=35418674)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=环境因素塑造荷兰人群的肠道菌群&journal=Nature&doi=10.1038%2Fs41586-022-04567-7&volume=604&pages=732-739&publication_year=2022&author=Gacesa%2CR)
+
+1.  Sahu, M. & Prasuna, J. 双生子研究：一种独特的流行病学工具。 *Indian J. Commun. Med.* **41**, 177 (2016).
+
+    [文章](https://doi.org/10.4103%2F0970-0218.183593)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=双生子研究：一种独特的流行病学工具&journal=Indian%20J.%20Commun.%20Med.&doi=10.4103%2F0970-0218.183593&volume=41&publication_year=2016&author=Sahu%2CM&author=Prasuna%2CJ)
+
+1.  StataCorp. Stata统计软件：16版。College Station, TX: StataCorp LLC. (2019).
+
+1.  RStudio Team & RStudio: R集成开发环境。 *RStudio*. (RStudio, Inc., Boston, MA, 2015).
+
+1.  Black, A. E. Goldberg截断法对EI:BMR的敏感性和特异性，用于识别饮食报告的低有效性。 *Eur. J. Clin. Nutr.* **54**, 395–404 (2000).
+
+    [文章](https://doi.org/10.1038%2Fsj.ejcn.1600971)  [CAS](/articles/cas-redirect/1:STN:280:DC%2BD3c3osVWjuw%3D%3D)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=10822286)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=Goldberg截断法对EI:BMR的敏感性和特异性，用于识别饮食报告的低有效性&journal=Eur.%20J.%20Clin.%20Nutr.&doi=10.1038%2Fsj.ejcn.1600971&volume=54&pages=395-404&publication_year=2000&author=Black%2CAE)
+
+1.  Black, A. E. 使用Goldberg截断法评估能量摄入：基础代谢率。计算、使用及限制的实用指南。 *Int. J. Obes.* **24**, 1119–1130 (2000).
+
+    [文章](https://doi.org/10.1038%2Fsj.ijo.0801376)  [CAS](/articles/cas-redirect/1:STN:280:DC%2BD3cvosFehsg%3D%3D)  [Google Scholar](http://scholar.google.com/scholar_lookup?&title=使用Goldberg截断法评估能量摄入：基础代谢率。计算、使用及限制&journal=Int.%20J.%20Obes.&doi=10.1038%2Fsj.ijo.0801376&volume=24&pages=1119-1130&publication_year=2000&author=Black%2CAE)
+
+1.  英国食品能量和营养素的膳食参考值。医疗政策委员会膳食参考值小组报告。 *Rep. Health Soc. Subj. (Lond.)* **41**, 1–210 (1991).
+
+    [Google 学术](http://scholar.google.com/scholar_lookup?&title=Report%20of%20the%20panel%20on%20dietary%20reference%20values%20of%20the%20committee%20on%20medical%20aspects%20of%20food%20policy&journal=Rep.%20Health%20Soc.%20Subj.%20%28Lond.%29&volume=41&pages=1-210&publication_year=1991)
+
+1.  Oksanen, J. et al. 生态学社区包[**R package version 2.6-4**]。[https://cran.r-project.org/package=vegan](https://cran.r-project.org/package=vegan) (2022).
+
+1.  Holst, K. K., Scheike, T. H. & Hjelmborg, J. B. 用于截尾双胞胎数据的责任阈模型。*计算统计数据分析* **93**, 324–335 (2016).
+
+    [文章](https://doi.org/10.1016%2Fj.csda.2015.01.014)  [MathSciNet](http://www.ams.org/mathscinet-getitem?mr=3406215)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=The%20liability%20threshold%20model%20for%20censored%20twin%20data&journal=Comput.%20Stat.%20Data%20Anal.&doi=10.1016%2Fj.csda.2015.01.014&volume=93&pages=324-335&publication_year=2016&author=Holst%2CKK&author=Scheike%2CTH&author=Hjelmborg%2CJB)
+
+1.  Scheike, T. H., Holst, K. K. & Hjelmborg, J. B. 基于双生子研究估计特定原因死亡的遗传力。*生存数据分析* **20**, 210–233 (2014).
+
+    [文章](https://link.springer.com/doi/10.1007/s10985-013-9244-x)  [MathSciNet](http://www.ams.org/mathscinet-getitem?mr=3181012)  [PubMed](http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&dopt=Abstract&list_uids=23378036)  [Google 学术](http://scholar.google.com/scholar_lookup?&title=Estimating%20heritability%20for%20cause%20specific%20mortality%20based%20on%20twin%20studies&journal=Lifetime%20Data%20Anal.&doi=10.1007%2Fs10985-013-9244-x&volume=20&pages=210-233&publication_year=2014&author=Scheike%2CTH&author=Holst%2CKK&author=Hjelmborg%2CJB)
