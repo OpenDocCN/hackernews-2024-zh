@@ -172,7 +172,7 @@ if (errctx.pg_try()) {
 } 
 ```
 
-pgzx提供了一个基于[Nix flakes](https://nixos.wiki/wiki/Flakes)的开发环境，用于开发扩展以及pgzx本身。它还提供了一个项目模板，您可以在新的存储库中使用它来设置这个环境。要使用它，[安装Nix](https://github.com/DeterminateSystems/nix-installer)，然后运行：
+pgzx提供了一个基于[Nix flakes](https://wiki.nixos.org/wiki/Flakes)的开发环境，用于开发扩展以及pgzx本身。它还提供了一个项目模板，您可以在新的存储库中使用它来设置这个环境。要使用它，[安装Nix](https://github.com/DeterminateSystems/nix-installer)，然后运行：
 
 ```
 mkdir my_extension

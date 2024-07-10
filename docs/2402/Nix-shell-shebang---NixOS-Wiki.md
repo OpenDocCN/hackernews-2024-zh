@@ -8,7 +8,7 @@
 
 # Nix-shell shebang - NixOS Wiki
 
-> 来源：[https://nixos.wiki/wiki/Nix-shell_shebang](https://nixos.wiki/wiki/Nix-shell_shebang)
+> 来源：[https://wiki.nixos.org/wiki/Nix-shell_shebang](https://wiki.nixos.org/wiki/Nix-shell_shebang)
 
 您可以使用 `nix-shell` 作为脚本解释器来
 

@@ -18,7 +18,7 @@ date: 2024-05-27 15:04:02
 
 我们使用GitHub actions构建和发布发布版本，这样工程师们可以在需要设置新机器或修复现有机器的开发环境时下载并运行最新版本的工具。
 
-在Linux上，这些都很顺利（除了在NixOS上运行任何东西的通常问题之外](https://nixos.wiki/wiki/Packaging/Binaries)，但macOS要求程序必须经过代码签名和公证。
+在Linux上，这些都很顺利（除了在NixOS上运行任何东西的通常问题之外](https://wiki.nixos.org/wiki/Packaging/Binaries)，但macOS要求程序必须经过代码签名和公证。
 
 在macOS上进行代码签名真的是一场*噩梦*。作为对非对称加密略有了解的人，我本来以为过程大致是这样的：
 
